@@ -1,0 +1,49 @@
+<template>
+  <section class="mission-hero">
+    <div class="mission-content">
+      <h1>Our Mission</h1>
+      <p>To build a thriving community of gamers united by competitive spirit, skill development, and shared passion.</p>
+    </div>
+  </section>
+</template>
+
+<script setup>
+</script>
+
+<style scoped>
+.mission-hero {
+  background: linear-gradient(45deg, rgba(97, 0, 224, 0.2), rgba(212, 165, 255, 0.1));
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.mission-content {
+  text-align: center;
+  max-width: 600px;
+}
+
+.mission-content h1 {
+  font-size: 48px;
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+.mission-content p {
+  font-size: 18px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .mission-content h1 {
+    font-size: 32px;
+  }
+
+  .mission-content p {
+    font-size: 16px;
+  }
+}
+</style>
