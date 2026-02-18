@@ -30,34 +30,4 @@
 <script setup>
 </script>
 
-<style scoped>
-h1 {
-  font-weight: 700;
-  margin-bottom: 2rem;
-}
-
-h2 {
-  font-weight: 700;
-}
-
-p {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: var(--text);
-  margin-bottom: 1.5rem;
-}
-
-.btn-primary {
-  background: linear-gradient(90deg, var(--accent), var(--accent-2)) !important;
-  color: #2a1b3d !important;
-  border: none !important;
-  font-weight: 600 !important;
-  padding: 12px 24px !important;
-  border-radius: 10px !important;
-}
-
-.btn-primary:hover {
-  opacity: 0.9;
-  color: #2a1b3d !important;
-}
-</style>
+<style scoped src="./About.css"></style>

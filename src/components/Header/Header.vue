@@ -4,7 +4,7 @@
       <div class="container">
         <!-- Logo -->
         <router-link to="/" class="navbar-brand">
-          <img src="./assets/logo.png" alt="Ravens logo" width="44" height="44" class="me-2">
+          <img src="../../assets/logo.png" alt="Ravens logo" width="44" height="44" class="me-2">
           <span>Ravens</span>
         </router-link>
 
@@ -41,65 +41,4 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 </script>
 
-<style scoped>
-.site-header {
-  background: linear-gradient(180deg, rgba(201, 180, 224, 0.04), transparent);
-  backdrop-filter: blur(6px);
-  border-bottom: 1px solid rgba(201, 180, 224, 0.08);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.navbar-brand {
-  display: flex;
-  align-items: center;
-  font-weight: 700;
-  letter-spacing: 0.4px;
-  color: var(--text) !important;
-  font-size: 1.25rem;
-}
-
-.navbar-brand img {
-  display: block;
-}
-
-.navbar-brand span {
-  white-space: nowrap;
-}
-
-.nav-link {
-  color: var(--muted) !important;
-  padding: 8px 10px !important;
-  border-radius: 8px;
-  white-space: nowrap;
-  transition: all 0.3s ease;
-}
-
-.nav-link:hover,
-.nav-link.active {
-  color: var(--text) !important;
-  background: var(--glass);
-}
-
-.btn-primary {
-  background: linear-gradient(90deg, var(--accent), var(--accent-2)) !important;
-  color: #2a1b3d !important;
-  border: none !important;
-  font-weight: 600 !important;
-  padding: 8px 12px !important;
-  border-radius: 10px !important;
-}
-
-.btn-primary:hover {
-  opacity: 0.9;
-}
-
-.navbar-toggler {
-  border: none !important;
-}
-
-.navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28148, 163, 184, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
-}
-</style>
+<style scoped src="./Header.css"></style>
