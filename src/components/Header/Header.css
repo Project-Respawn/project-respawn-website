@@ -7,14 +7,8 @@
   z-index: 100;
 }
 
-.navbar-brand {
-  display: flex;
-  align-items: center;
-  font-weight: 700;
-  letter-spacing: 0.4px;
-  color: var(--text) !important;
-  font-size: 1.25rem;
-}
+/* Keep only small, component-specific rules here. General navbar / nav-link / btn styles
+   are provided centrally in src/assets/styles.css (Bootstrap overrides). */
 
 .navbar-brand img {
   display: block;
@@ -22,33 +16,6 @@
 
 .navbar-brand span {
   white-space: nowrap;
-}
-
-.nav-link {
-  color: var(--muted) !important;
-  padding: 8px 10px !important;
-  border-radius: 8px;
-  white-space: nowrap;
-  transition: all 0.3s ease;
-}
-
-.nav-link:hover,
-.nav-link.active {
-  color: var(--text) !important;
-  background: var(--glass);
-}
-
-.btn-primary {
-  background: linear-gradient(90deg, var(--accent), var(--accent-2)) !important;
-  color: #2a1b3d !important;
-  border: none !important;
-  font-weight: 600 !important;
-  padding: 8px 12px !important;
-  border-radius: 10px !important;
-}
-
-.btn-primary:hover {
-  opacity: 0.9;
 }
 
 .navbar-toggler {

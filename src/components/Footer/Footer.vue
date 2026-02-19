@@ -10,7 +10,7 @@
             <router-link to="/" class="me-3">Home</router-link>
             <router-link to="/about" class="me-3">About</router-link>
             <router-link to="/contact">Contact</router-link>
-            <router-link to="/privacypolicy">Privacy Policy</router-link>
+            <router-link to="/privacy-policy">Privacy Policy</router-link>
           </div>
         </div>
       </div>

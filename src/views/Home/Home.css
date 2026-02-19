@@ -1,49 +1,10 @@
+/* Layout and button utilities replaced by Bootstrap classes.
+   Use Bootstrap `container`, `row`, `col`, `d-flex`, `gap-*`, `btn`,
+   `btn-group` and spacing utilities in the template instead of
+   view-level layout rules. Keep only unique visual styles below. */
+
 .hero {
   padding: 48px 0;
-}
-
-.hero-inner {
-  display: flex;
-  gap: 28px;
-  align-items: stretch;
-}
-
-.hero-text {
-  flex: 1;
-}
-
-.hero-aside {
-  width: 260px;
-}
-
-.hero-text h1 {
-  margin-bottom: 1rem;
-  font-weight: 700;
-}
-
-.lead {
-  color: var(--text);
-  max-width: 56ch;
-  font-size: 1.1rem;
-  margin-bottom: 1.5rem;
-}
-
-.btn-group {
-  display: flex;
-  gap: 1rem;
-}
-
-.btn {
-  display: inline-block;
-  padding: 10px 14px;
-  border-radius: 10px;
-  text-decoration: none;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.btn:hover {
-  opacity: 0.9;
 }
 
 .card.highlight {
@@ -84,24 +45,6 @@
 }
 
 @media (max-width: 768px) {
-  .hero-inner {
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .hero-aside {
-    width: 100%;
-  }
-
-  .hero-text h1 {
-    font-size: 24px;
-  }
-
-  .lead {
-    font-size: 14px;
-  }
-
-  .btn-group {
-    flex-direction: column;
-  }
+  .hero-text h1 { font-size: 24px; }
+  .lead { font-size: 14px; }
 }
