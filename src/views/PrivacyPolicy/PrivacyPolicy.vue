@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="privacy-container mx-auto">
         <h1>🔒 Data Privacy & Encryption Flowchart</h1>
         <p style="text-align: center; color: #7f8c8d; margin-bottom: 30px;">
             How your data is protected • Hover over boxes for more details
