@@ -29,7 +29,7 @@
               <router-link to="/contact" class="nav-link" :class="{ active: $route.path === '/contact' }">Contact</router-link>
             </li>
           </ul>
-          <router-link to="/contact" class="btn btn-primary ms-3">Join</router-link>
+          <router-link to="/contact" class="btn btn-secondary ms-3">Join</router-link>
         </div>
       </div>
     </nav>
