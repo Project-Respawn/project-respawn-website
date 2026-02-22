@@ -32,7 +32,7 @@
             <div class="card-body">
               <h3 class="card-title">Team Tryouts</h3>
               <p class="card-text">We're holding tryouts for our competitive squads next month. Signups open now.</p>
-              <router-link to="/about" class="text-decoration-none fw-semibold stretched-link">Read</router-link>
+              <router-link to="/team-tryouts" class="text-decoration-none fw-semibold stretched-link">Read</router-link>
             </div>
           </div>
         </div>
@@ -50,7 +50,7 @@
             <div class="card-body">
               <h3 class="card-title">Merch Drop</h3>
               <p class="card-text">New jerseys and hoodies available — limited stock.</p>
-              <router-link to="/contact" class="text-decoration-none fw-semibold stretched-link">Shop</router-link>
+              <router-link to="/merch" class="text-decoration-none fw-semibold stretched-link">Shop</router-link>
             </div>
           </div>
         </div>

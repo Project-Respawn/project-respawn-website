@@ -7,6 +7,7 @@ import NotFound from '../views/NotFound/NotFound.vue'
 import PrivacyPolicy from '../views/PrivacyPolicy/PrivacyPolicy.vue'
 import TeamTryouts from '../views/TeamTryouts/TeamTryouts.vue'
 import Merch from '../views/Mech/Merch.vue'
+import Events from '../views/Events/Events.vue'
 
 const routes = [
   { path: '/', component: Home },
@@ -16,6 +17,7 @@ const routes = [
   { path: '/privacy-policy', component: PrivacyPolicy },
   { path: '/team-tryouts', component: TeamTryouts },
   { path: '/merch', component: Merch },
+  { path: '/events', component: Events },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound }
 ]
 

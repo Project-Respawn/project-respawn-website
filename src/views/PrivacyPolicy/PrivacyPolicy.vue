@@ -153,7 +153,7 @@
             </div>
         </div>        
         <div style="margin-top: 20px; padding: 15px; background: #e8f4f8; border-left: 4px solid #3498db; border-radius: 6px;">
-            <strong>🎯 Bottom Line:</strong> Your photos are encrypted by default. Only you can see them. We ONLY break encryption if we think you're in danger—and we log everything.
+            <strong>🎯 Bottom Line:</strong> Your photos are encrypted by default. Only you can see them. We ONLY break encryption if we think you're in danger and we log everything.
         </div>
     </div>
 </template>

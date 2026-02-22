@@ -5,7 +5,7 @@
       
         <p>At Project Respawn, we believe that no matter where you have been, you always have the power to start over.</p>
       
-        <p>In gaming, a "respawn" is a second chance—a fresh moment where the mistakes of the last round are wiped clean, and you step back into the world with full health and a new strategy. We built this platform because real life deserves that same mechanic.</p>
+        <p>In gaming, a "respawn" is a second chance, a fresh moment where the mistakes of the last round are wiped clean, and you step back into the world with full health and a new strategy. We built this platform because real life deserves that same mechanic.</p>
 
         <p>For many of us, "confidence" feels like a trait other people were born with. Maybe you have never felt like the main character in your own story, or perhaps life has knocked you down so many times that getting back up feels impossible.</p>
 

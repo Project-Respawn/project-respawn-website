@@ -33,7 +33,10 @@
             </li>
              <li class="nav-item">
               <router-link to="/merch" class="nav-link" :class="{ active: $route.path === '/merch' }">Merch</router-link>
-            </li>            
+            </li>      
+              <li class="nav-item">
+              <router-link to="/events" class="nav-link" :class="{ active: $route.path === '/events' }">Events</router-link>
+            </li>                  
           </ul>
           <router-link to="/contact" class="btn btn-secondary ms-3">Join</router-link>
         </div>
