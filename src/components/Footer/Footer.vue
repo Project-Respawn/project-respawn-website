@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row py-4 align-items-center">
         <div class="col-md-6">
-          <p class="mb-0">&copy; <span id="year">{{ currentYear }}</span> Ravens — All rights reserved</p>
+          <p class="mb-0">&copy; <span id="year">{{ currentYear }}</span> Ravens Comunity Gaming ltd — All rights reserved</p>
         </div>
         <div class="col-md-6">
           <nav class="nav justify-content-md-end">

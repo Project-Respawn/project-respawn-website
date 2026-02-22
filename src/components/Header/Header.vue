@@ -28,6 +28,12 @@
             <li class="nav-item">
               <router-link to="/contact" class="nav-link" :class="{ active: $route.path === '/contact' }">Contact</router-link>
             </li>
+             <li class="nav-item">
+              <router-link to="/team-tryouts" class="nav-link" :class="{ active: $route.path === '/team-tryouts' }">Team Tryouts</router-link>
+            </li>
+             <li class="nav-item">
+              <router-link to="/merch" class="nav-link" :class="{ active: $route.path === '/merch' }">Merch</router-link>
+            </li>            
           </ul>
           <router-link to="/contact" class="btn btn-secondary ms-3">Join</router-link>
         </div>

@@ -5,6 +5,8 @@ import Contact from '../views/Contact/Contact.vue'
 import OurMission from '../views/OurMission/OurMission.vue'
 import NotFound from '../views/NotFound/NotFound.vue'
 import PrivacyPolicy from '../views/PrivacyPolicy/PrivacyPolicy.vue'
+import TeamTryouts from '../views/TeamTryouts/TeamTryouts.vue'
+import Merch from '../views/Mech/Merch.vue'
 
 const routes = [
   { path: '/', component: Home },
@@ -12,6 +14,8 @@ const routes = [
   { path: '/contact', component: Contact },
   { path: '/our-mission', component: OurMission },
   { path: '/privacy-policy', component: PrivacyPolicy },
+  { path: '/team-tryouts', component: TeamTryouts },
+  { path: '/merch', component: Merch },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound }
 ]
 
