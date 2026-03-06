@@ -18,7 +18,7 @@ const routes = [
   { path: '/team-tryouts', component: TeamTryouts },
   { path: '/merch', component: Merch },
   { path: '/events', component: Events },
-  { path: '/:catchAll(.*)*', component: NotFound }
+  { path: '/:pathMatch(.*)', component: NotFound }
 ]
 
 const router = createRouter({
