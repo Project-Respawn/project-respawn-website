@@ -6,7 +6,6 @@
         <div class="error-message">Page not found. The page you're looking for doesn't exist.</div>
         <div class="error-actions">
           <router-link class="btn btn-primary" to="/">Home</router-link>
-          <a class="btn btn-outline-primary" href="/error.html">Server Error Page</a>
         </div>
       </div>
     </section>

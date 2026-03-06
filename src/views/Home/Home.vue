@@ -5,18 +5,20 @@
       <div class="container">
         <div class="row align-items-stretch">
           <div class="col-md-8 hero-text">
-          <h1>Ravens — Community, Events, Teams</h1>
-          <p class="lead">We organise events, build teams and host matches. Join our community or catch upcoming events.</p>
-          <div class="btn-group">
-            <router-link to="/about" class="btn btn-primary">Learn More</router-link>
-            <router-link to="/contact" class="btn btn-outline-primary">Get Involved</router-link>
+            <h1>Ravens — Community, Events, Teams</h1>
+            <p class="lead">We organise events, build teams and host matches. Join our community or catch upcoming events.</p>
+            <div class="btn-group">
+              <router-link to="/about" class="btn btn-primary">Learn More</router-link>
+              <router-link to="/contact" class="btn btn-outline-primary">Get Involved</router-link>
+            </div>
           </div>
-          </div>
-          <div class="col-md-4 hero-aside">
-            <div class="card highlight">
-            <h3>Next Event</h3>
-            <p><strong>Friday Night Scrims</strong><br>Starts 8pm — Weekly</p>
-            <a href="#events" class="text-decoration-none fw-semibold">See Events</a>
+          <div class="col-md-4">
+            <div class="card h-100">
+              <div class="card-body">
+                <h3>Next Event</h3>
+                <p class="card-text"><strong>Friday Night Scrims</strong><br>Starts 8pm — Weekly</p>
+                <router-link to="/events" class="text-decoration-none fw-semibold">See Events</router-link>
+              </div>
             </div>
           </div>
         </div>
@@ -91,7 +93,7 @@
     </section>
 
     <!-- Upcoming Events Section -->
-    <section id="events" class="section container py-5">
+    <section class="section container py-5">
       <h2 class="mb-4">Upcoming Events</h2>
       <div class="row g-4">
         <div class="col-md-6">
