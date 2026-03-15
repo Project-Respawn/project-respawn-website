@@ -1,4 +1,4 @@
-# Ravens Website - Vue.js with Bootstrap
+# Project Respawn Website - Vue.js with Bootstrap
 
 A modern, modular website for the Ravens community built with Vue 3, Bootstrap 5, and Vite.
 
@@ -24,13 +24,13 @@ src/
 
 ## Features
 
-- ✅ **Vue 3** with Composition API
-- ✅ **Bootstrap 5** for responsive UI
-- ✅ **Vue Router** for client-side routing
-- ✅ **Reusable Components** (Header, Footer)
-- ✅ **Modular Pages** (Home, About, Contact, Our Mission)
-- ✅ **Responsive Design** with custom lavender theme
-- ✅ **Vite** for fast development and building
+- **Vue 3** with Composition API
+- **Bootstrap 5** for responsive UI
+- **Vue Router** for client-side routing
+- **Reusable Components** (Header, Footer)
+- **Modular Pages** (Home, About, Contact, Our Mission)
+- **Responsive Design** with custom lavender theme
+- **Vite** for fast development and building
 
 ## Setup
 
@@ -79,7 +79,7 @@ Edit `src/assets/styles.css` to customize the color scheme:
 ### Pages
 
 Each page is a Vue component in `src/views/`:
-- Home page with hero, news, teams, and events
+- Home page with news, teams, and events
 - About page with community information
 - Contact page with contact form
 - Our Mission page with mission statement
@@ -92,5 +92,5 @@ Each page is a Vue component in `src/views/`:
 - **vite**: Next generation frontend tooling
 
 ## Browser Support
-
 Modern browsers (Chrome, Firefox, Safari, Edge)
+Mobile browser support
