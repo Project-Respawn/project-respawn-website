@@ -18,8 +18,10 @@ src/
 │   ├── About.vue        # About page
 │   ├── Contact.vue      # Contact form page
 │   └── OurMission.vue   # Mission page
-└── assets/
-    └── styles.css       # Custom styles with CSS variables
+├── assets
+│    └── logo.png
+└── css
+    └── styles.css
 ```
 
 ## Features
@@ -59,8 +61,6 @@ src/
 
 ### Theme Colors
 
-Edit `src/assets/styles.css` to customize the color scheme:
-
 ```css
 :root {
   --bg: #0f172a;           /* Background */
@@ -74,7 +74,7 @@ Edit `src/assets/styles.css` to customize the color scheme:
 ### Components
 
 - **Header.vue**: Navigation bar with logo, menu, and CTA button
-- **Footer.vue**: Footer with links and year auto-update
+- **Footer.vue**: Footer with links
 
 ### Pages
 
