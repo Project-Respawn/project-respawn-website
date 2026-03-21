@@ -62,13 +62,9 @@ src/
 ### Theme Colors
 
 ```css
-:root {
-  --bg: #0f172a;           /* Background */
-  --text: #94a3b8;         /* Text color */
-  --accent: #39ff14;       /* Primary accent */
-  --accent-2: #d4a5ff;     /* Secondary accent */
-  --muted: #6100e0;        /* Muted text */
-}
+
+Colour scheme set up in styles.css
+
 ```
 
 ### Components

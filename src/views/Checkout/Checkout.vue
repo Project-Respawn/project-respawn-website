@@ -136,7 +136,6 @@
 
   onMounted(async () => {
     // await loadScript("https://sdk.revolut.com/embedded-checkout/embedded-checkout-sdk.js");    
-    await loadScript("https://merchant.revolut.com/embed.js");
   })
 </script>
 
