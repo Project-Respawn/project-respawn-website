@@ -3,6 +3,7 @@
     <div class="container">
       <div class="row py-4 align-items-center">
         <div class="col-md-6">
+          <p>To build a thriving community of gamers united by competitive spirit, skill development, and shared passion.</p>
           <p class="mb-0">&copy; <span id="year">{{ currentYear }}</span> Ravens Comunity Gaming ltd — All rights reserved</p>
         </div>
         <div class="col-md-6">
