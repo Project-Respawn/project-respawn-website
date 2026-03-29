@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home/Home.vue'
 import About from '../views/About/About.vue'
 import Contact from '../views/Contact/Contact.vue'
-import OurMission from '../views/OurMission/OurMission.vue'
+// import OurMission from '../views/OurMission/OurMission.vue'
 import NotFound from '../views/NotFound/NotFound.vue'
 import PrivacyPolicy from '../views/PrivacyPolicy/PrivacyPolicy.vue'
 import TeamTryouts from '../views/TeamTryouts/TeamTryouts.vue'
@@ -14,7 +14,7 @@ const routes = [
   { path: '/', component: Home },
   { path: '/about', component: About },
   { path: '/contact', component: Contact },
-  { path: '/our-mission', component: OurMission },
+  // { path: '/our-mission', component: OurMission },
   { path: '/privacy-policy', component: PrivacyPolicy },
   { path: '/team-tryouts', component: TeamTryouts },
   { path: '/merch', component: Merch },
