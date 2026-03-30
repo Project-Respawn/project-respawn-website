@@ -18,7 +18,6 @@
       >
         All
       </button>
-
       <button
         class="filter-btn"
         :class="{ active: filter === 'printful' }"
@@ -26,7 +25,6 @@
       >
         Printful
       </button>
-
       <button
         class="filter-btn"
         :class="{ active: filter === 'manual' }"
@@ -46,20 +44,42 @@
           class="product-card"
         >
           <div class="product-image-wrap">
-            <img :src="product.image" :alt="product.title" />
+            <img
+              :src="product.image || fallbackImage"
+              :alt="product.title || 'Product image'"
+            />
           </div>
 
           <div class="product-card-content">
-            <span class="product-source">{{ product.source }}</span>
-            <h2 class="product-title">{{ product.title }}</h2>
+            <span class="product-source">{{ product.source || 'manual' }}</span>
+            <h2 class="product-title">{{ product.title || 'Untitled product' }}</h2>
+
             <p class="product-description">
               {{ product.description || 'No description available.' }}
             </p>
+
             <div class="product-price">£{{ formatPrice(product.price) }}</div>
 
             <div class="product-actions">
-              <a class="btn-primary" :href="product.checkoutUrl || '#'">Buy now</a>
-              <a class="btn-secondary" :href="product.productUrl || '#'">Details</a>
+              <a
+                v-if="product.checkoutUrl"
+                class="btn-primary"
+                :href="product.checkoutUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Buy now
+              </a>
+
+              <a
+                v-if="product.productUrl"
+                class="btn-secondary"
+                :href="product.productUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Details
+              </a>
             </div>
           </div>
         </article>
@@ -73,7 +93,7 @@
 </template>
 
 <script>
-import { fetchProducts } from "./merchService";
+import { fetchProducts } from "./merchService.js";
 
 export default {
   name: "MerchPage",
@@ -81,7 +101,8 @@ export default {
     return {
       products: [],
       filter: "all",
-      status: "Loading products..."
+      status: "Loading products...",
+      fallbackImage: "https://via.placeholder.com/600x600?text=Project+Respawn"
     };
   },
   computed: {
@@ -89,26 +110,42 @@ export default {
       if (this.filter === "all") {
         return this.products;
       }
-
-      return this.products.filter((product) => product.source === this.filter);
+      return this.products.filter(
+        (product) => (product.source || "").toLowerCase() === this.filter
+      );
     }
   },
   async mounted() {
     try {
       const data = await fetchProducts();
-      this.products = data;
-      this.status = `${data.length} products loaded`;
+
+      this.products = Array.isArray(data)
+        ? data.map((product, index) => ({
+            id: product.id || `product-${index}`,
+            title: product.title || "Untitled product",
+            description: product.description || "",
+            image: product.image || "",
+            source: (product.source || "manual").toLowerCase(),
+            price: product.price ?? 0,
+            checkoutUrl: product.checkoutUrl || "",
+            productUrl: product.productUrl || ""
+          }))
+        : [];
+
+      this.status = `${this.products.length} products loaded`;
     } catch (error) {
-      console.error(error);
+      console.error("Merch page error:", error);
       this.status = "Could not load products right now.";
+      this.products = [];
     }
   },
   methods: {
     formatPrice(price) {
-      return Number(price || 0).toFixed(2);
+      const parsed = Number(price);
+      return Number.isFinite(parsed) ? parsed.toFixed(2) : "0.00";
     }
   }
 };
 </script>
 
-<style scoped src="./Merch.css"></style>  
+<style scoped src="./Merch.css"></style>
