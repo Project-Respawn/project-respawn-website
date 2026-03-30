@@ -38,7 +38,7 @@
               <router-link to="/events" class="nav-link" :class="{ active: $route.path === '/events' }">Events</router-link>
             </li>                  
           </ul>
-          <router-link to="/contact" class="btn btn-secondary ms-3">Join</router-link>
+          <router-link to="/join" class="btn btn-secondary ms-3 " :class="{ active: $route.path === '/join' }">Join</router-link>
         </div>
       </div>
     </nav>
