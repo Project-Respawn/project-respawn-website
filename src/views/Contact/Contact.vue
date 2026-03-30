@@ -59,6 +59,16 @@
 
           <div class="contact-info mt-5 pt-5 border-top">
             <h2 class="mb-4">Other Ways to Connect</h2>
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <h5>Email</h5>
+                  <a href="mailto:help@projectrespawn.com">help@projectrespawn.com</a>
+                </div>
+                <!-- <div class="col-md-6 mb-4">
+                  <h5>Follow Us</h5>
+                  <p>Stay updated with the latest news and events.</p>
+                </div> -->
+            </div>
             <div class="row">
               <div class="col-md-6 mb-4">
                 <h5>Join Our Community</h5>
