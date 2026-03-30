@@ -8,6 +8,7 @@ import TeamTryouts from '../views/TeamTryouts/TeamTryouts.vue'
 import Merch from '../views/Mech/Merch.vue'
 import Events from '../views/Events/Events.vue'
 import Checkout from '../views/Checkout/Checkout.vue'
+import Join from '../views/Join/Join.vue'
 
 const routes = [
   { path: '/', component: Home },
@@ -18,6 +19,7 @@ const routes = [
   { path: '/merch', component: Merch },
   { path: '/checkout', component: Checkout },
   { path: '/events', component: Events },
+  { path: '/join', component: Join },
   { path: '/:pathMatch(.*)', component: NotFound }
 ]
 

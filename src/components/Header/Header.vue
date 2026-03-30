@@ -23,9 +23,6 @@
               <router-link to="/about" class="nav-link" :class="{ active: $route.path === '/about' }">About</router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/our-mission" class="nav-link" :class="{ active: $route.path === '/our-mission' }">Our Mission</router-link>
-            </li>
-            <li class="nav-item">
               <router-link to="/contact" class="nav-link" :class="{ active: $route.path === '/contact' }">Contact</router-link>
             </li>
              <li class="nav-item">
