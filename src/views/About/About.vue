@@ -9,7 +9,7 @@
         <p>We treat personal growth like a game. You don't have to conquer the world in a day; you just have to complete the next quest. Whether it is leveling up your social skills, grinding for better mental resilience, or unlocking a community that finally gets you, our goal is simple: to help you respawn and grow into the person you were always meant to be.</p>
         <p>Your past is just the tutorial. Your real game starts now.</p>
         Welcome to the Respawn
-      <!-- <h2 class="mt-5 mb-4">The Future: Ravens Rewards</h2>
+      <!-- <h2 class="mt-5 mb-4">The Future: Project Respawn Rewards</h2>
       <p>
         We are building a unique economy of kindness. Soon, our custom token system will reward members who support others, mentor newcomers, and host events. You'll be able to redeem these earned tokens for exclusive perks and partner gear—proving that in our community, being a good person pays off.
       </p> -->

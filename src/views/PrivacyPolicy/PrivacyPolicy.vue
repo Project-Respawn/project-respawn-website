@@ -9,7 +9,7 @@
             <!-- START -->
             <div class="step step-start">
                 <div class="step-title">START</div>
-                <div class="step-description">You upload a photo + GPS location to Ravens Gaming</div>
+                <div class="step-description">You upload a photo + GPS location to Project Respawn Gaming</div>
             </div>
             
             <div class="arrow">↓</div>
@@ -58,7 +58,7 @@
                     <div class="arrow">↓</div>
                     
                     <div class="step step-normal">
-                        <div class="step-title">🔒 RAVENS CANNOT SEE</div>
+                        <div class="step-title">🔒 PROJECT RESPAWN CANNOT SEE</div>
                         <div class="step-description">
                             ✓ We see tokens earned<br>
                             ✗ We CANNOT see your photos<br>

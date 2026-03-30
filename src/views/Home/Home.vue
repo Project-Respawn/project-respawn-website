@@ -5,7 +5,7 @@
       <div class="container">
         <div class="row align-items-stretch">
           <div class="col-md-8 hero-text">
-            <h1>Ravens — Community, Events, Teams</h1>
+            <h1>Project Respawn — Community, Events, Teams</h1>
             <p class="lead">We organise events, build teams and host matches. Join our community or catch upcoming events.</p>
             <div class="btn-group">
               <router-link to="/about" class="btn btn-primary">Learn More</router-link>
@@ -67,7 +67,7 @@
           <div class="col-md-6 col-lg-4">
             <div class="card h-100">
               <div class="card-body d-flex flex-column justify-content-center">
-                <h3 class="card-title">Esports - Celestial Ravens</h3>
+                <h3 class="card-title">Esports - Project Respawn</h3>
                 <p class="card-text">Competitive team focused on tournaments.</p>
               </div>
             </div>

@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-lg-8 mx-auto">
           <h1 class="mb-4">Get In Touch</h1>
-          <p class="lead mb-4">Have questions or want to join Ravens? We'd love to hear from you!</p>
+          <p class="lead mb-4">Have questions or want to join Project Respawn? We'd love to hear from you!</p>
 
           <form @submit.prevent="submitForm" class="contact-form">
             <div class="mb-3">

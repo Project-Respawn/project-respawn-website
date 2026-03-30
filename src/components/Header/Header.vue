@@ -4,8 +4,8 @@
       <div class="container">
         <!-- Logo -->
         <router-link to="/" class="navbar-brand">
-          <img src="../../assets/logo.png" alt="Ravens logo" width="44" height="44" class="me-2">
-          <span>Ravens</span>
+          <img src="../../assets/logo.png" alt="Project Respawn logo" width="44" height="44" class="me-2">
+          <span>Project Respawn</span>
         </router-link>
 
         <!-- Navbar Toggle for Mobile -->

@@ -1,6 +1,6 @@
 # Project Respawn Website - Vue.js with Bootstrap
 
-A modern, modular website for the Ravens community built with Vue 3, Bootstrap 5, and Vite.
+A modern, modular website for the Project Respawn community built with Vue 3, Bootstrap 5, and Vite.
 
 ## Project Structure
 
