@@ -4,7 +4,7 @@ frontend:
     preBuild:
       commands:
         - npm install
-        - amplify pull --d2cux232bpa951 --development
+        - npx ampx generate outputs --app-id d2cux232bpa951 --branch development --out-dir .
     build:
       commands:
         - npm run build
