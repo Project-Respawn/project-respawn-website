@@ -11,16 +11,10 @@
               community or catch upcoming events.
             </p>
             <div class="btn-group">
-              <router-link to="/about" class="btn btn-primary"
-                >Learn More</router-link
-              >
-              <router-link to="/contact" class="btn btn-outline-primary"
-                >Get Involved</router-link
-              >
+              <router-link to="/about" class="btn btn-primary">Learn More</router-link>
+              <router-link to="/team-tryouts" class="btn btn-outline-primary">Get Involved</router-link>
             </div>
           </div>
-
-
           <div class="col-md-4">
             <div class="card h-80">
               <div class="card-body">
@@ -34,10 +28,8 @@
                   >See Events</router-link
                 >
               </div>
-
             </div>
-          </div>
-          
+          </div>          
         </div>
       </div>
     </section>

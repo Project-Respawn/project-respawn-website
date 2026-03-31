@@ -33,6 +33,7 @@ src/
 - **Modular Pages** (Home, About, Contact, Our Mission)
 - **Responsive Design** with custom lavender theme
 - **Vite** for fast development and building
+- **Amplify** for CI/CD & Authentication
 
 ## Setup
 
