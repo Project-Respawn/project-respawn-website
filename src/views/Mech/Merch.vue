@@ -1,3 +1,5 @@
+import { fetchProducts } from "./merchService";
+
 <template>
   <main class="merch-page">
     <section class="merch-hero">
@@ -73,7 +75,7 @@
 </template>
 
 <script>
-import { fetchProducts } from "./merchService";
+
 
 export default {
   name: "MerchPage",
