@@ -3,9 +3,7 @@ import App from './App.vue'
 import router from './router'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '/src/css/styles.css'
- 
 
-//Amplify.configure(outputs);
 
 const app = createApp(App)
 app.use(router)
