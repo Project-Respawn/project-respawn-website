@@ -13,7 +13,7 @@
 <script setup>
 import { ref } from 'vue'
 import PrivacyPolicy from './MainPrivacyPolicy.vue'
-import TermsOfUse from './TermsOfUse.vue'
+import TermsOfUse from './termsofuse.vue'
 
 const tab = ref('privacy')
 </script>
