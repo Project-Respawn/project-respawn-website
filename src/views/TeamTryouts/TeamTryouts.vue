@@ -3,7 +3,7 @@
     <section class="hero-section">
       <div class="container hero-shell">
         <p class="eyebrow">For streamers, creators, and community leaders</p>
-        <h1>Build confidence in your community — with one dashboard for Twitch and Discord.</h1>
+        <h1>Turn your stream into a community that grows beyond the broadcast.</h1>
         <p class="hero-copy">
           Project Respawn helps streamers turn their communities into something more meaningful through
           interactive quests, cross-platform bot tools, and a mission focused on building real-life social confidence.
