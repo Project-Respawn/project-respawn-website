@@ -1,9 +1,11 @@
 version: 1
+
 backend:
   phases:
     build:
       commands:
-        npx ampx@latest pipeline-deploy --branch master --app-id d2cux232bpa951
+        - npx ampx@latest pipeline-deploy --branch master --app-id d2cux232bpa951
+
 frontend:
   phases:
     preBuild:
@@ -12,10 +14,12 @@ frontend:
     build:
       commands:
         - npm run build
+
   artifacts:
     baseDirectory: dist
     files:
       - '**/*'
+
   cache:
     paths:
       - node_modules/**/*
