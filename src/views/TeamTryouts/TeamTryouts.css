@@ -1,0 +1,258 @@
+.streamers-page {
+  color: inherit;
+}
+
+.streamers-page section {
+  position: relative;
+}
+
+.hero-section {
+  padding: 4rem 0 3rem;
+}
+
+.content-section {
+  padding: 4rem 0;
+}
+
+.alt-surface {
+  background: rgba(255, 255, 255, 0.03);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.container.narrow {
+  max-width: 920px;
+}
+
+.centered {
+  text-align: center;
+}
+
+.eyebrow,
+.section-label {
+  margin-bottom: 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.hero-shell h1,
+.content-section h2 {
+  margin-bottom: 1rem;
+  color: #ffffff;
+  font-weight: 800;
+  line-height: 1.12;
+}
+
+.hero-shell h1 {
+  max-width: 13ch;
+  font-size: clamp(2.6rem, 5vw, 4.5rem);
+}
+
+.content-section h2 {
+  font-size: clamp(1.9rem, 3vw, 2.8rem);
+}
+
+.hero-copy,
+.content-section p,
+.bullet-list li,
+.faq-item p {
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.75;
+  font-size: 1.03rem;
+}
+
+.hero-copy {
+  max-width: 760px;
+  margin-bottom: 1.5rem;
+}
+
+.hero-note,
+.support-note,
+.section-intro,
+.track-summary {
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1.75rem 0 1rem;
+}
+
+.center-actions {
+  justify-content: center;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0.85rem 1.4rem;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background: #ffffff;
+  color: #0d1730;
+  border: 1px solid #ffffff;
+}
+
+.btn-primary:hover {
+  opacity: 0.92;
+  color: #0d1730;
+}
+
+.btn-outline {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-outline:hover {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.split-layout,
+.partner-columns {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.feature-card-grid,
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.feature-card,
+.step-card,
+.partner-card,
+.info-panel,
+.clarification-box,
+.beta-note,
+.faq-item {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.feature-card,
+.step-card,
+.partner-card,
+.info-panel,
+.clarification-box,
+.beta-note {
+  padding: 1.4rem;
+}
+
+.feature-card h3,
+.step-card h3,
+.partner-card h3,
+.info-panel h3,
+.beta-note h3 {
+  margin-bottom: 0.75rem;
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.step-number {
+  display: inline-block;
+  margin-bottom: 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.bullet-list {
+  margin: 1rem 0 0;
+  padding-left: 1.15rem;
+}
+
+.bullet-list li + li {
+  margin-top: 0.65rem;
+}
+
+.info-panel + .info-panel,
+.info-panel + .beta-note {
+  margin-top: 1.2rem;
+}
+
+.accent-panel {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.application-section,
+.final-cta-section {
+  text-align: center;
+}
+
+.faq-section .faq-item + .faq-item {
+  margin-top: 1rem;
+}
+
+.faq-item {
+  overflow: hidden;
+}
+
+.faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 1.2rem 1.3rem;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item p {
+  margin: 0;
+  padding: 0 1.3rem 1.3rem;
+}
+
+@media (max-width: 991.98px) {
+  .split-layout,
+  .partner-columns,
+  .feature-card-grid,
+  .steps-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-section,
+  .content-section {
+    padding: 3rem 0;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .hero-shell h1 {
+    max-width: 100%;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
