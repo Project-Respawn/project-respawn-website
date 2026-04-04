@@ -3,7 +3,8 @@ backend:
   phases:
     build:
       commands:
-        - npx ampx pipeline-deploy --branch staging --app-id d2cux232bpa951
+        - BRANCH_NAME=${AWS_BRANCH:-$(git rev-parse --abbrev-ref HEAD)}
+        - npx ampx pipeline-deploy --branch "$BRANCH_NAME" --app-id d2cux232bpa951
 frontend:
   phases:
     preBuild:
