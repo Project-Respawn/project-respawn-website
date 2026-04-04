@@ -1,0 +1,179 @@
+.merch-hero {
+  padding: 48px 0;
+}
+
+.merch-eyebrow {
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.merch-hero h1 {
+  margin: 0 0 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.merch-subtitle {
+  margin: 0;
+  max-width: 56ch;
+  color: var(--text);
+}
+
+.merch-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 24px 0;
+}
+
+.filter-btn {
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(201, 180, 224, 0.1);
+  background: rgba(201, 180, 224, 0.05);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+  border-color: var(--accent);
+  background: rgba(57, 255, 20, 0.1);
+}
+
+.filter-btn.active {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+
+.merch-status {
+  color: var(--muted);
+  margin: 0 0 20px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+  gap: 20px;
+  padding-bottom: 48px;
+}
+
+.product-card {
+  background: var(--surface);
+  border: 1px solid rgba(201, 180, 224, 0.1);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 16px rgba(97, 0, 224, 0.2);
+  transition: all 0.3s ease;
+}
+
+.product-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 24px rgba(57, 255, 20, 0.15);
+}
+
+.product-image-wrap {
+  aspect-ratio: 1 / 1;
+  background: rgba(201, 180, 224, 0.05);
+  overflow: hidden;
+}
+
+.product-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  flex: 1;
+}
+
+.product-source {
+  display: inline-flex;
+  width: fit-content;
+  padding: 6px 10px;
+  border-radius: var(--radius);
+  background: rgba(57, 255, 20, 0.1);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.product-title {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--text);
+  font-weight: 700;
+}
+
+.product-description {
+  margin: 0;
+  color: var(--muted);
+}
+
+.product-price {
+  font-size: 1rem;
+  font-weight: 800;
+  margin-top: auto;
+  color: var(--accent);
+}
+
+.product-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.product-actions a {
+  flex: 1;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.btn-primary:hover {
+  background: var(--accent-2);
+  color: var(--bg);
+}
+
+.btn-secondary {
+  background: rgba(57, 255, 20, 0.1);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.btn-secondary:hover {
+  background: rgba(57, 255, 20, 0.2);
+}
+
+.empty-state {
+  padding: 32px;
+  border: 1px solid rgba(201, 180, 224, 0.1);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--muted);
+  margin-bottom: 48px;
+}

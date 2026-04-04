@@ -6,8 +6,8 @@
           <p>To build a thriving community of gamers united by competitive spirit, skill development, and shared passion.</p>
           <p class="mb-0">&copy; <span id="year">{{ currentYear }}</span> Project Respawn Comunity Gaming ltd — All rights reserved</p>
         </div>
-        <div class="col-md-6">
-          <nav class="nav justify-content-md-end">
+        <div class="col-md-6 text-white">
+          <nav class="nav justify-content-md-end text-white">
             <router-link to="/" class="nav-link px-2">Home</router-link>
             <router-link to="/about" class="nav-link px-2">About</router-link>
             <router-link to="/contact" class="nav-link px-2">Contact</router-link>

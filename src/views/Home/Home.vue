@@ -1,26 +1,35 @@
-<template>
-  <div>
+<template class="body">
+  <div class="body">
     <!-- Hero Section -->
     <section class="hero">
       <div class="container">
         <div class="row align-items-stretch">
           <div class="col-md-8 hero-text">
             <h1>Project Respawn — Community, Events, Teams</h1>
-            <p class="lead">We organise events, build teams and host matches. Join our community or catch upcoming events.</p>
+            <p class="lead">
+              We organise events, build teams and host matches. Join our
+              community or catch upcoming events.
+            </p>
             <div class="btn-group">
               <router-link to="/about" class="btn btn-primary">Learn More</router-link>
-              <router-link to="/contact" class="btn btn-outline-primary">Get Involved</router-link>
+              <router-link to="/team-tryouts" class="btn btn-outline-primary">Get Involved</router-link>
             </div>
           </div>
           <div class="col-md-4">
-            <div class="card h-100">
+            <div class="card h-80">
               <div class="card-body">
-                <h3>Next Event</h3>
-                <p class="card-text"><strong>Friday Night Scrims</strong><br>Starts 8pm — Weekly</p>
-                <router-link to="/events" class="text-decoration-none fw-semibold">See Events</router-link>
+                <h3>Next  Event</h3>
+                <p class="card-text">
+                  <strong>Friday Night Scrims</strong><br />Starts 8pm — Weekly
+                </p>
+                <router-link
+                  to="/events"
+                  class="text-decoration-none fw-semibold"
+                  >See Events</router-link
+                >
               </div>
             </div>
-          </div>
+          </div>          
         </div>
       </div>
     </section>
@@ -33,8 +42,15 @@
           <div class="card h-100">
             <div class="card-body">
               <h3 class="card-title">Team Tryouts</h3>
-              <p class="card-text">We're holding tryouts for our competitive squads next month. Signups open now.</p>
-              <router-link to="/team-tryouts" class="text-decoration-none fw-semibold stretched-link">Read</router-link>
+              <p class="card-text">
+                We're holding tryouts for our competitive squads next month.
+                Signups open now.
+              </p>
+              <router-link
+                to="/team-tryouts"
+                class="text-decoration-none fw-semibold stretched-link"
+                >Read</router-link
+              >
             </div>
           </div>
         </div>
@@ -42,8 +58,14 @@
           <div class="card h-100">
             <div class="card-body">
               <h3 class="card-title">Community Night</h3>
-              <p class="card-text">Casual play and tournaments. All skill levels welcome.</p>
-              <a href="#events" class="text-decoration-none fw-semibold stretched-link">Details</a>
+              <p class="card-text">
+                Casual play and tournaments. All skill levels welcome.
+              </p>
+              <a
+                href="#events"
+                class="text-decoration-none fw-semibold stretched-link"
+                >Details</a
+              >
             </div>
           </div>
         </div>
@@ -51,8 +73,14 @@
           <div class="card h-100">
             <div class="card-body">
               <h3 class="card-title">Merch Drop</h3>
-              <p class="card-text">New jerseys and hoodies available — limited stock.</p>
-              <router-link to="/merch" class="text-decoration-none fw-semibold stretched-link">Shop</router-link>
+              <p class="card-text">
+                New jerseys and hoodies available — limited stock.
+              </p>
+              <router-link
+                to="/merch"
+                class="text-decoration-none fw-semibold stretched-link"
+                >Shop</router-link
+              >
             </div>
           </div>
         </div>
@@ -68,7 +96,9 @@
             <div class="card h-100">
               <div class="card-body d-flex flex-column justify-content-center">
                 <h3 class="card-title">Esports - Project Respawn</h3>
-                <p class="card-text">Competitive team focused on tournaments.</p>
+                <p class="card-text">
+                  Competitive team focused on tournaments.
+                </p>
               </div>
             </div>
           </div>
@@ -93,7 +123,7 @@
     </section>
 
     <!-- Upcoming Events Section -->
-    <section class="section container py-5">
+    <section class="section container py-5 gap-x-8">
       <h2 class="mb-4">Upcoming Events</h2>
       <div class="row g-4">
         <div class="col-md-6">
@@ -149,7 +179,6 @@
   </div>
 </template>
 
-<script setup>
-</script>
+<script setup></script>
 
 <style scoped src="./Home.css"></style>
