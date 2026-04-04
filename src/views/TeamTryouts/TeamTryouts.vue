@@ -316,4 +316,4 @@
 <script setup>
 </script>
 
-<style scoped src="./styles/TeamTryouts.css"></style>
+<style scoped src="./TeamTryouts.css"></style>
