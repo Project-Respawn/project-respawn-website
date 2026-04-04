@@ -9,6 +9,7 @@ import Merch from '../views/Merch/Merch.vue'
 import Events from '../views/Events/Events.vue'
 import Checkout from '../views/Checkout/Checkout.vue'
 import Join from '../views/Join/Join.vue'
+import Account from '../views/Account/Account.vue'
 
 const routes = [
   { path: '/', component: Home },
@@ -20,6 +21,7 @@ const routes = [
   { path: '/checkout', component: Checkout },
   { path: '/events', component: Events },
   { path: '/join', component: Join },
+  { path: '/account', component: Account },
   { path: '/:pathMatch(.*)', component: NotFound }
 ]
 
