@@ -1,109 +1,166 @@
-<script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
-
-const isPlaying = ref(false)
-let anthemAudio: HTMLAudioElement | null = null
-
-onMounted(() => {
-  anthemAudio = new Audio('/audio/Respawn-theme.mp3')
-  anthemAudio.loop = true
-})
-
-onBeforeUnmount(() => {
-  if (anthemAudio) {
-    anthemAudio.pause()
-    anthemAudio = null
-  }
-})
-
-const toggleAnthem = async () => {
-  if (!anthemAudio) return
-  if (isPlaying.value) {
-    anthemAudio.pause()
-    isPlaying.value = false
-  } else {
-    try {
-      await anthemAudio.play()
-      isPlaying.value = true
-    } catch (err) {
-      console.error(err)
-    }
-  }
-}
-</script>
-
 <template>
-  <div class="about">
-    <h2>Respawn</h2>
-    <p>
-      Start where you are. You do not need to have everything figured out to take the next step.
-    </p>
+  <div class="landing-page" :class="{ 'is-transitioning': isTransitioning }">
+    <section class="hero-section">
+      <div class="container hero-shell">
+        <p class="eyebrow">Project Respawn</p>
 
-    <h3>Project Respawn</h3>
-    <p>
-      Project Respawn helps people rebuild social confidence through gaming, community, and
-      real-life progression.
-    </p>
-    <p>
-      Respawn your confidence. Re-enter the world stronger.
-    </p>
+        <h1>
+          Your past is just the tutorial.
+          <span>Your real game starts now.</span>
+        </h1>
 
-    <!-- Simple music control, just before “What this is” -->
-    <button
-      type="button"
-      class="anthem-toggle"
-      @click="toggleAnthem"
-      :aria-pressed="isPlaying"
-      aria-label="Toggle Respawn theme music"
-    >
-      <span v-if="!isPlaying">🎵 Play Respawn theme</span>
-      <span v-else>🔇 Pause Respawn theme</span>
-    </button>
+        <p class="hero-copy">
+          Project Respawn helps people rebuild social confidence through gaming,
+          community, and real-life progression.
+        </p>
 
-    <h3>What this is</h3>
-    <p>
-      In games, a respawn is a second chance. You load back in, learn from the last round, and keep
-      moving. We believe real life should work like that too.
-    </p>
-    <p>
-      Project Respawn is a gaming-powered platform and community built to help people grow their
-      social confidence, find their people, and make progress that feels real.
-    </p>
-    <p>
-      Start where you are. You do not need to have everything figured out to take the next step.
-    </p>
-    <p>
-      Meet people, join communities, and build confidence through shared challenges and support.
-    </p>
-    <p>
-      Turn growth into something practical through quests, momentum, and repeatable wins.
-    </p>
-    <p>
-      “Your past is just the tutorial. Your real game starts now.”
-    </p>
-    <p>
-      Start the next quest.
-    </p>
+        <p class="hero-subcopy">
+          Respawn your confidence. Re-enter the world stronger.
+        </p>
+
+        <div class="hero-actions">
+          <button class="btn btn-primary" @click="beginRespawn">
+            Begin your respawn
+          </button>
+
+          <a href="#how-it-works" class="btn btn-secondary">
+            Learn how it works
+          </a>
+        </div>
+
+        <div class="value-strip" aria-label="Project Respawn benefits">
+          <span>One quest at a time</span>
+          <span>Built around community</span>
+          <span>Designed for real-life growth</span>
+        </div>
+      </div>
+
+      <transition name="respawn-overlay">
+        <div
+          v-if="isTransitioning"
+          class="respawn-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Beginning your respawn"
+        >
+          <div class="respawn-panel">
+            <p class="respawn-kicker">Beginning your respawn</p>
+            <div class="progress-bar" aria-hidden="true">
+              <div class="progress-fill"></div>
+            </div>
+            <ul class="respawn-steps" role="list">
+              <li :class="{ active: animationStep >= 1 }">Loading confidence…</li>
+              <li :class="{ active: animationStep >= 2 }">Equipping courage…</li>
+              <li :class="{ active: animationStep >= 3 }">Quest ready…</li>
+            </ul>
+          </div>
+        </div>
+      </transition>
+    </section>
+
+    <section id="how-it-works" class="content-section">
+      <div class="container content-shell">
+        <div class="section-heading">
+          <p class="section-label">What this is</p>
+          <h2>A better way to build confidence</h2>
+        </div>
+
+        <p class="section-copy">
+          In games, a respawn is a second chance. You load back in, learn from the
+          last round, and keep moving. We believe real life should work like that too.
+        </p>
+
+        <p class="section-copy">
+          Project Respawn is a gaming-powered platform and community built to help
+          people grow their social confidence, find their people, and make progress
+          that feels real.
+        </p>
+
+        <div class="mini-grid">
+          <article class="mini-card">
+            <h3>Respawn</h3>
+            <p>
+              Start where you are. You do not need to have everything figured out to
+              take the next step.
+            </p>
+          </article>
+
+          <article class="mini-card">
+            <h3>Reconnect</h3>
+            <p>
+              Meet people, join communities, and build confidence through shared
+              challenges and support.
+            </p>
+          </article>
+
+          <article class="mini-card">
+            <h3>Level up</h3>
+            <p>
+              Turn growth into something practical through quests, momentum, and
+              repeatable wins.
+            </p>
+          </article>
+        </div>
+
+        <div class="closing-block">
+          <p class="closing-quote">
+            “Your past is just the tutorial. Your real game starts now.”
+          </p>
+          <a href="/join" class="btn btn-primary">
+            Start the next quest
+          </a>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
-<style scoped>
-.about {
-  max-width: 720px;
-  margin: 0 auto;
-}
+<script>
+export default {
+  name: 'LandingPage',
+  data() {
+    return {
+      isTransitioning: false,
+      animationStep: 0,
+      timeouts: []
+    };
+  },
+  methods: {
+    beginRespawn() {
+      if (this.isTransitioning) return;
 
-.anthem-toggle {
-  margin: 1rem 0 1.5rem;
-  padding: 0.4rem 0.9rem;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(0, 0, 0, 0.35);
-  color: inherit;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-.anthem-toggle:hover {
-  background: rgba(0, 0, 0, 0.6);
-}
-</style>
+      this.isTransitioning = true;
+      this.animationStep = 0;
+
+      this.timeouts.push(
+        setTimeout(() => {
+          this.animationStep = 1;
+        }, 180)
+      );
+
+      this.timeouts.push(
+        setTimeout(() => {
+          this.animationStep = 2;
+        }, 520)
+      );
+
+      this.timeouts.push(
+        setTimeout(() => {
+          this.animationStep = 3;
+        }, 860)
+      );
+
+      this.timeouts.push(
+        setTimeout(() => {
+          window.location.href = '/join';
+        }, 1350)
+      );
+    }
+  },
+  beforeUnmount() {
+    this.timeouts.forEach(clearTimeout);
+  }
+};
+</script>
+
+<style scoped src="./About.css"></style>
