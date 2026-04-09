@@ -51,14 +51,19 @@
           </div>
 
           <div class="product-card-content">
-            <span class="product-source">{{ product.source || 'manual' }}</span>
-            <h2 class="product-title">{{ product.title || 'Untitled product' }}</h2>
+            <span class="product-source">{{ product.source || "manual" }}</span>
+            <h2 class="product-title">
+              {{ product.title || "Untitled product" }}
+            </h2>
 
             <p class="product-description">
-              {{ product.description || 'No description available.' }}
+              {{ product.description || "No description available." }}
             </p>
 
             <div class="product-price">£{{ formatPrice(product.price) }}</div>
+
+             
+
 
             <div class="product-actions">
               <a
@@ -93,7 +98,7 @@
 </template>
 
 <script>
-import { fetchProducts } from "./merchService.js";
+import { fetchProducts } from "./merchService";
 
 export default {
   name: "MerchPage",
@@ -102,7 +107,7 @@ export default {
       products: [],
       filter: "all",
       status: "Loading products...",
-      fallbackImage: "https://via.placeholder.com/600x600?text=Project+Respawn"
+      fallbackImage: "https://via.placeholder.com/600x600?text=Project+Respawn",
     };
   },
   computed: {
@@ -111,9 +116,9 @@ export default {
         return this.products;
       }
       return this.products.filter(
-        (product) => (product.source || "").toLowerCase() === this.filter
+        (product) => (product.source || "").toLowerCase() === this.filter,
       );
-    }
+    },
   },
   async mounted() {
     try {
@@ -124,11 +129,11 @@ export default {
             id: product.id || `product-${index}`,
             title: product.title || "Untitled product",
             description: product.description || "",
-            image: product.image || "",
+            image: product.image || product.thumbnail_url || "",
             source: (product.source || "manual").toLowerCase(),
             price: product.price ?? 0,
             checkoutUrl: product.checkoutUrl || "",
-            productUrl: product.productUrl || ""
+            productUrl: product.productUrl || "",
           }))
         : [];
 
@@ -143,8 +148,8 @@ export default {
     formatPrice(price) {
       const parsed = Number(price);
       return Number.isFinite(parsed) ? parsed.toFixed(2) : "0.00";
-    }
-  }
+    },
+  },
 };
 </script>
 

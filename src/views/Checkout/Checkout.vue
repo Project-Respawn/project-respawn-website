@@ -1,146 +1,295 @@
 <template>
-  <main class="container py-5">
-    <section>
-        <!-- Header -->
-        <header class="header">
-            <h1>Merch</h1>
-            <button class="cart-button" onclick="toggleCart()">
-                🛒 Cart (<span id="cart-count">0</span>)
-            </button>
-        </header>
+  <div class="checkout-page">
+    <!-- Header -->
+    <header class="checkout-header">
+      <h1>Checkout</h1>
+      <button @click="goBack" class="back-btn">← Back to Store</button>
+    </header>
 
-        <!-- Main Content -->
-        <main>
-            <!-- Products Section -->
-            <section class="products-section">
-                <h2>Our Products</h2>
-                <div id="products-container" class="products-grid">
-                    <!-- Products load here -->
-                    <div class="loading">Loading products...</div>
-                </div>
-            </section>
+    <!-- Cart Items -->
+    <section class="cart-items-section" v-if="cartProducts.length">
+      <h2>Your Cart</h2>
 
-            <!-- Shopping Cart Sidebar -->
-            <aside id="cart-sidebar" class="cart-sidebar hidden">
-                <div class="cart-header">
-                    <h2>Your Cart</h2>
-                    <button onclick="toggleCart()" class="close-btn">✕</button>
-                </div>
-                
-                <div id="cart-items" class="cart-items">
-                    <p class="empty-message">Your cart is empty</p>
-                </div>
+      <div class="cart-items">
+        <div
+          class="cart-item"
+          v-for="product in cartProducts"
+          :key="product.id"
+        >
+          <img
+            :src="product.image"
+            :alt="product.title"
+            class="cart-item-img"
+          />
+          <div class="cart-item-info">
+            <h3>{{ product.title }}</h3>
+            <p>{{ product.description }}</p>
+            <p>Price: £{{ product.price.toFixed(2) }}</p>
 
-                <div class="cart-summary">
-                    <div class="summary-row">
-                        <span>Subtotal:</span>
-                        <span>£<span id="subtotal">0.00</span></span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Shipping:</span>
-                        <span>£<span id="shipping">5.00</span></span>
-                    </div>
-                    <div class="summary-row total">
-                        <span>Total:</span>
-                        <span>£<span id="total">5.00</span></span>
-                    </div>
-                </div>
-
-                <button id="checkout-btn" class="checkout-btn" onclick="proceedToCheckout()" disabled>
-                    Proceed to Checkout
-                </button>
-            </aside>
-
-            <!-- Checkout Section -->
-            <div id="checkout-section" class="checkout-section hidden">
-                <div class="checkout-container">
-                    <button onclick="backToCart()" class="back-btn">← Back to Cart</button>
-                    
-                    <h2>Checkout</h2>
-
-                    <!-- Customer Details Form -->
-                    <form id="customer-form" class="customer-form">
-                        <h3>Delivery Details</h3>
-                        
-                        <div class="form-group">
-                            <label for="full-name">Full Name *</label>
-                            <input type="text" id="full-name" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email">Email Address *</label>
-                            <input type="email" id="email" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="phone">Phone Number *</label>
-                            <input type="tel" id="phone" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="address">Street Address *</label>
-                            <input type="text" id="address" required>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="city">City *</label>
-                                <input type="text" id="city" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="postcode">Postcode *</label>
-                                <input type="text" id="postcode" required>
-                            </div>
-                        </div>
-
-                        <h3>Payment Method</h3>
-                        <!-- Revolut Embedded Checkout -->
-                        <div id="revolut-checkout"></div>
-                        
-                        <button type="submit" class="payment-btn">Complete Payment</button>
-                    </form>
-
-                    <!-- Order Confirmation -->
-                    <div id="confirmation" class="confirmation hidden">
-                        <h3>✅ Order Confirmed!</h3>
-                        <p>Thank you for your purchase.</p>
-                        <p>Order ID: <strong id="order-id"></strong></p>
-                        <p>Your order will be printed and shipped within 3-5 business days.</p>
-                        <button onclick="location.reload()">Continue Shopping</button>
-                    </div>
-                </div>
+            <div class="quantity-control">
+              <button @click="decreaseQty(product)">-</button>
+              <span>{{ product.qty }}</span>
+              <button @click="increaseQty(product)">+</button>
             </div>
-        </main>
+          </div>
+        </div>
+      </div>
 
-        <!-- Footer -->
-        <!-- <footer class="footer">
-            <p>&copy; 2026 My Print Store. All rights reserved.</p>
-        </footer> -->
-
+      <div class="cart-summary">
+        <div class="summary-row">
+          <span>Subtotal:</span>
+          <span>£{{ subtotal.toFixed(2) }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Shipping:</span>
+          <span>£{{ shipping.toFixed(2) }}</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total:</span>
+          <span>£{{ total.toFixed(2) }}</span>
+        </div>
+      </div>
     </section>
-  </main>
+
+    <section v-else class="empty-cart">
+      <p>Your cart is empty. Go back and add some products!</p>
+      <button @click="goBack" class="back-btn">← Back to Store</button>
+    </section>
+
+    <!-- Customer Details Form -->
+    <section v-if="cartProducts.length" class="checkout-form-section">
+      <h2>Delivery Details</h2>
+      <form @submit.prevent="submitOrder" class="customer-form">
+        <div class="form-group">
+          <label for="name">Full Name *</label>
+          <input id="name" v-model="customer.name" type="text" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address *</label>
+          <input id="email" v-model="customer.email" type="email" required />
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number *</label>
+          <input id="phone" v-model="customer.phone" type="tel" required />
+        </div>
+        <div class="form-group">
+          <label for="address">Street Address *</label>
+          <input id="address" v-model="customer.address" type="text" required />
+        </div>
+        <div class="form-group">
+          <label for="city">City *</label>
+          <input id="city" v-model="customer.city" type="text" required />
+        </div>
+        <div class="form-group">
+          <label for="postcode">Postcode *</label>
+          <input
+            id="postcode"
+            v-model="customer.postcode"
+            type="text"
+            required
+          />
+        </div>
+
+        <button type="submit" class="payment-btn">
+          Complete Payment
+        </button>
+      </form>
+    </section>
+
+    <!-- Order Confirmation -->
+    <section v-if="orderConfirmed" class="confirmation">
+      <h2>✅ Order Confirmed!</h2>
+      <p>Thank you for your purchase, {{ customer.name }}.</p>
+      <p>
+        Order ID: <strong>{{ orderId }}</strong>
+      </p>
+      <p>Your order will be shipped within 3-5 business days.</p>
+      <button @click="goBack" class="back-btn">Continue Shopping</button>
+    </section>
+  </div>
 </template>
 
-<script setup>
-  import { onMounted } from 'vue'
+<script setup lang="ts">
+import { ref, reactive, computed, onMounted } from "vue";
+import { fetchProducts, type Product } from "../Merch/merchService";
 
-  function loadScript(src) {
-    return new Promise((resolve, reject) => {
-      const script = document.createElement('script')
-      script.src = src
-      script.onload = resolve
-      script.onerror = reject
-      document.head.appendChild(script)
-    })
+interface CartProduct extends Product {
+  qty: number;
+}
+
+const cartProducts = ref<CartProduct[]>([]);
+const shipping = ref(5);
+
+const customer = reactive({
+  name: "",
+  email: "",
+  phone: "",
+  address: "",
+  city: "",
+  postcode: "",
+});
+
+const orderConfirmed = ref(false);
+const orderId = ref("");
+
+const subtotal = computed(() =>
+  cartProducts.value.reduce((acc, p) => acc + p.price * p.qty, 0)
+);
+const total = computed(() => subtotal.value + shipping.value);
+
+function increaseQty(product: CartProduct) {
+  product.qty++;
+}
+function decreaseQty(product: CartProduct) {
+  if (product.qty > 1) product.qty--;
+}
+
+function goBack() {
+  window.history.back();
+}
+
+function submitOrder() {
+  orderConfirmed.value = true;
+  orderId.value = "ORD-" + Math.floor(Math.random() * 1000000);
+  console.log("Order details:", { customer, cartProducts });
+}
+
+onMounted(async () => {
+  // Load products (simulate selected products in cart)
+  try {
+    const products = await fetchProducts();
+    // For demo, take first 2 products
+    cartProducts.value = products.slice(0, 2).map((p) => ({ ...p, qty: 1 }));
+  } catch (err) {
+    console.error(err);
   }
-
-  onMounted(async () => {
-    // await loadScript("https://sdk.revolut.com/embedded-checkout/embedded-checkout-sdk.js");    
-  })
+});
 </script>
 
-
 <style scoped>
-</style>
+.checkout-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: system-ui, sans-serif;
+}
 
-<!-- <style scoped src="./Merch.css"></style> -->
+/* Header */
+.checkout-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.back-btn {
+  background: none;
+  border: none;
+  color: #3498db;
+  font-size: 16px;
+  cursor: pointer;
+}
+.back-btn:hover {
+  text-decoration: underline;
+}
+
+/* Cart Items */
+.cart-items-section h2 {
+  margin-bottom: 15px;
+}
+
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.cart-item {
+  display: flex;
+  gap: 15px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 8px;
+  align-items: center;
+}
+.cart-item-img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+.cart-item-info h3 {
+  margin: 0 0 5px 0;
+}
+.quantity-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.quantity-control button {
+  width: 30px;
+  height: 30px;
+  font-size: 18px;
+  border: 1px solid #ccc;
+  background: #27ae60;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.quantity-control span {
+  width: 20px;
+  text-align: center;
+}
+
+/* Cart summary */
+.cart-summary {
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+}
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+.summary-row.total {
+  font-size: 18px;
+  color: #27ae60;
+}
+
+/* Form */
+.customer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+.customer-form .form-group label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.customer-form .form-group input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.payment-btn {
+  background-color: #27ae60;
+  color: white;
+  font-weight: bold;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.payment-btn:hover {
+  background-color: #229954;
+}
+
+/* Confirmation */
+.confirmation {
+  text-align: center;
+  padding: 20px;
+  margin-top: 20px;
+}
+</style>
