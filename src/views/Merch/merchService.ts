@@ -42,7 +42,7 @@ export async function fetchProducts(): Promise<Product[]> {
   };
 });
 
-  //console.log("NORMALIZED PRODUCTS:", products);
+  // console.log("NORMALIZED PRODUCTS:", products);
 
   return products;
 }

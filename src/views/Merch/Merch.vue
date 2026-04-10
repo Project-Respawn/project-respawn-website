@@ -52,20 +52,44 @@
 
           <div class="product-card-content">
             <span class="product-source">{{ product.source || "manual" }}</span>
-            <h2 class="product-title">
-              {{ product.title || "Untitled product" }}
-            </h2>
-
-            <p class="product-description">
-              {{ product.description || "No description available." }}
-            </p>
-
+            <h2 class="product-title">{{ product.title || "Untitled product" }}</h2>
+            <p class="product-description">{{ product.description || "No description available." }}</p>
             <div class="product-price">£{{ formatPrice(product.price) }}</div>
 
-             
-
-
+            <!-- Updated Product Actions -->
             <div class="product-actions">
+              <!-- Size Selector -->
+              <div class="size-selector">
+                <p class="size-label">Choose Size:</p>
+                <div class="size-buttons">
+                  <button
+                    v-for="size in ['S', 'M', 'L', 'XL', '2XL', '3XL']"
+                    :key="size"
+                    class="size-btn"
+                    :class="{ active: product.selectedSize === size }"
+                    @click="selectSize(product, size)"
+                  >
+                    {{ size }}
+                  </button>
+                </div>
+              </div>
+
+              <!-- Quantity + Add to Cart -->
+              <div class="quantity-add-section">
+                <div class="quantity-control">
+                  <button class="qty-btn" @click="decrementQty(product)">–</button>
+                  <span class="qty-display">{{ product.selectedQuantity || 1 }}</span>
+                  <button class="qty-btn" @click="incrementQty(product)">+</button>
+                </div>
+
+                <button class="btn-primary add-to-cart-btn" @click="addToCart(product)">
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+
+            <!-- Buy Now + Details -->
+            <!-- <div class="product-actions">
               <a
                 v-if="product.checkoutUrl"
                 class="btn-primary"
@@ -73,7 +97,7 @@
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Buy now
+                Add to Cart
               </a>
 
               <a
@@ -85,7 +109,7 @@
               >
                 Details
               </a>
-            </div>
+            </div> -->
           </div>
         </article>
       </div>
@@ -112,11 +136,9 @@ export default {
   },
   computed: {
     filteredProducts() {
-      if (this.filter === "all") {
-        return this.products;
-      }
+      if (this.filter === "all") return this.products;
       return this.products.filter(
-        (product) => (product.source || "").toLowerCase() === this.filter,
+        (product) => (product.source || "").toLowerCase() === this.filter
       );
     },
   },
@@ -125,15 +147,10 @@ export default {
       const data = await fetchProducts();
 
       this.products = Array.isArray(data)
-        ? data.map((product, index) => ({
-            id: product.id || `product-${index}`,
-            title: product.title || "Untitled product",
-            description: product.description || "",
-            image: product.image || product.thumbnail_url || "",
-            source: (product.source || "manual").toLowerCase(),
-            price: product.price ?? 0,
-            checkoutUrl: product.checkoutUrl || "",
-            productUrl: product.productUrl || "",
+        ? data.map((product) => ({
+            ...product,
+            selectedSize: "",
+            selectedQuantity: 1,       
           }))
         : [];
 
@@ -149,6 +166,62 @@ export default {
       const parsed = Number(price);
       return Number.isFinite(parsed) ? parsed.toFixed(2) : "0.00";
     },
+
+    // Size options with full names
+    sizes: [
+      { value: "S", label: "Small" },
+      { value: "M", label: "Medium" },
+      { value: "L", label: "Large" },
+      { value: "XL", label: "X-Large" },
+      { value: "2XL", label: "XX-Large" },
+      { value: "3XL", label: "XXX-Large" },
+    ],
+
+    selectSize(product, size) {
+      product.selectedSize = product.selectedSize === size ? "" : size;
+    },
+
+    incrementQty(product) {
+      product.selectedQuantity = (product.selectedQuantity || 1) + 1;
+    },
+
+    decrementQty(product) {
+      if (product.selectedQuantity > 1) {
+        product.selectedQuantity--;
+      }
+    },
+
+    addToCart(product) {
+  if (!product.selectedSize) {
+    alert("Please select a size");
+    return;
+  }
+
+  const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+  const existing = cart.find(
+    (item) => item.id === product.id && item.size === product.selectedSize
+  );
+
+  if (existing) {
+    existing.qty += product.selectedQuantity || 1;
+  } else {
+    cart.push({
+      ...product,
+      size: product.selectedSize,
+      qty: product.selectedQuantity || 1,
+    });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  
+  // Notify header to update count
+  window.dispatchEvent(new Event("storage"));
+
+  // Show feedback instead of redirecting
+  product.addedToCart = true;
+  setTimeout(() => { product.addedToCart = false; }, 2000);
+},
   },
 };
 </script>
