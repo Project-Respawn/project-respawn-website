@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3001/api/products";
+const API_URL = "https://raven-api-nine.vercel.app/api/products";
 
 export interface Product {
   id: string;
@@ -22,25 +22,23 @@ export async function fetchProducts(): Promise<Product[]> {
 
   //console.log("RAW API RESPONSE:", data);
 
- const products: Product[] = (data.result || []).map((item: any) => {
-  const firstVariant = item.variants?.[0];
+  const products: Product[] = (data.result || []).map((item: any) => {
+    const firstVariant = item.variants?.[0];
 
-  return {
-    id: String(item.id),
-    title: item.name,
-    description: item.description || "",
-    image: item.thumbnail_url,
-    source: "printful",
-    price: firstVariant?.retail_price
-      ? Number(firstVariant.retail_price)
-      : 0,
+    return {
+      id: String(item.id),
+      title: item.name,
+      description: item.description || "",
+      image: item.thumbnail_url,
+      source: "printful",
+      price: firstVariant?.retail_price ? Number(firstVariant.retail_price) : 0,
 
-    // connect checkout page
-    checkoutUrl: `/checkout?productId=${item.id}`,
+      // connect checkout page
+      checkoutUrl: `/checkout?productId=${item.id}`,
 
-    productUrl: item.url || "",
-  };
-});
+      productUrl: item.url || "",
+    };
+  });
 
   // console.log("NORMALIZED PRODUCTS:", products);
 

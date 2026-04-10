@@ -26,14 +26,20 @@
               <h3>{{ product.title }}</h3>
               <p>{{ product.description }}</p>
               <p>Price: £{{ product.price.toFixed(2) }}</p>
-              <p v-if="product.size" class="product-size">Size: <strong>{{ product.size }}</strong></p>
+              <p v-if="product.size" class="product-size">
+                Size: <strong>{{ product.size }}</strong>
+              </p>
               <div class="product-controls">
                 <div class="quantity-control">
                   <button @click="decreaseQty(product)">-</button>
                   <span>{{ product.qty }}</span>
                   <button @click="increaseQty(product)">+</button>
                 </div>
-                <button @click="removeItem(product)" class="remove-btn" title="Remove item">
+                <button
+                  @click="removeItem(product)"
+                  class="remove-btn"
+                  title="Remove item"
+                >
                   <i class="bi bi-trash3"></i>
                 </button>
               </div>
@@ -69,7 +75,12 @@
             </div>
             <div class="form-group">
               <label for="email">Email Address *</label>
-              <input id="email" v-model="customer.email" type="email" required />
+              <input
+                id="email"
+                v-model="customer.email"
+                type="email"
+                required
+              />
             </div>
             <div class="form-group">
               <label for="phone">Phone Number *</label>
@@ -77,7 +88,12 @@
             </div>
             <div class="form-group">
               <label for="address">Street Address *</label>
-              <input id="address" v-model="customer.address" type="text" required />
+              <input
+                id="address"
+                v-model="customer.address"
+                type="text"
+                required
+              />
             </div>
             <div class="form-group">
               <label for="city">City *</label>
@@ -156,7 +172,7 @@ function increaseQty(product: CartProduct) {
 function decreaseQty(product: CartProduct) {
   if (product.qty > 1) product.qty--;
   localStorage.setItem("cart", JSON.stringify(cartProducts.value));
-  window.dispatchEvent(new Event("storage")); 
+  window.dispatchEvent(new Event("storage"));
 }
 
 function removeItem(product: CartProduct) {
@@ -164,7 +180,7 @@ function removeItem(product: CartProduct) {
     (p) => !(p.id === product.id && p.size === product.size)
   );
   localStorage.setItem("cart", JSON.stringify(cartProducts.value));
-  window.dispatchEvent(new Event("storage")); 
+  window.dispatchEvent(new Event("storage"));
 }
 
 function goBack() {
@@ -175,7 +191,7 @@ async function submitOrder() {
   try {
     localStorage.setItem("customerDetails", JSON.stringify(customer));
 
-    const res = await fetch("http://localhost:3001/api/revolut/order", {
+    const res = await fetch("https://raven-api-nine.vercel.app/api/revolut", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -193,7 +209,7 @@ async function submitOrder() {
     localStorage.removeItem("cart");
     window.dispatchEvent(new Event("storage")); // updates header badge to 0
 
-    window.location.href = `https://sandbox-checkout.revolut.com/payment-link/${data.publicId}`;
+    window.location.href = `https://checkout.revolut.com/payment-link/${data.publicId}`;
 
   } catch (err: any) {
     console.error("Payment failed:", err);
@@ -217,7 +233,8 @@ onMounted(() => {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 20px;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
   color: var(--text);
   background: var(--bg);
   min-height: 100vh;
