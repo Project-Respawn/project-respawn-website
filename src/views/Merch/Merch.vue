@@ -114,9 +114,8 @@
         </article>
       </div>
 
-      <div v-else class="empty-state">
-        No products found in this section yet.
-      </div>
+      
+      
     </section>
   </main>
 </template>

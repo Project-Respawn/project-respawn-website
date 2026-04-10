@@ -1,184 +1,166 @@
-<template class="body">
-  <div class="body">
-    <!-- Hero Section -->
-    <section class="hero">
-      <div class="container">
-        <div class="row align-items-stretch">
-          <div class="col-md-8 hero-text">
-            <h1>Project Respawn — Community, Events, Teams</h1>
-            <p class="lead">
-              We organise events, build teams and host matches. Join our
-              community or catch upcoming events.
+<template>
+  <div class="landing-page" :class="{ 'is-transitioning': isTransitioning }">
+    <section class="hero-section">
+      <div class="container hero-shell">
+        <p class="eyebrow">Project Respawn</p>
+
+        <h1>
+          Your past is just the tutorial.
+          <span>Your real game starts now.</span>
+        </h1>
+
+        <p class="hero-copy">
+          Project Respawn helps people rebuild social confidence through gaming,
+          community, and real-life progression.
+        </p>
+
+        <p class="hero-subcopy">
+          Respawn your confidence. Re-enter the world stronger.
+        </p>
+
+        <div class="hero-actions">
+          <button class="btn btn-primary" @click="beginRespawn">
+            Begin your respawn
+          </button>
+
+          <a href="#how-it-works" class="btn btn-secondary">
+            Learn how it works
+          </a>
+        </div>
+
+        <div class="value-strip" aria-label="Project Respawn benefits">
+          <span>One quest at a time</span>
+          <span>Built around community</span>
+          <span>Designed for real-life growth</span>
+        </div>
+      </div>
+
+      <transition name="respawn-overlay">
+        <div
+          v-if="isTransitioning"
+          class="respawn-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Beginning your respawn"
+        >
+          <div class="respawn-panel">
+            <p class="respawn-kicker">Beginning your respawn</p>
+            <div class="progress-bar" aria-hidden="true">
+              <div class="progress-fill"></div>
+            </div>
+            <ul class="respawn-steps" role="list">
+              <li :class="{ active: animationStep >= 1 }">Loading confidence…</li>
+              <li :class="{ active: animationStep >= 2 }">Equipping courage…</li>
+              <li :class="{ active: animationStep >= 3 }">Quest ready…</li>
+            </ul>
+          </div>
+        </div>
+      </transition>
+    </section>
+
+    <section id="how-it-works" class="content-section">
+      <div class="container content-shell">
+        <div class="section-heading">
+          <p class="section-label">What this is</p>
+          <h2>A better way to build confidence</h2>
+        </div>
+
+        <p class="section-copy">
+          In games, a respawn is a second chance. You load back in, learn from the
+          last round, and keep moving. We believe real life should work like that too.
+        </p>
+
+        <p class="section-copy">
+          Project Respawn is a gaming-powered platform and community built to help
+          people grow their social confidence, find their people, and make progress
+          that feels real.
+        </p>
+
+        <div class="mini-grid">
+          <article class="mini-card">
+            <h3>Respawn</h3>
+            <p>
+              Start where you are. You do not need to have everything figured out to
+              take the next step.
             </p>
-            <div class="btn-group">
-              <router-link to="/about" class="btn btn-primary">Learn More</router-link>
-              <router-link to="/team-tryouts" class="btn btn-outline-primary">Get Involved</router-link>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card h-80">
-              <div class="card-body">
-                <h3>Next  Event</h3>
-                <p class="card-text">
-                  <strong>Friday Night Scrims</strong><br />Starts 8pm — Weekly
-                </p>
-                <router-link
-                  to="/events"
-                  class="text-decoration-none fw-semibold"
-                  >See Events</router-link
-                >
-              </div>
-            </div>
-          </div>          
-        </div>
-      </div>
-    </section>
+          </article>
 
-    <!-- Latest News Section -->
-    <section class="section container py-5">
-      <h2 class="mb-4">Latest News</h2>
-      <div class="row g-4">
-        <div class="col-md-6 col-lg-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <h3 class="card-title">Team Tryouts</h3>
-              <p class="card-text">
-                We're holding tryouts for our competitive squads next month.
-                Signups open now.
-              </p>
-              <router-link
-                to="/team-tryouts"
-                class="text-decoration-none fw-semibold stretched-link"
-                >Read</router-link
-              >
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <h3 class="card-title">Community Night</h3>
-              <p class="card-text">
-                Casual play and tournaments. All skill levels welcome.
-              </p>
-              <a
-                href="#events"
-                class="text-decoration-none fw-semibold stretched-link"
-                >Details</a
-              >
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <h3 class="card-title">Merch Drop</h3>
-              <p class="card-text">
-                New jerseys and hoodies available — limited stock.
-              </p>
-              <router-link
-                to="/merch"
-                class="text-decoration-none fw-semibold stretched-link"
-                >Shop</router-link
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+          <article class="mini-card">
+            <h3>Reconnect</h3>
+            <p>
+              Meet people, join communities, and build confidence through shared
+              challenges and support.
+            </p>
+          </article>
 
-    <!-- Our Teams Section -->
-    <section class="section alt py-5">
-      <div class="container">
-        <h2 class="mb-4">Our Teams</h2>
-        <div class="row g-4">
-          <div class="col-md-6 col-lg-4">
-            <div class="card h-100">
-              <div class="card-body d-flex flex-column justify-content-center">
-                <h3 class="card-title">Esports - Project Respawn</h3>
-                <p class="card-text">
-                  Competitive team focused on tournaments.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <div class="card h-100">
-              <div class="card-body d-flex flex-column justify-content-center">
-                <h3 class="card-title">Beta</h3>
-                <p class="card-text">Development squad and training.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <div class="card h-100">
-              <div class="card-body d-flex flex-column justify-content-center">
-                <h3 class="card-title">Casuals</h3>
-                <p class="card-text">Community players and fun nights.</p>
-              </div>
-            </div>
-          </div>
+          <article class="mini-card">
+            <h3>Level up</h3>
+            <p>
+              Turn growth into something practical through quests, momentum, and
+              repeatable wins.
+            </p>
+          </article>
         </div>
-      </div>
-    </section>
 
-    <!-- Upcoming Events Section -->
-    <section class="section container py-5 gap-x-8">
-      <h2 class="mb-4">Upcoming Events</h2>
-      <div class="row g-4">
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-body">
-              <h3 class="card-title">Friday Night Scrims</h3>
-              <p class="card-text">Weekly, 20:00</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-body">
-              <h3 class="card-title">Monthly Tournament</h3>
-              <p class="card-text">2026-02-14</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-body">
-              <h3 class="card-title">Community Bootcamp</h3>
-              <p class="card-text">Signup open</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-body">
-              <h3 class="card-title">Another Event</h3>
-              <p class="card-text">Event details here</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-body">
-              <h3 class="card-title">Another Event</h3>
-              <p class="card-text">Event details here</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-body">
-              <h3 class="card-title">Another Event</h3>
-              <p class="card-text">Event details here</p>
-            </div>
-          </div>
+        <div class="closing-block">
+          <p class="closing-quote">
+            “Your past is just the tutorial. Your real game starts now.”
+          </p>
+          <a href="/join" class="btn btn-primary">
+            Start the next quest
+          </a>
         </div>
       </div>
     </section>
   </div>
 </template>
 
-<script setup></script>
+<script>
+export default {
+  name: 'LandingPage',
+  data() {
+    return {
+      isTransitioning: false,
+      animationStep: 0,
+      timeouts: []
+    };
+  },
+  methods: {
+    beginRespawn() {
+      if (this.isTransitioning) return;
+
+      this.isTransitioning = true;
+      this.animationStep = 0;
+
+      this.timeouts.push(
+        setTimeout(() => {
+          this.animationStep = 1;
+        }, 180)
+      );
+
+      this.timeouts.push(
+        setTimeout(() => {
+          this.animationStep = 2;
+        }, 520)
+      );
+
+      this.timeouts.push(
+        setTimeout(() => {
+          this.animationStep = 3;
+        }, 860)
+      );
+
+      this.timeouts.push(
+        setTimeout(() => {
+          window.location.href = '/join';
+        }, 1350)
+      );
+    }
+  },
+  beforeUnmount() {
+    this.timeouts.forEach(clearTimeout);
+  }
+};
+</script>
 
 <style scoped src="./Home.css"></style>
