@@ -56,6 +56,12 @@
                 >Merch</router-link
               >
             </li>
+            <li class="nav-item cart-nav-item">
+              <router-link to="/checkout" class="nav-link cart-icon-link">
+                <i class="bi bi-cart3"></i>
+                <span v-if="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
+              </router-link>
+            </li>
             <li class="nav-item">
               <router-link
                 to="/events"
@@ -90,15 +96,23 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useAuth } from "../../composables/useAuth.js";
 
-const { isSignedIn, displayName, truncatedDisplayName, refreshAuth , initials } = useAuth();
-
+const { isSignedIn, displayName, truncatedDisplayName, refreshAuth, initials } = useAuth();
 const truncatedNavName = computed(() => truncatedDisplayName(10));
+
+const cartCount = ref(0);
+
+function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  cartCount.value = cart.reduce((acc, item) => acc + (item.qty || 1), 0);
+}
 
 onMounted(() => {
   refreshAuth();
+  updateCartCount();
+  window.addEventListener("storage", updateCartCount);
 });
 </script>
 

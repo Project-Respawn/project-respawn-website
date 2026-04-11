@@ -19,6 +19,9 @@
   flex-direction: column;
   min-height: 100vh;
 }
+body {
+  background: red;
+}
 
 main {
   flex: 1;

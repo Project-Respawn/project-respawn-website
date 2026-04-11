@@ -1,166 +1,67 @@
-<template>
-  <div class="landing-page" :class="{ 'is-transitioning': isTransitioning }">
-    <section class="hero-section">
-      <div class="container hero-shell">
-        <p class="eyebrow">Project Respawn</p>
+ <template>
+  <section class="about-container">
+    <!-- Badge -->
+    <div class="badge">WHAT’S COMING</div>
 
-        <h1>
-          Your past is just the tutorial.
-          <span>Your real game starts now.</span>
-        </h1>
+    <!-- Heading -->
+    <h1 class="title">
+      More than a platform.<br />
+      <span>A new chapter.</span>
+    </h1>
 
-        <p class="hero-copy">
-          Project Respawn helps people rebuild social confidence through gaming,
-          community, and real-life progression.
+    <!-- Description -->
+    <p class="description">
+      Project Respawn is building something meaningful — a space where gaming
+      meets real-life growth. We're putting the finishing touches on features
+      designed to help you rebuild confidence, find your community, and level up
+      in ways that actually stick.
+    </p>
+
+    <!-- Cards -->
+    <div class="cards">
+      <div class="card">
+        <div class="icon">🎮</div>
+        <h3>Quests & Challenges</h3>
+        <p>
+          Structured challenges built around real social growth — one achievable
+          step at a time.
         </p>
-
-        <p class="hero-subcopy">
-          Respawn your confidence. Re-enter the world stronger.
-        </p>
-
-        <div class="hero-actions">
-          <button class="btn btn-primary" @click="beginRespawn">
-            Begin your respawn
-          </button>
-
-          <a href="#how-it-works" class="btn btn-secondary">
-            Learn how it works
-          </a>
-        </div>
-
-        <div class="value-strip" aria-label="Project Respawn benefits">
-          <span>One quest at a time</span>
-          <span>Built around community</span>
-          <span>Designed for real-life growth</span>
-        </div>
       </div>
 
-      <transition name="respawn-overlay">
-        <div
-          v-if="isTransitioning"
-          class="respawn-overlay"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Beginning your respawn"
-        >
-          <div class="respawn-panel">
-            <p class="respawn-kicker">Beginning your respawn</p>
-            <div class="progress-bar" aria-hidden="true">
-              <div class="progress-fill"></div>
-            </div>
-            <ul class="respawn-steps" role="list">
-              <li :class="{ active: animationStep >= 1 }">Loading confidence…</li>
-              <li :class="{ active: animationStep >= 2 }">Equipping courage…</li>
-              <li :class="{ active: animationStep >= 3 }">Quest ready…</li>
-            </ul>
-          </div>
-        </div>
-      </transition>
-    </section>
-
-    <section id="how-it-works" class="content-section">
-      <div class="container content-shell">
-        <div class="section-heading">
-          <p class="section-label">What this is</p>
-          <h2>A better way to build confidence</h2>
-        </div>
-
-        <p class="section-copy">
-          In games, a respawn is a second chance. You load back in, learn from the
-          last round, and keep moving. We believe real life should work like that too.
+      <div class="card">
+        <div class="icon">🤝</div>
+        <h3>Community Squads</h3>
+        <p>
+          Find your people. Join squads built around shared goals, games, and the
+          drive to grow together.
         </p>
-
-        <p class="section-copy">
-          Project Respawn is a gaming-powered platform and community built to help
-          people grow their social confidence, find their people, and make progress
-          that feels real.
-        </p>
-
-        <div class="mini-grid">
-          <article class="mini-card">
-            <h3>Respawn</h3>
-            <p>
-              Start where you are. You do not need to have everything figured out to
-              take the next step.
-            </p>
-          </article>
-
-          <article class="mini-card">
-            <h3>Reconnect</h3>
-            <p>
-              Meet people, join communities, and build confidence through shared
-              challenges and support.
-            </p>
-          </article>
-
-          <article class="mini-card">
-            <h3>Level up</h3>
-            <p>
-              Turn growth into something practical through quests, momentum, and
-              repeatable wins.
-            </p>
-          </article>
-        </div>
-
-        <div class="closing-block">
-          <p class="closing-quote">
-            “Your past is just the tutorial. Your real game starts now.”
-          </p>
-          <a href="/join" class="btn btn-primary">
-            Start the next quest
-          </a>
-        </div>
       </div>
-    </section>
-  </div>
+
+      <div class="card">
+        <div class="icon">📈</div>
+        <h3>Real Progress Tracking</h3>
+        <p>
+          See your growth. Track the moments that matter and celebrate the wins
+          that used to feel impossible.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="icon">🏆</div>
+        <h3>Events & Tournaments</h3>
+        <p>
+          Compete, connect, and show up — in-game events designed to push you
+          forward alongside others.
+        </p>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script>
 export default {
-  name: 'LandingPage',
-  data() {
-    return {
-      isTransitioning: false,
-      animationStep: 0,
-      timeouts: []
-    };
-  },
-  methods: {
-    beginRespawn() {
-      if (this.isTransitioning) return;
-
-      this.isTransitioning = true;
-      this.animationStep = 0;
-
-      this.timeouts.push(
-        setTimeout(() => {
-          this.animationStep = 1;
-        }, 180)
-      );
-
-      this.timeouts.push(
-        setTimeout(() => {
-          this.animationStep = 2;
-        }, 520)
-      );
-
-      this.timeouts.push(
-        setTimeout(() => {
-          this.animationStep = 3;
-        }, 860)
-      );
-
-      this.timeouts.push(
-        setTimeout(() => {
-          window.location.href = '/join';
-        }, 1350)
-      );
-    }
-  },
-  beforeUnmount() {
-    this.timeouts.forEach(clearTimeout);
-  }
+  name: "About",
 };
 </script>
 
-<style scoped src="./About.css"></style>
+<style src="./About.css"></style>
