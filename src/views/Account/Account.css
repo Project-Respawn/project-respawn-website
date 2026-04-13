@@ -29,3 +29,69 @@
 .profile-name {
   font-size: 1.05rem;
 }
+
+.account-tabs {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Coming soon FIX */
+.coming-soon {
+  font-size: 0.8rem;
+  color: #6c757d;
+  background: rgba(108, 117, 125, 0.1);
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+/* Tabs */
+.tabs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.tab-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0.8rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Emoji icon container */
+.icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  margin: 12px;
+  align-items: center;
+  justify-content: center;
+  background: rgba(13, 110, 253, 0.08);
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+/* Hover = “life” */
+.tab-item:hover {
+  background: rgba(13, 110, 253, 0.08);
+  transform: translateX(4px);
+}
+
+/* Sign out styling */
+.tab-item.signout {
+  margin-top: 0.5rem;
+  color: #dc3545;
+}
+
+.tab-item.signout .icon {
+  background: rgba(220, 53, 69, 0.1);
+}
+
+.tab-item.signout:hover {
+  background: rgba(220, 53, 69, 0.08);
+}
+
