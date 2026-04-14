@@ -58,7 +58,7 @@
           </div>
           <div class="summary-row">
             <span>Shipping:</span>
-           <span style="text-decoration: line-through;">£ 5</span>
+           <span style="text-decoration: line-through;">£5.00</span>
           </div>
           <div class="summary-row total">
             <span>Total:</span>
