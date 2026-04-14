@@ -58,7 +58,7 @@
           </div>
           <div class="summary-row">
             <span>Shipping:</span>
-            <span>£{{ shipping.toFixed(2) }}</span>
+           <span style="text-decoration: line-through;">£ 5</span>
           </div>
           <div class="summary-row total">
             <span>Total:</span>
@@ -144,7 +144,7 @@ interface CartProduct extends Product {
 }
 
 const cartProducts = ref<CartProduct[]>([]);
-const shipping = ref(5);
+const shipping = ref(0);
 
 const customer = reactive({
   name: "",
