@@ -1,5 +1,16 @@
 const API_URL = "https://raven-api-nine.vercel.app/api/products";
 
+export type PrintfulVariantFile = {
+  preview_url?: string;
+};
+
+export type PrintfulSyncVariant = {
+  id: string | number;
+  name?: string;
+  retail_price?: string | number;
+  files?: PrintfulVariantFile[];
+};
+
 export interface Product {
   id: string;
   title: string;
@@ -9,6 +20,7 @@ export interface Product {
   price: number;
   checkoutUrl?: string;
   productUrl?: string;
+  variants?: PrintfulSyncVariant[];
 }
 
 export async function fetchProducts(): Promise<Product[]> {
@@ -32,6 +44,7 @@ export async function fetchProducts(): Promise<Product[]> {
       image: item.thumbnail_url,
       source: "printful",
       price: firstVariant?.retail_price ? Number(firstVariant.retail_price) : 0,
+      variants: Array.isArray(item.variants) ? item.variants : [],
 
       // connect checkout page
       checkoutUrl: `/checkout?productId=${item.id}`,
