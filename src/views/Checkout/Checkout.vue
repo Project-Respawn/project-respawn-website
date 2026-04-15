@@ -15,7 +15,7 @@
           <div
             class="cart-item"
             v-for="product in cartProducts"
-            :key="product.id"
+            :key="`${product.id}-${product.variantId ?? 'no-variant'}-${product.size ?? 'no-size'}`"
           >
             <img
               :src="product.image"
@@ -28,6 +28,9 @@
               <p>Price: £{{ product.price.toFixed(2) }}</p>
               <p v-if="product.size" class="product-size">
                 Size: <strong>{{ product.size }}</strong>
+              </p>
+              <p v-if="product.color" class="product-size">
+                Colour: <strong>{{ product.color }}</strong>
               </p>
               <div class="product-controls">
                 <div class="quantity-control">
@@ -136,11 +139,13 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from "vue";
-import { fetchProducts, type Product } from "../Merch/merchService";
+import { type Product } from "../Merch/merchService";
 
 interface CartProduct extends Product {
   qty: number;
   size?: string;
+  variantId?: string | number;
+  color?: string;
 }
 
 const cartProducts = ref<CartProduct[]>([]);
@@ -177,7 +182,12 @@ function decreaseQty(product: CartProduct) {
 
 function removeItem(product: CartProduct) {
   cartProducts.value = cartProducts.value.filter(
-    (p) => !(p.id === product.id && p.size === product.size)
+    (p) =>
+      !(
+        p.id === product.id &&
+        p.size === product.size &&
+        (p.variantId ?? null) === (product.variantId ?? null)
+      )
   );
   localStorage.setItem("cart", JSON.stringify(cartProducts.value));
   window.dispatchEvent(new Event("storage"));
