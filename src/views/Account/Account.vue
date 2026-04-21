@@ -274,11 +274,11 @@ const MOCK_PROFILE = {
 };
 
 const TIER_IMAGES = [
-  "src/assets/images/imageTier1.png",
-  "src/assets/images/imageTier2.png",
-  "src/assets/images/imageTier3.png",
-  "src/assets/images/imageTier4.png",
-  "src/assets/images/imageTier5.png",
+  "images/imageTier1.png",
+  "images/ImageTier2.png",
+  "images/imageTier3.png",
+  "images/imageTier4.png",
+  "images/imageTier5.png",
 ];
 
 const MOCK_STATS = {
