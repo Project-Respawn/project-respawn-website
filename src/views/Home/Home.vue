@@ -23,7 +23,7 @@
             Begin your respawn
           </button>
 
-          <a href="#how-it-works" class="btn btn-secondary">
+          <a href="/team-tryouts" class="btn btn-secondary">
             Learn how it works
           </a>
         </div>
