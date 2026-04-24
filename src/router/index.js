@@ -11,6 +11,7 @@ import Checkout from '../views/Checkout/Checkout.vue'
 import Join from '../views/Join/Join.vue'
 import Account from '../views/Account/Account.vue'
 
+
 const routes = [
   { path: '/', component: Home },
   { path: '/about', component: About },
@@ -24,7 +25,7 @@ const routes = [
   { path: '/account', component: Account },
   { path: '/:pathMatch(.*)', component: NotFound }
 ]
-
+ 
 const router = createRouter({
   history: createWebHistory(),
   routes,
