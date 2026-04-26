@@ -1,84 +1,40 @@
 <template>
-  <div class="privacy-container mx-auto">
+  <div class="privacy-container mx-auto" >
     <h1>Privacy at Project Respawn</h1>
-    <p
-      style="
-        text-align: center;
-        color: #7f8c8d;
-        margin-bottom: 24px;
-        max-width: 640px;
-        margin-left: auto;
-        margin-right: auto;
-      "
-    >
+    <p class="intro-text">
       This page explains what data we collect, why we collect it, and how you
       stay in control of it when you use Project Respawn.
     </p>
 
     <!-- Quick overview -->
-    <div
-      style="
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 16px;
-        margin-bottom: 24px;
-      "
-    >
-      <div
-        style="
-          background: #f8f9fa;
-          border-radius: 8px;
-          padding: 12px 14px;
-          font-size: 13px;
-        "
-      >
-        <div style="font-weight: 600; margin-bottom: 4px;">👤 What we collect</div>
-        <div>
+    <div class="overview-grid">
+      <div class="overview-card">
+        <div class="overview-card-title">👤 What we collect</div>
+        <div class="overview-card-content">
           Account details, confidence and quest progress, social connections,
           payments, and basic device/security info.
         </div>
       </div>
 
-      <div
-        style="
-          background: #f8f9fa;
-          border-radius: 8px;
-          padding: 12px 14px;
-          font-size: 13px;
-        "
-      >
-        <div style="font-weight: 600; margin-bottom: 4px;">🎯 Why we collect it</div>
-        <div>
+      <div class="overview-card">
+        <div class="overview-card-title">🎯 Why we collect it</div>
+        <div class="overview-card-content">
           To run your account, track progress, deliver rewards, keep the
           platform secure, and understand what’s working.
         </div>
       </div>
 
-      <div
-        style="
-          background: #f8f9fa;
-          border-radius: 8px;
-          padding: 12px 14px;
-          font-size: 13px;
-        "
-      >
-        <div style="font-weight: 600; margin-bottom: 4px;">🛡️ Who sees it</div>
-        <div>
+      <div class="overview-card">
+        <div class="overview-card-title">🛡️ Who sees it</div>
+        <div class="overview-card-content">
           Your data is mainly used inside Project Respawn. We use Replit
           (hosting), Microsoft (email), and Revolut (payments).
         </div>
       </div>
 
-      <div
-        style="
-          background: #f8f9fa;
-          border-radius: 8px;
-          padding: 12px 14px;
-          font-size: 13px;
-        "
-      >
-        <div style="font-weight: 600; margin-bottom: 4px;">✅ Your choices</div>
-        <div>
+      <div class="overview-card">
+        <div class="overview-card-title">✅ Your choices</div>
+        <div class="overview-card-content">
           You can download your data, delete your account, change some
           settings, and contact us to exercise your data rights.
         </div>
@@ -86,52 +42,23 @@
     </div>
 
     <!-- Explainer selector -->
-    <div
-      style="
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-bottom: 20px;
-      "
-    >
-      <button
-        v-for="section in sections"
-        :key="section.id"
-        type="button"
-        :style="{
-          padding: '8px 12px',
-          borderRadius: '999px',
-          border: activeSection === section.id ? '1px solid #3498db' : '1px solid #d0d7de',
-          background: activeSection === section.id ? '#e8f4f8' : '#ffffff',
-          color: '#2c3e50',
-          fontSize: '13px',
-          cursor: 'pointer'
-        }"
-        @click="activeSection = section.id"
-      >
+    <div class="section-buttons">
+      <button v-for="section in sections" :key="section.id" type="button" 
+        :class="['section-btn', { active: activeSection === section.id }]" 
+        @click="activeSection = section.id">
         {{ section.label }}
       </button>
     </div>
 
-    <div
-      v-if="currentSection"
-      style="
-        margin-bottom: 24px;
-        padding: 14px 16px;
-        border-radius: 8px;
-        background: #e8f4f8;
-        border-left: 4px solid #3498db;
-        font-size: 13px;
-      "
-    >
-      <div style="font-weight: 600; margin-bottom: 6px;">
+    <div v-if="currentSection" class="section-summary">
+      <div class="section-summary-title">
         {{ currentSection.label }}
       </div>
       <div v-html="currentSection.summary"></div>
     </div>
 
     <!-- Full policy -->
-    <div style="font-size: 14px; line-height: 1.6;">
+    <div class="policy-content">
       <h2>Project Respawn Privacy Policy</h2>
       <p><em>Last updated: 2 April 2026</em></p>
 
@@ -321,18 +248,22 @@
 
       <h3>3. How long data is kept</h3>
       <ul>
-        <li>Active accounts: while your account is active, and potentially deleted after around 12 months of inactivity following warning notices.</li>
-        <li>Quest history, pet data, friends and follows: while your account exists, then deleted when your account is deleted.</li>
+        <li>Active accounts: while your account is active, and potentially deleted after around 12 months of inactivity
+          following warning notices.</li>
+        <li>Quest history, pet data, friends and follows: while your account exists, then deleted when your account is
+          deleted.</li>
         <li>Reward and redemption records: around 12 months after redemption.</li>
         <li>Security tokens: deleted automatically on use or expiry.</li>
         <li>Session data: usually up to 7 days.</li>
-        <li>Beta or waitlist emails: around 30 days after a code is used or the beta closes, unless you withdraw consent sooner.</li>
+        <li>Beta or waitlist emails: around 30 days after a code is used or the beta closes, unless you withdraw consent
+          sooner.</li>
       </ul>
 
       <h3>4. Who data is shared with</h3>
       <ul>
         <li><strong>Replit (hosting and database)</strong> – hosts the application and stores data.</li>
-        <li><strong>Microsoft (Outlook / Microsoft 365)</strong> – sends account-related emails such as password resets and important notifications.</li>
+        <li><strong>Microsoft (Outlook / Microsoft 365)</strong> – sends account-related emails such as password resets
+          and important notifications.</li>
         <li><strong>Revolut Payments</strong> – processes card payments and other payment methods.</li>
       </ul>
 

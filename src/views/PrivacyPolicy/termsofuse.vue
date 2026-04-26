@@ -1,6 +1,6 @@
 <template>
-  <main class="legal-page">
-    <section class="legal-content">
+  <div class="privacy-container mx-auto">
+    <div class="policy-content">
       <h1>Terms and Conditions</h1>
       <p><strong>Last updated:</strong> 2 April 2026</p>
 
@@ -186,45 +186,12 @@
         If you have any questions about these Terms, please contact us at
         <a href="mailto:help@projectrespawn.com">help@projectrespawn.com</a>.
       </p>
-    </section>
-  </main>
+    </div>
+  </div>
 </template>
 
 <script setup>
 // Static legal page component
 </script>
 
-<style scoped>
-.legal-page {
-  padding: 2rem 1rem;
-}
-
-.legal-content {
-  max-width: 900px;
-  margin: 0 auto;
-  line-height: 1.7;
-  color: #2c3e50;
-}
-
-.legal-content h1 {
-  margin-bottom: 1rem;
-}
-
-.legal-content h2 {
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
-}
-
-.legal-content p,
-.legal-content ul {
-  margin-bottom: 1rem;
-}
-
-.legal-content ul {
-  padding-left: 1.5rem;
-}
-
-.legal-content a {
-  color: #3498db;
-}
-</style>
+<style scoped src="./PrivacyPolicy.css"></style>
