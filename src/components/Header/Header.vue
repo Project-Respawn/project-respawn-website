@@ -62,6 +62,17 @@
                 <span v-if="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
               </router-link>
             </li>
+            <!-- Admin Dashboard link — only visible when signed in -->
+            <li v-if="isSignedIn" class="nav-item">
+              <router-link
+                to="/dashboard"
+                class="nav-link dashboard-link"
+                :class="{ active: $route.path === '/dashboard' }"
+                title="Admin Dashboard"
+              >
+                <i class="bi bi-sliders"></i>
+              </router-link>
+            </li>
             <!-- <li class="nav-item">
               <router-link
                 to="/events"
