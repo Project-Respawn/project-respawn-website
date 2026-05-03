@@ -6,13 +6,12 @@
       <h1>Checkout</h1>
     </header>
 
-    <!-- Main Content -->
+    <!-- Content -->
     <div class="checkout-content">
-      <!-- Left: Order Summary -->
+      <!-- Summary Panel -->
       <section class="order-summary">
         <h2>Order Summary</h2>
 
-        <!-- Cart Items -->
         <div v-if="cartItems.length" class="cart-items-list">
           <div v-for="item in cartItems" :key="item.id" class="cart-item-row">
             <div class="cart-item-info">
@@ -29,12 +28,10 @@
           </div>
         </div>
 
-        <!-- Empty Cart -->
         <div v-else class="empty-cart">
           <p>Your cart is empty</p>
         </div>
 
-        <!-- Summary -->
         <div class="summary-section">
           <div class="summary-row">
             <span>Subtotal:</span>
@@ -45,7 +42,7 @@
             <span>{{ formatPrice(shippingCost) }}</span>
           </div>
           <div class="summary-row">
-            <span>Tax (est):</span>
+            <span>Tax:</span>
             <span>{{ formatPrice(tax) }}</span>
           </div>
           <div class="summary-row total">
@@ -55,7 +52,7 @@
         </div>
       </section>
 
-      <!-- Right: Checkout Form -->
+      <!-- Form Panel -->
       <section class="checkout-form-section">
         <form @submit.prevent="handleCheckout" class="checkout-form">
           <!-- Delivery Details -->
@@ -69,40 +66,36 @@
                 v-model="formData.fullName"
                 type="text"
                 required
-                placeholder="John Doe"
               />
             </div>
 
             <div class="form-group">
-              abel for="email">Email Address *</label>
+              abel for="email">Email *</label>
               <input
                 id="email"
                 v-model="formData.email"
                 type="email"
                 required
-                placeholder="john@example.com"
               />
             </div>
 
             <div class="form-group">
-              abel for="phone">Phone Number *</label>
+              abel for="phone">Phone *</label>
               <input
                 id="phone"
                 v-model="formData.phone"
                 type="tel"
                 required
-                placeholder="+44 20 1234 5678"
               />
             </div>
 
             <div class="form-group">
-              abel for="address">Street Address *</label>
+              abel for="address">Address *</label>
               <input
                 id="address"
                 v-model="formData.address"
                 type="text"
                 required
-                placeholder="123 High Street"
               />
             </div>
 
@@ -114,7 +107,6 @@
                   v-model="formData.city"
                   type="text"
                   required
-                  placeholder="London"
                 />
               </div>
               <div class="form-group">
@@ -124,27 +116,24 @@
                   v-model="formData.postcode"
                   type="text"
                   required
-                  placeholder="SW1A 1AA"
                 />
               </div>
             </div>
 
             <div class="form-group">
               abel for="country">Country *</label>
-              <select id="country" v-model="formData.country" required>
+              <select id="country" v-model="formData.country">
                 <option value="GB">United Kingdom</option>
                 <option value="US">United States</option>
                 <option value="DE">Germany</option>
                 <option value="FR">France</option>
-                <option value="IT">Italy</option>
-                <option value="ES">Spain</option>
               </select>
             </div>
           </fieldset>
 
-          <!-- Shipping Method -->
+          <!-- Shipping -->
           <fieldset class="form-section">
-            <h3>Shipping Method</h3>
+            <h3>Shipping</h3>
             <div class="form-group">
               abel>
                 <input
@@ -152,7 +141,7 @@
                   type="radio"
                   value="STANDARD"
                 />
-                Standard (5-7 days) - FREE
+                Standard - FREE
               </label>
             </div>
             <div class="form-group">
@@ -162,19 +151,19 @@
                   type="radio"
                   value="EXPRESS"
                 />
-                Express (2-3 days) - £5.00
+                Express - £5.00
               </label>
             </div>
           </fieldset>
 
-          <!-- Payment Section -->
+          <!-- Payment -->
           <fieldset class="form-section">
-            <h3>Payment Method</h3>
+            <h3>Payment</h3>
             <p class="payment-info">Secure payment via Revolut</p>
             <div id="revolut-checkout" class="revolut-container"></div>
           </fieldset>
 
-          <!-- Submit Button -->
+          <!-- Submit -->
           <button
             type="submit"
             class="checkout-btn"
@@ -184,14 +173,14 @@
           </button>
         </form>
 
-        <!-- Error Message -->
+        <!-- Error -->
         <div v-if="error" class="error-message">
           {{ error }}
         </div>
       </section>
     </div>
 
-    <!-- Confirmation Modal -->
+    <!-- Confirmation -->
     <div v-if="showConfirmation" class="confirmation-modal">
       <div class="confirmation-content">
         <h2>✓ Order Confirmed!</h2>
@@ -201,18 +190,7 @@
             <span>Order ID:</span>
             <strong>{{ confirmationOrderId }}</strong>
           </div>
-          <div class="detail-row">
-            <span>Customer:</span>
-            <strong>{{ formData.fullName }}</strong>
-          </div>
-          <div class="detail-row">
-            <span>Total:</span>
-            <strong>{{ formatPrice(total) }}</strong>
-          </div>
         </div>
-        <p class="confirmation-message">
-          Your order will be printed and shipped within 3-5 business days.
-        </p>
         <button @click="returnToShop" class="confirmation-btn">
           Continue Shopping
         </button>
@@ -222,23 +200,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import {
-  createRevolutOrder,
-  createPrintfulOrder,
-  type CartItem
-} from '@/services/merchService';
+import { createRevolutOrder, createPrintfulOrder, type CartItem } from '@/services/merchService';
 
-// ===== ROUTER =====
 const router = useRouter();
 
-// ===== STATE =====
 const cartItems = ref<CartItem[]>([]);
-const isProcessing = ref<boolean>(false);
-const showConfirmation = ref<boolean>(false);
-const confirmationOrderId = ref<string>('');
-const error = ref<string>('');
+const isProcessing = ref(false);
+const showConfirmation = ref(false);
+const confirmationOrderId = ref('');
+const error = ref('');
+const shippingCost = ref(0);
 
 const formData = ref({
   fullName: '',
@@ -251,22 +224,18 @@ const formData = ref({
   shippingMethod: 'STANDARD'
 });
 
-const shippingCost = ref<number>(0);
-
-// ===== COMPUTED =====
-const subtotal = computed<number>(() => {
+const subtotal = computed(() => {
   return cartItems.value.reduce((sum, item) => sum + item.price * item.quantity, 0);
 });
 
-const tax = computed<number>(() => {
+const tax = computed(() => {
   return Math.round(subtotal.value * 0.2 * 100) / 100;
 });
 
-const total = computed<number>(() => {
+const total = computed(() => {
   return subtotal.value + tax.value + shippingCost.value;
 });
 
-// ===== METHODS =====
 function formatPrice(price: number): string {
   if (typeof price !== 'number' || !isFinite(price)) {
     return '£0.00';
@@ -275,7 +244,7 @@ function formatPrice(price: number): string {
 }
 
 function removeFromCart(itemId: string) {
-  cartItems.value = cartItems.value.filter((item) => item.id !== itemId);
+  cartItems.value = cartItems.value.filter(item => item.id !== itemId);
 }
 
 function goBack() {
@@ -291,7 +260,7 @@ function loadScript(src: string): Promise<void> {
     const script = document.createElement('script');
     script.src = src;
     script.onload = () => resolve();
-    script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+    script.onerror = () => reject(new Error(`Failed to load: ${src}`));
     document.head.appendChild(script);
   });
 }
@@ -301,33 +270,21 @@ async function handleCheckout() {
   isProcessing.value = true;
 
   try {
-    // Validate form
-    if (
-      !formData.value.fullName ||
-      !formData.value.email ||
-      !formData.value.phone ||
-      !formData.value.address ||
-      !formData.value.city ||
-      !formData.value.postcode
-    ) {
-      throw new Error('Please fill in all delivery details');
+    if (!formData.value.fullName || !formData.value.email || !formData.value.address || !formData.value.city) {
+      throw new Error('Please fill in all details');
     }
 
     if (cartItems.value.length === 0) {
-      throw new Error('Your cart is empty');
+      throw new Error('Cart is empty');
     }
 
-    // Create Revolut order
     const revolutOrder = await createRevolutOrder({
       amount: total.value,
       currency: 'GBP',
-      description: `Project Respawn Merch - ${formData.value.fullName}`,
+      description: `Project Respawn Merch`,
       customerId: `cust-${Date.now()}`
     });
 
-    console.log('Revolut order created:', revolutOrder);
-
-    // Initialize Revolut Checkout
     if (window.RevolutCheckout) {
       const instance = await window.RevolutCheckout.embed({
         amount: Math.round(total.value * 100),
@@ -335,7 +292,6 @@ async function handleCheckout() {
         publicToken: revolutOrder.result?.public_token || '',
         onSuccess: async () => {
           try {
-            // Create Printful order
             const printfulOrder = await createPrintfulOrder({
               orderId: `order-${Date.now()}`,
               customerName: formData.value.fullName,
@@ -346,7 +302,7 @@ async function handleCheckout() {
               postcode: formData.value.postcode,
               country: formData.value.country,
               shippingMethod: formData.value.shippingMethod,
-              items: cartItems.value.map((item) => ({
+              items: cartItems.value.map(item => ({
                 variant_id: item.variantId || item.productId,
                 quantity: item.quantity
               }))
@@ -356,35 +312,28 @@ async function handleCheckout() {
             showConfirmation.value = true;
             cartItems.value = [];
           } catch (err) {
-            console.error('Printful error:', err);
-            error.value = 'Payment successful but order creation failed. Contact support.';
+            error.value = 'Payment successful but order failed';
           }
         },
-        onError: (errorData: any) => {
-          error.value = errorData?.message || 'Payment failed. Please try again.';
+        onError: (err: any) => {
+          error.value = err?.message || 'Payment failed';
         },
         onCancel: () => {
-          error.value = 'Payment cancelled. Please try again.';
+          error.value = 'Payment cancelled';
         }
       });
-    } else {
-      throw new Error('Revolut SDK not loaded');
     }
   } catch (err) {
-    console.error('Checkout error:', err);
-    error.value = err instanceof Error ? err.message : 'An error occurred';
+    error.value = err instanceof Error ? err.message : 'Error occurred';
   } finally {
     isProcessing.value = false;
   }
 }
 
-// ===== LIFECYCLE =====
 onMounted(async () => {
   try {
     await loadScript('https://sdk.revolut.com/embedded-checkout/embedded-checkout-sdk.js');
-    console.log('Revolut SDK loaded');
   } catch (err) {
-    console.error('SDK load error:', err);
     error.value = 'Failed to load payment system';
   }
 
@@ -393,7 +342,7 @@ onMounted(async () => {
     try {
       cartItems.value = JSON.parse(savedCart);
     } catch (err) {
-      console.error('Failed to load cart:', err);
+      console.error('Cart load error:', err);
     }
   }
 
@@ -402,13 +351,10 @@ onMounted(async () => {
     localStorage.setItem('merch-cart', JSON.stringify(cartItems.value));
   });
 
-  // Update shipping based on selection
   watch(() => formData.value.shippingMethod, (method) => {
     shippingCost.value = method === 'EXPRESS' ? 5 : 0;
   });
 });
-
-import { watch } from 'vue';
 </script>
 
 <style scoped>
@@ -434,13 +380,8 @@ import { watch } from 'vue';
   border: none;
   color: var(--accent, #39ff14);
   cursor: pointer;
-  font-size: 1rem;
   font-weight: 700;
   margin-bottom: 20px;
-}
-
-.back-btn:hover {
-  text-decoration: underline;
 }
 
 .checkout-header h1 {
@@ -475,7 +416,6 @@ import { watch } from 'vue';
 .order-summary h2 {
   font-size: 1.3rem;
   margin-bottom: 20px;
-  color: var(--text, #000);
 }
 
 .cart-items-list {
@@ -519,8 +459,6 @@ import { watch } from 'vue';
 .item-price {
   font-weight: 700;
   color: var(--accent, #39ff14);
-  min-width: 80px;
-  text-align: right;
 }
 
 .remove-btn {
@@ -579,7 +517,6 @@ import { watch } from 'vue';
 .form-section h3 {
   font-size: 1.1rem;
   margin-bottom: 20px;
-  color: var(--text, #000);
 }
 
 .form-group {
@@ -590,7 +527,6 @@ import { watch } from 'vue';
   display: block;
   margin-bottom: 6px;
   font-weight: 600;
-  color: var(--text, #000);
   font-size: 0.95rem;
 }
 
@@ -601,7 +537,6 @@ import { watch } from 'vue';
   border: 1px solid rgba(201, 180, 224, 0.2);
   border-radius: 4px;
   font-size: 1rem;
-  color: var(--text, #000);
 }
 
 .form-group input:focus,
@@ -704,12 +639,6 @@ import { watch } from 'vue';
   display: flex;
   justify-content: space-between;
   padding: 8px 0;
-}
-
-.confirmation-message {
-  color: var(--text, #000);
-  margin: 20px 0;
-  line-height: 1.6;
 }
 
 .confirmation-btn {
