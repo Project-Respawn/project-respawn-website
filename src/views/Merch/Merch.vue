@@ -95,8 +95,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { fetchProducts, type Product, type CartItem } from '@/services/merchService';
-
+  import { fetchProducts, type Product, type CartItem } from '../../services/merchService';
 // ===== STATE =====
 const products = ref<Product[]>([]);
 const cart = ref<CartItem[]>([]);
