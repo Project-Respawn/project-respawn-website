@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <Header />
+    <Header v-if="!$route.meta.hideLayout" />
     <main>
       <router-view />
     </main>
-    <Footer />
+    <Footer v-if="!$route.meta.hideLayout" />
   </div>
 </template>
 
@@ -18,9 +18,6 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-}
-body {
-  background: red;
 }
 
 main {

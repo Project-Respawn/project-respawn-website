@@ -10,6 +10,8 @@ import Events from '../views/Events/Events.vue'
 import Checkout from '../views/Checkout/Checkout.vue'
 import Join from '../views/Join/Join.vue'
 import Account from '../views/Account/Account.vue'
+import Dashboard from '../views/Dashboard/Dashboard.vue'
+
 
 const routes = [
   { path: '/', component: Home },
@@ -22,9 +24,11 @@ const routes = [
   { path: '/events', component: Events },
   { path: '/join', component: Join },
   { path: '/account', component: Account },
-  { path: '/:pathMatch(.*)', component: NotFound }
+  { path: '/dashboard', component: Dashboard, meta: { hideLayout: true } },
+  { path: '/:pathMatch(.*)', component: NotFound },
+ 
 ]
-
+ 
 const router = createRouter({
   history: createWebHistory(),
   routes,
