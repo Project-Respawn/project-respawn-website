@@ -340,12 +340,10 @@
         <strong>Nicholas Grefsheim / Ravens Community Gaming Lets</strong><br />
         <strong>Project Respawn</strong><br />
         <strong>Email:</strong> Help@Projectrespawn.com<br />
-        <strong>Address:</strong> Ravens Community Gaming, 61 Bridge Street,
-        Kington, HR5 3DJ, United Kingdom
+        <strong>Address:</strong> Ravens Community Gaming, 61 Bridge Street, Kington, HR5 3DJ, United Kingdom
       </p>
       <p>
-        You can also complain to the Information Commissioner’s Office if you’re
-        unhappy with how your data is handled.
+        You can also complain to the Information Commissioner’s Office if you’re unhappy with how your data is handled.
       </p>
     </div>
   </div>
