@@ -6,7 +6,7 @@
       <h1>Checkout</h1>
     </header>
 
-    <!-- Two Column Layout -->
+    <!-- Main Content -->
     <div class="checkout-content">
       <!-- Left: Order Summary -->
       <section class="order-summary">
@@ -14,11 +14,7 @@
 
         <!-- Cart Items -->
         <div v-if="cartItems.length" class="cart-items-list">
-          <div
-            v-for="item in cartItems"
-            :key="item.id"
-            class="cart-item-row"
-          >
+          <div v-for="item in cartItems" :key="item.id" class="cart-item-row">
             <div class="cart-item-info">
               <img :src="item.image" :alt="item.productTitle" class="item-image" />
               <div class="item-details">
@@ -33,10 +29,9 @@
           </div>
         </div>
 
-        <!-- Empty Cart Message -->
+        <!-- Empty Cart -->
         <div v-else class="empty-cart">
           <p>Your cart is empty</p>
-          <router-link to="/merch" class="back-to-shop">← Back to Shop</router-link>
         </div>
 
         <!-- Summary -->
@@ -143,8 +138,6 @@
                 <option value="FR">France</option>
                 <option value="IT">Italy</option>
                 <option value="ES">Spain</option>
-                <option value="NL">Netherlands</option>
-                <option value="IE">Ireland</option>
               </select>
             </div>
           </fieldset>
@@ -158,7 +151,6 @@
                   v-model="formData.shippingMethod"
                   type="radio"
                   value="STANDARD"
-                  required
                 />
                 Standard (5-7 days) - FREE
               </label>
@@ -169,7 +161,6 @@
                   v-model="formData.shippingMethod"
                   type="radio"
                   value="EXPRESS"
-                  required
                 />
                 Express (2-3 days) - £5.00
               </label>
@@ -179,9 +170,7 @@
           <!-- Payment Section -->
           <fieldset class="form-section">
             <h3>Payment Method</h3>
-            <p class="payment-info">
-              Secure payment via Revolut. Your payment details are never stored.
-            </p>
+            <p class="payment-info">Secure payment via Revolut</p>
             <div id="revolut-checkout" class="revolut-container"></div>
           </fieldset>
 
@@ -223,7 +212,6 @@
         </div>
         <p class="confirmation-message">
           Your order will be printed and shipped within 3-5 business days.
-          A tracking number will be sent to {{ formData.email }}.
         </p>
         <button @click="returnToShop" class="confirmation-btn">
           Continue Shopping
@@ -258,7 +246,7 @@ const formData = ref({
   phone: '',
   address: '',
   city: '',
-  postcode: 'GB',
+  postcode: '',
   country: 'GB',
   shippingMethod: 'STANDARD'
 });
@@ -271,7 +259,7 @@ const subtotal = computed<number>(() => {
 });
 
 const tax = computed<number>(() => {
-  return Math.round(subtotal.value * 0.2 * 100) / 100; // 20% VAT for UK
+  return Math.round(subtotal.value * 0.2 * 100) / 100;
 });
 
 const total = computed<number>(() => {
@@ -329,28 +317,25 @@ async function handleCheckout() {
       throw new Error('Your cart is empty');
     }
 
-    // Step 1: Create Revolut checkout order
-    console.log('Creating Revolut order...');
+    // Create Revolut order
     const revolutOrder = await createRevolutOrder({
       amount: total.value,
       currency: 'GBP',
-      description: `Project Respawn Merch Order - ${formData.value.fullName}`,
+      description: `Project Respawn Merch - ${formData.value.fullName}`,
       customerId: `cust-${Date.now()}`
     });
 
     console.log('Revolut order created:', revolutOrder);
 
-    // Step 2: Initialize Revolut Embedded Checkout
+    // Initialize Revolut Checkout
     if (window.RevolutCheckout) {
       const instance = await window.RevolutCheckout.embed({
-        amount: Math.round(total.value * 100), // Convert to pence
+        amount: Math.round(total.value * 100),
         currency: 'GBP',
         publicToken: revolutOrder.result?.public_token || '',
         onSuccess: async () => {
-          console.log('Payment successful!');
-          
-          // Step 3: Create Printful order
           try {
+            // Create Printful order
             const printfulOrder = await createPrintfulOrder({
               orderId: `order-${Date.now()}`,
               customerName: formData.value.fullName,
@@ -367,37 +352,18 @@ async function handleCheckout() {
               }))
             });
 
-            console.log('Printful order created:', printfulOrder);
-
-            // Show confirmation
             confirmationOrderId.value = printfulOrder.result?.id || `order-${Date.now()}`;
             showConfirmation.value = true;
             cartItems.value = [];
-
-            // Clear form
-            setTimeout(() => {
-              formData.value = {
-                fullName: '',
-                email: '',
-                phone: '',
-                address: '',
-                city: '',
-                postcode: 'GB',
-                country: 'GB',
-                shippingMethod: 'STANDARD'
-              };
-            }, 2000);
-          } catch (printfulError) {
-            console.error('Printful order error:', printfulError);
-            error.value = 'Payment successful but order creation failed. Please contact support.';
+          } catch (err) {
+            console.error('Printful error:', err);
+            error.value = 'Payment successful but order creation failed. Contact support.';
           }
         },
         onError: (errorData: any) => {
-          console.error('Payment failed:', errorData);
           error.value = errorData?.message || 'Payment failed. Please try again.';
         },
         onCancel: () => {
-          console.log('Payment cancelled');
           error.value = 'Payment cancelled. Please try again.';
         }
       });
@@ -406,7 +372,7 @@ async function handleCheckout() {
     }
   } catch (err) {
     console.error('Checkout error:', err);
-    error.value = err instanceof Error ? err.message : 'An error occurred. Please try again.';
+    error.value = err instanceof Error ? err.message : 'An error occurred';
   } finally {
     isProcessing.value = false;
   }
@@ -414,16 +380,14 @@ async function handleCheckout() {
 
 // ===== LIFECYCLE =====
 onMounted(async () => {
-  // Load Revolut SDK
   try {
     await loadScript('https://sdk.revolut.com/embedded-checkout/embedded-checkout-sdk.js');
     console.log('Revolut SDK loaded');
   } catch (err) {
-    console.error('Failed to load Revolut SDK:', err);
-    error.value = 'Failed to load payment system. Please refresh the page.';
+    console.error('SDK load error:', err);
+    error.value = 'Failed to load payment system';
   }
 
-  // Load cart from localStorage or event
   const savedCart = localStorage.getItem('merch-cart');
   if (savedCart) {
     try {
@@ -433,17 +397,18 @@ onMounted(async () => {
     }
   }
 
-  // Listen for cart updates
   window.addEventListener('cart-updated', (event: any) => {
     cartItems.value = event.detail.cart;
     localStorage.setItem('merch-cart', JSON.stringify(cartItems.value));
   });
 
-  // Update shipping cost based on method
-  const updateShipping = () => {
-    shippingCost.value = formData.value.shippingMethod === 'EXPRESS' ? 5 : 0;
-  };
+  // Update shipping based on selection
+  watch(() => formData.value.shippingMethod, (method) => {
+    shippingCost.value = method === 'EXPRESS' ? 5 : 0;
+  });
 });
+
+import { watch } from 'vue';
 </script>
 
 <style scoped>
@@ -472,17 +437,15 @@ onMounted(async () => {
   font-size: 1rem;
   font-weight: 700;
   margin-bottom: 20px;
-  transition: all 0.3s ease;
 }
 
 .back-btn:hover {
-  transform: translateX(-4px);
+  text-decoration: underline;
 }
 
 .checkout-header h1 {
   font-size: 2.5rem;
   color: var(--text, #000);
-  margin-bottom: 20px;
 }
 
 .checkout-content {
@@ -496,11 +459,9 @@ onMounted(async () => {
 @media (max-width: 900px) {
   .checkout-content {
     grid-template-columns: 1fr;
-    gap: 20px;
   }
 }
 
-/* ORDER SUMMARY */
 .order-summary {
   background: var(--surface, #fff);
   padding: 30px;
@@ -547,7 +508,6 @@ onMounted(async () => {
 .item-details h4 {
   margin: 0 0 4px;
   font-size: 0.9rem;
-  color: var(--text, #000);
 }
 
 .item-details p {
@@ -570,25 +530,12 @@ onMounted(async () => {
   cursor: pointer;
   font-size: 1.5rem;
   padding: 0 4px;
-  transition: all 0.2s;
-}
-
-.remove-btn:hover {
-  background: rgba(255, 0, 0, 0.2);
 }
 
 .empty-cart {
   padding: 40px 20px;
   text-align: center;
   color: var(--muted, #999);
-}
-
-.back-to-shop {
-  color: var(--accent, #39ff14);
-  text-decoration: none;
-  font-weight: 700;
-  display: inline-block;
-  margin-top: 10px;
 }
 
 .summary-section {
@@ -600,8 +547,6 @@ onMounted(async () => {
   display: flex;
   justify-content: space-between;
   padding: 8px 0;
-  font-size: 0.95rem;
-  color: var(--text, #000);
 }
 
 .summary-row.total {
@@ -613,7 +558,6 @@ onMounted(async () => {
   color: var(--accent, #39ff14);
 }
 
-/* FORM */
 .checkout-form-section {
   background: var(--surface, #fff);
   padding: 30px;
@@ -658,15 +602,12 @@ onMounted(async () => {
   border-radius: 4px;
   font-size: 1rem;
   color: var(--text, #000);
-  background: var(--bg, #f9f9f9);
-  transition: all 0.2s;
 }
 
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
   border-color: var(--accent, #39ff14);
-  box-shadow: 0 0 0 2px rgba(57, 255, 20, 0.1);
 }
 
 .form-group input[type='radio'] {
@@ -702,13 +643,11 @@ onMounted(async () => {
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s;
   margin-top: 20px;
 }
 
 .checkout-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(57, 255, 20, 0.3);
 }
 
 .checkout-btn:disabled {
@@ -725,7 +664,6 @@ onMounted(async () => {
   font-size: 0.9rem;
 }
 
-/* CONFIRMATION MODAL */
 .confirmation-modal {
   position: fixed;
   top: 0;
@@ -737,7 +675,6 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  padding: 20px;
 }
 
 .confirmation-content {
@@ -747,18 +684,12 @@ onMounted(async () => {
   max-width: 500px;
   width: 100%;
   text-align: center;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
 .confirmation-content h2 {
   font-size: 1.8rem;
   color: var(--accent, #39ff14);
   margin-bottom: 10px;
-}
-
-.confirmation-content > p:first-of-type {
-  color: var(--muted, #999);
-  margin-bottom: 20px;
 }
 
 .order-details {
@@ -773,11 +704,6 @@ onMounted(async () => {
   display: flex;
   justify-content: space-between;
   padding: 8px 0;
-  border-bottom: 1px solid rgba(201, 180, 224, 0.1);
-}
-
-.detail-row:last-child {
-  border-bottom: none;
 }
 
 .confirmation-message {
@@ -795,7 +721,6 @@ onMounted(async () => {
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s;
   margin-top: 20px;
 }
 
