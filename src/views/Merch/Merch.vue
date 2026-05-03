@@ -96,7 +96,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 // FIX: Use correct relative path (../../services/merchService)
-import { fetchProducts, type Product, type CartItem } from '../../services/merchService'
+import { fetchProducts, type Product, type CartItem } from './merchService'
 
 // ===== STATE =====
 const products = ref<Product[]>([])
