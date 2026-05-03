@@ -1,6 +1,6 @@
 <template>
   <main class="merch-page">
-    <!-- HERO -->
+    <!-- Hero Section -->
     <section class="merch-hero">
       <div class="container">
         <p class="merch-eyebrow">Project Respawn</p>
@@ -11,367 +11,372 @@
       </div>
     </section>
 
-    <!-- FILTER -->
+    <!-- Filter Section -->
     <section class="container merch-toolbar">
-      <button class="filter-btn" :class="{ active: filter === 'all' }" @click="filter='all'">All</button>
-      <button class="filter-btn" :class="{ active: filter === 'printful' }" @click="filter='printful'">Printful</button>
-      <button class="filter-btn" :class="{ active: filter === 'manual' }" @click="filter='manual'">Custom</button>
+      <button
+        v-for="filter in filters"
+        :key="filter"
+        class="filter-btn"
+        :class="{ active: currentFilter === filter }"
+        @click="setFilter(filter)"
+      >
+        {{ filterLabels[filter] }}
+      </button>
     </section>
 
-    <!-- PRODUCTS -->
+    <!-- Status Message -->
     <section class="container">
       <p class="merch-status">{{ status }}</p>
+    </section>
 
+    <!-- Products Grid -->
+    <section class="container">
       <div v-if="filteredProducts.length" class="product-grid">
         <article
           v-for="product in filteredProducts"
           :key="product.id"
           class="product-card"
-          @click="openModal(product)"
         >
+          <!-- Product Image -->
           <div class="product-image-wrap">
-           <img :src="product.image || fallbackImage" />
+            <img
+              :src="product.image"
+              :alt="product.title"
+              class="product-image"
+              @error="(e) => (e.target.src = fallbackImage)"
+            />
           </div>
 
+          <!-- Product Content -->
           <div class="product-card-content">
-            <span class="product-source">{{ product.source }}</span>
+            <span class="product-source" :class="product.source">
+              {{ product.source }}
+            </span>
+
             <h2 class="product-title">{{ product.title }}</h2>
-            <div class="product-price">£{{ formatPrice(product.price) }}</div>
+
+            <p class="product-description">
+              {{ product.description || 'No description available.' }}
+            </p>
+
+            <div class="product-price">
+              {{ formatPrice(product.price) }}
+            </div>
+
+            <!-- Actions -->
+            <div class="product-actions">
+              <button
+                class="btn-primary"
+                @click="addToCart(product)"
+              >
+                Add to Cart
+              </button>
+              <a
+                v-if="product.productUrl"
+                :href="product.productUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-secondary"
+              >
+                Details
+              </a>
+            </div>
           </div>
         </article>
       </div>
-    </section>
 
-    <!-- MODAL -->
-    <div v-if="activeProduct" class="merch-modal-overlay" @click.self="closeModal">
-      <div class="merch-modal">
-
-        <button class="close-btn" @click="closeModal">✕</button>
-
-        <div class="merch-modal-body">
-          <!-- IMAGE -->
-          <div class="merch-modal-left">
-            <img :src="selectedVariantImage || activeProduct.image" />
-
-            <!-- COLOR VARIANTS (below image) -->
-            <div class="variant-grid" v-if="colors.length">
-              <div
-                v-for="c in colors"
-                :key="c.key"
-                class="variant-tile"
-                :class="{ active: selectedColorKey === c.key }"
-                @click.stop="selectColor(c.key)"
-                :title="c.key"
-              >
-                <img :src="c.thumb" :alt="c.key" />
-              </div>
-            </div>
-          </div>
-
-          <!-- DETAILS -->
-          <div class="merch-modal-right">
-            <h2>{{ activeProduct.title }}</h2>
-            <p v-if="activeProduct.description" class="product-description">
-              {{ activeProduct.description }}
-            </p>
-            <p class="price">£{{ formatPrice(activeProduct.price) }}</p>
-
-            <!-- SIZE -->
-            <div class="size-section" v-if="sizesForSelectedColor.length">
-              <p class="my-4">Select Size</p>
-              <div class="sizes">
-                <button
-                  v-for="size in sizesForSelectedColor"
-                  :key="size"
-                  :class="{ active: selectedSize === size }"
-                  @click.stop="selectSize(size)"
-                >
-                  {{ size }}
-                </button>
-              </div>
-            </div>
-
-            <!-- QUANTITY -->
-            <div class="qty my-3">
-              <button @click="decrementQty">–</button>
-              <span class="mt-2">{{ quantity }}</span>
-              <button @click="incrementQty">+</button>
-            </div>
-
-            <!-- ADD -->
-            <button class="add-btn my-4" @click="handleAddToCart">
-              Add to Cart
-            </button>
-          </div>
-        </div>
-
+      <!-- Empty State -->
+      <div v-else class="empty-state">
+        No products found in this section yet.
       </div>
-    </div>
+    </section>
   </main>
 </template>
 
-<script>
-import { fetchProducts } from "./merchService";
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue';
+import { fetchProducts, type Product, type CartItem } from '@/services/merchService';
 
-export default {
-  data() {
-    return {
-      products: [],
-      filter: "all",
-      status: "Loading...",
-      fallbackImage: "https://via.placeholder.com/600",
+// ===== STATE =====
+const products = ref<Product[]>([]);
+const cart = ref<CartItem[]>([]);
+const currentFilter = ref<string>('all');
+const status = ref<string>('Loading products...');
+const isLoading = ref<boolean>(false);
 
-      // MODAL STATE
-      activeProduct: null,
-      selectedColorKey: "",
-      selectedVariant: null,
-      selectedSize: "",
-      quantity: 1,
-    };
-  },
+const fallbackImage = 'https://via.placeholder.com/600x600?text=Product+Image';
 
-  computed: {
-    filteredProducts() {
-      if (this.filter === "all") return this.products;
-      return this.products.filter(
-        (p) => (p.source || "").toLowerCase() === this.filter
-      );
-    },
-
-    selectedVariantImage() {
-      return this.selectedVariant?.image || this.activeProduct?.image;
-    },
-
-    variantMeta() {
-      const variants = this.activeProduct?.variants || [];
-      const meta = variants.map((v) => {
-        const parsed = this.parseVariantName(v?.name);
-        return {
-          raw: v,
-          id: v?.id,
-          color: parsed.color,
-          size: parsed.size,
-          image: this.variantPreviewUrl(v),
-        };
-      });
-
-      // Only keep entries that have at least a color or size; avoid totally empty names.
-      return meta.filter((m) => m.color || m.size);
-    },
-
-    colors() {
-      const byColor = new Map();
-      for (const m of this.variantMeta) {
-        const key = m.color || "Unknown";
-        if (!byColor.has(key)) byColor.set(key, []);
-        byColor.get(key).push(m);
-      }
-      return Array.from(byColor.entries()).map(([key, entries]) => {
-        const thumb =
-          entries.find((e) => e.image)?.image ||
-          this.activeProduct?.image ||
-          this.fallbackImage;
-        return { key, thumb, entries };
-      });
-    },
-
-    sizesForSelectedColor() {
-      const colorKey = this.selectedColorKey || (this.colors[0]?.key ?? "");
-      const entries = this.colors.find((c) => c.key === colorKey)?.entries || [];
-      const set = new Set(entries.map((e) => e.size).filter(Boolean));
-
-      const arr = Array.from(set);
-      // Friendly ordering for common apparel sizes
-      const order = ["XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL", "5XL"];
-      arr.sort((a, b) => {
-        const ia = order.indexOf(a);
-        const ib = order.indexOf(b);
-        if (ia === -1 && ib === -1) return a.localeCompare(b);
-        if (ia === -1) return 1;
-        if (ib === -1) return -1;
-        return ia - ib;
-      });
-      return arr;
-    },
-  },
-
-  async mounted() {
-    const data = await fetchProducts();
-    this.products = data || [];
-    this.status = `${this.products.length} products loaded`;
-  },
-
-  methods: {
-    formatPrice(p) {
-      return Number(p || 0).toFixed(2);
-    },
-
-    parseVariantName(name) {
-      const raw = String(name || "").trim();
-      if (!raw) return { color: "Unknown", size: "" };
-
-      // Common Printful pattern: "Color / Size" (sometimes more segments)
-      if (raw.includes(" / ")) {
-        const parts = raw.split(" / ").map((p) => p.trim()).filter(Boolean);
-        // Printful often includes the product name first:
-        // "Product name / Color / Size"
-        if (parts.length >= 3) {
-          return {
-            color: parts[1] || "Unknown",
-            size: parts[2] || "",
-          };
-        }
-        return {
-          color: parts[0] || "Unknown",
-          size: parts[1] || "",
-        };
-      }
-
-      // Fallback: try last token as size if it matches common apparel sizes
-      const tokens = raw.split(/\s+/).filter(Boolean);
-      const last = tokens[tokens.length - 1] || "";
-      const sizePattern = /^(XS|S|M|L|XL|XXL|2XL|3XL|4XL|5XL)$/i;
-      if (sizePattern.test(last)) {
-        const normalized = last.toUpperCase() === "XXL" ? "2XL" : last.toUpperCase();
-        return { color: tokens.slice(0, -1).join(" ") || "Unknown", size: normalized };
-      }
-
-      return { color: raw || "Unknown", size: "" };
-    },
-
-    variantPreviewUrl(variant) {
-      const files = Array.isArray(variant?.files) ? variant.files : [];
-      const preferred =
-        files.find((f) => f?.type === "preview" && f?.preview_url) ||
-        files.find((f) => f?.type === "front_large" && f?.preview_url) ||
-        files.find((f) => f?.preview_url) ||
-        files[0];
-      return preferred?.preview_url || "";
-    },
-
-    resolveSelectedVariant() {
-      if (!this.activeProduct) return;
-      const colorKey = this.selectedColorKey || (this.colors[0]?.key ?? "");
-      const size = this.selectedSize || "";
-
-      const entries = this.colors.find((c) => c.key === colorKey)?.entries || [];
-
-      // Prefer exact size match; otherwise fallback to first entry.
-      const chosen =
-        (size && entries.find((e) => e.size === size)) ||
-        entries.find((e) => e.size) ||
-        entries[0] ||
-        null;
-
-      this.selectedVariant = chosen
-        ? {
-            id: chosen.id,
-            name: chosen.raw?.name,
-            files: chosen.raw?.files || [],
-            image: chosen.image || this.activeProduct.image,
-            color: chosen.color || colorKey,
-            size: chosen.size || size,
-          }
-        : null;
-    },
-
-    selectColor(colorKey) {
-      this.selectedColorKey = colorKey;
-      const sizes = this.sizesForSelectedColor;
-      if (!sizes.includes(this.selectedSize)) {
-        this.selectedSize = sizes[0] || "";
-      }
-      this.resolveSelectedVariant();
-    },
-
-    selectSize(size) {
-      this.selectedSize = size;
-      this.resolveSelectedVariant();
-    },
-
-    openModal(product) {
-      const variants = Array.isArray(product.variants) ? product.variants : [];
-
-      this.activeProduct = {
-        ...product,
-        variants,
-      };
-
-      // Initialize selection from first available color/size
-      this.selectedColorKey = this.colors[0]?.key || "Unknown";
-      this.selectedSize = this.sizesForSelectedColor[0] || "";
-      this.quantity = 1;
-      this.resolveSelectedVariant();
-    },
-
-    closeModal() {
-      this.activeProduct = null;
-    },
-
-    selectVariant(v) {
-      // Back-compat: if anything still calls this with a meta-like object
-      if (!v) return;
-      if (typeof v === "string") {
-        this.selectColor(v);
-        return;
-      }
-      if (v.color) this.selectedColorKey = v.color;
-      if (v.size) this.selectedSize = v.size;
-      this.resolveSelectedVariant();
-    },
-
-    incrementQty() {
-      this.quantity++;
-    },
-
-    decrementQty() {
-      if (this.quantity > 1) this.quantity--;
-    },
-
-    handleAddToCart() {
-      if (!this.selectedSize) {
-        alert("Select size");
-        return;
-      }
-      if (!this.selectedVariant?.id) {
-        alert("Select a colour/variant");
-        return;
-      }
-
-      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-
-      const item = {
-        id: this.activeProduct.id,
-        title: this.activeProduct.title,
-        image: this.selectedVariantImage || this.activeProduct.image,
-        price: this.activeProduct.price,
-        size: this.selectedSize,
-        variantId: this.selectedVariant?.id,
-        color: this.selectedVariant?.color || this.selectedColorKey || "Unknown",
-        qty: this.quantity,
-      };
-
-      const existing = cart.find(
-        (i) =>
-          i.id === item.id &&
-          i.size === item.size &&
-          i.variantId === item.variantId
-      );
-
-      if (existing) {
-        existing.qty += item.qty;
-      } else {
-        cart.push(item);
-      }
-
-      localStorage.setItem("cart", JSON.stringify(cart));
-      window.dispatchEvent(new Event("storage"));
-
-      // CLOSE MODAL AFTER ADD
-      this.closeModal();
-    },
-  },
+const filters = ['all', 'printful', 'manual'];
+const filterLabels: Record<string, string> = {
+  all: 'All Products',
+  printful: 'Printful',
+  manual: 'Custom/Digital'
 };
+
+// ===== COMPUTED =====
+const filteredProducts = computed<Product[]>(() => {
+  if (currentFilter.value === 'all') {
+    return products.value;
+  }
+  return products.value.filter(
+    (product) => product.source.toLowerCase() === currentFilter.value.toLowerCase()
+  );
+});
+
+// ===== METHODS =====
+function setFilter(filter: string) {
+  currentFilter.value = filter;
+}
+
+function formatPrice(price: number): string {
+  if (typeof price !== 'number' || !isFinite(price)) {
+    return '£0.00';
+  }
+  return `£${price.toFixed(2)}`;
+}
+
+function addToCart(product: Product) {
+  const cartItem: CartItem = {
+    id: `${product.id}-${Date.now()}`,
+    productId: product.id,
+    productTitle: product.title,
+    variantId: product.variants?.[0]?.id || undefined,
+    quantity: 1,
+    price: product.price,
+    image: product.image
+  };
+
+  cart.value.push(cartItem);
+
+  // Emit to parent or use state management
+  // For now, dispatch custom event
+  window.dispatchEvent(
+    new CustomEvent('cart-updated', {
+      detail: { cart: cart.value, item: cartItem }
+    })
+  );
+
+  console.log('Added to cart:', cartItem);
+}
+
+async function loadProducts() {
+  isLoading.value = true;
+  try {
+    const data = await fetchProducts();
+    products.value = data;
+    status.value = `${data.length} products loaded`;
+  } catch (error) {
+    console.error('Merch page error:', error);
+    status.value = 'Could not load products right now. Please try again later.';
+  } finally {
+    isLoading.value = false;
+  }
+}
+
+// ===== LIFECYCLE =====
+onMounted(() => {
+  loadProducts();
+});
 </script>
 
-<style scoped src="./Merch.css"></style>
+<style scoped>
+.merch-page {
+  min-height: 100vh;
+  background: var(--bg, #ffffff);
+}
+
+.merch-hero {
+  padding: 48px 0;
+}
+
+.merch-eyebrow {
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.8rem;
+  color: var(--accent, #39ff14);
+  font-weight: 700;
+}
+
+.merch-hero h1 {
+  margin: 0 0 16px;
+  font-weight: 700;
+  color: var(--text, #000);
+  font-size: 3rem;
+}
+
+.merch-subtitle {
+  margin: 0;
+  max-width: 56ch;
+  color: var(--text, #000);
+  font-size: 1.1rem;
+}
+
+.merch-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 24px 0;
+}
+
+.filter-btn {
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: var(--radius, 8px);
+  border: 1px solid rgba(201, 180, 224, 0.1);
+  background: rgba(201, 180, 224, 0.05);
+  color: var(--text, #000);
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+  border-color: var(--accent, #39ff14);
+  background: rgba(57, 255, 20, 0.1);
+}
+
+.filter-btn.active {
+  background: var(--accent, #39ff14);
+  color: var(--bg, #fff);
+  border-color: var(--accent, #39ff14);
+}
+
+.merch-status {
+  color: var(--muted, #999);
+  margin: 0 0 20px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+  gap: 20px;
+  padding-bottom: 48px;
+}
+
+.product-card {
+  background: var(--surface, #fff);
+  border: 1px solid rgba(201, 180, 224, 0.1);
+  border-radius: var(--radius, 8px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 16px rgba(97, 0, 224, 0.2);
+  transition: all 0.3s ease;
+}
+
+.product-card:hover {
+  border-color: var(--accent, #39ff14);
+  box-shadow: 0 0 24px rgba(57, 255, 20, 0.15);
+}
+
+.product-image-wrap {
+  aspect-ratio: 1 / 1;
+  background: rgba(201, 180, 224, 0.05);
+  overflow: hidden;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  flex: 1;
+}
+
+.product-source {
+  display: inline-flex;
+  width: fit-content;
+  padding: 6px 10px;
+  border-radius: var(--radius, 8px);
+  background: rgba(57, 255, 20, 0.1);
+  color: var(--accent, #39ff14);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.product-title {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--text, #000);
+  font-weight: 700;
+}
+
+.product-description {
+  margin: 0;
+  color: var(--muted, #999);
+  font-size: 0.9rem;
+}
+
+.product-price {
+  font-size: 1rem;
+  font-weight: 800;
+  margin-top: auto;
+  color: var(--accent, #39ff14);
+}
+
+.product-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.btn-primary,
+.btn-secondary {
+  flex: 1;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius, 8px);
+  text-decoration: none;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn-primary {
+  background: var(--accent, #39ff14);
+  color: var(--bg, #000);
+}
+
+.btn-primary:hover {
+  background: var(--accent-2, #31cc0d);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: rgba(57, 255, 20, 0.1);
+  color: var(--accent, #39ff14);
+  border: 1px solid var(--accent, #39ff14);
+}
+
+.btn-secondary:hover {
+  background: rgba(57, 255, 20, 0.2);
+}
+
+.empty-state {
+  padding: 32px;
+  border: 1px solid rgba(201, 180, 224, 0.1);
+  border-radius: var(--radius, 8px);
+  background: var(--surface, #fff);
+  color: var(--muted, #999);
+  margin-bottom: 48px;
+  text-align: center;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+</style>
