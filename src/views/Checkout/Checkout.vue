@@ -1,520 +1,805 @@
 <template>
-  <div class="checkout-page">
+  <main class="checkout-container">
     <!-- Header -->
     <header class="checkout-header">
+      <button class="back-btn" @click="goBack">← Back to Shop</button>
       <h1>Checkout</h1>
-      <button @click="goBack" class="back-btn">← Back to Store</button>
     </header>
 
-    <!-- Main Layout: Two Columns -->
-    <div class="checkout-layout" v-if="cartProducts.length">
-      <!-- Left: Cart Products -->
-      <div class="cart-section">
-        <h2>Your Cart</h2>
-        <div class="cart-items">
+    <!-- Two Column Layout -->
+    <div class="checkout-content">
+      <!-- Left: Order Summary -->
+      <section class="order-summary">
+        <h2>Order Summary</h2>
+
+        <!-- Cart Items -->
+        <div v-if="cartItems.length" class="cart-items-list">
           <div
-            class="cart-item"
-            v-for="product in cartProducts"
-            :key="`${product.id}-${product.variantId ?? 'no-variant'}-${product.size ?? 'no-size'}`"
+            v-for="item in cartItems"
+            :key="item.id"
+            class="cart-item-row"
           >
-            <img
-              :src="product.image"
-              :alt="product.title"
-              class="cart-item-img"
-            />
             <div class="cart-item-info">
-              <h3>{{ product.title }}</h3>
-              <p>{{ product.description }}</p>
-              <p>Price: £{{ product.price.toFixed(2) }}</p>
-              <p v-if="product.size" class="product-size">
-                Size: <strong>{{ product.size }}</strong>
-              </p>
-              <p v-if="product.color" class="product-size">
-                Colour: <strong>{{ product.color }}</strong>
-              </p>
-              <div class="product-controls">
-                <div class="quantity-control">
-                  <button @click="decreaseQty(product)">-</button>
-                  <span>{{ product.qty }}</span>
-                  <button @click="increaseQty(product)">+</button>
-                </div>
-                <button
-                  @click="removeItem(product)"
-                  class="remove-btn"
-                  title="Remove item"
-                >
-                  <i class="bi bi-trash3"></i>
-                </button>
+              <img :src="item.image" :alt="item.productTitle" class="item-image" />
+              <div class="item-details">
+                <h4>{{ item.productTitle }}</h4>
+                <p>Qty: {{ item.quantity }}</p>
               </div>
             </div>
+            <div class="item-price">
+              {{ formatPrice(item.price * item.quantity) }}
+            </div>
+            <button class="remove-btn" @click="removeFromCart(item.id)">×</button>
           </div>
         </div>
-      </div>
 
-      <!-- Right: Price Summary and Checkout Details -->
-      <div class="checkout-section">
-        <div class="cart-summary">
-          <h3>Order Summary</h3>
+        <!-- Empty Cart Message -->
+        <div v-else class="empty-cart">
+          <p>Your cart is empty</p>
+          <router-link to="/merch" class="back-to-shop">← Back to Shop</router-link>
+        </div>
+
+        <!-- Summary -->
+        <div class="summary-section">
           <div class="summary-row">
             <span>Subtotal:</span>
-            <span>£{{ subtotal.toFixed(2) }}</span>
+            <span>{{ formatPrice(subtotal) }}</span>
           </div>
           <div class="summary-row">
             <span>Shipping:</span>
-           <span style="text-decoration: line-through;">£5.00</span>
+            <span>{{ formatPrice(shippingCost) }}</span>
+          </div>
+          <div class="summary-row">
+            <span>Tax (est):</span>
+            <span>{{ formatPrice(tax) }}</span>
           </div>
           <div class="summary-row total">
             <span>Total:</span>
-            <span>£{{ total.toFixed(2) }}</span>
+            <span>{{ formatPrice(total) }}</span>
           </div>
         </div>
+      </section>
 
-        <section class="checkout-form-section">
-          <h3>Delivery Details</h3>
-          <form @submit.prevent="submitOrder" class="customer-form">
+      <!-- Right: Checkout Form -->
+      <section class="checkout-form-section">
+        <form @submit.prevent="handleCheckout" class="checkout-form">
+          <!-- Delivery Details -->
+          <fieldset class="form-section">
+            <h3>Delivery Details</h3>
+
             <div class="form-group">
-              <label for="name">Full Name *</label>
-              <input id="name" v-model="customer.name" type="text" required />
+              abel for="full-name">Full Name *</label>
+              <input
+                id="full-name"
+                v-model="formData.fullName"
+                type="text"
+                required
+                placeholder="John Doe"
+              />
             </div>
+
             <div class="form-group">
-              <label for="email">Email Address *</label>
+              abel for="email">Email Address *</label>
               <input
                 id="email"
-                v-model="customer.email"
+                v-model="formData.email"
                 type="email"
                 required
+                placeholder="john@example.com"
               />
             </div>
+
             <div class="form-group">
-              <label for="phone">Phone Number *</label>
-              <input id="phone" v-model="customer.phone" type="tel" required />
+              abel for="phone">Phone Number *</label>
+              <input
+                id="phone"
+                v-model="formData.phone"
+                type="tel"
+                required
+                placeholder="+44 20 1234 5678"
+              />
             </div>
+
             <div class="form-group">
-              <label for="address">Street Address *</label>
+              abel for="address">Street Address *</label>
               <input
                 id="address"
-                v-model="customer.address"
+                v-model="formData.address"
                 type="text"
                 required
+                placeholder="123 High Street"
               />
             </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                abel for="city">City *</label>
+                <input
+                  id="city"
+                  v-model="formData.city"
+                  type="text"
+                  required
+                  placeholder="London"
+                />
+              </div>
+              <div class="form-group">
+                abel for="postcode">Postcode *</label>
+                <input
+                  id="postcode"
+                  v-model="formData.postcode"
+                  type="text"
+                  required
+                  placeholder="SW1A 1AA"
+                />
+              </div>
+            </div>
+
             <div class="form-group">
-              <label for="city">City *</label>
-              <input id="city" v-model="customer.city" type="text" required />
+              abel for="country">Country *</label>
+              <select id="country" v-model="formData.country" required>
+                <option value="GB">United Kingdom</option>
+                <option value="US">United States</option>
+                <option value="DE">Germany</option>
+                <option value="FR">France</option>
+                <option value="IT">Italy</option>
+                <option value="ES">Spain</option>
+                <option value="NL">Netherlands</option>
+                <option value="IE">Ireland</option>
+              </select>
+            </div>
+          </fieldset>
+
+          <!-- Shipping Method -->
+          <fieldset class="form-section">
+            <h3>Shipping Method</h3>
+            <div class="form-group">
+              abel>
+                <input
+                  v-model="formData.shippingMethod"
+                  type="radio"
+                  value="STANDARD"
+                  required
+                />
+                Standard (5-7 days) - FREE
+              </label>
             </div>
             <div class="form-group">
-              <label for="postcode">Postcode *</label>
-              <input
-                id="postcode"
-                v-model="customer.postcode"
-                type="text"
-                required
-              />
+              abel>
+                <input
+                  v-model="formData.shippingMethod"
+                  type="radio"
+                  value="EXPRESS"
+                  required
+                />
+                Express (2-3 days) - £5.00
+              </label>
             </div>
-            <button type="submit" class="payment-btn">
-              Complete Payment
-            </button>
-          </form>
-        </section>
-      </div>
+          </fieldset>
+
+          <!-- Payment Section -->
+          <fieldset class="form-section">
+            <h3>Payment Method</h3>
+            <p class="payment-info">
+              Secure payment via Revolut. Your payment details are never stored.
+            </p>
+            <div id="revolut-checkout" class="revolut-container"></div>
+          </fieldset>
+
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            class="checkout-btn"
+            :disabled="isProcessing || cartItems.length === 0"
+          >
+            {{ isProcessing ? 'Processing...' : 'Complete Purchase' }}
+          </button>
+        </form>
+
+        <!-- Error Message -->
+        <div v-if="error" class="error-message">
+          {{ error }}
+        </div>
+      </section>
     </div>
 
-    <section v-else class="empty-cart">
-      <p>Your cart is empty. Go back and add some products!</p>
-      <button @click="goBack" class="back-btn">← Back to Store</button>
-    </section>
-
-    <!-- Order Confirmation -->
-    <section v-if="orderConfirmed" class="confirmation">
-      <h2>✅ Order Confirmed!</h2>
-      <p>Thank you for your purchase, {{ customer.name }}.</p>
-      <p>
-        Order ID: <strong>{{ orderId }}</strong>
-      </p>
-      <p>Your order will be shipped within 3-5 business days.</p>
-      <button @click="goBack" class="back-btn">Continue Shopping</button>
-    </section>
-  </div>
+    <!-- Confirmation Modal -->
+    <div v-if="showConfirmation" class="confirmation-modal">
+      <div class="confirmation-content">
+        <h2>✓ Order Confirmed!</h2>
+        <p>Thank you for your purchase.</p>
+        <div class="order-details">
+          <div class="detail-row">
+            <span>Order ID:</span>
+            <strong>{{ confirmationOrderId }}</strong>
+          </div>
+          <div class="detail-row">
+            <span>Customer:</span>
+            <strong>{{ formData.fullName }}</strong>
+          </div>
+          <div class="detail-row">
+            <span>Total:</span>
+            <strong>{{ formatPrice(total) }}</strong>
+          </div>
+        </div>
+        <p class="confirmation-message">
+          Your order will be printed and shipped within 3-5 business days.
+          A tracking number will be sent to {{ formData.email }}.
+        </p>
+        <button @click="returnToShop" class="confirmation-btn">
+          Continue Shopping
+        </button>
+      </div>
+    </div>
+  </main>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from "vue";
-import { type Product } from "../Merch/merchService";
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import {
+  createRevolutOrder,
+  createPrintfulOrder,
+  type CartItem
+} from '@/services/merchService';
 
-interface CartProduct extends Product {
-  qty: number;
-  size?: string;
-  variantId?: string | number;
-  color?: string;
-}
+// ===== ROUTER =====
+const router = useRouter();
 
-const cartProducts = ref<CartProduct[]>([]);
-const shipping = ref(0);
+// ===== STATE =====
+const cartItems = ref<CartItem[]>([]);
+const isProcessing = ref<boolean>(false);
+const showConfirmation = ref<boolean>(false);
+const confirmationOrderId = ref<string>('');
+const error = ref<string>('');
 
-const customer = reactive({
-  name: "",
-  email: "",
-  phone: "",
-  address: "",
-  city: "",
-  postcode: "",
+const formData = ref({
+  fullName: '',
+  email: '',
+  phone: '',
+  address: '',
+  city: '',
+  postcode: 'GB',
+  country: 'GB',
+  shippingMethod: 'STANDARD'
 });
 
-const orderConfirmed = ref(false);
-const orderId = ref("");
+const shippingCost = ref<number>(0);
 
-const subtotal = computed(() =>
-  cartProducts.value.reduce((acc, p) => acc + p.price * p.qty, 0)
-);
-const total = computed(() => subtotal.value + shipping.value);
+// ===== COMPUTED =====
+const subtotal = computed<number>(() => {
+  return cartItems.value.reduce((sum, item) => sum + item.price * item.quantity, 0);
+});
 
-function increaseQty(product: CartProduct) {
-  product.qty++;
-  localStorage.setItem("cart", JSON.stringify(cartProducts.value));
-  window.dispatchEvent(new Event("storage"));
+const tax = computed<number>(() => {
+  return Math.round(subtotal.value * 0.2 * 100) / 100; // 20% VAT for UK
+});
+
+const total = computed<number>(() => {
+  return subtotal.value + tax.value + shippingCost.value;
+});
+
+// ===== METHODS =====
+function formatPrice(price: number): string {
+  if (typeof price !== 'number' || !isFinite(price)) {
+    return '£0.00';
+  }
+  return `£${price.toFixed(2)}`;
 }
 
-function decreaseQty(product: CartProduct) {
-  if (product.qty > 1) product.qty--;
-  localStorage.setItem("cart", JSON.stringify(cartProducts.value));
-  window.dispatchEvent(new Event("storage"));
-}
-
-function removeItem(product: CartProduct) {
-  cartProducts.value = cartProducts.value.filter(
-    (p) =>
-      !(
-        p.id === product.id &&
-        p.size === product.size &&
-        (p.variantId ?? null) === (product.variantId ?? null)
-      )
-  );
-  localStorage.setItem("cart", JSON.stringify(cartProducts.value));
-  window.dispatchEvent(new Event("storage"));
+function removeFromCart(itemId: string) {
+  cartItems.value = cartItems.value.filter((item) => item.id !== itemId);
 }
 
 function goBack() {
-  window.history.back();
+  router.push('/merch');
 }
 
-async function submitOrder() {
-  try {
-    localStorage.setItem("customerDetails", JSON.stringify(customer));
+function returnToShop() {
+  router.push('/merch');
+}
 
-    const res = await fetch("https://raven-api-nine.vercel.app/api/revolut", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        amount: total.value,
-        currency: "GBP",
-        description: `Order for ${customer.name}`,
-        customer_email: customer.email,
-      }),
+function loadScript(src: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = src;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+    document.head.appendChild(script);
+  });
+}
+
+async function handleCheckout() {
+  error.value = '';
+  isProcessing.value = true;
+
+  try {
+    // Validate form
+    if (
+      !formData.value.fullName ||
+      !formData.value.email ||
+      !formData.value.phone ||
+      !formData.value.address ||
+      !formData.value.city ||
+      !formData.value.postcode
+    ) {
+      throw new Error('Please fill in all delivery details');
+    }
+
+    if (cartItems.value.length === 0) {
+      throw new Error('Your cart is empty');
+    }
+
+    // Step 1: Create Revolut checkout order
+    console.log('Creating Revolut order...');
+    const revolutOrder = await createRevolutOrder({
+      amount: total.value,
+      currency: 'GBP',
+      description: `Project Respawn Merch Order - ${formData.value.fullName}`,
+      customerId: `cust-${Date.now()}`
     });
 
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error);
+    console.log('Revolut order created:', revolutOrder);
 
-    // Clear cart before redirecting
-    localStorage.removeItem("cart");
-    window.dispatchEvent(new Event("storage")); // updates header badge to 0
+    // Step 2: Initialize Revolut Embedded Checkout
+    if (window.RevolutCheckout) {
+      const instance = await window.RevolutCheckout.embed({
+        amount: Math.round(total.value * 100), // Convert to pence
+        currency: 'GBP',
+        publicToken: revolutOrder.result?.public_token || '',
+        onSuccess: async () => {
+          console.log('Payment successful!');
+          
+          // Step 3: Create Printful order
+          try {
+            const printfulOrder = await createPrintfulOrder({
+              orderId: `order-${Date.now()}`,
+              customerName: formData.value.fullName,
+              email: formData.value.email,
+              phone: formData.value.phone,
+              address: formData.value.address,
+              city: formData.value.city,
+              postcode: formData.value.postcode,
+              country: formData.value.country,
+              shippingMethod: formData.value.shippingMethod,
+              items: cartItems.value.map((item) => ({
+                variant_id: item.variantId || item.productId,
+                quantity: item.quantity
+              }))
+            });
 
-    window.location.href = `https://checkout.revolut.com/payment-link/${data.publicId}`;
+            console.log('Printful order created:', printfulOrder);
 
-  } catch (err: any) {
-    console.error("Payment failed:", err);
-    alert(`Payment failed: ${err.message}`);
+            // Show confirmation
+            confirmationOrderId.value = printfulOrder.result?.id || `order-${Date.now()}`;
+            showConfirmation.value = true;
+            cartItems.value = [];
+
+            // Clear form
+            setTimeout(() => {
+              formData.value = {
+                fullName: '',
+                email: '',
+                phone: '',
+                address: '',
+                city: '',
+                postcode: 'GB',
+                country: 'GB',
+                shippingMethod: 'STANDARD'
+              };
+            }, 2000);
+          } catch (printfulError) {
+            console.error('Printful order error:', printfulError);
+            error.value = 'Payment successful but order creation failed. Please contact support.';
+          }
+        },
+        onError: (errorData: any) => {
+          console.error('Payment failed:', errorData);
+          error.value = errorData?.message || 'Payment failed. Please try again.';
+        },
+        onCancel: () => {
+          console.log('Payment cancelled');
+          error.value = 'Payment cancelled. Please try again.';
+        }
+      });
+    } else {
+      throw new Error('Revolut SDK not loaded');
+    }
+  } catch (err) {
+    console.error('Checkout error:', err);
+    error.value = err instanceof Error ? err.message : 'An error occurred. Please try again.';
+  } finally {
+    isProcessing.value = false;
   }
 }
 
-onMounted(() => {
-  // Load cart
-  const stored = localStorage.getItem("cart");
-  if (stored) cartProducts.value = JSON.parse(stored);
+// ===== LIFECYCLE =====
+onMounted(async () => {
+  // Load Revolut SDK
+  try {
+    await loadScript('https://sdk.revolut.com/embedded-checkout/embedded-checkout-sdk.js');
+    console.log('Revolut SDK loaded');
+  } catch (err) {
+    console.error('Failed to load Revolut SDK:', err);
+    error.value = 'Failed to load payment system. Please refresh the page.';
+  }
 
-  // Autofill customer details
-  const saved = localStorage.getItem("customerDetails");
-  if (saved) Object.assign(customer, JSON.parse(saved));
+  // Load cart from localStorage or event
+  const savedCart = localStorage.getItem('merch-cart');
+  if (savedCart) {
+    try {
+      cartItems.value = JSON.parse(savedCart);
+    } catch (err) {
+      console.error('Failed to load cart:', err);
+    }
+  }
+
+  // Listen for cart updates
+  window.addEventListener('cart-updated', (event: any) => {
+    cartItems.value = event.detail.cart;
+    localStorage.setItem('merch-cart', JSON.stringify(cartItems.value));
+  });
+
+  // Update shipping cost based on method
+  const updateShipping = () => {
+    shippingCost.value = formData.value.shippingMethod === 'EXPRESS' ? 5 : 0;
+  };
 });
 </script>
 
 <style scoped>
-.checkout-page {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 20px;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
-  color: var(--text);
-  background: var(--bg);
-  min-height: 100vh;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* Header */
+.checkout-container {
+  min-height: 100vh;
+  background: var(--bg, #f5f5f5);
+  padding: 40px 20px;
+}
+
 .checkout-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
+  max-width: 1200px;
+  margin: 0 auto 40px;
 }
-.checkout-header h1 {
-  color: white;
-  font-size: 28px;
-  margin: 0;
-}
+
 .back-btn {
   background: none;
   border: none;
-  color: var(--accent);
-  font-size: 16px;
+  color: var(--accent, #39ff14);
   cursor: pointer;
-  transition: all 0.3s ease;
-}
-.back-btn:hover {
-  color: var(--accent-2);
-  text-decoration: underline;
-}
-
-/* Main Layout */
-.checkout-layout {
-  display: flex;
-  gap: 30px;
-  margin-bottom: 30px;
-  align-items: flex-start;
-}
-
-.cart-section {
-  flex: 0 0 520px;
-  max-width: 520px;
-  min-width: 320px;
-  background: var(--surface);
-  border: 1px solid rgba(201, 180, 224, 0.1);
-  border-radius: var(--radius);
-  padding: 20px;
-}
-
-.checkout-section {
-  flex: 1;
-  min-width: 320px;
-  background: var(--surface);
-  border: 1px solid rgba(201, 180, 224, 0.1);
-  border-radius: var(--radius);
-  padding: 20px;
-}
-
-/* Cart Items */
-.cart-section h2 {
-  margin-bottom: 20px;
-  color: var(--text);
-}
-
-.cart-items {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.cart-item {
-  display: flex;
-  gap: 15px;
-  background: transparent;
-  border: 1px solid rgba(201, 180, 224, 0.25);
-  padding: 15px;
-  border-radius: 8px;
-  align-items: center;
-}
-.cart-item-img {
-  width: 100px;
-  height: 100px;
-  object-fit: contain;
-  border-radius: 5px;
-}
-.cart-item-info h3 {
-  margin: 0 0 5px 0;
-  color: white;
-  font-size: 22px;
-}
-.cart-item-info p {
-  margin: 0 0 5px 0;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 14px;
-}
-.product-size {
-  color: var(--accent);
-  font-size: 14px;
-}
-.product-controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-  gap: 10px;
-}
-.quantity-control {
-  display: flex;
-  align-items: center;
-  border: 2px solid #555;
-  border-radius: 9999px;
-  padding: 4px;
-  background: rgba(0, 0, 0, 0.3);
-  width: fit-content;
-}
-.quantity-control button {
-  width: 40px;
-  height: 40px;
-  border: none;
-  background: transparent;
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-}
-
-.quantity-control span {
-  min-width: 40px;
-  text-align: center;
-  color: white;
-  font-weight: 700;
-  font-size: 16px;
-}
-
-/* Cart Summary */
-.cart-summary {
-  margin-bottom: 30px;
-}
-
-.cart-section h2 {
-  margin-bottom: 20px;
-  color: white;
-}
-
-.cart-summary h3 {
-  margin-bottom: 15px;
-  color: white;
-}
-.summary-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  color: rgba(255, 255, 255, 0.85);
-}
-.customer-form .form-group label {
-  font-weight: bold;
-  margin-bottom: 5px;
-  color: rgba(255, 255, 255, 0.85);
-  display: block;
-}
-.summary-row.total {
-  font-size: 18px;
-  color: var(--accent);
-  font-weight: bold;
-  border-top: 1px solid rgba(201, 180, 224, 0.2);
-  padding-top: 10px;
-}
-
-/* Form */
-.checkout-form-section h3 {
-  margin-bottom: 20px;
-  color: white;
-}
-.customer-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-.customer-form .form-group label {
-  font-weight: bold;
-  margin-bottom: 5px;
-  color: white;
-}
-.customer-form .form-group input {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 12px;
-  border: 1px solid rgba(201, 180, 224, 0.2);
-  border-radius: 8px;
-  background: var(--bg2);
-  color: white;
-  transition: border-color 0.3s ease;
-}
-.customer-form .form-group input:focus {
-  border-color: var(--accent);
-  outline: none;
-}
-.payment-btn {
-  width: 100%;
-  background: var(--accent);
-  color: white;
-  font-weight: 700;
   font-size: 1rem;
-  padding: 15px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
+  font-weight: 700;
+  margin-bottom: 20px;
   transition: all 0.3s ease;
-  margin-top: 10px;
-  letter-spacing: 0.03em;
-}
-.payment-btn:hover {
-  opacity: 0.85;
-  background: var(--accent);
 }
 
-/* Empty Cart */
-.empty-cart {
-  text-align: center;
-  padding: 40px;
-  background: var(--surface);
-  border: 1px solid rgba(201, 180, 224, 0.1);
-  border-radius: var(--radius);
+.back-btn:hover {
+  transform: translateX(-4px);
 }
-.empty-cart p {
-  color: var(--text);
+
+.checkout-header h1 {
+  font-size: 2.5rem;
+  color: var(--text, #000);
   margin-bottom: 20px;
 }
 
-/* Confirmation */
-.confirmation {
-  text-align: center;
-  padding: 40px;
-  background: var(--surface);
+.checkout-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+@media (max-width: 900px) {
+  .checkout-content {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* ORDER SUMMARY */
+.order-summary {
+  background: var(--surface, #fff);
+  padding: 30px;
+  border-radius: 8px;
   border: 1px solid rgba(201, 180, 224, 0.1);
-  border-radius: var(--radius);
+  height: fit-content;
+  position: sticky;
+  top: 20px;
 }
-.confirmation h2 {
-  color: var(--accent);
-  margin-bottom: 15px;
+
+.order-summary h2 {
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  color: var(--text, #000);
 }
-.confirmation p {
-  color: var(--text);
-  margin-bottom: 10px;
+
+.cart-items-list {
+  margin-bottom: 20px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.cart-item-row {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(201, 180, 224, 0.1);
+  align-items: center;
+}
+
+.cart-item-info {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+}
+
+.item-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.item-details h4 {
+  margin: 0 0 4px;
+  font-size: 0.9rem;
+  color: var(--text, #000);
+}
+
+.item-details p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--muted, #999);
+}
+
+.item-price {
+  font-weight: 700;
+  color: var(--accent, #39ff14);
+  min-width: 80px;
+  text-align: right;
 }
 
 .remove-btn {
-  background: none;
-  border: 1px solid rgba(255, 80, 80, 0.5);
-  color: #ff5050;
-  padding: 6px 14px;
-  border-radius: 6px;
+  background: rgba(255, 0, 0, 0.1);
+  border: none;
+  color: #ff0000;
   cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 13px;
-}
-.remove-btn:hover {
-  background: rgba(255, 80, 80, 0.1);
+  font-size: 1.5rem;
+  padding: 0 4px;
+  transition: all 0.2s;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .checkout-layout {
-    flex-direction: column;
-  }
-  .cart-section,
-  .checkout-section {
-    flex: none;
-  }
+.remove-btn:hover {
+  background: rgba(255, 0, 0, 0.2);
+}
+
+.empty-cart {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--muted, #999);
+}
+
+.back-to-shop {
+  color: var(--accent, #39ff14);
+  text-decoration: none;
+  font-weight: 700;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.summary-section {
+  border-top: 2px solid rgba(201, 180, 224, 0.1);
+  padding-top: 20px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 0.95rem;
+  color: var(--text, #000);
+}
+
+.summary-row.total {
+  font-weight: 700;
+  font-size: 1.2rem;
+  border-top: 1px solid rgba(201, 180, 224, 0.1);
+  padding-top: 12px;
+  margin-top: 12px;
+  color: var(--accent, #39ff14);
+}
+
+/* FORM */
+.checkout-form-section {
+  background: var(--surface, #fff);
+  padding: 30px;
+  border-radius: 8px;
+  border: 1px solid rgba(201, 180, 224, 0.1);
+}
+
+.checkout-form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.form-section {
+  border: none;
+  padding: 0;
+}
+
+.form-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  color: var(--text, #000);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: var(--text, #000);
+  font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid rgba(201, 180, 224, 0.2);
+  border-radius: 4px;
+  font-size: 1rem;
+  color: var(--text, #000);
+  background: var(--bg, #f9f9f9);
+  transition: all 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--accent, #39ff14);
+  box-shadow: 0 0 0 2px rgba(57, 255, 20, 0.1);
+}
+
+.form-group input[type='radio'] {
+  width: auto;
+  margin-right: 8px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.payment-info {
+  color: var(--muted, #999);
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+.revolut-container {
+  min-height: 300px;
+  border: 1px solid rgba(201, 180, 224, 0.2);
+  border-radius: 4px;
+  padding: 20px;
+}
+
+.checkout-btn {
+  padding: 14px 20px;
+  background: var(--accent, #39ff14);
+  color: var(--bg, #000);
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 20px;
+}
+
+.checkout-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(57, 255, 20, 0.3);
+}
+
+.checkout-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #ff0000;
+  padding: 12px;
+  background: rgba(255, 0, 0, 0.1);
+  border-radius: 4px;
+  margin-top: 15px;
+  font-size: 0.9rem;
+}
+
+/* CONFIRMATION MODAL */
+.confirmation-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.confirmation-content {
+  background: var(--surface, #fff);
+  padding: 40px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.confirmation-content h2 {
+  font-size: 1.8rem;
+  color: var(--accent, #39ff14);
+  margin-bottom: 10px;
+}
+
+.confirmation-content > p:first-of-type {
+  color: var(--muted, #999);
+  margin-bottom: 20px;
+}
+
+.order-details {
+  background: rgba(201, 180, 224, 0.05);
+  padding: 20px;
+  border-radius: 4px;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(201, 180, 224, 0.1);
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.confirmation-message {
+  color: var(--text, #000);
+  margin: 20px 0;
+  line-height: 1.6;
+}
+
+.confirmation-btn {
+  padding: 12px 30px;
+  background: var(--accent, #39ff14);
+  color: var(--bg, #000);
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 20px;
+}
+
+.confirmation-btn:hover {
+  transform: translateY(-2px);
 }
 </style>

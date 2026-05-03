@@ -1,59 +1,187 @@
-const API_URL = "https://raven-api-nine.vercel.app/api/products";
-
-export type PrintfulVariantFile = {
-  preview_url?: string;
-};
-
-export type PrintfulSyncVariant = {
-  id: string | number;
-  name?: string;
-  retail_price?: string | number;
-  files?: PrintfulVariantFile[];
-};
-
 export interface Product {
   id: string;
   title: string;
   description: string;
   image: string;
-  source: string;
+  images?: string[];
+  source: 'printful' | 'manual';
   price: number;
+  variants?: {
+    id: string | number;
+    name?: string;
+    color?: string;
+    size?: string;
+    price?: number;
+    image?: string;
+  }[];
   checkoutUrl?: string;
   productUrl?: string;
-  variants?: PrintfulSyncVariant[];
 }
 
+export interface CartItem {
+  id: string;
+  productId: string;
+  productTitle: string;
+  variantId?: string | number;
+  quantity: number;
+  price: number;
+  image: string;
+}
+
+// Use Amplify Lambda endpoint (same domain)
+const API_BASE = `${window.location.origin}/api`;
+
+// ===== PRODUCT FETCHING =====
 export async function fetchProducts(): Promise<Product[]> {
-  const response = await fetch(API_URL);
+  try {
+    const response = await fetch(`${API_BASE}/printful/products`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch products");
+    if (!response.ok) {
+      throw new Error(`Failed to fetch products: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    
+    // Handle both direct array and wrapped response
+    const products = data.result || data;
+    
+    if (!Array.isArray(products)) {
+      throw new Error('Invalid products response format');
+    }
+
+    // Transform Printful response to your Product format
+    return products.map((product: any) => ({
+      id: product.id.toString(),
+      title: product.title || 'Untitled Product',
+      description: product.description || '',
+      image: product.image || product.thumbnail_url || '',
+      images: product.images?.map((img: any) => img.url) || [],
+      source: 'printful',
+      price: parseFloat(product.price) || 0,
+      variants: product.variants?.map((v: any) => ({
+        id: v.id,
+        name: v.title || v.name || '',
+        color: v.color || undefined,
+        size: v.size || undefined,
+        price: v.price ? parseFloat(v.price) : undefined,
+        image: v.image || undefined
+      })) || []
+    }));
+
+  } catch (error) {
+    console.error('Fetch products error:', error);
+    throw error;
   }
+}
 
-  const data = await response.json();
+// ===== REVOLUT CHECKOUT =====
+export async function createRevolutOrder(orderData: {
+  amount: number;
+  currency?: string;
+  description?: string;
+  customerId?: string;
+}): Promise<any> {
+  try {
+    const response = await fetch(`${API_BASE}/revolut/checkout`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(orderData)
+    });
 
-  //console.log("RAW API RESPONSE:", data);
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || 'Failed to create checkout order');
+    }
 
-  const products: Product[] = (data.result || []).map((item: any) => {
-    const firstVariant = item.variants?.[0];
+    return await response.json();
+  } catch (error) {
+    console.error('Revolut checkout error:', error);
+    throw error;
+  }
+}
 
-    return {
-      id: String(item.id),
-      title: item.name,
-      description: item.description || "",
-      image: item.thumbnail_url,
-      source: "printful",
-      price: firstVariant?.retail_price ? Number(firstVariant.retail_price) : 0,
-      variants: Array.isArray(item.variants) ? item.variants : [],
+// ===== PRINTFUL ORDER CREATION =====
+export async function createPrintfulOrder(orderData: {
+  orderId: string;
+  customerName: string;
+  email: string;
+  phone?: string;
+  address: string;
+  city: string;
+  state?: string;
+  postcode: string;
+  country?: string;
+  shippingMethod?: string;
+  items: Array<{
+    variant_id: string | number;
+    quantity: number;
+  }>;
+}): Promise<any> {
+  try {
+    const response = await fetch(`${API_BASE}/printful/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(orderData)
+    });
 
-      // connect checkout page
-      checkoutUrl: `/checkout?productId=${item.id}`,
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || 'Failed to create print order');
+    }
 
-      productUrl: item.url || "",
-    };
-  });
+    return await response.json();
+  } catch (error) {
+    console.error('Printful order error:', error);
+    throw error;
+  }
+}
 
-  // console.log("NORMALIZED PRODUCTS:", products);
+// ===== GET ORDER STATUS =====
+export async function getRevolutOrderStatus(orderId: string): Promise<any> {
+  try {
+    const response = await fetch(`${API_BASE}/revolut/orders/${orderId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
 
-  return products;
+    if (!response.ok) {
+      throw new Error('Failed to fetch order status');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Get order status error:', error);
+    throw error;
+  }
+}
+
+export async function getPrintfulOrderStatus(orderId: string): Promise<any> {
+  try {
+    const response = await fetch(`${API_BASE}/printful/orders/${orderId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch print order status');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Get printful order status error:', error);
+    throw error;
+  }
 }
