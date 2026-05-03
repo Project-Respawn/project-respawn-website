@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import { fetchProducts } from "./merchService.js";
+import { fetchProducts } from "./merchService";
 
 export default {
   name: "MerchPage",
