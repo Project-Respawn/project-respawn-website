@@ -43,7 +43,7 @@
               :src="product.image"
               :alt="product.title"
               class="product-image"
-              @error="(e) => (e.target.src = fallbackImage)"
+              @error="handleImageError"
             />
           </div>
 
@@ -94,47 +94,54 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
-  import { fetchProducts, type Product, type CartItem } from '../../services/merchService';
+import { ref, computed, onMounted } from 'vue'
+// FIX: Use correct relative path (../../services/merchService)
+import { fetchProducts, type Product, type CartItem } from '../../services/merchService'
+
 // ===== STATE =====
-const products = ref<Product[]>([]);
-const cart = ref<CartItem[]>([]);
-const currentFilter = ref<string>('all');
-const status = ref<string>('Loading products...');
-const isLoading = ref<boolean>(false);
+const products = ref<Product[]>([])
+const cart = ref<CartItem[]>([])
+const currentFilter = ref<string>('all')
+const status = ref<string>('Loading products...')
+const isLoading = ref<boolean>(false)
 
-const fallbackImage = 'https://via.placeholder.com/600x600?text=Product+Image';
-
-const filters = ['all', 'printful', 'manual'];
+// ===== CONFIG =====
+const fallbackImage = 'https://via.placeholder.com/600x600?text=Product+Image'
+const filters = ['all', 'printful', 'manual']
 const filterLabels: Record<string, string> = {
   all: 'All Products',
   printful: 'Printful',
   manual: 'Custom/Digital'
-};
+}
 
 // ===== COMPUTED =====
 const filteredProducts = computed<Product[]>(() => {
   if (currentFilter.value === 'all') {
-    return products.value;
+    return products.value
   }
-  return products.value.filter(
-    (product) => product.source.toLowerCase() === currentFilter.value.toLowerCase()
-  );
-});
+  return products.value.filter((product) => {
+    return product.source.toLowerCase() === currentFilter.value.toLowerCase()
+  })
+})
 
 // ===== METHODS =====
-function setFilter(filter: string) {
-  currentFilter.value = filter;
+function setFilter(filter: string): void {
+  currentFilter.value = filter
+}
+
+function handleImageError(event: Event): void {
+  const target = event.target as HTMLImageElement
+  target.src = fallbackImage
 }
 
 function formatPrice(price: number): string {
   if (typeof price !== 'number' || !isFinite(price)) {
-    return '£0.00';
+    return '£0.00'
   }
-  return `£${price.toFixed(2)}`;
+  return `£${price.toFixed(2)}`
 }
 
-function addToCart(product: Product) {
+function addToCart(product: Product): void {
   const cartItem: CartItem = {
     id: `${product.id}-${Date.now()}`,
     productId: product.id,
@@ -143,42 +150,37 @@ function addToCart(product: Product) {
     quantity: 1,
     price: product.price,
     image: product.image
-  };
+  }
 
-  cart.value.push(cartItem);
+  cart.value.push(cartItem)
 
-  // Emit to parent or use state management
-  // For now, dispatch custom event
   window.dispatchEvent(
     new CustomEvent('cart-updated', {
       detail: { cart: cart.value, item: cartItem }
     })
-  );
-
-  console.log('Added to cart:', cartItem);
+  )
+  console.log('Added to cart:', cartItem)
 }
 
-async function loadProducts() {
-  isLoading.value = true;
+async function loadProducts(): Promise<void> {
+  isLoading.value = true
   try {
-    const data = await fetchProducts();
-    products.value = data;
-    status.value = `${data.length} products loaded`;
+    products.value = await fetchProducts()
+    status.value = `${products.value.length} products loaded`
   } catch (error) {
-    console.error('Merch page error:', error);
-    status.value = 'Could not load products right now. Please try again later.';
+    console.error('Merch page error:', error)
+    status.value = 'Could not load products right now. Please try again later.'
   } finally {
-    isLoading.value = false;
+    isLoading.value = false
   }
 }
 
 // ===== LIFECYCLE =====
-onMounted(() => {
-  loadProducts();
-});
+onMounted(loadProducts)
 </script>
 
 <style scoped>
+/* ===== Hero Section ===== */
 .merch-page {
   min-height: 100vh;
   background: var(--bg, #ffffff);
@@ -211,6 +213,7 @@ onMounted(() => {
   font-size: 1.1rem;
 }
 
+/* ===== Filter Toolbar ===== */
 .merch-toolbar {
   display: flex;
   flex-wrap: wrap;
@@ -246,6 +249,7 @@ onMounted(() => {
   margin: 0 0 20px;
 }
 
+/* ===== Product Grid ===== */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
