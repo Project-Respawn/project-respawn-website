@@ -6,7 +6,7 @@ import { HttpLambdaIntegration } from 'aws-cdk-lib/aws-apigatewayv2-integrations
 import { auth } from './auth/resource';
 import { data } from './data/resource';
 import { storage } from './storage/resource';
-import { myFunction } from './myFunction/resource';
+import { myFunction } from './function/myFunction/resource';
 
 const backend = defineBackend({
   auth,
@@ -28,8 +28,6 @@ const httpApi = new HttpApi(apiStack, 'HttpApi', {
     allowMethods: [
       CorsHttpMethod.GET,
       CorsHttpMethod.POST,
-      CorsHttpMethod.PUT,
-      CorsHttpMethod.DELETE,
       CorsHttpMethod.OPTIONS,
     ],
     allowOrigins: ['*'],
@@ -74,7 +72,7 @@ backend.addOutput({
       projectRespawnApi: {
         endpoint: httpApi.url,
         region: Stack.of(httpApi).region,
-        apiName: 'projectRespawnApi',
+        apiName: httpApi.httpApiName,
       },
     },
   },
