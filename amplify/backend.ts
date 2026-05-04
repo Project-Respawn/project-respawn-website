@@ -6,7 +6,7 @@ import { HttpLambdaIntegration } from 'aws-cdk-lib/aws-apigatewayv2-integrations
 import { auth } from './auth/resource';
 import { data } from './data/resource';
 import { storage } from './storage/resource';
-import { myFunction } from './function/myFunction/resource';
+import { myFunction } from './myFunction/resource';
 
 const backend = defineBackend({
   auth,
