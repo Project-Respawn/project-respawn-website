@@ -1,5 +1,14 @@
 import outputs from '../../../amplify_outputs.json';
 
+export interface ProductVariant {
+  id: string | number;
+  name?: string;
+  color?: string;
+  size?: string;
+  price?: number;
+  image?: string;
+}
+
 export interface Product {
   id: string;
   title: string;
@@ -8,14 +17,7 @@ export interface Product {
   images?: string[];
   source: 'printful' | 'manual';
   price: number;
-  variants?: {
-    id: string | number;
-    name?: string;
-    color?: string;
-    size?: string;
-    price?: number;
-    image?: string;
-  }[];
+  variants?: ProductVariant[];
   checkoutUrl?: string;
   productUrl?: string;
 }
@@ -37,38 +39,98 @@ if (!API_BASE) {
   throw new Error('Missing projectRespawnApi endpoint in amplify_outputs.json');
 }
 
+function getJsonHeaders() {
+  return {
+    'Content-Type': 'application/json',
+  };
+}
+
+async function parseResponse(response: Response, errorPrefix: string) {
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`${errorPrefix}: ${response.status} ${errorText}`);
+  }
+
+  return response.json();
+}
+
+function toNumber(value: unknown, fallback = 0): number {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
+
+function normalizeVariant(variant: any, fallbackImage = ''): ProductVariant {
+  return {
+    id: variant?.id ?? '',
+    name: variant?.name || '',
+    color: variant?.color || '',
+    size: variant?.size || '',
+    price: toNumber(variant?.retail_price, 0),
+    image:
+      variant?.files?.[0]?.preview_url ||
+      variant?.product?.image ||
+      fallbackImage ||
+      '',
+  };
+}
+
+function normalizeProductSummary(product: any): Product {
+  const variants = Array.isArray(product?.sync_variants)
+    ? product.sync_variants.map((variant: any) =>
+        normalizeVariant(variant, product?.thumbnail_url || '')
+      )
+    : [];
+
+  const firstVariantPrice =
+    variants.find((variant) => typeof variant.price === 'number' && variant.price > 0)?.price ?? 0;
+
+  return {
+    id: String(product?.id ?? ''),
+    title: product?.name || 'Untitled Product',
+    description: product?.description || '',
+    image: product?.thumbnail_url || '',
+    images: product?.thumbnail_url ? [product.thumbnail_url] : [],
+    source: 'printful',
+    price: firstVariantPrice,
+    variants,
+  };
+}
+
+function normalizeProductDetails(result: any): Product {
+  const syncProduct = result?.sync_product || result || {};
+  const variants = Array.isArray(result?.sync_variants)
+    ? result.sync_variants.map((variant: any) =>
+        normalizeVariant(variant, syncProduct?.thumbnail_url || '')
+      )
+    : [];
+
+  const firstVariantPrice =
+    variants.find((variant) => typeof variant.price === 'number' && variant.price > 0)?.price ?? 0;
+
+  return {
+    id: String(syncProduct?.id ?? ''),
+    title: syncProduct?.name || 'Untitled Product',
+    description: syncProduct?.description || '',
+    image: syncProduct?.thumbnail_url || '',
+    images: syncProduct?.thumbnail_url ? [syncProduct.thumbnail_url] : [],
+    source: 'printful',
+    price: firstVariantPrice,
+    variants,
+  };
+}
+
 // ===== PRODUCT FETCHING =====
 export async function fetchProducts(): Promise<Product[]> {
   try {
     const response = await fetch(`${API_BASE}/printful/products`, {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: getJsonHeaders(),
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to fetch products: ${response.status} ${errorText}`);
-    }
+    const data = await parseResponse(response, 'Failed to fetch products');
+    const products = Array.isArray(data?.result) ? data.result : Array.isArray(data) ? data : [];
 
-    const data = await response.json();
-    const products = data.result || data;
-
-    if (!Array.isArray(products)) {
-      throw new Error('Invalid products response format');
-    }
-
-    return products.map((product: any) => ({
-      id: product.id.toString(),
-      title: product.name || 'Untitled Product',
-      description: product.description || '',
-      image: product.thumbnail_url || '',
-      images: [],
-      source: 'printful',
-      price: 0,
-      variants: [],
-    }));
+    return products.map(normalizeProductSummary);
   } catch (error) {
     console.error('Fetch products error:', error);
     throw error;
@@ -79,44 +141,40 @@ export async function fetchProductDetails(productId: string): Promise<Product> {
   try {
     const response = await fetch(`${API_BASE}/printful/products/${productId}`, {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: getJsonHeaders(),
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to fetch product details: ${response.status} ${errorText}`);
-    }
+    const data = await parseResponse(response, 'Failed to fetch product details');
+    const result = data?.result || data;
 
-    const data = await response.json();
-    const result = data.result || data;
-
-    if (!result?.sync_product) {
+    if (!result) {
       throw new Error('Invalid product details response format');
     }
 
-    return {
-      id: result.sync_product.id.toString(),
-      title: result.sync_product.name || 'Untitled Product',
-      description: result.sync_product.description || '',
-      image: result.sync_product.thumbnail_url || '',
-      images: [],
-      source: 'printful',
-      price: parseFloat(result.sync_variants?.[0]?.retail_price || '0'),
-      variants: (result.sync_variants || []).map((variant: any) => ({
-        id: variant.id,
-        name: variant.name || '',
-        color: variant.color || '',
-        size: variant.size || '',
-        price: variant.retail_price ? parseFloat(variant.retail_price) : 0,
-        image: variant.files?.[0]?.preview_url || result.sync_product.thumbnail_url || '',
-      })),
-    };
+    return normalizeProductDetails(result);
   } catch (error) {
     console.error('Fetch product details error:', error);
     throw error;
   }
+}
+
+export async function hydrateProducts(products: Product[]): Promise<Product[]> {
+  const hydratedProducts = await Promise.all(
+    products.map(async (product) => {
+      if (product.source !== 'printful') {
+        return product;
+      }
+
+      try {
+        return await fetchProductDetails(product.id);
+      } catch (error) {
+        console.error(`Failed to hydrate product ${product.id}:`, error);
+        return product;
+      }
+    })
+  );
+
+  return hydratedProducts;
 }
 
 // ===== REVOLUT CHECKOUT =====
@@ -129,18 +187,11 @@ export async function createRevolutOrder(orderData: {
   try {
     const response = await fetch(`${API_BASE}/revolut/checkout`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: getJsonHeaders(),
       body: JSON.stringify(orderData),
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to create checkout order: ${response.status} ${errorText}`);
-    }
-
-    return await response.json();
+    return await parseResponse(response, 'Failed to create checkout order');
   } catch (error) {
     console.error('Revolut checkout error:', error);
     throw error;
@@ -167,18 +218,11 @@ export async function createPrintfulOrder(orderData: {
   try {
     const response = await fetch(`${API_BASE}/printful/orders`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: getJsonHeaders(),
       body: JSON.stringify(orderData),
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to create print order: ${response.status} ${errorText}`);
-    }
-
-    return await response.json();
+    return await parseResponse(response, 'Failed to create print order');
   } catch (error) {
     console.error('Printful order error:', error);
     throw error;
@@ -190,17 +234,10 @@ export async function getRevolutOrderStatus(orderId: string): Promise<any> {
   try {
     const response = await fetch(`${API_BASE}/revolut/orders/${orderId}`, {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: getJsonHeaders(),
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to fetch order status: ${response.status} ${errorText}`);
-    }
-
-    return await response.json();
+    return await parseResponse(response, 'Failed to fetch Revolut order status');
   } catch (error) {
     console.error('Get order status error:', error);
     throw error;
@@ -211,17 +248,10 @@ export async function getPrintfulOrderStatus(orderId: string): Promise<any> {
   try {
     const response = await fetch(`${API_BASE}/printful/orders/${orderId}`, {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: getJsonHeaders(),
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to fetch print order status: ${response.status} ${errorText}`);
-    }
-
-    return await response.json();
+    return await parseResponse(response, 'Failed to fetch Printful order status');
   } catch (error) {
     console.error('Get printful order status error:', error);
     throw error;
