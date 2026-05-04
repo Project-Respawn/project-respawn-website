@@ -47,158 +47,6 @@
   background: rgba(57, 255, 20, 0.1);
 }
 
-
-/* MODAL */
-.merch-modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  z-index: 9999;
-}
-
-.merch-modal {
-  background: #0c0f1a;
-  width: 900px;
-  max-width: 1100px;
-  max-height: calc(100vh - 32px);
-  overflow: auto;
-  border-radius: 16px;
-  padding: 20px;
-  position: relative;
-  border: 1px solid rgba(201, 180, 224, 0.18);
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.55);
-}
-
-.close-btn {
-  position: absolute;
-  right: 15px;
-  top: 10px;
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-}
-
-.merch-modal-body {
-  display: flex;
-  gap: 20px;
-}
-
-.merch-modal-left img {
-  width: 100%;
-  border-radius: 12px;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-}
-
-.merch-modal-left {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.merch-modal-right {
-  color: white;
-  flex: 1;
-}
-
-.price {
-  color: #39ff14;
-  font-size: 22px;
-}
-
-/* VARIANTS */
-.variant-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(46px, 1fr));
-  gap: 8px;
-  margin: 0;
-  max-height: 140px;
-  overflow: auto;
-  padding-right: 4px;
-}
-
-.variant-tile {
-  border: 2px solid transparent;
-  border-radius: 8px;
-  overflow: hidden;
-  cursor: pointer;
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.variant-tile img {
-  width: 100%;
-  height: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  display: block;
-}
-
-.variant-tile.active {
-  border-color: #39ff14;
-  box-shadow: 0 0 0 2px rgba(57, 255, 20, 0.25);
-}
-
-/* SIZE */
-.sizes {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.sizes button {
-  background: #1a1f2e;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: white;
-  padding: 6px 10px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.sizes button.active {
-  background: #39ff14;
-  color: black;
-}
-
-/* QTY */
-.qty {
-  display: flex;
-  gap: 10px;
-  margin: 15px 0;
-}
-
-.qty button {
-  width: 40px;
-  height: 40px;
-  border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.04);
-  color: white;
-  cursor: pointer;
-}
-
-/* BUTTON */
-.add-btn {
-  background: #39ff14;
-  border: none;
-  padding: 12px;
-  width: 100%;
-  border-radius: 10px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-@media (max-width: 900px) {
-  .merch-modal-body {
-    flex-direction: column;
-  }
-}
-
 .filter-btn.active {
   background: var(--accent);
   color: var(--bg);
@@ -212,7 +60,7 @@
 
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
   gap: 20px;
   padding-bottom: 48px;
 }
@@ -223,7 +71,6 @@
   border-radius: var(--radius);
   overflow: hidden;
   display: flex;
-  width: 100%;
   flex-direction: column;
   box-shadow: 0 0 16px rgba(97, 0, 224, 0.2);
   transition: all 0.3s ease;
@@ -235,7 +82,7 @@
 }
 
 .product-image-wrap {
-  aspect-ratio: 3/2.8;
+  aspect-ratio: 1 / 1;
   background: rgba(201, 180, 224, 0.05);
   overflow: hidden;
 }
@@ -266,12 +113,10 @@
   text-transform: uppercase;
 }
 
-
-
 .product-title {
   margin: 0;
   font-size: 1.1rem;
-  color: white;
+  color: var(--text);
   font-weight: 700;
 }
 
@@ -304,42 +149,14 @@
   transition: all 0.3s ease;
 }
 
-.payment-btn {
-  width: 100%;
-  background: var(--accent);
-  color: #000000;
-  font-weight: 700;
-  font-size: 1rem;
-  padding: 15px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 10px;
-  letter-spacing: 0.03em;
-}
-.payment-btn:hover {
-  opacity: 0.85;
-  background: var(--accent);
-}
-
 .btn-primary {
   background: var(--accent);
-  color: white;
-  font-weight: 700;
-  font-size: 1rem;
-  padding: 15px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 10px;
-  letter-spacing: 0.03em;
+  color: var(--bg);
 }
 
 .btn-primary:hover {
-   opacity: 0.85;
-  background: var(--accent);
+  background: var(--accent-2);
+  color: var(--bg);
 }
 
 .btn-secondary {
@@ -359,146 +176,4 @@
   background: var(--surface);
   color: var(--muted);
   margin-bottom: 48px;
-}
-/* Size Selector */
-.size-selector {
-  margin-bottom: 16px;
-}
-
-.size-label {
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: white;
-}
-
-.size-buttons {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.size-btn {
-  padding: 12px 24px;
-  height: 46px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid #555;
-  background: transparent;
-  color: white;
-  border-radius: 9999px; /* fully rounded */
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.size-btn:hover {
-  border-color: #888;
-  background: #222;
-}
-
-.size-btn.active {
-  background: #ffffff;
-  color: #000000;
-  border-color: #ffffff;
-}
-
-/* Quantity + Add to Cart */
-.quantity-add-section {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.quantity-control {
-  display: flex;
-  align-items: center;
-  border: 2px solid #555;
-  border-radius: 9999px;
-  padding: 4px;
-  background: rgba(0, 0, 0, 0.3);
-}
-
-.qty-btn {
-  width: 40px;
-  height: 40px;
-  border: none;
-  background: transparent;
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.qty-display {
-  min-width: 40px;
-  text-align: center;
-  font-weight: 700;
-  font-size: 16px;
-  color: white;
-}
-
-.add-to-cart-btn {
-  flex: 1;
-  padding: 14px 20px;
-  font-size: 1rem;
-}
-
-/* Make product-actions flex column */
-.product-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-@media (max-width: 480px) {
- .product-grid {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .size-btn {
-    padding: 8px 12px;
-    height: 38px;
-    font-size: 12px;
-  }
-
-  .product-title {
-    font-size: 0.9rem;
-  }
-
-  .product-description {
-    display: none;
-  }
-
-  .add-to-cart-btn {
-    padding: 10px 12px;
-    font-size: 0.85rem;
-  }
-
-  .qty-btn {
-    width: 30px;
-    height: 30px;
-    font-size: 16px;
-  }
-
-  .qty-display {
-    min-width: 28px;
-    font-size: 14px;
-  }
-
-  .merch-toolbar {
-    padding: 12px 16px;
-    gap: 8px;
-  }
-
-  .filter-btn {
-    padding: 8px 12px;
-    font-size: 0.85rem;
-    min-height: 36px;
-  }
 }

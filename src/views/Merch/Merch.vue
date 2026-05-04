@@ -1,6 +1,5 @@
 <template>
   <main class="merch-page">
-    <!-- Hero Section -->
     <section class="merch-hero">
       <div class="container">
         <p class="merch-eyebrow">Project Respawn</p>
@@ -11,20 +10,30 @@
       </div>
     </section>
 
-    <!-- Filter Section -->
     <section class="container merch-toolbar">
       <button
-        v-for="filter in filters"
-        :key="filter"
         class="filter-btn"
-        :class="{ active: currentFilter === filter }"
-        @click="setFilter(filter)"
+        :class="{ active: filter === 'all' }"
+        @click="filter = 'all'"
       >
-        {{ filterLabels[filter] }}
+        All
+      </button>
+      <button
+        class="filter-btn"
+        :class="{ active: filter === 'printful' }"
+        @click="filter = 'printful'"
+      >
+        Printful
+      </button>
+      <button
+        class="filter-btn"
+        :class="{ active: filter === 'manual' }"
+        @click="filter = 'manual'"
+      >
+        Custom
       </button>
     </section>
 
-    <!-- Status Message -->
     <section class="container">
       <p class="merch-status">{{ status }}</p>
     </section>
@@ -40,43 +49,39 @@
           <!-- Product Image -->
           <div class="product-image-wrap">
             <img
-              :src="product.image"
-              :alt="product.title"
-              class="product-image"
-              @error="handleImageError"
+              :src="product.image || fallbackImage"
+              :alt="product.title || 'Product image'"
             />
           </div>
 
           <!-- Product Content -->
           <div class="product-card-content">
-            <span class="product-source" :class="product.source">
-              {{ product.source }}
-            </span>
-
-            <h2 class="product-title">{{ product.title }}</h2>
+            <span class="product-source">{{ product.source || 'manual' }}</span>
+            <h2 class="product-title">{{ product.title || 'Untitled product' }}</h2>
 
             <p class="product-description">
               {{ product.description || 'No description available.' }}
             </p>
 
-            <div class="product-price">
-              {{ formatPrice(product.price) }}
-            </div>
+            <div class="product-price">£{{ formatPrice(product.price) }}</div>
 
-            <!-- Actions -->
             <div class="product-actions">
-              <button
+              <a
+                v-if="product.checkoutUrl"
                 class="btn-primary"
-                @click="addToCart(product)"
+                :href="product.checkoutUrl"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                Add to Cart
-              </button>
+                Buy now
+              </a>
+
               <a
                 v-if="product.productUrl"
+                class="btn-secondary"
                 :href="product.productUrl"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="btn-secondary"
               >
                 Details
               </a>
@@ -85,7 +90,6 @@
         </article>
       </div>
 
-      <!-- Empty State -->
       <div v-else class="empty-state">
         No products found in this section yet.
       </div>
@@ -93,293 +97,60 @@
   </main>
 </template>
 
-<script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-// FIX: Use correct relative path (../../services/merchService)
-import { fetchProducts, type Product, type CartItem } from './merchService'
+<script>
+import { fetchProducts } from "./merchService";
 
-// ===== STATE =====
-const products = ref<Product[]>([])
-const cart = ref<CartItem[]>([])
-const currentFilter = ref<string>('all')
-const status = ref<string>('Loading products...')
-const isLoading = ref<boolean>(false)
+export default {
+  name: "MerchPage",
+  data() {
+    return {
+      products: [],
+      filter: "all",
+      status: "Loading products...",
+      fallbackImage: "https://via.placeholder.com/600x600?text=Project+Respawn"
+    };
+  },
+  computed: {
+    filteredProducts() {
+      if (this.filter === "all") {
+        return this.products;
+      }
+      return this.products.filter(
+        (product) => (product.source || "").toLowerCase() === this.filter
+      );
+    }
+  },
+  async mounted() {
+    try {
+      const data = await fetchProducts();
 
-// ===== CONFIG =====
-const fallbackImage = 'https://via.placeholder.com/600x600?text=Product+Image'
-const filters = ['all', 'printful', 'manual']
-const filterLabels: Record<string, string> = {
-  all: 'All Products',
-  printful: 'Printful',
-  manual: 'Custom/Digital'
-}
+      this.products = Array.isArray(data)
+        ? data.map((product, index) => ({
+            id: product.id || `product-${index}`,
+            title: product.title || "Untitled product",
+            description: product.description || "",
+            image: product.image || "",
+            source: (product.source || "manual").toLowerCase(),
+            price: product.price ?? 0,
+            checkoutUrl: product.checkoutUrl || "",
+            productUrl: product.productUrl || ""
+          }))
+        : [];
 
-// ===== COMPUTED =====
-const filteredProducts = computed<Product[]>(() => {
-  if (currentFilter.value === 'all') {
-    return products.value
+      this.status = `${this.products.length} products loaded`;
+    } catch (error) {
+      console.error("Merch page error:", error);
+      this.status = "Could not load products right now.";
+      this.products = [];
+    }
+  },
+  methods: {
+    formatPrice(price) {
+      const parsed = Number(price);
+      return Number.isFinite(parsed) ? parsed.toFixed(2) : "0.00";
+    }
   }
-  return products.value.filter((product) => {
-    return product.source.toLowerCase() === currentFilter.value.toLowerCase()
-  })
-})
-
-// ===== METHODS =====
-function setFilter(filter: string): void {
-  currentFilter.value = filter
-}
-
-function handleImageError(event: Event): void {
-  const target = event.target as HTMLImageElement
-  target.src = fallbackImage
-}
-
-function formatPrice(price: number): string {
-  if (typeof price !== 'number' || !isFinite(price)) {
-    return '£0.00'
-  }
-  return `£${price.toFixed(2)}`
-}
-
-function addToCart(product: Product): void {
-  const cartItem: CartItem = {
-    id: `${product.id}-${Date.now()}`,
-    productId: product.id,
-    productTitle: product.title,
-    variantId: product.variants?.[0]?.id || undefined,
-    quantity: 1,
-    price: product.price,
-    image: product.image
-  }
-
-  cart.value.push(cartItem)
-
-  window.dispatchEvent(
-    new CustomEvent('cart-updated', {
-      detail: { cart: cart.value, item: cartItem }
-    })
-  )
-  console.log('Added to cart:', cartItem)
-}
-
-async function loadProducts(): Promise<void> {
-  isLoading.value = true
-  try {
-    products.value = await fetchProducts()
-    status.value = `${products.value.length} products loaded`
-  } catch (error) {
-    console.error('Merch page error:', error)
-    status.value = 'Could not load products right now. Please try again later.'
-  } finally {
-    isLoading.value = false
-  }
-}
-
-// ===== LIFECYCLE =====
-onMounted(loadProducts)
+};
 </script>
 
-<style scoped>
-/* ===== Hero Section ===== */
-.merch-page {
-  min-height: 100vh;
-  background: var(--bg, #ffffff);
-}
-
-.merch-hero {
-  padding: 48px 0;
-}
-
-.merch-eyebrow {
-  margin: 0 0 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 0.8rem;
-  color: var(--accent, #39ff14);
-  font-weight: 700;
-}
-
-.merch-hero h1 {
-  margin: 0 0 16px;
-  font-weight: 700;
-  color: var(--text, #000);
-  font-size: 3rem;
-}
-
-.merch-subtitle {
-  margin: 0;
-  max-width: 56ch;
-  color: var(--text, #000);
-  font-size: 1.1rem;
-}
-
-/* ===== Filter Toolbar ===== */
-.merch-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding: 24px 0;
-}
-
-.filter-btn {
-  min-height: 44px;
-  padding: 10px 16px;
-  border-radius: var(--radius, 8px);
-  border: 1px solid rgba(201, 180, 224, 0.1);
-  background: rgba(201, 180, 224, 0.05);
-  color: var(--text, #000);
-  cursor: pointer;
-  font-weight: 700;
-  transition: all 0.3s ease;
-}
-
-.filter-btn:hover {
-  border-color: var(--accent, #39ff14);
-  background: rgba(57, 255, 20, 0.1);
-}
-
-.filter-btn.active {
-  background: var(--accent, #39ff14);
-  color: var(--bg, #fff);
-  border-color: var(--accent, #39ff14);
-}
-
-.merch-status {
-  color: var(--muted, #999);
-  margin: 0 0 20px;
-}
-
-/* ===== Product Grid ===== */
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
-  gap: 20px;
-  padding-bottom: 48px;
-}
-
-.product-card {
-  background: var(--surface, #fff);
-  border: 1px solid rgba(201, 180, 224, 0.1);
-  border-radius: var(--radius, 8px);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 0 16px rgba(97, 0, 224, 0.2);
-  transition: all 0.3s ease;
-}
-
-.product-card:hover {
-  border-color: var(--accent, #39ff14);
-  box-shadow: 0 0 24px rgba(57, 255, 20, 0.15);
-}
-
-.product-image-wrap {
-  aspect-ratio: 1 / 1;
-  background: rgba(201, 180, 224, 0.05);
-  overflow: hidden;
-}
-
-.product-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.product-card-content {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 16px;
-  flex: 1;
-}
-
-.product-source {
-  display: inline-flex;
-  width: fit-content;
-  padding: 6px 10px;
-  border-radius: var(--radius, 8px);
-  background: rgba(57, 255, 20, 0.1);
-  color: var(--accent, #39ff14);
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.product-title {
-  margin: 0;
-  font-size: 1.1rem;
-  color: var(--text, #000);
-  font-weight: 700;
-}
-
-.product-description {
-  margin: 0;
-  color: var(--muted, #999);
-  font-size: 0.9rem;
-}
-
-.product-price {
-  font-size: 1rem;
-  font-weight: 800;
-  margin-top: auto;
-  color: var(--accent, #39ff14);
-}
-
-.product-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.btn-primary,
-.btn-secondary {
-  flex: 1;
-  min-height: 44px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius, 8px);
-  text-decoration: none;
-  font-weight: 700;
-  transition: all 0.3s ease;
-  border: none;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-
-.btn-primary {
-  background: var(--accent, #39ff14);
-  color: var(--bg, #000);
-}
-
-.btn-primary:hover {
-  background: var(--accent-2, #31cc0d);
-  transform: translateY(-2px);
-}
-
-.btn-secondary {
-  background: rgba(57, 255, 20, 0.1);
-  color: var(--accent, #39ff14);
-  border: 1px solid var(--accent, #39ff14);
-}
-
-.btn-secondary:hover {
-  background: rgba(57, 255, 20, 0.2);
-}
-
-.empty-state {
-  padding: 32px;
-  border: 1px solid rgba(201, 180, 224, 0.1);
-  border-radius: var(--radius, 8px);
-  background: var(--surface, #fff);
-  color: var(--muted, #999);
-  margin-bottom: 48px;
-  text-align: center;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-</style>
+<style scoped src="./Merch.css"></style>
