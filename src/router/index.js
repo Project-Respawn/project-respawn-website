@@ -11,11 +11,13 @@ import Checkout from '../views/Checkout/Checkout.vue'
 import Join from '../views/Join/Join.vue'
 import Account from '../views/Account/Account.vue'
 import Dashboard from '../views/Dashboard/Dashboard.vue'
+import Roles from '../views/About/Roles/Roles.vue'
 
 
 const routes = [
   { path: '/', component: Home },
   { path: '/about', component: About },
+  { path: '/about/Roles', component: Roles },
   { path: '/contact', component: Contact },
   { path: '/privacy-policy', component: PrivacyPolicy },
   { path: '/team-tryouts', component: TeamTryouts },
