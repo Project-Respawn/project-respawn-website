@@ -36,7 +36,7 @@ const API_BASE =
   outputs.custom?.API?.projectRespawnApi?.endpoint?.replace(/\/$/, '');
 
 if (!API_BASE) {
-  throw new Error('Missing projectRespawnApi endpoint in amplify_outputs.json');
+  console.warn('Missing projectRespawnApi endpoint in amplify_outputs.json. Merch functionality will not work until backend is deployed.');
 }
 
 function getJsonHeaders() {
@@ -121,6 +121,11 @@ function normalizeProductDetails(result: any): Product {
 
 // ===== PRODUCT FETCHING =====
 export async function fetchProducts(): Promise<Product[]> {
+  if (!API_BASE) {
+    console.warn('API_BASE not set, returning empty products');
+    return [];
+  }
+
   try {
     const response = await fetch(`${API_BASE}/printful/products`, {
       method: 'GET',
@@ -138,6 +143,10 @@ export async function fetchProducts(): Promise<Product[]> {
 }
 
 export async function fetchProductDetails(productId: string): Promise<Product> {
+  if (!API_BASE) {
+    throw new Error('API_BASE not set');
+  }
+
   try {
     const response = await fetch(`${API_BASE}/printful/products/${productId}`, {
       method: 'GET',
@@ -184,6 +193,10 @@ export async function createRevolutOrder(orderData: {
   description?: string;
   customerId?: string;
 }): Promise<any> {
+  if (!API_BASE) {
+    throw new Error('API_BASE not set');
+  }
+
   try {
     const response = await fetch(`${API_BASE}/revolut/checkout`, {
       method: 'POST',
@@ -215,6 +228,10 @@ export async function createPrintfulOrder(orderData: {
     quantity: number;
   }>;
 }): Promise<any> {
+  if (!API_BASE) {
+    throw new Error('API_BASE not set');
+  }
+
   try {
     const response = await fetch(`${API_BASE}/printful/orders`, {
       method: 'POST',
@@ -231,6 +248,10 @@ export async function createPrintfulOrder(orderData: {
 
 // ===== GET ORDER STATUS =====
 export async function getRevolutOrderStatus(orderId: string): Promise<any> {
+  if (!API_BASE) {
+    throw new Error('API_BASE not set');
+  }
+
   try {
     const response = await fetch(`${API_BASE}/revolut/orders/${orderId}`, {
       method: 'GET',
@@ -245,6 +266,10 @@ export async function getRevolutOrderStatus(orderId: string): Promise<any> {
 }
 
 export async function getPrintfulOrderStatus(orderId: string): Promise<any> {
+  if (!API_BASE) {
+    throw new Error('API_BASE not set');
+  }
+
   try {
     const response = await fetch(`${API_BASE}/printful/orders/${orderId}`, {
       method: 'GET',

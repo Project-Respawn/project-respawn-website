@@ -79,7 +79,7 @@
                   </a>
                 </p>
                 <p> Instagram: 
-                  <a href="https://www.instagram.com/projectrespawn/" target="_blank" rel="noopener">
+                  <a href="https://www.instagram.com/projectrespawnhq" target="_blank" rel="noopener">
                     <img src="../../assets/Icons/Instagram-logo.svg" width="20px" height="20px" alt="Instagram">
                   </a>
                 </p>
