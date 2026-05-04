@@ -43,6 +43,12 @@ httpApi.addRoutes({
 });
 
 httpApi.addRoutes({
+  path: '/printful/products/{proxy+}',
+  methods: [HttpMethod.GET],
+  integration: httpLambdaIntegration,
+});
+
+httpApi.addRoutes({
   path: '/printful/orders',
   methods: [HttpMethod.POST],
   integration: httpLambdaIntegration,
