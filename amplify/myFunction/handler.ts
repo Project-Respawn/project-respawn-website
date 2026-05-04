@@ -91,7 +91,7 @@ export const handler: Handler = async (event: any) => {
 
     if (path.includes('/printful/products') && method === 'GET') {
       const result = await makeRequest(
-        'https://api.printful.com/v2/catalog-products',
+      'https://api.printful.com/sync/products'
         'GET',
         null,
         `Bearer ${PRINTFUL_API_KEY}`
