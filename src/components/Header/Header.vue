@@ -48,20 +48,20 @@
                 >Contact</router-link
               >
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <router-link
                 to="/merch"
                 class="nav-link"
                 :class="{ active: $route.path === '/merch' }"
                 >Merch</router-link
               >
-            </li>
-            <li class="nav-item cart-nav-item">
+            </li> -->
+            <!-- <li class="nav-item cart-nav-item">
               <router-link to="/checkout" class="nav-link cart-icon-link">
                 <i class="bi bi-cart3"></i>
                 <span v-if="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
               </router-link>
-            </li>
+            </li> -->
             <!-- Admin Dashboard link — only visible when signed in -->
             <li v-if="isSignedIn" class="nav-item">
               <router-link
