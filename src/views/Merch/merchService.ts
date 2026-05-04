@@ -1,3 +1,5 @@
+import outputs from '../../amplify_outputs.json';
+
 export interface Product {
   id: string;
   title: string;
@@ -28,8 +30,12 @@ export interface CartItem {
   image: string;
 }
 
-// Use Amplify Lambda endpoint (same domain)
-const API_BASE = `${window.location.origin}/api`;
+const API_BASE =
+  outputs.custom?.API?.projectRespawnApi?.endpoint?.replace(/\/$/, '');
+
+if (!API_BASE) {
+  throw new Error('Missing projectRespawnApi endpoint in amplify_outputs.json');
+}
 
 // ===== PRODUCT FETCHING =====
 export async function fetchProducts(): Promise<Product[]> {
@@ -42,19 +48,17 @@ export async function fetchProducts(): Promise<Product[]> {
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch products: ${response.statusText}`);
+      const errorText = await response.text();
+      throw new Error(`Failed to fetch products: ${response.status} ${errorText}`);
     }
 
     const data = await response.json();
-    
-    // Handle both direct array and wrapped response
     const products = data.result || data;
-    
+
     if (!Array.isArray(products)) {
       throw new Error('Invalid products response format');
     }
 
-    // Transform Printful response to your Product format
     return products.map((product: any) => ({
       id: product.id.toString(),
       title: product.title || 'Untitled Product',
@@ -72,7 +76,6 @@ export async function fetchProducts(): Promise<Product[]> {
         image: v.image || undefined
       })) || []
     }));
-
   } catch (error) {
     console.error('Fetch products error:', error);
     throw error;
@@ -96,8 +99,8 @@ export async function createRevolutOrder(orderData: {
     });
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.error || 'Failed to create checkout order');
+      const errorText = await response.text();
+      throw new Error(`Failed to create checkout order: ${response.status} ${errorText}`);
     }
 
     return await response.json();
@@ -134,8 +137,8 @@ export async function createPrintfulOrder(orderData: {
     });
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.error || 'Failed to create print order');
+      const errorText = await response.text();
+      throw new Error(`Failed to create print order: ${response.status} ${errorText}`);
     }
 
     return await response.json();
@@ -156,7 +159,8 @@ export async function getRevolutOrderStatus(orderId: string): Promise<any> {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch order status');
+      const errorText = await response.text();
+      throw new Error(`Failed to fetch order status: ${response.status} ${errorText}`);
     }
 
     return await response.json();
@@ -176,7 +180,8 @@ export async function getPrintfulOrderStatus(orderId: string): Promise<any> {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch print order status');
+      const errorText = await response.text();
+      throw new Error(`Failed to fetch print order status: ${response.status} ${errorText}`);
     }
 
     return await response.json();
