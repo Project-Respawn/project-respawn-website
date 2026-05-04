@@ -1,61 +1,39 @@
 declare const process: any;
 
-import * as https from 'https';
 import type { Handler } from 'aws-lambda';
 
 const REVOLUT_API_KEY = process.env.REVOLUT_API_KEY;
 const REVOLUT_API_SECRET = process.env.REVOLUT_API_SECRET;
 const PRINTFUL_API_KEY = process.env.PRINTFUL_API_KEY;
 
-function makeRequest(
-  hostname: string,
+async function makeRequest(
+  url: string,
   method: string,
-  path: string,
   body: any = null,
   authHeader?: string
-): Promise<{ statusCode?: number; body: any }> {
-  return new Promise((resolve, reject) => {
-    const options = {
-      hostname,
-      port: 443,
-      path,
-      method,
-      headers: {
-        Authorization: authHeader || '',
-        'Content-Type': 'application/json',
-      },
-    };
-
-    const req = https.request(options, (res: any) => {
-      let data = '';
-
-      res.on('data', (chunk: any) => {
-        data += chunk;
-      });
-
-      res.on('end', () => {
-        try {
-          resolve({
-            statusCode: res.statusCode,
-            body: JSON.parse(data),
-          });
-        } catch {
-          resolve({
-            statusCode: res.statusCode,
-            body: data,
-          });
-        }
-      });
-    });
-
-    req.on('error', reject);
-
-    if (body) {
-      req.write(JSON.stringify(body));
-    }
-
-    req.end();
+): Promise<{ statusCode: number; body: any }> {
+  const response = await fetch(url, {
+    method,
+    headers: {
+      Authorization: authHeader || '',
+      'Content-Type': 'application/json',
+    },
+    body: body ? JSON.stringify(body) : undefined,
   });
+
+  const text = await response.text();
+
+  try {
+    return {
+      statusCode: response.status,
+      body: JSON.parse(text),
+    };
+  } catch {
+    return {
+      statusCode: response.status,
+      body: text,
+    };
+  }
 }
 
 export const handler: Handler = async (event: any) => {
@@ -75,9 +53,8 @@ export const handler: Handler = async (event: any) => {
       };
 
       const result = await makeRequest(
-        'api.revolut.com',
+        'https://api.revolut.com/v1/orders',
         'POST',
-        '/v1/orders',
         orderData,
         `Bearer ${REVOLUT_API_KEY}`
       );
@@ -96,9 +73,8 @@ export const handler: Handler = async (event: any) => {
       const orderId = path.split('/').pop();
 
       const result = await makeRequest(
-        'api.revolut.com',
+        `https://api.revolut.com/v1/orders/${orderId}`,
         'GET',
-        `/v1/orders/${orderId}`,
         null,
         `Bearer ${REVOLUT_API_KEY}`
       );
@@ -115,9 +91,8 @@ export const handler: Handler = async (event: any) => {
 
     if (path.includes('/printful/products') && method === 'GET') {
       const result = await makeRequest(
-        'api.printful.com',
+        'https://api.printful.com/v2/catalog/products',
         'GET',
-        '/v2/catalog/products',
         null,
         `Bearer ${PRINTFUL_API_KEY}`
       );
@@ -149,9 +124,8 @@ export const handler: Handler = async (event: any) => {
       };
 
       const result = await makeRequest(
-        'api.printful.com',
+        'https://api.printful.com/v2/orders',
         'POST',
-        '/v2/orders',
         orderData,
         `Bearer ${PRINTFUL_API_KEY}`
       );
@@ -170,9 +144,8 @@ export const handler: Handler = async (event: any) => {
       const orderId = path.split('/').pop();
 
       const result = await makeRequest(
-        'api.printful.com',
+        `https://api.printful.com/v2/orders/${orderId}`,
         'GET',
-        `/v2/orders/${orderId}`,
         null,
         `Bearer ${PRINTFUL_API_KEY}`
       );
