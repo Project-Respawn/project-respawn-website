@@ -1,139 +1,146 @@
 <template>
-  <main class="checkout">
-    <header>
-      <button @click="goBack">← Back</button>
-      <h1>Checkout</h1>
-    </header>
+  <main class="container py-5">
+    <section>
+        <!-- Header -->
+        <header class="header">
+            <h1>Merch</h1>
+            <button class="cart-button" onclick="toggleCart()">
+                🛒 Cart (<span id="cart-count">0</span>)
+            </button>
+        </header>
 
-    <div class="content">
-      <aside class="summary">
-        <h2>Order Total</h2>
-        <p>{{ formatPrice(total) }}</p>
-      </aside>
+        <!-- Main Content -->
+        <main>
+            <!-- Products Section -->
+            <section class="products-section">
+                <h2>Our Products</h2>
+                <div id="products-container" class="products-grid">
+                    <!-- Products load here -->
+                    <div class="loading">Loading products...</div>
+                </div>
+            </section>
 
-      <section class="form-area">
-        <form @submit.prevent="checkout">
-          <input v-model="name" type="text" placeholder="Name" />
-          <input v-model="email" type="email" placeholder="Email" />
-          <input v-model="address" type="text" placeholder="Address" />
-          <button type="submit">Pay Now</button>
-        </form>
-        <p v-if="message" class="msg">{{ message }}</p>
-      </section>
-    </div>
+            <!-- Shopping Cart Sidebar -->
+            <aside id="cart-sidebar" class="cart-sidebar hidden">
+                <div class="cart-header">
+                    <h2>Your Cart</h2>
+                    <button onclick="toggleCart()" class="close-btn">✕</button>
+                </div>
+                
+                <div id="cart-items" class="cart-items">
+                    <p class="empty-message">Your cart is empty</p>
+                </div>
+
+                <div class="cart-summary">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span>£<span id="subtotal">0.00</span></span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping:</span>
+                        <span>£<span id="shipping">5.00</span></span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span>£<span id="total">5.00</span></span>
+                    </div>
+                </div>
+
+                <button id="checkout-btn" class="checkout-btn" onclick="proceedToCheckout()" disabled>
+                    Proceed to Checkout
+                </button>
+            </aside>
+
+            <!-- Checkout Section -->
+            <div id="checkout-section" class="checkout-section hidden">
+                <div class="checkout-container">
+                    <button onclick="backToCart()" class="back-btn">← Back to Cart</button>
+                    
+                    <h2>Checkout</h2>
+
+                    <!-- Customer Details Form -->
+                    <form id="customer-form" class="customer-form">
+                        <h3>Delivery Details</h3>
+                        
+                        <div class="form-group">
+                            <label for="full-name">Full Name *</label>
+                            <input type="text" id="full-name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Street Address *</label>
+                            <input type="text" id="address" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">City *</label>
+                                <input type="text" id="city" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="postcode">Postcode *</label>
+                                <input type="text" id="postcode" required>
+                            </div>
+                        </div>
+
+                        <h3>Payment Method</h3>
+                        <!-- Revolut Embedded Checkout -->
+                        <div id="revolut-checkout"></div>
+                        
+                        <button type="submit" class="payment-btn">Complete Payment</button>
+                    </form>
+
+                    <!-- Order Confirmation -->
+                    <div id="confirmation" class="confirmation hidden">
+                        <h3>✅ Order Confirmed!</h3>
+                        <p>Thank you for your purchase.</p>
+                        <p>Order ID: <strong id="order-id"></strong></p>
+                        <p>Your order will be printed and shipped within 3-5 business days.</p>
+                        <button onclick="location.reload()">Continue Shopping</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <!-- <footer class="footer">
+            <p>&copy; 2026 My Print Store. All rights reserved.</p>
+        </footer> -->
+
+    </section>
   </main>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+<script setup>
+  import { onMounted } from 'vue'
 
-const router = useRouter();
-const name = ref('');
-const email = ref('');
-const address = ref('');
-const message = ref('');
-const total = ref(0);
-
-function formatPrice(price: number): string {
-  return `£${price.toFixed(2)}`;
-}
-
-function goBack() {
-  router.push('/merch');
-}
-
-async function checkout() {
-  message.value = 'Processing...';
-  try {
-    // TODO: Add payment processing
-    message.value = 'Order confirmed!';
-  } catch (error) {
-    message.value = 'Error occurred';
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = src
+      script.onload = resolve
+      script.onerror = reject
+      document.head.appendChild(script)
+    })
   }
-}
+
+  onMounted(async () => {
+    // await loadScript("https://sdk.revolut.com/embedded-checkout/embedded-checkout-sdk.js");    
+  })
 </script>
 
+
 <style scoped>
-.checkout {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 20px;
-}
-
-header {
-  margin-bottom: 40px;
-}
-
-header button {
-  background: none;
-  border: none;
-  color: var(--accent, #39ff14);
-  cursor: pointer;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-header h1 {
-  font-size: 2rem;
-  margin: 0;
-}
-
-.content {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 40px;
-}
-
-@media (max-width: 900px) {
-  .content {
-    grid-template-columns: 1fr;
-  }
-}
-
-.summary {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  height: fit-content;
-}
-
-.form-area {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-input {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-button[type="submit"] {
-  padding: 12px;
-  background: var(--accent, #39ff14);
-  color: #000;
-  border: none;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-.msg {
-  margin-top: 15px;
-  padding: 10px;
-  background: #f0f0f0;
-  border-radius: 4px;
-}
 </style>
+
+<!-- <style scoped src="./Merch.css"></style> -->
