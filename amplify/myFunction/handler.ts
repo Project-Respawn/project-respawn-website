@@ -1,4 +1,6 @@
-import https from 'node:https';
+declare const process: any;
+
+import * as https from 'https';
 import type { Handler } from 'aws-lambda';
 
 const REVOLUT_API_KEY = process.env.REVOLUT_API_KEY;
@@ -24,10 +26,10 @@ function makeRequest(
       },
     };
 
-    const req = https.request(options, (res) => {
+    const req = https.request(options, (res: any) => {
       let data = '';
 
-      res.on('data', (chunk) => {
+      res.on('data', (chunk: any) => {
         data += chunk;
       });
 
