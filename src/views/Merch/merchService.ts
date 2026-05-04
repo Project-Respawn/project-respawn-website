@@ -61,21 +61,13 @@ export async function fetchProducts(): Promise<Product[]> {
 
     return products.map((product: any) => ({
       id: product.id.toString(),
-      title: product.title || 'Untitled Product',
+      title: product.name || 'Untitled Product',              // ← CHANGED: name not title
       description: product.description || '',
-      image: product.image || product.thumbnail_url || '',
-      images: product.images?.map((img: any) => img.url) || [],
+      image: product.thumbnail_url || '',                      // ← CHANGED: thumbnail_url first
+      images: [],                                              // ← CHANGED: Catalog doesn't return image array
       source: 'printful',
-      price: parseFloat(product.price) || 0,
-      variants:
-        product.variants?.map((v: any) => ({
-          id: v.id,
-          name: v.title || v.name || '',
-          color: v.color || undefined,
-          size: v.size || undefined,
-          price: v.price ? parseFloat(v.price) : undefined,
-          image: v.image || undefined,
-        })) || [],
+      price: 0,                                                // ← CHANGED: Catalog doesn't return price
+      variants: [],                                            // ← CHANGED: Catalog just returns coun
     }));
   } catch (error) {
     console.error('Fetch products error:', error);
