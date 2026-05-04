@@ -1,4 +1,4 @@
-import outputs from '../../amplify_outputs.json';
+import outputs from '../../../amplify_outputs.json';
 
 export interface Product {
   id: string;
@@ -44,7 +44,7 @@ export async function fetchProducts(): Promise<Product[]> {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
     });
 
     if (!response.ok) {
@@ -67,14 +67,15 @@ export async function fetchProducts(): Promise<Product[]> {
       images: product.images?.map((img: any) => img.url) || [],
       source: 'printful',
       price: parseFloat(product.price) || 0,
-      variants: product.variants?.map((v: any) => ({
-        id: v.id,
-        name: v.title || v.name || '',
-        color: v.color || undefined,
-        size: v.size || undefined,
-        price: v.price ? parseFloat(v.price) : undefined,
-        image: v.image || undefined
-      })) || []
+      variants:
+        product.variants?.map((v: any) => ({
+          id: v.id,
+          name: v.title || v.name || '',
+          color: v.color || undefined,
+          size: v.size || undefined,
+          price: v.price ? parseFloat(v.price) : undefined,
+          image: v.image || undefined,
+        })) || [],
     }));
   } catch (error) {
     console.error('Fetch products error:', error);
@@ -95,7 +96,7 @@ export async function createRevolutOrder(orderData: {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(orderData)
+      body: JSON.stringify(orderData),
     });
 
     if (!response.ok) {
@@ -133,7 +134,7 @@ export async function createPrintfulOrder(orderData: {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(orderData)
+      body: JSON.stringify(orderData),
     });
 
     if (!response.ok) {
@@ -155,7 +156,7 @@ export async function getRevolutOrderStatus(orderId: string): Promise<any> {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
     });
 
     if (!response.ok) {
@@ -176,7 +177,7 @@ export async function getPrintfulOrderStatus(orderId: string): Promise<any> {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
     });
 
     if (!response.ok) {
