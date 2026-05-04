@@ -75,12 +75,12 @@
                 <h5>Join Our Community</h5>                
                 <p>Discord: 
                   <a href="https://discord.gg/xpFyTcRwvg" target="_blank" rel="noopener">
-                    <img src="../../assets/Icons/Discord-logo.svg" width="20px" height="20px" alt="Discord">
+                    <img src="../../assets/Icons/Discord-logo.svg" width="25" height="25" alt="Discord">
                   </a>
                 </p>
                 <p> Instagram: 
                   <a href="https://www.instagram.com/projectrespawnhq" target="_blank" rel="noopener">
-                    <img src="../../assets/Icons/Instagram-logo.svg" width="20px" height="20px" alt="Instagram">
+                    <img src="../../assets/Icons/Instagram-logo.svg" width="25" height="25" alt="Instagram">
                   </a>
                 </p>
               </div>
