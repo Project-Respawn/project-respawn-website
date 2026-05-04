@@ -1,8 +1,12 @@
 import https from 'node:https';
 
 const REVOLUT_API_KEY = process.env.REVOLUT_API_KEY;
-const REVOLUT_API_SECRET = process.env.REVOLUT_API_SECRET;
 const PRINTFUL_API_KEY = process.env.PRINTFUL_API_KEY;
+
+const defaultHeaders = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
+};
 
 function makeRequest(
   hostname: string,
@@ -18,7 +22,7 @@ function makeRequest(
       path,
       method,
       headers: {
-        Authorization: authHeader || '',
+        ...(authHeader ? { Authorization: authHeader } : {}),
         'Content-Type': 'application/json',
       },
     };
@@ -34,7 +38,7 @@ function makeRequest(
         try {
           resolve({
             statusCode: res.statusCode,
-            body: JSON.parse(data),
+            body: data ? JSON.parse(data) : {},
           });
         } catch {
           resolve({
@@ -55,17 +59,43 @@ function makeRequest(
   });
 }
 
+function jsonResponse(statusCode: number, body: any) {
+  return {
+    statusCode,
+    headers: defaultHeaders,
+    body: JSON.stringify(body),
+  };
+}
+
 export const handler = async (event: any) => {
-  const path = event.path || event.rawPath;
-  const method = event.httpMethod || event.requestContext?.http?.method;
+  const path = event.path || event.rawPath || '';
+  const method = event.httpMethod || event.requestContext?.http?.method || '';
   const body = event.body ? JSON.parse(event.body) : null;
 
   try {
-    if (path.includes('/revolut/checkout') && method === 'POST') {
-      const { amount, currency = 'GBP', description, customerId } = body;
+    if (method === 'OPTIONS') {
+      return {
+        statusCode: 204,
+        headers: {
+          ...defaultHeaders,
+          'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type,Authorization',
+        },
+        body: '',
+      };
+    }
+
+    // ===== REVOLUT =====
+
+    if (path.endsWith('/revolut/checkout') && method === 'POST') {
+      const { amount, currency = 'GBP', description, customerId } = body || {};
+
+      if (!amount || Number(amount) <= 0) {
+        return jsonResponse(400, { error: 'Invalid amount' });
+      }
 
       const orderData = {
-        amount: Math.round(amount * 100),
+        amount: Math.round(Number(amount) * 100),
         currency,
         description: description || 'Project Respawn Merch Order',
         customer_id: customerId,
@@ -79,18 +109,15 @@ export const handler = async (event: any) => {
         `Bearer ${REVOLUT_API_KEY}`
       );
 
-      return {
-        statusCode: result.statusCode,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-        body: JSON.stringify(result.body),
-      };
+      return jsonResponse(result.statusCode || 500, result.body);
     }
 
-    if (path.includes('/revolut/orders/') && method === 'GET') {
+    if (path.match(/\/revolut\/orders\/[^/]+$/) && method === 'GET') {
       const orderId = path.split('/').pop();
+
+      if (!orderId) {
+        return jsonResponse(400, { error: 'Missing orderId' });
+      }
 
       const result = await makeRequest(
         'api.revolut.com',
@@ -100,111 +127,100 @@ export const handler = async (event: any) => {
         `Bearer ${REVOLUT_API_KEY}`
       );
 
-      return {
-        statusCode: result.statusCode,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-        body: JSON.stringify(result.body),
-      };
+      return jsonResponse(result.statusCode || 500, result.body);
     }
 
-    if (path.includes('/printful/products') && method === 'GET') {
+    // ===== PRINTFUL PRODUCTS =====
+
+    if (path.endsWith('/printful/products') && method === 'GET') {
       const result = await makeRequest(
         'api.printful.com',
         'GET',
-        '/store/products',  // ← CHANGED: Use store products for pricing
+        '/store/products',
         null,
         `Bearer ${PRINTFUL_API_KEY}`
       );
 
-      return {
-        statusCode: result.statusCode,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-        body: JSON.stringify(result.body),
-      };
+      return jsonResponse(result.statusCode || 500, result.body);
     }
 
-    if (path.includes('/printful/orders') && method === 'POST') {
+    if (path.match(/\/printful\/products\/[^/]+$/) && method === 'GET') {
+      const productId = path.split('/').pop();
+
+      if (!productId) {
+        return jsonResponse(400, { error: 'Missing productId' });
+      }
+
+      const result = await makeRequest(
+        'api.printful.com',
+        'GET',
+        `/store/products/${productId}`,
+        null,
+        `Bearer ${PRINTFUL_API_KEY}`
+      );
+
+      return jsonResponse(result.statusCode || 500, result.body);
+    }
+
+    // ===== PRINTFUL ORDERS =====
+
+    if (path.endsWith('/printful/orders') && method === 'POST') {
       const orderData = {
-        external_id: body.orderId,
-        shipping: body.shippingMethod || 'STANDARD',
-        items: body.items,
+        external_id: body?.orderId,
+        shipping: body?.shippingMethod || 'STANDARD',
+        items: body?.items || [],
         recipient: {
-          name: body.customerName,
-          address1: body.address,
-          city: body.city,
-          state_code: body.state,
-          postcode: body.postcode,
-          country_code: body.country || 'GB',
-          email: body.email,
+          name: body?.customerName,
+          address1: body?.address,
+          city: body?.city,
+          state_code: body?.state,
+          postcode: body?.postcode,
+          country_code: body?.country || 'GB',
+          email: body?.email,
+          phone: body?.phone,
         },
       };
+
+      if (!orderData.external_id || !orderData.recipient.name || !orderData.items.length) {
+        return jsonResponse(400, { error: 'Missing required order fields' });
+      }
 
       const result = await makeRequest(
         'api.printful.com',
         'POST',
-        '/v2/orders',
+        '/orders',
         orderData,
         `Bearer ${PRINTFUL_API_KEY}`
       );
 
-      return {
-        statusCode: result.statusCode,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-        body: JSON.stringify(result.body),
-      };
+      return jsonResponse(result.statusCode || 500, result.body);
     }
 
-    if (path.includes('/printful/orders/') && method === 'GET') {
+    if (path.match(/\/printful\/orders\/[^/]+$/) && method === 'GET') {
       const orderId = path.split('/').pop();
+
+      if (!orderId) {
+        return jsonResponse(400, { error: 'Missing orderId' });
+      }
 
       const result = await makeRequest(
         'api.printful.com',
         'GET',
-        `/v2/orders/${orderId}`,
+        `/orders/${orderId}`,
         null,
         `Bearer ${PRINTFUL_API_KEY}`
       );
 
-      return {
-        statusCode: result.statusCode,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-        body: JSON.stringify(result.body),
-      };
+      return jsonResponse(result.statusCode || 500, result.body);
     }
 
-    return {
-      statusCode: 400,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
-      body: JSON.stringify({ error: 'Invalid request' }),
-    };
+    return jsonResponse(400, { error: 'Invalid request' });
   } catch (error: any) {
     console.error('API Error:', error);
 
-    return {
-      statusCode: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
-      body: JSON.stringify({
-        error: 'Request failed',
-        message: error.message,
-      }),
-    };
+    return jsonResponse(500, {
+      error: 'Request failed',
+      message: error.message || 'Unknown error',
+    });
   }
 };
