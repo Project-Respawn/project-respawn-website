@@ -58,7 +58,7 @@
           </form>
 
           <div class="contact-info mt-5 pt-5 border-top">
-            <h2 class="mb-4">Other Ways to Connect</h2>
+            <h2 class="mb-4">Ways to Connect</h2>
               <div class="row">
                 <div class="col-md-6 mb-4">
                   <h5>Email</h5>
