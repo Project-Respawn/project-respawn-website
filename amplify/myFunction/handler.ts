@@ -89,23 +89,43 @@ export const handler: Handler = async (event: any) => {
       };
     }
 
-if (path.includes('/printful/products') && method === 'GET') {
-  const result = await makeRequest(
-    'https://api.printful.com/sync/products',
-    'GET',
-    null,
-    `Bearer ${PRINTFUL_API_KEY}`
-  );
+    if (path.includes('/printful/products/') && method === 'GET') {
+      const productId = path.split('/').pop();
 
-  return {
-    statusCode: result.statusCode,
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-    },
-    body: JSON.stringify(result.body),
-  };
-}
+      const result = await makeRequest(
+        `https://api.printful.com/sync/products/${productId}`,
+        'GET',
+        null,
+        `Bearer ${PRINTFUL_API_KEY}`
+      );
+
+      return {
+        statusCode: result.statusCode,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify(result.body),
+      };
+    }
+
+    if (path.includes('/printful/products') && method === 'GET') {
+      const result = await makeRequest(
+        'https://api.printful.com/sync/products',
+        'GET',
+        null,
+        `Bearer ${PRINTFUL_API_KEY}`
+      );
+
+      return {
+        statusCode: result.statusCode,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify(result.body),
+      };
+    }
 
     if (path.includes('/printful/orders') && method === 'POST') {
       const orderData = {
