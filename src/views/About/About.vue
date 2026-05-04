@@ -11,10 +11,8 @@
 
     <!-- Description -->
     <p class="description">
-      Project Respawn is building something meaningful — a space where gaming
-      meets real-life growth. We're putting the finishing touches on features
-      designed to help you rebuild confidence, find your community, and level up
-      in ways that actually stick.
+      Project Respawn is building something meaningful — a space where gaming meets real-life growth. We're putting the finishing touches on features
+      designed to help you rebuild confidence, find your community, and level up in ways that actually stick.
     </p>
 
     <!-- Cards -->
@@ -32,8 +30,7 @@
         <div class="icon">🤝</div>
         <h3>Community Squads</h3>
         <p>
-          Find your people. Join squads built around shared goals, games, and the
-          drive to grow together.
+          Find your people. Join squads built around shared goals, games, and the drive to grow together.
         </p>
       </div>
 
@@ -41,8 +38,10 @@
         <div class="icon">📈</div>
         <h3>Real Progress Tracking</h3>
         <p>
-          See your growth. Track the moments that matter and celebrate the wins
-          that used to feel impossible.
+          See your growth. Track the moments that matter and celebrate the wins that used to feel impossible.
+        </p>
+        <p>
+          More info here: <router-link to="/about/roles">About the roles</router-link>
         </p>
       </div>
 
@@ -50,8 +49,7 @@
         <div class="icon">🏆</div>
         <h3>Events & Tournaments</h3>
         <p>
-          Compete, connect, and show up — in-game events designed to push you
-          forward alongside others.
+          Compete, connect, and show up — in-game events designed to push you forward alongside others.
         </p>
       </div>
     </div>
