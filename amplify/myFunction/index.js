@@ -97,7 +97,7 @@ exports.handler = async (event) => {
       const result = await makeRequest(
         'api.printful.com',
         'GET',
-        '/v2/catalog/products',
+        '/sync/products',
         null,
         `Bearer ${PRINTFUL_API_KEY}`
       );
