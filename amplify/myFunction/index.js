@@ -112,7 +112,7 @@ export const handler = async (event: any) => {
       return jsonResponse(result.statusCode || 500, result.body);
     }
 
-    if (path.match(/\/revolut\/orders\/[^/]+$/) && method === 'GET') {
+    if (/\/revolut\/orders\/[^/]+$/.test(path) && method === 'GET') {
       const orderId = path.split('/').pop();
 
       if (!orderId) {
@@ -144,7 +144,7 @@ export const handler = async (event: any) => {
       return jsonResponse(result.statusCode || 500, result.body);
     }
 
-    if (path.match(/\/printful\/products\/[^/]+$/) && method === 'GET') {
+    if (/\/printful\/products\/[^/]+$/.test(path) && method === 'GET') {
       const productId = path.split('/').pop();
 
       if (!productId) {
@@ -196,7 +196,7 @@ export const handler = async (event: any) => {
       return jsonResponse(result.statusCode || 500, result.body);
     }
 
-    if (path.match(/\/printful\/orders\/[^/]+$/) && method === 'GET') {
+    if (/\/printful\/orders\/[^/]+$/.test(path) && method === 'GET') {
       const orderId = path.split('/').pop();
 
       if (!orderId) {
