@@ -114,7 +114,7 @@ export const handler = async (event: any) => {
       const result = await makeRequest(
         'api.printful.com',
         'GET',
-        '/v2/catalog/products',
+        '/store/products',  // ← CHANGED: Use store products for pricing
         null,
         `Bearer ${PRINTFUL_API_KEY}`
       );
