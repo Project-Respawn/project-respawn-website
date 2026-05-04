@@ -1,5 +1,11 @@
-import { defineFunction } from '@aws-amplify/backend';
+import { defineFunction, secret } from '@aws-amplify/backend';
 
 export const myFunction = defineFunction({
   name: 'myFunction',
+  entry: './handler.ts',
+  environment: {
+    PRINTFUL_API_KEY: secret('PRINTFUL_API_KEY'),
+    REVOLUT_API_KEY: secret('REVOLUT_API_KEY'),
+    REVOLUT_API_SECRET: secret('REVOLUT_API_SECRET'),
+  },
 });

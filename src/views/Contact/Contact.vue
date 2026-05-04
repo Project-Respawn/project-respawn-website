@@ -5,8 +5,8 @@
         <div class="col-lg-8 mx-auto">
           <h1 class="mb-4">Get In Touch</h1>
           <p class="lead mb-4">Have questions or want to join Project Respawn? We'd love to hear from you!</p>
-
-          <form @submit.prevent="submitForm" class="contact-form">
+          
+          <!-- <form @submit.prevent="submitForm" class="contact-form">
             <div class="mb-3">
               <label for="name" class="form-label">Name</label>
               <input
@@ -55,7 +55,8 @@
             <div v-if="successMessage" class="alert alert-success mt-3">
               {{ successMessage }}
             </div>
-          </form>
+          </form> -->
+          
 
           <div class="contact-info mt-5 pt-5 border-top">
             <h2 class="mb-4">Ways to Connect</h2>
@@ -71,8 +72,17 @@
             </div>
             <div class="row">
               <div class="col-md-6 mb-4">
-                <h5>Join Our Community</h5>
-                <p>Discord or other social platforms link would go here.</p>
+                <h5>Join Our Community</h5>                
+                <p>Discord: 
+                  <a href="https://discord.gg/xpFyTcRwvg" target="_blank" rel="noopener">
+                    <img src="../../assets/Icons/Discord-logo.svg" width="20px" height="20px" alt="Discord">
+                  </a>
+                </p>
+                <p> Instagram: 
+                  <a href="https://www.instagram.com/projectrespawnhq" target="_blank" rel="noopener">
+                    <img src="../../assets/Icons/Instagram-logo.svg" width="20px" height="20px" alt="Instagram">
+                  </a>
+                </p>
               </div>
               <div class="col-md-6 mb-4">
                 <h5>Follow Us</h5>

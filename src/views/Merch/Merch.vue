@@ -36,13 +36,17 @@
 
     <section class="container">
       <p class="merch-status">{{ status }}</p>
+    </section>
 
+    <!-- Products Grid -->
+    <section class="container">
       <div v-if="filteredProducts.length" class="product-grid">
         <article
           v-for="product in filteredProducts"
           :key="product.id"
           class="product-card"
         >
+          <!-- Product Image -->
           <div class="product-image-wrap">
             <img
               :src="product.image || fallbackImage"
@@ -50,6 +54,7 @@
             />
           </div>
 
+          <!-- Product Content -->
           <div class="product-card-content">
             <span class="product-source">{{ product.source || 'manual' }}</span>
             <h2 class="product-title">{{ product.title || 'Untitled product' }}</h2>

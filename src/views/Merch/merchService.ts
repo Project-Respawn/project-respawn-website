@@ -22,8 +22,20 @@ const API_URL: string =
 export async function fetchProducts(): Promise<Product[]> {
   const response = await fetch(API_URL);
 
+if (!API_BASE) {
+  console.warn('Missing projectRespawnApi endpoint in amplify_outputs.json. Merch functionality will not work until backend is deployed.');
+}
+
+function getJsonHeaders() {
+  return {
+    'Content-Type': 'application/json',
+  };
+}
+
+async function parseResponse(response: Response, errorPrefix: string) {
   if (!response.ok) {
-    throw new Error("Failed to fetch products");
+    const errorText = await response.text();
+    throw new Error(`${errorPrefix}: ${response.status} ${errorText}`);
   }
 
   return response.json();
