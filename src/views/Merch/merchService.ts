@@ -61,16 +61,60 @@ export async function fetchProducts(): Promise<Product[]> {
 
     return products.map((product: any) => ({
       id: product.id.toString(),
-      title: product.name || 'Untitled Product',              // ← CHANGED: name not title
+      title: product.name || 'Untitled Product',
       description: product.description || '',
-      image: product.thumbnail_url || '',                      // ← CHANGED: thumbnail_url first
-      images: [],                                              // ← CHANGED: Catalog doesn't return image array
+      image: product.thumbnail_url || '',
+      images: [],
       source: 'printful',
-      price: 0,                                                // ← CHANGED: Catalog doesn't return price
-      variants: [],                                            // ← CHANGED: Catalog just returns coun
+      price: 0,
+      variants: [],
     }));
   } catch (error) {
     console.error('Fetch products error:', error);
+    throw error;
+  }
+}
+
+export async function fetchProductDetails(productId: string): Promise<Product> {
+  try {
+    const response = await fetch(`${API_BASE}/printful/products/${productId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to fetch product details: ${response.status} ${errorText}`);
+    }
+
+    const data = await response.json();
+    const result = data.result || data;
+
+    if (!result?.sync_product) {
+      throw new Error('Invalid product details response format');
+    }
+
+    return {
+      id: result.sync_product.id.toString(),
+      title: result.sync_product.name || 'Untitled Product',
+      description: result.sync_product.description || '',
+      image: result.sync_product.thumbnail_url || '',
+      images: [],
+      source: 'printful',
+      price: parseFloat(result.sync_variants?.[0]?.retail_price || '0'),
+      variants: (result.sync_variants || []).map((variant: any) => ({
+        id: variant.id,
+        name: variant.name || '',
+        color: variant.color || '',
+        size: variant.size || '',
+        price: variant.retail_price ? parseFloat(variant.retail_price) : 0,
+        image: variant.files?.[0]?.preview_url || result.sync_product.thumbnail_url || '',
+      })),
+    };
+  } catch (error) {
+    console.error('Fetch product details error:', error);
     throw error;
   }
 }
