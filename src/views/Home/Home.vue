@@ -23,15 +23,19 @@
             Begin your respawn
           </button>
 
-          <a href="/team-tryouts" class="btn btn-secondary">
-            Learn how it works
-          </a>
-        </div>
+          <div class="col-md-12">
+            <a href="/team-tryouts" class="btn btn-secondary col-md-4 offset-md-4">
+              Learn how it works
+            </a>
+          </div>
 
-        <div class="value-strip" aria-label="Project Respawn benefits">
-          <span>One quest at a time</span>
-          <span>Built around community</span>
-          <span>Designed for real-life growth</span>
+          <div class="col-md-10 offset-md-1">
+            <div class="value-strip" aria-label="Project Respawn benefits">
+              <span>One quest at a time</span>
+              <span>Built around community</span>
+              <span>Designed for real-life growth</span>
+            </div>
+          </div>
         </div>
       </div>
 
