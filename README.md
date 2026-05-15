@@ -58,15 +58,11 @@ src/
    npm run preview
    ```
 
-## Customization
-
-### Theme Colors
-
-```css
-
-Colour scheme set up in styles.css
-
-```
+5. **Generate amplify backend**
+   '''bash
+   npx ampx sandbox
+   npx ampx sandbox delete
+   '''
 
 ### Components
 
@@ -75,18 +71,16 @@ Colour scheme set up in styles.css
 
 ### Pages
 
-Each page is a Vue component in `src/views/`:
-- Home page with news, teams, and events
-- About page with community information
-- Contact page with contact form
-- Our Mission page with mission statement
+Each page is a Vue component in `src/views/`
+Styles in `src/views/`*`view`*`/`*`view`*`.css`:
 
 ## Dependencies
 
-- **vue**: Progressive JavaScript framework
+- **vue**: JavaScript framework
 - **vue-router**: Official router for Vue
 - **bootstrap**: CSS framework for responsive design
-- **vite**: Next generation frontend tooling
+- **vite**: Frontend tooling
+- **amplify**: aws backend
 
 ## Browser Support
 Modern browsers (Chrome, Firefox, Safari, Edge)
