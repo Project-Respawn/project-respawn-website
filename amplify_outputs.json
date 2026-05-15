@@ -105,5 +105,41 @@
       "nonModels": {}
     }
   },
-  "version": "1.4"
+  "storage": {
+    "aws_region": "eu-north-1",
+    "bucket_name": "amplify-projectrespawnweb-projectrespawnstoragebuc-c6kdeigd3ekx",
+    "buckets": [
+      {
+        "name": "projectRespawnStorage",
+        "bucket_name": "amplify-projectrespawnweb-projectrespawnstoragebuc-c6kdeigd3ekx",
+        "aws_region": "eu-north-1",
+        "paths": {
+          "public/*": {
+            "authenticated": [
+              "get",
+              "list",
+              "write"
+            ]
+          },
+          "private/${cognito-identity.amazonaws.com:sub}/*": {
+            "entityidentity": [
+              "get",
+              "list",
+              "write"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "version": "1.4",
+  "custom": {
+    "API": {
+      "projectRespawnApi": {
+        "endpoint": "https://26xeluise4.execute-api.eu-north-1.amazonaws.com/",
+        "region": "eu-north-1",
+        "apiName": "projectRespawnApi"
+      }
+    }
+  }
 }
