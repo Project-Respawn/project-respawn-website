@@ -40,9 +40,9 @@
         <p>
           See your growth. Track the moments that matter and celebrate the wins that used to feel impossible.
         </p>
-        <p>
+        <!-- <p>
           More info here: <router-link to="/about/roles">About the roles</router-link>
-        </p>
+        </p> -->
       </div>
 
       <div class="card">
