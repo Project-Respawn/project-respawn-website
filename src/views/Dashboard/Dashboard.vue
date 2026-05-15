@@ -240,6 +240,17 @@
 </template>
 
 <script>
+
+import { getCurrentUser, fetchAuthSession, signOut } from 'aws-amplify/auth';
+import { generateClient } from 'aws-amplify/data';
+import outputs from '../../amplify_outputs.json';
+
+import { Amplify } from 'aws-amplify';
+
+Amplify.configure(outputs);
+
+const client = generateClient();
+
 const SUPER_ADMIN_EMAILS = [
   "admin@respawn.gg",
   "superadmin@respawn.gg",
@@ -349,18 +360,30 @@ export default {
 
     async fetchUsers() {
       this.loadingUsers = true;
-      // ── REPLACE WITH YOUR REAL API CALL ──────────────────────────────────
-      // const res = await fetch("/api/admin/users");
-      // const data = await res.json();
-      // this.users = data.users.map((u, i) => ({ ...u, avatarColor: AVATAR_COLORS[i % AVATAR_COLORS.length], initials: u.name.split(" ").map(n => n[0]).join("").toUpperCase() }));
-      // ─────────────────────────────────────────────────────────────────────
-      await new Promise((r) => setTimeout(r, 800));
-      this.users = MOCK_USERS.map((u, i) => ({
-        ...u,
-        avatarColor: AVATAR_COLORS[i % AVATAR_COLORS.length],
-        initials: u.name.split(" ").map((n) => n[0]).join("").toUpperCase(),
-      }));
-      this.loadingUsers = false;
+
+      try {
+        const { data, errors } = await client.queries.listAdminUsers();
+
+        if (errors?.length) {
+          throw new Error(errors.map((e) => e.message).join(', '));
+        }
+
+        this.users = (data || []).map((u, i) => ({
+          ...u,
+          avatarColor: AVATAR_COLORS[i % AVATAR_COLORS.length],
+          initials: (u.name || u.email || u.username || 'U')
+            .split(' ')
+            .map((n) => n[0])
+            .join('')
+            .toUpperCase()
+            .slice(0, 2),
+        }));
+      } catch (error) {
+        console.error(error);
+        this.showToast('Failed to fetch users');
+      } finally {
+        this.loadingUsers = false;
+      }
     },
 
     openRoleModal(user) {
@@ -382,22 +405,31 @@ export default {
     },
 
     async saveRoles() {
-      const user = this.roleModalUser;
-      let roles = [...this.pendingRoles];
-      // Always keep member unless banned
-      if (!roles.includes("banned") && !roles.includes("member")) roles.push("member");
-      user.roles = roles;
+      if (!this.roleModalUser) return;
 
-      // ── REPLACE WITH YOUR REAL API CALL ──────────────────────────────────
-      // await fetch(`/api/admin/users/${user.id}/roles`, {
-      //   method: "PATCH",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({ roles }),
-      // });
-      // ─────────────────────────────────────────────────────────────────────
+      this.savingRoles = true;
 
-      this.showToast(`${user.name}'s roles updated`);
-      this.closeRoleModal();
+      try {
+        const roles = [...new Set([...this.pendingRoles, 'Member'])];
+
+        const { data, errors } = await client.mutations.updateUserRoles({
+          username: this.roleModalUser.username || this.roleModalUser.id,
+          roles,
+        });
+
+        if (errors?.length) {
+          throw new Error(errors.map((e) => e.message).join(', '));
+        }
+
+        this.roleModalUser.roles = data.roles;
+        this.showToast(`${this.roleModalUser.name}'s roles updated`);
+        this.closeRoleModal();
+      } catch (error) {
+        console.error(error);
+        this.showToast('Failed to update roles');
+      } finally {
+        this.savingRoles = false;
+      }
     },
 
     showToast(message) {
