@@ -1,40 +1,31 @@
 <template>
   <div class="dashboard-wrapper">
-    <!-- AUTH MODAL -->
-    <div v-if="!isAuthenticated" class="modal-overlay">
+    <div v-if="authChecking" class="modal-overlay">
       <div class="auth-modal">
         <div class="modal-glow"></div>
         <div class="modal-header">
-          <p class="modal-subtitle">Enter your super admin email to continue</p>
+          <p class="modal-subtitle">Checking your dashboard permissions...</p>
         </div>
-
-        <div class="form-group">
-          <label class="form-label">Email Address</label>
-          <input
-            v-model="authEmail"
-            type="email"
-            class="form-input"
-            placeholder="Enter email"
-            @keyup.enter="handleAuth"
-            :class="{ 'input-error': authError }"
-          />
-          <p v-if="authError" class="error-text">{{ authError }}</p>
-        </div>
-
-        <button class="btn-primary" @click="handleAuth" :disabled="authLoading">
-          <span v-if="!authLoading">Access Dashboard</span>
-          <span v-else class="loading-dots">Verifying<span>.</span><span>.</span><span>.</span></span>
-        </button>
-
-        <p class="modal-footer-note">
-          Access is restricted to authorized super admins only.
-        </p>
+        <div class="spinner" style="margin: 12px auto 0;"></div>
       </div>
     </div>
 
-    <!-- DASHBOARD CONTENT -->
+    <div v-else-if="authError && !isAuthenticated" class="modal-overlay">
+      <div class="auth-modal">
+        <div class="modal-glow"></div>
+        <div class="modal-header">
+          <p class="modal-subtitle">Access restricted</p>
+        </div>
+
+        <p class="error-text" style="margin-bottom: 16px;">{{ authError }}</p>
+
+        <button class="btn-primary" @click="handleSignOut">
+          Sign Out
+        </button>
+      </div>
+    </div>
+
     <div v-if="isAuthenticated" class="dashboard">
-      <!-- Sidebar -->
       <aside class="sidebar">
         <div class="sidebar-brand">
           <div class="brand-dot"></div>
@@ -56,9 +47,9 @@
 
         <div class="sidebar-footer">
           <div class="admin-chip">
-            <div class="chip-avatar">SA</div>
+            <div class="chip-avatar">{{ currentAdminInitials }}</div>
             <div class="chip-info">
-              <span class="chip-name">Super Admin</span>
+              <span class="chip-name">{{ currentAdminPrimaryRoleLabel }}</span>
               <span class="chip-email">{{ adminEmail }}</span>
             </div>
           </div>
@@ -66,7 +57,6 @@
         </div>
       </aside>
 
-      <!-- Main Content -->
       <main class="dashboard-main">
         <div class="dash-header">
           <div>
@@ -79,13 +69,12 @@
               <span class="stat-lbl">Total Users</span>
             </div>
             <div class="stat-pill">
-              <span class="stat-num">{{ users.filter(u => u.roles.some(r => r !== 'member')).length }}</span>
+              <span class="stat-num">{{ users.filter(u => u.roles.some(r => r !== 'Member')).length }}</span>
               <span class="stat-lbl">Assigned Roles</span>
             </div>
           </div>
         </div>
 
-        <!-- Toolbar -->
         <div class="toolbar">
           <div class="search-wrap">
             <span class="search-icon">🔍</span>
@@ -96,6 +85,7 @@
               placeholder="Search by name or email..."
             />
           </div>
+
           <div class="filter-group">
             <button
               v-for="f in roleFilters"
@@ -107,13 +97,13 @@
               {{ f.label }}
             </button>
           </div>
+
           <button class="btn-fetch" @click="fetchUsers" :disabled="loadingUsers">
             <span v-if="!loadingUsers">↻ Refresh</span>
             <span v-else>Loading...</span>
           </button>
         </div>
 
-        <!-- Table -->
         <div class="table-container">
           <div v-if="loadingUsers" class="table-loading">
             <div class="spinner"></div>
@@ -136,36 +126,45 @@
                   v-for="user in filteredUsers"
                   :key="user.id"
                   class="user-row"
-                  :class="{ 'row-highlight': user.roles.some(r => r !== 'member') }"
+                  :class="{ 'row-highlight': user.roles.some(r => r !== 'Member') }"
                 >
                   <td class="user-cell">
-                    <div class="user-avatar" :style="{ background: user.avatarColor }">{{ user.initials }}</div>
+                    <div class="user-avatar" :style="{ background: user.avatarColor }">
+                      {{ user.initials }}
+                    </div>
                     <div class="user-info">
                       <span class="user-name">{{ user.name }}</span>
                       <span class="user-email">{{ user.email }}</span>
                     </div>
                   </td>
-                  <td class="meta-cell">{{ user.joined }}</td>
+
+                  <td class="meta-cell">{{ user.joined || '—' }}</td>
+
                   <td class="roles-cell">
                     <div class="role-badges">
                       <span
                         v-for="role in user.roles"
                         :key="role"
                         class="role-badge"
-                        :class="`role-${role}`"
+                        :class="roleClass(role)"
                       >
                         {{ ROLE_DEFINITIONS[role]?.label || role }}
                       </span>
                     </div>
                   </td>
+
                   <td>
-                    <button class="btn-manage" @click="openRoleModal(user)">Edit Roles</button>
+                    <button class="btn-manage" @click="openRoleModal(user)">
+                      Edit Roles
+                    </button>
                   </td>
+
                   <td>
                     <span class="status-dot" :class="user.online ? 'online' : 'offline'"></span>
                     <span class="status-text">{{ user.online ? 'Online' : 'Offline' }}</span>
                   </td>
                 </tr>
+
                 <tr v-if="filteredUsers.length === 0">
                   <td colspan="5" class="empty-state">No users found matching your search.</td>
                 </tr>
@@ -180,7 +179,6 @@
       </main>
     </div>
 
-    <!-- ROLE ASSIGNMENT MODAL -->
     <transition name="fade">
       <div v-if="roleModalUser" class="modal-overlay" @click.self="closeRoleModal">
         <div class="role-modal">
@@ -197,7 +195,9 @@
             <button class="btn-close" @click="closeRoleModal">✕</button>
           </div>
 
-          <p class="role-modal-hint">Select all roles that apply. Users can hold multiple roles.</p>
+          <p class="role-modal-hint">
+            Select all roles that apply. Users can hold multiple roles. Member is the default role and stays enabled.
+          </p>
 
           <div class="role-groups">
             <div v-for="group in roleGroups" :key="group.label" class="role-group">
@@ -207,13 +207,13 @@
                   v-for="role in group.roles"
                   :key="role"
                   class="role-checkbox-item"
-                  :class="{ checked: pendingRoles.includes(role), disabled: role === 'member' }"
+                  :class="{ checked: pendingRoles.includes(role), disabled: role === 'Member' }"
                 >
                   <input
                     type="checkbox"
                     :value="role"
                     :checked="pendingRoles.includes(role)"
-                    :disabled="role === 'member'"
+                    :disabled="role === 'Member'"
                     @change="toggleRole(role)"
                   />
                   <div class="checkbox-content">
@@ -223,7 +223,13 @@
                       <span class="checkbox-desc">{{ ROLE_DEFINITIONS[role].desc }}</span>
                     </div>
                   </div>
-                  <span v-if="pendingRoles.includes(role)" class="role-badge sm" :class="`role-${role}`">Active</span>
+                  <span
+                    v-if="pendingRoles.includes(role)"
+                    class="role-badge sm"
+                    :class="roleClass(role)"
+                  >
+                    Active
+                  </span>
                 </label>
               </div>
             </div>
@@ -231,7 +237,10 @@
 
           <div class="role-modal-footer">
             <button class="btn-cancel" @click="closeRoleModal">Cancel</button>
-            <button class="btn-primary sm" @click="saveRoles">Save Roles</button>
+            <button class="btn-primary sm" @click="saveRoles" :disabled="savingRoles">
+              <span v-if="!savingRoles">Save Roles</span>
+              <span v-else>Saving...</span>
+            </button>
           </div>
         </div>
       </div>
@@ -240,88 +249,65 @@
 </template>
 
 <script>
-
 import { getCurrentUser, fetchAuthSession, signOut } from 'aws-amplify/auth';
-import { generateClient } from 'aws-amplify/data';
-import outputs from '../../amplify_outputs.json';
-
-import { Amplify } from 'aws-amplify';
-
-Amplify.configure(outputs);
-
-const client = generateClient();
-
-const SUPER_ADMIN_EMAILS = [
-  "admin@respawn.gg",
-  "superadmin@respawn.gg",
-  // add your email here
-];
 
 const ROLE_DEFINITIONS = {
-  super_admin:         { label: "Super Admin",         icon: "👑", desc: "Full platform control" },
-  admin:               { label: "Admin",               icon: "🛡️", desc: "Near-full access, trusted staff" },
-  staff:               { label: "Staff",               icon: "🔧", desc: "Internal team, limited admin" },
-  community_moderator: { label: "Community Moderator", icon: "🤝", desc: "Moderates community spaces" },
-  streaming_partner:   { label: "Streaming Partner",   icon: "🎥", desc: "Streamer with partner perks" },
-  affiliate_partner:   { label: "Affiliate Partner",   icon: "🔗", desc: "Affiliate link & promo access" },
-  therapist:           { label: "Therapist",           icon: "🧠", desc: "Mental health professional" },
-  trainer:             { label: "Trainer",             icon: "💪", desc: "Coaching & training access" },
-  beta_member:         { label: "Beta Member",         icon: "🧪", desc: "Early access to beta features" },
-  member:              { label: "Member",              icon: "👤", desc: "Default signed-up user (auto)" },
-  banned:              { label: "Banned",              icon: "🚫", desc: "Blocked from the platform" },
+  SuperAdmin:      { label: 'Super Admin',      icon: '👑', desc: 'Full platform control' },
+  Admin:           { label: 'Admin',            icon: '🛡️', desc: 'Administrative platform access' },
+  Staff:           { label: 'Staff',            icon: '🔧', desc: 'Internal team with management access' },
+  Moderator:       { label: 'Moderator',        icon: '🤝', desc: 'Moderates community and forum spaces' },
+  StreamingPartner:{ label: 'Streaming Partner',icon: '🎥', desc: 'Streamer with partner access' },
+  AffiliatePartner:{ label: 'Affiliate Partner',icon: '🔗', desc: 'Affiliate and partner analytics access' },
+  Therapist:       { label: 'Therapist',        icon: '🧠', desc: 'Mental health professional access' },
+  Trainer:         { label: 'Trainer',          icon: '💪', desc: 'Coaching and training access' },
+  BetaMember:      { label: 'Beta Member',      icon: '🧪', desc: 'Early access to beta areas and features' },
+  Member:          { label: 'Member',           icon: '👤', desc: 'Default signed-up user role' },
 };
 
 const ROLE_GROUPS = [
-  { label: "Platform Staff",  roles: ["super_admin", "admin", "staff"] },
-  { label: "Community",       roles: ["community_moderator", "streaming_partner", "affiliate_partner"] },
-  { label: "Professional",    roles: ["therapist", "trainer"] },
-  { label: "Members",         roles: ["beta_member", "member", "banned"] },
+  { label: 'Platform Staff', roles: ['SuperAdmin', 'Admin', 'Staff'] },
+  { label: 'Community', roles: ['Moderator', 'StreamingPartner', 'AffiliatePartner'] },
+  { label: 'Professional', roles: ['Therapist', 'Trainer'] },
+  { label: 'Members', roles: ['BetaMember', 'Member'] },
 ];
 
-const MOCK_USERS = [
-  { id: 1, name: "Alex Rivera",  email: "alex@example.com",   roles: ["community_moderator", "member"], joined: "Jan 12, 2025", online: true },
-  { id: 2, name: "Jordan Kim",   email: "jordan@example.com", roles: ["member"],                        joined: "Feb 3, 2025",  online: false },
-  { id: 3, name: "Sam Okonkwo",  email: "sam@example.com",    roles: ["beta_member", "member"],         joined: "Mar 19, 2025", online: true },
-  { id: 4, name: "Maya Chen",    email: "maya@example.com",   roles: ["streaming_partner", "member"],   joined: "Apr 1, 2025",  online: true },
-  { id: 5, name: "Dev Patel",    email: "dev@example.com",    roles: ["trainer", "member"],             joined: "Jan 28, 2025", online: false },
-  { id: 6, name: "Riley Scott",  email: "riley@example.com",  roles: ["member"],                        joined: "May 5, 2025",  online: false },
-  { id: 7, name: "Morgan Diaz",  email: "morgan@example.com", roles: ["banned"],                        joined: "Dec 10, 2024", online: false },
+const ROLE_FILTERS = [
+  { label: 'All', value: 'all' },
+  { label: 'Staff', value: 'Staff' },
+  { label: 'Admins', value: 'Admin' },
+  { label: 'Moderators', value: 'Moderator' },
+  { label: 'Partners', value: 'StreamingPartner' },
+  { label: 'Beta', value: 'BetaMember' },
 ];
 
-const AVATAR_COLORS = ["#7c3aed","#2563eb","#059669","#d97706","#dc2626","#7c3aed","#0891b2"];
+const ADMIN_ALLOWED_GROUPS = ['SuperAdmin', 'Admin', 'Staff'];
+const AVATAR_COLORS = ['#7c3aed', '#2563eb', '#059669', '#d97706', '#dc2626', '#0891b2', '#4f46e5'];
 
 export default {
-  name: "Dashboard",
+  name: 'Dashboard',
 
   data() {
     return {
+      authChecking: true,
       isAuthenticated: false,
-      authEmail: "",
-      authError: "",
-      authLoading: false,
-      adminEmail: "",
+      authError: '',
+      adminEmail: '',
+      currentUserGroups: [],
 
-      activeTab: "users",
-      tabs: [{ id: "users", icon: "👥", label: "Users" }],
+      activeTab: 'users',
+      tabs: [{ id: 'users', icon: '👥', label: 'Users' }],
 
       users: [],
       loadingUsers: false,
-      searchQuery: "",
-      roleFilter: "all",
-
-      roleFilters: [
-        { label: "All",        value: "all" },
-        { label: "Staff",      value: "staff" },
-        { label: "Moderators", value: "community_moderator" },
-        { label: "Partners",   value: "streaming_partner" },
-        { label: "Beta",       value: "beta_member" },
-        { label: "Banned",     value: "banned" },
-      ],
+      savingRoles: false,
+      searchQuery: '',
+      roleFilter: 'all',
+      roleFilters: ROLE_FILTERS,
 
       roleModalUser: null,
       pendingRoles: [],
 
-      toastMessage: "",
+      toastMessage: '',
       toastTimer: null,
 
       ROLE_DEFINITIONS,
@@ -335,43 +321,93 @@ export default {
         const matchesSearch =
           u.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
           u.email.toLowerCase().includes(this.searchQuery.toLowerCase());
-        const matchesRole = this.roleFilter === "all" || u.roles.includes(this.roleFilter);
+
+        const matchesRole =
+          this.roleFilter === 'all' || u.roles.includes(this.roleFilter);
+
         return matchesSearch && matchesRole;
       });
     },
+
+    currentAdminPrimaryRoleLabel() {
+      const priority = ['SuperAdmin', 'Admin', 'Staff'];
+      const found = priority.find((role) => this.currentUserGroups.includes(role));
+      return ROLE_DEFINITIONS[found]?.label || 'Admin User';
+    },
+
+    currentAdminInitials() {
+      const label = this.currentAdminPrimaryRoleLabel;
+      return label
+        .split(' ')
+        .map((part) => part[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2);
+    },
+  },
+
+  async mounted() {
+    await this.initAuth();
   },
 
   methods: {
-    async handleAuth() {
-      if (!this.authEmail.trim()) { this.authError = "Please enter your email address."; return; }
-      this.authLoading = true;
-      this.authError = "";
-      await new Promise((r) => setTimeout(r, 900));
-      const email = this.authEmail.trim().toLowerCase();
-      if (SUPER_ADMIN_EMAILS.map((e) => e.toLowerCase()).includes(email)) {
+    async initAuth() {
+      this.authChecking = true;
+      this.authError = '';
+
+      try {
+        const user = await getCurrentUser();
+        const session = await fetchAuthSession();
+
+        const groups =
+          session.tokens?.accessToken?.payload?.['cognito:groups'] ||
+          session.tokens?.idToken?.payload?.['cognito:groups'] ||
+          [];
+
+        if (!Array.isArray(groups) || !groups.some((group) => ADMIN_ALLOWED_GROUPS.includes(group))) {
+          this.isAuthenticated = false;
+          this.authError = 'Access denied. Your account does not have dashboard permissions.';
+          this.authChecking = false;
+          return;
+        }
+
+        this.currentUserGroups = groups;
+        this.adminEmail = user.signInDetails?.loginId || user.username || '';
         this.isAuthenticated = true;
-        this.adminEmail = email;
-        this.fetchUsers();
-      } else {
-        this.authError = "Access denied. This email is not a super admin.";
+
+        await this.fetchUsers();
+      } catch (error) {
+        this.isAuthenticated = false;
+        this.authError = 'You must be signed in to access this dashboard.';
+      } finally {
+        this.authChecking = false;
       }
-      this.authLoading = false;
     },
 
     async fetchUsers() {
       this.loadingUsers = true;
 
       try {
-        const { data, errors } = await client.queries.listAdminUsers();
+        const res = await fetch('/api/admin/users', {
+          credentials: 'include',
+        });
 
-        if (errors?.length) {
-          throw new Error(errors.map((e) => e.message).join(', '));
+        if (!res.ok) {
+          throw new Error('Failed to fetch users');
         }
 
-        this.users = (data || []).map((u, i) => ({
-          ...u,
+        const data = await res.json();
+
+        this.users = (data.users || []).map((u, i) => ({
+          id: u.id || u.username || u.email,
+          username: u.username || '',
+          name: u.name || u.displayName || u.username || 'Unknown User',
+          email: u.email || '',
+          roles: Array.isArray(u.roles) && u.roles.length ? u.roles : ['Member'],
+          joined: u.joined || u.createdAt || '',
+          online: Boolean(u.online),
           avatarColor: AVATAR_COLORS[i % AVATAR_COLORS.length],
-          initials: (u.name || u.email || u.username || 'U')
+          initials: (u.name || u.displayName || u.username || 'U')
             .split(' ')
             .map((n) => n[0])
             .join('')
@@ -379,7 +415,6 @@ export default {
             .slice(0, 2),
         }));
       } catch (error) {
-        console.error(error);
         this.showToast('Failed to fetch users');
       } finally {
         this.loadingUsers = false;
@@ -389,6 +424,9 @@ export default {
     openRoleModal(user) {
       this.roleModalUser = user;
       this.pendingRoles = [...user.roles];
+      if (!this.pendingRoles.includes('Member')) {
+        this.pendingRoles.push('Member');
+      }
     },
 
     closeRoleModal() {
@@ -397,10 +435,16 @@ export default {
     },
 
     toggleRole(role) {
+      if (role === 'Member') return;
+
       if (this.pendingRoles.includes(role)) {
         this.pendingRoles = this.pendingRoles.filter((r) => r !== role);
       } else {
         this.pendingRoles.push(role);
+      }
+
+      if (!this.pendingRoles.includes('Member')) {
+        this.pendingRoles.push('Member');
       }
     },
 
@@ -412,37 +456,53 @@ export default {
       try {
         const roles = [...new Set([...this.pendingRoles, 'Member'])];
 
-        const { data, errors } = await client.mutations.updateUserRoles({
-          username: this.roleModalUser.username || this.roleModalUser.id,
-          roles,
+        const res = await fetch(`/api/admin/users/${encodeURIComponent(this.roleModalUser.id)}/roles`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify({ roles }),
         });
 
-        if (errors?.length) {
-          throw new Error(errors.map((e) => e.message).join(', '));
+        if (!res.ok) {
+          throw new Error('Failed to update roles');
         }
 
-        this.roleModalUser.roles = data.roles;
+        this.roleModalUser.roles = roles;
         this.showToast(`${this.roleModalUser.name}'s roles updated`);
         this.closeRoleModal();
       } catch (error) {
-        console.error(error);
         this.showToast('Failed to update roles');
       } finally {
         this.savingRoles = false;
       }
     },
 
+    roleClass(role) {
+      return `role-${role.replace(/([A-Z])/g, '-$1').toLowerCase().replace(/^-/, '')}`;
+    },
+
     showToast(message) {
       this.toastMessage = message;
       clearTimeout(this.toastTimer);
-      this.toastTimer = setTimeout(() => { this.toastMessage = ""; }, 3000);
+      this.toastTimer = setTimeout(() => {
+        this.toastMessage = '';
+      }, 3000);
     },
 
-    handleSignOut() {
-      this.isAuthenticated = false;
-      this.authEmail = "";
-      this.adminEmail = "";
-      this.users = [];
+    async handleSignOut() {
+      try {
+        await signOut();
+      } catch (error) {
+        // ignore signout cleanup error
+      } finally {
+        this.isAuthenticated = false;
+        this.authError = '';
+        this.adminEmail = '';
+        this.currentUserGroups = [];
+        this.users = [];
+      }
     },
   },
 };
