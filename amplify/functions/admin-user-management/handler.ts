@@ -143,14 +143,14 @@ async function updateUserRoles(username: string, roles: string[]) {
 export const handler: AppSyncResolverHandler<any, any> = async (event) => {
   assertAdminAccess(event);
 
-  switch (event.fieldName) {
-    case 'listAdminUsers':
-      return await listAdminUsers();
+switch (event.info.fieldName) {
+  case 'listAdminUsers':
+    return await listAdminUsers();
 
-    case 'updateUserRoles':
-      return await updateUserRoles(event.arguments.username, event.arguments.roles);
+  case 'updateUserRoles':
+    return await updateUserRoles(event.arguments.username, event.arguments.roles);
 
-    default:
-      throw new Error(`Unknown field: ${event.fieldName}`);
-  }
+  default:
+    throw new Error(`Unknown field: ${event.info.fieldName}`);
+}
 };
