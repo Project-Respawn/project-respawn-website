@@ -1,5 +1,11 @@
 <template>
+  <!-- =========================
+    DASHBOARD WRAPPER
+  ========================== -->
   <div class="dashboard-wrapper">
+    <!-- =========================
+      AUTH CHECKING STATE
+    ========================== -->
     <div v-if="authChecking" class="modal-overlay">
       <div class="auth-modal">
         <div class="modal-glow"></div>
@@ -10,6 +16,9 @@
       </div>
     </div>
 
+    <!-- =========================
+      AUTH ERROR STATE
+    ========================== -->
     <div v-else-if="authError && !isAuthenticated" class="modal-overlay">
       <div class="auth-modal">
         <div class="modal-glow"></div>
@@ -25,7 +34,13 @@
       </div>
     </div>
 
+    <!-- =========================
+      MAIN DASHBOARD
+    ========================== -->
     <div v-if="isAuthenticated" class="dashboard">
+      <!-- =========================
+        SIDEBAR
+      ========================== -->
       <aside class="sidebar">
         <div class="sidebar-brand">
           <div class="brand-dot"></div>
@@ -57,7 +72,13 @@
         </div>
       </aside>
 
+      <!-- =========================
+        MAIN CONTENT
+      ========================== -->
       <main class="dashboard-main">
+        <!-- =========================
+          PAGE HEADER
+        ========================== -->
         <div class="dash-header">
           <div>
             <h1 class="dash-title">User Management</h1>
@@ -75,6 +96,9 @@
           </div>
         </div>
 
+        <!-- =========================
+          TOOLBAR
+        ========================== -->
         <div class="toolbar">
           <div class="search-wrap">
             <span class="search-icon">🔍</span>
@@ -104,6 +128,9 @@
           </button>
         </div>
 
+        <!-- =========================
+          USERS TABLE
+        ========================== -->
         <div class="table-container">
           <div v-if="loadingUsers" class="table-loading">
             <div class="spinner"></div>
@@ -173,12 +200,18 @@
           </div>
         </div>
 
+        <!-- =========================
+          TOAST
+        ========================== -->
         <transition name="toast">
           <div v-if="toastMessage" class="toast">✓ {{ toastMessage }}</div>
         </transition>
       </main>
     </div>
 
+    <!-- =========================
+      ROLE MODAL
+    ========================== -->
     <transition name="fade">
       <div v-if="roleModalUser" class="modal-overlay" @click.self="closeRoleModal">
         <div class="role-modal">
@@ -251,17 +284,20 @@
 <script>
 import { getCurrentUser, fetchAuthSession, signOut } from 'aws-amplify/auth';
 
+/* =========================
+   ROLE CONSTANTS
+========================= */
 const ROLE_DEFINITIONS = {
-  SuperAdmin:      { label: 'Super Admin',      icon: '👑', desc: 'Full platform control' },
-  Admin:           { label: 'Admin',            icon: '🛡️', desc: 'Administrative platform access' },
-  Staff:           { label: 'Staff',            icon: '🔧', desc: 'Internal team with management access' },
-  Moderator:       { label: 'Moderator',        icon: '🤝', desc: 'Moderates community and forum spaces' },
-  StreamingPartner:{ label: 'Streaming Partner',icon: '🎥', desc: 'Streamer with partner access' },
-  AffiliatePartner:{ label: 'Affiliate Partner',icon: '🔗', desc: 'Affiliate and partner analytics access' },
-  Therapist:       { label: 'Therapist',        icon: '🧠', desc: 'Mental health professional access' },
-  Trainer:         { label: 'Trainer',          icon: '💪', desc: 'Coaching and training access' },
-  BetaMember:      { label: 'Beta Member',      icon: '🧪', desc: 'Early access to beta areas and features' },
-  Member:          { label: 'Member',           icon: '👤', desc: 'Default signed-up user role' },
+  SuperAdmin:      { label: 'Super Admin', icon: '👑', desc: 'Full platform control' },
+  Admin:           { label: 'Admin', icon: '🛡️', desc: 'Administrative platform access' },
+  Staff:           { label: 'Staff', icon: '🔧', desc: 'Internal team with management access' },
+  Moderator:       { label: 'Moderator', icon: '🤝', desc: 'Moderates community and forum spaces' },
+  StreamingPartner:{ label: 'Streaming Partner', icon: '🎥', desc: 'Streamer with partner access' },
+  AffiliatePartner:{ label: 'Affiliate Partner', icon: '🔗', desc: 'Affiliate and partner analytics access' },
+  Therapist:       { label: 'Therapist', icon: '🧠', desc: 'Mental health professional access' },
+  Trainer:         { label: 'Trainer', icon: '💪', desc: 'Coaching and training access' },
+  BetaMember:      { label: 'Beta Member', icon: '🧪', desc: 'Early access to beta areas and features' },
+  Member:          { label: 'Member', icon: '👤', desc: 'Default signed-up user role' },
 };
 
 const ROLE_GROUPS = [
@@ -286,6 +322,9 @@ const AVATAR_COLORS = ['#7c3aed', '#2563eb', '#059669', '#d97706', '#dc2626', '#
 export default {
   name: 'Dashboard',
 
+  /* =========================
+     COMPONENT STATE
+  ========================= */
   data() {
     return {
       authChecking: true,
@@ -315,6 +354,9 @@ export default {
     };
   },
 
+  /* =========================
+     COMPUTED VALUES
+  ========================= */
   computed: {
     filteredUsers() {
       return this.users.filter((u) => {
@@ -346,11 +388,20 @@ export default {
     },
   },
 
+  /* =========================
+     LIFECYCLE
+  ========================= */
   async mounted() {
     await this.initAuth();
   },
 
+  /* =========================
+     METHODS
+  ========================= */
   methods: {
+    /* =========================
+       AUTH METHODS
+    ========================= */
     async initAuth() {
       this.authChecking = true;
       this.authError = '';
@@ -384,6 +435,23 @@ export default {
       }
     },
 
+    async handleSignOut() {
+      try {
+        await signOut();
+      } catch (error) {
+        // ignore signout cleanup error
+      } finally {
+        this.isAuthenticated = false;
+        this.authError = '';
+        this.adminEmail = '';
+        this.currentUserGroups = [];
+        this.users = [];
+      }
+    },
+
+    /* =========================
+       USER DATA METHODS
+    ========================= */
     async fetchUsers() {
       this.loadingUsers = true;
 
@@ -415,6 +483,7 @@ export default {
             .slice(0, 2),
         }));
       } catch (error) {
+        console.error('fetchUsers failed:', error);
         this.showToast('Failed to fetch users');
       } finally {
         this.loadingUsers = false;
@@ -479,6 +548,9 @@ export default {
       }
     },
 
+    /* =========================
+       UI HELPERS
+    ========================= */
     roleClass(role) {
       return `role-${role.replace(/([A-Z])/g, '-$1').toLowerCase().replace(/^-/, '')}`;
     },
@@ -489,20 +561,6 @@ export default {
       this.toastTimer = setTimeout(() => {
         this.toastMessage = '';
       }, 3000);
-    },
-
-    async handleSignOut() {
-      try {
-        await signOut();
-      } catch (error) {
-        // ignore signout cleanup error
-      } finally {
-        this.isAuthenticated = false;
-        this.authError = '';
-        this.adminEmail = '';
-        this.currentUserGroups = [];
-        this.users = [];
-      }
     },
   },
 };
