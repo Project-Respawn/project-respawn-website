@@ -250,13 +250,12 @@
 
 <script>
 import { Amplify } from 'aws-amplify';
+<script>
 import { generateClient } from 'aws-amplify/data';
 import { getCurrentUser, fetchAuthSession, signOut } from 'aws-amplify/auth';
-import outputs from '../../amplify_outputs.json';
 
-Amplify.configure(outputs);
 const client = generateClient();
-
+  
 /* =========================
    ROLE CONSTANTS
 ========================= */
