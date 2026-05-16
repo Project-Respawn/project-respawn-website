@@ -1,9 +1,9 @@
 {
   "auth": {
-    "user_pool_id": "eu-north-1_LFYtyjYxA",
+    "user_pool_id": "eu-north-1_JZeBKdmkK",
     "aws_region": "eu-north-1",
-    "user_pool_client_id": "6s17balb71fs4obcdk0ee3e9i2",
-    "identity_pool_id": "eu-north-1:fc4c1d34-b5d8-4b94-aa2e-8b3caf646ac0",
+    "user_pool_client_id": "6sbaihrskf1uunoa99o4ut47ch",
+    "identity_pool_id": "eu-north-1:ac7875a1-bef4-4d04-8a4b-2c2a1c04e534",
     "mfa_methods": [],
     "standard_required_attributes": [
       "email"
@@ -14,7 +14,58 @@
     "user_verification_types": [
       "email"
     ],
-    "groups": [],
+    "groups": [
+      {
+        "SuperAdmin": {
+          "precedence": 0
+        }
+      },
+      {
+        "Admin": {
+          "precedence": 1
+        }
+      },
+      {
+        "Staff": {
+          "precedence": 2
+        }
+      },
+      {
+        "Moderator": {
+          "precedence": 3
+        }
+      },
+      {
+        "Trainer": {
+          "precedence": 4
+        }
+      },
+      {
+        "Therapist": {
+          "precedence": 5
+        }
+      },
+      {
+        "StreamingPartner": {
+          "precedence": 6
+        }
+      },
+      {
+        "AffiliatePartner": {
+          "precedence": 7
+        }
+      },
+      {
+        "Member": {
+          "precedence": 8
+        }
+      },
+      {
+        "BetaMember": {
+          "precedence": 9
+        }
+      }
+    ],
     "mfa_configuration": "NONE",
     "password_policy": {
       "min_length": 8,
@@ -26,92 +77,159 @@
     "unauthenticated_identities_enabled": true
   },
   "data": {
-    "url": "https://ycpvs6t4dvcmnjeb4z6u7kphg4.appsync-api.eu-north-1.amazonaws.com/graphql",
+    "url": "https://cueu3cah6namvn33xcdsxxtovq.appsync-api.eu-north-1.amazonaws.com/graphql",
     "aws_region": "eu-north-1",
-    "default_authorization_type": "AWS_IAM",
+    "default_authorization_type": "AMAZON_COGNITO_USER_POOLS",
     "authorization_types": [
-      "AMAZON_COGNITO_USER_POOLS"
+      "AWS_IAM"
     ],
     "model_introspection": {
       "version": 1,
-      "models": {
-        "Todo": {
-          "name": "Todo",
+      "models": {},
+      "enums": {},
+      "nonModels": {
+        "AdminUser": {
+          "name": "AdminUser",
           "fields": {
             "id": {
               "name": "id",
               "isArray": false,
-              "type": "ID",
+              "type": "String",
               "isRequired": true,
               "attributes": []
             },
-            "content": {
-              "name": "content",
+            "username": {
+              "name": "username",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "email": {
+              "name": "email",
               "isArray": false,
               "type": "String",
               "isRequired": false,
               "attributes": []
             },
-            "createdAt": {
-              "name": "createdAt",
+            "name": {
+              "name": "name",
               "isArray": false,
-              "type": "AWSDateTime",
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "joined": {
+              "name": "joined",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "online": {
+              "name": "online",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false,
+              "attributes": []
+            },
+            "status": {
+              "name": "status",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "enabled": {
+              "name": "enabled",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false,
+              "attributes": []
+            },
+            "roles": {
+              "name": "roles",
+              "isArray": true,
+              "type": "String",
               "isRequired": false,
               "attributes": [],
-              "isReadOnly": true
-            },
-            "updatedAt": {
-              "name": "updatedAt",
+              "isArrayNullable": false
+            }
+          }
+        },
+        "UpdateUserRolesResult": {
+          "name": "UpdateUserRolesResult",
+          "fields": {
+            "success": {
+              "name": "success",
               "isArray": false,
-              "type": "AWSDateTime",
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "username": {
+              "name": "username",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "roles": {
+              "name": "roles",
+              "isArray": true,
+              "type": "String",
               "isRequired": false,
               "attributes": [],
-              "isReadOnly": true
+              "isArrayNullable": false
             }
-          },
-          "syncable": true,
-          "pluralName": "Todos",
-          "attributes": [
-            {
-              "type": "model",
-              "properties": {}
-            },
-            {
-              "type": "auth",
-              "properties": {
-                "rules": [
-                  {
-                    "allow": "public",
-                    "provider": "iam",
-                    "operations": [
-                      "create",
-                      "update",
-                      "delete",
-                      "read"
-                    ]
-                  }
-                ]
-              }
-            }
-          ],
-          "primaryKeyInfo": {
-            "isCustomPrimaryKey": false,
-            "primaryKeyFieldName": "id",
-            "sortKeyFieldNames": []
           }
         }
       },
-      "enums": {},
-      "nonModels": {}
+      "queries": {
+        "listAdminUsers": {
+          "name": "listAdminUsers",
+          "isArray": true,
+          "type": {
+            "nonModel": "AdminUser"
+          },
+          "isRequired": false,
+          "isArrayNullable": false
+        }
+      },
+      "mutations": {
+        "updateUserRoles": {
+          "name": "updateUserRoles",
+          "isArray": false,
+          "type": {
+            "nonModel": "UpdateUserRolesResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "username": {
+              "name": "username",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "roles": {
+              "name": "roles",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "isArrayNullable": false
+            }
+          }
+        }
+      }
     }
   },
   "storage": {
     "aws_region": "eu-north-1",
-    "bucket_name": "amplify-projectrespawnweb-projectrespawnstoragebuc-c6kdeigd3ekx",
+    "bucket_name": "amplify-projectrespawnweb-projectrespawnstoragebuc-oceozihu5aa8",
     "buckets": [
       {
         "name": "projectRespawnStorage",
-        "bucket_name": "amplify-projectrespawnweb-projectrespawnstoragebuc-c6kdeigd3ekx",
+        "bucket_name": "amplify-projectrespawnweb-projectrespawnstoragebuc-oceozihu5aa8",
         "aws_region": "eu-north-1",
         "paths": {
           "public/*": {
@@ -136,7 +254,7 @@
   "custom": {
     "API": {
       "projectRespawnApi": {
-        "endpoint": "https://26xeluise4.execute-api.eu-north-1.amazonaws.com/",
+        "endpoint": "https://y5suf4v9k3.execute-api.eu-north-1.amazonaws.com/",
         "region": "eu-north-1",
         "apiName": "projectRespawnApi"
       }
