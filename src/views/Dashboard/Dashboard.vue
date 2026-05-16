@@ -134,7 +134,7 @@
                     </div>
                     <div class="user-info">
                       <span class="user-name">{{ user.name }}</span>
-                      <span class="user-email">{{ user.email }}</span>
+                      <span class="user-email">{{ user.email || '—' }}</span>
                     </div>
                   </td>
 
@@ -160,8 +160,13 @@
                   </td>
 
                   <td>
-                    <span class="status-dot" :class="user.online ? 'online' : 'offline'"></span>
-                    <span class="status-text">{{ user.online ? 'Online' : 'Offline' }}</span>
+                    <span
+                      class="status-dot"
+                      :class="user.enabled ? 'online' : 'offline'"
+                    ></span>
+                    <span class="status-text">
+                      {{ user.enabled ? 'Enabled' : 'Disabled' }}
+                    </span>
                   </td>
                 </tr>
 
@@ -189,7 +194,7 @@
               </div>
               <div>
                 <div class="user-name">{{ roleModalUser.name }}</div>
-                <div class="user-email">{{ roleModalUser.email }}</div>
+                <div class="user-email">{{ roleModalUser.email || '—' }}</div>
               </div>
             </div>
             <button class="btn-close" @click="closeRoleModal">✕</button>
@@ -249,13 +254,11 @@
 </template>
 
 <script>
-import { Amplify } from 'aws-amplify';
-<script>
 import { generateClient } from 'aws-amplify/data';
 import { getCurrentUser, fetchAuthSession, signOut } from 'aws-amplify/auth';
 
 const client = generateClient();
-  
+
 /* =========================
    ROLE CONSTANTS
 ========================= */
@@ -328,7 +331,7 @@ export default {
       return this.users.filter((u) => {
         const safeName = (u.name || '').toLowerCase();
         const safeEmail = (u.email || '').toLowerCase();
-        const query = this.searchQuery.toLowerCase();
+        const query = (this.searchQuery || '').toLowerCase();
 
         const matchesSearch =
           safeName.includes(query) || safeEmail.includes(query);
@@ -415,7 +418,7 @@ export default {
       try {
         const result = await client.queries.listAdminUsers();
 
-        if (result.errors?.length) {
+        if (result?.errors?.length) {
           console.error('listAdminUsers errors:', result.errors);
           throw new Error('Failed to fetch users');
         }
@@ -435,7 +438,7 @@ export default {
             roles: Array.isArray(u.roles) && u.roles.length ? u.roles : ['Member'],
             joined: u.joined || '',
             online: Boolean(u.online),
-            enabled: Boolean(u.enabled),
+            enabled: typeof u.enabled === 'boolean' ? u.enabled : true,
             status: u.status || '',
             avatarColor: AVATAR_COLORS[i % AVATAR_COLORS.length],
             initials: displayName
@@ -494,7 +497,7 @@ export default {
           roles,
         });
 
-        if (result.errors?.length) {
+        if (result?.errors?.length) {
           console.error('updateUserRoles errors:', result.errors);
           throw new Error('Failed to update roles');
         }
@@ -503,15 +506,15 @@ export default {
           throw new Error('Failed to update roles');
         }
 
-        this.roleModalUser.roles = roles;
-
         const userIndex = this.users.findIndex(
           (u) => u.username === this.roleModalUser.username
         );
+
         if (userIndex !== -1) {
           this.users[userIndex].roles = [...roles];
         }
 
+        this.roleModalUser.roles = [...roles];
         this.showToast(`${this.roleModalUser.name}'s roles updated`);
         this.closeRoleModal();
       } catch (error) {
