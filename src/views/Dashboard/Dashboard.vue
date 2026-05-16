@@ -388,26 +388,22 @@ export default {
       this.loadingUsers = true;
 
       try {
-        const res = await fetch('/api/admin/users', {
-          credentials: 'include',
-        });
+        const response = await client.queries.listAdminUsers();
+        console.log('listAdminUsers full response:', response);
 
-        if (!res.ok) {
-          throw new Error('Failed to fetch users');
+        const { data, errors } = response;
+
+        if (errors?.length) {
+          console.error('listAdminUsers errors:', errors);
+          throw new Error(errors.map((e) => e.message).join(', '));
         }
 
-        const data = await res.json();
+        console.log('listAdminUsers data:', data);
 
-        this.users = (data.users || []).map((u, i) => ({
-          id: u.id || u.username || u.email,
-          username: u.username || '',
-          name: u.name || u.displayName || u.username || 'Unknown User',
-          email: u.email || '',
-          roles: Array.isArray(u.roles) && u.roles.length ? u.roles : ['Member'],
-          joined: u.joined || u.createdAt || '',
-          online: Boolean(u.online),
+        this.users = (data || []).map((u, i) => ({
+          ...u,
           avatarColor: AVATAR_COLORS[i % AVATAR_COLORS.length],
-          initials: (u.name || u.displayName || u.username || 'U')
+          initials: (u.name || u.email || u.username || 'U')
             .split(' ')
             .map((n) => n[0])
             .join('')
@@ -415,6 +411,7 @@ export default {
             .slice(0, 2),
         }));
       } catch (error) {
+        console.error('fetchUsers failed:', error);
         this.showToast('Failed to fetch users');
       } finally {
         this.loadingUsers = false;
