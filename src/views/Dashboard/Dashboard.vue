@@ -388,22 +388,37 @@ export default {
       this.loadingUsers = true;
 
       try {
-        const response = await client.queries.listAdminUsers();
-        console.log('listAdminUsers full response:', response);
+        const res = await fetch('/api/admin/users', {
+          credentials: 'include',
+        });
 
-        const { data, errors } = response;
+        const contentType = res.headers.get('content-type') || '';
+        const rawText = await res.text();
 
-        if (errors?.length) {
-          console.error('listAdminUsers errors:', errors);
-          throw new Error(errors.map((e) => e.message).join(', '));
+        console.log('fetchUsers status:', res.status);
+        console.log('fetchUsers content-type:', contentType);
+        console.log('fetchUsers raw response:', rawText.slice(0, 500));
+
+        if (!res.ok) {
+          throw new Error(`Failed to fetch users: ${res.status}`);
         }
 
-        console.log('listAdminUsers data:', data);
+        if (!contentType.includes('application/json')) {
+          throw new Error('Expected JSON but received non-JSON response');
+        }
 
-        this.users = (data || []).map((u, i) => ({
-          ...u,
+        const data = JSON.parse(rawText);
+
+        this.users = (data.users || []).map((u, i) => ({
+          id: u.id || u.username || u.email,
+          username: u.username || '',
+          name: u.name || u.displayName || u.username || 'Unknown User',
+          email: u.email || '',
+          roles: Array.isArray(u.roles) && u.roles.length ? u.roles : ['Member'],
+          joined: u.joined || u.createdAt || '',
+          online: Boolean(u.online),
           avatarColor: AVATAR_COLORS[i % AVATAR_COLORS.length],
-          initials: (u.name || u.email || u.username || 'U')
+          initials: (u.name || u.displayName || u.username || 'U')
             .split(' ')
             .map((n) => n[0])
             .join('')
