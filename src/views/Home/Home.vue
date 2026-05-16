@@ -29,7 +29,7 @@
             </a>
           </div>
 
-          <div class="col-md-10 offset-md-1">
+          <div class="col-md-12 offset-md-1">
             <div class="value-strip" aria-label="Project Respawn benefits">
               <span>One quest at a time</span>
               <span>Built around community</span>
