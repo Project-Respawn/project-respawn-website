@@ -1,16 +1,22 @@
+import { generateClient } from 'aws-amplify/data';
 import { getCurrentUser, fetchAuthSession, signOut } from 'aws-amplify/auth';
 
+const client = generateClient();
+
+/* =========================
+   ROLE CONSTANTS
+========================= */
 const ROLE_DEFINITIONS = {
-  SuperAdmin:      { label: 'Super Admin',      icon: '👑', desc: 'Full platform control' },
-  Admin:           { label: 'Admin',            icon: '🛡️', desc: 'Administrative platform access' },
-  Staff:           { label: 'Staff',            icon: '🔧', desc: 'Internal team with management access' },
-  Moderator:       { label: 'Moderator',        icon: '🤝', desc: 'Moderates community and forum spaces' },
-  StreamingPartner:{ label: 'Streaming Partner',icon: '🎥', desc: 'Streamer with partner access' },
-  AffiliatePartner:{ label: 'Affiliate Partner',icon: '🔗', desc: 'Affiliate and partner analytics access' },
-  Therapist:       { label: 'Therapist',        icon: '🧠', desc: 'Mental health professional access' },
-  Trainer:         { label: 'Trainer',          icon: '💪', desc: 'Coaching and training access' },
-  BetaMember:      { label: 'Beta Member',      icon: '🧪', desc: 'Early access to beta areas and features' },
-  Member:          { label: 'Member',           icon: '👤', desc: 'Default signed-up user role' },
+  SuperAdmin: { label: 'Super Admin', icon: '👑', desc: 'Full platform control' },
+  Admin: { label: 'Admin', icon: '🛡️', desc: 'Administrative platform access' },
+  Staff: { label: 'Staff', icon: '🔧', desc: 'Internal team with management access' },
+  Moderator: { label: 'Moderator', icon: '🤝', desc: 'Moderates community and forum spaces' },
+  StreamingPartner: { label: 'Streaming Partner', icon: '🎥', desc: 'Streamer with partner access' },
+  AffiliatePartner: { label: 'Affiliate Partner', icon: '🔗', desc: 'Affiliate and partner analytics access' },
+  Therapist: { label: 'Therapist', icon: '🧠', desc: 'Mental health professional access' },
+  Trainer: { label: 'Trainer', icon: '💪', desc: 'Coaching and training access' },
+  BetaMember: { label: 'Beta Member', icon: '🧪', desc: 'Early access to beta areas and features' },
+  Member: { label: 'Member', icon: '👤', desc: 'Default signed-up user role' },
 };
 
 const ROLE_GROUPS = [
@@ -67,9 +73,12 @@ export default {
   computed: {
     filteredUsers() {
       return this.users.filter((u) => {
+        const safeName = (u.name || '').toLowerCase();
+        const safeEmail = (u.email || '').toLowerCase();
+        const query = (this.searchQuery || '').toLowerCase();
+
         const matchesSearch =
-          u.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-          u.email.toLowerCase().includes(this.searchQuery.toLowerCase());
+          safeName.includes(query) || safeEmail.includes(query);
 
         const matchesRole =
           this.roleFilter === 'all' || u.roles.includes(this.roleFilter);
@@ -116,7 +125,6 @@ export default {
         if (!Array.isArray(groups) || !groups.some((group) => ADMIN_ALLOWED_GROUPS.includes(group))) {
           this.isAuthenticated = false;
           this.authError = 'Access denied. Your account does not have dashboard permissions.';
-          this.authChecking = false;
           return;
         }
 
@@ -126,6 +134,7 @@ export default {
 
         await this.fetchUsers();
       } catch (error) {
+        console.error('initAuth failed:', error);
         this.isAuthenticated = false;
         this.authError = 'You must be signed in to access this dashboard.';
       } finally {
@@ -133,47 +142,59 @@ export default {
       }
     },
 
+    async handleSignOut() {
+      try {
+        await signOut();
+      } catch (error) {
+        console.error('signOut failed:', error);
+      } finally {
+        this.isAuthenticated = false;
+        this.authError = '';
+        this.adminEmail = '';
+        this.currentUserGroups = [];
+        this.users = [];
+
+        this.$router.push('/'); 
+      }
+    },
+
     async fetchUsers() {
       this.loadingUsers = true;
 
       try {
-        const res = await fetch('/api/admin/users', {
-          credentials: 'include',
+        const result = await client.queries.listAdminUsers();
+
+        if (result?.errors?.length) {
+          console.error('listAdminUsers errors:', result.errors);
+          throw new Error('Failed to fetch users');
+        }
+
+        const rawUsers = Array.isArray(result?.data)
+          ? result.data
+          : result?.data?.users || [];
+
+        this.users = rawUsers.map((u, i) => {
+          const displayName = u.name || u.username || u.email || 'Unknown User';
+
+          return {
+            id: u.id || u.username || u.email,
+            username: u.username || '',
+            name: displayName,
+            email: u.email || '',
+            roles: Array.isArray(u.roles) && u.roles.length ? u.roles : ['Member'],
+            joined: u.joined || '',
+            online: Boolean(u.online),
+            enabled: typeof u.enabled === 'boolean' ? u.enabled : true,
+            status: u.status || '',
+            avatarColor: AVATAR_COLORS[i % AVATAR_COLORS.length],
+            initials: displayName
+              .split(' ')
+              .map((n) => n[0])
+              .join('')
+              .toUpperCase()
+              .slice(0, 2),
+          };
         });
-
-        const contentType = res.headers.get('content-type') || '';
-        const rawText = await res.text();
-
-        console.log('fetchUsers status:', res.status);
-        console.log('fetchUsers content-type:', contentType);
-        console.log('fetchUsers raw response:', rawText.slice(0, 500));
-
-        if (!res.ok) {
-          throw new Error(`Failed to fetch users: ${res.status}`);
-        }
-
-        if (!contentType.includes('application/json')) {
-          throw new Error('Expected JSON but received non-JSON response');
-        }
-
-        const data = JSON.parse(rawText);
-
-        this.users = (data.users || []).map((u, i) => ({
-          id: u.id || u.username || u.email,
-          username: u.username || '',
-          name: u.name || u.displayName || u.username || 'Unknown User',
-          email: u.email || '',
-          roles: Array.isArray(u.roles) && u.roles.length ? u.roles : ['Member'],
-          joined: u.joined || u.createdAt || '',
-          online: Boolean(u.online),
-          avatarColor: AVATAR_COLORS[i % AVATAR_COLORS.length],
-          initials: (u.name || u.displayName || u.username || 'U')
-            .split(' ')
-            .map((n) => n[0])
-            .join('')
-            .toUpperCase()
-            .slice(0, 2),
-        }));
       } catch (error) {
         console.error('fetchUsers failed:', error);
         this.showToast('Failed to fetch users');
@@ -217,23 +238,33 @@ export default {
       try {
         const roles = [...new Set([...this.pendingRoles, 'Member'])];
 
-        const res = await fetch(`/api/admin/users/${encodeURIComponent(this.roleModalUser.id)}/roles`, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-          body: JSON.stringify({ roles }),
+        const result = await client.mutations.updateUserRoles({
+          username: this.roleModalUser.username,
+          roles,
         });
 
-        if (!res.ok) {
+        if (result?.errors?.length) {
+          console.error('updateUserRoles errors:', result.errors);
           throw new Error('Failed to update roles');
         }
 
-        this.roleModalUser.roles = roles;
+        if (!result?.data?.success) {
+          throw new Error('Failed to update roles');
+        }
+
+        const userIndex = this.users.findIndex(
+          (u) => u.username === this.roleModalUser.username
+        );
+
+        if (userIndex !== -1) {
+          this.users[userIndex].roles = [...roles];
+        }
+
+        this.roleModalUser.roles = [...roles];
         this.showToast(`${this.roleModalUser.name}'s roles updated`);
         this.closeRoleModal();
       } catch (error) {
+        console.error('saveRoles failed:', error);
         this.showToast('Failed to update roles');
       } finally {
         this.savingRoles = false;
@@ -250,21 +281,6 @@ export default {
       this.toastTimer = setTimeout(() => {
         this.toastMessage = '';
       }, 3000);
-    },
-
-    async handleSignOut() {
-      try {
-        await signOut();
-      } catch (error) {
-        // ignore signout cleanup error
-      } finally {
-        this.isAuthenticated = false;
-        this.authError = '';
-        this.adminEmail = '';
-        this.currentUserGroups = [];
-        this.users = [];
-        this.$router.push('/'); 
-      }
     },
   },
 };
