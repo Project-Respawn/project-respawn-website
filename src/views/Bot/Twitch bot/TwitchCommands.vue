@@ -359,11 +359,11 @@
             >
               <div class="cell toggle-cell" @click.stop>
                 <label class="toggle-switch">
-                  <input
-                    type="checkbox"
-                    :checked="suggested.isEnabled"
-                    @change="enableSuggestedCommand(suggested)"
-                  />
+              <input
+                type="checkbox"
+                :checked="suggested.isEnabled"
+                @change="toggleSuggestedCommand(suggested)"
+                />
                   <span></span>
                 </label>
               </div>
@@ -457,12 +457,11 @@
                 </button>
 
                 <button
-                  class="primary-btn"
-                  :disabled="suggested.isEnabled"
-                  @click.stop="enableSuggestedCommand(suggested)"
-                >
-                  {{ suggested.isEnabled ? 'Already Enabled' : 'Enable Command' }}
-                </button>
+                class="primary-btn"
+                @click.stop="toggleSuggestedCommand(suggested)"
+              >
+                {{ suggested.isEnabled ? 'Disable Command' : 'Enable Command' }}
+              </button>
               </div>
             </div>
           </div>
@@ -722,15 +721,19 @@ export default {
       }
     },
 
-    syncSuggestedStates() {
-      this.suggestedCommands = this.suggestedCommands.map(suggested => {
-        const exists = this.commands.some(command => command.name === suggested.name);
-        return {
-          ...suggested,
-          isEnabled: exists
-        };
-      });
-    },
+        syncSuggestedStates() {
+        this.suggestedCommands = this.suggestedCommands.map(suggested => {
+          const existing = this.commands.find(command => {
+            return String(command.name || '').trim().toLowerCase() === String(suggested.name || '').trim().toLowerCase();
+          });
+
+          return {
+            ...suggested,
+            isEnabled: existing ? existing.enabled === true : false,
+            savedCommandId: existing ? existing.id : null
+          };
+        });
+      },
 
     /* Command operations – create / update / delete */
     async addNewCommand() {
@@ -827,39 +830,68 @@ export default {
       }
     },
 
-    async enableSuggestedCommand(suggested) {
-      if (suggested.isEnabled || !this.streamerId) return;
+      async toggleSuggestedCommand(suggested) {
+        if (!suggested || !this.streamerId) return;
 
-      try {
-        const response = await client.models.TwitchCommand.create({
-          streamerId: this.streamerId,
-          name: suggested.name,
-          reply: suggested.reply,
-          enabled: true,
-          cooldownSeconds: suggested.cooldownSeconds,
-          isCustom: false,
-          category: suggested.category,
-          permissionLevel: suggested.permissionLevel
-        });
-
-        if (response.data) {
-          this.commands.unshift({
-            ...response.data,
-            category: response.data.category || suggested.category || 'Suggested',
-            permissionLevel:
-              response.data.permissionLevel || suggested.permissionLevel || 'everyone'
+        try {
+          const existing = this.commands.find(command => {
+            return String(command.name || '').trim().toLowerCase() === String(suggested.name || '').trim().toLowerCase();
           });
 
+          if (existing) {
+            const nextEnabled = !existing.enabled;
+
+            const response = await client.models.TwitchCommand.update({
+              id: existing.id,
+              streamerId: this.streamerId,
+              name: suggested.name,
+              reply: suggested.reply,
+              enabled: nextEnabled,
+              cooldownSeconds: suggested.cooldownSeconds,
+              isCustom: existing.isCustom ?? false,
+              category: suggested.category,
+              permissionLevel: suggested.permissionLevel
+            });
+
+            if (response.data) {
+              const index = this.commands.findIndex(item => item.id === response.data.id);
+
+              if (index !== -1) {
+                this.commands.splice(index, 1, {
+                  ...response.data,
+                  category: response.data.category || suggested.category || 'Suggested',
+                  permissionLevel:
+                    response.data.permissionLevel || suggested.permissionLevel || 'everyone'
+                });
+              }
+            }
+          } else {
+            const response = await client.models.TwitchCommand.create({
+              streamerId: this.streamerId,
+              name: suggested.name,
+              reply: suggested.reply,
+              enabled: true,
+              cooldownSeconds: suggested.cooldownSeconds,
+              isCustom: false,
+              category: suggested.category,
+              permissionLevel: suggested.permissionLevel
+            });
+
+            if (response.data) {
+              this.commands.unshift({
+                ...response.data,
+                category: response.data.category || suggested.category || 'Suggested',
+                permissionLevel:
+                  response.data.permissionLevel || suggested.permissionLevel || 'everyone'
+              });
+            }
+          }
+
           this.syncSuggestedStates();
-          this.activeTab = 'custom';
-          this.expandedCommandId = response.data.id;
+        } catch (error) {
+          console.error('Failed to toggle suggested command:', error);
         }
-      } catch (error) {
-        console.error('Failed to enable suggested command:', error);
-      }
-    }
-  }
-};
+      },
 </script>
 
 <!-- =========================================================
