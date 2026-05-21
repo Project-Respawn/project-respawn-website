@@ -6,7 +6,8 @@
         <h1>Turn your stream into a community that grows beyond the broadcast.</h1>
         <p class="hero-copy">
           Project Respawn helps streamers turn their communities into something more meaningful through
-          interactive quests, cross-platform bot tools, and a mission focused on building real-life social confidence.
+          interactive quests, a viewer progression system, cross-platform bot tools, and a mission focused
+          on helping people build real-life social confidence over time.
         </p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="#apply">Apply as a Streamer</a>
@@ -14,6 +15,7 @@
         </div>
         <p class="hero-note">
           Accepted creators get access to our integrated Twitch + Discord dashboard during beta.
+          Built for both competitive creators and community-first streamers.
         </p>
       </div>
     </section>
@@ -28,9 +30,55 @@
           because creators shape the culture, tone, and behaviour of the communities around them.
         </p>
         <p>
-          This is not just about adding another bot to a server. It is about giving creators tools that help
-          their audiences participate, connect, and take small steps forward both online and offline.
+          This is not just about adding another bot to a server. It is about giving creators tools and systems that help
+          their audiences participate, connect, build momentum, and take small steps forward both online and offline.
         </p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="container narrow">
+        <p class="section-label">What Project Respawn actually is</p>
+        <h2>More than a bot, more than a dashboard.</h2>
+        <p>
+          Project Respawn is designed as a wider creator-led system, not just a Twitch bot or Discord utility.
+          At the centre of it is a viewer experience where community members can sign up, take part in quests,
+          gain EXP, and build confidence through participation-based progression.
+        </p>
+        <p>
+          Around that sits the creator dashboard and the Twitch + Discord integration layer, which help streamers run the experience,
+          connect activity across platforms, and keep engagement alive between streams instead of letting it end when the broadcast does.
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section alt-surface">
+      <div class="container">
+        <p class="section-label">How the system is structured</p>
+        <h2>Three connected layers working together.</h2>
+        <div class="feature-card-grid three-up">
+          <article class="feature-card">
+            <h3>Viewer experience</h3>
+            <p>
+              Viewers join Project Respawn, complete quests, gain EXP, and progress over time through activities designed
+              to encourage participation, confidence-building, and personal momentum.
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3>Creator dashboard</h3>
+            <p>
+              Streamers get a central dashboard to manage community experiences, configure quest systems,
+              customise engagement prompts, and shape how Project Respawn fits their content.
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3>Twitch + Discord tools</h3>
+            <p>
+              Cross-platform bot tools, prompts, messages, and integrations help keep engagement flowing across stream and Discord,
+              while also supporting validation, continuity, and community interaction between broadcasts.
+            </p>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -45,6 +93,10 @@
               Instead of managing disconnected tools, commands, and community systems across multiple platforms,
               you can customise your setup from one dashboard and run a more joined-up community experience.
             </p>
+            <p>
+              The goal is not just convenience. It is to give you a stronger way to run community participation,
+              shape the viewer journey, and support engagement that continues beyond live chat.
+            </p>
           </div>
           <div class="feature-card-grid">
             <article class="feature-card">
@@ -53,11 +105,11 @@
             </article>
             <article class="feature-card">
               <h3>Custom bot messages</h3>
-              <p>Configure live messages, welcome messages, and engagement prompts.</p>
+              <p>Configure live messages, welcome messages, go-live announcements, and engagement prompts.</p>
             </article>
             <article class="feature-card">
               <h3>Quest management</h3>
-              <p>Run Project Respawn quest experiences across both platforms.</p>
+              <p>Run Project Respawn quest experiences across both platforms and tie them into your wider creator system.</p>
             </article>
             <article class="feature-card">
               <h3>Community continuity</h3>
@@ -78,6 +130,7 @@
           <li>Run confidence-based quests and participation prompts.</li>
           <li>Keep engagement flowing between streams, not just during live hours.</li>
           <li>Help shape future tools through direct beta feedback.</li>
+          <li>Create a more trackable and meaningful participation loop for your viewers.</li>
         </ul>
       </div>
     </section>
@@ -99,13 +152,13 @@
           </article>
           <article class="step-card">
             <span class="step-number">03</span>
-            <h3>Access the dashboard</h3>
-            <p>You get access to the creator dashboard and begin testing the tools that fit your content and community.</p>
+            <h3>Access the dashboard and system</h3>
+            <p>You get access to the creator dashboard and begin testing the tools, quests, and community systems that fit your content.</p>
           </article>
           <article class="step-card">
             <span class="step-number">04</span>
             <h3>Run the experience</h3>
-            <p>Your viewers take part through quests, prompts, and cross-platform engagement designed to encourage participation and confidence-building.</p>
+            <p>Your viewers take part through quests, prompts, progression, and cross-platform engagement designed to encourage participation and confidence-building.</p>
           </article>
         </div>
       </div>
@@ -123,8 +176,9 @@
           <article class="partner-card">
             <h3>Competitive streamers</h3>
             <p>
-              For creators whose main focus is high-level gameplay, ranked grind, and competition.
-              You represent our org on the ladder, in tournaments, and in community events.
+              For creators whose main focus is high-level gameplay, ranked grind, competition, and representing an org.
+              You may not think of yourself as community-first, but your audience can still benefit from stronger participation systems,
+              better continuity, and deeper engagement around your content.
             </p>
             <ul class="bullet-list compact">
               <li>Stream and compete around a primary title consistently.</li>
@@ -140,6 +194,7 @@
             <p>
               For creators who want their channel to be a safe, supportive place where viewers can take small steps
               toward building confidence in real life through quests, conversation, and community support.
+              This route is especially aligned with streamers who want their community to become something more active and meaningful over time.
             </p>
             <ul class="bullet-list compact">
               <li>Run Project Respawn quests regularly on stream.</li>
@@ -152,8 +207,8 @@
         </div>
         <div class="clarification-box">
           <p>
-            You do not need to be a pro player to apply. Some partners will fit clearly into one path, while others
-            may overlap both. In the application, we’ll ask which route fits you best and why.
+            You do not need to be a typical “community streamer” to apply. Some partners will fit clearly into one path,
+            while others may overlap both. In the application, we’ll ask which route fits you best and why.
           </p>
         </div>
       </div>
@@ -177,7 +232,7 @@
           <ul class="bullet-list compact">
             <li>Early access to the integrated Twitch + Discord dashboard and bot tools at no cost to you.</li>
             <li>A direct feedback loop with the founding team so your ideas and needs influence what we build next.</li>
-            <li>Priority when we test new features, quest types, and community systems.</li>
+            <li>Priority when we test new features, quest types, progression systems, and community tools.</li>
             <li>A chance to help shape how Project Respawn supports confidence-building in your community from day one.</li>
           </ul>
         </div>
@@ -221,6 +276,7 @@
           <li>Creators willing to test new formats and give honest feedback.</li>
           <li>Communities that value participation, respect, and growth.</li>
           <li>People who can clearly explain why they are a good fit for Project Respawn.</li>
+          <li>Creators with either strong competitive identity, strong community culture, or a blend of both.</li>
         </ul>
       </div>
     </section>
@@ -252,6 +308,22 @@
         <h2>Common questions</h2>
 
         <details class="faq-item">
+          <summary>Is this just a bot?</summary>
+          <p>
+            No. Bot tools are only one part of the system. Project Respawn also includes a wider viewer experience,
+            creator dashboard, quests, progression, and community participation systems designed to continue beyond the stream itself.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary>What does the viewer side actually do?</summary>
+          <p>
+            Viewers join Project Respawn, take part in quests and participation-based activities, gain progression over time,
+            and become part of a system meant to encourage stronger engagement and confidence-building.
+          </p>
+        </details>
+
+        <details class="faq-item">
           <summary>Is the dashboard free?</summary>
           <p>
             Yes. Accepted streamers in beta get access to the Project Respawn Twitch + Discord tools and dashboard at no cost.
@@ -270,6 +342,14 @@
           <summary>Is this only for gaming creators?</summary>
           <p>
             Gaming and community-focused creators are the most natural fit right now, but anyone can apply if they feel aligned with the mission and format.
+          </p>
+        </details>
+
+        <details class="faq-item">
+          <summary>Is this only for community-focused creators?</summary>
+          <p>
+            No. Project Respawn is built for both competitive creators and community-first streamers. You do not need to be known for support-focused content
+            to be a fit if your audience would benefit from stronger engagement, continuity, and shared progression.
           </p>
         </details>
 

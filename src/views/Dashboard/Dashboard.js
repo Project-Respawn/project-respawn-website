@@ -154,7 +154,9 @@ export default {
         this.currentUserGroups = [];
         this.users = [];
 
-        this.$router.push('/'); 
+        if (this.$router) {
+          this.$router.push('/');
+        }
       }
     },
 
@@ -165,8 +167,9 @@ export default {
         const result = await client.queries.listAdminUsers();
 
         if (result?.errors?.length) {
-          console.error('listAdminUsers errors:', result.errors);
-          throw new Error('Failed to fetch users');
+          console.error('listAdminUsers full result:', result);
+          console.error('listAdminUsers errors JSON:', JSON.stringify(result.errors, null, 2));
+          throw new Error(result.errors[0]?.message || 'Failed to fetch users');
         }
 
         const rawUsers = Array.isArray(result?.data)
@@ -197,7 +200,7 @@ export default {
         });
       } catch (error) {
         console.error('fetchUsers failed:', error);
-        this.showToast('Failed to fetch users');
+        this.showToast(error.message || 'Failed to fetch users');
       } finally {
         this.loadingUsers = false;
       }
@@ -206,6 +209,7 @@ export default {
     openRoleModal(user) {
       this.roleModalUser = user;
       this.pendingRoles = [...user.roles];
+
       if (!this.pendingRoles.includes('Member')) {
         this.pendingRoles.push('Member');
       }
@@ -244,8 +248,9 @@ export default {
         });
 
         if (result?.errors?.length) {
-          console.error('updateUserRoles errors:', result.errors);
-          throw new Error('Failed to update roles');
+          console.error('updateUserRoles full result:', result);
+          console.error('updateUserRoles errors JSON:', JSON.stringify(result.errors, null, 2));
+          throw new Error(result.errors[0]?.message || 'Failed to update roles');
         }
 
         if (!result?.data?.success) {
@@ -265,7 +270,7 @@ export default {
         this.closeRoleModal();
       } catch (error) {
         console.error('saveRoles failed:', error);
-        this.showToast('Failed to update roles');
+        this.showToast(error.message || 'Failed to update roles');
       } finally {
         this.savingRoles = false;
       }
@@ -283,4 +288,4 @@ export default {
       }, 3000);
     },
   },
-};
+}

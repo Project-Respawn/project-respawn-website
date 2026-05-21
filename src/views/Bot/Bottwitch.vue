@@ -1,0 +1,577 @@
+<template>
+  <div class="bot-page">
+    <aside class="bot-sidebar">
+      <div class="brand-block">
+        <div class="brand-icon">R</div>
+        <div>
+          <p class="brand-kicker">Project Respawn</p>
+          <h1 class="brand-title">Twitch Dashboard</h1>
+        </div>
+      </div>
+
+            <nav class="sidebar-nav">
+        <router-link to="/bot" class="nav-item" exact-active-class="active">
+          <span class="nav-dot"></span>
+          Overview
+        </router-link>
+
+        <router-link to="/bot/twitch" class="nav-item" exact-active-class="active">
+          <span class="nav-dot"></span>
+          Twitch
+        </router-link>
+
+        <router-link to="/bot/discord" class="nav-item" exact-active-class="active">
+          <span class="nav-dot"></span>
+          Discord
+        </router-link>
+
+        <router-link to="/bot/automation" class="nav-item" exact-active-class="active">
+          <span class="nav-dot"></span>
+          Automation
+        </router-link>
+
+        <router-link to="/bot/settings" class="nav-item" exact-active-class="active">
+          <span class="nav-dot"></span>
+          Settings
+        </router-link>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="status-pill online">Coming Soon</div>
+        <p class="sidebar-note">Automation dashboard placeholder with shared bot navigation.</p>
+      </div>
+    </aside>
+
+    <main class="bot-main">
+      <section class="hero-card twitch-hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Twitch bot control</p>
+          <h2>Manage commands, timers, moderation, and channel tools</h2>
+          <p class="hero-text">
+            This page is the first dedicated bot dashboard for Project Respawn. Start by managing
+            your core Twitch commands, then expand into automations and streamer-specific settings.
+          </p>
+
+          <div class="hero-actions">
+            <button class="primary-btn">Save Twitch Settings</button>
+            <button class="secondary-btn">Test Command Setup</button>
+          </div>
+        </div>
+
+        <div class="hero-stats">
+          <div class="mini-stat">
+            <span class="mini-label">Connected Channel</span>
+            <strong>RespawnSquad</strong>
+          </div>
+          <div class="mini-stat">
+            <span class="mini-label">Core Commands</span>
+            <strong>4 Active</strong>
+          </div>
+          <div class="mini-stat">
+            <span class="mini-label">Build Status</span>
+            <strong>MVP Setup</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="dashboard-section">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Core tools</p>
+            <h3>Twitch command controls</h3>
+          </div>
+          <div class="inline-status">Build this first</div>
+        </div>
+
+        <div class="card-grid">
+          <article class="feature-card" v-for="card in commandCards" :key="card.title">
+            <span class="card-badge">{{ card.badge }}</span>
+            <h4>{{ card.title }}</h4>
+            <p>{{ card.description }}</p>
+            <button class="card-btn">{{ card.action }}</button>
+          </article>
+        </div>
+      </section>
+
+      <section class="dashboard-section">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Channel tools</p>
+            <h3>Automation and engagement</h3>
+          </div>
+        </div>
+
+        <div class="card-grid">
+          <article class="feature-card" v-for="card in channelCards" :key="card.title">
+            <span class="card-badge muted">{{ card.badge }}</span>
+            <h4>{{ card.title }}</h4>
+            <p>{{ card.description }}</p>
+            <button class="card-btn secondary">{{ card.action }}</button>
+          </article>
+        </div>
+      </section>
+
+      <section class="dashboard-section">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Operations</p>
+            <h3>Moderation and configuration</h3>
+          </div>
+        </div>
+
+        <div class="card-grid">
+          <article class="feature-card" v-for="card in opsCards" :key="card.title">
+            <span class="card-badge muted">{{ card.badge }}</span>
+            <h4>{{ card.title }}</h4>
+            <p>{{ card.description }}</p>
+            <button class="card-btn secondary">{{ card.action }}</button>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'BotTwitch',
+  data() {
+    return {
+      commandCards: [
+        {
+          badge: 'Ready',
+          title: 'Basic Commands',
+          description: 'Manage !hello, !commands, !respawn, and !beta from one Twitch-focused dashboard.',
+          action: 'Manage'
+        },
+        {
+          badge: 'Next',
+          title: 'Custom Command Replies',
+          description: 'Edit the response text for each command without changing the bot code every time.',
+          action: 'Edit'
+        },
+        {
+          badge: 'Next',
+          title: 'Command Toggles',
+          description: 'Enable or disable individual commands for testing, events, or streamer preferences.',
+          action: 'Configure'
+        }
+      ],
+      channelCards: [
+        {
+          badge: 'Planned',
+          title: 'Welcome Messages',
+          description: 'Set up first-chat or onboarding style replies for users entering the stream community.',
+          action: 'Coming Soon'
+        },
+        {
+          badge: 'Planned',
+          title: 'Timers',
+          description: 'Create recurring messages for your beta, website links, and community prompts.',
+          action: 'Coming Soon'
+        },
+        {
+          badge: 'Planned',
+          title: 'Promo Tools',
+          description: 'Prepare reusable modules for beta signups, Project Respawn info, and featured links.',
+          action: 'Coming Soon'
+        }
+      ],
+      opsCards: [
+        {
+          badge: 'Planned',
+          title: 'Moderation Tools',
+          description: 'Reserve a clean area for moderation helpers, safe chat rules, and bot protections.',
+          action: 'Coming Soon'
+        },
+        {
+          badge: 'Planned',
+          title: 'Connection Status',
+          description: 'Show startup health, bot identity, broadcaster settings, and token readiness.',
+          action: 'Coming Soon'
+        },
+        {
+          badge: 'Planned',
+          title: 'Channel Settings',
+          description: 'Later connect broadcaster-specific preferences and streamer-side dashboard controls.',
+          action: 'Coming Soon'
+        }
+      ]
+    };
+  }
+};
+</script>
+
+<style scoped>
+.bot-page {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.16), transparent 22%),
+    linear-gradient(180deg, #0c1020 0%, #12182b 100%);
+  color: #eef2ff;
+}
+
+.bot-sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px 18px;
+  background: rgba(8, 12, 24, 0.82);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+}
+
+.brand-block {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.brand-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 1rem;
+  background: linear-gradient(135deg, #2563eb, #38bdf8);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.35);
+}
+
+.brand-kicker {
+  margin: 0 0 4px;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #9ca3af;
+}
+
+.brand-title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  background: transparent;
+  color: #c7d2fe;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+.nav-item.active {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.22), rgba(56, 189, 248, 0.14));
+  border-color: rgba(96, 165, 250, 0.25);
+  color: #fff;
+}
+
+.nav-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: currentColor;
+  opacity: 0.8;
+}
+
+.sidebar-footer {
+  padding-top: 20px;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.status-pill.online {
+  background: rgba(59, 130, 246, 0.15);
+  color: #93c5fd;
+  border: 1px solid rgba(147, 197, 253, 0.2);
+}
+
+.sidebar-note {
+  margin-top: 12px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #94a3b8;
+}
+
+.bot-main {
+  padding: 28px;
+}
+
+.hero-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(260px, 0.8fr);
+  gap: 20px;
+  padding: 28px;
+  margin-bottom: 22px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.25);
+}
+
+.twitch-hero {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.24), rgba(56, 189, 248, 0.16));
+}
+
+.eyebrow,
+.section-kicker {
+  margin: 0 0 8px;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #93c5fd;
+}
+
+.hero-card h2 {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.15;
+  max-width: 13ch;
+}
+
+.hero-text {
+  margin: 14px 0 0;
+  max-width: 54ch;
+  color: #dbeafe;
+  line-height: 1.65;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.primary-btn,
+.secondary-btn,
+.card-btn {
+  border: none;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.primary-btn,
+.secondary-btn {
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.primary-btn {
+  background: #fff;
+  color: #111827;
+}
+
+.secondary-btn {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.hero-stats {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+
+.mini-stat {
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.34);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mini-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.78rem;
+  color: #cbd5e1;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.mini-stat strong {
+  font-size: 1.05rem;
+  color: #fff;
+}
+
+.dashboard-section {
+  margin-bottom: 28px;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.section-heading h3 {
+  margin: 0;
+  font-size: 1.45rem;
+  color: #fff;
+}
+
+.inline-status {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.14);
+  border: 1px solid rgba(96, 165, 250, 0.18);
+  color: #93c5fd;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.feature-card {
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(10, 16, 31, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+}
+
+.feature-card h4 {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+  color: #fff;
+}
+
+.feature-card p {
+  margin: 0 0 16px;
+  color: #9fb0cc;
+  line-height: 1.6;
+  min-height: 72px;
+}
+
+.card-badge {
+  display: inline-flex;
+  margin-bottom: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.14);
+  color: #93c5fd;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.card-badge.muted {
+  background: rgba(148, 163, 184, 0.12);
+  color: #cbd5e1;
+}
+
+.card-btn {
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(59, 130, 246, 0.18);
+  color: #dbeafe;
+  font-weight: 600;
+}
+
+.card-btn:hover {
+  background: rgba(59, 130, 246, 0.28);
+}
+
+.card-btn.secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: #e5e7eb;
+}
+
+.card-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+@media (max-width: 1180px) {
+  .card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  .bot-page {
+    grid-template-columns: 1fr;
+  }
+
+  .bot-sidebar {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .sidebar-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 640px) {
+  .bot-main {
+    padding: 18px;
+  }
+
+  .hero-card {
+    padding: 22px;
+  }
+
+  .hero-card h2 {
+    font-size: 1.6rem;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-heading {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+</style>

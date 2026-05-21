@@ -12,7 +12,12 @@ import Join from '../views/Join/Join.vue'
 import Account from '../views/Account/Account.vue'
 import Dashboard from '../views/Dashboard/Dashboard.vue'
 import Roles from '../views/About/Roles/Roles.vue'
-
+import Bot from '../views/Bot/Bot.vue'
+import BotTwitch from '../views/Bot/BotTwitch.vue'
+import BotDiscord from '../views/Bot/BotDiscord.vue'
+import BotAutomation from '../views/Bot/BotAutomation.vue'
+import BotSettings from '../views/Bot/BotSettings.vue'
+import Twitchcommands from '../views/bot/Twitch Bot/Twitchcommands.vue'
 
 const routes = [
   { path: '/', component: Home },
@@ -27,10 +32,15 @@ const routes = [
   { path: '/join', component: Join },
   { path: '/account', component: Account },
   { path: '/dashboard', component: Dashboard, meta: { hideLayout: true } },
+  { path: '/bot', component: Bot },
+  { path: '/bot/twitch', component: BotTwitch },
+  { path: '/bot/twitch/commands', component: Twitchcommands },
+  { path: '/bot/discord', component: BotDiscord },
+  { path: '/bot/automation', component: BotAutomation },
+  { path: '/bot/settings', component: BotSettings },
   { path: '/:pathMatch(.*)', component: NotFound },
- 
 ]
- 
+
 const router = createRouter({
   history: createWebHistory(),
   routes,
