@@ -133,6 +133,16 @@
         </div>
       </section>
 
+      <section v-if="commandError" class="error-banner panel-card">
+        <div class="panel-header compact">
+          <div>
+            <p class="section-kicker">Error</p>
+            <h3>An operation failed</h3>
+          </div>
+        </div>
+        <p class="error-message">{{ commandError }}</p>
+      </section>
+
       <!-- =================================================
            3. COMMAND BUILDER HELP
            - Variables & examples
@@ -359,11 +369,11 @@
             >
               <div class="cell toggle-cell" @click.stop>
                 <label class="toggle-switch">
-                  <input
-                    type="checkbox"
-                    :checked="suggested.isEnabled"
-                    @change="enableSuggestedCommand(suggested)"
-                  />
+              <input
+                type="checkbox"
+                :checked="suggested.isEnabled"
+                @change="toggleSuggestedCommand(suggested)"
+                />
                   <span></span>
                 </label>
               </div>
@@ -378,6 +388,12 @@
 
               <div class="cell">
                 <span class="mini-badge muted">{{ suggested.category || 'Suggested' }}</span>
+                <span
+                  class="mini-badge status-badge"
+                  :class="suggested.isEnabled ? 'active' : 'muted'"
+                >
+                  {{ suggested.isEnabled ? 'Enabled' : 'Disabled' }}
+                </span>
               </div>
 
               <div class="cell">
@@ -457,12 +473,11 @@
                 </button>
 
                 <button
-                  class="primary-btn"
-                  :disabled="suggested.isEnabled"
-                  @click.stop="enableSuggestedCommand(suggested)"
-                >
-                  {{ suggested.isEnabled ? 'Already Enabled' : 'Enable Command' }}
-                </button>
+                class="primary-btn"
+                @click.stop="toggleSuggestedCommand(suggested)"
+              >
+                {{ suggested.isEnabled ? 'Disable Command' : 'Enable Command' }}
+              </button>
               </div>
             </div>
           </div>
@@ -484,7 +499,15 @@
 import { generateClient } from 'aws-amplify/data';
 import { getCurrentUser } from 'aws-amplify/auth';
 
-const client = generateClient();
+let generatedClient = null;
+const client = new Proxy({}, {
+  get(_, prop) {
+    if (!generatedClient) {
+      generatedClient = generateClient();
+    }
+    return generatedClient[prop];
+  }
+});
 const TWITCH_API_BASE = 'http://localhost:3000';
 
 export default {
@@ -510,6 +533,7 @@ export default {
       isLoading: false,
       isSaving: false,
       connectionError: '',
+      commandError: '',
       activeTab: 'custom',
       searchQuery: '',
       showHelp: true,
@@ -572,9 +596,10 @@ export default {
   computed: {
     filteredCustomCommands() {
       const q = this.searchQuery.trim().toLowerCase();
-      if (!q) return this.commands;
+      const customCommands = this.commands.filter(command => command.isCustom === true);
+      if (!q) return customCommands;
 
-      return this.commands.filter(command => {
+      return customCommands.filter(command => {
         return (
           (command.name && command.name.toLowerCase().includes(q)) ||
           (command.reply && command.reply.toLowerCase().includes(q)) ||
@@ -619,6 +644,17 @@ export default {
 
     toggleExpanded(id) {
       this.expandedCommandId = this.expandedCommandId === id ? null : id;
+    },
+
+    showCommandError(message, error) {
+      const details = error?.message ||
+        (Array.isArray(error)
+          ? error.map(err => err?.message || String(err)).join('; ')
+          : String(error || ''));
+      const fullMessage = `${message}${details ? `: ${details}` : ''}`;
+      console.error(fullMessage, error);
+      this.commandError = fullMessage;
+      alert(fullMessage);
     },
 
     resetSuggestedCommand(key) {
@@ -684,7 +720,7 @@ export default {
           }
         });
 
-        this.commands = (response.data || []).map(command => ({
+        this.commands = (response.data || []).filter(Boolean).map(command => ({
           ...command,
           category: command.category || 'Custom',
           permissionLevel: command.permissionLevel || 'everyone'
@@ -722,19 +758,26 @@ export default {
       }
     },
 
-    syncSuggestedStates() {
-      this.suggestedCommands = this.suggestedCommands.map(suggested => {
-        const exists = this.commands.some(command => command.name === suggested.name);
-        return {
-          ...suggested,
-          isEnabled: exists
-        };
-      });
-    },
+        syncSuggestedStates() {
+        this.suggestedCommands = this.suggestedCommands.map(suggested => {
+          const existing = this.commands.find(command => {
+            return String(command.name || '').trim().toLowerCase() === String(suggested.name || '').trim().toLowerCase();
+          });
+
+          return {
+            ...suggested,
+            isEnabled: existing ? existing.enabled === true : false,
+            savedCommandId: existing ? existing.id : null
+          };
+        });
+      },
 
     /* Command operations – create / update / delete */
     async addNewCommand() {
-      if (!this.streamerId) return;
+      if (!this.streamerId) {
+        this.showCommandError('Cannot create command', 'Missing streamerId');
+        return;
+      }
 
       try {
         const response = await client.models.TwitchCommand.create({
@@ -748,24 +791,35 @@ export default {
           permissionLevel: 'everyone'
         });
 
-        if (response.data) {
-          const created = {
-            ...response.data,
-            category: response.data.category || 'Custom',
-            permissionLevel: response.data.permissionLevel || 'everyone'
-          };
-
-          this.commands.unshift(created);
-          this.activeTab = 'custom';
-          this.expandedCommandId = created.id;
+        if (response?.errors?.length) {
+          this.showCommandError('Failed to create command', response.errors);
+          return;
         }
+
+        if (!response?.data) {
+          this.showCommandError('Failed to create command', 'No data returned');
+          return;
+        }
+
+        const created = {
+          ...response.data,
+          category: response.data.category || 'Custom',
+          permissionLevel: response.data.permissionLevel || 'everyone'
+        };
+
+        this.commands.unshift(created);
+        this.activeTab = 'custom';
+        this.expandedCommandId = created.id;
       } catch (error) {
-        console.error('Failed to create command:', error);
+        this.showCommandError('Failed to create command', error);
       }
     },
 
     async saveCommand(command) {
-      if (!command || !this.streamerId) return;
+      if (!command || !this.streamerId) {
+        this.showCommandError('Cannot save command', 'Missing command or streamerId');
+        return;
+      }
 
       this.isSaving = true;
 
@@ -778,25 +832,33 @@ export default {
           enabled: command.enabled,
           cooldownSeconds: command.cooldownSeconds,
           isCustom: command.isCustom,
-          category: command.category,
-          permissionLevel: command.permissionLevel
+          category: command.category || 'Custom',
+          permissionLevel: command.permissionLevel || 'everyone'
         });
 
-        if (response.data) {
-          const index = this.commands.findIndex(item => item.id === response.data.id);
+        if (response?.errors?.length) {
+          this.showCommandError('Failed to save command', response.errors);
+          return;
+        }
 
-          if (index !== -1) {
-            this.commands.splice(index, 1, {
-              ...response.data,
-              category: response.data.category || 'Custom',
-              permissionLevel: response.data.permissionLevel || 'everyone'
-            });
-          }
+        if (!response?.data) {
+          this.showCommandError('Failed to save command', 'No data returned');
+          return;
+        }
+
+        const index = this.commands.findIndex(item => item.id === response.data.id);
+
+        if (index !== -1) {
+          this.commands.splice(index, 1, {
+            ...response.data,
+            category: response.data.category || 'Custom',
+            permissionLevel: response.data.permissionLevel || 'everyone'
+          });
         }
 
         this.syncSuggestedStates();
       } catch (error) {
-        console.error('Failed to save command:', error);
+        this.showCommandError('Failed to save command', error);
       } finally {
         this.isSaving = false;
       }
@@ -827,35 +889,85 @@ export default {
       }
     },
 
-    async enableSuggestedCommand(suggested) {
-      if (suggested.isEnabled || !this.streamerId) return;
+    async toggleSuggestedCommand(suggested) {
+      if (!suggested || !this.streamerId) {
+        this.showCommandError('Cannot toggle suggested command', 'Missing suggested command or streamerId');
+        return;
+      }
 
       try {
-        const response = await client.models.TwitchCommand.create({
-          streamerId: this.streamerId,
-          name: suggested.name,
-          reply: suggested.reply,
-          enabled: true,
-          cooldownSeconds: suggested.cooldownSeconds,
-          isCustom: false,
-          category: suggested.category,
-          permissionLevel: suggested.permissionLevel
+        const existing = this.commands.find(command => {
+          return String(command.name || '').trim().toLowerCase() === String(suggested.name || '').trim().toLowerCase();
         });
 
-        if (response.data) {
+        if (existing) {
+          const nextEnabled = !existing.enabled;
+
+          const response = await client.models.TwitchCommand.update({
+            id: existing.id,
+            streamerId: this.streamerId,
+            name: suggested.name,
+            reply: suggested.reply,
+            enabled: nextEnabled,
+            cooldownSeconds: suggested.cooldownSeconds,
+            isCustom: existing.isCustom ?? false,
+            category: suggested.category || 'Custom',
+            permissionLevel: suggested.permissionLevel || 'everyone'
+          });
+
+          if (response?.errors?.length) {
+            this.showCommandError('Failed to update suggested command', response.errors);
+            return;
+          }
+
+          if (!response?.data) {
+            this.showCommandError('Failed to update suggested command', 'No data returned');
+            return;
+          }
+
+          const index = this.commands.findIndex(item => item.id === response.data.id);
+
+          if (index !== -1) {
+            this.commands.splice(index, 1, {
+              ...response.data,
+              category: response.data.category || suggested.category || 'Suggested',
+              permissionLevel:
+                response.data.permissionLevel || suggested.permissionLevel || 'everyone'
+            });
+          }
+        } else {
+          const response = await client.models.TwitchCommand.create({
+            streamerId: this.streamerId,
+            name: suggested.name,
+            reply: suggested.reply,
+            enabled: true,
+            cooldownSeconds: suggested.cooldownSeconds,
+            isCustom: false,
+            category: suggested.category || 'Custom',
+            permissionLevel: suggested.permissionLevel || 'everyone'
+          });
+
+          if (response?.errors?.length) {
+            this.showCommandError('Failed to create suggested command', response.errors);
+            return;
+          }
+
+          if (!response?.data) {
+            this.showCommandError('Failed to create suggested command', 'No data returned');
+            return;
+          }
+
           this.commands.unshift({
             ...response.data,
             category: response.data.category || suggested.category || 'Suggested',
             permissionLevel:
               response.data.permissionLevel || suggested.permissionLevel || 'everyone'
           });
-
-          this.syncSuggestedStates();
-          this.activeTab = 'custom';
-          this.expandedCommandId = response.data.id;
         }
+
+        this.syncSuggestedStates();
       } catch (error) {
-        console.error('Failed to enable suggested command:', error);
+        this.showCommandError('Failed to toggle suggested command', error);
       }
     }
   }
@@ -1114,6 +1226,18 @@ export default {
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
 }
 
+.error-banner {
+  border-color: rgba(248, 113, 113, 0.3);
+  background: rgba(254, 202, 202, 0.12);
+}
+
+.error-message {
+  color: #fee2e2;
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
 .panel-header {
   display: flex;
   justify-content: space-between;
@@ -1364,9 +1488,26 @@ export default {
   text-transform: uppercase;
 }
 
+.mini-badge.active {
+  background: rgba(34, 197, 94, 0.14);
+  color: #86efac;
+}
+
+.mini-badge.disabled {
+  background: rgba(148, 163, 184, 0.12);
+  color: #cbd5e1;
+}
+
 .mini-badge.muted {
   background: rgba(148, 163, 184, 0.12);
   color: #cbd5e1;
+}
+
+.mini-badge.status-badge {
+  margin-left: 8px;
+  font-size: 0.65rem;
+  padding: 4px 8px;
+  text-transform: none;
 }
 
 .empty-state {

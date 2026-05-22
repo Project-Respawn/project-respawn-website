@@ -18,6 +18,8 @@ import BotDiscord from '../views/Bot/BotDiscord.vue'
 import BotAutomation from '../views/Bot/BotAutomation.vue'
 import BotSettings from '../views/Bot/BotSettings.vue'
 import Twitchcommands from '../views/bot/Twitch Bot/Twitchcommands.vue'
+import TtsSettings from '../views/Bot/Twitch bot/TtsSettings.vue'
+import TtsOverlay from '../views/Bot/Twitch bot/TtsOverlay.vue'
 
 const routes = [
   { path: '/', component: Home },
@@ -35,6 +37,8 @@ const routes = [
   { path: '/bot', component: Bot },
   { path: '/bot/twitch', component: BotTwitch },
   { path: '/bot/twitch/commands', component: Twitchcommands },
+  { path: '/bot/twitch/tts', component: TtsSettings },
+  { path: '/tts-overlay', component: TtsOverlay, meta: { hideLayout: true } },
   { path: '/bot/discord', component: BotDiscord },
   { path: '/bot/automation', component: BotAutomation },
   { path: '/bot/settings', component: BotSettings },

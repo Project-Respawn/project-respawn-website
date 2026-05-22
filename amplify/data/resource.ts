@@ -38,6 +38,8 @@ const schema = a
         enabled: a.boolean().required(),
         cooldownSeconds: a.integer().required(),
         isCustom: a.boolean().required(),
+        category: a.string().required(),
+        permissionLevel: a.string().required(),
       })
       .authorization((allow) => [
         allow.authenticated(),

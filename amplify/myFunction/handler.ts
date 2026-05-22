@@ -259,6 +259,8 @@ async function handlePrintfulOrderLookup(path: string) {
 // Twitch helpers
 // =============================================================================
 
+// Migration-safe fallback for legacy TwitchCommand records that may still be missing
+// category or permissionLevel in storage.
 function mapTwitchCommand(command: any) {
   return {
     id: command.id,
@@ -268,6 +270,8 @@ function mapTwitchCommand(command: any) {
     enabled: command.enabled,
     cooldownSeconds: command.cooldownSeconds,
     isCustom: command.isCustom,
+    category: command.category || 'Custom',
+    permissionLevel: command.permissionLevel || 'everyone',
   };
 }
 
