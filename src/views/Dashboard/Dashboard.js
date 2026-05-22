@@ -1,7 +1,14 @@
 import { generateClient } from 'aws-amplify/data';
 import { getCurrentUser, fetchAuthSession, signOut } from 'aws-amplify/auth';
 
-const client = generateClient();
+let client = null;
+
+function getClient() {
+  if (!client) {
+    client = generateClient();
+  }
+  return client;
+}
 
 /* =========================
    ROLE CONSTANTS
