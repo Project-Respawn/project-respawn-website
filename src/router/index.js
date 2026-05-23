@@ -12,14 +12,15 @@ import Join from '../views/Join/Join.vue'
 import Account from '../views/Account/Account.vue'
 import Dashboard from '../views/Dashboard/Dashboard.vue'
 import Roles from '../views/About/Roles/Roles.vue'
-import Bot from '../views/Bot/Bot.vue'
-import BotTwitch from '../views/Bot/BotTwitch.vue'
-import BotDiscord from '../views/Bot/BotDiscord.vue'
-import BotAutomation from '../views/Bot/BotAutomation.vue'
-import BotSettings from '../views/Bot/BotSettings.vue'
-import Twitchcommands from '../views/bot/Twitch Bot/Twitchcommands.vue'
-import TtsSettings from '../views/Bot/Twitch bot/TtsSettings.vue'
-import TtsOverlay from '../views/Bot/Twitch bot/TtsOverlay.vue'
+import BotOverview from '../views/Bot/Overview/BotOverview.vue'
+import BotTwitch from '../views/Bot/Twitch/BotTwitch.vue'
+import BotDiscord from '../views/Bot/Discord/BotDiscord.vue'
+import BotAutomation from '../views/Bot/Automation/BotAutomation.vue'
+import BotSettings from '../views/Bot/Settings/BotSettings.vue'
+import TtsOverlay from '../views/Bot/Twitch/TTS/TtsOverlay.vue'
+import TtsSettings from '../views/Bot/Twitch/TTS/Settings/TtsSettings.vue'
+import TwitchCommands from '../views/Bot/Twitch/TwitchCommands/TwitchCommands.vue'
+
 
 const routes = [
   { path: '/', component: Home },
@@ -34,9 +35,9 @@ const routes = [
   { path: '/join', component: Join },
   { path: '/account', component: Account },
   { path: '/dashboard', component: Dashboard, meta: { hideLayout: true } },
-  { path: '/bot', component: Bot },
+  { path: '/bot', component: BotOverview },
   { path: '/bot/twitch', component: BotTwitch },
-  { path: '/bot/twitch/commands', component: Twitchcommands },
+  { path: '/bot/twitch/commands', component: TwitchCommands },
   { path: '/bot/twitch/tts', component: TtsSettings },
   { path: '/tts-overlay', component: TtsOverlay, meta: { hideLayout: true } },
   { path: '/bot/discord', component: BotDiscord },
