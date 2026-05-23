@@ -10,6 +10,7 @@
 
 import { generateClient } from 'aws-amplify/data';
 import { getCurrentUser } from 'aws-amplify/auth';
+import BotSidebar from '../../../../components/BotSidebar/BotSidebar.vue';
 
 let generatedClient = null;
 const client = new Proxy({}, {
@@ -24,6 +25,9 @@ const TWITCH_API_BASE = 'http://localhost:3000';
 
 export default {
   name: 'TwitchCommands',
+  components: {
+    BotSidebar
+  },
 
   /* ---------------------------------------------
    * 2.1 Component state (data)

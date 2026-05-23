@@ -42,63 +42,11 @@
     <!-- ========================
          1.1 Sidebar
     ========================= -->
-    <aside class="bot-sidebar">
-      <!-- Brand -->
-      <div class="brand-block">
-        <div class="brand-icon">R</div>
-        <div>
-          <p class="brand-kicker">Project Respawn</p>
-          <h1 class="brand-title">Twitch Dashboard</h1>
-        </div>
-      </div>
-
-      <!-- Sidebar navigation -->
-      <nav class="sidebar-nav">
-        <!-- Main nav -->
-        <router-link to="/bot" class="nav-item" exact-active-class="active">
-          <span class="nav-dot"></span>
-          Overview
-        </router-link>
-
-        <!-- Twitch section -->
-        <div class="nav-section">
-          <div class="nav-section-label">Twitch</div>
-
-          <router-link
-            to="/bot/twitch/commands"
-            class="sub-nav-item"
-            exact-active-class="active"
-          >
-            <span class="nav-dot"></span>
-            Commands
-          </router-link>
-        </div>
-
-        <!-- Other sections -->
-        <router-link to="/bot/discord" class="nav-item" exact-active-class="active">
-          <span class="nav-dot"></span>
-          Discord
-        </router-link>
-
-        <router-link to="/bot/automation" class="nav-item" exact-active-class="active">
-          <span class="nav-dot"></span>
-          Automation
-        </router-link>
-
-        <router-link to="/bot/settings" class="nav-item" exact-active-class="active">
-          <span class="nav-dot"></span>
-          Settings
-        </router-link>
-      </nav>
-
-      <!-- Sidebar footer / status -->
-      <div class="sidebar-footer">
-        <div class="status-pill online">Commands</div>
-        <p class="sidebar-note">
-          Manage Twitch bot commands from a simpler workspace.
-        </p>
-      </div>
-    </aside>
+   
+    <BotSidebar :title="'Twitch Dashboard'" 
+    :colourBrand1="'#2563eb'" 
+    :colourBrand2="'#38bdf8'" 
+    :colourBoxShadow="'rgba(37, 99, 235, 0.35)'" />
 
     <!-- ========================
          1.2 Main content
@@ -474,8 +422,7 @@
 
                 <button
                 class="primary-btn"
-                @click.stop="toggleSuggestedCommand(suggested)"
-              >
+                @click.stop="toggleSuggestedCommand(suggested)">
                 {{ suggested.isEnabled ? 'Disable Command' : 'Enable Command' }}
               </button>
               </div>
@@ -494,3 +441,4 @@
 
 <!-- 3) STYLES – Layout & visual style -->
 <style scoped src="./TwitchCommands.css"></style>
+
