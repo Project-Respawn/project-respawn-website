@@ -87,7 +87,7 @@
 </template>
 
 <script setup>
-  import BotSidebar from '../../components/BotSidebar/BotSidebar.vue'
+  import BotSidebar from '../../../components/BotSidebar/BotSidebar.vue'
 </script>
 
 <script>
@@ -160,4 +160,4 @@ export default {
 };
 </script>
 
-<style scoped src="./Bot.css"></style>
+<style scoped src="./BotOverview.css"></style>

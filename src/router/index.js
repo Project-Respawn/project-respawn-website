@@ -12,7 +12,7 @@ import Join from '../views/Join/Join.vue'
 import Account from '../views/Account/Account.vue'
 import Dashboard from '../views/Dashboard/Dashboard.vue'
 import Roles from '../views/About/Roles/Roles.vue'
-import Bot from '../views/Bot/Bot.vue'
+import BotOverview from '../views/Bot/Overview/BotOverview.vue'
 import BotTwitch from '../views/Bot/Twitch/BotTwitch.vue'
 import BotDiscord from '../views/Bot/Discord/BotDiscord.vue'
 import BotAutomation from '../views/Bot/Automation/BotAutomation.vue'
@@ -34,7 +34,7 @@ const routes = [
   { path: '/join', component: Join },
   { path: '/account', component: Account },
   { path: '/dashboard', component: Dashboard, meta: { hideLayout: true } },
-  { path: '/bot', component: Bot },
+  { path: '/bot', component: BotOverview },
   { path: '/bot/twitch', component: BotTwitch },
   { path: '/bot/twitch/commands', component: TwitchCommands },
   { path: '/bot/twitch/tts', component: TtsSettings },
