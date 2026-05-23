@@ -1,51 +1,11 @@
 <template>
-  <div class="bot-page">
-    <aside class="bot-sidebar">
-      <div class="brand-block">
-        <div class="brand-icon">R</div>
-        <div>
-          <p class="brand-kicker">Project Respawn</p>
-          <h1 class="brand-title">Connections</h1>
-        </div>
-      </div>
+  <div class="bot-page">  
 
-      <nav class="sidebar-nav">
-        <router-link to="/bot" class="nav-item" exact-active-class="active">
-          <span class="nav-dot"></span>
-          Overview
-        </router-link>
-
-        <router-link to="/bot/twitch" class="nav-item" exact-active-class="active">
-          <span class="nav-dot"></span>
-          Twitch
-        </router-link>
-
-        <router-link to="/bot/discord" class="nav-item" exact-active-class="active">
-          <span class="nav-dot"></span>
-          Discord
-        </router-link>
-
-        <router-link to="/bot/automation" class="nav-item" exact-active-class="active">
-          <span class="nav-dot"></span>
-          Automation
-        </router-link>
-
-        <router-link to="/bot/settings" class="nav-item" exact-active-class="active">
-          <span class="nav-dot"></span>
-          Settings
-        </router-link>
-      </nav>
-
-      <div class="sidebar-footer">
-        <div class="status-pill online" :class="{ offline: !twitchConnected }">
-          {{ twitchConnected ? 'Twitch Connected' : 'Awaiting Connection' }}
-        </div>
-        <p class="sidebar-note">
-          Connect your Twitch account to Project Respawn Bot and prepare for future Discord server linking.
-        </p>
-      </div>
-    </aside>
-
+    <BotSidebar :title="'Connections'" 
+    :colourBrand1="'#9146ff'" 
+    :colourBrand2="'#5865f2'" 
+    :colourBoxShadow="'rgba(145, 70, 255, 0.35)'" />
+   
     <main class="bot-main">
       <section class="hero-card connections-hero">
         <div class="hero-copy">
@@ -296,6 +256,10 @@ export default {
     }
   }
 };
+</script>
+
+<script setup>
+  import BotSidebar from '../../../components/BotSidebar/BotSidebar.vue'
 </script>
 
 <style scoped src="./Botsettings.css"></style>

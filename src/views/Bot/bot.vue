@@ -1,48 +1,11 @@
 <template>
   <div class="bot-page">
-    <aside class="bot-sidebar">
-      <div class="brand-block">
-        <div class="brand-icon">R</div>
-        <div>
-          <p class="brand-kicker">Project Respawn</p>
-          <h1 class="brand-title">Bot Dashboard</h1>
-        </div>
-      </div>
 
-      <nav class="sidebar-nav">
-        <router-link to="/bot" class="nav-item" exact-active-class="active">
-          <span class="nav-dot"></span>
-          Overview
-        </router-link>
+    <BotSidebar :title="'Bot Dashboard'" 
+    :colourBrand1="'#7c3aed'" 
+    :colourBrand2="'#ec4899'" 
+    :colourBoxShadow="'rgba(124, 58, 237, 0.35)'" />
 
-        <router-link to="/bot/twitch" class="nav-item" exact-active-class="active">
-          <span class="nav-dot"></span>
-          Twitch
-        </router-link>
-
-        <router-link to="/bot/discord" class="nav-item" exact-active-class="active">
-          <span class="nav-dot"></span>
-          Discord
-        </router-link>
-
-        <router-link to="/bot/automation" class="nav-item" exact-active-class="active">
-          <span class="nav-dot"></span>
-          Automation
-        </router-link>
-
-        <router-link to="/bot/settings" class="nav-item" exact-active-class="active">
-          <span class="nav-dot"></span>
-          Settings
-        </router-link>
-      </nav>
-
-      <div class="sidebar-footer">
-        <div class="status-pill online">Bot Connected</div>
-        <p class="sidebar-note">
-          Main overview page for your Twitch, Discord, automation, and settings dashboards.
-        </p>
-      </div>
-    </aside>
 
     <main class="bot-main">
       <section class="hero-card">
@@ -122,6 +85,10 @@
     </main>
   </div>
 </template>
+
+<script setup>
+  import BotSidebar from '../../components/BotSidebar/BotSidebar.vue'
+</script>
 
 <script>
 export default {
