@@ -31,7 +31,7 @@
         <button v-if="!isAuthenticated" 
           @click="handleSignOut" 
           class="btn-primary">
-          Sign In
+          Sign Out
         </button>                
       </div>
     </div>

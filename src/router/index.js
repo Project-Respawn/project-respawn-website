@@ -12,6 +12,14 @@ import Join from '../views/Join/Join.vue'
 import Account from '../views/Account/Account.vue'
 import Dashboard from '../views/Dashboard/Dashboard.vue'
 import Roles from '../views/About/Roles/Roles.vue'
+import BotOverview from '../views/Bot/Overview/BotOverview.vue'
+import BotTwitch from '../views/Bot/Twitch/BotTwitch.vue'
+import BotDiscord from '../views/Bot/Discord/BotDiscord.vue'
+import BotAutomation from '../views/Bot/Automation/BotAutomation.vue'
+import BotSettings from '../views/Bot/Settings/BotSettings.vue'
+import TtsOverlay from '../views/Bot/Twitch/TTS/TtsOverlay.vue'
+import TtsSettings from '../views/Bot/Twitch/TTS/Settings/TtsSettings.vue'
+import TwitchCommands from '../views/Bot/Twitch/TwitchCommands/TwitchCommands.vue'
 
 
 const routes = [
@@ -27,10 +35,17 @@ const routes = [
   { path: '/join', component: Join },
   { path: '/account', component: Account },
   { path: '/dashboard', component: Dashboard, meta: { hideLayout: true } },
+  { path: '/bot', component: BotOverview },
+  { path: '/bot/twitch', component: BotTwitch },
+  { path: '/bot/twitch/commands', component: TwitchCommands },
+  { path: '/bot/twitch/tts', component: TtsSettings },
+  { path: '/tts-overlay', component: TtsOverlay, meta: { hideLayout: true } },
+  { path: '/bot/discord', component: BotDiscord },
+  { path: '/bot/automation', component: BotAutomation },
+  { path: '/bot/settings', component: BotSettings },
   { path: '/:pathMatch(.*)', component: NotFound },
- 
 ]
- 
+
 const router = createRouter({
   history: createWebHistory(),
   routes,
