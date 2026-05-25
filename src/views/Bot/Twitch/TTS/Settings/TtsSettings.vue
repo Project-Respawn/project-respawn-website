@@ -1,11 +1,12 @@
 <template>
   <div class="tts-settings-container">
-    <BotSidebar 
+    
+    <BotSidebar    
       title="TTS Settings"
       colourBrand1="#7c6af7"
       colourBrand2="#6b58f0"
-      colourBoxShadow="rgba(124, 106, 247, 0.18)"
-    />
+      colourBoxShadow="rgba(124, 106, 247, 0.18)"/>
+
     <section class="tts-settings-page">
     <!-- ========================= Header ========================== -->
     <header class="page-header">

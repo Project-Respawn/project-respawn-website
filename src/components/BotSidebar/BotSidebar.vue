@@ -92,10 +92,28 @@
     </aside>
 </template>
 
+<script setup>
+  import { sidebarStore } from '../../stores/sidebarStore'
+  import { watch } from 'vue'
+
+  const props = defineProps({
+    title: String,
+    colourBrand1: String,
+    colourBrand2: String,
+    colourBoxShadow: String
+  })
+
+  watch(
+    () => props,
+    (newProps) => {
+      sidebarStore.setTitle(props.title)
+      sidebarStore.setColors(props.colourBrand1, props.colourBrand2, props.colourBoxShadow)
+    },
+    { deep: true, immediate: true }
+  )
+</script>
 
 <script>
-import { sidebarStore } from '../../stores/sidebarStore'
-
 export default {
   data() {
     return {
@@ -147,6 +165,7 @@ export default {
     };
   },
 };
+
 </script>
 
 
