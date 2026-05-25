@@ -1,8 +1,7 @@
 <template>
   <div id="app">
     <Header v-if="!$route.meta.hideLayout" />
-    <div class="app-content">
-      <BotSidebar v-if="$route.meta.showBotSidebar" />
+    <div>
       <main>
         <router-view />
       </main>
@@ -22,11 +21,6 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-}
-
-.app-content {
-  display: flex;
-  flex: 1;
 }
 
 main {

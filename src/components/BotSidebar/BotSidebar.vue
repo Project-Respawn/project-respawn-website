@@ -93,7 +93,7 @@
 </template>
 
 <script setup>
-  import { sidebarStore } from '../../stores/sidebarStore'
+  import { sidebarStore } from '../Stores/SidebarStore'
   import { watch } from 'vue'
 
   const props = defineProps({
