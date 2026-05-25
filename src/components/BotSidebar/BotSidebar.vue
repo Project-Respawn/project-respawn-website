@@ -2,16 +2,16 @@
     <aside 
       class="bot-sidebar"
       :style="{
-        '--colour-brand-1': colourBrand1,
-        '--colour-brand-2': colourBrand2,
-        '--colour-box-shadow': colourBoxShadow
+        '--colour-brand-1': sidebarStore.colourBrand1,
+        '--colour-brand-2': sidebarStore.colourBrand2,
+        '--colour-box-shadow': sidebarStore.colourBoxShadow
       }">
       
       <div class="brand-block">
         <div class="brand-icon">R</div>
         <div>
           <p class="brand-kicker">Project Respawn</p>
-          <h1 class="brand-title">{{ title }}</h1>
+          <h1 class="brand-title">{{ sidebarStore.title }}</h1>
         </div>
       </div>
 
@@ -29,8 +29,8 @@
           <div v-else class="nav-group">
             <button 
               class="nav-item nav-parent"
-              :class="{ expanded: expandedItems[item.id] }"
-              @click="toggleExpand(item.id)"
+              :class="{ expanded: sidebarStore.expandedItems[item.id] }"
+              @click="sidebarStore.toggleExpand(item.id)"
             >
               <span class="nav-dot"></span>
               {{ item.label }}
@@ -40,7 +40,7 @@
             <!-- Submenu -->
             <div 
               class="submenu"
-              :class="{ active: expandedItems[item.id] }"
+              :class="{ active: sidebarStore.expandedItems[item.id] }"
             >
               <template v-for="subitem in item.children" :key="subitem.id">
                 <div v-if="!subitem.children || subitem.children.length === 0">
@@ -54,8 +54,8 @@
                 <div v-else class="nav-group">
                   <button 
                     class="nav-item nav-subitem nav-parent"
-                    :class="{ expanded: expandedItems[subitem.id] }"
-                    @click="toggleExpand(subitem.id)"
+                    :class="{ expanded: sidebarStore.expandedItems[subitem.id] }"
+                    @click="sidebarStore.toggleExpand(subitem.id)"
                   >
                     <span class="nav-dot"></span>
                     {{ subitem.label }}
@@ -64,7 +64,7 @@
 
                   <div 
                     class="submenu submenu-2"
-                    :class="{ active: expandedItems[subitem.id] }"
+                    :class="{ active: sidebarStore.expandedItems[subitem.id] }"
                   >
                     <router-link 
                       v-for="subsubitem in subitem.children"
@@ -92,13 +92,32 @@
     </aside>
 </template>
 
+<script setup>
+  import { sidebarStore } from '../../stores/sidebarStore'
+  import { watch } from 'vue'
+
+  const props = defineProps({
+    title: String,
+    colourBrand1: String,
+    colourBrand2: String,
+    colourBoxShadow: String
+  })
+
+  watch(
+    () => props,
+    (newProps) => {
+      sidebarStore.setTitle(props.title)
+      sidebarStore.setColors(props.colourBrand1, props.colourBrand2, props.colourBoxShadow)
+    },
+    { deep: true, immediate: true }
+  )
+</script>
 
 <script>
 export default {
-  props: ['title', 'colourBrand1', 'colourBrand2', 'colourBoxShadow'],
   data() {
     return {
-      expandedItems: {},
+      sidebarStore,
       menuItems: [
         {
           id: 'overview',
@@ -145,13 +164,8 @@ export default {
       ],
     };
   },
-  methods: {
-    toggleExpand(itemId) {
-      this.expandedItems[itemId] = !this.expandedItems[itemId];
-      this.$forceUpdate();
-    },
-  },
 };
+
 </script>
 
 

@@ -43,10 +43,10 @@
          1.1 Sidebar
     ========================= -->
    
-    <BotSidebar :title="'Twitch Dashboard'" 
+    <BotSidebar :title="'Twitch Commands'" 
     :colourBrand1="'#2563eb'" 
     :colourBrand2="'#38bdf8'" 
-    :colourBoxShadow="'rgba(37, 99, 235, 0.35)'" />
+    :colourBoxShadow="'rgba(37, 99, 235, 0.35)'"/>
 
     <!-- ========================
          1.2 Main content
