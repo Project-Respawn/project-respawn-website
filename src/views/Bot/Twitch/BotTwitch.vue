@@ -97,7 +97,7 @@
 </template>
 
 <script setup>
-  import BotSidebar from '../../../components/BotSidebar/BotSidebar.vue'
+  import BotSidebar from '@/components/BotSidebar/BotSidebar.vue';
 </script>
 
 <script>
