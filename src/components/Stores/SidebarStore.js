@@ -11,6 +11,10 @@ export const sidebarStore = reactive({
     this.expandedItems[itemId] = !this.expandedItems[itemId]
   },
   
+  expandMenu(itemId) {
+    this.expandedItems[itemId] = true
+  },
+  
   setTitle(title) {
     this.title = title
   },

@@ -17,68 +17,37 @@
 
       <nav class="sidebar-nav">
         <template v-for="item in menuItems" :key="item.id">
-          <!-- Top-level items -->
-          <div v-if="!item.children || item.children.length === 0">
-            <router-link :to="item.path" class="nav-item" exact-active-class="active">
-              <span class="nav-dot"></span>
-              {{ item.label }}
-            </router-link>
-          </div>
+          <!-- Top-level items without children -->
+          <router-link 
+            v-if="!item.children || item.children.length === 0"
+            :to="item.path" 
+            class="nav-item" 
+            exact-active-class="active">
+            <span class="nav-dot"></span>
+            {{ item.label }}
+          </router-link>
 
-          <!-- Items with submenus -->
+          <!-- Top-level items with children - render link with button inside + submenu -->
           <div v-else class="nav-group">
-            <button 
+            <router-link
+              :to="item.path"
               class="nav-item nav-parent"
-              :class="{ expanded: sidebarStore.expandedItems[item.id] }"
-              @click="sidebarStore.toggleExpand(item.id)"
-            >
+              exact-active-class="active"
+              @click="expandOnly(item.id)">
               <span class="nav-dot"></span>
               {{ item.label }}
-              <span class="chevron-icon">›</span>
-            </button>
+              
+              <button
+                class="nav-expand-btn"
+                :class="{ expanded: sidebarStore.expandedItems[item.id] }"
+                @click.prevent.stop="toggleExpand(item.id)"
+                :aria-label="`Toggle ${item.label} menu`">
+                <span class="chevron-icon">›</span>
+              </button>
+            </router-link>
 
-            <!-- Submenu -->
-            <div 
-              class="submenu"
-              :class="{ active: sidebarStore.expandedItems[item.id] }"
-            >
-              <template v-for="subitem in item.children" :key="subitem.id">
-                <div v-if="!subitem.children || subitem.children.length === 0">
-                  <router-link :to="subitem.path" class="nav-item nav-subitem" exact-active-class="active">
-                    <span class="nav-dot"></span>
-                    {{ subitem.label }}
-                  </router-link>
-                </div>
-
-                <!-- Nested submenu (3rd level) -->
-                <div v-else class="nav-group">
-                  <button 
-                    class="nav-item nav-subitem nav-parent"
-                    :class="{ expanded: sidebarStore.expandedItems[subitem.id] }"
-                    @click="sidebarStore.toggleExpand(subitem.id)"
-                  >
-                    <span class="nav-dot"></span>
-                    {{ subitem.label }}
-                    <span class="chevron-icon">›</span>
-                  </button>
-
-                  <div 
-                    class="submenu submenu-2"
-                    :class="{ active: sidebarStore.expandedItems[subitem.id] }"
-                  >
-                    <router-link 
-                      v-for="subsubitem in subitem.children"
-                      :key="subsubitem.id"
-                      :to="subsubitem.path" 
-                      class="nav-item nav-subitem-2" 
-                      exact-active-class="active"
-                    >
-                      <span class="nav-dot"></span>
-                      {{ subsubitem.label }}
-                    </router-link>
-                  </div>
-                </div>
-              </template>
+            <div class="submenu" :class="{ active: sidebarStore.expandedItems[item.id] }">
+              <MenuLevel :items="item.children" :depth="1" />
             </div>
           </div>
         </template>
@@ -93,6 +62,7 @@
 </template>
 
 <script setup>
+  import MenuLevel from './MenuLevel.vue'
   import { sidebarStore } from '../Stores/SidebarStore'
   import { watch } from 'vue'
 
@@ -130,11 +100,6 @@ export default {
           path: '/bot/twitch',
           children: [
             {
-              id: 'twitch-dashboard',
-              label: 'Dashboard',
-              path: '/bot/twitch',
-            },
-            {
               id: 'twitch-commands',
               label: 'Commands',
               path: '/bot/twitch/commands',
@@ -164,6 +129,16 @@ export default {
       ],
     };
   },
+  methods: {
+    expandOnly(itemId) {
+      // Only expand, don't collapse (for parent clicks)
+      sidebarStore.expandMenu(itemId)
+    },
+    toggleExpand(itemId) {
+      // Toggle expand/collapse (for arrow button)
+      sidebarStore.toggleExpand(itemId)
+    }
+  }
 };
 
 </script>
