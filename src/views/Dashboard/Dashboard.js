@@ -167,51 +167,65 @@ export default {
       }
     },
 
-    async fetchUsers() {
-      this.loadingUsers = true;
+async fetchUsers() {
+  this.loadingUsers = true;
 
-      try {
-        const result = await client.queries.listAdminUsers();
+  try {
+    const result = await getClient().queries.listAdminUsers();
 
-        if (result?.errors?.length) {
-          console.error('listAdminUsers full result:', result);
-          console.error('listAdminUsers errors JSON:', JSON.stringify(result.errors, null, 2));
-          throw new Error(result.errors[0]?.message || 'Failed to fetch users');
-        }
+    console.log('listAdminUsers result:', result);
 
-        const rawUsers = Array.isArray(result?.data)
-          ? result.data
-          : result?.data?.users || [];
+    if (result?.errors?.length) {
+      console.error('listAdminUsers full result:', result);
+      console.error('listAdminUsers errors JSON:', JSON.stringify(result.errors, null, 2));
+      throw new Error(result.errors[0]?.message || 'Failed to fetch users');
+    }
 
-        this.users = rawUsers.map((u, i) => {
-          const displayName = u.name || u.username || u.email || 'Unknown User';
+    const rawUsers = Array.isArray(result?.data)
+      ? result.data
+      : result?.data?.users || [];
 
-          return {
-            id: u.id || u.username || u.email,
-            username: u.username || '',
-            name: displayName,
-            email: u.email || '',
-            roles: Array.isArray(u.roles) && u.roles.length ? u.roles : ['Member'],
-            joined: u.joined || '',
-            online: Boolean(u.online),
-            enabled: typeof u.enabled === 'boolean' ? u.enabled : true,
-            status: u.status || '',
-            avatarColor: AVATAR_COLORS[i % AVATAR_COLORS.length],
-            initials: displayName
-              .split(' ')
-              .map((n) => n[0])
-              .join('')
-              .toUpperCase()
-              .slice(0, 2),
-          };
-        });
-      } catch (error) {
-        console.error('fetchUsers failed:', error);
-        this.showToast(error.message || 'Failed to fetch users');
-      } finally {
-        this.loadingUsers = false;
-      }
-    },
+    this.users = rawUsers.map((u, i) => {
+      const attrs = Array.isArray(u.Attributes)
+        ? Object.fromEntries(u.Attributes.map((a) => [a.Name, a.Value]))
+        : {};
+
+      const displayName =
+        u.name ||
+        u.username ||
+        attrs.name ||
+        [attrs.given_name, attrs.family_name].filter(Boolean).join(' ') ||
+        u.email ||
+        attrs.email ||
+        u.Username ||
+        'Unknown User';
+
+      return {
+        id: u.id || u.username || u.Username || u.email || attrs.email,
+        username: u.username || u.Username || '',
+        name: displayName,
+        email: u.email || attrs.email || '',
+        roles: Array.isArray(u.roles) && u.roles.length ? u.roles : ['Member'],
+        joined: u.joined || u.UserCreateDate || '',
+        online: Boolean(u.online),
+        enabled: typeof u.enabled === 'boolean' ? u.enabled : Boolean(u.Enabled ?? true),
+        status: u.status || u.UserStatus || '',
+        avatarColor: AVATAR_COLORS[i % AVATAR_COLORS.length],
+        initials: displayName
+          .split(' ')
+          .map((n) => n[0])
+          .join('')
+          .toUpperCase()
+          .slice(0, 2),
+      };
+    });
+  } catch (error) {
+    console.error('fetchUsers failed:', error);
+    this.showToast(error.message || 'Failed to fetch users');
+  } finally {
+    this.loadingUsers = false;
+  }
+},
 
     openRoleModal(user) {
       this.roleModalUser = user;
@@ -249,7 +263,7 @@ export default {
       try {
         const roles = [...new Set([...this.pendingRoles, 'Member'])];
 
-        const result = await client.mutations.updateUserRoles({
+        const result = await getClient().mutations.updateUserRoles({
           username: this.roleModalUser.username,
           roles,
         });
