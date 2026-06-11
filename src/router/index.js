@@ -10,8 +10,8 @@ import Events from '../views/Events/Events.vue'
 import Checkout from '../views/Checkout/Checkout.vue'
 import Join from '../views/Join/Join.vue'
 import Account from '../views/Account/Account.vue'
-import Dashboard from '../views/Dashboard/Dashboard.vue'
 import Roles from '../views/About/Roles/Roles.vue'
+
 import BotOverview from '../views/Bot/Overview/BotOverview.vue'
 import BotTwitch from '../views/Bot/Twitch/BotTwitch.vue'
 import BotDiscord from '../views/Bot/Discord/BotDiscord.vue'
@@ -21,6 +21,13 @@ import TtsOverlay from '../views/Bot/Twitch/TTS/TtsOverlay.vue'
 import TtsSettings from '../views/Bot/Twitch/TTS/Settings/TtsSettings.vue'
 import TwitchCommands from '../views/Bot/Twitch/TwitchCommands/TwitchCommands.vue'
 
+import AdminLayout from '../views/Admin/AdminLayout/AdminLayout.vue'
+import AdminUsers from '../views/Admin/AdminUsers/AdminUsers.vue'
+import AdminPermissions from '../views/Admin/AdminPermissions/AdminPermissions.vue'
+
+import ForumIndex from '../views/Forum/ForumIndex/ForumIndex.vue'
+import ForumBoard from '../views/Forum/ForumBoard/ForumBoard.vue'
+import ForumThread from '../views/Forum/ForumThread/ForumThread.vue'
 
 const routes = [
   { path: '/', component: Home },
@@ -34,7 +41,31 @@ const routes = [
   { path: '/events', component: Events },
   { path: '/join', component: Join },
   { path: '/account', component: Account },
-  { path: '/dashboard', component: Dashboard, meta: { hideLayout: true } },
+
+  {
+    path: '/dashboard',
+    component: AdminLayout,
+    meta: { hideLayout: true },
+    children: [
+      {
+        path: '',
+        redirect: '/dashboard/users',
+      },
+      {
+        path: 'users',
+        component: AdminUsers,
+      },
+      {
+        path: 'permissions',
+        component: AdminPermissions,
+      },
+    ],
+  },
+
+  { path: '/forum', component: ForumIndex },
+  { path: '/forum/board/:boardSlug', component: ForumBoard, props: true },
+  { path: '/forum/thread/:threadSlug', component: ForumThread, props: true },
+
   { path: '/bot', component: BotOverview },
   { path: '/bot/twitch', component: BotTwitch },
   { path: '/bot/twitch/commands', component: TwitchCommands },
@@ -43,13 +74,14 @@ const routes = [
   { path: '/bot/discord', component: BotDiscord },
   { path: '/bot/automation', component: BotAutomation },
   { path: '/bot/settings', component: BotSettings },
+
   { path: '/:pathMatch(.*)', component: NotFound },
 ]
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior() {
     return { top: 0 }
   }
 })

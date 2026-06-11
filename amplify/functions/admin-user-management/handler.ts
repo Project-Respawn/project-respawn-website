@@ -26,8 +26,8 @@ const MANAGED_GROUPS = [
 
 function getCallerGroups(event: any): string[] {
   const groups =
-    event.identity?.claims?.['cognito:groups'] ||
-    event.identity?.resolverContext?.groups ||
+    event?.identity?.claims?.['cognito:groups'] ||
+    event?.identity?.resolverContext?.groups ||
     [];
 
   return Array.isArray(groups) ? groups : [groups].filter(Boolean);
@@ -51,6 +51,14 @@ function formatDate(value?: Date): string {
   return new Date(value).toLocaleDateString('en-GB');
 }
 
+function getFieldName(event: any): string {
+  return event?.info?.fieldName || event?.fieldName || '';
+}
+
+function getArguments(event: any) {
+  return event?.arguments || event?.args || {};
+}
+
 async function listAllUsers() {
   if (!USER_POOL_ID) {
     throw new Error('Missing AMPLIFY_AUTH_USERPOOL_ID');
@@ -67,11 +75,6 @@ async function listAllUsers() {
         PaginationToken: paginationToken,
       })
     );
-
-    console.log('Fetched Cognito page', {
-      count: result.Users?.length ?? 0,
-      nextToken: result.PaginationToken ?? null,
-    });
 
     allUsers.push(...(result.Users ?? []));
     paginationToken = result.PaginationToken;
@@ -115,8 +118,6 @@ async function listAllUsers() {
     })
   );
 
-  console.log('Total users returned to dashboard:', users.length);
-
   return users;
 }
 
@@ -129,7 +130,7 @@ async function updateUserRoles(username: string, roles: string[]) {
     throw new Error('Username is required');
   }
 
-  const desiredRoles = [...new Set(roles.filter((role) => MANAGED_GROUPS.includes(role)))];
+  const desiredRoles = [...new Set((roles || []).filter((role) => MANAGED_GROUPS.includes(role)))];
 
   if (!desiredRoles.includes('Member')) {
     desiredRoles.push('Member');
@@ -179,21 +180,25 @@ async function updateUserRoles(username: string, roles: string[]) {
 }
 
 export const handler: AppSyncResolverHandler<any, any> = async (event) => {
+  const fieldName = getFieldName(event);
+  const args = getArguments(event);
+
   console.log('Admin user management invoked', {
-    fieldName: event.info?.fieldName,
+    fieldName,
     callerGroups: getCallerGroups(event),
+    eventKeys: Object.keys(event || {}),
   });
 
   assertAdminAccess(event);
 
-  switch (event.info.fieldName) {
+  switch (fieldName) {
     case 'listAdminUsers':
       return await listAllUsers();
 
     case 'updateUserRoles':
-      return await updateUserRoles(event.arguments.username, event.arguments.roles);
+      return await updateUserRoles(args.username, args.roles || []);
 
     default:
-      throw new Error(`Unknown field: ${event.info.fieldName}`);
+      throw new Error(`Unknown field: ${fieldName || 'undefined'}`);
   }
 };
