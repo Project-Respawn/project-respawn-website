@@ -25,6 +25,7 @@ import AdminLayout from '../views/Admin/AdminLayout/AdminLayout.vue'
 import AdminUsers from '../views/Admin/AdminUsers/AdminUsers.vue'
 import AdminPermissions from '../views/Admin/AdminPermissions/AdminPermissions.vue'
 
+import ForumLayout from '../views/Forum/ForumLayout/ForumLayout.vue'
 import ForumIndex from '../views/Forum/ForumIndex/ForumIndex.vue'
 import ForumBoard from '../views/Forum/ForumBoard/ForumBoard.vue'
 import ForumThread from '../views/Forum/ForumThread/ForumThread.vue'
@@ -62,9 +63,29 @@ const routes = [
     ],
   },
 
-  { path: '/forum', component: ForumIndex },
-  { path: '/forum/board/:boardSlug', component: ForumBoard, props: true },
-  { path: '/forum/thread/:threadSlug', component: ForumThread, props: true },
+ {
+  path: '/forum',
+  component: ForumLayout,
+  children: [
+    {
+      path: '',
+      name: 'ForumIndex',
+      component: ForumIndex,
+    },
+    {
+      path: 'board/:boardSlug',
+      name: 'ForumBoard',
+      component: ForumBoard,
+      props: true,
+    },
+    {
+      path: 'thread/:threadSlug',
+      name: 'ForumThread',
+      component: ForumThread,
+      props: true,
+    },
+  ],
+},
 
   { path: '/bot', component: BotOverview },
   { path: '/bot/twitch', component: BotTwitch },

@@ -1,0 +1,335 @@
+.forum-layout-shell {
+  display: grid;
+  grid-template-columns: 270px minmax(0, 1fr) 320px;
+  gap: 24px;
+  min-height: 100vh;
+  padding: 24px;
+  background:
+    radial-gradient(circle at top, rgba(121, 87, 255, 0.1), transparent 32%),
+    linear-gradient(180deg, #050816 0%, #070b1d 100%);
+  color: #f4f4f8;
+}
+
+.forum-layout-sidebar,
+.forum-layout-rightbar {
+  position: sticky;
+  top: 24px;
+  align-self: start;
+}
+
+.forum-layout-sidebar-inner,
+.forum-layout-rightbar-card,
+.forum-layout-topbar,
+.forum-layout-content {
+  border: 1px solid rgba(164, 139, 255, 0.12);
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(15, 20, 38, 0.92), rgba(8, 12, 24, 0.96));
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
+}
+
+.forum-layout-sidebar-inner {
+  padding: 22px 18px;
+}
+
+.forum-layout-brand {
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.forum-layout-brand-kicker,
+.forum-layout-topbar-kicker,
+.forum-layout-card-kicker {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #b8a8ff;
+}
+
+.forum-layout-brand-title,
+.forum-layout-topbar-title,
+.forum-layout-card-title {
+  margin: 0;
+  color: #ffffff;
+}
+
+.forum-layout-brand-title {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.forum-layout-brand-copy {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(244, 244, 248, 0.72);
+}
+
+.forum-layout-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.forum-layout-nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.forum-layout-nav-heading {
+  margin: 0;
+  padding: 0 6px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(244, 244, 248, 0.5);
+}
+
+.forum-layout-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 12px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  color: #f4f4f8;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.forum-layout-nav-link:hover {
+  border-color: rgba(143, 107, 255, 0.22);
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateX(2px);
+}
+
+.forum-layout-nav-link.is-active {
+  border-color: rgba(143, 107, 255, 0.36);
+  background: rgba(143, 107, 255, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(143, 107, 255, 0.12);
+}
+
+.forum-layout-nav-link-icon {
+  font-size: 16px;
+}
+
+.forum-layout-nav-link-label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.forum-layout-main-column {
+  min-width: 0;
+}
+
+.forum-layout-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 20px;
+  padding: 22px 24px;
+}
+
+.forum-layout-topbar-title {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.forum-layout-topbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.forum-layout-primary-btn,
+.forum-layout-secondary-btn {
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.forum-layout-primary-btn {
+  border: none;
+  background: #8f6bff;
+  color: #ffffff;
+}
+
+.forum-layout-primary-btn:hover {
+  background: #a285ff;
+}
+
+.forum-layout-secondary-btn {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: #f4f4f8;
+}
+
+.forum-layout-secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.forum-layout-content {
+  padding: 0;
+  overflow: hidden;
+}
+
+.forum-layout-content > * {
+  width: 100%;
+}
+
+.forum-layout-rightbar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.forum-layout-rightbar-card {
+  padding: 20px;
+}
+
+.forum-layout-card-header {
+  margin-bottom: 16px;
+}
+
+.forum-layout-activity-list,
+.forum-layout-friends-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.forum-layout-activity-item,
+.forum-layout-friend-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.forum-layout-activity-icon,
+.forum-layout-friend-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.forum-layout-activity-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: rgba(143, 107, 255, 0.14);
+  font-size: 16px;
+}
+
+.forum-layout-activity-title,
+.forum-layout-friend-name {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.forum-layout-activity-meta,
+.forum-layout-friend-meta {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: rgba(244, 244, 248, 0.66);
+}
+
+.forum-layout-friend-avatar {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8f6bff, #5f7dff);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.forum-layout-friend-status {
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #101424;
+  border-radius: 50%;
+  background: #6dff8b;
+}
+
+@media (max-width: 1400px) {
+  .forum-layout-shell {
+    grid-template-columns: 240px minmax(0, 1fr) 280px;
+  }
+}
+
+@media (max-width: 1180px) {
+  .forum-layout-shell {
+    grid-template-columns: 240px minmax(0, 1fr);
+  }
+
+  .forum-layout-rightbar {
+    grid-column: 1 / -1;
+    position: static;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .forum-layout-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .forum-layout-sidebar,
+  .forum-layout-rightbar {
+    position: static;
+  }
+
+  .forum-layout-topbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .forum-layout-rightbar {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .forum-layout-shell {
+    padding: 14px;
+    gap: 16px;
+  }
+
+  .forum-layout-sidebar-inner,
+  .forum-layout-rightbar-card,
+  .forum-layout-topbar {
+    padding: 18px;
+  }
+
+  .forum-layout-brand-title,
+  .forum-layout-topbar-title {
+    font-size: 22px;
+  }
+
+  .forum-layout-nav-link {
+    padding: 11px 12px;
+  }
+}
