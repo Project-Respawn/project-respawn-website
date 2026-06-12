@@ -1,5 +1,6 @@
 <template>
   <div class="forum-layout-shell">
+    <!-- Forum Layout Sidebar -->
     <aside class="forum-layout-sidebar">
       <div class="forum-layout-sidebar-inner">
         <div class="forum-layout-brand">
@@ -33,6 +34,7 @@
       </div>
     </aside>
 
+    <!-- Main Content Column -->
     <div class="forum-layout-main-column">
       <header class="forum-layout-topbar">
         <div class="forum-layout-topbar-copy">
@@ -55,6 +57,7 @@
       </main>
     </div>
 
+    <!-- Right Sidebar Widgets -->
     <aside class="forum-layout-rightbar">
       <div class="forum-layout-rightbar-card">
         <div class="forum-layout-card-header">

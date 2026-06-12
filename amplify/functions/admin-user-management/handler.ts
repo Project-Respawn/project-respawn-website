@@ -6,11 +6,12 @@ import {
   AdminAddUserToGroupCommand,
   AdminRemoveUserFromGroupCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
+import type { ListUsersCommandOutput } from '@aws-sdk/client-cognito-identity-provider';
 
 const client = new CognitoIdentityProviderClient({});
 
 const USER_POOL_ID = process.env.AMPLIFY_AUTH_USERPOOL_ID;
-const ALLOWED_ADMIN_GROUPS = ['SuperAdmin', 'Admin', 'Staff'];
+const ALLOWED_ADMIN_GROUPS = ['SuperAdmin', 'Admin', 'Staff'] as const;
 const MANAGED_GROUPS = [
   'SuperAdmin',
   'Admin',
@@ -22,7 +23,17 @@ const MANAGED_GROUPS = [
   'AffiliatePartner',
   'Member',
   'BetaMember',
-];
+] as const;
+
+type ManagedGroup = (typeof MANAGED_GROUPS)[number];
+
+function isNonEmptyString(value: unknown): value is string {
+  return typeof value === 'string' && value.trim().length > 0;
+}
+
+function isManagedGroup(value: unknown): value is ManagedGroup {
+  return isNonEmptyString(value) && MANAGED_GROUPS.includes(value as ManagedGroup);
+}
 
 function getCallerGroups(event: any): string[] {
   const groups =
@@ -30,12 +41,18 @@ function getCallerGroups(event: any): string[] {
     event?.identity?.resolverContext?.groups ||
     [];
 
-  return Array.isArray(groups) ? groups : [groups].filter(Boolean);
+  if (Array.isArray(groups)) {
+    return groups.filter(isNonEmptyString);
+  }
+
+  return isNonEmptyString(groups) ? [groups] : [];
 }
 
 function assertAdminAccess(event: any) {
   const callerGroups = getCallerGroups(event);
-  const allowed = callerGroups.some((group) => ALLOWED_ADMIN_GROUPS.includes(group));
+  const allowed = callerGroups.some((group) =>
+    ALLOWED_ADMIN_GROUPS.includes(group as (typeof ALLOWED_ADMIN_GROUPS)[number])
+  );
 
   if (!allowed) {
     throw new Error('Unauthorized');
@@ -68,16 +85,16 @@ async function listAllUsers() {
   let paginationToken: string | undefined = undefined;
 
   do {
-    const result = await client.send(
-      new ListUsersCommand({
-        UserPoolId: USER_POOL_ID,
-        Limit: 60,
-        PaginationToken: paginationToken,
-      })
-    );
+ const listUsersResponse: ListUsersCommandOutput = await client.send(
+  new ListUsersCommand({
+    UserPoolId: USER_POOL_ID,
+    Limit: 60,
+    PaginationToken: paginationToken,
+  })
+);
 
-    allUsers.push(...(result.Users ?? []));
-    paginationToken = result.PaginationToken;
+    allUsers.push(...(listUsersResponse.Users ?? []));
+    paginationToken = listUsersResponse.PaginationToken;
   } while (paginationToken);
 
   const users = await Promise.all(
@@ -88,21 +105,21 @@ async function listAllUsers() {
         getAttribute(user, 'name') ||
         getAttribute(user, 'preferred_username') ||
         [getAttribute(user, 'given_name'), getAttribute(user, 'family_name')]
-          .filter(Boolean)
+          .filter(isNonEmptyString)
           .join(' ') ||
         email ||
         username;
 
-      const groupsResult = await client.send(
+      const groupsResponse = await client.send(
         new AdminListGroupsForUserCommand({
           UserPoolId: USER_POOL_ID,
           Username: username,
         })
       );
 
-      const roles = (groupsResult.Groups ?? [])
+      const roles = (groupsResponse.Groups ?? [])
         .map((group) => group.GroupName)
-        .filter(Boolean);
+        .filter(isManagedGroup);
 
       return {
         id: username,
@@ -130,23 +147,24 @@ async function updateUserRoles(username: string, roles: string[]) {
     throw new Error('Username is required');
   }
 
-  const desiredRoles = [...new Set((roles || []).filter((role) => MANAGED_GROUPS.includes(role)))];
+  const desiredRoles: ManagedGroup[] = [
+    ...new Set((roles || []).filter(isManagedGroup)),
+  ];
 
   if (!desiredRoles.includes('Member')) {
     desiredRoles.push('Member');
   }
 
-  const existingGroupsResult = await client.send(
+  const existingGroupsResponse = await client.send(
     new AdminListGroupsForUserCommand({
       UserPoolId: USER_POOL_ID,
       Username: username,
     })
   );
 
-  const existingRoles = (existingGroupsResult.Groups ?? [])
+  const existingRoles: ManagedGroup[] = (existingGroupsResponse.Groups ?? [])
     .map((group) => group.GroupName)
-    .filter(Boolean)
-    .filter((role) => MANAGED_GROUPS.includes(role));
+    .filter(isManagedGroup);
 
   const rolesToAdd = desiredRoles.filter((role) => !existingRoles.includes(role));
   const rolesToRemove = existingRoles.filter((role) => !desiredRoles.includes(role));
