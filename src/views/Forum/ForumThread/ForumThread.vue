@@ -1,6 +1,5 @@
 <template>
   <div class="forum-thread-page">
-    <!-- 1. Loading -->
     <section v-if="loading" class="forum-thread-empty-state">
       <h1 class="forum-thread-empty-title">Loading thread</h1>
       <p class="forum-thread-empty-copy">
@@ -8,7 +7,6 @@
       </p>
     </section>
 
-    <!-- 2. Error -->
     <section
       v-else-if="loadError"
       class="forum-thread-empty-state forum-thread-empty-state-error"
@@ -25,9 +23,7 @@
       </div>
     </section>
 
-    <!-- 3. Thread page -->
     <template v-else>
-      <!-- 3a. Thread header -->
       <section class="forum-thread-hero">
         <div class="forum-thread-hero-copy">
           <p class="forum-thread-kicker">Community Hub</p>
@@ -61,7 +57,6 @@
         </div>
       </section>
 
-      <!-- 3b. Thread stats -->
       <section class="forum-thread-topbar">
         <div class="forum-thread-topbar-stat">
           <span class="forum-thread-topbar-value">{{ thread.replyCount }}</span>
@@ -84,7 +79,6 @@
         </div>
       </section>
 
-      <!-- 3c. Posts -->
       <section class="forum-thread-posts-section">
         <article
           v-for="post in thread.posts"
@@ -97,20 +91,26 @@
               {{ post.avatar }}
             </div>
 
-            <h2 class="forum-post-author-name">{{ post.author }}</h2>
+            <h2 class="forum-post-author-name">
+              {{ post.author || 'Member' }}
+            </h2>
 
             <p class="forum-post-author-role">
-              {{ post.role }}
+              {{ post.role || 'Member' }}
             </p>
 
             <div class="forum-post-author-stats">
               <div class="forum-post-author-stat">
-                <span class="forum-post-author-stat-value">{{ post.joined }}</span>
+                <span class="forum-post-author-stat-value">
+                  {{ post.joined || 'Recently' }}
+                </span>
                 <span class="forum-post-author-stat-label">Joined</span>
               </div>
 
               <div class="forum-post-author-stat">
-                <span class="forum-post-author-stat-value">{{ post.postCount }}</span>
+                <span class="forum-post-author-stat-value">
+                  {{ post.postCount ?? 0 }}
+                </span>
                 <span class="forum-post-author-stat-label">Posts</span>
               </div>
             </div>
@@ -178,7 +178,6 @@
         </article>
       </section>
 
-      <!-- 3d. Locked state -->
       <section
         v-if="thread.isLocked"
         class="forum-thread-empty-state forum-thread-empty-state-inline"
@@ -189,7 +188,6 @@
         </p>
       </section>
 
-      <!-- 3e. Reply form -->
       <section
         v-else
         ref="replySection"

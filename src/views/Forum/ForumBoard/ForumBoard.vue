@@ -165,7 +165,7 @@
                   <p class="forum-featured-card-excerpt">{{ thread.excerpt }}</p>
 
                   <div class="forum-featured-card-meta">
-                    <span>{{ thread.author }}</span>
+                    <span>{{ thread.authorUsername }}</span>
                     <span>·</span>
                     <span>{{ thread.createdAt }}</span>
                   </div>
@@ -194,7 +194,7 @@
                   <p class="forum-featured-card-excerpt">{{ thread.excerpt }}</p>
 
                   <div class="forum-featured-card-meta">
-                    <span>{{ thread.author }}</span>
+                    <span>{{ thread.authorUsername }}</span>
                     <span>·</span>
                     <span>{{ thread.createdAt }}</span>
                   </div>
@@ -318,7 +318,7 @@
                 <p class="forum-thread-excerpt">{{ thread.excerpt }}</p>
 
                 <div class="forum-thread-meta">
-                  <span>{{ thread.author }}</span>
+                  <span>{{ thread.authorUsername }}</span>
                   <span>·</span>
                   <span>{{ thread.createdAt }}</span>
                 </div>
@@ -338,9 +338,11 @@
 
             <div class="forum-thread-latest">
               <div class="forum-thread-latest-label">Latest Reply</div>
-              <div class="forum-thread-latest-title">{{ thread.latestReply.title }}</div>
+              <div class="forum-thread-latest-title">
+                {{ thread.latestReply.title }}
+              </div>
               <div class="forum-thread-latest-meta">
-                {{ thread.latestReply.author }} · {{ thread.latestReply.time }}
+                {{ thread.latestReply.authorUsername }} · {{ thread.latestReply.time }}
               </div>
             </div>
 

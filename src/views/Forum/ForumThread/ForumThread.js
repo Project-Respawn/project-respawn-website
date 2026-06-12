@@ -35,6 +35,10 @@ function splitParagraphs(value = '') {
     .filter(Boolean);
 }
 
+function normaliseGroupName(value = '') {
+  return String(value).trim().toLowerCase();
+}
+
 export default {
   name: 'ForumThread',
 
@@ -54,6 +58,7 @@ export default {
       deletingThread: false,
       updatingThreadLock: false,
       currentUserId: '',
+      currentUsername: '',
       currentUserGroups: [],
       replyError: '',
       replyPreview: false,
@@ -72,8 +77,9 @@ export default {
       const orderedPosts = sortByNewest(this.threadPosts);
 
       return orderedPosts.map((post, index) => {
-        const authorName = post.authorDisplayName || 'Unknown author';
-        const initials = authorName.trim().charAt(0).toUpperCase() || 'U';
+        const authorName =
+          this.normaliseAuthorDisplayName(post.authorDisplayName) || 'Member';
+        const initials = authorName.trim().charAt(0).toUpperCase() || 'M';
 
         return {
           id: post.id,
@@ -84,7 +90,7 @@ export default {
           joined: 'Jun 2026',
           postCount: this.getAuthorPostCount(post.authorUserId),
           postedAt: this.formatRelativeTime(
-            post.editedAt || post.updatedAt || post.createdAt
+            post.editedAt || post.updatedAt || post.createdAt,
           ),
           isOriginalPost: index === 0,
           isStaff: this.isStaffAuthor(authorName),
@@ -99,7 +105,9 @@ export default {
       }
 
       const participants = new Set(
-        this.threadPosts.map((post) => post.authorUserId || post.authorDisplayName)
+        this.threadPosts.map(
+          (post) => post.authorUserId || this.normaliseAuthorDisplayName(post.authorDisplayName),
+        ),
       );
 
       return {
@@ -120,7 +128,7 @@ export default {
         lastActivity: this.formatRelativeTime(
           this.threadRecord.lastReplyAt ||
             this.threadRecord.updatedAt ||
-            this.threadRecord.createdAt
+            this.threadRecord.createdAt,
         ),
         posts: this.mappedPosts,
       };
@@ -137,34 +145,90 @@ export default {
   },
 
   methods: {
-    // 1. Auth and permissions
+    looksLikeCognitoId(value = '') {
+      return (
+        typeof value === 'string' &&
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+          value,
+        )
+      );
+    },
+
+    normaliseAuthorDisplayName(value = '') {
+      if (!value || this.looksLikeCognitoId(value)) {
+        return '';
+      }
+
+      return String(value).trim();
+    },
+
+    async getForumAuthor() {
+      const user = await getCurrentUser();
+      const authorUserId = user?.userId || user?.username || '';
+
+      if (!authorUserId) {
+        throw new Error('Could not determine the current user.');
+      }
+
+      const profileResult = await client.models.UserProfile.list({
+        filter: {
+          ownerUserId: { eq: authorUserId },
+        },
+      });
+
+      if (profileResult.errors?.length) {
+        throw new Error(
+          profileResult.errors[0].message || 'Failed to load user profile',
+        );
+      }
+
+      const userProfile = profileResult.data?.[0] || null;
+
+      return {
+        authorUserId,
+        authorDisplayName:
+          userProfile?.displayName?.trim() ||
+          this.currentUsername ||
+          'Member',
+      };
+    },
+
     async loadCurrentUser() {
       try {
-        const user = await getCurrentUser();
-        const session = await fetchAuthSession();
+        const [session, forumAuthor] = await Promise.all([
+          fetchAuthSession(),
+          this.getForumAuthor().catch(() => ({
+            authorUserId: '',
+            authorDisplayName: '',
+          })),
+        ]);
 
-        this.currentUserId = user.userId || '';
-        this.currentUserGroups =
-          session.tokens?.accessToken?.payload?.['cognito:groups'] || [];
+        this.currentUserId = forumAuthor.authorUserId || '';
+        this.currentUsername = forumAuthor.authorDisplayName || '';
 
-        console.log('currentUserId:', this.currentUserId);
-        console.log('currentUserGroups:', this.currentUserGroups);
+        const groups =
+          session?.tokens?.accessToken?.payload?.['cognito:groups'] ||
+          session?.tokens?.idToken?.payload?.['cognito:groups'] ||
+          [];
+
+        this.currentUserGroups = Array.isArray(groups)
+          ? groups.map(normaliseGroupName)
+          : [];
       } catch (error) {
         console.warn('Unable to load current user:', error);
         this.currentUserId = '';
+        this.currentUsername = '';
         this.currentUserGroups = [];
       }
     },
 
     hasModerationAccess() {
-      const groups = (this.currentUserGroups || []).map((group) =>
-        String(group).trim().toLowerCase()
-      );
+      const groups = (this.currentUserGroups || []).map(normaliseGroupName);
 
       return (
-        groups.includes('SuperAdmin') ||
-        groups.includes('Admin') ||
-        groups.includes('Staff')
+        groups.includes('superadmin') ||
+        groups.includes('admin') ||
+        groups.includes('staff')
       );
     },
 
@@ -193,35 +257,6 @@ export default {
       return String(originalPost?.authorUserId || '') === String(this.currentUserId);
     },
 
-    // 2. Author profile
-    async getForumAuthor() {
-      const user = await getCurrentUser();
-      const authorUserId = user.userId;
-
-      const profileResult = await client.models.UserProfile.list({
-        filter: {
-          ownerUserId: { eq: authorUserId },
-        },
-      });
-
-      if (profileResult.errors?.length) {
-        throw new Error(
-          profileResult.errors[0].message || 'Failed to load user profile'
-        );
-      }
-
-      const userProfile = profileResult.data?.[0];
-
-      return {
-        authorUserId,
-        authorDisplayName:
-          userProfile?.displayName?.trim() ||
-          user?.signInDetails?.loginId ||
-          'Member',
-      };
-    },
-
-    // 3. Thread moderation
     async toggleThreadLock() {
       if (!this.threadRecord?.id || !this.hasModerationAccess()) {
         return;
@@ -231,7 +266,7 @@ export default {
       const actionLabel = nextLockedState ? 'lock' : 'unlock';
 
       const confirmed = window.confirm(
-        `Are you sure you want to ${actionLabel} this thread?`
+        `Are you sure you want to ${actionLabel} this thread?`,
       );
 
       if (!confirmed) {
@@ -250,7 +285,7 @@ export default {
 
         if (updateResult.errors?.length) {
           throw new Error(
-            updateResult.errors[0].message || `Failed to ${actionLabel} thread`
+            updateResult.errors[0].message || `Failed to ${actionLabel} thread`,
           );
         }
 
@@ -279,7 +314,7 @@ export default {
       }
 
       const confirmed = window.confirm(
-        'Delete this entire thread and all replies? This cannot be undone.'
+        'Delete this entire thread and all replies? This cannot be undone.',
       );
 
       if (!confirmed) {
@@ -300,7 +335,7 @@ export default {
 
           if (deletePostResult.errors?.length) {
             throw new Error(
-              deletePostResult.errors[0].message || 'Failed to delete a thread post'
+              deletePostResult.errors[0].message || 'Failed to delete a thread post',
             );
           }
         }
@@ -311,7 +346,7 @@ export default {
 
         if (deleteThreadResult.errors?.length) {
           throw new Error(
-            deleteThreadResult.errors[0].message || 'Failed to delete thread'
+            deleteThreadResult.errors[0].message || 'Failed to delete thread',
           );
         }
 
@@ -352,7 +387,7 @@ export default {
 
         if (deleteResult.errors?.length) {
           throw new Error(
-            deleteResult.errors[0].message || 'Failed to delete post'
+            deleteResult.errors[0].message || 'Failed to delete post',
           );
         }
 
@@ -376,7 +411,7 @@ export default {
         if (threadUpdateResult.errors?.length) {
           throw new Error(
             threadUpdateResult.errors[0].message ||
-              'Post deleted but thread update failed'
+              'Post deleted but thread update failed',
           );
         }
 
@@ -389,7 +424,6 @@ export default {
       }
     },
 
-    // 4. Thread loading
     async fetchThreadPage() {
       this.loading = true;
       this.loadError = '';
@@ -403,19 +437,19 @@ export default {
 
         if (threadResult.errors?.length) {
           throw new Error(
-            threadResult.errors[0].message || 'Failed to load thread'
+            threadResult.errors[0].message || 'Failed to load thread',
           );
         }
 
         if (boardResult.errors?.length) {
           throw new Error(
-            boardResult.errors[0].message || 'Failed to load boards'
+            boardResult.errors[0].message || 'Failed to load boards',
           );
         }
 
         if (postResult.errors?.length) {
           throw new Error(
-            postResult.errors[0].message || 'Failed to load posts'
+            postResult.errors[0].message || 'Failed to load posts',
           );
         }
 
@@ -424,7 +458,7 @@ export default {
         const posts = postResult.data || [];
 
         const matchedThread = threads.find(
-          (thread) => thread.slug === this.threadSlug
+          (thread) => thread.slug === this.threadSlug,
         );
 
         if (!matchedThread) {
@@ -469,7 +503,6 @@ export default {
       }
     },
 
-    // 5. Reply helpers
     scrollToReplyBox() {
       this.$refs.replySection?.scrollIntoView({
         behavior: 'smooth',
@@ -540,7 +573,7 @@ export default {
 
         if (postCreateResult.errors?.length) {
           throw new Error(
-            postCreateResult.errors[0].message || 'Failed to create reply'
+            postCreateResult.errors[0].message || 'Failed to create reply',
           );
         }
 
@@ -555,7 +588,7 @@ export default {
 
         if (threadUpdateResult.errors?.length) {
           throw new Error(
-            threadUpdateResult.errors[0].message || 'Failed to update thread'
+            threadUpdateResult.errors[0].message || 'Failed to update thread',
           );
         }
 
@@ -574,9 +607,8 @@ export default {
       }
     },
 
-    // 6. Post presentation
     getAuthorRole(authorName = '') {
-      const normalized = authorName.toLowerCase();
+      const normalized = String(authorName).toLowerCase();
 
       if (normalized.includes('founder')) {
         return 'Project Lead';
@@ -594,7 +626,8 @@ export default {
     },
 
     isStaffAuthor(authorName = '') {
-      const normalized = authorName.toLowerCase();
+      const normalized = String(authorName).toLowerCase();
+
       return (
         normalized.includes('founder') ||
         normalized.includes('admin') ||
@@ -608,7 +641,7 @@ export default {
       }
 
       return this.threadPosts.filter(
-        (post) => post.authorUserId === authorUserId
+        (post) => post.authorUserId === authorUserId,
       ).length;
     },
 

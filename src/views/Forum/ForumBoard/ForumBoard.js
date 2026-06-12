@@ -1,10 +1,8 @@
-// 1. Imports and Amplify client
 import { generateClient } from 'aws-amplify/data';
 import { getCurrentUser, fetchAuthSession } from 'aws-amplify/auth';
 
 const client = generateClient();
 
-// 1a. Default board shape
 const DEFAULT_BOARD = {
   id: 'community-board',
   dbId: '',
@@ -19,7 +17,6 @@ const DEFAULT_BOARD = {
   threads: [],
 };
 
-// 1b. Helper functions (sorting, slug, groups)
 function sortByOrder(items = []) {
   return [...items].sort((a, b) => {
     const aOrder = a.sortOrder ?? 0;
@@ -72,11 +69,9 @@ function normaliseGroupName(value = '') {
   return String(value).trim().toLowerCase();
 }
 
-// 2. Component export
 export default {
   name: 'ForumBoard',
 
-  // 2a. Props
   props: {
     boardSlug: {
       type: String,
@@ -84,7 +79,6 @@ export default {
     },
   },
 
-  // 2b. Data
   data() {
     return {
       loading: true,
@@ -98,6 +92,7 @@ export default {
       boardCategory: null,
       boardThreads: [],
       boardPosts: [],
+      currentUserId: '',
       currentUsername: '',
       currentUserGroups: [],
       newThreadForm: {
@@ -108,9 +103,7 @@ export default {
     };
   },
 
-  // 2c. Computed properties
   computed: {
-    // 2c‑1. Moderation access (SuperAdmin/Admin/Staff)
     canManageThreadFlags() {
       const allowedGroups = ['superadmin', 'admin', 'staff'];
 
@@ -119,7 +112,10 @@ export default {
         .some((group) => allowedGroups.includes(group));
     },
 
-    // 2c‑2. Board view model
+    hasModerationAccess() {
+      return this.canManageThreadFlags;
+    },
+
     board() {
       if (!this.boardRecord) {
         return DEFAULT_BOARD;
@@ -142,11 +138,17 @@ export default {
       };
     },
 
-    // 2c‑3. Mapped thread rows
     mappedThreads() {
       return sortThreadsForBoard(this.boardThreads).map((thread, index) => {
         const threadPosts = this.boardPosts.filter((post) => post.threadId === thread.id);
         const latestPost = sortPostsByNewest(threadPosts)[0];
+
+        const authorUsername =
+          this.normaliseAuthorDisplayName(thread.authorDisplayName) || 'Member';
+
+        const latestAuthorUsername = latestPost
+          ? this.normaliseAuthorDisplayName(latestPost.authorDisplayName) || 'Member'
+          : 'System';
 
         return {
           id: thread.id,
@@ -157,7 +159,7 @@ export default {
           excerpt:
             thread.contentPreview ||
             'Join the discussion and help shape this board.',
-          author: thread.authorDisplayName || 'Unknown author',
+          authorUsername,
           createdAt: this.formatRelativeTime(thread.createdAt),
           replies: Math.max(threadPosts.length - 1, 0),
           views: thread.viewCount || 0,
@@ -167,28 +169,29 @@ export default {
           latestReply: latestPost
             ? {
                 title: this.buildLatestReplyTitle(latestPost.content),
-                author: latestPost.authorDisplayName || 'Unknown author',
+                authorUsername: latestAuthorUsername,
                 time: this.formatRelativeTime(
-                  latestPost.editedAt || latestPost.updatedAt || latestPost.createdAt
+                  latestPost.editedAt ||
+                    latestPost.updatedAt ||
+                    latestPost.createdAt,
                 ),
               }
             : {
                 title: 'No replies yet',
-                author: 'System',
+                authorUsername: 'System',
                 time: 'No activity yet',
               },
         };
       });
     },
 
-    // 2c‑4. Derived thread subsets
     pinnedThreadsForBoard() {
       return this.board.threads.filter((thread) => thread.isPinned);
     },
 
     featuredThreadsForBoard() {
       return this.board.threads.filter(
-        (thread) => thread.isFeatured && !thread.isPinned
+        (thread) => thread.isFeatured && !thread.isPinned,
       );
     },
 
@@ -196,7 +199,7 @@ export default {
       const threads = [...this.featuredThreadsForBoard];
       const prioritySlug = 'beginning-of-the-end';
       const priorityIndex = threads.findIndex(
-        (thread) => thread.threadSlug === prioritySlug
+        (thread) => thread.threadSlug === prioritySlug,
       );
 
       if (priorityIndex > -1) {
@@ -210,9 +213,7 @@ export default {
     scrollingFeaturedThreads() {
       const threads = this.orderedFeaturedThreads;
 
-      if (!threads.length) {
-        return [];
-      }
+      if (!threads.length) return [];
 
       if (threads.length === 1) {
         return [...threads, ...threads, ...threads, ...threads].map((thread, index) => ({
@@ -243,19 +244,63 @@ export default {
 
     regularThreads() {
       return this.board.threads.filter(
-        (thread) => !thread.isFeatured && !thread.isPinned
+        (thread) => !thread.isFeatured && !thread.isPinned,
       );
     },
   },
 
-  // 2d. Lifecycle
   async mounted() {
     await this.bootstrapBoardPage();
   },
 
-  // 2e. Methods
   methods: {
-    // 2e‑1. Bootstrap: auth + board data
+    looksLikeCognitoId(value = '') {
+      return (
+        typeof value === 'string' &&
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+          value,
+        )
+      );
+    },
+
+    normaliseAuthorDisplayName(value = '') {
+      if (!value || this.looksLikeCognitoId(value)) {
+        return '';
+      }
+      return String(value).trim();
+    },
+
+    async getForumAuthor() {
+      const user = await getCurrentUser();
+      const authorUserId = user?.userId || user?.username || '';
+
+      if (!authorUserId) {
+        throw new Error('Could not determine the current user.');
+      }
+
+      const profileResult = await client.models.UserProfile.list({
+        filter: {
+          ownerUserId: { eq: authorUserId },
+        },
+      });
+
+      if (profileResult.errors?.length) {
+        throw new Error(
+          profileResult.errors[0].message || 'Failed to load user profile',
+        );
+      }
+
+      const profile = profileResult.data?.[0] || null;
+      const authorDisplayName =
+        profile?.displayName?.trim() ||
+        'Member';
+
+      return {
+        authorUserId,
+        authorDisplayName,
+      };
+    },
+
     async bootstrapBoardPage() {
       this.loading = true;
       this.loadError = '';
@@ -270,18 +315,18 @@ export default {
       }
     },
 
-    // 2e‑2. Load current user + Cognito groups
     async loadCurrentUserPermissions() {
       try {
-        const [user, session] = await Promise.all([
-          getCurrentUser(),
+        const [session, forumAuthor] = await Promise.all([
           fetchAuthSession(),
+          this.getForumAuthor().catch(() => ({
+            authorUserId: '',
+            authorDisplayName: '',
+          })),
         ]);
 
-        this.currentUsername =
-          user?.username ||
-          user?.signInDetails?.loginId ||
-          '';
+        this.currentUserId = forumAuthor.authorUserId || '';
+        this.currentUsername = forumAuthor.authorDisplayName || '';
 
         const groups =
           session?.tokens?.accessToken?.payload?.['cognito:groups'] ||
@@ -292,12 +337,12 @@ export default {
           ? groups.map(normaliseGroupName)
           : [];
       } catch (error) {
+        this.currentUserId = '';
         this.currentUsername = '';
         this.currentUserGroups = [];
       }
     },
 
-    // 2e‑3. Fetch board, threads, posts
     async fetchBoardPage() {
       this.loading = true;
       this.loadError = '';
@@ -317,13 +362,13 @@ export default {
 
         if (categoryResult.errors?.length) {
           throw new Error(
-            categoryResult.errors[0].message || 'Failed to load categories'
+            categoryResult.errors[0].message || 'Failed to load categories',
           );
         }
 
         if (threadResult.errors?.length) {
           throw new Error(
-            threadResult.errors[0].message || 'Failed to load threads'
+            threadResult.errors[0].message || 'Failed to load threads',
           );
         }
 
@@ -336,33 +381,25 @@ export default {
         const threads = threadResult.data || [];
         const posts = postResult.data || [];
 
-        // Debug: see what flags are coming from the backend
-        console.log(
-          'forum raw threads',
-          threads.map((t) => ({
-            slug: t.slug,
-            boardId: t.boardId,
-            isPinned: t.isPinned,
-            isFeatured: t.isFeatured,
-          }))
-        );
-
         const matchedBoard = boards.find(
-          (board) => board.slug === this.boardSlug && board.isActive !== false
+          (board) => board.slug === this.boardSlug && board.isActive !== false,
         );
 
         if (!matchedBoard) {
           throw new Error('Board not found');
         }
 
-        const boardThreads = threads.filter((thread) => thread.boardId === matchedBoard.id);
+        const boardThreads = threads.filter(
+          (thread) => thread.boardId === matchedBoard.id,
+        );
 
         this.boardRecord = matchedBoard;
         this.boardCategory =
-          categories.find((category) => category.id === matchedBoard.categoryId) || null;
+          categories.find((category) => category.id === matchedBoard.categoryId) ||
+          null;
         this.boardThreads = boardThreads;
         this.boardPosts = posts.filter((post) =>
-          boardThreads.some((thread) => thread.id === post.threadId)
+          boardThreads.some((thread) => thread.id === post.threadId),
         );
       } catch (error) {
         console.error('Failed to fetch board page:', error);
@@ -372,7 +409,6 @@ export default {
       }
     },
 
-    // 2e‑4. Thread creation UX controls
     openCreateThread() {
       this.showCreateThreadForm = true;
       this.createThreadError = '';
@@ -388,7 +424,6 @@ export default {
       };
     },
 
-    // 2e‑5. Create thread + opening post
     async submitThread() {
       this.createThreadError = '';
 
@@ -413,12 +448,7 @@ export default {
       this.creatingThread = true;
 
       try {
-        const user = await getCurrentUser();
-        const username =
-          user?.username ||
-          user?.signInDetails?.loginId ||
-          this.currentUsername ||
-          'authenticated-user';
+        const { authorUserId, authorDisplayName } = await this.getForumAuthor();
 
         const threadSlugBase = slugify(title);
         const uniqueThreadSlug = `${threadSlugBase}-${Date.now()}`;
@@ -428,8 +458,8 @@ export default {
           boardId: this.boardRecord.id,
           title,
           slug: uniqueThreadSlug,
-          authorUserId: username,
-          authorDisplayName: username,
+          authorUserId,
+          authorDisplayName,
           contentPreview: preview,
           isPinned: false,
           isLocked: false,
@@ -442,7 +472,7 @@ export default {
 
         if (threadCreateResult.errors?.length) {
           throw new Error(
-            threadCreateResult.errors[0].message || 'Failed to create thread'
+            threadCreateResult.errors[0].message || 'Failed to create thread',
           );
         }
 
@@ -454,14 +484,14 @@ export default {
 
         const postCreateResult = await client.models.ForumPost.create({
           threadId: createdThread.id,
-          authorUserId: username,
-          authorDisplayName: username,
+          authorUserId,
+          authorDisplayName,
           content,
         });
 
         if (postCreateResult.errors?.length) {
           throw new Error(
-            postCreateResult.errors[0].message || 'Failed to create opening post'
+            postCreateResult.errors[0].message || 'Failed to create opening post',
           );
         }
 
@@ -476,7 +506,6 @@ export default {
       }
     },
 
-    // 2e‑6. Toggle pinned
     async togglePinned(thread) {
       if (!thread?.dbId || !this.canManageThreadFlags) {
         return;
@@ -493,7 +522,7 @@ export default {
 
         if (updateResult.errors?.length) {
           throw new Error(
-            updateResult.errors[0].message || 'Failed to update pinned state'
+            updateResult.errors[0].message || 'Failed to update pinned state',
           );
         }
 
@@ -506,7 +535,6 @@ export default {
       }
     },
 
-    // 2e‑7. Toggle featured
     async toggleFeatured(thread, nextValue) {
       if (!thread?.dbId || !this.canManageThreadFlags) {
         return;
@@ -523,7 +551,7 @@ export default {
 
         if (updateResult.errors?.length) {
           throw new Error(
-            updateResult.errors[0].message || 'Failed to update featured state'
+            updateResult.errors[0].message || 'Failed to update featured state',
           );
         }
 
@@ -536,7 +564,6 @@ export default {
       }
     },
 
-    // 2e‑8. UI helpers
     isUpdatingPinned(thread) {
       return this.updatingPinnedThreadId === thread.dbId;
     },
@@ -644,7 +671,6 @@ export default {
     },
   },
 
-  // 2f. Watchers
   watch: {
     async boardSlug() {
       await this.bootstrapBoardPage();
