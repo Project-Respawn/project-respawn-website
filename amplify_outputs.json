@@ -79,8 +79,10 @@
   "data": {
     "url": "https://jhpmbmmd5rauljxc2zh2hfeipy.appsync-api.eu-north-1.amazonaws.com/graphql",
     "aws_region": "eu-north-1",
+    "api_key": "da2-samcwvcymjd55aisa33ielbyhq",
     "default_authorization_type": "AMAZON_COGNITO_USER_POOLS",
     "authorization_types": [
+      "API_KEY",
       "AWS_IAM"
     ],
     "model_introspection": {
@@ -276,6 +278,19 @@
                       "delete",
                       "read"
                     ]
+                  },
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [
+                      "read"
+                    ],
+                    "groups": [
+                      "SuperAdmin",
+                      "Admin",
+                      "Staff"
+                    ]
                   }
                 ]
               }
@@ -377,12 +392,24 @@
               "properties": {
                 "rules": [
                   {
-                    "allow": "private",
+                    "allow": "public",
+                    "provider": "apiKey",
+                    "operations": [
+                      "read"
+                    ]
+                  },
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
                     "operations": [
                       "create",
+                      "read",
                       "update",
-                      "delete",
-                      "read"
+                      "delete"
+                    ],
+                    "groups": [
+                      "SuperAdmin"
                     ]
                   }
                 ]
@@ -523,12 +550,24 @@
               "properties": {
                 "rules": [
                   {
-                    "allow": "private",
+                    "allow": "public",
+                    "provider": "apiKey",
+                    "operations": [
+                      "read"
+                    ]
+                  },
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
                     "operations": [
                       "create",
+                      "read",
                       "update",
-                      "delete",
-                      "read"
+                      "delete"
+                    ],
+                    "groups": [
+                      "SuperAdmin"
                     ]
                   }
                 ]
@@ -585,6 +624,13 @@
               "isArray": false,
               "type": "String",
               "isRequired": true,
+              "attributes": []
+            },
+            "owner": {
+              "name": "owner",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
               "attributes": []
             },
             "authorUserId": {
@@ -695,12 +741,40 @@
               "properties": {
                 "rules": [
                   {
+                    "allow": "public",
+                    "provider": "apiKey",
+                    "operations": [
+                      "read"
+                    ]
+                  },
+                  {
                     "allow": "private",
                     "operations": [
                       "create",
-                      "update",
-                      "delete",
                       "read"
+                    ]
+                  },
+                  {
+                    "provider": "userPools",
+                    "ownerField": "owner",
+                    "allow": "owner",
+                    "operations": [
+                      "update"
+                    ],
+                    "identityClaim": "cognito:username"
+                  },
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [
+                      "create",
+                      "read",
+                      "update",
+                      "delete"
+                    ],
+                    "groups": [
+                      "SuperAdmin"
                     ]
                   }
                 ]
@@ -744,6 +818,13 @@
                   "threadId"
                 ]
               }
+            },
+            "owner": {
+              "name": "owner",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
             },
             "authorUserId": {
               "name": "authorUserId",
@@ -802,12 +883,40 @@
               "properties": {
                 "rules": [
                   {
+                    "allow": "public",
+                    "provider": "apiKey",
+                    "operations": [
+                      "read"
+                    ]
+                  },
+                  {
                     "allow": "private",
                     "operations": [
                       "create",
-                      "update",
-                      "delete",
                       "read"
+                    ]
+                  },
+                  {
+                    "provider": "userPools",
+                    "ownerField": "owner",
+                    "allow": "owner",
+                    "operations": [
+                      "update"
+                    ],
+                    "identityClaim": "cognito:username"
+                  },
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [
+                      "create",
+                      "read",
+                      "update",
+                      "delete"
+                    ],
+                    "groups": [
+                      "SuperAdmin"
                     ]
                   }
                 ]
@@ -933,15 +1042,14 @@
                     "groupClaim": "cognito:groups",
                     "provider": "userPools",
                     "allow": "groups",
-                    "groups": [
-                      "SuperAdmin",
-                      "Admin"
-                    ],
                     "operations": [
                       "create",
+                      "read",
                       "update",
-                      "delete",
-                      "read"
+                      "delete"
+                    ],
+                    "groups": [
+                      "SuperAdmin"
                     ]
                   }
                 ]

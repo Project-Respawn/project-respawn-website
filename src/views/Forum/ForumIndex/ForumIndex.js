@@ -1,6 +1,10 @@
 import { generateClient } from 'aws-amplify/data';
+import { fetchAuthSession } from 'aws-amplify/auth';
 
-const client = generateClient();
+const userPoolClient = generateClient();
+const publicClient = generateClient({
+  authMode: 'apiKey',
+});
 
 // 1. Starter data (new structure)
 const STARTER_CATEGORIES = [
@@ -131,7 +135,8 @@ export default {
       loading: true,
       loadError: '',
       seedingForum: false,
-      showSeedButton: true,
+      // Seed button hidden on this public page; keep logic for admin use
+      showSeedButton: false,
       forumCategories: [],
       forumThreads: [],
       boardLookup: {},
@@ -273,18 +278,32 @@ export default {
   },
 
   methods: {
+    // Choose the right client based on auth state
+    async getForumReadClient() {
+      try {
+        const session = await fetchAuthSession();
+        const isSignedIn = !!session?.tokens?.idToken;
+        return isSignedIn ? userPoolClient : publicClient;
+      } catch (error) {
+        // If we cannot determine session, fall back to public read
+        return publicClient;
+      }
+    },
+
     // 3. Read forum data
     async fetchForumIndex() {
       this.loading = true;
       this.loadError = '';
 
       try {
+        const readClient = await this.getForumReadClient();
+
         const [categoryResult, boardResult, threadResult, postResult] =
           await Promise.all([
-            client.models.ForumCategory.list(),
-            client.models.ForumBoard.list(),
-            client.models.ForumThread.list(),
-            client.models.ForumPost.list(),
+            readClient.models.ForumCategory.list(),
+            readClient.models.ForumBoard.list(),
+            readClient.models.ForumThread.list(),
+            readClient.models.ForumPost.list(),
           ]);
 
         if (categoryResult.errors?.length) {
@@ -391,15 +410,17 @@ export default {
       }
     },
 
-    // 4. Seed + migrate forum structure
+    // 4. Seed + migrate forum structure (admin-only; still uses userPool client)
     async seedForumStructure() {
       this.seedingForum = true;
       this.loadError = '';
 
       try {
+        const writeClient = userPoolClient;
+
         // Categories
         const existingCategoriesResult =
-          await client.models.ForumCategory.list();
+          await writeClient.models.ForumCategory.list();
 
         if (existingCategoriesResult.errors?.length) {
           throw new Error(
@@ -418,7 +439,7 @@ export default {
         // Migrate old Real-World Progress -> Real World if it exists
         const legacyRealWorld = categoryMap.get('real-world-progress');
         if (legacyRealWorld && !categoryMap.has('real-world')) {
-          const updateResult = await client.models.ForumCategory.update({
+          const updateResult = await writeClient.models.ForumCategory.update({
             id: legacyRealWorld.id,
             name: 'Real World',
             slug: 'real-world',
@@ -444,7 +465,7 @@ export default {
         // Ensure all starter categories exist
         for (const category of STARTER_CATEGORIES) {
           if (!categoryMap.has(category.slug)) {
-            const createResult = await client.models.ForumCategory.create({
+            const createResult = await writeClient.models.ForumCategory.create({
               name: category.name,
               slug: category.slug,
               description: category.description,
@@ -466,7 +487,8 @@ export default {
         }
 
         // Boards
-        const existingBoardsResult = await client.models.ForumBoard.list();
+        const existingBoardsResult =
+          await writeClient.models.ForumBoard.list();
 
         if (existingBoardsResult.errors?.length) {
           throw new Error(
@@ -489,7 +511,7 @@ export default {
             categoryMap.get('real-world-progress');
 
           if (parentCategory?.id) {
-            const updateResult = await client.models.ForumBoard.update({
+            const updateResult = await writeClient.models.ForumBoard.update({
               id: legacyAchievements.id,
               categoryId: parentCategory.id,
               name: 'Achievements',
@@ -528,7 +550,7 @@ export default {
             );
           }
 
-          const createResult = await client.models.ForumBoard.create({
+          const createResult = await writeClient.models.ForumBoard.create({
             categoryId: parentCategory.id,
             name: board.name,
             slug: board.slug,

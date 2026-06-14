@@ -1,7 +1,10 @@
 import { generateClient } from 'aws-amplify/data';
 import { getCurrentUser, fetchAuthSession } from 'aws-amplify/auth';
 
-const client = generateClient();
+const userPoolClient = generateClient();
+const publicClient = generateClient({
+  authMode: 'apiKey',
+});
 
 const DEFAULT_BOARD = {
   id: 'community-board',
@@ -104,6 +107,10 @@ export default {
       currentUserId: '',
       currentUsername: '',
       currentUserGroups: [],
+      isSignedIn: false,
+      showJoinPrompt: false,
+      joinPageUrl: '/join',
+      signInPageUrl: '/login',
       newThreadForm: {
         title: '',
         content: '',
@@ -294,7 +301,7 @@ export default {
         throw new Error('Could not determine the current user.');
       }
 
-      const profileResult = await client.models.UserProfile.list({
+      const profileResult = await userPoolClient.models.UserProfile.list({
         filter: {
           ownerUserId: { eq: authorUserId },
         },
@@ -315,6 +322,19 @@ export default {
       };
     },
 
+    async getForumReadClient() {
+      try {
+        const session = await fetchAuthSession();
+        const isSignedIn = !!session?.tokens?.idToken;
+        this.isSignedIn = isSignedIn;
+
+        return isSignedIn ? userPoolClient : publicClient;
+      } catch (error) {
+        this.isSignedIn = false;
+        return publicClient;
+      }
+    },
+
     async bootstrapBoardPage() {
       this.loading = true;
       this.loadError = '';
@@ -331,13 +351,22 @@ export default {
 
     async loadCurrentUserPermissions() {
       try {
-        const [session, forumAuthor] = await Promise.all([
-          fetchAuthSession(),
-          this.getForumAuthor().catch(() => ({
-            authorUserId: '',
-            authorDisplayName: '',
-          })),
-        ]);
+        const session = await fetchAuthSession();
+
+        const isSignedIn = !!session?.tokens?.idToken;
+        this.isSignedIn = isSignedIn;
+
+        if (!isSignedIn) {
+          this.currentUserId = '';
+          this.currentUsername = '';
+          this.currentUserGroups = [];
+          return;
+        }
+
+        const forumAuthor = await this.getForumAuthor().catch(() => ({
+          authorUserId: '',
+          authorDisplayName: '',
+        }));
 
         this.currentUserId = forumAuthor.authorUserId || '';
         this.currentUsername = forumAuthor.authorDisplayName || '';
@@ -351,6 +380,7 @@ export default {
           ? groups.map(normaliseGroupName)
           : [];
       } catch (error) {
+        this.isSignedIn = false;
         this.currentUserId = '';
         this.currentUsername = '';
         this.currentUserGroups = [];
@@ -362,12 +392,14 @@ export default {
       this.loadError = '';
 
       try {
+        const readClient = await this.getForumReadClient();
+
         const [boardResult, categoryResult, threadResult, postResult] =
           await Promise.all([
-            client.models.ForumBoard.list(),
-            client.models.ForumCategory.list(),
-            client.models.ForumThread.list(),
-            client.models.ForumPost.list(),
+            readClient.models.ForumBoard.list(),
+            readClient.models.ForumCategory.list(),
+            readClient.models.ForumThread.list(),
+            readClient.models.ForumPost.list(),
           ]);
 
         if (boardResult.errors?.length) {
@@ -378,8 +410,7 @@ export default {
 
         if (categoryResult.errors?.length) {
           throw new Error(
-            categoryResult.errors[0].message ||
-              'Failed to load categories',
+            categoryResult.errors[0].message || 'Failed to load categories',
           );
         }
 
@@ -430,8 +461,26 @@ export default {
     },
 
     openCreateThread() {
+      if (!this.isSignedIn) {
+        this.showJoinPrompt = true;
+        this.createThreadError = '';
+        return;
+      }
+
       this.showCreateThreadForm = true;
       this.createThreadError = '';
+    },
+
+    closeJoinPrompt() {
+      this.showJoinPrompt = false;
+    },
+
+    goToJoinPage() {
+      this.$router.push(this.joinPageUrl);
+    },
+
+    goToSignInPage() {
+      this.$router.push(this.signInPageUrl);
     },
 
     cancelCreateThread() {
@@ -476,22 +525,24 @@ export default {
         const uniqueThreadSlug = `${threadSlugBase}-${Date.now()}`;
         const preview = content.slice(0, 180);
 
-        const threadCreateResult = await client.models.ForumThread.create({
-          boardId: this.boardRecord.id,
-          title,
-          slug: uniqueThreadSlug,
-          authorUserId,
-          authorDisplayName,
-          contentPreview: preview,
-          isPinned: false,
-          isLocked: false,
-          isFeatured:
-            this.canManageThreadFlags &&
-            this.newThreadForm.isFeatured === true,
-          replyCount: 0,
-          viewCount: 0,
-          lastReplyAt: new Date().toISOString(),
-        });
+        const threadCreateResult = await userPoolClient.models.ForumThread.create(
+          {
+            boardId: this.boardRecord.id,
+            title,
+            slug: uniqueThreadSlug,
+            authorUserId,
+            authorDisplayName,
+            contentPreview: preview,
+            isPinned: false,
+            isLocked: false,
+            isFeatured:
+              this.canManageThreadFlags &&
+              this.newThreadForm.isFeatured === true,
+            replyCount: 0,
+            viewCount: 0,
+            lastReplyAt: new Date().toISOString(),
+          },
+        );
 
         if (threadCreateResult.errors?.length) {
           throw new Error(
@@ -506,7 +557,7 @@ export default {
           throw new Error('Thread was created without an ID.');
         }
 
-        const postCreateResult = await client.models.ForumPost.create({
+        const postCreateResult = await userPoolClient.models.ForumPost.create({
           threadId: createdThread.id,
           authorUserId,
           authorDisplayName,
@@ -541,7 +592,7 @@ export default {
       this.loadError = '';
 
       try {
-        const updateResult = await client.models.ForumThread.update({
+        const updateResult = await userPoolClient.models.ForumThread.update({
           id: thread.dbId,
           isPinned: !thread.isPinned,
         });
@@ -572,7 +623,7 @@ export default {
       this.loadError = '';
 
       try {
-        const updateResult = await client.models.ForumThread.update({
+        const updateResult = await userPoolClient.models.ForumThread.update({
           id: thread.dbId,
           isFeatured: nextValue === true,
         });
