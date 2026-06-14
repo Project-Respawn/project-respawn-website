@@ -11,70 +11,126 @@
     </section>
 
     <section class="container merch-toolbar">
-      <button
-        class="filter-btn"
-        :class="{ active: filter === 'all' }"
-        @click="filter = 'all'"
-      >
-        All
-      </button>
-      <button
-        class="filter-btn"
-        :class="{ active: filter === 'printful' }"
-        @click="filter = 'printful'"
-      >
-        Printful
-      </button>
-      <button
-        class="filter-btn"
-        :class="{ active: filter === 'manual' }"
-        @click="filter = 'manual'"
-      >
-        Custom
-      </button>
+      <div class="toolbar-top">
+        <p class="merch-status">{{ statusMessage }}</p>
+      </div>
+
+      <div class="filter-stack">
+        <div v-if="brandOptions.length" class="filter-group">
+          <p class="filter-label">Brand</p>
+          <div class="filter-chips">
+            <button
+              type="button"
+              class="filter-chip"
+              :class="{ active: selectedBrand === '' }"
+              @click="selectedBrand = ''"
+            >
+              All
+            </button>
+
+            <button
+              v-for="brand in brandOptions"
+              :key="brand"
+              type="button"
+              class="filter-chip"
+              :class="{ active: selectedBrand === brand }"
+              @click="selectedBrand = brand"
+            >
+              {{ brand }}
+            </button>
+          </div>
+        </div>
+
+        <div v-if="categoryOptions.length" class="filter-group">
+          <p class="filter-label">Categories</p>
+          <div class="filter-chips">
+            <button
+              type="button"
+              class="filter-chip"
+              :class="{ active: selectedCategory === '' }"
+              @click="selectedCategory = ''"
+            >
+              All
+            </button>
+
+            <button
+              v-for="category in categoryOptions"
+              :key="category"
+              type="button"
+              class="filter-chip"
+              :class="{ active: selectedCategory === category }"
+              @click="selectedCategory = category"
+            >
+              {{ category }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="selectedBrand || selectedCategory" class="active-filters">
+        <span v-if="selectedBrand" class="active-filter-pill">
+          Brand: {{ selectedBrand }}
+        </span>
+
+        <span v-if="selectedCategory" class="active-filter-pill">
+          Category: {{ selectedCategory }}
+        </span>
+
+        <button type="button" class="clear-filters" @click="resetFilters">
+          Clear filters
+        </button>
+      </div>
     </section>
 
     <section class="container">
-      <p class="merch-status">{{ status }}</p>
-    </section>
+      <div v-if="loading" class="empty-state">
+        Loading products...
+      </div>
 
-    <!-- Products Grid -->
-    <section class="container">
-      <div v-if="filteredProducts.length" class="product-grid">
+      <div v-else-if="filteredProducts.length" class="product-grid">
         <article
           v-for="product in filteredProducts"
           :key="product.id"
           class="product-card"
         >
-          <!-- Product Image -->
           <div class="product-image-wrap">
             <img
               :src="product.image || fallbackImage"
               :alt="product.title || 'Product image'"
+              loading="lazy"
             />
           </div>
 
-          <!-- Product Content -->
           <div class="product-card-content">
-            <span class="product-source">{{ product.source || 'manual' }}</span>
-            <h2 class="product-title">{{ product.title || 'Untitled product' }}</h2>
+            <h2 class="product-title">
+              {{ product.title || 'Untitled product' }}
+            </h2>
 
             <p class="product-description">
-              {{ product.description || 'No description available.' }}
+              {{
+                product.description ||
+                'View details to see info on sizing and colours available.'
+              }}
             </p>
 
-            <div class="product-price">£{{ formatPrice(product.price) }}</div>
+            <div class="product-footer">
+              <div class="product-price">
+                {{ product.displayPrice || 'Price unavailable' }}
+              </div>
+
+              <p v-if="product.variantCount" class="variant-count">
+                {{ product.variantCount }} variants
+              </p>
+            </div>
 
             <div class="product-actions">
-              <a
-                v-if="product.checkoutUrl"
+              <button
                 class="btn-primary"
-                :href="product.checkoutUrl"
-                target="_blank"
-                rel="noopener noreferrer"
+                type="button"
+                @click="openPrintfulProduct(product)"
               >
-                Buy now
-              </a>
+                View details
+              </button>
 
               <a
                 v-if="product.productUrl"
@@ -83,7 +139,7 @@
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Details
+                Product page
               </a>
             </div>
           </div>
@@ -91,66 +147,166 @@
       </div>
 
       <div v-else class="empty-state">
-        No products found in this section yet.
+        Check back for new products soon 🙂
       </div>
     </section>
+
+    <dialog ref="productDialog" class="product-dialog">
+      <div v-if="selectedProduct" class="product-dialog-content product-dialog-layout">
+        <button
+          class="dialog-close"
+          type="button"
+          @click="closeDialog"
+          aria-label="Close product details"
+        >
+          ×
+        </button>
+
+        <div class="dialog-media-column">
+          <div class="dialog-image-wrap dialog-image-large">
+            <img
+              :src="selectedVariantImage"
+              :alt="selectedProduct.title || 'Product image'"
+            />
+          </div>
+
+          <div
+            v-if="selectedProduct.variants && selectedProduct.variants.length"
+            class="variant-picker variant-picker-grid"
+          >
+            <div class="variant-field">
+              <label for="color-select">Colour</label>
+              <select
+                id="color-select"
+                v-model="selectedColor"
+                @change="onColorChange"
+              >
+                <option
+                  v-for="color in availableColors"
+                  :key="color"
+                  :value="color"
+                >
+                  {{ color }}
+                </option>
+              </select>
+            </div>
+
+            <div class="variant-field">
+              <label for="size-select">Size</label>
+              <select
+                id="size-select"
+                v-model="selectedSize"
+              >
+                <option
+                  v-for="size in availableSizes"
+                  :key="size"
+                  :value="size"
+                >
+                  {{ size }}
+                </option>
+              </select>
+            </div>
+
+            <div class="variant-field">
+              <label for="quantity-select">Quantity</label>
+              <input
+                id="quantity-select"
+                v-model.number="selectedQuantity"
+                type="number"
+                min="1"
+                step="1"
+              />
+            </div>
+
+            <div class="variant-field variant-field-button">
+              <label class="sr-only" for="add-to-cart-button">Add to cart</label>
+              <button
+                id="add-to-cart-button"
+                class="btn-primary add-to-cart-btn"
+                type="button"
+                @click="addToCart"
+                :disabled="selectedProduct.variants.length > 0 && !selectedVariant"
+              >
+                Add to cart
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="dialog-info dialog-details-column">
+          <h2>{{ selectedProduct.title }}</h2>
+
+          <div class="product-price dialog-price">
+            {{ selectedVariantPrice }}
+          </div>
+
+          <p class="dialog-description">
+            {{
+              selectedProduct.description ||
+              'Pick a colour and size to view the current price and availability.'
+            }}
+          </p>
+
+          <div class="product-detail-sections">
+            <details class="product-detail-block" open>
+              <summary>Materials</summary>
+              <div class="product-detail-body">
+                <p>{{ selectedProduct.materials || 'Materials information will be added soon.' }}</p>
+              </div>
+            </details>
+
+            <details class="product-detail-block">
+              <summary>Size guide</summary>
+              <div class="product-detail-body">
+                <p>{{ selectedProduct.sizeGuide || 'Size guide information will be added soon.' }}</p>
+              </div>
+            </details>
+
+            <details class="product-detail-block">
+              <summary>Shipping &amp; returns</summary>
+              <div class="product-detail-body">
+                <p>
+                  {{
+                    selectedProduct.shippingReturns ||
+                    'Shipping and return information will be added soon.'
+                  }}
+                </p>
+              </div>
+            </details>
+
+            <details class="product-detail-block">
+              <summary>What’s included</summary>
+              <div class="product-detail-body">
+                <p>{{ selectedProduct.whatsIncluded || 'What’s included will be added soon.' }}</p>
+              </div>
+            </details>
+          </div>
+
+          <ul v-if="selectedVariant" class="variant-details">
+            <li><strong>Colour:</strong> {{ selectedVariant.color || 'N/A' }}</li>
+            <li><strong>Size:</strong> {{ selectedVariant.size || 'N/A' }}</li>
+            <li><strong>Availability:</strong> {{ selectedVariant.availabilityStatus || 'Availability unknown' }}</li>
+          </ul>
+
+          <a
+            v-if="selectedProduct.productUrl"
+            class="btn-secondary dialog-product-link"
+            :href="selectedProduct.productUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View full product page
+          </a>
+        </div>
+      </div>
+    </dialog>
   </main>
 </template>
 
 <script>
-import { fetchProducts } from "./merchService";
+import merchLogic from './Merch.logic.js';
 
-export default {
-  name: "MerchPage",
-  data() {
-    return {
-      products: [],
-      filter: "all",
-      status: "Loading products...",
-      fallbackImage: "https://via.placeholder.com/600x600?text=Project+Respawn"
-    };
-  },
-  computed: {
-    filteredProducts() {
-      if (this.filter === "all") {
-        return this.products;
-      }
-      return this.products.filter(
-        (product) => (product.source || "").toLowerCase() === this.filter
-      );
-    }
-  },
-  async mounted() {
-    try {
-      const data = await fetchProducts();
-
-      this.products = Array.isArray(data)
-        ? data.map((product, index) => ({
-            id: product.id || `product-${index}`,
-            title: product.title || "Untitled product",
-            description: product.description || "",
-            image: product.image || "",
-            source: (product.source || "manual").toLowerCase(),
-            price: product.price ?? 0,
-            checkoutUrl: product.checkoutUrl || "",
-            productUrl: product.productUrl || ""
-          }))
-        : [];
-
-      this.status = `${this.products.length} products loaded`;
-    } catch (error) {
-      console.error("Merch page error:", error);
-      this.status = "Could not load products right now.";
-      this.products = [];
-    }
-  },
-  methods: {
-    formatPrice(price) {
-      const parsed = Number(price);
-      return Number.isFinite(parsed) ? parsed.toFixed(2) : "0.00";
-    }
-  }
-};
+export default merchLogic;
 </script>
 
 <style scoped src="./Merch.css"></style>

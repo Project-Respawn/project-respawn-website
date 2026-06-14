@@ -21,6 +21,9 @@ export default {
       tabs: [
         { id: 'users', icon: '👥', label: 'Users', route: '/dashboard/users' },
         { id: 'permissions', icon: '🛡️', label: 'Permissions', route: '/dashboard/permissions' },
+        { id: 'brands', icon: '🏷️', label: 'Brands', route: '/dashboard/brands' },
+        { id: 'merch-categories', icon: '📦', label: 'Merch Categories', route: '/dashboard/merch-categories' },
+        { id: 'brand-permissions', icon: '🔐', label: 'Brand Permissions', route: '/dashboard/brand-permissions' },
       ],
     };
   },
@@ -43,6 +46,10 @@ export default {
 
     activeTab() {
       const path = this.$route?.path || '';
+
+      if (path.includes('/brand-permissions')) return 'brand-permissions';
+      if (path.includes('/merch-categories')) return 'merch-categories';
+      if (path.includes('/brands')) return 'brands';
       if (path.includes('/permissions')) return 'permissions';
       return 'users';
     },

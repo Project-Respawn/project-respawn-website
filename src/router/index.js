@@ -24,6 +24,9 @@ import TwitchCommands from '../views/Bot/Twitch/TwitchCommands/TwitchCommands.vu
 import AdminLayout from '../views/Admin/AdminLayout/AdminLayout.vue'
 import AdminUsers from '../views/Admin/AdminUsers/AdminUsers.vue'
 import AdminPermissions from '../views/Admin/AdminPermissions/AdminPermissions.vue'
+import AdminBrands from '../views/Admin/AdminBrands/AdminBrands.vue'
+import AdminMerchCategories from '../views/Admin/AdminMerchCategories/AdminMerchCategories.vue'
+import AdminBrandPermissions from '../views/Admin/AdminBrandPermissions/AdminBrandPermissions.vue'
 
 import ForumLayout from '../views/Forum/ForumLayout/ForumLayout.vue'
 import ForumIndex from '../views/Forum/ForumIndex/ForumIndex.vue'
@@ -54,38 +57,55 @@ const routes = [
       },
       {
         path: 'users',
+        name: 'AdminUsers',
         component: AdminUsers,
       },
       {
         path: 'permissions',
+        name: 'AdminPermissions',
         component: AdminPermissions,
+      },
+      {
+        path: 'brands',
+        name: 'AdminBrands',
+        component: AdminBrands,
+      },
+      {
+        path: 'merch-categories',
+        name: 'AdminMerchCategories',
+        component: AdminMerchCategories,
+      },
+      {
+        path: 'brand-permissions',
+        name: 'AdminBrandPermissions',
+        component: AdminBrandPermissions,
       },
     ],
   },
 
- {
-  path: '/forum',
-  component: ForumLayout,
-  children: [
-    {
-      path: '',
-      name: 'ForumIndex',
-      component: ForumIndex,
-    },
-    {
-      path: 'board/:boardSlug',
-      name: 'ForumBoard',
-      component: ForumBoard,
-      props: true,
-    },
-    {
-      path: 'thread/:threadSlug',
-      name: 'ForumThread',
-      component: ForumThread,
-      props: true,
-    },
-  ],
-},
+  {
+    path: '/forum',
+    component: ForumLayout,
+    children: [
+      {
+        path: '',
+        name: 'ForumIndex',
+        component: ForumIndex,
+      },
+      {
+        path: 'board/:boardSlug',
+        name: 'ForumBoard',
+        component: ForumBoard,
+        props: true,
+      },
+      {
+        path: 'thread/:threadSlug',
+        name: 'ForumThread',
+        component: ForumThread,
+        props: true,
+      },
+    ],
+  },
 
   { path: '/bot', component: BotOverview },
   { path: '/bot/twitch', component: BotTwitch },

@@ -97,8 +97,13 @@
               </td>
 
               <td>
-                <button class="btn-manage" @click="openRoleModal(user)">
-                  Edit Roles
+                <button
+                  class="btn-manage"
+                  :disabled="!canEditUser(user)"
+                  :class="{ disabled: !canEditUser(user) }"
+                  @click="openRoleModal(user)"
+                >
+                  {{ canEditUser(user) ? 'Edit Roles' : 'No Access' }}
                 </button>
               </td>
 
@@ -153,13 +158,16 @@
                   v-for="role in group.roles"
                   :key="role"
                   class="role-checkbox-item"
-                  :class="{ checked: pendingRoles.includes(role), disabled: role === 'Member' }"
+                  :class="{
+                    checked: pendingRoles.includes(role),
+                    disabled: isRoleDisabled(role)
+                  }"
                 >
                   <input
                     type="checkbox"
                     :value="role"
                     :checked="pendingRoles.includes(role)"
-                    :disabled="role === 'Member'"
+                    :disabled="isRoleDisabled(role)"
                     @change="toggleRole(role)"
                   />
                   <div class="checkbox-content">
@@ -167,6 +175,12 @@
                     <div>
                       <span class="checkbox-label">{{ ROLE_DEFINITIONS[role].label }}</span>
                       <span class="checkbox-desc">{{ ROLE_DEFINITIONS[role].desc }}</span>
+                      <span
+                        v-if="isRoleDisabled(role) && role !== 'Member'"
+                        class="checkbox-desc"
+                      >
+                        You cannot assign a role above your own level.
+                      </span>
                     </div>
                   </div>
                   <span
@@ -194,5 +208,5 @@
   </div>
 </template>
 
-<script src="./Adminusers.js"></script>
-<style src="./Adminusers.css"></style>
+<script src="./AdminUsers.js"></script>
+<style src="./AdminUsers.css"></style>

@@ -7,17 +7,9 @@ import { getAmplifyDataClientConfig } from '@aws-amplify/backend/function/runtim
 import { env } from '$amplify/env/myFunction';
 import type { Schema } from '../data/resource';
 
-// =============================================================================
-// Environment
-// =============================================================================
-
 const REVOLUT_API_KEY = process.env.REVOLUT_API_KEY;
 const REVOLUT_API_SECRET = process.env.REVOLUT_API_SECRET;
 const PRINTFUL_API_KEY = process.env.PRINTFUL_API_KEY;
-
-// =============================================================================
-// Amplify Data client
-// =============================================================================
 
 let clientPromise: Promise<any> | null = null;
 
@@ -28,7 +20,6 @@ async function getDataClient() {
         await getAmplifyDataClientConfig(env);
 
       Amplify.configure(resourceConfig, libraryOptions);
-
       return generateClient<Schema>();
     })();
   }
@@ -36,16 +27,14 @@ async function getDataClient() {
   return clientPromise;
 }
 
-// =============================================================================
-// Shared response helpers
-// =============================================================================
-
 function jsonResponse(statusCode: number, payload: any) {
   return {
     statusCode,
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': '*',
+      'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
     },
     body: JSON.stringify(payload),
   };
@@ -73,10 +62,6 @@ function getQueryParams(event: any) {
   return event?.queryStringParameters || {};
 }
 
-// =============================================================================
-// Shared outbound request helper
-// =============================================================================
-
 async function makeRequest(
   url: string,
   method: string,
@@ -86,7 +71,7 @@ async function makeRequest(
   const response = await fetch(url, {
     method,
     headers: {
-      Authorization: authHeader || '',
+      ...(authHeader ? { Authorization: authHeader } : {}),
       'Content-Type': 'application/json',
     },
     body: body ? JSON.stringify(body) : undefined,
@@ -107,12 +92,26 @@ async function makeRequest(
   }
 }
 
-// =============================================================================
-// Revolut helpers
-// =============================================================================
+function getPrintfulApiKey() {
+  if (!PRINTFUL_API_KEY) {
+    throw new Error('Missing PRINTFUL_API_KEY');
+  }
+  return PRINTFUL_API_KEY;
+}
+
+function getRevolutApiKey() {
+  if (!REVOLUT_API_KEY) {
+    throw new Error('Missing REVOLUT_API_KEY');
+  }
+  return REVOLUT_API_KEY;
+}
+
+function buildPrintfulAuthHeader() {
+  return `Bearer ${getPrintfulApiKey()}`;
+}
 
 function buildRevolutAuthHeader() {
-  return `Bearer ${REVOLUT_API_KEY}`;
+  return `Bearer ${getRevolutApiKey()}`;
 }
 
 function buildRevolutOrderPayload(body: any) {
@@ -124,9 +123,49 @@ function buildRevolutOrderPayload(body: any) {
   };
 }
 
-// =============================================================================
-// Revolut handlers
-// =============================================================================
+function buildPrintfulOrderPayload(body: any) {
+  return {
+    external_id: body.orderId,
+    shipping: body.shippingMethod || 'STANDARD',
+    items: body.items,
+    recipient: {
+      name: body.customerName,
+      address1: body.address,
+      city: body.city,
+      state_code: body.state,
+      postcode: body.postcode,
+      country_code: body.country || 'GB',
+      email: body.email,
+    },
+  };
+}
+
+function normalizePrintfulListItem(product: any) {
+  return {
+    id: product.id,
+    name: product.name,
+    thumbnailUrl: product.thumbnail_url || '',
+    variantCount: product.variants || 0,
+    synced: product.synced ?? true,
+  };
+}
+
+function normalizePrintfulVariant(variant: any, fallbackImage = '') {
+  return {
+    id: variant.id,
+    name: variant.name,
+    retailPrice: variant.retail_price || '',
+    currency: variant.currency || '',
+    size: variant.size || '',
+    color: variant.color || '',
+    availabilityStatus: variant.availability_status || '',
+    sku: variant.sku || '',
+    image:
+      variant.product?.image ||
+      variant.files?.[0]?.preview_url ||
+      fallbackImage,
+  };
+}
 
 async function handleRevolutCheckout(body: any) {
   const { amount } = body || {};
@@ -164,44 +203,21 @@ async function handleRevolutOrderLookup(path: string) {
   return jsonResponse(result.statusCode, result.body);
 }
 
-// =============================================================================
-// Printful helpers
-// =============================================================================
-
-function buildPrintfulAuthHeader() {
-  return `Bearer ${PRINTFUL_API_KEY}`;
-}
-
-function buildPrintfulOrderPayload(body: any) {
-  return {
-    external_id: body.orderId,
-    shipping: body.shippingMethod || 'STANDARD',
-    items: body.items,
-    recipient: {
-      name: body.customerName,
-      address1: body.address,
-      city: body.city,
-      state_code: body.state,
-      postcode: body.postcode,
-      country_code: body.country || 'GB',
-      email: body.email,
-    },
-  };
-}
-
-// =============================================================================
-// Printful handlers
-// =============================================================================
-
 async function handlePrintfulProducts() {
   const result = await makeRequest(
-    'https://api.printful.com/sync/products',
+    'https://api.printful.com/store/products',
     'GET',
     null,
     buildPrintfulAuthHeader()
   );
 
-  return jsonResponse(result.statusCode, result.body);
+  if (result.statusCode !== 200) {
+    return jsonResponse(result.statusCode, result.body);
+  }
+
+  const products = (result.body?.result || []).map(normalizePrintfulListItem);
+
+  return jsonResponse(200, { products });
 }
 
 async function handlePrintfulProductLookup(path: string) {
@@ -212,13 +228,31 @@ async function handlePrintfulProductLookup(path: string) {
   }
 
   const result = await makeRequest(
-    `https://api.printful.com/sync/products/${productId}`,
+    `https://api.printful.com/store/products/${productId}`,
     'GET',
     null,
     buildPrintfulAuthHeader()
   );
 
-  return jsonResponse(result.statusCode, result.body);
+  if (result.statusCode !== 200) {
+    return jsonResponse(result.statusCode, result.body);
+  }
+
+  const product = result.body?.result;
+
+  return jsonResponse(200, {
+    product: {
+      id: product?.sync_product?.id,
+      name: product?.sync_product?.name,
+      thumbnailUrl: product?.sync_product?.thumbnail_url || '',
+      variants: (product?.sync_variants || []).map((variant: any) =>
+        normalizePrintfulVariant(
+          variant,
+          product?.sync_product?.thumbnail_url || ''
+        )
+      ),
+    },
+  });
 }
 
 async function handlePrintfulCreateOrder(body: any) {
@@ -229,7 +263,7 @@ async function handlePrintfulCreateOrder(body: any) {
   const orderData = buildPrintfulOrderPayload(body);
 
   const result = await makeRequest(
-    'https://api.printful.com/v2/orders',
+    'https://api.printful.com/orders',
     'POST',
     orderData,
     buildPrintfulAuthHeader()
@@ -246,7 +280,7 @@ async function handlePrintfulOrderLookup(path: string) {
   }
 
   const result = await makeRequest(
-    `https://api.printful.com/v2/orders/${orderId}`,
+    `https://api.printful.com/orders/${orderId}`,
     'GET',
     null,
     buildPrintfulAuthHeader()
@@ -255,12 +289,6 @@ async function handlePrintfulOrderLookup(path: string) {
   return jsonResponse(result.statusCode, result.body);
 }
 
-// =============================================================================
-// Twitch helpers
-// =============================================================================
-
-// Migration-safe fallback for legacy TwitchCommand records that may still be missing
-// category or permissionLevel in storage.
 function mapTwitchCommand(command: any) {
   return {
     id: command.id,
@@ -274,10 +302,6 @@ function mapTwitchCommand(command: any) {
     permissionLevel: command.permissionLevel || 'everyone',
   };
 }
-
-// =============================================================================
-// Twitch handlers
-// =============================================================================
 
 async function handleTwitchCommandsLookup(event: any) {
   const query = getQueryParams(event);
@@ -331,10 +355,6 @@ async function handleTwitchCommandsMe(event: any) {
   return jsonResponse(405, { error: 'Method not allowed' });
 }
 
-// =============================================================================
-// Route dispatch
-// =============================================================================
-
 async function handleRevolutRoutes(path: string, method: string, body: any) {
   if (path.includes('/revolut/checkout') && method === 'POST') {
     return handleRevolutCheckout(body);
@@ -352,11 +372,11 @@ async function handlePrintfulRoutes(path: string, method: string, body: any) {
     return handlePrintfulProductLookup(path);
   }
 
-  if (path.includes('/printful/products') && method === 'GET') {
+  if (path === '/printful/products' && method === 'GET') {
     return handlePrintfulProducts();
   }
 
-  if (path.includes('/printful/orders') && method === 'POST') {
+  if (path === '/printful/orders' && method === 'POST') {
     return handlePrintfulCreateOrder(body);
   }
 
@@ -379,16 +399,16 @@ async function handleTwitchRoutes(path: string, method: string, event: any) {
   return null;
 }
 
-// =============================================================================
-// Main handler
-// =============================================================================
-
 export const handler: Handler = async (event: any) => {
   const path = getRequestPath(event);
   const method = getRequestMethod(event);
   const body = getRequestBody(event);
 
   try {
+    if (method === 'OPTIONS') {
+      return jsonResponse(200, { ok: true });
+    }
+
     const revolutResponse = await handleRevolutRoutes(path, method, body);
     if (revolutResponse) return revolutResponse;
 
@@ -398,7 +418,11 @@ export const handler: Handler = async (event: any) => {
     const twitchResponse = await handleTwitchRoutes(path, method, event);
     if (twitchResponse) return twitchResponse;
 
-    return jsonResponse(400, { error: 'Invalid request' });
+    return jsonResponse(404, {
+      error: 'Route not found',
+      path,
+      method,
+    });
   } catch (error: any) {
     console.error('API Error:', error);
 

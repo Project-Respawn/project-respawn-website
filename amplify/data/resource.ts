@@ -47,7 +47,7 @@ const schema = a
     // User profile model
     // =========================================================================
 
-      UserProfile: a
+    UserProfile: a
       .model({
         ownerUserId: a.string().required(),
         displayName: a.string().required(),
@@ -127,9 +127,106 @@ const schema = a
         canModerate: a.boolean().required(),
         canAdmin: a.boolean().required(),
       })
-      .authorization((allow) => [
-        allow.groups(['SuperAdmin', 'Admin']),
-      ]),
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]),
+
+// =========================================================================
+// Merch models
+// =========================================================================
+
+Brand: a
+  .model({
+    name: a.string().required(),
+    slug: a.string().required(),
+    description: a.string(),
+    status: a.string().required(),
+    logoUrl: a.string(),
+    productLinks: a.hasMany('MerchProductBrand', 'brandId'),
+    assignments: a.hasMany('BrandAssignment', 'brandId'),
+  })
+  .authorization((allow) => [
+    allow.groups(['SuperAdmin', 'Admin']),
+    allow.authenticated().to(['read']),
+  ]),
+
+MerchCategory: a
+  .model({
+    name: a.string().required(),
+    slug: a.string().required(),
+    description: a.string(),
+    sortOrder: a.integer().required(),
+    isActive: a.boolean().required(),
+    showInMenu: a.boolean().required(),
+    status: a.string().required(),
+    productLinks: a.hasMany('MerchProductCategory', 'categoryId'),
+  })
+  .authorization((allow) => [
+    allow.groups(['SuperAdmin', 'Admin']),
+    allow.authenticated().to(['read']),
+  ]),
+
+MerchProduct: a
+  .model({
+    title: a.string().required(),
+    slug: a.string().required(),
+    description: a.string(),
+    imageUrl: a.string(),
+    sourceType: a.string().required(),
+    externalProductId: a.string(),
+    externalVariantGroupId: a.string(),
+    sku: a.string(),
+    displayPrice: a.string(),
+    productUrl: a.string(),
+    variantCount: a.integer(),
+    status: a.string().required(),
+    isVisible: a.boolean().required(),
+    sortOrder: a.integer(),
+    brandLinks: a.hasMany('MerchProductBrand', 'productId'),
+    categoryLinks: a.hasMany('MerchProductCategory', 'productId'),
+  })
+  .authorization((allow) => [
+    allow.groups(['SuperAdmin', 'Admin', 'Staff']),
+    allow.authenticated().to(['read']),
+  ]),
+
+MerchProductBrand: a
+  .model({
+    productId: a.id().required(),
+    brandId: a.id().required(),
+    product: a.belongsTo('MerchProduct', 'productId'),
+    brand: a.belongsTo('Brand', 'brandId'),
+  })
+  .authorization((allow) => [
+    allow.groups(['SuperAdmin', 'Admin', 'Staff']),
+    allow.authenticated().to(['read']),
+  ]),
+
+MerchProductCategory: a
+  .model({
+    productId: a.id().required(),
+    categoryId: a.id().required(),
+    product: a.belongsTo('MerchProduct', 'productId'),
+    category: a.belongsTo('MerchCategory', 'categoryId'),
+  })
+  .authorization((allow) => [
+    allow.groups(['SuperAdmin', 'Admin', 'Staff']),
+    allow.authenticated().to(['read']),
+  ]),
+
+BrandAssignment: a
+  .model({
+    brandId: a.id().required(),
+    brand: a.belongsTo('Brand', 'brandId'),
+    userId: a.string().required(),
+    username: a.string(),
+    email: a.string(),
+    displayName: a.string(),
+    accessLevel: a.string().required(),
+    assignedBy: a.string(),
+  })
+  .authorization((allow) => [
+    allow.groups(['SuperAdmin', 'Admin']),
+    allow.authenticated().to(['read']),
+  ]),
 
     // =========================================================================
     // Admin user operations
