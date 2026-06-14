@@ -23,10 +23,11 @@ export default {
           ],
         },
         {
-          id: 'real-world-progress',
-          name: 'Real World Progress',
+          id: 'real-world',
+          name: 'Real World',
           boards: [
-            { id: 'irl-achievements', name: 'IRL Achievements', icon: '🏆' },
+            { id: 'achievements', name: 'Achievements', icon: '🏆' },
+            { id: 'help-and-advice', name: 'Help & Advice', icon: '🫶' },
           ],
         },
       ],
@@ -63,8 +64,8 @@ export default {
         {
           id: 'activity-5',
           icon: '📝',
-          title: 'You posted in IRL Achievements',
-          board: 'IRL Achievements',
+          title: 'You posted in Achievements',
+          board: 'Achievements',
           time: '9h ago',
         },
       ],
@@ -108,8 +109,8 @@ export default {
       }
 
       if (boardSlug) {
-        const allBoards = this.forumSections.flatMap(section => section.boards);
-        const currentBoard = allBoards.find(board => board.id === boardSlug);
+        const allBoards = this.forumSections.flatMap((section) => section.boards);
+        const currentBoard = allBoards.find((board) => board.id === boardSlug);
         return currentBoard?.name || 'Board View';
       }
 

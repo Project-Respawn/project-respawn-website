@@ -8,7 +8,8 @@ const DEFAULT_BOARD = {
   dbId: '',
   name: 'Community Board',
   description: 'General community discussion for Project Respawn.',
-  rules: 'Keep conversations constructive, helpful, and focused on community growth.',
+  rules:
+    'Keep conversations constructive, helpful, and focused on community growth.',
   tags: ['Community'],
   threadCount: 0,
   postCount: 0,
@@ -27,8 +28,12 @@ function sortByOrder(items = []) {
 
 function sortPostsByNewest(items = []) {
   return [...items].sort((a, b) => {
-    const aDate = new Date(a.editedAt || a.updatedAt || a.createdAt || 0).getTime();
-    const bDate = new Date(b.editedAt || b.updatedAt || b.createdAt || 0).getTime();
+    const aDate = new Date(
+      a.editedAt || a.updatedAt || a.createdAt || 0,
+    ).getTime();
+    const bDate = new Date(
+      b.editedAt || b.updatedAt || b.createdAt || 0,
+    ).getTime();
     return bDate - aDate;
   });
 }
@@ -49,8 +54,12 @@ function sortThreadsForBoard(items = []) {
       return bFeatured - aFeatured;
     }
 
-    const aDate = new Date(a.lastReplyAt || a.updatedAt || a.createdAt || 0).getTime();
-    const bDate = new Date(b.lastReplyAt || b.updatedAt || b.createdAt || 0).getTime();
+    const aDate = new Date(
+      a.lastReplyAt || a.updatedAt || a.createdAt || 0,
+    ).getTime();
+    const bDate = new Date(
+      b.lastReplyAt || b.updatedAt || b.createdAt || 0,
+    ).getTime();
     return bDate - aDate;
   });
 }
@@ -140,14 +149,19 @@ export default {
 
     mappedThreads() {
       return sortThreadsForBoard(this.boardThreads).map((thread, index) => {
-        const threadPosts = this.boardPosts.filter((post) => post.threadId === thread.id);
+        const threadPosts = this.boardPosts.filter(
+          (post) => post.threadId === thread.id,
+        );
         const latestPost = sortPostsByNewest(threadPosts)[0];
 
         const authorUsername =
-          this.normaliseAuthorDisplayName(thread.authorDisplayName) || 'Member';
+          this.normaliseAuthorDisplayName(thread.authorDisplayName) ||
+          'Member';
 
         const latestAuthorUsername = latestPost
-          ? this.normaliseAuthorDisplayName(latestPost.authorDisplayName) || 'Member'
+          ? this.normaliseAuthorDisplayName(
+              latestPost.authorDisplayName,
+            ) || 'Member'
           : 'System';
 
         return {
@@ -216,10 +230,12 @@ export default {
       if (!threads.length) return [];
 
       if (threads.length === 1) {
-        return [...threads, ...threads, ...threads, ...threads].map((thread, index) => ({
-          ...thread,
-          renderId: `${thread.id}-x${index}`,
-        }));
+        return [...threads, ...threads, ...threads, ...threads].map(
+          (thread, index) => ({
+            ...thread,
+            renderId: `${thread.id}-x${index}`,
+          }),
+        );
       }
 
       if (threads.length === 2) {
@@ -291,9 +307,7 @@ export default {
       }
 
       const profile = profileResult.data?.[0] || null;
-      const authorDisplayName =
-        profile?.displayName?.trim() ||
-        'Member';
+      const authorDisplayName = profile?.displayName?.trim() || 'Member';
 
       return {
         authorUserId,
@@ -357,12 +371,15 @@ export default {
           ]);
 
         if (boardResult.errors?.length) {
-          throw new Error(boardResult.errors[0].message || 'Failed to load board');
+          throw new Error(
+            boardResult.errors[0].message || 'Failed to load board',
+          );
         }
 
         if (categoryResult.errors?.length) {
           throw new Error(
-            categoryResult.errors[0].message || 'Failed to load categories',
+            categoryResult.errors[0].message ||
+              'Failed to load categories',
           );
         }
 
@@ -373,7 +390,9 @@ export default {
         }
 
         if (postResult.errors?.length) {
-          throw new Error(postResult.errors[0].message || 'Failed to load posts');
+          throw new Error(
+            postResult.errors[0].message || 'Failed to load posts',
+          );
         }
 
         const boards = sortByOrder(boardResult.data || []);
@@ -395,8 +414,9 @@ export default {
 
         this.boardRecord = matchedBoard;
         this.boardCategory =
-          categories.find((category) => category.id === matchedBoard.categoryId) ||
-          null;
+          categories.find(
+            (category) => category.id === matchedBoard.categoryId,
+          ) || null;
         this.boardThreads = boardThreads;
         this.boardPosts = posts.filter((post) =>
           boardThreads.some((thread) => thread.id === post.threadId),
@@ -441,14 +461,16 @@ export default {
       }
 
       if (!this.boardRecord?.id) {
-        this.createThreadError = 'Board is not ready yet. Refresh and try again.';
+        this.createThreadError =
+          'Board is not ready yet. Refresh and try again.';
         return;
       }
 
       this.creatingThread = true;
 
       try {
-        const { authorUserId, authorDisplayName } = await this.getForumAuthor();
+        const { authorUserId, authorDisplayName } =
+          await this.getForumAuthor();
 
         const threadSlugBase = slugify(title);
         const uniqueThreadSlug = `${threadSlugBase}-${Date.now()}`;
@@ -464,7 +486,8 @@ export default {
           isPinned: false,
           isLocked: false,
           isFeatured:
-            this.canManageThreadFlags && this.newThreadForm.isFeatured === true,
+            this.canManageThreadFlags &&
+            this.newThreadForm.isFeatured === true,
           replyCount: 0,
           viewCount: 0,
           lastReplyAt: new Date().toISOString(),
@@ -472,7 +495,8 @@ export default {
 
         if (threadCreateResult.errors?.length) {
           throw new Error(
-            threadCreateResult.errors[0].message || 'Failed to create thread',
+            threadCreateResult.errors[0].message ||
+              'Failed to create thread',
           );
         }
 
@@ -491,7 +515,8 @@ export default {
 
         if (postCreateResult.errors?.length) {
           throw new Error(
-            postCreateResult.errors[0].message || 'Failed to create opening post',
+            postCreateResult.errors[0].message ||
+              'Failed to create opening post',
           );
         }
 
@@ -500,7 +525,8 @@ export default {
         this.goToThread(createdThread.slug);
       } catch (error) {
         console.error('Failed to create thread:', error);
-        this.createThreadError = error?.message || 'Failed to publish thread';
+        this.createThreadError =
+          error?.message || 'Failed to publish thread';
       } finally {
         this.creatingThread = false;
       }
@@ -522,14 +548,16 @@ export default {
 
         if (updateResult.errors?.length) {
           throw new Error(
-            updateResult.errors[0].message || 'Failed to update pinned state',
+            updateResult.errors[0].message ||
+              'Failed to update pinned state',
           );
         }
 
         await this.fetchBoardPage();
       } catch (error) {
         console.error('Failed to toggle pinned state:', error);
-        this.loadError = error?.message || 'Failed to update pinned state';
+        this.loadError =
+          error?.message || 'Failed to update pinned state';
       } finally {
         this.updatingPinnedThreadId = '';
       }
@@ -551,14 +579,16 @@ export default {
 
         if (updateResult.errors?.length) {
           throw new Error(
-            updateResult.errors[0].message || 'Failed to update featured state',
+            updateResult.errors[0].message ||
+              'Failed to update featured state',
           );
         }
 
         await this.fetchBoardPage();
       } catch (error) {
         console.error('Failed to toggle featured state:', error);
-        this.loadError = error?.message || 'Failed to update featured state';
+        this.loadError =
+          error?.message || 'Failed to update featured state';
       } finally {
         this.updatingFeaturedThreadId = '';
       }
@@ -595,8 +625,10 @@ export default {
           'Use this board for streaming strategy, audience growth, content loops, and creator improvement discussions.',
         'discord-communities':
           'Use this board for Discord strategy, server structure, moderation ideas, bots, and onboarding.',
-        'irl-achievements':
-          'Use this board to share progress, real-life wins, habits, milestones, and personal growth.',
+        achievements:
+          'Use this board to share achievements, momentum, discipline, and real-life wins outside the screen.',
+        'help-and-advice':
+          'Use this board to ask for help, share advice, and support other members with practical guidance.',
       };
 
       return (
@@ -613,7 +645,8 @@ export default {
         'app-development': ['Build', 'Roadmap', 'Development'],
         'twitch-growth': ['Streaming', 'Growth', 'Creator'],
         'discord-communities': ['Discord', 'Community', 'Moderation'],
-        'irl-achievements': ['IRL', 'Wins', 'Progress'],
+        achievements: ['Achievements', 'Wins', 'Progress'],
+        'help-and-advice': ['Help', 'Advice', 'Support'],
       };
 
       return tagMap[boardSlug] || ['Community'];

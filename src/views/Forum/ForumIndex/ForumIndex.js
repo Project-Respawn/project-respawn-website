@@ -2,11 +2,13 @@ import { generateClient } from 'aws-amplify/data';
 
 const client = generateClient();
 
+// 1. Starter data (new structure)
 const STARTER_CATEGORIES = [
   {
     name: 'Project Respawn',
     slug: 'project-respawn',
-    description: 'Official updates, platform feedback, and app-building discussion.',
+    description:
+      'Official updates, platform feedback, and app-building discussion.',
     sortOrder: 1,
     isActive: true,
   },
@@ -18,9 +20,10 @@ const STARTER_CATEGORIES = [
     isActive: true,
   },
   {
-    name: 'Real-World Progress',
-    slug: 'real-world-progress',
-    description: 'Share momentum, discipline, and real-life wins outside the screen.',
+    name: 'Real World',
+    slug: 'real-world',
+    description:
+      'Share momentum, discipline, and real-life wins outside the screen.',
     sortOrder: 3,
     isActive: true,
   },
@@ -39,7 +42,8 @@ const STARTER_BOARDS = [
     categorySlug: 'project-respawn',
     name: 'Feature Ideas',
     slug: 'feature-ideas',
-    description: 'Suggest improvements, vote on ideas, and help shape the roadmap.',
+    description:
+      'Suggest improvements, vote on ideas, and help shape the roadmap.',
     sortOrder: 2,
     isActive: true,
   },
@@ -55,7 +59,8 @@ const STARTER_BOARDS = [
     categorySlug: 'project-respawn',
     name: 'App Development',
     slug: 'app-development',
-    description: 'Discuss implementation, product direction, architecture, and builds.',
+    description:
+      'Discuss implementation, product direction, architecture, and builds.',
     sortOrder: 4,
     isActive: true,
   },
@@ -63,7 +68,8 @@ const STARTER_BOARDS = [
     categorySlug: 'creator-community',
     name: 'Twitch Growth',
     slug: 'twitch-growth',
-    description: 'Streaming strategy, retention, content loops, and channel growth.',
+    description:
+      'Streaming strategy, retention, content loops, and channel growth.',
     sortOrder: 1,
     isActive: true,
   },
@@ -71,20 +77,32 @@ const STARTER_BOARDS = [
     categorySlug: 'creator-community',
     name: 'Discord Communities',
     slug: 'discord-communities',
-    description: 'Community design, moderation, events, and healthy group culture.',
+    description:
+      'Community design, moderation, events, and healthy group culture.',
     sortOrder: 2,
     isActive: true,
   },
   {
-    categorySlug: 'real-world-progress',
-    name: 'IRL Achievements',
-    slug: 'irl-achievements',
-    description: 'Post real-life wins, habits, milestones, and personal progress.',
+    categorySlug: 'real-world',
+    name: 'Achievements',
+    slug: 'achievements',
+    description:
+      'Post real-life wins, habits, milestones, and personal progress.',
     sortOrder: 1,
+    isActive: true,
+  },
+  {
+    categorySlug: 'real-world',
+    name: 'Help & Advice',
+    slug: 'help-and-advice',
+    description:
+      'Ask for support, share advice, and help other members with real-world challenges.',
+    sortOrder: 2,
     isActive: true,
   },
 ];
 
+// 2. Helpers
 function sortByOrder(items = []) {
   return [...items].sort((a, b) => {
     const aOrder = a.sortOrder ?? 0;
@@ -95,8 +113,12 @@ function sortByOrder(items = []) {
 
 function sortByNewest(items = []) {
   return [...items].sort((a, b) => {
-    const aDate = new Date(a.lastReplyAt || a.updatedAt || a.createdAt || 0).getTime();
-    const bDate = new Date(b.lastReplyAt || b.updatedAt || b.createdAt || 0).getTime();
+    const aDate = new Date(
+      a.lastReplyAt || a.updatedAt || a.createdAt || 0,
+    ).getTime();
+    const bDate = new Date(
+      b.lastReplyAt || b.updatedAt || b.createdAt || 0,
+    ).getTime();
     return bDate - aDate;
   });
 }
@@ -121,7 +143,7 @@ export default {
     totalBoards() {
       return this.forumCategories.reduce(
         (total, category) => total + (category.boards?.length || 0),
-        0
+        0,
       );
     },
 
@@ -131,7 +153,7 @@ export default {
           total +
           category.boards.reduce(
             (boardTotal, board) => boardTotal + (board.threadCount || 0),
-            0
+            0,
           )
         );
       }, 0);
@@ -143,7 +165,7 @@ export default {
           total +
           category.boards.reduce(
             (boardTotal, board) => boardTotal + (board.postCount || 0),
-            0
+            0,
           )
         );
       }, 0);
@@ -151,50 +173,50 @@ export default {
 
     latestActivityLabel() {
       const allBoards = this.forumCategories.flatMap(
-        (category) => category.boards || []
+        (category) => category.boards || [],
       );
 
       const latestBoardWithActivity = allBoards.find(
         (board) =>
           board.latestPost &&
           board.latestPost.time &&
-          board.latestPost.time !== 'No activity yet'
+          board.latestPost.time !== 'No activity yet',
       );
 
       return latestBoardWithActivity?.latestPost?.time || 'No activity yet';
     },
 
-featuredThreads() {
-  return sortByNewest(
-    this.forumThreads.filter((thread) => thread.isFeatured === true)
-  ).map((thread, index) => {
-    const board = this.boardLookup[thread.boardId] || {};
-    const excerpt =
-      thread.contentPreview ||
-      'Join the discussion and help shape the direction of the community.';
+    featuredThreads() {
+      return sortByNewest(
+        this.forumThreads.filter((thread) => thread.isFeatured === true),
+      ).map((thread, index) => {
+        const board = this.boardLookup[thread.boardId] || {};
+        const excerpt =
+          thread.contentPreview ||
+          'Join the discussion and help shape the direction of the community.';
 
-    return {
-      id: thread.id,
-      renderId: `${thread.id}-${index}`,
-      threadSlug: thread.slug,
-      title: thread.title,
-      excerpt,
-      board: board.name || 'Community',
-      author: thread.authorDisplayName || 'Unknown author',
-      time: this.formatRelativeTime(
-        thread.lastReplyAt || thread.updatedAt || thread.createdAt
-      ),
-      isPinned: thread.isPinned === true,
-      isFeatured: thread.isFeatured === true,
-    };
-  });
-},
+        return {
+          id: thread.id,
+          renderId: `${thread.id}-${index}`,
+          threadSlug: thread.slug,
+          title: thread.title,
+          excerpt,
+          board: board.name || 'Community',
+          author: thread.authorDisplayName || 'Unknown author',
+          time: this.formatRelativeTime(
+            thread.lastReplyAt || thread.updatedAt || thread.createdAt,
+          ),
+          isPinned: thread.isPinned === true,
+          isFeatured: thread.isFeatured === true,
+        };
+      });
+    },
 
     orderedFeaturedThreads() {
       const threads = [...this.featuredThreads];
       const prioritySlug = 'beginning-of-the-end';
       const priorityIndex = threads.findIndex(
-        (thread) => thread.threadSlug === prioritySlug
+        (thread) => thread.threadSlug === prioritySlug,
       );
 
       if (priorityIndex > -1) {
@@ -217,7 +239,7 @@ featuredThreads() {
           (thread, index) => ({
             ...thread,
             renderId: `${thread.id}-x${index}`,
-          })
+          }),
         );
       }
 
@@ -251,6 +273,7 @@ featuredThreads() {
   },
 
   methods: {
+    // 3. Read forum data
     async fetchForumIndex() {
       this.loading = true;
       this.loadError = '';
@@ -266,25 +289,26 @@ featuredThreads() {
 
         if (categoryResult.errors?.length) {
           throw new Error(
-            categoryResult.errors[0].message || 'Failed to load forum categories'
+            categoryResult.errors[0].message ||
+              'Failed to load forum categories',
           );
         }
 
         if (boardResult.errors?.length) {
           throw new Error(
-            boardResult.errors[0].message || 'Failed to load forum boards'
+            boardResult.errors[0].message || 'Failed to load forum boards',
           );
         }
 
         if (threadResult.errors?.length) {
           throw new Error(
-            threadResult.errors[0].message || 'Failed to load forum threads'
+            threadResult.errors[0].message || 'Failed to load forum threads',
           );
         }
 
         if (postResult.errors?.length) {
           throw new Error(
-            postResult.errors[0].message || 'Failed to load forum posts'
+            postResult.errors[0].message || 'Failed to load forum posts',
           );
         }
 
@@ -305,15 +329,15 @@ featuredThreads() {
             const categoryBoards = boards
               .filter(
                 (board) =>
-                  board.categoryId === category.id && board.isActive !== false
+                  board.categoryId === category.id && board.isActive !== false,
               )
               .map((board) => {
                 const boardThreads = threads.filter(
-                  (thread) => thread.boardId === board.id
+                  (thread) => thread.boardId === board.id,
                 );
 
                 const boardPosts = posts.filter((post) =>
-                  boardThreads.some((thread) => thread.id === post.threadId)
+                  boardThreads.some((thread) => thread.id === post.threadId),
                 );
 
                 const latestThread = sortByNewest(boardThreads)[0];
@@ -336,7 +360,7 @@ featuredThreads() {
                         time: this.formatRelativeTime(
                           latestThread.lastReplyAt ||
                             latestThread.updatedAt ||
-                            latestThread.createdAt
+                            latestThread.createdAt,
                         ),
                       }
                     : {
@@ -367,17 +391,20 @@ featuredThreads() {
       }
     },
 
+    // 4. Seed + migrate forum structure
     async seedForumStructure() {
       this.seedingForum = true;
       this.loadError = '';
 
       try {
-        const existingCategoriesResult = await client.models.ForumCategory.list();
+        // Categories
+        const existingCategoriesResult =
+          await client.models.ForumCategory.list();
 
         if (existingCategoriesResult.errors?.length) {
           throw new Error(
             existingCategoriesResult.errors[0].message ||
-              'Failed to check existing forum categories'
+              'Failed to check existing forum categories',
           );
         }
 
@@ -388,6 +415,33 @@ featuredThreads() {
           categoryMap.set(existingCategory.slug, existingCategory);
         }
 
+        // Migrate old Real-World Progress -> Real World if it exists
+        const legacyRealWorld = categoryMap.get('real-world-progress');
+        if (legacyRealWorld && !categoryMap.has('real-world')) {
+          const updateResult = await client.models.ForumCategory.update({
+            id: legacyRealWorld.id,
+            name: 'Real World',
+            slug: 'real-world',
+            description:
+              'Share momentum, discipline, and real-life wins outside the screen.',
+            sortOrder: 3,
+            isActive: true,
+          });
+
+          if (updateResult.errors?.length) {
+            throw new Error(
+              updateResult.errors[0].message ||
+                'Failed to migrate Real World category',
+            );
+          }
+
+          if (updateResult.data) {
+            categoryMap.delete('real-world-progress');
+            categoryMap.set('real-world', updateResult.data);
+          }
+        }
+
+        // Ensure all starter categories exist
         for (const category of STARTER_CATEGORIES) {
           if (!categoryMap.has(category.slug)) {
             const createResult = await client.models.ForumCategory.create({
@@ -401,7 +455,7 @@ featuredThreads() {
             if (createResult.errors?.length) {
               throw new Error(
                 createResult.errors[0].message ||
-                  `Failed to create category: ${category.name}`
+                  `Failed to create category: ${category.name}`,
               );
             }
 
@@ -411,20 +465,58 @@ featuredThreads() {
           }
         }
 
+        // Boards
         const existingBoardsResult = await client.models.ForumBoard.list();
 
         if (existingBoardsResult.errors?.length) {
           throw new Error(
             existingBoardsResult.errors[0].message ||
-              'Failed to check existing forum boards'
+              'Failed to check existing forum boards',
           );
         }
 
         const existingBoards = existingBoardsResult.data || [];
-        const existingBoardSlugs = new Set(existingBoards.map((board) => board.slug));
+        const boardSlugMap = new Map();
+        existingBoards.forEach((board) => {
+          boardSlugMap.set(board.slug, board);
+        });
 
+        // Migrate old IRL Achievements -> Achievements if present
+        const legacyAchievements = boardSlugMap.get('irl-achievements');
+        if (legacyAchievements && !boardSlugMap.has('achievements')) {
+          const parentCategory =
+            categoryMap.get('real-world') ||
+            categoryMap.get('real-world-progress');
+
+          if (parentCategory?.id) {
+            const updateResult = await client.models.ForumBoard.update({
+              id: legacyAchievements.id,
+              categoryId: parentCategory.id,
+              name: 'Achievements',
+              slug: 'achievements',
+              description:
+                'Post real-life wins, habits, milestones, and personal progress.',
+              sortOrder: 1,
+              isActive: true,
+            });
+
+            if (updateResult.errors?.length) {
+              throw new Error(
+                updateResult.errors[0].message ||
+                  'Failed to migrate Achievements board',
+              );
+            }
+
+            if (updateResult.data) {
+              boardSlugMap.delete('irl-achievements');
+              boardSlugMap.set('achievements', updateResult.data);
+            }
+          }
+        }
+
+        // Ensure all starter boards exist
         for (const board of STARTER_BOARDS) {
-          if (existingBoardSlugs.has(board.slug)) {
+          if (boardSlugMap.has(board.slug)) {
             continue;
           }
 
@@ -432,7 +524,7 @@ featuredThreads() {
 
           if (!parentCategory?.id) {
             throw new Error(
-              `Missing category for board "${board.name}" (${board.categorySlug})`
+              `Missing category for board "${board.name}" (${board.categorySlug})`,
             );
           }
 
@@ -448,8 +540,12 @@ featuredThreads() {
           if (createResult.errors?.length) {
             throw new Error(
               createResult.errors[0].message ||
-                `Failed to create board: ${board.name}`
+                `Failed to create board: ${board.name}`,
             );
+          }
+
+          if (createResult.data) {
+            boardSlugMap.set(board.slug, createResult.data);
           }
         }
 
@@ -463,6 +559,7 @@ featuredThreads() {
       }
     },
 
+    // 5. UI helpers
     updateFeaturedScrollDuration() {
       const count = this.scrollingFeaturedThreads.length;
 
@@ -492,7 +589,8 @@ featuredThreads() {
         'app-development': '🧠',
         'twitch-growth': '🎥',
         'discord-communities': '💬',
-        'irl-achievements': '🏆',
+        achievements: '🏆',
+        'help-and-advice': '🫶',
       };
 
       return iconMap[boardSlug] || '🗂️';
@@ -506,7 +604,8 @@ featuredThreads() {
         'app-development': ['Build', 'Roadmap'],
         'twitch-growth': ['Streaming', 'Growth'],
         'discord-communities': ['Discord', 'Community'],
-        'irl-achievements': ['IRL', 'Wins'],
+        achievements: ['Achievements', 'Wins'],
+        'help-and-advice': ['Help', 'Advice', 'Support'],
       };
 
       return tagMap[boardSlug] || ['Community'];
