@@ -1,6 +1,5 @@
 <template>
   <div class="forum-layout-shell">
-    <!-- Forum Layout Sidebar -->
     <aside class="forum-layout-sidebar">
       <div class="forum-layout-sidebar-inner">
         <div class="forum-layout-brand">
@@ -22,6 +21,7 @@
             <button
               v-for="board in category.boards"
               :key="board.id"
+              type="button"
               class="forum-layout-nav-link"
               :class="{ 'is-active': isBoardActive(board.id) }"
               @click="goToBoard(board.id)"
@@ -34,7 +34,6 @@
       </div>
     </aside>
 
-    <!-- Main Content Column -->
     <div class="forum-layout-main-column">
       <header class="forum-layout-topbar">
         <div class="forum-layout-topbar-copy">
@@ -43,11 +42,12 @@
         </div>
 
         <div class="forum-layout-topbar-actions">
-          <button class="forum-layout-primary-btn" @click="goToForumHome">
+          <button
+            type="button"
+            class="forum-layout-primary-btn"
+            @click="goToForumHome"
+          >
             Forum Home
-          </button>
-          <button class="forum-layout-secondary-btn">
-            New Thread
           </button>
         </div>
       </header>
@@ -57,7 +57,6 @@
       </main>
     </div>
 
-    <!-- Right Sidebar Widgets -->
     <aside class="forum-layout-rightbar">
       <div class="forum-layout-rightbar-card">
         <div class="forum-layout-card-header">
