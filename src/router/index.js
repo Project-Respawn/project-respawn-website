@@ -22,7 +22,7 @@ import TtsSettings from '../views/Bot/Twitch/TTS/Settings/TtsSettings.vue'
 import TwitchCommands from '../views/Bot/Twitch/TwitchCommands/TwitchCommands.vue'
 
 import AdminLayout from '../views/Admin/AdminLayout/AdminLayout.vue'
-import AdminUsers from '../views/Admin/Adminusers/AdminUsers.vue'
+import AdminUsers from '../views/Admin/AdminUsers/AdminUsers.vue'
 import AdminPermissions from '../views/Admin/AdminPermissions/AdminPermissions.vue'
 import AdminBrands from '../views/Admin/AdminBrands/AdminBrands.vue'
 import AdminMerchCategories from '../views/Admin/AdminMerchCategories/AdminMerchCategories.vue'
