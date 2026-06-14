@@ -1,5 +1,8 @@
 <template>
   <div class="forum-thread-page">
+    <!-- ==========================================================
+         1. Loading state
+         ========================================================== -->
     <section v-if="loading" class="forum-thread-empty-state">
       <h1 class="forum-thread-empty-title">Loading thread</h1>
       <p class="forum-thread-empty-copy">
@@ -7,6 +10,9 @@
       </p>
     </section>
 
+    <!-- ==========================================================
+         2. Error state
+         ========================================================== -->
     <section
       v-else-if="loadError"
       class="forum-thread-empty-state forum-thread-empty-state-error"
@@ -17,13 +23,20 @@
       </p>
 
       <div class="forum-thread-empty-actions">
-        <button class="forum-thread-primary-btn" @click="fetchThreadPage">
+        <button
+          class="forum-thread-primary-btn"
+          type="button"
+          @click="fetchThreadPage"
+        >
           Try Again
         </button>
       </div>
     </section>
 
     <template v-else>
+      <!-- ==========================================================
+           3. Thread hero
+           ========================================================== -->
       <section class="forum-thread-hero">
         <div class="forum-thread-hero-copy">
           <p class="forum-thread-kicker">Community Hub</p>
@@ -35,6 +48,7 @@
             <button
               v-if="hasModerationAccess()"
               class="forum-thread-secondary-btn forum-thread-lock-btn"
+              type="button"
               @click="toggleThreadLock"
               :disabled="deletingThread || updatingThreadLock"
             >
@@ -48,6 +62,7 @@
             <button
               v-if="canDeleteThread()"
               class="forum-thread-secondary-btn forum-thread-danger-btn"
+              type="button"
               @click="deleteThread"
               :disabled="deletingThread || updatingThreadLock"
             >
@@ -57,6 +72,9 @@
         </div>
       </section>
 
+      <!-- ==========================================================
+           4. Thread stats bar
+           ========================================================== -->
       <section class="forum-thread-topbar">
         <div class="forum-thread-topbar-stat">
           <span class="forum-thread-topbar-value">{{ thread.replyCount }}</span>
@@ -79,6 +97,9 @@
         </div>
       </section>
 
+      <!-- ==========================================================
+           5. Posts list
+           ========================================================== -->
       <section class="forum-thread-posts-section">
         <article
           v-for="post in thread.posts"
@@ -147,7 +168,8 @@
             <div class="forum-post-footer">
               <button
                 class="forum-post-action"
-                @click="quotePost(post)"
+                type="button"
+                @click="openReplyBox"
                 :disabled="thread.isLocked"
               >
                 Reply
@@ -155,19 +177,24 @@
 
               <button
                 class="forum-post-action"
+                type="button"
                 @click="quotePost(post)"
                 :disabled="thread.isLocked"
               >
                 Quote
               </button>
 
-              <button class="forum-post-action">
+              <button
+                class="forum-post-action"
+                type="button"
+              >
                 Report
               </button>
 
               <button
                 v-if="canDeletePost(post)"
                 class="forum-post-action forum-post-action-danger"
+                type="button"
                 @click="deletePost(post)"
                 :disabled="deletingPostId === post.id"
               >
@@ -178,6 +205,69 @@
         </article>
       </section>
 
+      <!-- ==========================================================
+           6. Join prompt modal
+           ========================================================== -->
+      <section
+        v-if="showJoinPrompt"
+        class="forum-join-prompt-overlay"
+      >
+        <div
+          class="forum-join-prompt-card"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="forum-join-prompt-title"
+          @click.stop
+        >
+          <button
+            class="forum-join-prompt-close"
+            type="button"
+            aria-label="Close join prompt"
+            @click="closeJoinPrompt"
+          >
+            ×
+          </button>
+
+          <p class="forum-reply-kicker">Join the conversation</p>
+          <h2 id="forum-join-prompt-title" class="forum-reply-title">
+            Want to get involved?
+          </h2>
+          <p class="forum-thread-empty-copy">
+            Create an account or sign in to reply, quote posts, and take part in
+            the Project Respawn community.
+          </p>
+
+          <div class="forum-reply-actions">
+            <button
+              class="forum-thread-primary-btn"
+              type="button"
+              @click="goToJoinPage"
+            >
+              Join Project Respawn
+            </button>
+
+            <button
+              class="forum-thread-secondary-btn"
+              type="button"
+              @click="goToSignInPage"
+            >
+              Sign In
+            </button>
+
+            <button
+              class="forum-thread-secondary-btn"
+              type="button"
+              @click="closeJoinPrompt"
+            >
+              Not Now
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================================
+           7. Locked notice
+           ========================================================== -->
       <section
         v-if="thread.isLocked"
         class="forum-thread-empty-state forum-thread-empty-state-inline"
@@ -188,8 +278,11 @@
         </p>
       </section>
 
+      <!-- ==========================================================
+           8. Signed-in reply editor
+           ========================================================== -->
       <section
-        v-else
+        v-else-if="isSignedIn"
         ref="replySection"
         class="forum-reply-box-section"
       >
@@ -222,6 +315,7 @@
           <div class="forum-reply-actions">
             <button
               class="forum-thread-secondary-btn"
+              type="button"
               @click="previewReply"
               :disabled="postingReply"
             >
@@ -230,6 +324,7 @@
 
             <button
               class="forum-thread-primary-btn"
+              type="button"
               @click="submitReply"
               :disabled="postingReply"
             >
@@ -252,6 +347,30 @@
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- ==========================================================
+           9. Logged-out reply CTA
+           ========================================================== -->
+      <section
+        v-else
+        class="forum-thread-empty-state forum-thread-empty-state-inline forum-thread-signin-cta"
+      >
+        <h2 class="forum-thread-empty-title">Want to reply?</h2>
+        <p class="forum-thread-empty-copy">
+          Sign in or create an account to join this discussion, reply to posts,
+          and quote other members.
+        </p>
+
+        <div class="forum-thread-empty-actions">
+          <button
+            class="forum-thread-primary-btn"
+            type="button"
+            @click="openReplyBox"
+          >
+            Reply to Thread
+          </button>
         </div>
       </section>
     </template>

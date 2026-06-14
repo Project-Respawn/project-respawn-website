@@ -1,7 +1,34 @@
+// ============================================================
+// ForumThread
+// ============================================================
+// File map
+// 1. Imports + clients
+// 2. Constants + helpers (pure functions)
+// 3. Component meta (name, props)
+// 4. State (data)
+// 5. Computed properties
+// 6. Lifecycle hooks
+// 7. Auth + identity helpers
+// 8. Permissions + moderation helpers
+// 9. Thread data loading + analytics
+// 10. Reply interactions (quote, preview, submit, scroll)
+// 11. Display helpers (roles, counts, formatting)
+// 12. Watchers
+// ============================================================
+
+
+// 1. Imports + clients
+// ------------------------------------------------------------
+
 import { generateClient } from 'aws-amplify/data';
 import { getCurrentUser, fetchAuthSession } from 'aws-amplify/auth';
 
-const client = generateClient();
+const userPoolClient = generateClient(); // authenticated reads/writes
+const publicClient = generateClient({ authMode: 'apiKey' }); // guest reads
+
+
+// 2. Constants + helpers (pure functions)
+// ------------------------------------------------------------
 
 const DEFAULT_THREAD = {
   id: 'default-thread',
@@ -22,8 +49,12 @@ const DEFAULT_THREAD = {
 
 function sortByNewest(items = []) {
   return [...items].sort((a, b) => {
-    const aDate = new Date(a.editedAt || a.updatedAt || a.createdAt || 0).getTime();
-    const bDate = new Date(b.editedAt || b.updatedAt || b.createdAt || 0).getTime();
+    const aDate = new Date(
+      a.editedAt || a.updatedAt || a.createdAt || 0,
+    ).getTime();
+    const bDate = new Date(
+      b.editedAt || b.updatedAt || b.createdAt || 0,
+    ).getTime();
     return aDate - bDate;
   });
 }
@@ -39,6 +70,10 @@ function normaliseGroupName(value = '') {
   return String(value).trim().toLowerCase();
 }
 
+
+// 3. Component meta (name, props)
+// ------------------------------------------------------------
+
 export default {
   name: 'ForumThread',
 
@@ -49,28 +84,51 @@ export default {
     },
   },
 
+
+  // 4. State (data)
+  // ----------------------------------------------------------
+
   data() {
     return {
+      // loading + errors
       loading: true,
       loadError: '',
+      replyError: '',
+
+      // async flags
       postingReply: false,
       deletingPostId: '',
       deletingThread: false,
       updatingThreadLock: false,
+
+      // auth + identity
+      isSignedIn: false,
       currentUserId: '',
       currentUsername: '',
       currentUserGroups: [],
-      replyError: '',
-      replyPreview: false,
+
+      // join prompt (for logged-out reply)
+      showJoinPrompt: false,
+      joinPageUrl: '/join',
+      signInPageUrl: '/join',
+
+      // thread data
       threadRecord: null,
       boardRecord: null,
       threadPosts: [],
+
+      // reply form state
+      replyPreview: false,
       replyForm: {
         title: '',
         content: '',
       },
     };
   },
+
+
+  // 5. Computed properties
+  // ----------------------------------------------------------
 
   computed: {
     mappedPosts() {
@@ -106,7 +164,9 @@ export default {
 
       const participants = new Set(
         this.threadPosts.map(
-          (post) => post.authorUserId || this.normaliseAuthorDisplayName(post.authorDisplayName),
+          (post) =>
+            post.authorUserId ||
+            this.normaliseAuthorDisplayName(post.authorDisplayName),
         ),
       );
 
@@ -139,10 +199,18 @@ export default {
     },
   },
 
+
+  // 6. Lifecycle hooks
+  // ----------------------------------------------------------
+
   async mounted() {
     await this.loadCurrentUser();
     await this.fetchThreadPage();
   },
+
+
+  // 7. Auth + identity helpers
+  // ----------------------------------------------------------
 
   methods: {
     looksLikeCognitoId(value = '') {
@@ -158,7 +226,6 @@ export default {
       if (!value || this.looksLikeCognitoId(value)) {
         return '';
       }
-
       return String(value).trim();
     },
 
@@ -170,7 +237,7 @@ export default {
         throw new Error('Could not determine the current user.');
       }
 
-      const profileResult = await client.models.UserProfile.list({
+      const profileResult = await userPoolClient.models.UserProfile.list({
         filter: {
           ownerUserId: { eq: authorUserId },
         },
@@ -193,15 +260,35 @@ export default {
       };
     },
 
+    async getForumReadClient() {
+      try {
+        const session = await fetchAuthSession();
+        const isSignedIn = !!session?.tokens?.idToken;
+        this.isSignedIn = isSignedIn;
+        return isSignedIn ? userPoolClient : publicClient;
+      } catch {
+        this.isSignedIn = false;
+        return publicClient;
+      }
+    },
+
     async loadCurrentUser() {
       try {
-        const [session, forumAuthor] = await Promise.all([
-          fetchAuthSession(),
-          this.getForumAuthor().catch(() => ({
-            authorUserId: '',
-            authorDisplayName: '',
-          })),
-        ]);
+        const session = await fetchAuthSession();
+        const isSignedIn = !!session?.tokens?.idToken;
+        this.isSignedIn = isSignedIn;
+
+        if (!isSignedIn) {
+          this.currentUserId = '';
+          this.currentUsername = '';
+          this.currentUserGroups = [];
+          return;
+        }
+
+        const forumAuthor = await this.getForumAuthor().catch(() => ({
+          authorUserId: '',
+          authorDisplayName: '',
+        }));
 
         this.currentUserId = forumAuthor.authorUserId || '';
         this.currentUsername = forumAuthor.authorDisplayName || '';
@@ -216,11 +303,16 @@ export default {
           : [];
       } catch (error) {
         console.warn('Unable to load current user:', error);
+        this.isSignedIn = false;
         this.currentUserId = '';
         this.currentUsername = '';
         this.currentUserGroups = [];
       }
     },
+
+
+    // 8. Permissions + moderation helpers
+    // ------------------------------------------------------
 
     hasModerationAccess() {
       const groups = (this.currentUserGroups || []).map(normaliseGroupName);
@@ -254,7 +346,9 @@ export default {
       }
 
       const originalPost = sortByNewest(this.threadPosts)[0];
-      return String(originalPost?.authorUserId || '') === String(this.currentUserId);
+      return String(originalPost?.authorUserId || '') === String(
+        this.currentUserId,
+      );
     },
 
     async toggleThreadLock() {
@@ -278,7 +372,7 @@ export default {
       this.updatingThreadLock = true;
 
       try {
-        const updateResult = await client.models.ForumThread.update({
+        const updateResult = await userPoolClient.models.ForumThread.update({
           id: this.threadRecord.id,
           isLocked: nextLockedState,
         });
@@ -329,20 +423,22 @@ export default {
         const postsInThread = [...this.threadPosts];
 
         for (const post of postsInThread) {
-          const deletePostResult = await client.models.ForumPost.delete({
+          const deletePostResult = await userPoolClient.models.ForumPost.delete({
             id: post.id,
           });
 
           if (deletePostResult.errors?.length) {
             throw new Error(
-              deletePostResult.errors[0].message || 'Failed to delete a thread post',
+              deletePostResult.errors[0].message ||
+                'Failed to delete a thread post',
             );
           }
         }
 
-        const deleteThreadResult = await client.models.ForumThread.delete({
-          id: this.threadRecord.id,
-        });
+        const deleteThreadResult =
+          await userPoolClient.models.ForumThread.delete({
+            id: this.threadRecord.id,
+          });
 
         if (deleteThreadResult.errors?.length) {
           throw new Error(
@@ -372,7 +468,9 @@ export default {
         return;
       }
 
-      const confirmed = window.confirm('Delete this post? This cannot be undone.');
+      const confirmed = window.confirm(
+        'Delete this post? This cannot be undone.',
+      );
       if (!confirmed) {
         return;
       }
@@ -381,7 +479,7 @@ export default {
       this.deletingPostId = post.id;
 
       try {
-        const deleteResult = await client.models.ForumPost.delete({
+        const deleteResult = await userPoolClient.models.ForumPost.delete({
           id: post.id,
         });
 
@@ -391,7 +489,9 @@ export default {
           );
         }
 
-        const remainingPosts = this.threadPosts.filter((item) => item.id !== post.id);
+        const remainingPosts = this.threadPosts.filter(
+          (item) => item.id !== post.id,
+        );
         const updatedReplyCount = Math.max(remainingPosts.length - 1, 0);
 
         const latestPost = sortByNewest(remainingPosts).at(-1);
@@ -402,11 +502,13 @@ export default {
           this.threadRecord?.createdAt ||
           null;
 
-        const threadUpdateResult = await client.models.ForumThread.update({
-          id: this.threadRecord.id,
-          replyCount: updatedReplyCount,
-          lastReplyAt: fallbackLastReplyAt,
-        });
+        const threadUpdateResult = await userPoolClient.models.ForumThread.update(
+          {
+            id: this.threadRecord.id,
+            replyCount: updatedReplyCount,
+            lastReplyAt: fallbackLastReplyAt,
+          },
+        );
 
         if (threadUpdateResult.errors?.length) {
           throw new Error(
@@ -424,15 +526,21 @@ export default {
       }
     },
 
+
+    // 9. Thread data loading + analytics
+    // ------------------------------------------------------
+
     async fetchThreadPage() {
       this.loading = true;
       this.loadError = '';
 
       try {
+        const readClient = await this.getForumReadClient();
+
         const [threadResult, boardResult, postResult] = await Promise.all([
-          client.models.ForumThread.list(),
-          client.models.ForumBoard.list(),
-          client.models.ForumPost.list(),
+          readClient.models.ForumThread.list(),
+          readClient.models.ForumBoard.list(),
+          readClient.models.ForumPost.list(),
         ]);
 
         if (threadResult.errors?.length) {
@@ -468,7 +576,9 @@ export default {
         this.threadRecord = matchedThread;
         this.boardRecord =
           boards.find((board) => board.id === matchedThread.boardId) || null;
-        this.threadPosts = posts.filter((post) => post.threadId === matchedThread.id);
+        this.threadPosts = posts.filter(
+          (post) => post.threadId === matchedThread.id,
+        );
 
         await this.incrementThreadViews();
       } catch (error) {
@@ -487,7 +597,7 @@ export default {
       try {
         const nextViewCount = (this.threadRecord.viewCount || 0) + 1;
 
-        const updateResult = await client.models.ForumThread.update({
+        const updateResult = await userPoolClient.models.ForumThread.update({
           id: this.threadRecord.id,
           viewCount: nextViewCount,
         });
@@ -503,6 +613,10 @@ export default {
       }
     },
 
+
+    // 10. Reply interactions (quote, preview, submit, scroll)
+    // ------------------------------------------------------
+
     scrollToReplyBox() {
       this.$refs.replySection?.scrollIntoView({
         behavior: 'smooth',
@@ -510,8 +624,43 @@ export default {
       });
     },
 
+    // For template: logged-out click should call this to open the join modal
+    openReplyBox() {
+      if (!this.isSignedIn) {
+        this.showJoinPrompt = true;
+        this.replyError = '';
+        return;
+      }
+
+      if (this.thread.isLocked) {
+        this.replyError = 'This thread is locked.';
+        return;
+      }
+
+      this.replyError = '';
+      this.replyPreview = false;
+      this.scrollToReplyBox();
+    },
+
+    closeJoinPrompt() {
+      this.showJoinPrompt = false;
+    },
+
+    goToJoinPage() {
+      this.$router.push(this.joinPageUrl);
+    },
+
+    goToSignInPage() {
+      this.$router.push(this.signInPageUrl);
+    },
+
     quotePost(post) {
       if (this.thread.isLocked) {
+        return;
+      }
+
+      if (!this.isSignedIn) {
+        this.showJoinPrompt = true;
         return;
       }
 
@@ -547,6 +696,12 @@ export default {
         return;
       }
 
+      if (!this.isSignedIn) {
+        this.showJoinPrompt = true;
+        this.replyError = 'Sign in to post a reply.';
+        return;
+      }
+
       const content = this.replyForm.content.trim();
 
       if (!content) {
@@ -562,9 +717,10 @@ export default {
       this.postingReply = true;
 
       try {
-        const { authorUserId, authorDisplayName } = await this.getForumAuthor();
+        const { authorUserId, authorDisplayName } =
+          await this.getForumAuthor();
 
-        const postCreateResult = await client.models.ForumPost.create({
+        const postCreateResult = await userPoolClient.models.ForumPost.create({
           threadId: this.threadRecord.id,
           authorUserId,
           authorDisplayName,
@@ -580,15 +736,18 @@ export default {
         const updatedReplyCount = this.threadPosts.length;
         const nowIso = new Date().toISOString();
 
-        const threadUpdateResult = await client.models.ForumThread.update({
-          id: this.threadRecord.id,
-          replyCount: updatedReplyCount,
-          lastReplyAt: nowIso,
-        });
+        const threadUpdateResult = await userPoolClient.models.ForumThread.update(
+          {
+            id: this.threadRecord.id,
+            replyCount: updatedReplyCount,
+            lastReplyAt: nowIso,
+          },
+        );
 
         if (threadUpdateResult.errors?.length) {
           throw new Error(
-            threadUpdateResult.errors[0].message || 'Failed to update thread',
+            threadUpdateResult.errors[0].message ||
+              'Failed to update thread',
           );
         }
 
@@ -606,6 +765,10 @@ export default {
         this.postingReply = false;
       }
     },
+
+
+    // 11. Display helpers (roles, counts, formatting)
+    // ------------------------------------------------------
 
     getAuthorRole(authorName = '') {
       const normalized = String(authorName).toLowerCase();
@@ -685,6 +848,10 @@ export default {
       return date.toLocaleDateString();
     },
   },
+
+
+  // 12. Watchers
+  // ----------------------------------------------------------
 
   watch: {
     async threadSlug() {

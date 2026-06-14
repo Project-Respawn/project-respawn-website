@@ -1,3 +1,23 @@
+/* ==========================================================================
+   Forum Thread Page
+   ==========================================================================
+   Page map
+   1. Page shell
+   2. Thread hero
+   3. Thread stats bar
+   4. Buttons + focus states
+   5. Posts list
+   6. Reply editor
+   7. Join prompt modal
+   8. Empty + inline states
+   9. Responsive
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. Page shell
+   ========================================================================== */
+
 .forum-thread-page {
   max-width: 1200px;
   margin: 0 auto;
@@ -5,7 +25,10 @@
   color: #f4f4f8;
 }
 
-/* Header */
+
+/* ==========================================================================
+   2. Thread hero
+   ========================================================================== */
 
 .forum-thread-hero {
   margin-bottom: 18px;
@@ -101,7 +124,10 @@
   color: rgba(244, 244, 248, 0.28);
 }
 
-/* Top stats */
+
+/* ==========================================================================
+   3. Thread stats bar
+   ========================================================================== */
 
 .forum-thread-topbar {
   display: grid;
@@ -132,7 +158,10 @@
   color: rgba(244, 244, 248, 0.64);
 }
 
-/* Buttons */
+
+/* ==========================================================================
+   4. Buttons + focus states
+   ========================================================================== */
 
 .forum-thread-primary-btn,
 .forum-thread-secondary-btn,
@@ -186,7 +215,8 @@
 .forum-thread-secondary-btn:focus-visible,
 .forum-post-action:focus-visible,
 .forum-reply-input:focus-visible,
-.forum-reply-textarea:focus-visible {
+.forum-reply-textarea:focus-visible,
+.forum-join-prompt-close:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px rgba(143, 107, 255, 0.18);
   border-color: rgba(143, 107, 255, 0.65);
@@ -201,7 +231,10 @@
   box-shadow: none;
 }
 
-/* Posts */
+
+/* ==========================================================================
+   5. Posts list
+   ========================================================================== */
 
 .forum-thread-posts-section {
   display: flex;
@@ -354,7 +387,10 @@
   background: rgba(255, 107, 107, 0.1);
 }
 
-/* Reply area */
+
+/* ==========================================================================
+   6. Reply editor
+   ========================================================================== */
 
 .forum-reply-box-section {
   margin-bottom: 28px;
@@ -436,7 +472,67 @@
   background: rgba(143, 107, 255, 0.06);
 }
 
-/* Empty states */
+
+/* ==========================================================================
+   7. Join prompt modal
+   ========================================================================== */
+
+.forum-join-prompt-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(7, 10, 16, 0.78);
+  backdrop-filter: blur(6px);
+}
+
+.forum-join-prompt-card {
+  position: relative;
+  width: min(100%, 560px);
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  padding: 32px;
+  border-radius: 20px;
+  border: 1px solid rgba(143, 107, 255, 0.18);
+  background:
+    radial-gradient(circle at top left, rgba(143, 107, 255, 0.14), transparent 38%),
+    linear-gradient(180deg, rgba(19, 23, 41, 0.98), rgba(10, 14, 27, 0.98));
+  box-shadow:
+    0 32px 90px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(143, 107, 255, 0.05) inset;
+}
+
+.forum-join-prompt-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.forum-join-prompt-close:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+
+/* ==========================================================================
+   8. Empty + inline states
+   ========================================================================== */
 
 .forum-thread-empty-state {
   padding: 24px 22px;
@@ -476,7 +572,17 @@
   margin-top: 18px;
 }
 
-/* Tablet */
+.forum-thread-signin-cta {
+  border-color: rgba(143, 107, 255, 0.16);
+  background:
+    radial-gradient(circle at top left, rgba(143, 107, 255, 0.08), transparent 35%),
+    rgba(255, 255, 255, 0.03);
+}
+
+
+/* ==========================================================================
+   9. Responsive
+   ========================================================================== */
 
 @media (max-width: 1100px) {
   .forum-thread-topbar {
@@ -500,8 +606,6 @@
     gap: 18px;
   }
 }
-
-/* Mobile */
 
 @media (max-width: 768px) {
   .forum-thread-page {
@@ -566,5 +670,16 @@
   .forum-thread-secondary-btn,
   .forum-thread-danger-btn {
     width: 100%;
+  }
+
+  .forum-join-prompt-overlay {
+    padding: 16px;
+  }
+
+  .forum-join-prompt-card {
+    width: 100%;
+    max-height: calc(100vh - 32px);
+    padding: 24px 20px;
+    border-radius: 18px;
   }
 }

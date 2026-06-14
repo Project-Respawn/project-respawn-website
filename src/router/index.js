@@ -22,11 +22,13 @@ import TtsSettings from '../views/Bot/Twitch/TTS/Settings/TtsSettings.vue'
 import TwitchCommands from '../views/Bot/Twitch/TwitchCommands/TwitchCommands.vue'
 
 import AdminLayout from '../views/Admin/AdminLayout/AdminLayout.vue'
+import AdminHome from '../views/Admin/AdminHome/AdminHome.vue'
 import AdminUsers from '../views/Admin/AdminUsers/AdminUsers.vue'
 import AdminPermissions from '../views/Admin/AdminPermissions/AdminPermissions.vue'
 import AdminBrands from '../views/Admin/AdminBrands/AdminBrands.vue'
 import AdminMerchCategories from '../views/Admin/AdminMerchCategories/AdminMerchCategories.vue'
 import AdminBrandPermissions from '../views/Admin/AdminBrandPermissions/AdminBrandPermissions.vue'
+import AdminForums from '../views/Admin/AdminForums/AdminForums.vue'
 
 import ForumLayout from '../views/Forum/ForumLayout/ForumLayout.vue'
 import ForumIndex from '../views/Forum/ForumIndex/ForumIndex.vue'
@@ -53,7 +55,7 @@ const routes = [
     children: [
       {
         path: '',
-        redirect: '/dashboard/users',
+        component: AdminHome,
       },
       {
         path: 'users',
@@ -64,6 +66,11 @@ const routes = [
         path: 'permissions',
         name: 'AdminPermissions',
         component: AdminPermissions,
+      },
+      {
+        path: 'forums',
+        name: 'AdminForums',
+        component: AdminForums,
       },
       {
         path: 'brands',

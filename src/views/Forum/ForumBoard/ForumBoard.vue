@@ -38,6 +38,7 @@
             class="forum-board-primary-btn"
             @click="openCreateThread"
             :disabled="creatingThread"
+            type="button"
           >
             {{ creatingThread ? 'Creating…' : 'New Thread' }}
           </button>
@@ -46,9 +47,68 @@
             v-if="featuredThreadsForBoard.length"
             class="forum-board-secondary-btn"
             @click="scrollToFeatured"
+            type="button"
           >
             Featured Posts
           </button>
+        </div>
+      </section>
+
+      <section
+        v-if="showJoinPrompt"
+        class="forum-join-prompt-overlay"
+        @click="closeJoinPrompt"
+      >
+        <div
+          class="forum-join-prompt-card"
+          @click.stop
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="forum-join-prompt-title"
+        >
+          <button
+            class="forum-join-prompt-close"
+            type="button"
+            aria-label="Close join prompt"
+            @click="closeJoinPrompt"
+          >
+            ×
+          </button>
+
+          <p class="forum-thread-list-kicker">Join the conversation</p>
+          <h2 id="forum-join-prompt-title" class="forum-thread-list-title">
+            Want to get involved?
+          </h2>
+          <p class="forum-board-empty-copy">
+            Create an account to start threads, reply to posts, and take part in
+            the Project Respawn community.
+          </p>
+
+          <div class="forum-create-thread-actions">
+            <button
+              class="forum-board-primary-btn"
+              type="button"
+              @click="goToJoinPage"
+            >
+              Join Project Respawn
+            </button>
+
+            <button
+              class="forum-board-secondary-btn"
+              type="button"
+              @click="goToSignInPage"
+            >
+              Sign In
+            </button>
+
+            <button
+              class="forum-board-secondary-btn"
+              type="button"
+              @click="closeJoinPrompt"
+            >
+              Not Now
+            </button>
+          </div>
         </div>
       </section>
 
@@ -105,6 +165,7 @@
               class="forum-board-primary-btn"
               @click="submitThread"
               :disabled="creatingThread"
+              type="button"
             >
               {{ creatingThread ? 'Publishing Thread…' : 'Publish Thread' }}
             </button>
@@ -113,6 +174,7 @@
               class="forum-board-secondary-btn"
               @click="cancelCreateThread"
               :disabled="creatingThread"
+              type="button"
             >
               Cancel
             </button>
@@ -262,7 +324,11 @@
           </p>
 
           <div class="forum-board-empty-actions">
-            <button class="forum-board-primary-btn" @click="openCreateThread">
+            <button
+              class="forum-board-primary-btn"
+              @click="openCreateThread"
+              type="button"
+            >
               Start the First Thread
             </button>
           </div>
