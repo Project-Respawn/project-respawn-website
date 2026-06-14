@@ -2,83 +2,52 @@
     <aside 
       class="bot-sidebar"
       :style="{
-        '--colour-brand-1': colourBrand1,
-        '--colour-brand-2': colourBrand2,
-        '--colour-box-shadow': colourBoxShadow
+        '--colour-brand-1': sidebarStore.colourBrand1,
+        '--colour-brand-2': sidebarStore.colourBrand2,
+        '--colour-box-shadow': sidebarStore.colourBoxShadow
       }">
       
       <div class="brand-block">
         <div class="brand-icon">R</div>
         <div>
           <p class="brand-kicker">Project Respawn</p>
-          <h1 class="brand-title">{{ title }}</h1>
+          <h1 class="brand-title">{{ sidebarStore.title }}</h1>
         </div>
       </div>
 
       <nav class="sidebar-nav">
         <template v-for="item in menuItems" :key="item.id">
-          <!-- Top-level items -->
-          <div v-if="!item.children || item.children.length === 0">
-            <router-link :to="item.path" class="nav-item" exact-active-class="active">
-              <span class="nav-dot"></span>
-              {{ item.label }}
-            </router-link>
-          </div>
+          <!-- Top-level items without children -->
+          <router-link 
+            v-if="!item.children || item.children.length === 0"
+            :to="item.path" 
+            class="nav-item" 
+            exact-active-class="active">
+            <span class="nav-dot"></span>
+            {{ item.label }}
+          </router-link>
 
-          <!-- Items with submenus -->
+          <!-- Top-level items with children - render link with button inside + submenu -->
           <div v-else class="nav-group">
-            <button 
+            <router-link
+              :to="item.path"
               class="nav-item nav-parent"
-              :class="{ expanded: expandedItems[item.id] }"
-              @click="toggleExpand(item.id)"
-            >
+              exact-active-class="active"
+              @click="expandOnly(item.id)">
               <span class="nav-dot"></span>
               {{ item.label }}
-              <span class="chevron-icon">›</span>
-            </button>
+              
+              <button
+                class="nav-expand-btn"
+                :class="{ expanded: sidebarStore.expandedItems[item.id] }"
+                @click.prevent.stop="toggleExpand(item.id)"
+                :aria-label="`Toggle ${item.label} menu`">
+                <span class="chevron-icon">›</span>
+              </button>
+            </router-link>
 
-            <!-- Submenu -->
-            <div 
-              class="submenu"
-              :class="{ active: expandedItems[item.id] }"
-            >
-              <template v-for="subitem in item.children" :key="subitem.id">
-                <div v-if="!subitem.children || subitem.children.length === 0">
-                  <router-link :to="subitem.path" class="nav-item nav-subitem" exact-active-class="active">
-                    <span class="nav-dot"></span>
-                    {{ subitem.label }}
-                  </router-link>
-                </div>
-
-                <!-- Nested submenu (3rd level) -->
-                <div v-else class="nav-group">
-                  <button 
-                    class="nav-item nav-subitem nav-parent"
-                    :class="{ expanded: expandedItems[subitem.id] }"
-                    @click="toggleExpand(subitem.id)"
-                  >
-                    <span class="nav-dot"></span>
-                    {{ subitem.label }}
-                    <span class="chevron-icon">›</span>
-                  </button>
-
-                  <div 
-                    class="submenu submenu-2"
-                    :class="{ active: expandedItems[subitem.id] }"
-                  >
-                    <router-link 
-                      v-for="subsubitem in subitem.children"
-                      :key="subsubitem.id"
-                      :to="subsubitem.path" 
-                      class="nav-item nav-subitem-2" 
-                      exact-active-class="active"
-                    >
-                      <span class="nav-dot"></span>
-                      {{ subsubitem.label }}
-                    </router-link>
-                  </div>
-                </div>
-              </template>
+            <div class="submenu" :class="{ active: sidebarStore.expandedItems[item.id] }">
+              <MenuLevel :items="item.children" :depth="1" />
             </div>
           </div>
         </template>
@@ -92,13 +61,33 @@
     </aside>
 </template>
 
+<script setup>
+  import MenuLevel from './MenuLevel.vue'
+  import { sidebarStore } from '../Stores/SidebarStore'
+  import { watch } from 'vue'
+
+  const props = defineProps({
+    title: String,
+    colourBrand1: String,
+    colourBrand2: String,
+    colourBoxShadow: String
+  })
+
+  watch(
+    () => props,
+    (newProps) => {
+      sidebarStore.setTitle(props.title)
+      sidebarStore.setColors(props.colourBrand1, props.colourBrand2, props.colourBoxShadow)
+    },
+    { deep: true, immediate: true }
+  )
+</script>
 
 <script>
 export default {
-  props: ['title', 'colourBrand1', 'colourBrand2', 'colourBoxShadow'],
   data() {
     return {
-      expandedItems: {},
+      sidebarStore,
       menuItems: [
         {
           id: 'overview',
@@ -110,11 +99,6 @@ export default {
           label: 'Twitch',
           path: '/bot/twitch',
           children: [
-            {
-              id: 'twitch-dashboard',
-              label: 'Dashboard',
-              path: '/bot/twitch',
-            },
             {
               id: 'twitch-commands',
               label: 'Commands',
@@ -146,12 +130,17 @@ export default {
     };
   },
   methods: {
-    toggleExpand(itemId) {
-      this.expandedItems[itemId] = !this.expandedItems[itemId];
-      this.$forceUpdate();
+    expandOnly(itemId) {
+      // Only expand, don't collapse (for parent clicks)
+      sidebarStore.expandMenu(itemId)
     },
-  },
+    toggleExpand(itemId) {
+      // Toggle expand/collapse (for arrow button)
+      sidebarStore.toggleExpand(itemId)
+    }
+  }
 };
+
 </script>
 
 

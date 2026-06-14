@@ -1,5 +1,5 @@
 import { generateClient } from 'aws-amplify/data';
-import { getCurrentUser, fetchAuthSession, signOut } from 'aws-amplify/auth';
+import { fetchAuthSession } from 'aws-amplify/auth';
 
 let client = null;
 
@@ -10,27 +10,37 @@ function getClient() {
   return client;
 }
 
-/* =========================
-   ROLE CONSTANTS
-========================= */
 const ROLE_DEFINITIONS = {
   SuperAdmin: { label: 'Super Admin', icon: '👑', desc: 'Full platform control' },
   Admin: { label: 'Admin', icon: '🛡️', desc: 'Administrative platform access' },
   Staff: { label: 'Staff', icon: '🔧', desc: 'Internal team with management access' },
   Moderator: { label: 'Moderator', icon: '🤝', desc: 'Moderates community and forum spaces' },
+  Trainer: { label: 'Trainer', icon: '💪', desc: 'Coaching and training access' },
+  Therapist: { label: 'Therapist', icon: '🧠', desc: 'Mental health professional access' },
   StreamingPartner: { label: 'Streaming Partner', icon: '🎥', desc: 'Streamer with partner access' },
   AffiliatePartner: { label: 'Affiliate Partner', icon: '🔗', desc: 'Affiliate and partner analytics access' },
-  Therapist: { label: 'Therapist', icon: '🧠', desc: 'Mental health professional access' },
-  Trainer: { label: 'Trainer', icon: '💪', desc: 'Coaching and training access' },
-  BetaMember: { label: 'Beta Member', icon: '🧪', desc: 'Early access to beta areas and features' },
   Member: { label: 'Member', icon: '👤', desc: 'Default signed-up user role' },
+  BetaMember: { label: 'Beta Member', icon: '🧪', desc: 'Early access to beta areas and features' },
+};
+
+const ROLE_RANK = {
+  SuperAdmin: 0,
+  Admin: 1,
+  Staff: 2,
+  Moderator: 3,
+  Trainer: 4,
+  Therapist: 5,
+  StreamingPartner: 6,
+  AffiliatePartner: 7,
+  Member: 8,
+  BetaMember: 9,
 };
 
 const ROLE_GROUPS = [
   { label: 'Platform Staff', roles: ['SuperAdmin', 'Admin', 'Staff'] },
   { label: 'Community', roles: ['Moderator', 'StreamingPartner', 'AffiliatePartner'] },
-  { label: 'Professional', roles: ['Therapist', 'Trainer'] },
-  { label: 'Members', roles: ['BetaMember', 'Member'] },
+  { label: 'Professional', roles: ['Trainer', 'Therapist'] },
+  { label: 'Members', roles: ['Member', 'BetaMember'] },
 ];
 
 const ROLE_FILTERS = [
@@ -42,38 +52,44 @@ const ROLE_FILTERS = [
   { label: 'Beta', value: 'BetaMember' },
 ];
 
-const ADMIN_ALLOWED_GROUPS = ['SuperAdmin', 'Admin', 'Staff'];
 const AVATAR_COLORS = ['#7c3aed', '#2563eb', '#059669', '#d97706', '#dc2626', '#0891b2', '#4f46e5'];
 
+function normalizeRoles(roles = []) {
+  return Array.from(new Set((Array.isArray(roles) ? roles : []).filter(Boolean)));
+}
+
+function getHighestPrivilegeRole(roles = []) {
+  const normalized = normalizeRoles(roles).filter((role) => role in ROLE_RANK);
+
+  if (!normalized.length) return 'Member';
+
+  return normalized.reduce((bestRole, currentRole) => {
+    return ROLE_RANK[currentRole] < ROLE_RANK[bestRole] ? currentRole : bestRole;
+  }, normalized[0]);
+}
+
+function getRoleRank(role) {
+  return role in ROLE_RANK ? ROLE_RANK[role] : Number.POSITIVE_INFINITY;
+}
+
 export default {
-  name: 'Dashboard',
+  name: 'AdminUsers',
 
   data() {
     return {
-      authChecking: true,
-      isAuthenticated: false,
-      authError: '',
-      adminEmail: '',
-      currentUserGroups: [],
-
-      activeTab: 'users',
-      tabs: [{ id: 'users', icon: '👥', label: 'Users' }],
-
       users: [],
       loadingUsers: false,
       savingRoles: false,
       searchQuery: '',
       roleFilter: 'all',
       roleFilters: ROLE_FILTERS,
-
       roleModalUser: null,
       pendingRoles: [],
-
       toastMessage: '',
       toastTimer: null,
-
       ROLE_DEFINITIONS,
       roleGroups: ROLE_GROUPS,
+      currentUserGroups: [],
     };
   },
 
@@ -94,84 +110,71 @@ export default {
       });
     },
 
-    currentAdminPrimaryRoleLabel() {
-      const priority = ['SuperAdmin', 'Admin', 'Staff'];
-      const found = priority.find((role) => this.currentUserGroups.includes(role));
-      return ROLE_DEFINITIONS[found]?.label || 'Admin User';
+    currentHighestRole() {
+      return getHighestPrivilegeRole(this.currentUserGroups);
     },
 
-    currentAdminInitials() {
-      const label = this.currentAdminPrimaryRoleLabel;
-      return label
-        .split(' ')
-        .map((part) => part[0])
-        .join('')
-        .toUpperCase()
-        .slice(0, 2);
+    currentUserRank() {
+      return getRoleRank(this.currentHighestRole);
+    },
+
+    editableRoles() {
+      return Object.keys(ROLE_DEFINITIONS).filter(
+        (role) => getRoleRank(role) >= this.currentUserRank
+      );
     },
   },
 
   async mounted() {
-    await this.initAuth();
+    await this.loadCurrentUserGroups();
+    await this.fetchUsers();
   },
 
   methods: {
-    async initAuth() {
-      this.authChecking = true;
-      this.authError = '';
-
+    async loadCurrentUserGroups() {
       try {
-        const user = await getCurrentUser();
         const session = await fetchAuthSession();
 
         const groups =
-          session.tokens?.accessToken?.payload?.['cognito:groups'] ||
-          session.tokens?.idToken?.payload?.['cognito:groups'] ||
+          session?.tokens?.accessToken?.payload?.['cognito:groups'] ||
+          session?.tokens?.idToken?.payload?.['cognito:groups'] ||
           [];
 
-        if (!Array.isArray(groups) || !groups.some((group) => ADMIN_ALLOWED_GROUPS.includes(group))) {
-          this.isAuthenticated = false;
-          this.authError = 'Access denied. Your account does not have dashboard permissions.';
-          return;
-        }
-
-        this.currentUserGroups = groups;
-        this.adminEmail = user.signInDetails?.loginId || user.username || '';
-        this.isAuthenticated = true;
-
-        await this.fetchUsers();
+        this.currentUserGroups = Array.isArray(groups) ? groups : [];
       } catch (error) {
-        console.error('initAuth failed:', error);
-        this.isAuthenticated = false;
-        this.authError = 'You must be signed in to access this dashboard.';
-      } finally {
-        this.authChecking = false;
+        console.error('loadCurrentUserGroups failed:', error);
+        this.currentUserGroups = [];
       }
     },
 
-    async handleSignOut() {
-      try {
-        await signOut();
-      } catch (error) {
-        console.error('signOut failed:', error);
-      } finally {
-        this.isAuthenticated = false;
-        this.authError = '';
-        this.adminEmail = '';
-        this.currentUserGroups = [];
-        this.users = [];
+    getUserHighestRole(user) {
+      return getHighestPrivilegeRole(user?.roles || []);
+    },
 
-        if (this.$router) {
-          this.$router.push('/');
-        }
-      }
+    getUserRank(user) {
+      return getRoleRank(this.getUserHighestRole(user));
+    },
+
+    canEditUser(user) {
+      return this.getUserRank(user) >= this.currentUserRank;
+    },
+
+    canAssignRole(role) {
+      return getRoleRank(role) >= this.currentUserRank;
+    },
+
+    isRoleDisabled(role) {
+      if (role === 'Member') return true;
+      return !this.canAssignRole(role);
     },
 
     async fetchUsers() {
       this.loadingUsers = true;
 
       try {
-        const result = await client.queries.listAdminUsers();
+        const result = await getClient().queries.listAdminUsers();
+
+        console.log('listAdminUsers result:', result);
 
         if (result?.errors?.length) {
           console.error('listAdminUsers full result:', result);
@@ -184,18 +187,38 @@ export default {
           : result?.data?.users || [];
 
         this.users = rawUsers.map((u, i) => {
-          const displayName = u.name || u.username || u.email || 'Unknown User';
+          const attrs = Array.isArray(u.Attributes)
+            ? Object.fromEntries(u.Attributes.map((a) => [a.Name, a.Value]))
+            : {};
+
+          const displayName =
+            u.name ||
+            u.username ||
+            attrs.name ||
+            [attrs.given_name, attrs.family_name].filter(Boolean).join(' ') ||
+            u.email ||
+            attrs.email ||
+            u.Username ||
+            'Unknown User';
+
+          const roles = normalizeRoles(
+            Array.isArray(u.roles) && u.roles.length ? u.roles : ['Member']
+          );
+
+          if (!roles.includes('Member')) {
+            roles.push('Member');
+          }
 
           return {
-            id: u.id || u.username || u.email,
-            username: u.username || '',
+            id: u.id || u.username || u.Username || u.email || attrs.email,
+            username: u.username || u.Username || '',
             name: displayName,
-            email: u.email || '',
-            roles: Array.isArray(u.roles) && u.roles.length ? u.roles : ['Member'],
-            joined: u.joined || '',
+            email: u.email || attrs.email || '',
+            roles,
+            joined: u.joined || u.UserCreateDate || '',
             online: Boolean(u.online),
-            enabled: typeof u.enabled === 'boolean' ? u.enabled : true,
-            status: u.status || '',
+            enabled: typeof u.enabled === 'boolean' ? u.enabled : Boolean(u.Enabled ?? true),
+            status: u.status || u.UserStatus || '',
             avatarColor: AVATAR_COLORS[i % AVATAR_COLORS.length],
             initials: displayName
               .split(' ')
@@ -214,8 +237,13 @@ export default {
     },
 
     openRoleModal(user) {
+      if (!this.canEditUser(user)) {
+        this.showToast('You cannot edit a user with a higher role than your own');
+        return;
+      }
+
       this.roleModalUser = user;
-      this.pendingRoles = [...user.roles];
+      this.pendingRoles = normalizeRoles([...user.roles]);
 
       if (!this.pendingRoles.includes('Member')) {
         this.pendingRoles.push('Member');
@@ -230,6 +258,11 @@ export default {
     toggleRole(role) {
       if (role === 'Member') return;
 
+      if (!this.canAssignRole(role)) {
+        this.showToast(`You cannot assign the ${ROLE_DEFINITIONS[role]?.label || role} role`);
+        return;
+      }
+
       if (this.pendingRoles.includes(role)) {
         this.pendingRoles = this.pendingRoles.filter((r) => r !== role);
       } else {
@@ -239,17 +272,32 @@ export default {
       if (!this.pendingRoles.includes('Member')) {
         this.pendingRoles.push('Member');
       }
+
+      this.pendingRoles = normalizeRoles(this.pendingRoles);
     },
 
     async saveRoles() {
       if (!this.roleModalUser) return;
 
+      if (!this.canEditUser(this.roleModalUser)) {
+        this.showToast('You cannot edit a user with a higher role than your own');
+        return;
+      }
+
+      const roles = normalizeRoles([...this.pendingRoles, 'Member']);
+      const forbiddenRole = roles.find((role) => !this.canAssignRole(role));
+
+      if (forbiddenRole) {
+        this.showToast(
+          `You cannot assign the ${ROLE_DEFINITIONS[forbiddenRole]?.label || forbiddenRole} role`
+        );
+        return;
+      }
+
       this.savingRoles = true;
 
       try {
-        const roles = [...new Set([...this.pendingRoles, 'Member'])];
-
-        const result = await client.mutations.updateUserRoles({
+        const result = await getClient().mutations.updateUserRoles({
           username: this.roleModalUser.username,
           roles,
         });
@@ -295,4 +343,4 @@ export default {
       }, 3000);
     },
   },
-}
+};

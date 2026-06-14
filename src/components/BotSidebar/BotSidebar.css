@@ -80,11 +80,32 @@
   color: #fff;
 }
 
-/* Parent items with children */
 .nav-parent {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 10px;
+}
+
+/* Expand/collapse button */
+.nav-expand-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: #c7d2fe;
+  cursor: pointer;
+  transition: 0.25s ease;
+  flex-shrink: 0;
+}
+
+.nav-expand-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
 }
 
 .chevron-icon {
@@ -93,16 +114,22 @@
   justify-content: center;
   font-size: 1.2rem;
   transition: transform 0.3s ease;
-  margin-left: auto;
 }
 
-.nav-parent.expanded .chevron-icon {
+.nav-expand-btn.expanded .chevron-icon {
   transform: rotate(90deg);
+}
+
+.nav-parent .nav-expand-btn {
+  margin-right: -6px;
+  margin-left: auto;
 }
 
 /* Submenu container */
 .nav-group {
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .submenu {
@@ -125,35 +152,18 @@
 }
 
 /* First-level submenu items */
-.nav-subitem {
-  padding-left: 32px;
+.nav-child {
   font-size: 0.95rem;
   color: #a5b4fc;
 }
 
-.nav-subitem:hover {
+.nav-child:hover {
   color: #e0e7ff;
 }
 
-.nav-subitem.active {
+.nav-child.active {
   background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(56, 189, 248, 0.1));
   color: #e0e7ff;
-}
-
-/* Second-level submenu items */
-.nav-subitem-2 {
-  padding-left: 48px;
-  font-size: 0.9rem;
-  color: #cbd5e1;
-}
-
-.nav-subitem-2:hover {
-  color: #f1f5f9;
-}
-
-.nav-subitem-2.active {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(56, 189, 248, 0.05));
-  color: #f1f5f9;
 }
 
 .nav-dot {

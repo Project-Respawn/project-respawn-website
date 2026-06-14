@@ -46,20 +46,6 @@ export default {
     }
 
     this.connectSocket();
-
-    // Temporary visual confirmation on load
-    setTimeout(() => {
-      if (!this.activeMessage && this.showDebug) {
-        this.activeMessage = {
-          username: 'Overlay Ready',
-          text: 'Waiting for TTS messages'
-        };
-
-        this.activeClearTimer = setTimeout(() => {
-          this.activeMessage = null;
-        }, 2000);
-      }
-    }, 600);
   },
 
   beforeUnmount() {

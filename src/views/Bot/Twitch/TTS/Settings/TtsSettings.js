@@ -1,7 +1,12 @@
 const STORAGE_KEY = 'tts-settings-v1';
 
+import BotSidebar from '@/components/BotSidebar/BotSidebar.vue';
+
 export default {
   name: 'TtsSettings',
+  components: {
+    BotSidebar,
+  },
 
   data() {
     return {

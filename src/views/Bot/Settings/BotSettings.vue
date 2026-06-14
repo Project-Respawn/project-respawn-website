@@ -259,7 +259,7 @@ export default {
 </script>
 
 <script setup>
-  import BotSidebar from '../../../components/BotSidebar/BotSidebar.vue'
+  import BotSidebar from '@/components/BotSidebar/BotSidebar.vue';
 </script>
 
 <style scoped src="./BotSettings.css"></style>

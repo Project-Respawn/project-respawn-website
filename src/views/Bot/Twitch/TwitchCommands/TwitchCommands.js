@@ -10,7 +10,7 @@
 
 import { generateClient } from 'aws-amplify/data';
 import { getCurrentUser } from 'aws-amplify/auth';
-import BotSidebar from '../../../../components/BotSidebar/BotSidebar.vue';
+import BotSidebar from '@/components/BotSidebar/BotSidebar.vue';
 
 let generatedClient = null;
 const client = new Proxy({}, {
