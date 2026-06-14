@@ -110,7 +110,7 @@ export default {
       isSignedIn: false,
       showJoinPrompt: false,
       joinPageUrl: '/join',
-      signInPageUrl: '/login',
+      signInPageUrl: '/join',
       newThreadForm: {
         title: '',
         content: '',

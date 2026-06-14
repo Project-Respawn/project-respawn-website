@@ -110,7 +110,7 @@ export default {
       // join prompt (for logged-out reply)
       showJoinPrompt: false,
       joinPageUrl: '/join',
-      signInPageUrl: '/login',
+      signInPageUrl: '/join',
 
       // thread data
       threadRecord: null,

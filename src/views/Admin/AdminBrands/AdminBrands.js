@@ -1,6 +1,10 @@
 import { generateClient } from 'aws-amplify/data';
 
-const client = generateClient();
+function getClient() {
+  return generateClient({
+    authMode: 'userPool',
+  });
+}
 
 function slugify(value = '') {
   return value
@@ -23,6 +27,7 @@ export default {
       saving: false,
       formError: '',
       toastMessage: '',
+      toastTimeout: null,
       newBrand: {
         name: '',
         slug: '',
@@ -74,9 +79,8 @@ export default {
       this.loadError = '';
 
       try {
-        const { data, errors } = await client.models.Brand.list({
-          authMode: 'userPool',
-        });
+        const client = getClient();
+        const { data, errors } = await client.models.Brand.list();
 
         if (errors?.length) {
           throw new Error(errors[0].message || 'Failed to load brands.');
@@ -122,17 +126,13 @@ export default {
       this.saving = true;
 
       try {
-        const { errors } = await client.models.Brand.create(
-          {
-            name,
-            slug: generatedSlug,
-            description: this.newBrand.description.trim(),
-            status: this.newBrand.status,
-          },
-          {
-            authMode: 'userPool',
-          }
-        );
+        const client = getClient();
+        const { errors } = await client.models.Brand.create({
+          name,
+          slug: generatedSlug,
+          description: this.newBrand.description.trim(),
+          status: this.newBrand.status,
+        });
 
         if (errors?.length) {
           throw new Error(errors[0].message || 'Failed to create brand.');
@@ -165,15 +165,11 @@ export default {
       try {
         const nextStatus = brand.status === 'active' ? 'archived' : 'active';
 
-        const { errors } = await client.models.Brand.update(
-          {
-            id: brand.id,
-            status: nextStatus,
-          },
-          {
-            authMode: 'userPool',
-          }
-        );
+        const client = getClient();
+        const { errors } = await client.models.Brand.update({
+          id: brand.id,
+          status: nextStatus,
+        });
 
         if (errors?.length) {
           throw new Error(errors[0].message || 'Failed to update brand.');
