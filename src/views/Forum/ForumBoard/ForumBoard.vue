@@ -1,5 +1,5 @@
 <template>
-  <div class="forum-board-page">
+  <div class="forum-board-page" :class="boardTextSizeClass">
     <section v-if="loading" class="forum-board-empty-state">
       <h1 class="forum-board-empty-title">Loading board</h1>
       <p class="forum-board-empty-copy">
@@ -17,7 +17,7 @@
       </p>
 
       <div class="forum-board-empty-actions">
-        <button class="forum-board-primary-btn" @click="fetchBoardPage">
+        <button class="forum-board-primary-btn" @click="fetchBoardPage" type="button">
           Try Again
         </button>
       </div>
@@ -34,16 +34,45 @@
         </div>
 
         <div class="forum-board-hero-actions">
-          <!-- Only show on /forum/board/announcements + superadmin -->
-<button
-  v-if="showNewThreadButton"
-  class="forum-board-primary-btn"
-  @click="openCreateThread"
-  :disabled="creatingThread"
-  type="button"
->
-  {{ creatingThread ? 'Creating…' : 'New Thread' }}
-</button>
+          <div class="forum-board-text-size-toggle" aria-label="Text size controls">
+            <button
+              class="forum-board-size-btn"
+              :class="{ 'is-active': textSize === 'default' }"
+              type="button"
+              @click="setTextSize('default')"
+              aria-label="Default text size"
+            >
+              A
+            </button>
+            <button
+              class="forum-board-size-btn"
+              :class="{ 'is-active': textSize === 'large' }"
+              type="button"
+              @click="setTextSize('large')"
+              aria-label="Large text size"
+            >
+              A
+            </button>
+            <button
+              class="forum-board-size-btn"
+              :class="{ 'is-active': textSize === 'xlarge' }"
+              type="button"
+              @click="setTextSize('xlarge')"
+              aria-label="Extra large text size"
+            >
+              A
+            </button>
+          </div>
+
+          <button
+            v-if="showNewThreadButton"
+            class="forum-board-primary-btn"
+            @click="openCreateThread"
+            :disabled="creatingThread"
+            type="button"
+          >
+            {{ creatingThread ? 'Creating…' : 'New Thread' }}
+          </button>
 
           <button
             v-if="featuredThreadsForBoard.length"
@@ -53,134 +82,6 @@
           >
             Featured Posts
           </button>
-        </div>
-      </section>
-
-      <section
-        v-if="showJoinPrompt"
-        class="forum-join-prompt-overlay"
-        @click="closeJoinPrompt"
-      >
-        <div
-          class="forum-join-prompt-card"
-          @click.stop
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="forum-join-prompt-title"
-        >
-          <button
-            class="forum-join-prompt-close"
-            type="button"
-            aria-label="Close join prompt"
-            @click="closeJoinPrompt"
-          >
-            ×
-          </button>
-
-          <p class="forum-thread-list-kicker">Join the conversation</p>
-          <h2 id="forum-join-prompt-title" class="forum-thread-list-title">
-            Want to get involved?
-          </h2>
-          <p class="forum-board-empty-copy">
-            Create an account to start threads, reply to posts, and take part in
-            the Project Respawn community.
-          </p>
-
-          <div class="forum-create-thread-actions">
-            <button
-              class="forum-board-primary-btn"
-              type="button"
-              @click="goToJoinPage"
-            >
-              Join Project Respawn
-            </button>
-
-            <button
-              class="forum-board-secondary-btn"
-              type="button"
-              @click="goToSignInPage"
-            >
-              Sign In
-            </button>
-
-            <button
-              class="forum-board-secondary-btn"
-              type="button"
-              @click="closeJoinPrompt"
-            >
-              Not Now
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <section
-        v-if="showCreateThreadForm && showNewThreadButton"
-        class="forum-create-thread-card"
-      >
-        <div class="forum-create-thread-header">
-          <div>
-            <p class="forum-thread-list-kicker">Start Discussion</p>
-            <h2 class="forum-thread-list-title">Create New Thread</h2>
-          </div>
-        </div>
-
-        <div class="forum-create-thread-form">
-          <label class="forum-create-thread-field">
-            <span class="forum-create-thread-label">Thread title</span>
-            <input
-              v-model.trim="newThreadForm.title"
-              type="text"
-              class="forum-create-thread-input"
-              maxlength="120"
-              placeholder="Enter a clear thread title"
-            />
-          </label>
-
-          <label class="forum-create-thread-field">
-            <span class="forum-create-thread-label">Opening post</span>
-            <textarea
-              v-model.trim="newThreadForm.content"
-              class="forum-create-thread-textarea"
-              rows="7"
-              placeholder="Write the opening post for this discussion"
-            ></textarea>
-          </label>
-
-          <label
-            v-if="hasModerationAccess"
-            class="forum-create-thread-checkbox"
-          >
-            <input
-              v-model="newThreadForm.isFeatured"
-              type="checkbox"
-            />
-            <span>Mark as featured</span>
-          </label>
-
-          <div v-if="createThreadError" class="forum-create-thread-error">
-            {{ createThreadError }}
-          </div>
-
-          <div class="forum-create-thread-actions">
-            <button
-              class="forum-board-primary-btn"
-              @click="submitThread"
-              :disabled="creatingThread"
-              type="button"
-            >
-              {{ creatingThread ? 'Publishing Thread…' : 'Publish Thread' }}
-            </button>
-
-            <button
-              class="forum-board-secondary-btn"
-              @click="cancelCreateThread"
-              :disabled="creatingThread"
-              type="button"
-            >
-              Cancel
-            </button>
-          </div>
         </div>
       </section>
 
@@ -202,10 +103,7 @@
         <div class="forum-featured-ticker-box">
           <div class="forum-featured-glow"></div>
 
-          <div
-            class="forum-featured-ticker-window"
-            aria-label="Featured threads"
-          >
+          <div class="forum-featured-ticker-window" aria-label="Featured threads">
             <div class="forum-featured-ticker-track">
               <div class="forum-featured-ticker-group">
                 <article
@@ -236,10 +134,7 @@
                 </article>
               </div>
 
-              <div
-                class="forum-featured-ticker-group"
-                aria-hidden="true"
-              >
+              <div class="forum-featured-ticker-group" aria-hidden="true">
                 <article
                   v-for="thread in scrollingFeaturedThreads"
                   :key="`clone-${thread.renderId}`"
@@ -326,7 +221,6 @@
           </p>
 
           <div class="forum-board-empty-actions">
-            <!-- same visibility rule as hero button -->
             <button
               v-if="showNewThreadButton"
               class="forum-board-primary-btn"
@@ -461,6 +355,151 @@
         </div>
       </section>
     </template>
+
+    <Teleport to="body">
+      <section
+        v-if="showJoinPrompt"
+        class="forum-join-prompt-overlay"
+        @click.self="closeJoinPrompt"
+      >
+        <div
+          class="forum-join-prompt-card"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="forum-join-prompt-title"
+        >
+          <button
+            class="forum-join-prompt-close"
+            type="button"
+            aria-label="Close join prompt"
+            @click="closeJoinPrompt"
+          >
+            ×
+          </button>
+
+          <p class="forum-thread-list-kicker">Join the conversation</p>
+          <h2 id="forum-join-prompt-title" class="forum-thread-list-title">
+            Want to get involved?
+          </h2>
+          <p class="forum-board-empty-copy">
+            Create an account to start threads, reply to posts, and take part in
+            the Project Respawn community.
+          </p>
+
+          <div class="forum-create-thread-actions">
+            <button
+              class="forum-board-primary-btn"
+              type="button"
+              @click="goToJoinPage"
+            >
+              Join Project Respawn
+            </button>
+
+            <button
+              class="forum-board-secondary-btn"
+              type="button"
+              @click="goToSignInPage"
+            >
+              Sign In
+            </button>
+
+            <button
+              class="forum-board-secondary-btn"
+              type="button"
+              @click="closeJoinPrompt"
+            >
+              Not Now
+            </button>
+          </div>
+        </div>
+      </section>
+    </Teleport>
+
+    <Teleport to="body">
+      <section
+        v-if="showCreateThreadForm && showNewThreadButton"
+        class="forum-create-thread-overlay"
+        @click.self="cancelCreateThread"
+      >
+        <div
+          class="forum-create-thread-card forum-create-thread-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="forum-create-thread-title"
+        >
+          <button
+            class="forum-join-prompt-close"
+            type="button"
+            aria-label="Close create thread"
+            @click="cancelCreateThread"
+          >
+            ×
+          </button>
+
+          <div class="forum-create-thread-header">
+            <p class="forum-thread-list-kicker">Start Discussion</p>
+            <h2 id="forum-create-thread-title" class="forum-thread-list-title">
+              Create New Thread
+            </h2>
+          </div>
+
+          <div class="forum-create-thread-form">
+            <label class="forum-create-thread-field">
+              <span class="forum-create-thread-label">Thread title</span>
+              <input
+                v-model.trim="newThreadForm.title"
+                type="text"
+                class="forum-create-thread-input"
+                maxlength="120"
+                placeholder="Enter a clear thread title"
+              />
+            </label>
+
+            <label class="forum-create-thread-field">
+              <span class="forum-create-thread-label">Opening post</span>
+              <textarea
+                v-model.trim="newThreadForm.content"
+                class="forum-create-thread-textarea"
+                rows="7"
+                placeholder="Write the opening post for this discussion"
+              ></textarea>
+            </label>
+
+            <label
+              v-if="hasModerationAccess"
+              class="forum-create-thread-checkbox"
+            >
+              <input v-model="newThreadForm.isFeatured" type="checkbox" />
+              <span>Mark as featured</span>
+            </label>
+
+            <div v-if="createThreadError" class="forum-create-thread-error">
+              {{ createThreadError }}
+            </div>
+
+            <div class="forum-create-thread-actions">
+              <button
+                class="forum-board-primary-btn"
+                @click="submitThread"
+                :disabled="creatingThread"
+                type="button"
+              >
+                {{ creatingThread ? 'Publishing Thread…' : 'Publish Thread' }}
+              </button>
+
+              <button
+                class="forum-board-secondary-btn"
+                @click="cancelCreateThread"
+                :disabled="creatingThread"
+                type="button"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </Teleport>
   </div>
 </template>
 
