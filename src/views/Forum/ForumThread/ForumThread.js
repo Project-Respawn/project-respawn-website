@@ -17,6 +17,7 @@
 // ============================================================
 
 
+
 // 1. Imports + clients
 // ------------------------------------------------------------
 
@@ -39,6 +40,7 @@ function getPublicClient() {
   }
   return publicClient;
 }
+
 
 
 // 2. Constants + helpers
@@ -88,6 +90,7 @@ function looksLikeCognitoId(value = '') {
 }
 
 
+
 // 3. Component meta
 // ------------------------------------------------------------
 
@@ -100,6 +103,7 @@ export default {
       default: '',
     },
   },
+
 
 
   // 4. State
@@ -123,6 +127,7 @@ export default {
       currentUserGroups: [],
 
       showJoinPrompt: false,
+      showExpandedReply: false,
       joinPageUrl: '/join',
       signInPageUrl: '/join',
 
@@ -132,6 +137,7 @@ export default {
 
       replyPreview: false,
       replyForm: {
+        title: '',
         content: '',
       },
 
@@ -141,6 +147,7 @@ export default {
       },
     };
   },
+
 
 
   // 5. Computed
@@ -226,12 +233,19 @@ export default {
   },
 
 
+
   // 6. Lifecycle
   // ----------------------------------------------------------
 
   async mounted() {
+    window.addEventListener('keydown', this.handleEscapeKey);
     await this.bootstrapThreadPage();
   },
+
+  unmounted() {
+    window.removeEventListener('keydown', this.handleEscapeKey);
+  },
+
 
 
   // 7. Auth + identity helpers
@@ -331,6 +345,7 @@ export default {
     },
 
 
+
     // 8. Permissions helpers
     // --------------------------------------------------------
 
@@ -382,6 +397,7 @@ export default {
         this.currentUserId
       );
     },
+
 
 
     // 9. Thread data loading
@@ -487,6 +503,7 @@ export default {
     },
 
 
+
     // 10. Reply + edit interactions
     // --------------------------------------------------------
 
@@ -511,7 +528,29 @@ export default {
 
       this.replyError = '';
       this.replyPreview = false;
+      this.showExpandedReply = false;
       this.scrollToReplyBox();
+    },
+
+    openExpandedReply() {
+      if (!this.isSignedIn) {
+        this.showJoinPrompt = true;
+        this.replyError = '';
+        return;
+      }
+
+      if (this.thread.isLocked) {
+        this.replyError = 'This thread is locked.';
+        return;
+      }
+
+      this.replyError = '';
+      this.replyPreview = false;
+      this.showExpandedReply = true;
+    },
+
+    closeExpandedReply() {
+      this.showExpandedReply = false;
     },
 
     closeJoinPrompt() {
@@ -545,7 +584,7 @@ export default {
         : `${quotedText}\n\n`;
 
       this.replyPreview = false;
-      this.scrollToReplyBox();
+      this.showExpandedReply = true;
     },
 
     previewReply() {
@@ -574,6 +613,7 @@ export default {
         return;
       }
 
+      const title = (this.replyForm.title || '').trim();
       const content = this.replyForm.content.trim();
 
       if (!content) {
@@ -602,6 +642,7 @@ export default {
 
         const replyResult = await client.mutations.submitForumReply({
           threadId: this.threadRecord.id,
+          title,
           content,
           authorUserId,
           authorDisplayName,
@@ -621,11 +662,14 @@ export default {
         }
 
         this.replyForm = {
+          title: '',
           content: '',
         };
         this.replyPreview = false;
+        this.showExpandedReply = false;
 
         await this.fetchThreadPage();
+        this.scrollToReplyBox();
       } catch (error) {
         console.error('Failed to submit reply:', error);
         this.replyError = error?.message || 'Failed to post reply';
@@ -689,6 +733,7 @@ export default {
     },
 
 
+
     // 11. Moderation actions
     // --------------------------------------------------------
 
@@ -729,6 +774,10 @@ export default {
           ...(updateResult.data || {}),
           isLocked: nextLockedState,
         };
+
+        if (nextLockedState) {
+          this.showExpandedReply = false;
+        }
       } catch (error) {
         console.error(`Failed to ${actionLabel} thread:`, error);
         this.loadError = error?.message || `Failed to ${actionLabel} thread`;
@@ -835,6 +884,7 @@ export default {
     },
 
 
+
     // 12. Display helpers
     // --------------------------------------------------------
 
@@ -912,7 +962,23 @@ export default {
 
       return date.toLocaleDateString();
     },
+
+    handleEscapeKey(event) {
+      if (event.key !== 'Escape') {
+        return;
+      }
+
+      if (this.showJoinPrompt) {
+        this.closeJoinPrompt();
+        return;
+      }
+
+      if (this.showExpandedReply) {
+        this.closeExpandedReply();
+      }
+    },
   },
+
 
 
   // 13. Watchers
@@ -921,6 +987,8 @@ export default {
   watch: {
     async threadSlug() {
       this.cancelEditingPost();
+      this.showExpandedReply = false;
+      this.replyPreview = false;
       await this.fetchThreadPage();
     },
   },
