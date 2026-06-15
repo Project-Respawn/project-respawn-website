@@ -80,16 +80,6 @@ function sortThreadsForBoard(items = []) {
   });
 }
 
-function slugify(value = '') {
-  return value
-    .toLowerCase()
-    .trim()
-    .replace(/['"]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 80);
-}
-
 function normaliseGroupName(value = '') {
   return String(value).trim().toLowerCase();
 }
@@ -124,6 +114,9 @@ export default {
         isFeatured: false,
       },
 
+      // accessibility
+      textSize: 'default',
+
       // board data
       boardRecord: null,
       boardCategory: null,
@@ -145,21 +138,20 @@ export default {
 
   computed: {
     // route + role gate for "New Thread" buttons
-isAnnouncementsRoute() {
-  return this.$route.path === '/forum/board/announcements';
-},
+    isAnnouncementsRoute() {
+      return this.$route.path === '/forum/board/announcements';
+    },
 
-isSuperAdmin() {
-  return (this.currentUserGroups || []).includes('superadmin');
-},
+    isSuperAdmin() {
+      return (this.currentUserGroups || []).includes('superadmin');
+    },
 
-showNewThreadButton() {
-  if (this.isAnnouncementsRoute) {
-    return this.isSuperAdmin;
-  }
-
-  return true;
-},
+    showNewThreadButton() {
+      if (this.isAnnouncementsRoute) {
+        return this.isSuperAdmin;
+      }
+      return true;
+    },
 
     canManageThreadFlags() {
       const allowedGroups = ['superadmin', 'admin', 'staff'];
@@ -171,6 +163,10 @@ showNewThreadButton() {
 
     hasModerationAccess() {
       return this.canManageThreadFlags;
+    },
+
+    boardTextSizeClass() {
+      return `forum-text-size-${this.textSize}`;
     },
 
     board() {
@@ -314,7 +310,12 @@ showNewThreadButton() {
   },
 
   async mounted() {
+    window.addEventListener('keydown', this.handleEscapeKey);
     await this.bootstrapBoardPage();
+  },
+
+  unmounted() {
+    window.removeEventListener('keydown', this.handleEscapeKey);
   },
 
   methods: {
@@ -500,21 +501,23 @@ showNewThreadButton() {
         this.loading = false;
       }
     },
-openCreateThread() {
-  if (!this.isSignedIn) {
-    this.showJoinPrompt = true;
-    this.createThreadError = '';
-    return;
-  }
 
-  if (!this.showNewThreadButton) {
-    this.createThreadError = 'You do not have permission to create threads here.';
-    return;
-  }
+    openCreateThread() {
+      if (!this.isSignedIn) {
+        this.showJoinPrompt = true;
+        this.createThreadError = '';
+        return;
+      }
 
-  this.showCreateThreadForm = true;
-  this.createThreadError = '';
-},
+      if (!this.showNewThreadButton) {
+        this.createThreadError =
+          'You do not have permission to create threads here.';
+        return;
+      }
+
+      this.showCreateThreadForm = true;
+      this.createThreadError = '';
+    },
 
     closeJoinPrompt() {
       this.showJoinPrompt = false;
@@ -804,6 +807,32 @@ openCreateThread() {
         behavior: 'smooth',
         block: 'start',
       });
+    },
+
+    setTextSize(size = 'default') {
+      const allowed = ['default', 'large', 'xlarge'];
+
+      if (!allowed.includes(size)) {
+        this.textSize = 'default';
+        return;
+      }
+
+      this.textSize = size;
+    },
+
+    handleEscapeKey(event) {
+      if (event.key !== 'Escape') {
+        return;
+      }
+
+      if (this.showJoinPrompt) {
+        this.closeJoinPrompt();
+        return;
+      }
+
+      if (this.showCreateThreadForm) {
+        this.cancelCreateThread();
+      }
     },
   },
 

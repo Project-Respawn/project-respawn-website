@@ -156,7 +156,6 @@
               </span>
             </div>
 
-            <!-- View mode -->
             <div
               class="forum-post-body"
               v-if="!post.isEditing"
@@ -169,7 +168,6 @@
               </p>
             </div>
 
-            <!-- Edit mode -->
             <div
               v-else
               class="forum-post-edit-box"
@@ -257,18 +255,138 @@
       </section>
 
       <!-- ==========================================================
-           6. Join prompt modal
+           6. Locked notice
            ========================================================== -->
+      <section
+        v-if="thread.isLocked"
+        class="forum-thread-empty-state forum-thread-empty-state-inline"
+      >
+        <h2 class="forum-thread-empty-title">This thread is locked</h2>
+        <p class="forum-thread-empty-copy">
+          Replies are currently disabled for this discussion.
+        </p>
+      </section>
+
+      <!-- ==========================================================
+           7. Signed-in quick reply
+           ========================================================== -->
+      <section
+        v-else-if="isSignedIn"
+        ref="replySection"
+        class="forum-reply-box-section"
+      >
+        <div class="forum-reply-box-header">
+          <div>
+            <p class="forum-reply-kicker">Join Discussion</p>
+            <h2 class="forum-reply-title">Quick Reply</h2>
+          </div>
+        </div>
+
+        <div class="forum-reply-box forum-reply-box-compact">
+          <input
+            v-model.trim="replyForm.title"
+            type="text"
+            class="forum-reply-input forum-reply-input-title"
+            placeholder="Optional reply title"
+          />
+
+          <textarea
+            v-model.trim="replyForm.content"
+            class="forum-reply-textarea forum-reply-textarea-compact"
+            rows="4"
+            placeholder="Write a quick reply..."
+          ></textarea>
+
+          <div v-if="replyError" class="forum-reply-error">
+            {{ replyError }}
+          </div>
+
+          <div class="forum-reply-actions">
+            <button
+              class="forum-thread-secondary-btn"
+              type="button"
+              @click="previewReply"
+              :disabled="postingReply"
+            >
+              Preview
+            </button>
+
+            <button
+              class="forum-thread-secondary-btn"
+              type="button"
+              @click="openExpandedReply"
+              :disabled="postingReply"
+            >
+              Expand Reply
+            </button>
+
+            <button
+              class="forum-thread-primary-btn"
+              type="button"
+              @click="submitReply"
+              :disabled="postingReply"
+            >
+              {{ postingReply ? 'Posting Reply…' : 'Post Reply' }}
+            </button>
+          </div>
+
+          <div
+            v-if="replyPreview"
+            class="forum-reply-preview"
+          >
+            <p class="forum-reply-kicker">Preview</p>
+
+            <div class="forum-post-body">
+              <p
+                v-for="(paragraph, index) in replyPreviewParagraphs"
+                :key="`preview-${index}`"
+              >
+                {{ paragraph }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================================
+           8. Logged-out reply CTA
+           ========================================================== -->
+      <section
+        v-else
+        class="forum-thread-empty-state forum-thread-empty-state-inline forum-thread-signin-cta"
+      >
+        <h2 class="forum-thread-empty-title">Want to reply?</h2>
+        <p class="forum-thread-empty-copy">
+          Sign in or create an account to join this discussion, reply to posts,
+          and quote other members.
+        </p>
+
+        <div class="forum-thread-empty-actions">
+          <button
+            class="forum-thread-primary-btn"
+            type="button"
+            @click="openReplyBox"
+          >
+            Reply to Thread
+          </button>
+        </div>
+      </section>
+    </template>
+
+    <!-- ==========================================================
+         9. Join prompt modal
+         ========================================================== -->
+    <Teleport to="body">
       <section
         v-if="showJoinPrompt"
         class="forum-join-prompt-overlay"
+        @click.self="closeJoinPrompt"
       >
         <div
           class="forum-join-prompt-card"
           role="dialog"
           aria-modal="true"
           aria-labelledby="forum-join-prompt-title"
-          @click.stop
         >
           <button
             class="forum-join-prompt-close"
@@ -315,116 +433,108 @@
           </div>
         </div>
       </section>
+    </Teleport>
 
-      <!-- ==========================================================
-           7. Locked notice
-           ========================================================== -->
+    <!-- ==========================================================
+         10. Expanded reply modal
+         ========================================================== -->
+    <Teleport to="body">
       <section
-        v-if="thread.isLocked"
-        class="forum-thread-empty-state forum-thread-empty-state-inline"
+        v-if="showExpandedReply && isSignedIn && !thread.isLocked"
+        class="forum-reply-expand-overlay"
+        @click.self="closeExpandedReply"
       >
-        <h2 class="forum-thread-empty-title">This thread is locked</h2>
-        <p class="forum-thread-empty-copy">
-          Replies are currently disabled for this discussion.
-        </p>
-      </section>
-
-      <!-- ==========================================================
-           8. Signed-in reply editor
-           ========================================================== -->
-      <section
-        v-else-if="isSignedIn"
-        ref="replySection"
-        class="forum-reply-box-section"
-      >
-        <div class="forum-reply-box-header">
-          <div>
-            <p class="forum-reply-kicker">Join Discussion</p>
-            <h2 class="forum-reply-title">Write a Reply</h2>
-          </div>
-        </div>
-
-        <div class="forum-reply-box">
-          <input
-            v-model.trim="replyForm.title"
-            type="text"
-            class="forum-reply-input forum-reply-input-title"
-            placeholder="Optional reply title"
-          />
-
-          <textarea
-            v-model.trim="replyForm.content"
-            class="forum-reply-textarea"
-            rows="7"
-            placeholder="Share your reply, suggestion, or feedback here..."
-          ></textarea>
-
-          <div v-if="replyError" class="forum-reply-error">
-            {{ replyError }}
-          </div>
-
-          <div class="forum-reply-actions">
-            <button
-              class="forum-thread-secondary-btn"
-              type="button"
-              @click="previewReply"
-              :disabled="postingReply"
-            >
-              Preview
-            </button>
-
-            <button
-              class="forum-thread-primary-btn"
-              type="button"
-              @click="submitReply"
-              :disabled="postingReply"
-            >
-              {{ postingReply ? 'Posting Reply…' : 'Post Reply' }}
-            </button>
-          </div>
-
-          <div
-            v-if="replyPreview"
-            class="forum-reply-preview"
+        <div
+          class="forum-reply-expand-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="forum-expanded-reply-title"
+        >
+          <button
+            class="forum-join-prompt-close"
+            type="button"
+            aria-label="Close expanded reply"
+            @click="closeExpandedReply"
           >
-            <p class="forum-reply-kicker">Preview</p>
+            ×
+          </button>
 
-            <div class="forum-post-body">
-              <p
-                v-for="(paragraph, index) in replyPreviewParagraphs"
-                :key="`preview-${index}`"
+          <div class="forum-reply-box-header forum-reply-expand-header">
+            <div>
+              <p class="forum-reply-kicker">Long-form reply</p>
+              <h2 id="forum-expanded-reply-title" class="forum-reply-title">
+                Expanded Reply
+              </h2>
+            </div>
+          </div>
+
+          <div class="forum-reply-box forum-reply-box-expanded">
+            <input
+              v-model.trim="replyForm.title"
+              type="text"
+              class="forum-reply-input forum-reply-input-title"
+              placeholder="Optional reply title"
+            />
+
+            <textarea
+              v-model.trim="replyForm.content"
+              class="forum-reply-textarea forum-reply-textarea-expanded"
+              rows="12"
+              placeholder="Write a longer reply with more detail..."
+            ></textarea>
+
+            <div v-if="replyError" class="forum-reply-error">
+              {{ replyError }}
+            </div>
+
+            <div class="forum-reply-actions">
+              <button
+                class="forum-thread-secondary-btn"
+                type="button"
+                @click="previewReply"
+                :disabled="postingReply"
               >
-                {{ paragraph }}
-              </p>
+                Preview
+              </button>
+
+              <button
+                class="forum-thread-secondary-btn"
+                type="button"
+                @click="closeExpandedReply"
+                :disabled="postingReply"
+              >
+                Back to Quick Reply
+              </button>
+
+              <button
+                class="forum-thread-primary-btn"
+                type="button"
+                @click="submitReply"
+                :disabled="postingReply"
+              >
+                {{ postingReply ? 'Posting Reply…' : 'Post Reply' }}
+              </button>
+            </div>
+
+            <div
+              v-if="replyPreview"
+              class="forum-reply-preview"
+            >
+              <p class="forum-reply-kicker">Preview</p>
+
+              <div class="forum-post-body">
+                <p
+                  v-for="(paragraph, index) in replyPreviewParagraphs"
+                  :key="`expanded-preview-${index}`"
+                >
+                  {{ paragraph }}
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </section>
-
-      <!-- ==========================================================
-           9. Logged-out reply CTA
-           ========================================================== -->
-      <section
-        v-else
-        class="forum-thread-empty-state forum-thread-empty-state-inline forum-thread-signin-cta"
-      >
-        <h2 class="forum-thread-empty-title">Want to reply?</h2>
-        <p class="forum-thread-empty-copy">
-          Sign in or create an account to join this discussion, reply to posts,
-          and quote other members.
-        </p>
-
-        <div class="forum-thread-empty-actions">
-          <button
-            class="forum-thread-primary-btn"
-            type="button"
-            @click="openReplyBox"
-          >
-            Reply to Thread
-          </button>
-        </div>
-      </section>
-    </template>
+    </Teleport>
   </div>
 </template>
 

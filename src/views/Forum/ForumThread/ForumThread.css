@@ -9,9 +9,11 @@
    5. Posts list
    6. Reply editor
    7. Join prompt modal
-   8. Empty + inline states
-   9. Responsive
+   8. Expanded reply modal
+   9. Empty + inline states
+   10. Responsive
    ========================================================================== */
+
 
 
 /* ==========================================================================
@@ -24,6 +26,7 @@
   padding: 28px 24px 40px;
   color: #f4f4f8;
 }
+
 
 
 /* ==========================================================================
@@ -125,6 +128,7 @@
 }
 
 
+
 /* ==========================================================================
    3. Thread stats bar
    ========================================================================== */
@@ -157,6 +161,7 @@
   letter-spacing: 0.02em;
   color: rgba(244, 244, 248, 0.64);
 }
+
 
 
 /* ==========================================================================
@@ -216,7 +221,8 @@
 .forum-post-action:focus-visible,
 .forum-reply-input:focus-visible,
 .forum-reply-textarea:focus-visible,
-.forum-join-prompt-close:focus-visible {
+.forum-join-prompt-close:focus-visible,
+.forum-reply-expand-close:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px rgba(143, 107, 255, 0.18);
   border-color: rgba(143, 107, 255, 0.65);
@@ -230,6 +236,7 @@
   transform: none;
   box-shadow: none;
 }
+
 
 
 /* ==========================================================================
@@ -388,6 +395,7 @@
 }
 
 
+
 /* ==========================================================================
    6. Reply editor
    ========================================================================== */
@@ -397,6 +405,10 @@
 }
 
 .forum-reply-box-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
   margin-bottom: 14px;
 }
 
@@ -426,17 +438,31 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+.forum-reply-box-compact {
+  padding: 18px;
+}
+
+.forum-reply-box-expanded {
+  gap: 18px;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
 .forum-reply-input,
 .forum-reply-textarea {
   width: 100%;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(8, 10, 20, 0.82);
   color: #f4f4f8;
-  border-radius: 14px;
+  border-radius: 16px;
   padding: 14px 16px;
-  font-size: 14px;
+  font-size: 15px;
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
 }
 
 .forum-reply-input::placeholder,
@@ -444,15 +470,39 @@
   color: rgba(244, 244, 248, 0.42);
 }
 
+.forum-reply-input:focus,
+.forum-reply-textarea:focus {
+  border-color: rgba(143, 107, 255, 0.62);
+  box-shadow: 0 0 0 4px rgba(143, 107, 255, 0.14);
+  background: rgba(11, 14, 28, 0.94);
+}
+
+.forum-reply-input-title {
+  min-height: 54px;
+}
+
 .forum-reply-textarea {
   min-height: 170px;
   resize: vertical;
+  line-height: 1.6;
+}
+
+.forum-reply-textarea-compact {
+  min-height: 140px;
+}
+
+.forum-reply-textarea-expanded {
+  min-height: 380px;
+  padding: 18px 18px 20px;
+  font-size: 16px;
+  line-height: 1.7;
 }
 
 .forum-reply-actions {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .forum-reply-error {
@@ -471,6 +521,7 @@
   border: 1px solid rgba(143, 107, 255, 0.18);
   background: rgba(143, 107, 255, 0.06);
 }
+
 
 
 /* ==========================================================================
@@ -530,8 +581,78 @@
 }
 
 
+
 /* ==========================================================================
-   8. Empty + inline states
+   8. Expanded reply modal
+   ========================================================================== */
+
+.forum-reply-expand-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(7, 10, 16, 0.88);
+  backdrop-filter: blur(8px);
+}
+
+.forum-reply-expand-modal {
+  position: relative;
+  width: min(92vw, 1200px);
+  height: min(88vh, 920px);
+  max-width: 1200px;
+  max-height: 88vh;
+  overflow-y: auto;
+  padding: 40px 32px 32px;
+  border-radius: 24px;
+  border: 1px solid rgba(143, 107, 255, 0.18);
+  background:
+    radial-gradient(circle at top left, rgba(143, 107, 255, 0.14), transparent 34%),
+    linear-gradient(
+      180deg,
+      rgba(19, 23, 41, 0.985),
+      rgba(10, 14, 27, 0.985)
+    );
+  box-shadow:
+    0 32px 90px rgba(0, 0, 0, 0.42),
+    0 0 0 1px rgba(143, 107, 255, 0.05) inset;
+}
+
+.forum-reply-expand-header {
+  margin-bottom: 22px;
+  padding-right: 44px;
+}
+
+.forum-reply-expand-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.forum-reply-expand-close:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+
+
+/* ==========================================================================
+   9. Empty + inline states
    ========================================================================== */
 
 .forum-thread-empty-state {
@@ -580,8 +701,9 @@
 }
 
 
+
 /* ==========================================================================
-   9. Responsive
+   10. Responsive
    ========================================================================== */
 
 @media (max-width: 1100px) {
@@ -681,5 +803,24 @@
     max-height: calc(100vh - 32px);
     padding: 24px 20px;
     border-radius: 18px;
+  }
+
+  .forum-reply-expand-overlay {
+    padding: 12px;
+    align-items: stretch;
+  }
+
+  .forum-reply-expand-modal {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    min-height: calc(100vh - 24px);
+    padding: 28px 20px 20px;
+    border-radius: 20px;
+  }
+
+  .forum-reply-textarea-expanded {
+    min-height: 240px;
+    font-size: 15px;
   }
 }
