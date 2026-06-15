@@ -1,0 +1,212 @@
+<template>
+  <div class="admin-users-page">
+    <div class="dash-header">
+      <div>
+        <h1 class="dash-title">User Management</h1>
+        <p class="dash-subtitle">Search, manage and assign roles to platform users</p>
+      </div>
+
+      <div class="header-stats">
+        <div class="stat-pill">
+          <span class="stat-num">{{ users.length }}</span>
+          <span class="stat-lbl">Total Users</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-num">{{ users.filter(u => u.roles.some(r => r !== 'Member')).length }}</span>
+          <span class="stat-lbl">Assigned Roles</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input
+          v-model="searchQuery"
+          type="text"
+          class="search-input"
+          placeholder="Search by name or email..."
+        />
+      </div>
+
+      <div class="filter-group">
+        <button
+          v-for="f in roleFilters"
+          :key="f.value"
+          class="filter-btn"
+          :class="{ active: roleFilter === f.value }"
+          @click="roleFilter = f.value"
+        >
+          {{ f.label }}
+        </button>
+      </div>
+
+      <button class="btn-fetch" @click="fetchUsers" :disabled="loadingUsers">
+        <span v-if="!loadingUsers">↻ Refresh</span>
+        <span v-else>Loading...</span>
+      </button>
+    </div>
+
+    <div class="table-container">
+      <div v-if="loadingUsers" class="table-loading">
+        <div class="spinner"></div>
+        <p>Fetching users...</p>
+      </div>
+
+      <div v-else class="table-scroll">
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Joined</th>
+              <th>Roles</th>
+              <th>Manage</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="user in filteredUsers"
+              :key="user.id"
+              class="user-row"
+              :class="{ 'row-highlight': user.roles.some(r => r !== 'Member') }"
+            >
+              <td class="user-cell">
+                <div class="user-avatar" :style="{ background: user.avatarColor }">
+                  {{ user.initials }}
+                </div>
+                <div class="user-info">
+                  <span class="user-name">{{ user.name }}</span>
+                  <span class="user-email">{{ user.email || '—' }}</span>
+                </div>
+              </td>
+
+              <td class="meta-cell">{{ user.joined || '—' }}</td>
+
+              <td class="roles-cell">
+                <div class="role-badges">
+                  <span
+                    v-for="role in user.roles"
+                    :key="role"
+                    class="role-badge"
+                    :class="roleClass(role)"
+                  >
+                    {{ ROLE_DEFINITIONS[role]?.label || role }}
+                  </span>
+                </div>
+              </td>
+
+              <td>
+                <button
+                  class="btn-manage"
+                  :disabled="!canEditUser(user)"
+                  :class="{ disabled: !canEditUser(user) }"
+                  @click="openRoleModal(user)"
+                >
+                  {{ canEditUser(user) ? 'Edit Roles' : 'No Access' }}
+                </button>
+              </td>
+
+              <td>
+                <span
+                  class="status-dot"
+                  :class="user.enabled ? 'online' : 'offline'"
+                ></span>
+                <span class="status-text">
+                  {{ user.enabled ? 'Enabled' : 'Disabled' }}
+                </span>
+              </td>
+            </tr>
+
+            <tr v-if="filteredUsers.length === 0">
+              <td colspan="5" class="empty-state">No users found matching your search.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <transition name="toast">
+      <div v-if="toastMessage" class="toast">✓ {{ toastMessage }}</div>
+    </transition>
+
+    <transition name="fade">
+      <div v-if="roleModalUser" class="modal-overlay" @click.self="closeRoleModal">
+        <div class="role-modal">
+          <div class="role-modal-header">
+            <div class="role-modal-user">
+              <div class="user-avatar sm" :style="{ background: roleModalUser.avatarColor }">
+                {{ roleModalUser.initials }}
+              </div>
+              <div>
+                <div class="user-name">{{ roleModalUser.name }}</div>
+                <div class="user-email">{{ roleModalUser.email || '—' }}</div>
+              </div>
+            </div>
+            <button class="btn-close" @click="closeRoleModal">✕</button>
+          </div>
+
+          <p class="role-modal-hint">
+            Select all roles that apply. Users can hold multiple roles. Member is the default role and stays enabled.
+          </p>
+
+          <div class="role-groups">
+            <div v-for="group in roleGroups" :key="group.label" class="role-group">
+              <div class="group-label">{{ group.label }}</div>
+              <div class="role-checkboxes">
+                <label
+                  v-for="role in group.roles"
+                  :key="role"
+                  class="role-checkbox-item"
+                  :class="{
+                    checked: pendingRoles.includes(role),
+                    disabled: isRoleDisabled(role)
+                  }"
+                >
+                  <input
+                    type="checkbox"
+                    :value="role"
+                    :checked="pendingRoles.includes(role)"
+                    :disabled="isRoleDisabled(role)"
+                    @change="toggleRole(role)"
+                  />
+                  <div class="checkbox-content">
+                    <span class="checkbox-icon">{{ ROLE_DEFINITIONS[role].icon }}</span>
+                    <div>
+                      <span class="checkbox-label">{{ ROLE_DEFINITIONS[role].label }}</span>
+                      <span class="checkbox-desc">{{ ROLE_DEFINITIONS[role].desc }}</span>
+                      <span
+                        v-if="isRoleDisabled(role) && role !== 'Member'"
+                        class="checkbox-desc"
+                      >
+                        You cannot assign a role above your own level.
+                      </span>
+                    </div>
+                  </div>
+                  <span
+                    v-if="pendingRoles.includes(role)"
+                    class="role-badge sm"
+                    :class="roleClass(role)"
+                  >
+                    Active
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="role-modal-footer">
+            <button class="btn-cancel" @click="closeRoleModal">Cancel</button>
+            <button class="btn-primary sm" @click="saveRoles" :disabled="savingRoles">
+              <span v-if="!savingRoles">Save Roles</span>
+              <span v-else>Saving...</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </transition>
+  </div>
+</template>
+
+<script src="./AdminUsers.js"></script>
+<style src="./AdminUsers.css"></style>

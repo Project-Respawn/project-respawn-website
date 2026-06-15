@@ -17,6 +17,8 @@
 
 .navbar-toggler {
   border: none !important;
+  position: relative;
+  z-index: 1001;
 }
 
 .navbar-toggler-icon {
@@ -90,4 +92,73 @@
 }
 .cart-icon-link i {
   font-size: 1rem;
+}
+
+@media (max-width: 991px) {
+  .navbar-nav .nav-link {
+    font-size: 1.1rem;
+    padding: 0.75rem 0 !important;
+  }
+
+  body.navbar-open {
+    overflow: hidden;
+  }
+
+  .navbar-collapse {
+    position: fixed;
+    top: 0;
+    right: -240px;
+    width: 240px;
+    height: auto;
+    max-height: 100vh;
+    background: linear-gradient(180deg, var(--bg2), var(--surface));
+    backdrop-filter: blur(1px);
+    border-left: 1px solid rgba(201, 180, 224, 0.08);
+    border-bottom: 1px solid rgba(201, 180, 224, 0.08);
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.5);
+    border-radius: 4px 4px 4px 12px;
+    padding: 4.5rem 1.5rem 1rem 1.5rem;
+    z-index: 999;
+    transition: right 0.3s ease-in-out;
+    overflow-y: auto;
+  }
+
+  .navbar-collapse::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 320px;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 998;
+  }
+
+  .navbar-collapse.show::before {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .navbar-collapse.show {
+    right: 0;
+  }
+
+  .navbar-nav {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .navbar-nav .nav-link {
+    padding: 0.5rem 0 !important;
+  }
+
+  .navbar-nav .btn {
+    width: 100%;
+    margin-left: 0 !important;
+    margin-top: 0.75rem;
+    padding: 0.5rem 0.75rem !important;
+  }
 }

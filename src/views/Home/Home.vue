@@ -19,9 +19,12 @@
         </p>
 
         <div class="hero-actions">
-          <button class="btn btn-primary" @click="beginRespawn">
-            Begin your respawn
-          </button>
+
+          <div class="col-md-12" align="center">
+            <button class="btn btn-primary" @click="beginRespawn">
+              Begin your respawn
+            </button>
+          </div>
 
           <div class="col-md-12">
             <a href="/team-tryouts" class="btn btn-secondary col-md-4 offset-md-4">

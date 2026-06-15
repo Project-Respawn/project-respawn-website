@@ -3,50 +3,27 @@
     <nav class="navbar navbar-expand-lg navbar-dark">
       <div class="container">
         <router-link to="/" class="navbar-brand">
-          <img
-            src="../../assets/logo.png"
-            alt="Project Respawn logo"
-            width="44"
-            height="44"
-            class="me-2"
-          />
+          <img src="../../assets/logo.png" alt="Project Respawn logo" width="44" height="44" class="me-2"/>
           <span>Project Respawn</span>
         </router-link>
 
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-        >
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
           <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <router-link
-                to="/"
-                class="nav-link"
-                :class="{ active: $route.path === '/' }"
-                >Home</router-link
-              >
+              <router-link to="/" class="nav-link" :class="{ active: $route.path === '/' }">Home</router-link>
             </li>
             <li class="nav-item">
-              <router-link
-                to="/about"
-                class="nav-link"
-                :class="{ active: $route.path === '/about' }"
-                >About</router-link
-              >
+              <router-link to="/about" class="nav-link" :class="{ active: $route.path === '/about' }">About</router-link>
             </li>
             <li class="nav-item">
-              <router-link
-                to="/contact"
-                class="nav-link"
-                :class="{ active: $route.path === '/contact' }"
-                >Contact</router-link
-              >
+              <router-link to="/forum" class="nav-link" :class="{ active: $route.path === '/forum' }">Forum</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/contact" class="nav-link" :class="{ active: $route.path === '/contact' }">Contact</router-link>
             </li>
             <!-- <li class="nav-item">
               <router-link
@@ -83,25 +60,15 @@
                 >Events</router-link
               >
             </li> -->
+            <li class="nav-item">
+              <router-link v-if="!isSignedIn" to="/join" class="btn btn-secondary ms-3" :class="{ active: $route.path === '/join' }">Join</router-link>
+                <router-link v-else to="/account" class="btn btn-secondary ms-3 header-account-btn text-truncate d-flex align-items-center gap-2"
+                :class="{ active: $route.path === '/account' }" :title="displayName">
+                <span class="profile-avatar" aria-hidden="true">{{ initials }}</span>
+                <span class="text-truncate">{{ truncatedNavName }}</span>
+              </router-link>
+            </li>
           </ul>
-
-          <router-link
-            v-if="!isSignedIn"
-            to="/join"
-            class="btn btn-secondary ms-3"
-            :class="{ active: $route.path === '/join' }"
-            >Join</router-link
-          >
-          <router-link
-            v-else
-            to="/account"
-            class="btn btn-secondary ms-3 header-account-btn text-truncate d-flex align-items-center gap-2"
-            :class="{ active: $route.path === '/account' }"
-            :title="displayName"
-          >
-            <span class="profile-avatar" aria-hidden="true">{{ initials }}</span>
-            <span class="text-truncate">{{ truncatedNavName }}</span>
-          </router-link>
         </div>
       </div>
     </nav>
@@ -109,7 +76,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, nextTick } from "vue";
 import { useAuth } from "../../composables/useAuth.js";
 
 const { isSignedIn, displayName, truncatedDisplayName, refreshAuth, initials } = useAuth();
@@ -122,10 +89,32 @@ function updateCartCount() {
   cartCount.value = cart.reduce((acc, item) => acc + (item.qty || 1), 0);
 }
 
+function closeNavbar() {
+  const navbarCollapse = document.getElementById("navbarNav");
+  const toggler = document.querySelector(".navbar-toggler");
+  if (navbarCollapse && navbarCollapse.classList.contains("show")) {
+    toggler.click();
+  }
+}
+
 onMounted(() => {
   refreshAuth();
   updateCartCount();
   window.addEventListener("storage", updateCartCount);
+
+  // Close navbar when a link is clicked
+  const navLinks = document.querySelectorAll(".navbar-collapse .nav-link, .navbar-collapse .btn");
+  navLinks.forEach(link => {
+    link.addEventListener("click", closeNavbar);
+  });
+
+  // Close navbar when clicking the backdrop
+  const navbarCollapse = document.getElementById("navbarNav");
+  navbarCollapse?.addEventListener("click", (e) => {
+    if (e.target === navbarCollapse) {
+      closeNavbar();
+    }
+  });
 });
 </script>
 
