@@ -62,19 +62,20 @@ UserProfile: a
     allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),
   ]),
 
-    // =========================================================================
-    // Forum types
-    // =========================================================================
+// =========================================================================
+// Forum types
+// =========================================================================
 
-    ForumMutationResult: a.customType({
-      success: a.boolean().required(),
-      message: a.string(),
-      threadId: a.id(),
-      postId: a.id(),
-      replyCount: a.integer(),
-      viewCount: a.integer(),
-      lastReplyAt: a.datetime(),
-    }),
+ForumMutationResult: a.customType({
+  success: a.boolean().required(),
+  message: a.string(),
+  threadId: a.id(),
+  postId: a.id(),
+  replyCount: a.integer(),
+  viewCount: a.integer(),
+  lastReplyAt: a.datetime(),
+}),
+
 
 // =========================================================================
 // Forum models
@@ -105,7 +106,7 @@ ForumBoard: a
     sortOrder: a.integer().required(),
     isActive: a.boolean().required(),
     allowedGroups: a.string().array(),
-    threadCreateGroups: a.string().array(), // NEW: restrict who can create top-level threads
+    threadCreateGroups: a.string().array(),
     threads: a.hasMany('ForumThread', 'boardId'),
     permissionRules: a.hasMany('BoardPermissionRule', 'boardId'),
   })
@@ -173,6 +174,7 @@ BoardPermissionRule: a
     allow.groups(['SuperAdmin']).to(['create', 'read', 'update', 'delete']),
   ]),
 
+
 // =========================================================================
 // Forum backend-managed mutations
 // =========================================================================
@@ -194,18 +196,6 @@ submitForumThread: a
   ])
   .handler(a.handler.function(myFunction)),
 
-recordForumThreadView: a
-  .mutation()
-  .arguments({
-    threadId: a.id().required(),
-  })
-  .returns(a.ref('ForumMutationResult').required())
-  .authorization((allow) => [
-    allow.publicApiKey(),
-    allow.authenticated(),
-  ])
-  .handler(a.handler.function(myFunction)),
-
 submitForumReply: a
   .mutation()
   .arguments({
@@ -217,6 +207,18 @@ submitForumReply: a
   })
   .returns(a.ref('ForumMutationResult').required())
   .authorization((allow) => [
+    allow.authenticated(),
+  ])
+  .handler(a.handler.function(myFunction)),
+
+recordForumThreadView: a
+  .mutation()
+  .arguments({
+    threadId: a.id().required(),
+  })
+  .returns(a.ref('ForumMutationResult').required())
+  .authorization((allow) => [
+    allow.publicApiKey(),
     allow.authenticated(),
   ])
   .handler(a.handler.function(myFunction)),

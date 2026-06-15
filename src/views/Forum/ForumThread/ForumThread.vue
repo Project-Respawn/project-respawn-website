@@ -156,13 +156,54 @@
               </span>
             </div>
 
-            <div class="forum-post-body">
+            <!-- View mode -->
+            <div
+              class="forum-post-body"
+              v-if="!post.isEditing"
+            >
               <p
                 v-for="(paragraph, index) in post.content"
                 :key="`${post.id}-${index}`"
               >
                 {{ paragraph }}
               </p>
+            </div>
+
+            <!-- Edit mode -->
+            <div
+              v-else
+              class="forum-post-edit-box"
+            >
+              <textarea
+                v-model.trim="editForm.content"
+                class="forum-reply-textarea forum-post-edit-textarea"
+                rows="6"
+                placeholder="Edit your post..."
+              ></textarea>
+
+              <div class="forum-reply-actions">
+                <button
+                  class="forum-thread-secondary-btn"
+                  type="button"
+                  @click="cancelEditingPost"
+                  :disabled="savingEditPostId === post.id"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  class="forum-thread-primary-btn"
+                  type="button"
+                  @click="saveEditedPost(post.raw)"
+                  :disabled="savingEditPostId === post.id"
+                >
+                  {{
+                    savingEditPostId === post.id
+                      ? 'Saving…'
+                      : 'Save Changes'
+                  }}
+                </button>
+              </div>
             </div>
 
             <div class="forum-post-footer">
@@ -189,6 +230,16 @@
                 type="button"
               >
                 Report
+              </button>
+
+              <button
+                v-if="post.canEdit"
+                class="forum-post-action"
+                type="button"
+                @click="startEditingPost(post.raw)"
+                :disabled="editingPostId === post.id || deletingPostId === post.id"
+              >
+                Edit
               </button>
 
               <button
