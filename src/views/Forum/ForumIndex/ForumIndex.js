@@ -1,10 +1,22 @@
 import { generateClient } from 'aws-amplify/data';
 import { fetchAuthSession } from 'aws-amplify/auth';
 
-const userPoolClient = generateClient();
-const publicClient = generateClient({
-  authMode: 'apiKey',
-});
+let userPoolClient;
+let publicClient;
+
+function getUserPoolClient() {
+  if (!userPoolClient) {
+    userPoolClient = generateClient();
+  }
+  return userPoolClient;
+}
+
+function getPublicClient() {
+  if (!publicClient) {
+    publicClient = generateClient({ authMode: 'apiKey' });
+  }
+  return publicClient;
+}
 
 // 1. Starter data (new structure)
 const STARTER_CATEGORIES = [
@@ -283,10 +295,10 @@ export default {
       try {
         const session = await fetchAuthSession();
         const isSignedIn = !!session?.tokens?.idToken;
-        return isSignedIn ? userPoolClient : publicClient;
+        return isSignedIn ? getUserPoolClient() : getPublicClient();
       } catch (error) {
         // If we cannot determine session, fall back to public read
-        return publicClient;
+        return getPublicClient();
       }
     },
 
@@ -416,7 +428,7 @@ export default {
       this.loadError = '';
 
       try {
-        const writeClient = userPoolClient;
+        const writeClient = getUserPoolClient();
 
         // Categories
         const existingCategoriesResult =

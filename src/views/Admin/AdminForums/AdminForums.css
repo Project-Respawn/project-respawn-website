@@ -52,7 +52,8 @@
 .admin-forums-section-copy,
 .admin-forums-board-copy,
 .admin-forums-section-meta,
-.admin-forums-board-meta {
+.admin-forums-board-meta,
+.admin-forums-field-hint {
   color: #94a3b8;
 }
 
@@ -64,7 +65,8 @@
 
 .admin-forums-hero-actions,
 .admin-forums-form-actions,
-.admin-forums-row-actions {
+.admin-forums-row-actions,
+.admin-forums-thread-tools {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
@@ -99,6 +101,12 @@
   background: rgba(30, 41, 59, 0.72);
   color: #cbd5e1;
   border: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.admin-forums-btn-warning {
+  background: rgba(120, 53, 15, 0.3);
+  color: #fdba74;
+  border: 1px solid rgba(251, 146, 60, 0.24);
 }
 
 .admin-forums-btn:hover:not(:disabled) {
@@ -210,6 +218,18 @@
   font-weight: 600;
 }
 
+.admin-forums-label {
+  color: #e2e8f0;
+  font-weight: 700;
+}
+
+.admin-forums-field-hint {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
 .admin-forums-field input,
 .admin-forums-field textarea,
 .admin-forums-field select {
@@ -242,6 +262,91 @@
   font-weight: 600;
 }
 
+.admin-forums-checkbox input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: #38bdf8;
+}
+
+.admin-forums-checkbox-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.admin-forums-checkbox-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(15, 23, 42, 0.56);
+  color: #e2e8f0;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.admin-forums-checkbox-card:hover {
+  border-color: rgba(56, 189, 248, 0.38);
+  background: rgba(15, 23, 42, 0.72);
+}
+
+.admin-forums-checkbox-card input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  padding: 0;
+  accent-color: #38bdf8;
+  flex-shrink: 0;
+  box-shadow: none;
+}
+
+.admin-forums-checkbox-card span {
+  line-height: 1.4;
+}
+
+.admin-forums-board-permissions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.admin-forums-permission-tag {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: rgba(99, 102, 241, 0.16);
+  color: #c7d2fe;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.admin-forums-thread-tools {
+  margin-top: 12px;
+}
+
+.admin-forums-thread-lock-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: rgba(148, 163, 184, 0.12);
+  color: #cbd5e1;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.admin-forums-thread-lock-status.is-locked {
+  background: rgba(251, 146, 60, 0.16);
+  color: #fdba74;
+}
+
 @media (max-width: 1100px) {
   .admin-forums-grid {
     grid-template-columns: 1fr;
@@ -270,12 +375,17 @@
 
   .admin-forums-row-actions,
   .admin-forums-hero-actions,
-  .admin-forums-form-actions {
+  .admin-forums-form-actions,
+  .admin-forums-thread-tools {
     width: 100%;
   }
 
   .admin-forums-btn,
   .admin-forums-add-board {
     width: 100%;
+  }
+
+  .admin-forums-checkbox-group {
+    grid-template-columns: 1fr;
   }
 }

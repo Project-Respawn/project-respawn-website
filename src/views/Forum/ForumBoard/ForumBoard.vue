@@ -34,14 +34,16 @@
         </div>
 
         <div class="forum-board-hero-actions">
-          <button
-            class="forum-board-primary-btn"
-            @click="openCreateThread"
-            :disabled="creatingThread"
-            type="button"
-          >
-            {{ creatingThread ? 'Creating…' : 'New Thread' }}
-          </button>
+          <!-- Only show on /forum/board/announcements + superadmin -->
+<button
+  v-if="showNewThreadButton"
+  class="forum-board-primary-btn"
+  @click="openCreateThread"
+  :disabled="creatingThread"
+  type="button"
+>
+  {{ creatingThread ? 'Creating…' : 'New Thread' }}
+</button>
 
           <button
             v-if="featuredThreadsForBoard.length"
@@ -113,7 +115,7 @@
       </section>
 
       <section
-        v-if="showCreateThreadForm"
+        v-if="showCreateThreadForm && showNewThreadButton"
         class="forum-create-thread-card"
       >
         <div class="forum-create-thread-header">
@@ -324,7 +326,9 @@
           </p>
 
           <div class="forum-board-empty-actions">
+            <!-- same visibility rule as hero button -->
             <button
+              v-if="showNewThreadButton"
               class="forum-board-primary-btn"
               @click="openCreateThread"
               type="button"

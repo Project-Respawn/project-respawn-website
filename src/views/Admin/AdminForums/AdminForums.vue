@@ -17,10 +17,11 @@
         >
           New Category
         </button>
+
         <button
           type="button"
           class="admin-forums-btn admin-forums-btn-secondary"
-          @click="openCreateBoard"
+          @click="openCreateBoard()"
           :disabled="!categories.length"
         >
           New Board
@@ -28,11 +29,19 @@
       </div>
     </div>
 
-    <div v-if="loadError" class="admin-forums-alert admin-forums-alert-error">
+    <div
+      v-if="loadError"
+      class="admin-forums-alert admin-forums-alert-error"
+      role="alert"
+    >
       {{ loadError }}
     </div>
 
-    <div v-if="saveMessage" class="admin-forums-alert admin-forums-alert-success">
+    <div
+      v-if="saveMessage"
+      class="admin-forums-alert admin-forums-alert-success"
+      role="status"
+    >
       {{ saveMessage }}
     </div>
 
@@ -41,7 +50,7 @@
         <div class="admin-forums-panel-header">
           <div>
             <p class="admin-forums-panel-kicker">Structure</p>
-            <h2 class="admin-forums-panel-title">Categories & Boards</h2>
+            <h2 class="admin-forums-panel-title">Categories &amp; Boards</h2>
           </div>
 
           <button
@@ -88,6 +97,7 @@
                 >
                   Edit
                 </button>
+
                 <button
                   type="button"
                   class="admin-forums-btn admin-forums-btn-ghost"
@@ -114,6 +124,28 @@
                     <p class="admin-forums-board-copy">
                       {{ board.description || 'No board description yet.' }}
                     </p>
+
+                    <div
+                      v-if="board.allowedGroupLabels && board.allowedGroupLabels.length"
+                      class="admin-forums-board-permissions"
+                    >
+                      <span
+                        v-for="groupLabel in board.allowedGroupLabels"
+                        :key="groupLabel"
+                        class="admin-forums-permission-tag"
+                      >
+                        {{ groupLabel }} can post
+                      </span>
+                    </div>
+
+                    <div
+                      v-else
+                      class="admin-forums-board-permissions"
+                    >
+                      <span class="admin-forums-permission-tag">
+                        Everyone can post
+                      </span>
+                    </div>
                   </div>
 
                   <div class="admin-forums-board-badges">
@@ -131,6 +163,7 @@
                   >
                     Edit
                   </button>
+
                   <button
                     type="button"
                     class="admin-forums-btn admin-forums-btn-ghost"
@@ -170,22 +203,40 @@
         >
           <label class="admin-forums-field">
             <span>Name</span>
-            <input v-model="categoryForm.name" type="text" required />
+            <input
+              v-model.trim="categoryForm.name"
+              type="text"
+              required
+              autocomplete="off"
+            />
           </label>
 
           <label class="admin-forums-field">
             <span>Slug</span>
-            <input v-model="categoryForm.slug" type="text" required />
+            <input
+              v-model.trim="categoryForm.slug"
+              type="text"
+              required
+              autocomplete="off"
+            />
           </label>
 
           <label class="admin-forums-field">
             <span>Description</span>
-            <textarea v-model="categoryForm.description" rows="4"></textarea>
+            <textarea
+              v-model="categoryForm.description"
+              rows="4"
+            ></textarea>
           </label>
 
           <label class="admin-forums-field">
             <span>Sort Order</span>
-            <input v-model.number="categoryForm.sortOrder" type="number" min="0" required />
+            <input
+              v-model.number="categoryForm.sortOrder"
+              type="number"
+              min="0"
+              required
+            />
           </label>
 
           <label class="admin-forums-checkbox">
@@ -206,6 +257,7 @@
               type="button"
               class="admin-forums-btn admin-forums-btn-secondary"
               @click="resetForms"
+              :disabled="saving"
             >
               Clear
             </button>
@@ -233,23 +285,63 @@
 
           <label class="admin-forums-field">
             <span>Name</span>
-            <input v-model="boardForm.name" type="text" required />
+            <input
+              v-model.trim="boardForm.name"
+              type="text"
+              required
+              autocomplete="off"
+            />
           </label>
 
           <label class="admin-forums-field">
             <span>Slug</span>
-            <input v-model="boardForm.slug" type="text" required />
+            <input
+              v-model.trim="boardForm.slug"
+              type="text"
+              required
+              autocomplete="off"
+            />
           </label>
 
           <label class="admin-forums-field">
             <span>Description</span>
-            <textarea v-model="boardForm.description" rows="4"></textarea>
+            <textarea
+              v-model="boardForm.description"
+              rows="4"
+            ></textarea>
           </label>
 
           <label class="admin-forums-field">
             <span>Sort Order</span>
-            <input v-model.number="boardForm.sortOrder" type="number" min="0" required />
+            <input
+              v-model.number="boardForm.sortOrder"
+              type="number"
+              min="0"
+              required
+            />
           </label>
+
+          <div class="admin-forums-field">
+            <label class="admin-forums-label">Who can create threads?</label>
+            <p class="admin-forums-field-hint">
+              Leave all unchecked to allow everyone to create threads in this board.
+            </p>
+
+            <div class="admin-forums-checkbox-group">
+              <label
+                v-for="group in availableGroups"
+                :key="group.value"
+                class="admin-forums-checkbox-card"
+              >
+                <input
+                  type="checkbox"
+                  :checked="boardForm.allowedGroups.includes(group.value)"
+                  @change="toggleAllowedGroup(group.value)"
+                />
+                <span>{{ group.label }}</span>
+              </label>
+            </div>
+          </div>
 
           <label class="admin-forums-checkbox">
             <input v-model="boardForm.isActive" type="checkbox" />
@@ -269,6 +361,7 @@
               type="button"
               class="admin-forums-btn admin-forums-btn-secondary"
               @click="resetForms"
+              :disabled="saving"
             >
               Clear
             </button>
