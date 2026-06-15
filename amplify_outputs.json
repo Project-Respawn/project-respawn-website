@@ -211,6 +211,13 @@
               "isRequired": true,
               "attributes": []
             },
+            "owner": {
+              "name": "owner",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
             "ownerUserId": {
               "name": "ownerUserId",
               "isArray": false,
@@ -399,6 +406,12 @@
                     ]
                   },
                   {
+                    "allow": "private",
+                    "operations": [
+                      "read"
+                    ]
+                  },
+                  {
                     "groupClaim": "cognito:groups",
                     "provider": "userPools",
                     "allow": "groups",
@@ -489,6 +502,22 @@
               "isRequired": true,
               "attributes": []
             },
+            "allowedGroups": {
+              "name": "allowedGroups",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": true
+            },
+            "threadCreateGroups": {
+              "name": "threadCreateGroups",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": true
+            },
             "threads": {
               "name": "threads",
               "isArray": true,
@@ -552,6 +581,12 @@
                   {
                     "allow": "public",
                     "provider": "apiKey",
+                    "operations": [
+                      "read"
+                    ]
+                  },
+                  {
+                    "allow": "private",
                     "operations": [
                       "read"
                     ]
@@ -750,7 +785,6 @@
                   {
                     "allow": "private",
                     "operations": [
-                      "create",
                       "read"
                     ]
                   },
@@ -759,7 +793,9 @@
                     "ownerField": "owner",
                     "allow": "owner",
                     "operations": [
-                      "update"
+                      "read",
+                      "update",
+                      "delete"
                     ],
                     "identityClaim": "cognito:username"
                   },
@@ -774,7 +810,9 @@
                       "delete"
                     ],
                     "groups": [
-                      "SuperAdmin"
+                      "SuperAdmin",
+                      "Admin",
+                      "Staff"
                     ]
                   }
                 ]
@@ -892,8 +930,8 @@
                   {
                     "allow": "private",
                     "operations": [
-                      "create",
-                      "read"
+                      "read",
+                      "create"
                     ]
                   },
                   {
@@ -901,7 +939,9 @@
                     "ownerField": "owner",
                     "allow": "owner",
                     "operations": [
-                      "update"
+                      "read",
+                      "update",
+                      "delete"
                     ],
                     "identityClaim": "cognito:username"
                   },
@@ -910,13 +950,14 @@
                     "provider": "userPools",
                     "allow": "groups",
                     "operations": [
-                      "create",
                       "read",
                       "update",
                       "delete"
                     ],
                     "groups": [
-                      "SuperAdmin"
+                      "SuperAdmin",
+                      "Admin",
+                      "Staff"
                     ]
                   }
                 ]
@@ -1991,6 +2032,60 @@
               "isArrayNullable": false
             }
           }
+        },
+        "ForumMutationResult": {
+          "name": "ForumMutationResult",
+          "fields": {
+            "success": {
+              "name": "success",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "message": {
+              "name": "message",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "threadId": {
+              "name": "threadId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false,
+              "attributes": []
+            },
+            "postId": {
+              "name": "postId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false,
+              "attributes": []
+            },
+            "replyCount": {
+              "name": "replyCount",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": false,
+              "attributes": []
+            },
+            "viewCount": {
+              "name": "viewCount",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": false,
+              "attributes": []
+            },
+            "lastReplyAt": {
+              "name": "lastReplyAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            }
+          }
         }
       },
       "queries": {
@@ -2005,6 +2100,114 @@
         }
       },
       "mutations": {
+        "submitForumThread": {
+          "name": "submitForumThread",
+          "isArray": false,
+          "type": {
+            "nonModel": "ForumMutationResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "boardId": {
+              "name": "boardId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            },
+            "title": {
+              "name": "title",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "content": {
+              "name": "content",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "authorUserId": {
+              "name": "authorUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "authorDisplayName": {
+              "name": "authorDisplayName",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "owner": {
+              "name": "owner",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "isFeatured": {
+              "name": "isFeatured",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false
+            }
+          }
+        },
+        "recordForumThreadView": {
+          "name": "recordForumThreadView",
+          "isArray": false,
+          "type": {
+            "nonModel": "ForumMutationResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "threadId": {
+              "name": "threadId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            }
+          }
+        },
+        "submitForumReply": {
+          "name": "submitForumReply",
+          "isArray": false,
+          "type": {
+            "nonModel": "ForumMutationResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "threadId": {
+              "name": "threadId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            },
+            "content": {
+              "name": "content",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "authorUserId": {
+              "name": "authorUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "authorDisplayName": {
+              "name": "authorDisplayName",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "owner": {
+              "name": "owner",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            }
+          }
+        },
         "updateUserRoles": {
           "name": "updateUserRoles",
           "isArray": false,

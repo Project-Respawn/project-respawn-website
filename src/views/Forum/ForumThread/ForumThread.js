@@ -10,7 +10,7 @@
 // 6. Lifecycle hooks
 // 7. Auth + identity helpers
 // 8. Permissions + moderation helpers
-// 9. Thread data loading + analytics
+// 9. Thread data loading + backend analytics
 // 10. Reply interactions (quote, preview, submit, scroll)
 // 11. Display helpers (roles, counts, formatting)
 // 12. Watchers
@@ -23,8 +23,24 @@
 import { generateClient } from 'aws-amplify/data';
 import { getCurrentUser, fetchAuthSession } from 'aws-amplify/auth';
 
-const userPoolClient = generateClient(); // authenticated reads/writes
-const publicClient = generateClient({ authMode: 'apiKey' }); // guest reads
+// Use a typed client if you imported Schema into this file, e.g.:
+// import type { Schema } from '@/amplify/data/resource';
+// const userPoolClient = generateClient<Schema>();
+let userPoolClient; // authenticated reads/writes
+let publicClient; // guest reads
+function getUserPoolClient() {
+  if (!userPoolClient) {
+    userPoolClient = generateClient();
+  }
+  return userPoolClient;
+}
+
+function getPublicClient() {
+  if (!publicClient) {
+    publicClient = generateClient({ authMode: 'apiKey' });
+  }
+  return publicClient;
+}
 
 
 // 2. Constants + helpers (pure functions)
@@ -182,7 +198,11 @@ export default {
         isPinned: this.threadRecord.isPinned === true,
         isFeatured: this.threadRecord.isFeatured === true,
         isLocked: this.threadRecord.isLocked === true,
-        replyCount: Math.max(this.threadPosts.length - 1, 0),
+        // replyCount is backend-managed, but we still compute a safe fallback
+        replyCount:
+          typeof this.threadRecord.replyCount === 'number'
+            ? this.threadRecord.replyCount
+            : Math.max(this.threadPosts.length - 1, 0),
         viewCount: this.threadRecord.viewCount || 0,
         participantCount: participants.size,
         lastActivity: this.formatRelativeTime(
@@ -237,7 +257,7 @@ export default {
         throw new Error('Could not determine the current user.');
       }
 
-      const profileResult = await userPoolClient.models.UserProfile.list({
+      const profileResult = await getUserPoolClient().models.UserProfile.list({
         filter: {
           ownerUserId: { eq: authorUserId },
         },
@@ -265,10 +285,10 @@ export default {
         const session = await fetchAuthSession();
         const isSignedIn = !!session?.tokens?.idToken;
         this.isSignedIn = isSignedIn;
-        return isSignedIn ? userPoolClient : publicClient;
+        return isSignedIn ? getUserPoolClient() : getPublicClient();
       } catch {
         this.isSignedIn = false;
-        return publicClient;
+        return getPublicClient();
       }
     },
 
@@ -372,7 +392,7 @@ export default {
       this.updatingThreadLock = true;
 
       try {
-        const updateResult = await userPoolClient.models.ForumThread.update({
+        const updateResult = await getUserPoolClient().models.ForumThread.update({
           id: this.threadRecord.id,
           isLocked: nextLockedState,
         });
@@ -423,7 +443,7 @@ export default {
         const postsInThread = [...this.threadPosts];
 
         for (const post of postsInThread) {
-          const deletePostResult = await userPoolClient.models.ForumPost.delete({
+          const deletePostResult = await getUserPoolClient().models.ForumPost.delete({
             id: post.id,
           });
 
@@ -436,7 +456,7 @@ export default {
         }
 
         const deleteThreadResult =
-          await userPoolClient.models.ForumThread.delete({
+          await getUserPoolClient().models.ForumThread.delete({
             id: this.threadRecord.id,
           });
 
@@ -479,7 +499,7 @@ export default {
       this.deletingPostId = post.id;
 
       try {
-        const deleteResult = await userPoolClient.models.ForumPost.delete({
+        const deleteResult = await getUserPoolClient().models.ForumPost.delete({
           id: post.id,
         });
 
@@ -489,34 +509,7 @@ export default {
           );
         }
 
-        const remainingPosts = this.threadPosts.filter(
-          (item) => item.id !== post.id,
-        );
-        const updatedReplyCount = Math.max(remainingPosts.length - 1, 0);
-
-        const latestPost = sortByNewest(remainingPosts).at(-1);
-        const fallbackLastReplyAt =
-          latestPost?.editedAt ||
-          latestPost?.updatedAt ||
-          latestPost?.createdAt ||
-          this.threadRecord?.createdAt ||
-          null;
-
-        const threadUpdateResult = await userPoolClient.models.ForumThread.update(
-          {
-            id: this.threadRecord.id,
-            replyCount: updatedReplyCount,
-            lastReplyAt: fallbackLastReplyAt,
-          },
-        );
-
-        if (threadUpdateResult.errors?.length) {
-          throw new Error(
-            threadUpdateResult.errors[0].message ||
-              'Post deleted but thread update failed',
-          );
-        }
-
+        // Let backend manage replyCount/lastReplyAt; just reload the thread.
         await this.fetchThreadPage();
       } catch (error) {
         console.error('Failed to delete post:', error);
@@ -527,7 +520,7 @@ export default {
     },
 
 
-    // 9. Thread data loading + analytics
+    // 9. Thread data loading + backend analytics
     // ------------------------------------------------------
 
     async fetchThreadPage() {
@@ -580,7 +573,7 @@ export default {
           (post) => post.threadId === matchedThread.id,
         );
 
-        await this.incrementThreadViews();
+        await this.recordThreadView();
       } catch (error) {
         console.error('Failed to fetch thread page:', error);
         this.loadError = error?.message || 'Failed to load thread page';
@@ -589,27 +582,36 @@ export default {
       }
     },
 
-    async incrementThreadViews() {
+    async recordThreadView() {
       if (!this.threadRecord?.id) {
         return;
       }
 
       try {
-        const nextViewCount = (this.threadRecord.viewCount || 0) + 1;
-
-        const updateResult = await userPoolClient.models.ForumThread.update({
-          id: this.threadRecord.id,
-          viewCount: nextViewCount,
+        // Custom backend mutation (defined in resource.ts)
+        // Adjust name if you picked a different identifier.
+        const result = await getUserPoolClient().mutations.recordForumThreadView({
+          threadId: this.threadRecord.id,
         });
 
-        if (!updateResult.errors?.length && updateResult.data) {
+        // If backend returns updated counts, you can merge them:
+        if (result?.data) {
+          const { viewCount, replyCount, lastReplyAt } = result.data;
           this.threadRecord = {
             ...this.threadRecord,
-            ...updateResult.data,
+            viewCount:
+              typeof viewCount === 'number'
+                ? viewCount
+                : this.threadRecord.viewCount,
+            replyCount:
+              typeof replyCount === 'number'
+                ? replyCount
+                : this.threadRecord.replyCount,
+            lastReplyAt: lastReplyAt || this.threadRecord.lastReplyAt,
           };
         }
       } catch (error) {
-        console.warn('Failed to increment thread views:', error);
+        console.warn('Failed to record thread view:', error);
       }
     },
 
@@ -720,34 +722,18 @@ export default {
         const { authorUserId, authorDisplayName } =
           await this.getForumAuthor();
 
-        const postCreateResult = await userPoolClient.models.ForumPost.create({
+        // Backend-managed reply creation + counters
+        const replyResult = await getUserPoolClient().mutations.createForumReply({
           threadId: this.threadRecord.id,
+          content,
           authorUserId,
           authorDisplayName,
-          content,
+          owner: authorUserId,
         });
 
-        if (postCreateResult.errors?.length) {
+        if (replyResult?.errors?.length) {
           throw new Error(
-            postCreateResult.errors[0].message || 'Failed to create reply',
-          );
-        }
-
-        const updatedReplyCount = this.threadPosts.length;
-        const nowIso = new Date().toISOString();
-
-        const threadUpdateResult = await userPoolClient.models.ForumThread.update(
-          {
-            id: this.threadRecord.id,
-            replyCount: updatedReplyCount,
-            lastReplyAt: nowIso,
-          },
-        );
-
-        if (threadUpdateResult.errors?.length) {
-          throw new Error(
-            threadUpdateResult.errors[0].message ||
-              'Failed to update thread',
+            replyResult.errors[0].message || 'Failed to create reply',
           );
         }
 

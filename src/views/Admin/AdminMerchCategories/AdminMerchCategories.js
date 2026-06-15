@@ -1,6 +1,12 @@
 import { generateClient } from 'aws-amplify/data';
 
-const client = generateClient();
+let client;
+function getClient() {
+  if (!client) {
+    client = generateClient();
+  }
+  return client;
+}
 
 function slugify(value = '') {
   return value
@@ -100,7 +106,7 @@ export default {
     },
 
     async fetchCategories() {
-      const { data, errors } = await client.models.MerchCategory.list({
+      const { data, errors } = await getClient().models.MerchCategory.list({
         authMode: 'userPool',
       });
 
@@ -153,7 +159,7 @@ export default {
       this.saving = true;
 
       try {
-        const { errors } = await client.models.MerchCategory.create(
+        const { errors } = await getClient().models.MerchCategory.create(
           {
             name,
             slug: generatedSlug,
@@ -201,7 +207,7 @@ export default {
       try {
         const nextIsActive = !category.isActive;
 
-        const { errors } = await client.models.MerchCategory.update(
+        const { errors } = await getClient().models.MerchCategory.update(
           {
             id: category.id,
             isActive: nextIsActive,

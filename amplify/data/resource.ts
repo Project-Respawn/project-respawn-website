@@ -47,109 +47,179 @@ const schema = a
     // User profile model
     // =========================================================================
 
-    UserProfile: a
-      .model({
-        ownerUserId: a.string().required(),
-        displayName: a.string().required(),
-        bio: a.string(),
-        avatarUrl: a.string(),
-      })
-      .authorization((allow) => [
-        allow.owner(),
-        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),
-      ]),
+UserProfile: a
+  .model({
+    owner: a
+      .string()
+      .authorization((allow) => [allow.owner().to(['read'])]),
+    ownerUserId: a.string().required(),
+    displayName: a.string().required(),
+    bio: a.string(),
+    avatarUrl: a.string(),
+  })
+  .authorization((allow) => [
+    allow.owner(),
+    allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),
+  ]),
 
     // =========================================================================
-    // Forum models
+    // Forum types
     // =========================================================================
-    ForumCategory: a
-      .model({
-        name: a.string().required(),
-        slug: a.string().required(),
-        description: a.string(),
-        sortOrder: a.integer().required(),
-        isActive: a.boolean().required(),
-        boards: a.hasMany('ForumBoard', 'categoryId'),
-      })
-      .authorization((allow) => [
-        allow.publicApiKey().to(['read']),
-        allow.groups(['SuperAdmin']).to(['create', 'read', 'update', 'delete']),
-      ]),
 
-    ForumBoard: a
-      .model({
-        categoryId: a.id().required(),
-        category: a.belongsTo('ForumCategory', 'categoryId'),
-        name: a.string().required(),
-        slug: a.string().required(),
-        description: a.string(),
-        sortOrder: a.integer().required(),
-        isActive: a.boolean().required(),
-        threads: a.hasMany('ForumThread', 'boardId'),
-        permissionRules: a.hasMany('BoardPermissionRule', 'boardId'),
-      })
-      .authorization((allow) => [
-        allow.publicApiKey().to(['read']),
-        allow.groups(['SuperAdmin']).to(['create', 'read', 'update', 'delete']),
-      ]),
+    ForumMutationResult: a.customType({
+      success: a.boolean().required(),
+      message: a.string(),
+      threadId: a.id(),
+      postId: a.id(),
+      replyCount: a.integer(),
+      viewCount: a.integer(),
+      lastReplyAt: a.datetime(),
+    }),
 
-    ForumThread: a
-      .model({
-        boardId: a.id().required(),
-        board: a.belongsTo('ForumBoard', 'boardId'),
-        title: a.string().required(),
-        slug: a.string().required(),
-        owner: a.string(),
-        authorUserId: a.string().required(),
-        authorDisplayName: a.string().required(),
-        contentPreview: a.string(),
-        isPinned: a.boolean().required(),
-        isLocked: a.boolean().required(),
-        isFeatured: a.boolean().required(),
-        replyCount: a.integer().required(),
-        viewCount: a.integer().required(),
-        lastReplyAt: a.datetime(),
-        posts: a.hasMany('ForumPost', 'threadId'),
-      })
-      .authorization((allow) => [
-        allow.publicApiKey().to(['read']),
-        allow.authenticated().to(['create', 'read']),
-        allow.ownerDefinedIn('owner').to(['update']),
-        allow.groups(['SuperAdmin']).to(['create', 'read', 'update', 'delete']),
-      ]),
+// =========================================================================
+// Forum models
+// =========================================================================
 
-    ForumPost: a
-      .model({
-        threadId: a.id().required(),
-        thread: a.belongsTo('ForumThread', 'threadId'),
-        owner: a.string(),
-        authorUserId: a.string().required(),
-        authorDisplayName: a.string().required(),
-        content: a.string().required(),
-        editedAt: a.datetime(),
-      })
-      .authorization((allow) => [
-        allow.publicApiKey().to(['read']),
-        allow.authenticated().to(['create', 'read']),
-        allow.ownerDefinedIn('owner').to(['update']),
-        allow.groups(['SuperAdmin']).to(['create', 'read', 'update', 'delete']),
-      ]),
+ForumCategory: a
+  .model({
+    name: a.string().required(),
+    slug: a.string().required(),
+    description: a.string(),
+    sortOrder: a.integer().required(),
+    isActive: a.boolean().required(),
+    boards: a.hasMany('ForumBoard', 'categoryId'),
+  })
+  .authorization((allow) => [
+    allow.publicApiKey().to(['read']),
+    allow.authenticated().to(['read']),
+    allow.groups(['SuperAdmin']).to(['create', 'read', 'update', 'delete']),
+  ]),
 
-    BoardPermissionRule: a
-      .model({
-        boardId: a.id().required(),
-        board: a.belongsTo('ForumBoard', 'boardId'),
-        subjectType: a.string().required(),
-        subjectKey: a.string().required(),
-        canView: a.boolean().required(),
-        canCreateThread: a.boolean().required(),
-        canReply: a.boolean().required(),
-        canModerate: a.boolean().required(),
-        canAdmin: a.boolean().required(),
-      })
-      .authorization((allow) => [
-        allow.groups(['SuperAdmin']).to(['create', 'read', 'update', 'delete']),
-      ]),
+ForumBoard: a
+  .model({
+    categoryId: a.id().required(),
+    category: a.belongsTo('ForumCategory', 'categoryId'),
+    name: a.string().required(),
+    slug: a.string().required(),
+    description: a.string(),
+    sortOrder: a.integer().required(),
+    isActive: a.boolean().required(),
+    allowedGroups: a.string().array(),
+    threadCreateGroups: a.string().array(), // NEW: restrict who can create top-level threads
+    threads: a.hasMany('ForumThread', 'boardId'),
+    permissionRules: a.hasMany('BoardPermissionRule', 'boardId'),
+  })
+  .authorization((allow) => [
+    allow.publicApiKey().to(['read']),
+    allow.authenticated().to(['read']),
+    allow.groups(['SuperAdmin']).to(['create', 'read', 'update', 'delete']),
+  ]),
+
+ForumThread: a
+  .model({
+    boardId: a.id().required(),
+    board: a.belongsTo('ForumBoard', 'boardId'),
+    title: a.string().required(),
+    slug: a.string().required(),
+    owner: a.string(),
+    authorUserId: a.string().required(),
+    authorDisplayName: a.string().required(),
+    contentPreview: a.string(),
+    isPinned: a.boolean().required(),
+    isLocked: a.boolean().required(),
+    isFeatured: a.boolean().required(),
+    replyCount: a.integer().required(),
+    viewCount: a.integer().required(),
+    lastReplyAt: a.datetime(),
+    posts: a.hasMany('ForumPost', 'threadId'),
+  })
+  .authorization((allow) => [
+    allow.publicApiKey().to(['read']),
+    allow.authenticated().to(['read']),
+    allow.ownerDefinedIn('owner').to(['read', 'update', 'delete']),
+    allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['create', 'read', 'update', 'delete']),
+  ]),
+
+ForumPost: a
+  .model({
+    threadId: a.id().required(),
+    thread: a.belongsTo('ForumThread', 'threadId'),
+    owner: a.string(),
+    authorUserId: a.string().required(),
+    authorDisplayName: a.string().required(),
+    content: a.string().required(),
+    editedAt: a.datetime(),
+  })
+  .authorization((allow) => [
+    allow.publicApiKey().to(['read']),
+    allow.authenticated().to(['read', 'create']),
+    allow.ownerDefinedIn('owner').to(['read', 'update', 'delete']),
+    allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read', 'update', 'delete']),
+  ]),
+
+BoardPermissionRule: a
+  .model({
+    boardId: a.id().required(),
+    board: a.belongsTo('ForumBoard', 'boardId'),
+    subjectType: a.string().required(),
+    subjectKey: a.string().required(),
+    canView: a.boolean().required(),
+    canCreateThread: a.boolean().required(),
+    canReply: a.boolean().required(),
+    canModerate: a.boolean().required(),
+    canAdmin: a.boolean().required(),
+  })
+  .authorization((allow) => [
+    allow.groups(['SuperAdmin']).to(['create', 'read', 'update', 'delete']),
+  ]),
+
+// =========================================================================
+// Forum backend-managed mutations
+// =========================================================================
+
+submitForumThread: a
+  .mutation()
+  .arguments({
+    boardId: a.id().required(),
+    title: a.string().required(),
+    content: a.string().required(),
+    authorUserId: a.string().required(),
+    authorDisplayName: a.string().required(),
+    owner: a.string().required(),
+    isFeatured: a.boolean(),
+  })
+  .returns(a.ref('ForumMutationResult').required())
+  .authorization((allow) => [
+    allow.authenticated(),
+  ])
+  .handler(a.handler.function(myFunction)),
+
+recordForumThreadView: a
+  .mutation()
+  .arguments({
+    threadId: a.id().required(),
+  })
+  .returns(a.ref('ForumMutationResult').required())
+  .authorization((allow) => [
+    allow.publicApiKey(),
+    allow.authenticated(),
+  ])
+  .handler(a.handler.function(myFunction)),
+
+submitForumReply: a
+  .mutation()
+  .arguments({
+    threadId: a.id().required(),
+    content: a.string().required(),
+    authorUserId: a.string().required(),
+    authorDisplayName: a.string().required(),
+    owner: a.string().required(),
+  })
+  .returns(a.ref('ForumMutationResult').required())
+  .authorization((allow) => [
+    allow.authenticated(),
+  ])
+  .handler(a.handler.function(myFunction)),
 
     // =========================================================================
     // Merch models
@@ -276,6 +346,7 @@ const schema = a
   })
   .authorization((allow) => [
     allow.resource(myFunction).to(['query', 'mutate']),
+    allow.resource(adminUserManagement).to(['query', 'mutate']),
   ]);
 
 export type Schema = ClientSchema<typeof schema>;

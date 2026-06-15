@@ -13,10 +13,15 @@ const PRINTFUL_API_KEY = process.env.PRINTFUL_API_KEY
 
 let clientPromise: Promise<any> | null = null
 
+/* ============================================================================
+   Shared: data client
+============================================================================ */
+
 async function getDataClient() {
   if (!clientPromise) {
     clientPromise = (async () => {
-      const { resourceConfig, libraryOptions } = await getAmplifyDataClientConfig(env)
+      const { resourceConfig, libraryOptions } =
+        await getAmplifyDataClientConfig(env as any)
       Amplify.configure(resourceConfig, libraryOptions)
       return generateClient<Schema>()
     })()
@@ -24,6 +29,10 @@ async function getDataClient() {
 
   return clientPromise
 }
+
+/* ============================================================================
+   Shared: HTTP helpers
+============================================================================ */
 
 function jsonResponse(statusCode: number, payload: any) {
   return {
@@ -65,7 +74,7 @@ async function makeRequest(
   method: string,
   body: any = null,
   authHeader?: string
-): Promise<{ statusCode: number; body: any }> {
+) {
   const response = await fetch(url, {
     method,
     headers: {
@@ -91,7 +100,496 @@ async function makeRequest(
 }
 
 /* ============================================================================
-   Printful
+   Forums: resolver event helpers
+============================================================================ */
+
+function isAppSyncResolverEvent(event: any) {
+  return Boolean(event?.arguments && (event?.info?.fieldName || event?.fieldName))
+}
+
+function getResolverFieldName(event: any) {
+  return event?.info?.fieldName || event?.fieldName || ''
+}
+
+function getResolverIdentity(event: any) {
+  return event?.identity || {}
+}
+
+function getIdentityUsername(identity: any) {
+  return (
+    identity?.username ||
+    identity?.claims?.['cognito:username'] ||
+    identity?.claims?.username ||
+    identity?.sub ||
+    ''
+  )
+}
+
+function getIdentityGroups(identity: any): string[] {
+  const raw =
+    identity?.claims?.['cognito:groups'] ||
+    identity?.groups ||
+    []
+
+  return Array.isArray(raw) ? raw.map((value: any) => String(value)) : []
+}
+
+function hasForumModerationAccess(identity: any) {
+  const groups = getIdentityGroups(identity).map((value) => value.toLowerCase())
+
+  return (
+    groups.includes('superadmin') ||
+    groups.includes('admin') ||
+    groups.includes('staff')
+  )
+}
+
+function hasGroupAccess(requiredGroups: string[] = [], userGroups: string[] = []) {
+  if (!Array.isArray(requiredGroups) || requiredGroups.length === 0) {
+    return true
+  }
+
+  const normalizedRequired = requiredGroups.map((value) => String(value).trim())
+  const normalizedActual = userGroups.map((value) => String(value).trim())
+
+  return normalizedRequired.some((group) => normalizedActual.includes(group))
+}
+
+function slugify(value: string) {
+  return String(value || '')
+    .toLowerCase()
+    .trim()
+    .replace(/['"]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80)
+}
+
+function forumResult(payload: {
+  success: boolean
+  message?: string | null
+  threadId?: string | null
+  postId?: string | null
+  replyCount?: number | null
+  viewCount?: number | null
+  lastReplyAt?: string | null
+}) {
+  return {
+    success: payload.success,
+    message: payload.message ?? null,
+    threadId: payload.threadId ?? null,
+    postId: payload.postId ?? null,
+    replyCount: typeof payload.replyCount === 'number' ? payload.replyCount : null,
+    viewCount: typeof payload.viewCount === 'number' ? payload.viewCount : null,
+    lastReplyAt: payload.lastReplyAt ?? null,
+  }
+}
+
+/* ============================================================================
+   Forums: data loaders
+============================================================================ */
+
+async function getForumBoardById(client: any, boardId: string) {
+  const result = await client.models.ForumBoard.get({ id: boardId })
+
+  if (result.errors?.length) {
+    throw new Error(result.errors[0].message || 'Failed to load board')
+  }
+
+  if (!result.data) {
+    throw new Error('Board not found')
+  }
+
+  return result.data
+}
+
+async function getForumThreadById(client: any, threadId: string) {
+  const result = await client.models.ForumThread.get({ id: threadId })
+
+  if (result.errors?.length) {
+    throw new Error(result.errors[0].message || 'Failed to load thread')
+  }
+
+  if (!result.data) {
+    throw new Error('Thread not found')
+  }
+
+  return result.data
+}
+
+async function listForumPostsByThreadId(client: any, threadId: string) {
+  const result = await client.models.ForumPost.list({
+    filter: {
+      threadId: { eq: threadId },
+    },
+  })
+
+  if (result.errors?.length) {
+    throw new Error(result.errors[0].message || 'Failed to load thread posts')
+  }
+
+  return result.data || []
+}
+
+/* ============================================================================
+   Forums: permission checks
+============================================================================ */
+
+function assertUserMatchesAuthorOrModerator(params: {
+  identity: any
+  owner: string
+  authorUserId: string
+}) {
+  const { identity, owner, authorUserId } = params
+
+  const username = getIdentityUsername(identity)
+  const isModerator = hasForumModerationAccess(identity)
+  const ownerMatchesIdentity = String(owner) === String(username)
+  const authorMatchesIdentity = String(authorUserId) === String(username)
+
+  return {
+    username,
+    isModerator,
+    ownerMatchesIdentity,
+    authorMatchesIdentity,
+    isAllowed: isModerator || ownerMatchesIdentity || authorMatchesIdentity,
+  }
+}
+
+function canCreateThreadInBoard(board: any, identity: any) {
+  const userGroups = getIdentityGroups(identity)
+  const isModerator = hasForumModerationAccess(identity)
+
+  const allowedGroups = Array.isArray(board?.threadCreateGroups)
+    ? board.threadCreateGroups
+    : []
+
+  if (isModerator) {
+    return true
+  }
+
+  if (!allowedGroups.length) {
+    return true
+  }
+
+  return hasGroupAccess(allowedGroups, userGroups)
+}
+
+/* ============================================================================
+   Forums: record thread view
+============================================================================ */
+
+async function handleRecordForumThreadView(event: any) {
+  const client = await getDataClient()
+  const { threadId } = event.arguments || {}
+
+  if (!threadId) {
+    return forumResult({
+      success: false,
+      message: 'Missing threadId',
+    })
+  }
+
+  try {
+    const thread = await getForumThreadById(client, threadId)
+    const nextViewCount = Number(thread.viewCount || 0) + 1
+
+    const updateResult = await client.models.ForumThread.update({
+      id: threadId,
+      viewCount: nextViewCount,
+    })
+
+    if (updateResult.errors?.length) {
+      throw new Error(updateResult.errors[0].message || 'Failed to update thread view count')
+    }
+
+    return forumResult({
+      success: true,
+      message: 'Thread view recorded',
+      threadId,
+      replyCount: typeof thread.replyCount === 'number' ? thread.replyCount : 0,
+      viewCount: nextViewCount,
+      lastReplyAt: thread.lastReplyAt || null,
+    })
+  } catch (error: any) {
+    console.error('recordForumThreadView failed:', error)
+
+    return forumResult({
+      success: false,
+      message: error?.message || 'Failed to record thread view',
+      threadId,
+    })
+  }
+}
+
+/* ============================================================================
+   Forums: create thread
+============================================================================ */
+
+async function handleCreateForumThread(event: any) {
+  const client = await getDataClient()
+  const identity = getResolverIdentity(event)
+
+  const {
+    boardId,
+    title,
+    content,
+    authorUserId,
+    authorDisplayName,
+    owner,
+    isFeatured,
+  } = event.arguments || {}
+
+  if (!boardId || !title || !content || !authorUserId || !authorDisplayName || !owner) {
+    return forumResult({
+      success: false,
+      message: 'Missing required thread fields',
+    })
+  }
+
+  const actorCheck = assertUserMatchesAuthorOrModerator({
+    identity,
+    owner,
+    authorUserId,
+  })
+
+  if (!actorCheck.username) {
+    return forumResult({
+      success: false,
+      message: 'Authentication required',
+    })
+  }
+
+  if (!actorCheck.isAllowed) {
+    return forumResult({
+      success: false,
+      message: 'You are not allowed to create a thread for another user',
+    })
+  }
+
+  try {
+    const board = await getForumBoardById(client, boardId)
+
+    if (board.isActive === false) {
+      return forumResult({
+        success: false,
+        message: 'This board is not active',
+      })
+    }
+
+    if (!canCreateThreadInBoard(board, identity)) {
+      return forumResult({
+        success: false,
+        message: 'You do not have permission to create a thread in this board',
+      })
+    }
+
+    const nowIso = new Date().toISOString()
+    const slugBase = slugify(String(title)) || 'thread'
+    const slug = `${slugBase}-${Date.now()}`
+    const preview = String(content).trim().slice(0, 180)
+
+    const threadCreateResult = await client.models.ForumThread.create({
+      boardId,
+      title: String(title).trim(),
+      slug,
+      owner,
+      authorUserId,
+      authorDisplayName,
+      contentPreview: preview,
+      isPinned: false,
+      isLocked: false,
+      isFeatured: actorCheck.isModerator && isFeatured === true,
+      replyCount: 0,
+      viewCount: 0,
+      lastReplyAt: nowIso,
+    })
+
+    if (threadCreateResult.errors?.length) {
+      throw new Error(threadCreateResult.errors[0].message || 'Failed to create thread')
+    }
+
+    const createdThread = threadCreateResult.data
+
+    if (!createdThread?.id) {
+      throw new Error('Thread was created without an id')
+    }
+
+    const postCreateResult = await client.models.ForumPost.create({
+      threadId: createdThread.id,
+      owner,
+      authorUserId,
+      authorDisplayName,
+      content: String(content).trim(),
+      editedAt: null,
+    })
+
+    if (postCreateResult.errors?.length) {
+      throw new Error(postCreateResult.errors[0].message || 'Failed to create opening post')
+    }
+
+    return forumResult({
+      success: true,
+      message: 'Thread created successfully',
+      threadId: createdThread.id,
+      postId: postCreateResult.data?.id || null,
+      replyCount: 0,
+      viewCount: 0,
+      lastReplyAt: nowIso,
+    })
+  } catch (error: any) {
+    console.error('createForumThread failed:', error)
+
+    return forumResult({
+      success: false,
+      message: error?.message || 'Failed to create thread',
+    })
+  }
+}
+
+/* ============================================================================
+   Forums: create reply
+============================================================================ */
+
+async function handleCreateForumReply(event: any) {
+  const client = await getDataClient()
+  const identity = getResolverIdentity(event)
+
+  const {
+    threadId,
+    content,
+    authorUserId,
+    authorDisplayName,
+    owner,
+  } = event.arguments || {}
+
+  if (!threadId || !content || !authorUserId || !authorDisplayName || !owner) {
+    return forumResult({
+      success: false,
+      message: 'Missing required reply fields',
+      threadId: threadId || null,
+    })
+  }
+
+  const actorCheck = assertUserMatchesAuthorOrModerator({
+    identity,
+    owner,
+    authorUserId,
+  })
+
+  if (!actorCheck.username) {
+    return forumResult({
+      success: false,
+      message: 'Authentication required',
+      threadId,
+    })
+  }
+
+  if (!actorCheck.isAllowed) {
+    return forumResult({
+      success: false,
+      message: 'You are not allowed to create a reply for another user',
+      threadId,
+    })
+  }
+
+  try {
+    const thread = await getForumThreadById(client, threadId)
+
+    if (thread.isLocked === true) {
+      return forumResult({
+        success: false,
+        message: 'This thread is locked',
+        threadId,
+        replyCount: typeof thread.replyCount === 'number' ? thread.replyCount : 0,
+        viewCount: typeof thread.viewCount === 'number' ? thread.viewCount : 0,
+        lastReplyAt: thread.lastReplyAt || null,
+      })
+    }
+
+    const nowIso = new Date().toISOString()
+
+    const createResult = await client.models.ForumPost.create({
+      threadId,
+      owner,
+      authorUserId,
+      authorDisplayName,
+      content: String(content).trim(),
+      editedAt: null,
+    })
+
+    if (createResult.errors?.length) {
+      throw new Error(createResult.errors[0].message || 'Failed to create forum reply')
+    }
+
+    const createdPost = createResult.data
+
+    if (!createdPost?.id) {
+      throw new Error('Reply was created without an id')
+    }
+
+    const posts = await listForumPostsByThreadId(client, threadId)
+    const nextReplyCount = Math.max(posts.length - 1, 0)
+
+    const updateThreadResult = await client.models.ForumThread.update({
+      id: threadId,
+      replyCount: nextReplyCount,
+      lastReplyAt: nowIso,
+    })
+
+    if (updateThreadResult.errors?.length) {
+      throw new Error(updateThreadResult.errors[0].message || 'Reply created but thread update failed')
+    }
+
+    const updatedThread = updateThreadResult.data || thread
+
+    return forumResult({
+      success: true,
+      message: 'Reply created successfully',
+      threadId,
+      postId: createdPost.id,
+      replyCount: typeof updatedThread.replyCount === 'number'
+        ? updatedThread.replyCount
+        : nextReplyCount,
+      viewCount: typeof updatedThread.viewCount === 'number'
+        ? updatedThread.viewCount
+        : Number(thread.viewCount || 0),
+      lastReplyAt: updatedThread.lastReplyAt || nowIso,
+    })
+  } catch (error: any) {
+    console.error('createForumReply failed:', error)
+
+    return forumResult({
+      success: false,
+      message: error?.message || 'Failed to create reply',
+      threadId,
+    })
+  }
+}
+
+/* ============================================================================
+   Forums: resolver router
+============================================================================ */
+
+async function handleForumResolvers(event: any) {
+  const fieldName = getResolverFieldName(event)
+
+  if (fieldName === 'recordForumThreadView') {
+    return handleRecordForumThreadView(event)
+  }
+
+  if (fieldName === 'submitForumThread') {
+    return handleCreateForumThread(event)
+  }
+
+  if (fieldName === 'submitForumReply') {
+    return handleCreateForumReply(event)
+  }
+
+  return null
+}
+/* ============================================================================
+   Printful: helpers
 ============================================================================ */
 
 function getPrintfulApiKey() {
@@ -149,6 +647,10 @@ function normalizePrintfulVariant(variant: any, fallbackImage = '') {
       fallbackImage,
   }
 }
+
+/* ============================================================================
+   Printful: handlers
+============================================================================ */
 
 async function handlePrintfulProducts() {
   const result = await makeRequest(
@@ -236,7 +738,7 @@ async function handlePrintfulOrderLookup(path: string) {
 }
 
 /* ============================================================================
-   Revolut
+   Revolut: helpers
 ============================================================================ */
 
 function getRevolutMode(): 'sandbox' | 'prod' {
@@ -309,6 +811,10 @@ function sanitizeRevolutCreateResponse(order: any) {
     mode: getRevolutMode(),
   }
 }
+
+/* ============================================================================
+   Revolut: handlers
+============================================================================ */
 
 async function createRevolutMerchantOrder(body: any) {
   const payload = buildRevolutOrderPayload(body)
@@ -483,7 +989,7 @@ async function handleTwitchCommandsMe(event: any) {
 }
 
 /* ============================================================================
-   Route handlers
+   REST route routers
 ============================================================================ */
 
 async function handleRevolutRoutes(path: string, method: string, body: any) {
@@ -535,11 +1041,24 @@ async function handleTwitchRoutes(path: string, method: string, event: any) {
 ============================================================================ */
 
 export const handler: Handler = async (event: any) => {
-  const path = getRequestPath(event)
-  const method = getRequestMethod(event)
-  const body = getRequestBody(event)
-
   try {
+    if (isAppSyncResolverEvent(event)) {
+      const forumResponse = await handleForumResolvers(event)
+
+      if (forumResponse) {
+        return forumResponse
+      }
+
+      return forumResult({
+        success: false,
+        message: `Unsupported resolver field: ${getResolverFieldName(event)}`,
+      })
+    }
+
+    const path = getRequestPath(event)
+    const method = getRequestMethod(event)
+    const body = getRequestBody(event)
+
     if (method === 'OPTIONS') {
       return jsonResponse(200, { ok: true })
     }
@@ -560,6 +1079,13 @@ export const handler: Handler = async (event: any) => {
     })
   } catch (error: any) {
     console.error('API Error:', error)
+
+    if (isAppSyncResolverEvent(event)) {
+      return forumResult({
+        success: false,
+        message: error?.message || 'Unknown forum error',
+      })
+    }
 
     return jsonResponse(500, {
       error: 'Request failed',

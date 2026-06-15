@@ -1,10 +1,23 @@
+// ForumBoard.js
 import { generateClient } from 'aws-amplify/data';
 import { getCurrentUser, fetchAuthSession } from 'aws-amplify/auth';
 
-const userPoolClient = generateClient();
-const publicClient = generateClient({
-  authMode: 'apiKey',
-});
+let userPoolClient;
+let publicClient;
+
+function getUserPoolClient() {
+  if (!userPoolClient) {
+    userPoolClient = generateClient();
+  }
+  return userPoolClient;
+}
+
+function getPublicClient() {
+  if (!publicClient) {
+    publicClient = generateClient({ authMode: 'apiKey' });
+  }
+  return publicClient;
+}
 
 const DEFAULT_BOARD = {
   id: 'community-board',
@@ -93,33 +106,61 @@ export default {
 
   data() {
     return {
+      // loading + errors
       loading: true,
       loadError: '',
       creatingThread: false,
       createThreadError: '',
+
+      // async flags
       updatingPinnedThreadId: '',
       updatingFeaturedThreadId: '',
+
+      // create-thread form
       showCreateThreadForm: false,
-      boardRecord: null,
-      boardCategory: null,
-      boardThreads: [],
-      boardPosts: [],
-      currentUserId: '',
-      currentUsername: '',
-      currentUserGroups: [],
-      isSignedIn: false,
-      showJoinPrompt: false,
-      joinPageUrl: '/join',
-      signInPageUrl: '/join',
       newThreadForm: {
         title: '',
         content: '',
         isFeatured: false,
       },
+
+      // board data
+      boardRecord: null,
+      boardCategory: null,
+      boardThreads: [],
+      boardPosts: [],
+
+      // auth + identity
+      currentUserId: '',
+      currentUsername: '',
+      currentUserGroups: [],
+      isSignedIn: false,
+
+      // join prompt
+      showJoinPrompt: false,
+      joinPageUrl: '/join',
+      signInPageUrl: '/join',
     };
   },
 
   computed: {
+    // route + role gate for "New Thread" buttons
+isAnnouncementsRoute() {
+  return this.$route.path === '/forum/board/announcements';
+},
+
+isSuperAdmin() {
+  return (this.currentUserGroups || []).includes('superadmin');
+},
+
+showNewThreadButton() {
+  if (this.isAnnouncementsRoute) {
+    return this.isSuperAdmin;
+  }
+
+  return true;
+},
+
     canManageThreadFlags() {
       const allowedGroups = ['superadmin', 'admin', 'staff'];
 
@@ -301,7 +342,7 @@ export default {
         throw new Error('Could not determine the current user.');
       }
 
-      const profileResult = await userPoolClient.models.UserProfile.list({
+      const profileResult = await getUserPoolClient().models.UserProfile.list({
         filter: {
           ownerUserId: { eq: authorUserId },
         },
@@ -328,10 +369,10 @@ export default {
         const isSignedIn = !!session?.tokens?.idToken;
         this.isSignedIn = isSignedIn;
 
-        return isSignedIn ? userPoolClient : publicClient;
-      } catch (error) {
+        return isSignedIn ? getUserPoolClient() : getPublicClient();
+      } catch {
         this.isSignedIn = false;
-        return publicClient;
+        return getPublicClient();
       }
     },
 
@@ -379,7 +420,7 @@ export default {
         this.currentUserGroups = Array.isArray(groups)
           ? groups.map(normaliseGroupName)
           : [];
-      } catch (error) {
+      } catch {
         this.isSignedIn = false;
         this.currentUserId = '';
         this.currentUsername = '';
@@ -459,17 +500,21 @@ export default {
         this.loading = false;
       }
     },
+openCreateThread() {
+  if (!this.isSignedIn) {
+    this.showJoinPrompt = true;
+    this.createThreadError = '';
+    return;
+  }
 
-    openCreateThread() {
-      if (!this.isSignedIn) {
-        this.showJoinPrompt = true;
-        this.createThreadError = '';
-        return;
-      }
+  if (!this.showNewThreadButton) {
+    this.createThreadError = 'You do not have permission to create threads here.';
+    return;
+  }
 
-      this.showCreateThreadForm = true;
-      this.createThreadError = '';
-    },
+  this.showCreateThreadForm = true;
+  this.createThreadError = '';
+},
 
     closeJoinPrompt() {
       this.showJoinPrompt = false;
@@ -515,65 +560,70 @@ export default {
         return;
       }
 
+      if (!this.isSignedIn) {
+        this.showJoinPrompt = true;
+        this.createThreadError = '';
+        return;
+      }
+
+      // guard again on submit, just to be safe
+      if (!this.showNewThreadButton) {
+        this.createThreadError =
+          'You do not have permission to create threads on this board.';
+        return;
+      }
+
       this.creatingThread = true;
 
       try {
         const { authorUserId, authorDisplayName } =
           await this.getForumAuthor();
 
-        const threadSlugBase = slugify(title);
-        const uniqueThreadSlug = `${threadSlugBase}-${Date.now()}`;
-        const preview = content.slice(0, 180);
-
-        const threadCreateResult = await userPoolClient.models.ForumThread.create(
-          {
-            boardId: this.boardRecord.id,
-            title,
-            slug: uniqueThreadSlug,
-            authorUserId,
-            authorDisplayName,
-            contentPreview: preview,
-            isPinned: false,
-            isLocked: false,
-            isFeatured:
-              this.canManageThreadFlags &&
-              this.newThreadForm.isFeatured === true,
-            replyCount: 0,
-            viewCount: 0,
-            lastReplyAt: new Date().toISOString(),
-          },
-        );
-
-        if (threadCreateResult.errors?.length) {
-          throw new Error(
-            threadCreateResult.errors[0].message ||
-              'Failed to create thread',
-          );
-        }
-
-        const createdThread = threadCreateResult.data;
-
-        if (!createdThread?.id) {
-          throw new Error('Thread was created without an ID.');
-        }
-
-        const postCreateResult = await userPoolClient.models.ForumPost.create({
-          threadId: createdThread.id,
+        const result = await getUserPoolClient().mutations.submitForumThread({
+          boardId: this.boardRecord.id,
+          title,
+          content,
           authorUserId,
           authorDisplayName,
-          content,
+          owner: authorUserId,
+          isFeatured:
+            this.canManageThreadFlags &&
+            this.newThreadForm.isFeatured === true,
         });
 
-        if (postCreateResult.errors?.length) {
+        if (result.errors?.length) {
           throw new Error(
-            postCreateResult.errors[0].message ||
-              'Failed to create opening post',
+            result.errors[0].message || 'Failed to create thread',
           );
+        }
+
+        const payload = result.data;
+
+        if (!payload?.success) {
+          throw new Error(payload?.message || 'Failed to create thread');
         }
 
         this.cancelCreateThread();
         await this.fetchBoardPage();
-        this.goToThread(createdThread.slug);
+
+        const createdThread = this.boardThreads.find(
+          (thread) => thread.id === payload.threadId,
+        );
+
+        if (createdThread?.slug) {
+          this.goToThread(createdThread.slug);
+          return;
+        }
+
+        await this.fetchBoardPage();
+
+        const fallbackThread = this.boardThreads.find(
+          (thread) => thread.id === payload.threadId,
+        );
+
+        if (fallbackThread?.slug) {
+          this.goToThread(fallbackThread.slug);
+        }
       } catch (error) {
         console.error('Failed to create thread:', error);
         this.createThreadError =
@@ -592,10 +642,11 @@ export default {
       this.loadError = '';
 
       try {
-        const updateResult = await userPoolClient.models.ForumThread.update({
-          id: thread.dbId,
-          isPinned: !thread.isPinned,
-        });
+        const updateResult =
+          await getUserPoolClient().models.ForumThread.update({
+            id: thread.dbId,
+            isPinned: !thread.isPinned,
+          });
 
         if (updateResult.errors?.length) {
           throw new Error(
@@ -623,10 +674,11 @@ export default {
       this.loadError = '';
 
       try {
-        const updateResult = await userPoolClient.models.ForumThread.update({
-          id: thread.dbId,
-          isFeatured: nextValue === true,
-        });
+        const updateResult =
+          await getUserPoolClient().models.ForumThread.update({
+            id: thread.dbId,
+            isFeatured: nextValue === true,
+          });
 
         if (updateResult.errors?.length) {
           throw new Error(
