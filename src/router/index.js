@@ -11,6 +11,7 @@ import Checkout from '../views/Checkout/Checkout.vue'
 import Join from '../views/Join/Join.vue'
 import Account from '../views/Account/Account.vue'
 import Roles from '../views/About/Roles/Roles.vue'
+import UserHomepage from '../views/UserHomepage/UserHomepage.vue'
 
 import BotOverview from '../views/Bot/Overview/BotOverview.vue'
 import BotTwitch from '../views/Bot/Twitch/BotTwitch.vue'
@@ -47,6 +48,7 @@ const routes = [
   { path: '/events', component: Events },
   { path: '/join', component: Join },
   { path: '/account', component: Account },
+  { path: '/home', name: 'UserHomepage', component: UserHomepage, meta: { requiresAuth: true } },
 
   {
     path: '/dashboard',

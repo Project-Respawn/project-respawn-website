@@ -4,6 +4,10 @@
       <template v-if="isSignedIn">
         <header class="account-topbar">
           <div>
+            <div class="account-status-row">
+              <span class="account-status-badge">In Progress Layout not final</span>
+            </div>
+
             <p class="account-eyebrow">Project Respawn</p>
             <h1 class="account-title">Profile Hub</h1>
             <p class="account-subtitle">
