@@ -62,8 +62,8 @@
             </li> -->
             <li class="nav-item">
               <router-link v-if="!isSignedIn" to="/join" class="btn btn-secondary ms-3" :class="{ active: $route.path === '/join' }">Join</router-link>
-                <router-link v-else to="/account" class="btn btn-secondary ms-3 header-account-btn text-truncate d-flex align-items-center gap-2"
-                :class="{ active: $route.path === '/account' }" :title="displayName">
+                <router-link v-else to="/home" class="btn btn-secondary ms-3 header-account-btn text-truncate d-flex align-items-center gap-2"
+  :class="{ active: $route.path === '/home' }" :title="displayName">
                 <span class="profile-avatar" aria-hidden="true">{{ initials }}</span>
                 <span class="text-truncate">{{ truncatedNavName }}</span>
               </router-link>

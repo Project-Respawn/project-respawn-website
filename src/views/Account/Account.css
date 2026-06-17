@@ -1,412 +1,710 @@
-.account-column {
-  max-width: 48rem;
+/* =========================================================
+   1. DESIGN TOKENS / VARIABLES
+   Colors, spacing, radius, shadows, transitions
+   ========================================================= */
+:root {
+  --account-bg: #0f151c;
+  --account-bg-soft: #16202b;
+  --account-surface: rgba(31, 43, 56, 0.96);
+  --account-surface-strong: rgba(20, 30, 40, 0.99);
+  --account-border: rgba(138, 166, 192, 0.18);
+  --account-border-strong: rgba(138, 166, 192, 0.3);
+  --account-text: #e7eef7;
+  --account-text-muted: #9eb0c3;
+  --account-text-faint: #738395;
+  --account-accent: #66c0f4;
+  --account-success: #7ee787;
+  --account-danger: #ff7b72;
+
+  --account-radius-md: 14px;
+  --account-radius-lg: 18px;
+  --account-radius-xl: 24px;
+  --account-radius-pill: 999px;
+
+  --account-shadow-sm: 0 8px 20px rgba(0, 0, 0, 0.22);
+  --account-shadow-md: 0 18px 40px rgba(0, 0, 0, 0.28);
+  --account-shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.34);
+
+  --account-space-2: 8px;
+  --account-space-3: 12px;
+  --account-space-4: 16px;
+  --account-space-5: 20px;
+  --account-space-6: 24px;
+  --account-space-8: 32px;
+
+  --account-transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.account-eyebrow {
-  margin: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 0.8rem;
-  color: var(--accent);
-  font-weight: 700;
+/* =========================================================
+   2. GLOBAL RESET
+   Base box sizing
+   ========================================================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-.account-panel {
-  border-radius: var(--radius);
-  overflow: hidden;
+/* =========================================================
+   3. PAGE WRAPPER
+   Main page background and overall page spacing
+   ========================================================= */
+.account-page {
+  min-height: 100dvh;
+  padding: clamp(20px, 3vw, 40px);
+  background:
+    radial-gradient(circle at top, rgba(102, 192, 244, 0.08), transparent 30%),
+    linear-gradient(180deg, #0f151c 0%, #0c1117 100%);
+  color: var(--account-text);
 }
 
-.min-width-0 {
-  min-width: 0;
-}
-
-/* Profile header */
-.profile-header-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  gap: 1.25rem;
-}
-
-.profile-avatar-wrap {
-  flex-shrink: 0;
-}
-
-.profile-avatar {
-  width: 3.25rem;
-  height: 3.25rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.95rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  background: linear-gradient(
-    145deg,
-    rgba(111, 66, 193, 0.35),
-    rgba(13, 110, 253, 0.25)
-  );
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: inherit;
-}
-
-.profile-avatar-lg {
-  width: 5.5rem;
-  height: 5.5rem;
-  font-size: 1.35rem;
-}
-
-.profile-avatar-img {
-  width: 5.5rem;
-  height: 5.5rem;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 1px solid rgba(201, 180, 224, 0.15);
-  display: block;
-}
-
-.profile-heading {
-  color: var(--text);
-}
-
-.profile-bio {
-  color: var(--text);
-  font-size: 0.95rem;
-  line-height: 1.5;
-  max-width: 52ch;
-}
-
-.account-icon-btn {
-  border-color: rgba(201, 180, 224, 0.25);
-  color: var(--text);
-  flex-shrink: 0;
-}
-
-.account-icon-btn:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-.account-gear {
-  font-size: 1.1rem;
-  line-height: 1;
-}
-
-.account-section-title {
-  color: var(--text);
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
-
-/* Stats */
-.stats-grid {
+/* =========================================================
+   4. MAIN SHELL / OUTER LAYOUT
+   Main centered container for the account page
+   ========================================================= */
+.account-shell {
+  width: min(1700px, 100%);
+  margin: 0 auto;
   display: grid;
-  gap: 12px;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--account-space-8);
 }
 
-.stat-card {
-  text-align: left;
-  padding: 0.85rem 1rem;
-  border-radius: 10px;
-  border: 1px solid rgba(201, 180, 224, 0.12);
-  background: linear-gradient(135deg, #39127c, #9f7aea);
-  color: white;
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  min-height: 4.5rem;
-  justify-content: center;
-}
-
-.stat-card-interactive {
-  cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease;
-}
-
-.stat-card-interactive:hover {
-  border-color: rgba(57, 255, 20, 0.35);
-  background: rgba(57, 255, 20, 0.06);
-}
-
-.stat-label {
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  color: white;
-  letter-spacing: 0.08em;
-  color: white;
-  font-weight: 600;
-}
-
-.stat-value {
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: var(--text);
-}
-
-.stat-hint {
-  font-size: 0.85rem;
-  color: var(--muted);
-}
-
-.stat-status {
-  font-size: 0.9rem;
-  color: var(--accent-2);
-}
-
-button.stat-card {
-  font: inherit;
-  appearance: none;
-  width: 100%;
-}
-
-/* Badges */
-.badges-grid {
+/* =========================================================
+   5. ROWS / SECTION LAYOUT
+   Main stacked rows and layout sections
+   ========================================================= */
+.account-row,
+.account-layout-section {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 10px;
+  gap: var(--account-space-5);
 }
 
-@media (max-width: 520px) {
-  .badges-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-.badge-slot {
-  aspect-ratio: 1;
-  border-radius: 10px;
-  border: 1px dashed rgba(201, 180, 224, 0.2);
-  background: rgba(201, 180, 224, 0.04);
+/* =========================================================
+   6. SHARED FLEX HEADERS
+   Used by topbar, row headers, and box headers
+   ========================================================= */
+.account-topbar,
+.account-row-header,
+.account-box-header {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+  justify-content: space-between;
+  gap: var(--account-space-3);
 }
 
-.badge-slot-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+/* =========================================================
+   7. TOPBAR
+   Top account summary/header panel
+   ========================================================= */
+.account-topbar {
+  align-items: flex-end;
+  padding: var(--account-space-6);
+  border: 1px solid var(--account-border);
+  border-radius: var(--account-radius-xl);
+  background: linear-gradient(180deg, rgba(30, 43, 57, 0.92), rgba(20, 29, 39, 0.96));
+  box-shadow: var(--account-shadow-sm);
 }
 
-.badge-slot-placeholder {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--muted);
-  opacity: 0.5;
-  user-select: none;
-}
-
-/* Quick links */
-.quick-links {
+/* =========================================================
+   7B. TOPBAR STATUS BADGE
+   Hardcoded page status badge above eyebrow/title
+   ========================================================= */
+.account-status-row {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  margin-bottom: 12px;
 }
 
-.quick-link {
+.account-status-badge {
   display: inline-flex;
   align-items: center;
-  padding: 0.5rem 1rem;
-  border-radius: var(--radius);
-  border: 1px solid rgba(201, 180, 224, 0.12);
-  background: rgba(201, 180, 224, 0.05);
-  color: var(--accent);
-  font-weight: 600;
+  min-height: 30px;
+  padding: 6px 12px;
+  border-radius: var(--account-radius-pill);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #041012;
+  background: linear-gradient(135deg, #97fba9 0%, #59d98e 100%);
+  box-shadow: 0 8px 20px rgba(89, 217, 142, 0.22);
+}
+
+/* =========================================================
+   8. SMALL LABEL TEXT
+   Eyebrows, kickers, control labels
+   ========================================================= */
+.account-eyebrow,
+.account-box-kicker,
+.account-row-kicker,
+.account-control-label {
+  margin: 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--account-text-faint);
+}
+
+/* =========================================================
+   9. PAGE TITLE / SUBTITLE
+   Main heading text
+   ========================================================= */
+.account-title {
+  margin: 6px 0 10px;
+  font-size: clamp(2rem, 1.5rem + 1.5vw, 3rem);
+  line-height: 1.05;
+}
+
+.account-subtitle {
+  margin: 0;
+  max-width: 70ch;
+  color: var(--account-text-muted);
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+
+/* =========================================================
+   10. ACTION ROWS / TOOLBARS
+   Shared flex wrappers for actions and controls
+   ========================================================= */
+.account-topbar-actions,
+.account-box-header-actions,
+.account-chip-row,
+.account-box-controls,
+.account-modal-actions,
+.account-box-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--account-space-3);
+}
+
+/* =========================================================
+   11. SHARED TRANSITIONS
+   Common interactive animation rules
+   ========================================================= */
+.account-btn,
+.account-select,
+.account-form-control,
+.account-box-handle,
+.account-modal-close,
+.account-board-cell {
+  transition:
+    background var(--account-transition),
+    border-color var(--account-transition),
+    color var(--account-transition),
+    transform var(--account-transition),
+    box-shadow var(--account-transition),
+    opacity var(--account-transition);
+}
+
+/* =========================================================
+   12. BUTTONS
+   Base button styling and button variants
+   ========================================================= */
+.account-btn {
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid transparent;
+  border-radius: var(--account-radius-pill);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.account-btn:hover,
+.account-box-handle:hover,
+.account-modal-close:hover {
+  transform: translateY(-1px);
+}
+
+.account-btn-primary {
+  color: #081018;
+  background: linear-gradient(180deg, #8ad7ff, #66c0f4);
+  box-shadow:
+    0 0 0 1px rgba(102, 192, 244, 0.18),
+    0 10px 22px rgba(102, 192, 244, 0.18);
+}
+
+.account-btn-secondary {
+  color: var(--account-text);
+  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--account-border);
+}
+
+.account-btn-ghost {
+  color: var(--account-text-muted);
+  background: transparent;
+  border-color: var(--account-border);
+}
+
+.account-btn-sm {
+  min-height: 36px;
+  padding: 0 14px;
   font-size: 0.9rem;
-  transition: border-color 0.2s ease, background 0.2s ease;
 }
 
-.quick-link:hover {
-  border-color: var(--accent);
-  background: rgba(57, 255, 20, 0.08);
-  color: var(--accent);
+/* =========================================================
+   13. FORM CONTROLS
+   Selects, inputs, textarea, file input
+   ========================================================= */
+.account-select,
+.account-form-control {
+  width: 100%;
+  min-height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--account-border);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--account-text);
+  font: inherit;
 }
 
-.account-signout-wrap {
-  margin-top: 0.5rem;
-  padding-bottom: 1rem;
+.account-form-control {
+  min-height: 44px;
+  padding: 0 14px;
 }
 
-/* Modal (Merch-like) */
+.account-select:focus,
+.account-form-control:focus {
+  outline: none;
+  border-color: rgba(102, 192, 244, 0.7);
+  box-shadow: 0 0 0 3px rgba(102, 192, 244, 0.16);
+}
+
+.account-form-control-textarea {
+  min-height: 140px;
+  padding: 12px 14px;
+  resize: vertical;
+}
+
+.account-form-control-file {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/* =========================================================
+   14. BOARD SHELL
+   Outer wrapper for board area
+   ========================================================= */
+.account-board-shell {
+  overflow-x: visible;
+  overflow-y: visible;
+  padding-bottom: 10px;
+}
+
+/* =========================================================
+   15. BOARD CELLS
+   Grid drop zones / layout cells
+   ========================================================= */
+.account-board-cell {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 10px;
+  border: 1px dashed rgba(102, 192, 244, 0.32);
+  border-radius: var(--account-radius-lg);
+  background: linear-gradient(180deg, rgba(102, 192, 244, 0.06), rgba(255, 255, 255, 0.02));
+  color: var(--account-text-faint);
+}
+
+.account-board-cell.is-occupied {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+}
+
+.account-board-cell.is-drop-target {
+  border-color: rgba(102, 192, 244, 0.8);
+  background: linear-gradient(180deg, rgba(102, 192, 244, 0.18), rgba(102, 192, 244, 0.08));
+  box-shadow: inset 0 0 0 1px rgba(102, 192, 244, 0.28);
+}
+
+.account-board-cell-label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+/* =========================================================
+   16. BOX / CARD BASE
+   Main module card styling
+   ========================================================= */
+.account-box {
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+  min-height: 280px;
+  border: 1px solid var(--account-border);
+  border-radius: var(--account-radius-lg);
+  background: linear-gradient(180deg, var(--account-surface) 0%, var(--account-surface-strong) 100%);
+  box-shadow: var(--account-shadow-sm);
+}
+
+/* =========================================================
+   17. BOX STATES
+   Editing, drag state, coming soon state
+   ========================================================= */
+.account-board-module.is-editing {
+  border-color: rgba(102, 192, 244, 0.45);
+}
+
+.account-board-module.is-drag-source {
+  opacity: 0.72;
+}
+
+.account-board-module.is-coming-soon {
+  position: relative;
+  overflow: hidden;
+  border-color: rgba(109, 255, 139, 0.28);
+  box-shadow:
+    0 0 0 1px rgba(109, 255, 139, 0.08),
+    0 0 18px rgba(109, 255, 139, 0.08),
+    0 12px 28px rgba(0, 0, 0, 0.28);
+}
+
+/* =========================================================
+   18. COMING SOON OVERLAY EFFECT
+   Neon diagonal wash + glowing text
+   ========================================================= */
+.account-board-module.is-coming-soon::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    135deg,
+    rgba(109, 255, 139, 0) 0%,
+    rgba(109, 255, 139, 0.05) 35%,
+    rgba(109, 255, 139, 0.14) 50%,
+    rgba(109, 255, 139, 0.05) 65%,
+    rgba(109, 255, 139, 0) 100%
+  );
+}
+
+.account-board-module.is-coming-soon::after {
+  content: "COMING SOON";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  transform: translate(-50%, -50%) rotate(-24deg);
+  pointer-events: none;
+  white-space: nowrap;
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #6dff8b;
+  text-shadow:
+    0 0 6px rgba(109, 255, 139, 0.95),
+    0 0 14px rgba(109, 255, 139, 0.8),
+    0 0 28px rgba(109, 255, 139, 0.55);
+  opacity: 0.95;
+}
+
+.account-board-module.is-coming-soon .account-box-inner {
+  position: relative;
+  z-index: 1;
+  opacity: 0.5;
+}
+
+/* =========================================================
+   19. BOX INNER CONTENT
+   Inner layout and spacing for card content
+   ========================================================= */
+.account-box-inner {
+  display: grid;
+  gap: var(--account-space-5);
+  height: 100%;
+  padding: 28px;
+}
+
+.account-box-header {
+  align-items: flex-start;
+  padding-bottom: var(--account-space-3);
+  border-bottom: 1px solid rgba(138, 166, 192, 0.14);
+}
+
+/* =========================================================
+   20. BOX TEXT CONTENT
+   Titles, descriptions, body text
+   ========================================================= */
+.account-box-title,
+.account-display-name,
+.account-box-description,
+.account-bio-text,
+.account-user-text,
+.account-inline-error,
+.account-empty-state p {
+  margin: 0;
+}
+
+.account-display-name {
+  font-size: clamp(1.8rem, 1.3rem + 1vw, 2.5rem);
+}
+
+.account-box-description,
+.account-bio-text,
+.account-user-text,
+.account-empty-state p {
+  color: var(--account-text-muted);
+  line-height: 1.6;
+}
+
+/* =========================================================
+   21. BOX HANDLE / BOX CONTROLS
+   Drag handle and per-box controls
+   ========================================================= */
+.account-box-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--account-border);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--account-text-muted);
+  cursor: grab;
+}
+
+.account-box-handle:active {
+  cursor: grabbing;
+}
+
+.account-box-controls {
+  margin-top: auto;
+  padding-top: var(--account-space-3);
+  border-top: 1px solid rgba(138, 166, 192, 0.12);
+}
+
+.account-control-group {
+  display: grid;
+  gap: 6px;
+  min-width: 140px;
+}
+
+.account-control-group--compact {
+  min-width: 110px;
+}
+
+/* =========================================================
+   22. IDENTITY BOX LAYOUT
+   Avatar + identity content layout
+   ========================================================= */
+.account-identity-layout {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: var(--account-space-6);
+  align-items: flex-start;
+}
+
+.account-avatar-column {
+  display: grid;
+  gap: var(--account-space-3);
+  justify-items: flex-start;
+}
+
+/* =========================================================
+   23. AVATAR
+   Avatar image and placeholder
+   ========================================================= */
+.account-avatar-image,
+.account-avatar-placeholder {
+  width: 132px;
+  height: 132px;
+  border-radius: 24px;
+}
+
+.account-avatar-image {
+  object-fit: cover;
+  border: 1px solid rgba(138, 166, 192, 0.25);
+}
+
+.account-avatar-placeholder {
+  display: grid;
+  place-items: center;
+  background: rgba(102, 192, 244, 0.12);
+  border: 1px solid rgba(102, 192, 244, 0.22);
+  color: var(--account-accent);
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+/* =========================================================
+   24. SHARED CONTENT STACKS
+   Common grid stacks used in multiple modules
+   ========================================================= */
+.account-identity-copy,
+.account-text-module,
+.account-empty-state,
+.account-form-field,
+.account-signed-out-card,
+.account-modal {
+  display: grid;
+  gap: var(--account-space-4);
+}
+
+/* =========================================================
+   25. CHIPS / BADGES
+   Tag-like elements and status pills
+   ========================================================= */
+.account-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: var(--account-radius-pill);
+  border: 1px solid rgba(138, 166, 192, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--account-text);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.account-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: var(--account-radius-pill);
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.account-badge-live {
+  color: #0d1d13;
+  background: var(--account-success);
+}
+
+.account-badge-friends {
+  color: #081018;
+  background: var(--account-accent);
+}
+
+/* =========================================================
+   26. CONTENT PANELS
+   Empty state panel and text content panel
+   ========================================================= */
+.account-empty-state,
+.account-user-text {
+  padding: 14px 16px;
+  border-radius: var(--account-radius-md);
+  border: 1px solid rgba(138, 166, 192, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.account-user-text {
+  min-height: 120px;
+  white-space: pre-wrap;
+}
+
+/* =========================================================
+   27. SIGNED OUT CARD
+   Logged-out view card
+   ========================================================= */
+.account-signed-out-card {
+  max-width: 680px;
+  padding: var(--account-space-6);
+  border: 1px solid var(--account-border);
+  border-radius: var(--account-radius-xl);
+  background: linear-gradient(180deg, rgba(30, 43, 57, 0.92), rgba(20, 29, 39, 0.96));
+}
+
+/* =========================================================
+   28. INLINE ERROR
+   Small error message styling
+   ========================================================= */
+.account-inline-error {
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 123, 114, 0.24);
+  border-radius: var(--account-radius-md);
+  background: rgba(255, 123, 114, 0.08);
+  color: #ffb4ad;
+}
+
+/* =========================================================
+   29. MODAL OVERLAY
+   Full-screen backdrop for modals
+   ========================================================= */
 .account-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  z-index: 9999;
+  z-index: 1200;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(4, 7, 10, 0.72);
+  backdrop-filter: blur(8px);
 }
 
+/* =========================================================
+   30. MODAL WINDOW
+   Modal panel and close button
+   ========================================================= */
 .account-modal {
   position: relative;
-  width: 100%;
-  max-width: 560px;
-  max-height: calc(100vh - 32px);
-  overflow: auto;
-  padding: 1.5rem 1.25rem 1.25rem;
-  border-radius: 16px;
-  background: #0c0f1a;
-  border: 1px solid rgba(201, 180, 224, 0.18);
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.55);
-  color: var(--text);
+  width: min(100%, 620px);
+  padding: var(--account-space-6);
+  border: 1px solid var(--account-border-strong);
+  border-radius: var(--account-radius-xl);
+  background: linear-gradient(180deg, rgba(28, 39, 51, 0.98), rgba(17, 26, 35, 0.99));
+  box-shadow: var(--account-shadow-lg);
+}
+
+.account-modal-title {
+  margin: 0;
+  font-size: 1.3rem;
 }
 
 .account-modal-close {
   position: absolute;
-  right: 12px;
-  top: 10px;
-  background: none;
-  border: none;
-  color: var(--text);
+  top: 14px;
+  right: 14px;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--account-border);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--account-text);
   cursor: pointer;
-  font-size: 1.1rem;
-  line-height: 1;
-  padding: 4px 8px;
-  border-radius: 6px;
 }
 
-.account-modal-close:hover {
-  color: var(--accent);
+/* =========================================================
+   31. FORM LABELS
+   Labels used inside forms and modals
+   ========================================================= */
+.account-form-label {
+  font-size: 0.9rem;
+  color: var(--account-text-muted);
+  font-weight: 700;
 }
 
-.edit-badges-inputs {
-  max-height: 220px;
-  overflow-y: auto;
-  padding-right: 4px;
-}
+/* =========================================================
+   32. RESPONSIVE RULES
+   Tablet/mobile adjustments
+   ========================================================= */
+@media (max-width: 960px) {
+  .account-topbar,
+  .account-row-header,
+  .account-box-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-.connect-banner {
-  position: relative;
-  background: radial-gradient(circle at top right, #1e293b, #020617);
-  border-radius: 18px;
-  padding: 40px;
-  overflow: hidden;
-  color: white;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-}
+  .account-identity-layout {
+    grid-template-columns: 1fr;
+  }
 
-/* layout */
-.banner-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 30px;
-  flex-wrap: wrap;
-}
+  .account-box-controls,
+  .account-topbar-actions,
+  .account-box-toolbar,
+  .account-modal-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-.banner-text {
-  max-width: 480px;
-}
-
-.banner-text h2 {
-  font-size: 2rem;
-  margin-bottom: 12px;
-  font-weight: 800;
-}
-
-.banner-text p {
-  font-size: 0.95rem;
-  color: #cbd5f5;
-  margin-bottom: 20px;
-}
-
-/* buttons */
-.banner-actions {
-  display: flex;
-  gap: 12px;
-}
-
-.btn {
-  padding: 10px 18px;
-  border-radius: 999px;
-  font-size: 0.85rem;
-  text-decoration: none;
-  transition: 0.25s ease;
-}
-
-.btn.primary {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  color: white;
-}
-
-.btn.primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 20px rgba(99,102,241,0.5);
-}
-
-.btn.secondary {
-  border: 1px solid #6366f1;
-  color: #c7d2fe;
-}
-
-.btn.secondary:hover {
-  background: rgba(99,102,241,0.1);
-}
-
-/* visuals */
-.visual {
-  position: relative;
-}
-
-.visual-main {
-  width: 200px;
-}
-
-.visual-accent {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 90px;
-  opacity: 0.9;
-  animation: float 4s ease-in-out infinite;
-}
-
-/* glow effects */
-.connect-banner::before {
-  content: "";
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(99,102,241,0.3), transparent);
-  top: -100px;
-  right: -100px;
-}
-
-.connect-banner::after {
-  content: "";
-  position: absolute;
-  width: 250px;
-  height: 250px;
-  background: radial-gradient(circle, rgba(34,197,94,0.2), transparent);
-  bottom: -80px;
-  left: -80px;
-}
-.account-icon-btn-modern {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: none;
-  font-size: 22px;
-  background: linear-gradient(135deg, #6a5cff, #9f7aea);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-  transition: all 0.25s ease;
-}
-
-.account-icon-btn-modern:hover {
-  transform: scale(1.08) rotate(10deg);
-  box-shadow: 0 12px 28px rgba(0,0,0,0.35);
-}
-/* animation */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+  .account-control-group,
+  .account-control-group--compact {
+    min-width: 0;
+  }
 }
