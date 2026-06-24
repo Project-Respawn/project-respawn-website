@@ -22,6 +22,7 @@ export default {
         { id: 'home', icon: '🏠', label: 'Home', route: '/dashboard' },
         { id: 'users', icon: '👥', label: 'Users', route: '/dashboard/users' },
         { id: 'permissions', icon: '🛡️', label: 'Permissions', route: '/dashboard/permissions' },
+        { id: 'events', icon: '📅', label: 'Events', route: '/dashboard/events' },
         { id: 'forums', icon: '🧵', label: 'Forums', route: '/dashboard/forums' },
         { id: 'brands', icon: '🏷️', label: 'Brands', route: '/dashboard/brands' },
         { id: 'merch-categories', icon: '📦', label: 'Merch Categories', route: '/dashboard/merch-categories' },
@@ -54,6 +55,7 @@ export default {
       if (path.includes('/merch-categories')) return 'merch-categories';
       if (path.includes('/brands')) return 'brands';
       if (path.includes('/forums')) return 'forums';
+      if (path.includes('/events')) return 'events';
       if (path.includes('/permissions')) return 'permissions';
       if (path.includes('/users')) return 'users';
 
@@ -81,6 +83,7 @@ export default {
 
         if (
           !Array.isArray(groups) ||
+          !Array.isArray(ADMIN_ALLOWED_GROUPS) ||
           !groups.some((group) => ADMIN_ALLOWED_GROUPS.includes(group))
         ) {
           this.isAuthenticated = false;

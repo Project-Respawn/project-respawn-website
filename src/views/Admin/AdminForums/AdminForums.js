@@ -282,19 +282,19 @@ export default {
     },
 
     toggleThreadCreateGroup(groupValue) {
-      const idx = this.boardForm.threadCreateGroups.indexOf(groupValue);
+        const groups = Array.isArray(this.boardForm.threadCreateGroups)
+          ? this.boardForm.threadCreateGroups
+          : [];
 
-      if (idx === -1) {
-        this.boardForm.threadCreateGroups = [
-          ...this.boardForm.threadCreateGroups,
-          groupValue,
-        ];
-      } else {
-        this.boardForm.threadCreateGroups =
-          this.boardForm.threadCreateGroups.filter(
+        const idx = groups.indexOf(groupValue);
+
+        if (idx === -1) {
+          this.boardForm.threadCreateGroups = [...groups, groupValue];
+        } else {
+          this.boardForm.threadCreateGroups = groups.filter(
             (value) => value !== groupValue,
           );
-      }
+        }
     },
 
     async submitCategory() {

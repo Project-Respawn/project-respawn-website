@@ -1,19 +1,3 @@
-/* ==========================================
-   EVENTS PAGE — MODULAR DASHBOARD VERSION
-   1. Page shell
-   2. Shared cards
-   3. Buttons / chips / pills
-   4. Hero + summary
-   5. Coming soon states
-   6. Dashboard grid
-   7. Main list
-   8. Side cards
-   9. Calendar
-   10. Past events
-   11. Modal
-   12. Empty state
-   13. Responsive
-========================================== */
 
 /* ==========================================
    1. PAGE SHELL
@@ -23,9 +7,9 @@
   min-height: 100vh;
   padding: 28px 22px 48px;
   background:
-    radial-gradient(circle at top left, rgba(79, 152, 163, 0.12), transparent 22%),
-    linear-gradient(180deg, var(--color-bg, #0e0d0b) 0%, var(--color-bg, #0e0d0b) 100%);
-  color: var(--color-text, #f3efe7);
+    radial-gradient(circle at top left, rgba(109, 255, 139, 0.12), transparent 22%),
+    linear-gradient(180deg, #0e1411 0%, #0a1210 100%);
+  color: #f3f7f4;
 }
 
 .events-shell {
@@ -41,11 +25,14 @@
 
 .events-card {
   position: relative;
-  background: var(--color-surface, #171614);
-  border: 1px solid oklch(from var(--color-text, #f3efe7) l c h / 0.08);
+  background:
+    linear-gradient(180deg, rgba(14, 22, 19, 0.98) 0%, rgba(10, 16, 14, 0.98) 100%);
+  border: 1px solid rgba(143, 212, 160, 0.12);
   border-radius: 22px;
   padding: 20px;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.02),
+    0 18px 36px rgba(0, 0, 0, 0.28);
   overflow: hidden;
 }
 
@@ -60,7 +47,7 @@
     rgba(255, 255, 255, 0.03),
     transparent 28%,
     transparent 72%,
-    rgba(79, 152, 163, 0.05)
+    rgba(109, 255, 139, 0.05)
   );
 }
 
@@ -83,20 +70,20 @@
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--color-primary, #4f98a3);
+  color: #8fd4a0;
 }
 
 .events-card-title {
   margin: 0;
   font-size: clamp(1.15rem, 1rem + 0.45vw, 1.55rem);
   line-height: 1.1;
-  color: var(--color-text, #f3efe7);
+  color: #f4fff7;
 }
 
 .events-card-description {
   margin: 0;
   line-height: 1.6;
-  color: var(--color-text-muted, #b7b0a3);
+  color: rgba(226, 241, 231, 0.78);
 }
 
 /* ==========================================
@@ -129,8 +116,8 @@
 
 .events-btn--primary {
   color: #041012;
-  background: var(--color-primary, #4f98a3);
-  box-shadow: 0 10px 24px rgba(79, 152, 163, 0.22);
+  background: linear-gradient(135deg, #97fba9 0%, #59d98e 100%);
+  box-shadow: 0 10px 24px rgba(89, 217, 142, 0.22);
 }
 
 .events-btn--primary:hover {
@@ -138,16 +125,16 @@
 }
 
 .events-btn--secondary {
-  color: var(--color-text, #f3efe7);
+  color: #e9f8ec;
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid oklch(from var(--color-text, #f3efe7) l c h / 0.08);
+  border: 1px solid rgba(143, 212, 160, 0.14);
 }
 
 .events-btn--secondary:hover,
 .events-chip:hover,
 .events-view-chip:hover {
-  background: rgba(79, 152, 163, 0.1);
-  border-color: rgba(79, 152, 163, 0.25);
+  background: rgba(109, 255, 139, 0.08);
+  border-color: rgba(109, 255, 139, 0.24);
 }
 
 .events-chip-row,
@@ -170,14 +157,14 @@
 .events-chip,
 .events-view-chip {
   background: rgba(255, 255, 255, 0.03);
-  color: var(--color-text-muted, #b7b0a3);
-  border: 1px solid oklch(from var(--color-text, #f3efe7) l c h / 0.08);
+  color: rgba(226, 241, 231, 0.74);
+  border: 1px solid rgba(143, 212, 160, 0.14);
 }
 
 .events-chip.is-active,
 .events-view-chip.is-active {
-  color: #061013;
-  background: var(--color-primary, #4f98a3);
+  color: #041012;
+  background: linear-gradient(135deg, #97fba9 0%, #59d98e 100%);
   border-color: transparent;
 }
 
@@ -185,22 +172,24 @@
   display: inline-flex;
   align-items: center;
   background: rgba(255, 255, 255, 0.04);
-  color: var(--color-text-muted, #b7b0a3);
+  color: rgba(226, 241, 231, 0.74);
 }
 
 .events-pill--status {
-  background: rgba(79, 152, 163, 0.14);
-  color: var(--color-primary, #4f98a3);
+  background: rgba(109, 255, 139, 0.08);
+  color: #8fd4a0;
+  border: 1px solid rgba(109, 255, 139, 0.16);
 }
 
 .events-pill--status.is-live {
-  background: rgba(109, 170, 69, 0.18);
-  color: #95d374;
+  background: rgba(109, 255, 139, 0.16);
+  color: #6dff8b;
 }
 
 .events-pill--status.is-past {
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--color-text-muted, #b7b0a3);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(226, 241, 231, 0.68);
+  border-color: rgba(143, 212, 160, 0.1);
 }
 
 /* ==========================================
@@ -212,6 +201,10 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 20px;
+  border-color: rgba(109, 255, 139, 0.16);
+  box-shadow:
+    0 0 0 1px rgba(109, 255, 139, 0.05),
+    0 22px 48px rgba(0, 0, 0, 0.34);
 }
 
 .events-hero-copy {
@@ -224,7 +217,7 @@
   font-size: clamp(2rem, 1.5rem + 1.6vw, 3.2rem);
   line-height: 0.98;
   letter-spacing: -0.04em;
-  color: var(--color-text, #f3efe7);
+  color: #f5fff7;
 }
 
 .events-hero-actions {
@@ -272,19 +265,19 @@
   margin: 0;
   font-size: 1.08rem;
   line-height: 1.3;
-  color: var(--color-text, #f3efe7);
+  color: #f4fff7;
 }
 
 .events-summary-number {
   margin: 0;
   font-size: clamp(2rem, 1.5rem + 1vw, 2.8rem);
   line-height: 1;
-  color: var(--color-text, #f3efe7);
+  color: #f5fff7;
 }
 
 .events-summary-meta {
   margin: 0;
-  color: var(--color-text-muted, #b7b0a3);
+  color: rgba(226, 241, 231, 0.74);
   line-height: 1.5;
 }
 
@@ -390,8 +383,8 @@
   align-items: center;
   padding: 16px;
   border-radius: 18px;
-  background: var(--color-surface-2, #201f1d);
-  border: 1px solid oklch(from var(--color-text, #f3efe7) l c h / 0.07);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(143, 212, 160, 0.12);
 }
 
 .events-main-list-date {
@@ -400,15 +393,15 @@
   gap: 4px;
   padding: 12px 8px;
   border-radius: 16px;
-  background: rgba(79, 152, 163, 0.08);
-  border: 1px solid rgba(79, 152, 163, 0.16);
+  background: rgba(109, 255, 139, 0.08);
+  border: 1px solid rgba(109, 255, 139, 0.16);
 }
 
 .events-main-list-day {
   font-size: 1.4rem;
   font-weight: 900;
   line-height: 1;
-  color: var(--color-text, #f3efe7);
+  color: #f4fff7;
 }
 
 .events-main-list-month {
@@ -416,7 +409,7 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-primary, #4f98a3);
+  color: #8fd4a0;
 }
 
 .events-main-list-body {
@@ -428,13 +421,13 @@
   margin: 0;
   font-size: 1.08rem;
   line-height: 1.25;
-  color: var(--color-text, #f3efe7);
+  color: #f4fff7;
 }
 
 .events-item-description,
 .events-compact-copy {
   margin: 0;
-  color: var(--color-text-muted, #b7b0a3);
+  color: rgba(226, 241, 231, 0.78);
   line-height: 1.55;
 }
 
@@ -444,7 +437,7 @@
   flex-wrap: wrap;
   gap: 8px 14px;
   font-size: 13px;
-  color: var(--color-text-faint, #8f8677);
+  color: rgba(210, 233, 217, 0.62);
 }
 
 .events-main-list-actions {
@@ -474,7 +467,7 @@
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-text-faint, #8f8677);
+  color: rgba(210, 233, 217, 0.62);
 }
 
 .events-compact-list {
@@ -487,8 +480,8 @@
   gap: 8px;
   padding: 14px;
   border-radius: 16px;
-  background: var(--color-surface-2, #201f1d);
-  border: 1px solid oklch(from var(--color-text, #f3efe7) l c h / 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(143, 212, 160, 0.12);
 }
 
 .events-compact-item-top {
@@ -501,12 +494,12 @@
 .events-compact-title {
   margin: 0;
   font-size: 0.98rem;
-  color: var(--color-text, #f3efe7);
+  color: #f4fff7;
 }
 
 .events-compact-date {
   font-size: 12px;
-  color: var(--color-primary, #4f98a3);
+  color: #8fd4a0;
   font-weight: 700;
 }
 
@@ -529,12 +522,12 @@
 .events-mini-calendar-title {
   margin: 0;
   font-size: 1.1rem;
-  color: var(--color-text, #f3efe7);
+  color: #f4fff7;
 }
 
 .events-mini-calendar-subtitle {
   margin: 0;
-  color: var(--color-text-muted, #b7b0a3);
+  color: rgba(226, 241, 231, 0.74);
 }
 
 .events-mini-calendar-grid {
@@ -550,8 +543,8 @@
   gap: 8px;
   padding: 10px;
   border-radius: 14px;
-  background: var(--color-surface-2, #201f1d);
-  border: 1px solid oklch(from var(--color-text, #f3efe7) l c h / 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(143, 212, 160, 0.12);
 }
 
 .events-mini-calendar-cell.is-muted {
@@ -559,14 +552,14 @@
 }
 
 .events-mini-calendar-cell.is-has-events {
-  border-color: rgba(79, 152, 163, 0.24);
+  border-color: rgba(109, 255, 139, 0.24);
 }
 
 .events-mini-calendar-date {
   justify-self: end;
   font-size: 12px;
   font-weight: 700;
-  color: var(--color-text-muted, #b7b0a3);
+  color: rgba(226, 241, 231, 0.72);
 }
 
 .events-mini-calendar-events {
@@ -578,7 +571,7 @@
   display: block;
   font-size: 11px;
   line-height: 1.35;
-  color: var(--color-text-muted, #b7b0a3);
+  color: rgba(226, 241, 231, 0.74);
 }
 
 /* ==========================================
@@ -596,8 +589,8 @@
   gap: 12px;
   padding: 16px;
   border-radius: 18px;
-  background: var(--color-surface-2, #201f1d);
-  border: 1px solid oklch(from var(--color-text, #f3efe7) l c h / 0.07);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(143, 212, 160, 0.12);
 }
 
 /* ==========================================
@@ -623,8 +616,8 @@
   gap: 18px;
   padding: 24px;
   border-radius: 24px;
-  background: #181714;
-  border: 1px solid oklch(from var(--color-text, #f3efe7) l c h / 0.1);
+  background: linear-gradient(180deg, rgba(14, 22, 19, 0.99) 0%, rgba(10, 16, 14, 1) 100%);
+  border: 1px solid rgba(143, 212, 160, 0.14);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
 }
 
@@ -636,7 +629,7 @@
   height: 38px;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.05);
-  color: var(--color-text, #f3efe7);
+  color: #f3f7f4;
 }
 
 .events-modal-panels {
@@ -650,15 +643,15 @@
   gap: 10px;
   padding: 16px;
   border-radius: 16px;
-  background: var(--color-surface-2, #201f1d);
-  border: 1px solid oklch(from var(--color-text, #f3efe7) l c h / 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(143, 212, 160, 0.12);
 }
 
 .events-modal-list {
   margin: 0;
   padding-left: 18px;
   line-height: 1.7;
-  color: var(--color-text-muted, #b7b0a3);
+  color: rgba(226, 241, 231, 0.78);
 }
 
 /* ==========================================
@@ -670,8 +663,8 @@
   gap: 10px;
   padding: 18px;
   border-radius: 16px;
-  background: var(--color-surface-2, #201f1d);
-  border: 1px dashed oklch(from var(--color-text, #f3efe7) l c h / 0.11);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(143, 212, 160, 0.16);
   text-align: center;
 }
 
@@ -682,12 +675,12 @@
 .events-empty-title {
   margin: 0;
   font-size: 1.05rem;
-  color: var(--color-text, #f3efe7);
+  color: #f5fff7;
 }
 
 .events-empty-copy {
   margin: 0;
-  color: var(--color-text-muted, #b7b0a3);
+  color: rgba(226, 241, 231, 0.74);
 }
 
 /* ==========================================
@@ -778,12 +771,5 @@
 
   .events-mini-calendar-cell {
     min-height: auto;
-  }
-
-  .events-coming-soon-ribbon {
-    top: 14px;
-    right: -54px;
-    width: 170px;
-    font-size: 10px;
   }
 }
