@@ -1,0 +1,338 @@
+.admin-host-permissions-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.admin-host-permissions-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  grid-template-areas:
+    "create viewer"
+    "assign viewer";
+  gap: 24px;
+  align-items: start;
+}
+
+.permissions-search-card,
+.permissions-brand-card,
+.permissions-assignment-card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.permissions-search-card {
+  grid-area: create;
+}
+
+.permissions-viewer-card {
+  grid-area: viewer;
+}
+
+.permissions-assignment-card {
+  grid-area: assign;
+}
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.card-head h2 {
+  margin: 0 0 6px;
+}
+
+.card-head p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-row label {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.form-row input,
+.form-row select {
+  width: 100%;
+  min-height: 46px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.form-row input::placeholder {
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.form-row input:focus,
+.form-row select:focus {
+  border-color: rgba(120, 190, 255, 0.6);
+  box-shadow: 0 0 0 3px rgba(120, 190, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.user-search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 320px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.user-result-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  color: #ffffff;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.user-result-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.user-result-card.is-selected {
+  border-color: rgba(84, 182, 255, 0.75);
+  background: rgba(84, 182, 255, 0.12);
+  box-shadow: 0 0 0 1px rgba(84, 182, 255, 0.2);
+}
+
+.user-result-name {
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.user-result-meta {
+  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.permission-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.selected-user-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.selected-user-label {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.56);
+}
+
+.selected-user-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border: 1px solid rgba(84, 182, 255, 0.22);
+  border-radius: 16px;
+  background: rgba(84, 182, 255, 0.08);
+}
+
+.selected-user-card strong {
+  font-size: 1rem;
+}
+
+.selected-user-card span {
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.92rem;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.empty-inline-state,
+.empty-state {
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  padding: 18px 16px;
+  color: rgba(255, 255, 255, 0.62);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.brand-members-summary {
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.brand-members-summary p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.brand-member-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.brand-member-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.brand-member-main {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.brand-member-top {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.brand-member-top h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.brand-member-meta {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.92rem;
+  word-break: break-word;
+}
+
+.brand-member-actions {
+  flex-shrink: 0;
+}
+
+.scope-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.scope-badge.is-assign {
+  background: rgba(255, 191, 71, 0.14);
+  color: #ffd27a;
+  border: 1px solid rgba(255, 191, 71, 0.24);
+}
+
+.scope-badge.is-manage {
+  background: rgba(69, 201, 161, 0.14);
+  color: #7ef0c8;
+  border: 1px solid rgba(69, 201, 161, 0.24);
+}
+
+.form-error {
+  margin: 0;
+  color: #ff8f8f;
+  font-size: 0.92rem;
+}
+
+.form-success {
+  margin: 0;
+  color: #7ef0c8;
+  font-size: 0.92rem;
+}
+
+.btn-danger {
+  border-color: rgba(255, 107, 107, 0.24);
+  color: #ff9e9e;
+}
+
+.btn-danger:hover {
+  border-color: rgba(255, 107, 107, 0.4);
+  background: rgba(255, 107, 107, 0.08);
+}
+
+@media (max-width: 1080px) {
+  .admin-host-permissions-layout {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "create"
+      "viewer"
+      "assign";
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-host-permissions-page {
+    gap: 18px;
+  }
+
+  .permissions-search-card,
+  .permissions-brand-card,
+  .permissions-assignment-card {
+    gap: 16px;
+  }
+
+  .brand-member-item {
+    flex-direction: column;
+  }
+
+  .brand-member-actions {
+    width: 100%;
+  }
+
+  .brand-member-actions .btn-secondary,
+  .brand-member-actions .btn-danger {
+    width: 100%;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions .btn-primary,
+  .form-actions .btn-secondary {
+    width: 100%;
+  }
+}

@@ -27,6 +27,7 @@ export default {
         { id: 'brands', icon: '🏷️', label: 'Brands', route: '/dashboard/brands' },
         { id: 'merch-categories', icon: '📦', label: 'Merch Categories', route: '/dashboard/merch-categories' },
         { id: 'brand-permissions', icon: '🔐', label: 'Brand Permissions', route: '/dashboard/brand-permissions' },
+        { id: 'host-permissions', icon: '🎤', label: 'Host Permissions', route: '/dashboard/host-permissions' },
       ],
     };
   },
@@ -51,6 +52,7 @@ export default {
       const path = this.$route?.path || '';
 
       if (path === '/dashboard') return 'home';
+      if (path.includes('/host-permissions')) return 'host-permissions';
       if (path.includes('/brand-permissions')) return 'brand-permissions';
       if (path.includes('/merch-categories')) return 'merch-categories';
       if (path.includes('/brands')) return 'brands';

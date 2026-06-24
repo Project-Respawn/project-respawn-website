@@ -19,18 +19,13 @@ function createEmptyForm() {
     title: '',
     shortDescription: '',
     longDescription: '',
-    // categories is now an array, not a single string
     categories: [],
     locationType: 'online',
     tagIds: [],
-    // host selection fields
     hostUserId: '',
     hostDisplayName: '',
     startAt: '',
     endAt: '',
-    ctaLabel: 'View event',
-    ctaUrl: '',
-    rewardText: '',
     featured: false,
     status: 'draft',
     ticketMode: 'free',
@@ -46,6 +41,7 @@ export default {
       loading: false,
       saving: false,
       currentUserGroups: [],
+      currentUserSub: '',
 
       events: [],
       suggestions: [],
@@ -61,11 +57,9 @@ export default {
 
       eventForm: createEmptyForm(),
 
-      // new host search state
       hostSearch: '',
       hostOptions: [],
 
-      // static category options for checkbox group
       categoryOptions: [
         { value: 'community', label: 'Community' },
         { value: 'quest', label: 'Quest' },
@@ -79,14 +73,23 @@ export default {
         type: 'category',
         visibleOnEventCard: false,
       },
+
+      nowTick: Date.now(),
+      nowTimer: null,
     };
   },
 
   computed: {
     summary() {
+      const now = new Date(this.nowTick);
+
       return {
-        upcoming: this.events.filter((item) => item.status === 'upcoming').length,
-        draft: this.events.filter((item) => item.status === 'draft' || !item.status).length,
+        upcoming: this.events.filter((item) => {
+          if ((item.status || 'draft') !== 'live') return false;
+          const start = item.startAt ? new Date(item.startAt) : null;
+          return start && !Number.isNaN(start.getTime()) && start > now;
+        }).length,
+        draft: this.events.filter((item) => (item.status || 'draft') === 'draft').length,
         pendingSuggestions: this.suggestions.filter((item) => item.status === 'pending').length,
         tags: this.tags.length,
       };
@@ -94,15 +97,26 @@ export default {
 
     filteredEvents() {
       return this.events.filter((event) => {
+        const searchText = `${event.title || ''} ${event.shortDescription || ''} ${event.description || ''}`.toLowerCase();
         const matchesSearch =
-          !this.eventSearch ||
-          `${event.title} ${event.shortDescription || ''} ${event.description || ''}`
-            .toLowerCase()
-            .includes(this.eventSearch.toLowerCase());
+          !this.eventSearch || searchText.includes(this.eventSearch.toLowerCase());
 
-        const matchesStatus =
-          this.eventStatusFilter === 'all' ||
-          (event.status || 'draft') === this.eventStatusFilter;
+        const publishStatus = event.status || 'draft';
+        const timingStatus = this.getEventPhase(event);
+
+        let matchesStatus = true;
+
+        if (this.eventStatusFilter === 'draft') {
+          matchesStatus = publishStatus === 'draft';
+        } else if (this.eventStatusFilter === 'live') {
+          matchesStatus = publishStatus === 'live';
+        } else if (this.eventStatusFilter === 'upcoming') {
+          matchesStatus = publishStatus === 'live' && timingStatus === 'upcoming';
+        } else if (this.eventStatusFilter === 'live-now') {
+          matchesStatus = publishStatus === 'live' && timingStatus === 'live-now';
+        } else if (this.eventStatusFilter === 'past') {
+          matchesStatus = publishStatus === 'live' && timingStatus === 'past';
+        }
 
         return matchesSearch && matchesStatus;
       });
@@ -155,7 +169,6 @@ export default {
       return this.eventForm.id ? 'Save changes' : 'Create event';
     },
 
-    // host list filtered by search
     filteredHostOptions() {
       const search = this.hostSearch.toLowerCase().trim();
 
@@ -167,16 +180,31 @@ export default {
   },
 
   async created() {
+    this.startNowTicker();
     await this.bootstrap();
   },
 
+  beforeUnmount() {
+    if (this.nowTimer) {
+      window.clearInterval(this.nowTimer);
+      this.nowTimer = null;
+    }
+  },
+
   methods: {
+    startNowTicker() {
+      this.nowTimer = window.setInterval(() => {
+        this.nowTick = Date.now();
+      }, 60000);
+    },
+
     async bootstrap() {
       this.loading = true;
 
       try {
+        await this.loadCurrentUserContext();
+
         await Promise.all([
-          this.loadCurrentUserGroups(),
           this.loadEvents(),
           this.loadSuggestions(),
           this.loadTags(),
@@ -189,14 +217,51 @@ export default {
       }
     },
 
-    async loadCurrentUserGroups() {
+    async loadCurrentUserContext() {
       try {
         const session = await fetchAuthSession();
         this.currentUserGroups = session.tokens?.accessToken?.payload?.['cognito:groups'] || [];
+        this.currentUserSub =
+          session.tokens?.idToken?.payload?.sub ||
+          session.tokens?.accessToken?.payload?.sub ||
+          '';
       } catch (error) {
-        console.error('Could not load current user groups:', error);
+        console.error('Could not load current user context:', error);
         this.currentUserGroups = [];
+        this.currentUserSub = '';
       }
+    },
+
+    isElevatedUser() {
+      return (
+        this.currentUserGroups.includes('SuperAdmin') ||
+        this.currentUserGroups.includes('Admin')
+      );
+    },
+
+    getEventPhase(event) {
+      if (!event?.startAt || !event?.endAt) return 'unscheduled';
+
+      const now = new Date(this.nowTick);
+      const start = new Date(event.startAt);
+      const end = new Date(event.endAt);
+
+      if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
+        return 'unscheduled';
+      }
+
+      if (now < start) return 'upcoming';
+      if (now > end) return 'past';
+      return 'live-now';
+    },
+
+    getEventTimingLabel(event) {
+      const phase = this.getEventPhase(event);
+
+      if (phase === 'upcoming') return 'Upcoming';
+      if (phase === 'live-now') return 'Happening now';
+      if (phase === 'past') return 'Past';
+      return 'Unscheduled';
     },
 
     async loadEvents() {
@@ -263,7 +328,6 @@ export default {
       }
     },
 
-    // hostOptions should come from your own user profile model
     async loadHostOptions() {
       try {
         if (!client.models.UserProfile) {
@@ -271,30 +335,53 @@ export default {
           return;
         }
 
-        const { data, errors } = await client.models.UserProfile.list();
+        const { data: profiles, errors: profileErrors } = await client.models.UserProfile.list();
 
-        if (errors?.length) {
-          console.error('Host list errors:', errors);
+        if (profileErrors?.length) {
+          console.error('Host profile list errors:', profileErrors);
+          this.hostOptions = [];
           return;
         }
 
-        const allowedRoles = ['Trainer', 'StreamingPartner', 'Streamer'];
-
-        this.hostOptions = (data || [])
-          .filter((user) => {
-            const roles = Array.isArray(user.roles) ? user.roles : [];
-            return roles.some((role) => allowedRoles.includes(role));
-          })
+        const allHosts = (profiles || [])
+          .filter((user) => user.canHostEvents === true)
           .map((user) => ({
-            id: user.id,
-            displayName:
-              user.preferredUsername ||
-              user.displayName ||
-              user.username ||
-              user.email,
-            primaryRoleLabel: Array.isArray(user.roles) ? user.roles[0] : 'Host',
+            id: user.ownerUserId || user.id,
+            profileId: user.id,
+            displayName: user.displayName || 'Unnamed host',
+            primaryRoleLabel: user.hostTitle || 'Host',
           }))
           .sort((a, b) => a.displayName.localeCompare(b.displayName));
+
+        if (this.isElevatedUser()) {
+          this.hostOptions = allHosts;
+          return;
+        }
+
+        if (!client.models.HostAssignment || !this.currentUserSub) {
+          this.hostOptions = [];
+          return;
+        }
+
+        const { data: assignments, errors: assignmentErrors } = await client.models.HostAssignment.list();
+
+        if (assignmentErrors?.length) {
+          console.error('Host assignment list errors:', assignmentErrors);
+          this.hostOptions = [];
+          return;
+        }
+
+        const allowedHostIds = new Set(
+          (assignments || [])
+            .filter(
+              (assignment) =>
+                assignment.managerUserId === this.currentUserSub &&
+                assignment.accessLevel !== 'disabled',
+            )
+            .map((assignment) => assignment.hostUserId),
+        );
+
+        this.hostOptions = allHosts.filter((host) => allowedHostIds.has(host.id));
       } catch (error) {
         console.error('Failed to load host options:', error);
         this.hostOptions = [];
@@ -357,9 +444,6 @@ export default {
         hostDisplayName: event.hostDisplayName || event.host || '',
         startAt: this.toLocalDateTime(event.startAt),
         endAt: this.toLocalDateTime(event.endAt),
-        ctaLabel: event.ctaLabel || 'View event',
-        ctaUrl: event.ctaUrl || '',
-        rewardText: event.rewardText || '',
         featured: !!event.featured,
         status: event.status || 'draft',
         ticketMode: event.ticketMode || 'free',
@@ -391,11 +475,15 @@ export default {
         categories: Array.isArray(suggestion.categories)
           ? [...suggestion.categories]
           : suggestion.category
-          ? [suggestion.category]
-          : [],
+            ? [suggestion.category]
+            : [],
         locationType: suggestion.locationType || 'online',
         hostUserId: suggestion.hostUserId || '',
-        hostDisplayName: suggestion.host || suggestion.ownerDisplayName || '',
+        hostDisplayName:
+          suggestion.hostDisplayName ||
+          suggestion.host ||
+          suggestion.ownerDisplayName ||
+          '',
         startAt: this.toLocalDateTime(suggestion.startAt),
         endAt: this.toLocalDateTime(suggestion.endAt),
       };
@@ -432,20 +520,8 @@ export default {
       }
     },
 
-    toggleCategory(value) {
-      if (this.eventForm.categories.includes(value)) {
-        this.eventForm.categories = this.eventForm.categories.filter(
-          (item) => item !== value,
-        );
-      } else {
-        this.eventForm.categories = [...this.eventForm.categories, value];
-      }
-    },
-
     syncSelectedHost() {
-      const selected = this.hostOptions.find(
-        (user) => user.id === this.eventForm.hostUserId,
-      );
+      const selected = this.hostOptions.find((user) => user.id === this.eventForm.hostUserId);
       this.eventForm.hostDisplayName = selected?.displayName || '';
     },
 
@@ -541,17 +617,15 @@ export default {
           tagIds: this.eventForm.tagIds,
           hostUserId: this.eventForm.hostUserId,
           host: this.eventForm.hostDisplayName,
+          hostDisplayName: this.eventForm.hostDisplayName,
           startAt: this.toIsoDateTime(this.eventForm.startAt),
           endAt: this.toIsoDateTime(this.eventForm.endAt),
-          ctaLabel: this.eventForm.ctaLabel,
-          ctaUrl: this.eventForm.ctaUrl,
-          rewardText: this.eventForm.rewardText,
           featured: this.eventForm.featured,
-          status: this.eventForm.status,
+          status: this.eventForm.status || 'draft',
           ticketMode: this.eventForm.ticketMode,
           ticketTiers:
             this.eventForm.ticketMode === 'ticketed'
-              ? this.eventForm.ticketTiers
+              ? this.eventForm.ticketTiers.map(({ localId, ...tier }) => tier)
               : [],
         };
 
@@ -635,9 +709,9 @@ export default {
       const date = new Date(value);
       if (Number.isNaN(date.getTime())) return '';
       const pad = (num) => String(num).padStart(2, '0');
-      return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
-        date.getDate(),
-      )}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+      return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(
+        date.getHours(),
+      )}:${pad(date.getMinutes())}`;
     },
 
     toIsoDateTime(value) {

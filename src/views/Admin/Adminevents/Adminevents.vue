@@ -58,12 +58,12 @@
               placeholder="Search events"
             />
             <select v-model="eventStatusFilter" class="admin-events-select">
-              <option value="all">All statuses</option>
+              <option value="all">All events</option>
               <option value="draft">Draft</option>
+              <option value="live">Published</option>
               <option value="upcoming">Upcoming</option>
-              <option value="live">Live</option>
+              <option value="live-now">Happening now</option>
               <option value="past">Past</option>
-              <option value="cancelled">Cancelled</option>
             </select>
           </div>
         </div>
@@ -77,7 +77,15 @@
             <div class="admin-events-list-main">
               <div class="admin-events-list-top">
                 <h3 class="admin-events-list-title">{{ event.title }}</h3>
-                <span class="admin-events-pill">{{ event.status || 'draft' }}</span>
+
+                <div class="admin-events-pill-row">
+                  <span class="admin-events-pill">
+                    {{ event.status || 'draft' }}
+                  </span>
+                  <span class="admin-events-pill admin-events-pill--subtle">
+                    {{ getEventTimingLabel(event) }}
+                  </span>
+                </div>
               </div>
 
               <p class="admin-events-list-copy">
@@ -85,7 +93,7 @@
               </p>
 
               <div class="admin-events-meta-row">
-                <span>{{ event.categorySummary || event.category || 'No category' }}</span>
+                <span>{{ event.categorySummary || 'No category' }}</span>
                 <span>{{ event.locationType || 'No location' }}</span>
                 <span>{{ formatDateRange(event.startAt, event.endAt) }}</span>
               </div>
@@ -214,7 +222,11 @@
       </article>
     </section>
 
-    <section v-if="wizardOpen" class="admin-events-wizard-overlay" @click.self="closeWizard">
+    <section
+      v-if="wizardOpen"
+      class="admin-events-wizard-overlay"
+      @click.self="closeWizard"
+    >
       <div class="admin-events-wizard">
         <div class="admin-events-wizard-main">
           <div class="admin-events-wizard-header">
@@ -262,7 +274,11 @@
               <div class="admin-events-field-grid">
                 <label class="admin-events-field">
                   <span>Event name</span>
-                  <input v-model.trim="eventForm.title" class="admin-events-input" type="text" />
+                  <input
+                    v-model.trim="eventForm.title"
+                    class="admin-events-input"
+                    type="text"
+                  />
                 </label>
 
                 <div class="admin-events-field">
@@ -315,26 +331,26 @@
                 </label>
               </div>
 
-          <fieldset class="admin-events-choice-group">
-  <legend class="admin-events-field-label">Categories</legend>
+              <fieldset class="admin-events-choice-group">
+                <legend class="admin-events-field-label">Categories</legend>
 
-  <div class="admin-events-category-grid">
-    <label
-      v-for="option in categoryOptions"
-      :key="option.value"
-      class="admin-events-category-card"
-      :class="{ 'is-selected': eventForm.categories.includes(option.value) }"
-    >
-      <input
-        v-model="eventForm.categories"
-        class="admin-events-category-input"
-        type="checkbox"
-        :value="option.value"
-      />
-      <span class="admin-events-category-label">{{ option.label }}</span>
-    </label>
-  </div>
-</fieldset>
+                <div class="admin-events-category-grid">
+                  <label
+                    v-for="option in categoryOptions"
+                    :key="option.value"
+                    class="admin-events-category-card"
+                    :class="{ 'is-selected': eventForm.categories.includes(option.value) }"
+                  >
+                    <input
+                      v-model="eventForm.categories"
+                      class="admin-events-category-input"
+                      type="checkbox"
+                      :value="option.value"
+                    />
+                    <span class="admin-events-category-label">{{ option.label }}</span>
+                  </label>
+                </div>
+              </fieldset>
 
               <div class="admin-events-tag-picker">
                 <p class="admin-events-field-label">Assign tags</p>
@@ -366,36 +382,27 @@
 
                 <label class="admin-events-field">
                   <span>Start at</span>
-                  <input v-model="eventForm.startAt" class="admin-events-input" type="datetime-local" />
+                  <input
+                    v-model="eventForm.startAt"
+                    class="admin-events-input"
+                    type="datetime-local"
+                  />
                 </label>
 
                 <label class="admin-events-field">
                   <span>End at</span>
-                  <input v-model="eventForm.endAt" class="admin-events-input" type="datetime-local" />
+                  <input
+                    v-model="eventForm.endAt"
+                    class="admin-events-input"
+                    type="datetime-local"
+                  />
                 </label>
 
                 <label class="admin-events-field">
-                  <span>CTA label</span>
-                  <input v-model.trim="eventForm.ctaLabel" class="admin-events-input" type="text" />
-                </label>
-
-                <label class="admin-events-field">
-                  <span>CTA URL</span>
-                  <input v-model.trim="eventForm.ctaUrl" class="admin-events-input" type="text" />
-                </label>
-
-                <label class="admin-events-field">
-                  <span>Reward text</span>
-                  <input v-model.trim="eventForm.rewardText" class="admin-events-input" type="text" />
-                </label>
-
-                <label class="admin-events-field">
-                  <span>Status</span>
+                  <span>Publish status</span>
                   <select v-model="eventForm.status" class="admin-events-select">
                     <option value="draft">Draft</option>
-                    <option value="upcoming">Upcoming</option>
                     <option value="live">Live</option>
-                    <option value="past">Past</option>
                   </select>
                 </label>
 
@@ -427,7 +434,10 @@
                 </button>
               </div>
 
-              <div v-if="eventForm.ticketMode === 'ticketed'" class="admin-events-ticket-builder">
+              <div
+                v-if="eventForm.ticketMode === 'ticketed'"
+                class="admin-events-ticket-builder"
+              >
                 <article
                   v-for="(ticket, index) in eventForm.ticketTiers"
                   :key="ticket.localId"
@@ -436,17 +446,32 @@
                   <div class="admin-events-field-grid">
                     <label class="admin-events-field">
                       <span>Ticket name</span>
-                      <input v-model.trim="ticket.name" class="admin-events-input" type="text" />
+                      <input
+                        v-model.trim="ticket.name"
+                        class="admin-events-input"
+                        type="text"
+                      />
                     </label>
 
                     <label class="admin-events-field">
                       <span>Price</span>
-                      <input v-model.number="ticket.price" class="admin-events-input" type="number" min="0" step="0.01" />
+                      <input
+                        v-model.number="ticket.price"
+                        class="admin-events-input"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                      />
                     </label>
 
                     <label class="admin-events-field">
                       <span>Quantity</span>
-                      <input v-model.number="ticket.quantityAvailable" class="admin-events-input" type="number" min="0" />
+                      <input
+                        v-model.number="ticket.quantityAvailable"
+                        class="admin-events-input"
+                        type="number"
+                        min="0"
+                      />
                     </label>
 
                     <label class="admin-events-field admin-events-field--full">
@@ -514,7 +539,10 @@
           </form>
         </div>
 
-        <aside v-if="wizardMode === 'suggestion' && selectedSuggestion" class="admin-events-wizard-side">
+        <aside
+          v-if="wizardMode === 'suggestion' && selectedSuggestion"
+          class="admin-events-wizard-side"
+        >
           <div class="admin-events-card-header">
             <div>
               <p class="admin-events-card-kicker">Suggested event text</p>
@@ -528,7 +556,10 @@
               {{ selectedSuggestion.description || 'No main description supplied.' }}
             </p>
 
-            <div v-if="selectedSuggestion.notes" class="admin-events-suggestion-block">
+            <div
+              v-if="selectedSuggestion.notes"
+              class="admin-events-suggestion-block"
+            >
               <p class="admin-events-suggestion-label">Extra notes</p>
               <p class="admin-events-suggestion-copy">{{ selectedSuggestion.notes }}</p>
             </div>

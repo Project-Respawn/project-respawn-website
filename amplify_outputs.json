@@ -246,6 +246,20 @@
               "isRequired": false,
               "attributes": []
             },
+            "canHostEvents": {
+              "name": "canHostEvents",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false,
+              "attributes": []
+            },
+            "hostTitle": {
+              "name": "hostTitle",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
             "createdAt": {
               "name": "createdAt",
               "isArray": false,
@@ -309,6 +323,118 @@
             "sortKeyFieldNames": []
           }
         },
+        "EventTag": {
+          "name": "EventTag",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "name": {
+              "name": "name",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "slug": {
+              "name": "slug",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "type": {
+              "name": "type",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "visibleOnEventCard": {
+              "name": "visibleOnEventCard",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "isActive": {
+              "name": "isActive",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "EventTags",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "allow": "public",
+                    "provider": "apiKey",
+                    "operations": [
+                      "read"
+                    ]
+                  },
+                  {
+                    "allow": "private",
+                    "operations": [
+                      "read"
+                    ]
+                  },
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [
+                      "create",
+                      "read",
+                      "update",
+                      "delete"
+                    ],
+                    "groups": [
+                      "SuperAdmin",
+                      "Admin",
+                      "Staff"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
         "Event": {
           "name": "Event",
           "fields": {
@@ -333,11 +459,25 @@
               "isRequired": false,
               "attributes": []
             },
+            "shortDescription": {
+              "name": "shortDescription",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
             "description": {
               "name": "description",
               "isArray": false,
               "type": "String",
               "isRequired": true,
+              "attributes": []
+            },
+            "longDescription": {
+              "name": "longDescription",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
               "attributes": []
             },
             "startAt": {
@@ -372,8 +512,16 @@
               "name": "category",
               "isArray": false,
               "type": "String",
-              "isRequired": true,
+              "isRequired": false,
               "attributes": []
+            },
+            "categories": {
+              "name": "categories",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": true
             },
             "featured": {
               "name": "featured",
@@ -391,6 +539,20 @@
             },
             "host": {
               "name": "host",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "hostUserId": {
+              "name": "hostUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "hostDisplayName": {
+              "name": "hostDisplayName",
               "isArray": false,
               "type": "String",
               "isRequired": false,
@@ -421,6 +583,123 @@
               "name": "ctaUrl",
               "isArray": false,
               "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "tagIds": {
+              "name": "tagIds",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": true
+            },
+            "ticketMode": {
+              "name": "ticketMode",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "ticketTiers": {
+              "name": "ticketTiers",
+              "isArray": true,
+              "type": {
+                "nonModel": "EventTicketTier"
+              },
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": true
+            },
+            "signupMode": {
+              "name": "signupMode",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "eventType": {
+              "name": "eventType",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "isTemplate": {
+              "name": "isTemplate",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false,
+              "attributes": []
+            },
+            "isRecurring": {
+              "name": "isRecurring",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false,
+              "attributes": []
+            },
+            "seriesId": {
+              "name": "seriesId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "parentEventId": {
+              "name": "parentEventId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "clonedFromEventId": {
+              "name": "clonedFromEventId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "recurrenceRule": {
+              "name": "recurrenceRule",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "recurrenceFrequency": {
+              "name": "recurrenceFrequency",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "recurrenceInterval": {
+              "name": "recurrenceInterval",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": false,
+              "attributes": []
+            },
+            "recurrenceByWeekday": {
+              "name": "recurrenceByWeekday",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": true
+            },
+            "recurrenceEndsAt": {
+              "name": "recurrenceEndsAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "recurrenceCount": {
+              "name": "recurrenceCount",
+              "isArray": false,
+              "type": "Int",
               "isRequired": false,
               "attributes": []
             },
@@ -529,6 +808,20 @@
               "isRequired": true,
               "attributes": []
             },
+            "shortDescription": {
+              "name": "shortDescription",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "longDescription": {
+              "name": "longDescription",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
             "startAt": {
               "name": "startAt",
               "isArray": false,
@@ -564,8 +857,30 @@
               "isRequired": false,
               "attributes": []
             },
+            "categories": {
+              "name": "categories",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": true
+            },
             "host": {
               "name": "host",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "hostUserId": {
+              "name": "hostUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "hostDisplayName": {
+              "name": "hostDisplayName",
               "isArray": false,
               "type": "String",
               "isRequired": false,
@@ -2318,6 +2633,136 @@
             "primaryKeyFieldName": "id",
             "sortKeyFieldNames": []
           }
+        },
+        "HostAssignment": {
+          "name": "HostAssignment",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "hostUserId": {
+              "name": "hostUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "managerUserId": {
+              "name": "managerUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "managerUsername": {
+              "name": "managerUsername",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "managerEmail": {
+              "name": "managerEmail",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "managerDisplayName": {
+              "name": "managerDisplayName",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "hostDisplayName": {
+              "name": "hostDisplayName",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "accessLevel": {
+              "name": "accessLevel",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "assignedBy": {
+              "name": "assignedBy",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "HostAssignments",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [
+                      "create",
+                      "read",
+                      "update",
+                      "delete"
+                    ],
+                    "groups": [
+                      "SuperAdmin",
+                      "Admin"
+                    ]
+                  },
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [
+                      "read"
+                    ],
+                    "groups": [
+                      "Staff"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
         }
       },
       "enums": {},
@@ -2418,6 +2863,105 @@
             }
           }
         },
+        "EventTicketTier": {
+          "name": "EventTicketTier",
+          "fields": {
+            "name": {
+              "name": "name",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "price": {
+              "name": "price",
+              "isArray": false,
+              "type": "Float",
+              "isRequired": true,
+              "attributes": []
+            },
+            "perks": {
+              "name": "perks",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "quantityAvailable": {
+              "name": "quantityAvailable",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": false,
+              "attributes": []
+            }
+          }
+        },
+        "CloneEventResult": {
+          "name": "CloneEventResult",
+          "fields": {
+            "success": {
+              "name": "success",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "message": {
+              "name": "message",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "eventId": {
+              "name": "eventId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false,
+              "attributes": []
+            }
+          }
+        },
+        "RecurringEventSeriesResult": {
+          "name": "RecurringEventSeriesResult",
+          "fields": {
+            "success": {
+              "name": "success",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "message": {
+              "name": "message",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "seriesId": {
+              "name": "seriesId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "masterEventId": {
+              "name": "masterEventId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false,
+              "attributes": []
+            },
+            "generatedCount": {
+              "name": "generatedCount",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": false,
+              "attributes": []
+            }
+          }
+        },
         "ForumMutationResult": {
           "name": "ForumMutationResult",
           "fields": {
@@ -2485,6 +3029,115 @@
         }
       },
       "mutations": {
+        "cloneEvent": {
+          "name": "cloneEvent",
+          "isArray": false,
+          "type": {
+            "nonModel": "CloneEventResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "eventId": {
+              "name": "eventId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            },
+            "newStartAt": {
+              "name": "newStartAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false
+            },
+            "newEndAt": {
+              "name": "newEndAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false
+            },
+            "status": {
+              "name": "status",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            }
+          }
+        },
+        "createRecurringEventSeries": {
+          "name": "createRecurringEventSeries",
+          "isArray": false,
+          "type": {
+            "nonModel": "RecurringEventSeriesResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "eventId": {
+              "name": "eventId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            },
+            "recurrenceFrequency": {
+              "name": "recurrenceFrequency",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "recurrenceInterval": {
+              "name": "recurrenceInterval",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": false
+            },
+            "recurrenceByWeekday": {
+              "name": "recurrenceByWeekday",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "isArrayNullable": true
+            },
+            "recurrenceEndsAt": {
+              "name": "recurrenceEndsAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false
+            },
+            "recurrenceCount": {
+              "name": "recurrenceCount",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": false
+            }
+          }
+        },
+        "generateRecurringInstances": {
+          "name": "generateRecurringInstances",
+          "isArray": false,
+          "type": {
+            "nonModel": "RecurringEventSeriesResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "masterEventId": {
+              "name": "masterEventId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            },
+            "rangeStart": {
+              "name": "rangeStart",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false
+            },
+            "rangeEnd": {
+              "name": "rangeEnd",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false
+            }
+          }
+        },
         "submitForumThread": {
           "name": "submitForumThread",
           "isArray": false,

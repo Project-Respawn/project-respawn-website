@@ -56,6 +56,9 @@ const schema = a
         displayName: a.string().required(),
         bio: a.string(),
         avatarUrl: a.string(),
+
+        canHostEvents: a.boolean(),
+        hostTitle: a.string(),
       })
       .authorization((allow) => [
         allow.owner(),
@@ -66,23 +69,98 @@ const schema = a
     // Events models
     // =========================================================================
 
+    EventTicketTier: a.customType({
+      name: a.string().required(),
+      price: a.float().required(),
+      perks: a.string(),
+      quantityAvailable: a.integer(),
+    }),
+
+    CloneEventResult: a.customType({
+      success: a.boolean().required(),
+      message: a.string(),
+      eventId: a.id(),
+    }),
+
+    RecurringEventSeriesResult: a.customType({
+      success: a.boolean().required(),
+      message: a.string(),
+      seriesId: a.string(),
+      masterEventId: a.id(),
+      generatedCount: a.integer(),
+    }),
+
+    EventTag: a
+      .model({
+        name: a.string().required(),
+        slug: a.string().required(),
+        type: a.string().required(),
+        visibleOnEventCard: a.boolean().required(),
+        isActive: a.boolean().required(),
+      })
+      .authorization((allow) => [
+        allow.publicApiKey().to(['read']),
+        allow.authenticated().to(['read']),
+        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to([
+          'create',
+          'read',
+          'update',
+          'delete',
+        ]),
+      ]),
+
     Event: a
       .model({
         title: a.string().required(),
         slug: a.string(),
+        shortDescription: a.string(),
         description: a.string().required(),
+        longDescription: a.string(),
+
         startAt: a.datetime().required(),
         endAt: a.datetime().required(),
+
         locationType: a.string().required(),
         platform: a.string(),
-        category: a.string().required(),
+
+        category: a.string(),
+        categories: a.string().array(),
+
         featured: a.boolean(),
         status: a.string().required(),
+
         host: a.string(),
+        hostUserId: a.string(),
+        hostDisplayName: a.string(),
+
         rewardText: a.string(),
         recapText: a.string(),
+
         ctaLabel: a.string(),
         ctaUrl: a.string(),
+
+        tagIds: a.string().array(),
+
+        ticketMode: a.string(),
+        ticketTiers: a.ref('EventTicketTier').array(),
+
+        signupMode: a.string(),
+
+        eventType: a.string(),
+        isTemplate: a.boolean(),
+        isRecurring: a.boolean(),
+
+        seriesId: a.string(),
+        parentEventId: a.string(),
+        clonedFromEventId: a.string(),
+
+        recurrenceRule: a.string(),
+        recurrenceFrequency: a.string(),
+        recurrenceInterval: a.integer(),
+        recurrenceByWeekday: a.string().array(),
+        recurrenceEndsAt: a.datetime(),
+        recurrenceCount: a.integer(),
+
         createdBy: a.string(),
         updatedBy: a.string(),
       })
@@ -101,16 +179,28 @@ const schema = a
       .model({
         title: a.string().required(),
         description: a.string().required(),
+        shortDescription: a.string(),
+        longDescription: a.string(),
+
         startAt: a.datetime(),
         endAt: a.datetime(),
+
         locationType: a.string(),
         platform: a.string(),
+
         category: a.string(),
+        categories: a.string().array(),
+
         host: a.string(),
+        hostUserId: a.string(),
+        hostDisplayName: a.string(),
+
         rewardText: a.string(),
         notes: a.string(),
+
         status: a.string().required(),
         reviewNotes: a.string(),
+
         owner: a
           .string()
           .authorization((allow) => [allow.owner().to(['read', 'delete'])]),
@@ -127,6 +217,43 @@ const schema = a
           'delete',
         ]),
       ]),
+
+    cloneEvent: a
+      .mutation()
+      .arguments({
+        eventId: a.id().required(),
+        newStartAt: a.datetime(),
+        newEndAt: a.datetime(),
+        status: a.string(),
+      })
+      .returns(a.ref('CloneEventResult').required())
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin', 'Staff'])])
+      .handler(a.handler.function(myFunction)),
+
+    createRecurringEventSeries: a
+      .mutation()
+      .arguments({
+        eventId: a.id().required(),
+        recurrenceFrequency: a.string().required(),
+        recurrenceInterval: a.integer(),
+        recurrenceByWeekday: a.string().array(),
+        recurrenceEndsAt: a.datetime(),
+        recurrenceCount: a.integer(),
+      })
+      .returns(a.ref('RecurringEventSeriesResult').required())
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin', 'Staff'])])
+      .handler(a.handler.function(myFunction)),
+
+    generateRecurringInstances: a
+      .mutation()
+      .arguments({
+        masterEventId: a.id().required(),
+        rangeStart: a.datetime(),
+        rangeEnd: a.datetime(),
+      })
+      .returns(a.ref('RecurringEventSeriesResult').required())
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin', 'Staff'])])
+      .handler(a.handler.function(myFunction)),
 
     // =========================================================================
     // Forum types
@@ -290,10 +417,7 @@ const schema = a
         threadId: a.id().required(),
       })
       .returns(a.ref('ForumMutationResult').required())
-      .authorization((allow) => [
-        allow.publicApiKey(),
-        allow.authenticated(),
-      ])
+      .authorization((allow) => [allow.publicApiKey(), allow.authenticated()])
       .handler(a.handler.function(myFunction)),
 
     // =========================================================================
@@ -422,6 +546,27 @@ const schema = a
           'update',
           'delete',
         ]),
+      ]),
+
+    HostAssignment: a
+      .model({
+        hostUserId: a.string().required(),
+        managerUserId: a.string().required(),
+        managerUsername: a.string(),
+        managerEmail: a.string(),
+        managerDisplayName: a.string(),
+        hostDisplayName: a.string(),
+        accessLevel: a.string().required(), // assign_only | assign_and_manage
+        assignedBy: a.string(),
+      })
+      .authorization((allow) => [
+        allow.groups(['SuperAdmin', 'Admin']).to([
+          'create',
+          'read',
+          'update',
+          'delete',
+        ]),
+        allow.groups(['Staff']).to(['read']),
       ]),
 
     // =========================================================================

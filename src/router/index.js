@@ -34,6 +34,7 @@ import AdminMerchCategories from '../views/Admin/AdminMerchCategories/AdminMerch
 import AdminBrandPermissions from '../views/Admin/AdminBrandPermissions/AdminBrandPermissions.vue'
 import AdminForums from '../views/Admin/AdminForums/AdminForums.vue'
 import AdminEvents from '../views/Admin/AdminEvents/AdminEvents.vue'
+import AdminHost from '../views/Admin/AdminHost/AdminHost.vue'
 
 import ForumLayout from '../views/Forum/ForumLayout/ForumLayout.vue'
 import ForumIndex from '../views/Forum/ForumIndex/ForumIndex.vue'
@@ -103,6 +104,11 @@ const routes = [
         path: 'brand-permissions',
         name: 'AdminBrandPermissions',
         component: AdminBrandPermissions,
+      },
+      {
+        path: 'host-permissions',
+        name: 'AdminHost',
+        component: AdminHost,
       },
     ],
   },
