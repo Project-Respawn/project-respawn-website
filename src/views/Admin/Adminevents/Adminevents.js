@@ -1,7 +1,13 @@
 import { generateClient } from 'aws-amplify/data';
 import { fetchAuthSession } from 'aws-amplify/auth';
 
-const client = generateClient({ authMode: 'userPool' });
+let client = null;
+function getClient() {
+  if (!client) {
+    client = generateClient({ authMode: 'userPool' });
+  }
+  return client;
+}
 
 function createEmptyTicketTier() {
   return {
@@ -266,7 +272,7 @@ export default {
 
     async loadEvents() {
       try {
-        const { data, errors } = await client.models.Event.list();
+        const { data, errors } = await getClient().models.Event.list();
 
         if (errors?.length) {
           console.error('Event list errors:', errors);
@@ -290,12 +296,12 @@ export default {
 
     async loadSuggestions() {
       try {
-        if (!client.models.EventSuggestion) {
+        if (!getClient().models.EventSuggestion) {
           this.suggestions = [];
           return;
         }
 
-        const { data, errors } = await client.models.EventSuggestion.list();
+        const { data, errors } = await getClient().models.EventSuggestion.list();
 
         if (errors?.length) {
           console.error('Suggestion list errors:', errors);
@@ -310,12 +316,12 @@ export default {
 
     async loadTags() {
       try {
-        if (!client.models.EventTag) {
+        if (!getClient().models.EventTag) {
           this.tags = [];
           return;
         }
 
-        const { data, errors } = await client.models.EventTag.list();
+        const { data, errors } = await getClient().models.EventTag.list();
 
         if (errors?.length) {
           console.error('Tag list errors:', errors);
@@ -330,12 +336,12 @@ export default {
 
     async loadHostOptions() {
       try {
-        if (!client.models.UserProfile) {
+        if (!getClient().models.UserProfile) {
           this.hostOptions = [];
           return;
         }
 
-        const { data: profiles, errors: profileErrors } = await client.models.UserProfile.list();
+        const { data: profiles, errors: profileErrors } = await getClient().models.UserProfile.list();
 
         if (profileErrors?.length) {
           console.error('Host profile list errors:', profileErrors);
@@ -358,12 +364,12 @@ export default {
           return;
         }
 
-        if (!client.models.HostAssignment || !this.currentUserSub) {
+        if (!getClient().models.HostAssignment || !this.currentUserSub) {
           this.hostOptions = [];
           return;
         }
 
-        const { data: assignments, errors: assignmentErrors } = await client.models.HostAssignment.list();
+        const { data: assignments, errors: assignmentErrors } = await getClient().models.HostAssignment.list();
 
         if (assignmentErrors?.length) {
           console.error('Host assignment list errors:', assignmentErrors);
@@ -494,9 +500,9 @@ export default {
 
     async rejectSuggestion(suggestion) {
       try {
-        if (!client.models.EventSuggestion) return;
+        if (!getClient().models.EventSuggestion) return;
 
-        const { errors } = await client.models.EventSuggestion.update({
+        const { errors } = await getClient().models.EventSuggestion.update({
           id: suggestion.id,
           status: 'rejected',
         });
@@ -527,7 +533,7 @@ export default {
 
     async createTag() {
       const name = this.newTag.name.trim();
-      if (!name || !client.models.EventTag) return;
+      if (!name || !getClient().models.EventTag) return;
 
       try {
         const payload = {
@@ -559,9 +565,9 @@ export default {
 
     async toggleTagActive(tag) {
       try {
-        if (!client.models.EventTag) return;
+        if (!getClient().models.EventTag) return;
 
-        const { errors } = await client.models.EventTag.update({
+        const { errors } = await getClient().models.EventTag.update({
           id: tag.id,
           isActive: !tag.isActive,
         });
@@ -587,7 +593,7 @@ export default {
 
     async toggleFeatured(event) {
       try {
-        const { errors } = await client.models.Event.update({
+        const { errors } = await getClient().models.Event.update({
           id: event.id,
           featured: !event.featured,
         });
@@ -630,7 +636,7 @@ export default {
         };
 
         if (this.eventForm.id) {
-          const { errors } = await client.models.Event.update({
+          const { errors } = await getClient().models.Event.update({
             id: this.eventForm.id,
             ...payload,
           });
@@ -640,7 +646,7 @@ export default {
             return;
           }
         } else {
-          const { errors } = await client.models.Event.create(payload);
+          const { errors } = await getClient().models.Event.create(payload);
 
           if (errors?.length) {
             console.error('Create event errors:', errors);
@@ -651,9 +657,9 @@ export default {
         if (
           this.wizardMode === 'suggestion' &&
           this.selectedSuggestion &&
-          client.models.EventSuggestion
+          getClient().models.EventSuggestion
         ) {
-          const { errors } = await client.models.EventSuggestion.update({
+          const { errors } = await getClient().models.EventSuggestion.update({
             id: this.selectedSuggestion.id,
             status: 'approved',
           });

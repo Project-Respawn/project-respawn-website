@@ -1,7 +1,13 @@
 import { getCurrentUser, fetchAuthSession } from "aws-amplify/auth";
 import { generateClient } from "aws-amplify/data";
 
-const client = generateClient();
+let client = null;
+function getClient() {
+  if (!client) {
+    client = generateClient();
+  }
+  return client;
+}
 
 /* =========================
    SHARED HELPERS
@@ -349,7 +355,7 @@ export default {
       this.eventsError = "";
 
       try {
-        const response = await client.models.Event.list({
+        const response = await getClient().models.Event.list({
           limit: 200,
         });
 
@@ -467,7 +473,7 @@ export default {
           ownerDisplayName: this.currentUser?.signInDetails?.loginId || this.currentUser?.username || null,
         };
 
-        const response = await client.models.EventSuggestion.create(input);
+        const response = await getClient().models.EventSuggestion.create(input);
 
         if (response?.errors?.length) {
           throw new Error(response.errors.map((item) => item.message).join(", "));
