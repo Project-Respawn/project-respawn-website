@@ -439,11 +439,17 @@ export default {
   },
 
   async mounted() {
-    await this.syncPrintfulProductsToDatabase();
     await this.loadProducts();
   },
 
   methods: {
+    
+    async handleManualPrintfulSync() {
+      if (this.syncing) return;
+      await this.syncPrintfulProductsToDatabase();
+      await this.loadProducts();
+    },
+
     async syncPrintfulProductsToDatabase() {
       this.syncing = true;
       this.status = 'Syncing products from Printful...';

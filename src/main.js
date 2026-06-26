@@ -25,7 +25,6 @@ try {
   app.use(router);
   app.mount('#app');
 
-  bootstrap();
 } catch (error) {
   console.error('Failed to configure Amplify:', error);
 }

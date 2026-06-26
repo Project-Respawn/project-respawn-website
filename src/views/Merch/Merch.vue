@@ -13,6 +13,13 @@
     <section class="container merch-toolbar">
       <div class="toolbar-top">
         <p class="merch-status">{{ statusMessage }}</p>
+        <button
+          type="button"
+          class="btn-secondary merch-sync-button"
+          @click="handleManualPrintfulSync"
+          :disabled="syncing">
+          {{ syncing ? 'Syncing Printful...' : 'Sync Printful Products' }}
+        </button>
       </div>
 
       <div class="filter-stack">
