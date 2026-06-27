@@ -443,7 +443,6 @@ export default {
   },
 
   methods: {
-    
     async handleManualPrintfulSync() {
       if (this.syncing) return;
       await this.syncPrintfulProductsToDatabase();
@@ -577,11 +576,11 @@ export default {
           productBrandsResult,
           productCategoriesResult,
         ] = await Promise.all([
-          getClient().models.MerchProduct.list({ authMode: 'userPool' }),
-          getClient().models.Brand.list({ authMode: 'userPool' }),
-          getClient().models.MerchCategory.list({ authMode: 'userPool' }),
-          getClient().models.MerchProductBrand.list({ authMode: 'userPool' }),
-          getClient().models.MerchProductCategory.list({ authMode: 'userPool' }),
+          getClient().models.MerchProduct.list({ authMode: 'apiKey' }),
+          getClient().models.Brand.list({ authMode: 'apiKey' }),
+          getClient().models.MerchCategory.list({ authMode: 'apiKey' }),
+          getClient().models.MerchProductBrand.list({ authMode: 'apiKey' }),
+          getClient().models.MerchProductCategory.list({ authMode: 'apiKey' }),
         ]);
 
         if (productsResult.errors?.length) {
