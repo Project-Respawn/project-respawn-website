@@ -6,9 +6,7 @@ const API_BASE = (() => {
   const productionBase = import.meta.env.VITE_API_BASE_URL?.trim();
 
   if (!productionBase) {
-    throw new Error(
-      'Missing VITE_API_BASE_URL for production merch API requests.'
-    );
+    throw new Error('Missing VITE_API_BASE_URL for production merch API requests.');
   }
 
   return productionBase.replace(/\/+$/, '');
@@ -39,10 +37,7 @@ async function readResponseBody(response) {
 
 function summarizeBody(body) {
   if (body == null) return '';
-
-  if (typeof body === 'string') {
-    return body.slice(0, 300);
-  }
+  if (typeof body === 'string') return body.slice(0, 300);
 
   try {
     return JSON.stringify(body).slice(0, 300);
@@ -63,7 +58,9 @@ async function handleResponse(response, errorMessage) {
 
   if (!contentType.includes('application/json')) {
     throw new Error(
-      `${errorMessage}: Expected JSON but received ${contentType || 'unknown content type'} - ${summarizeBody(body)}`
+      `${errorMessage}: Expected JSON but received ${
+        contentType || 'unknown content type'
+      } - ${summarizeBody(body)}`
     );
   }
 

@@ -25,9 +25,30 @@ export default {
         { id: 'events', icon: '📅', label: 'Events', route: '/dashboard/events' },
         { id: 'forums', icon: '🧵', label: 'Forums', route: '/dashboard/forums' },
         { id: 'brands', icon: '🏷️', label: 'Brands', route: '/dashboard/brands' },
-        { id: 'merch-categories', icon: '📦', label: 'Merch Categories', route: '/dashboard/merch-categories' },
-        { id: 'brand-permissions', icon: '🔐', label: 'Brand Permissions', route: '/dashboard/brand-permissions' },
-        { id: 'host-permissions', icon: '🎤', label: 'Host Permissions', route: '/dashboard/host-permissions' },
+        {
+          id: 'merch-categories',
+          icon: '📦',
+          label: 'Merch Categories',
+          route: '/dashboard/merch-categories',
+        },
+        {
+          id: 'brand-permissions',
+          icon: '🔐',
+          label: 'Brand Permissions',
+          route: '/dashboard/brand-permissions',
+        },
+        {
+          id: 'product-control',
+          icon: '🛍️',
+          label: 'Product Control',
+          route: '/dashboard/product-control',
+        },
+        {
+          id: 'host-permissions',
+          icon: '🎤',
+          label: 'Host Permissions',
+          route: '/dashboard/host-permissions',
+        },
       ],
     };
   },
@@ -51,7 +72,8 @@ export default {
     activeTab() {
       const path = this.$route?.path || '';
 
-      if (path === '/dashboard') return 'home';
+      if (path === '/dashboard' || path === '/dashboard/') return 'home';
+      if (path.includes('/product-control')) return 'product-control';
       if (path.includes('/host-permissions')) return 'host-permissions';
       if (path.includes('/brand-permissions')) return 'brand-permissions';
       if (path.includes('/merch-categories')) return 'merch-categories';

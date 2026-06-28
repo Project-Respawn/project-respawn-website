@@ -2100,8 +2100,22 @@
               "isRequired": true,
               "attributes": []
             },
+            "shortDescription": {
+              "name": "shortDescription",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
             "description": {
               "name": "description",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "thumbnailUrl": {
+              "name": "thumbnailUrl",
               "isArray": false,
               "type": "String",
               "isRequired": false,
@@ -2149,6 +2163,20 @@
               "isRequired": false,
               "attributes": []
             },
+            "basePrice": {
+              "name": "basePrice",
+              "isArray": false,
+              "type": "Float",
+              "isRequired": false,
+              "attributes": []
+            },
+            "currency": {
+              "name": "currency",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
             "productUrl": {
               "name": "productUrl",
               "isArray": false,
@@ -2160,6 +2188,48 @@
               "name": "variantCount",
               "isArray": false,
               "type": "Int",
+              "isRequired": false,
+              "attributes": []
+            },
+            "materials": {
+              "name": "materials",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "sizeGuide": {
+              "name": "sizeGuide",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "shippingReturns": {
+              "name": "shippingReturns",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "whatsIncluded": {
+              "name": "whatsIncluded",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "careInstructions": {
+              "name": "careInstructions",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "fitNotes": {
+              "name": "fitNotes",
+              "isArray": false,
+              "type": "String",
               "isRequired": false,
               "attributes": []
             },
@@ -2183,6 +2253,38 @@
               "type": "Int",
               "isRequired": false,
               "attributes": []
+            },
+            "imageRecords": {
+              "name": "imageRecords",
+              "isArray": true,
+              "type": {
+                "model": "MerchProductImage"
+              },
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": true,
+              "association": {
+                "connectionType": "HAS_MANY",
+                "associatedWith": [
+                  "productId"
+                ]
+              }
+            },
+            "variants": {
+              "name": "variants",
+              "isArray": true,
+              "type": {
+                "model": "MerchProductVariant"
+              },
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": true,
+              "association": {
+                "connectionType": "HAS_MANY",
+                "associatedWith": [
+                  "productId"
+                ]
+              }
             },
             "brandLinks": {
               "name": "brandLinks",
@@ -2235,6 +2337,353 @@
           },
           "syncable": true,
           "pluralName": "MerchProducts",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "allow": "public",
+                    "provider": "apiKey",
+                    "operations": [
+                      "read"
+                    ]
+                  },
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [
+                      "create",
+                      "read",
+                      "update",
+                      "delete"
+                    ],
+                    "groups": [
+                      "SuperAdmin",
+                      "Admin",
+                      "Staff"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "MerchProductImage": {
+          "name": "MerchProductImage",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "productId": {
+              "name": "productId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "product": {
+              "name": "product",
+              "isArray": false,
+              "type": {
+                "model": "MerchProduct"
+              },
+              "isRequired": false,
+              "attributes": [],
+              "association": {
+                "connectionType": "BELONGS_TO",
+                "targetNames": [
+                  "productId"
+                ]
+              }
+            },
+            "url": {
+              "name": "url",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "altText": {
+              "name": "altText",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "color": {
+              "name": "color",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "colorHex": {
+              "name": "colorHex",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "sortOrder": {
+              "name": "sortOrder",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": false,
+              "attributes": []
+            },
+            "isPrimary": {
+              "name": "isPrimary",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false,
+              "attributes": []
+            },
+            "isMockup": {
+              "name": "isMockup",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false,
+              "attributes": []
+            },
+            "sourceType": {
+              "name": "sourceType",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "externalImageId": {
+              "name": "externalImageId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "status": {
+              "name": "status",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "MerchProductImages",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "allow": "public",
+                    "provider": "apiKey",
+                    "operations": [
+                      "read"
+                    ]
+                  },
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [
+                      "create",
+                      "read",
+                      "update",
+                      "delete"
+                    ],
+                    "groups": [
+                      "SuperAdmin",
+                      "Admin",
+                      "Staff"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "MerchProductVariant": {
+          "name": "MerchProductVariant",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "productId": {
+              "name": "productId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "product": {
+              "name": "product",
+              "isArray": false,
+              "type": {
+                "model": "MerchProduct"
+              },
+              "isRequired": false,
+              "attributes": [],
+              "association": {
+                "connectionType": "BELONGS_TO",
+                "targetNames": [
+                  "productId"
+                ]
+              }
+            },
+            "externalVariantId": {
+              "name": "externalVariantId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "sku": {
+              "name": "sku",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "name": {
+              "name": "name",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "color": {
+              "name": "color",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "colorHex": {
+              "name": "colorHex",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "size": {
+              "name": "size",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "displayPrice": {
+              "name": "displayPrice",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "retailPrice": {
+              "name": "retailPrice",
+              "isArray": false,
+              "type": "Float",
+              "isRequired": false,
+              "attributes": []
+            },
+            "currency": {
+              "name": "currency",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "availabilityStatus": {
+              "name": "availabilityStatus",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "imageUrl": {
+              "name": "imageUrl",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "sortOrder": {
+              "name": "sortOrder",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": false,
+              "attributes": []
+            },
+            "status": {
+              "name": "status",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "MerchProductVariants",
           "attributes": [
             {
               "type": "model",

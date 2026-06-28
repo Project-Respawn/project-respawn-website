@@ -469,20 +469,102 @@ const schema = a
       .model({
         title: a.string().required(),
         slug: a.string().required(),
+
+        shortDescription: a.string(),
         description: a.string(),
+
+        thumbnailUrl: a.string(),
         imageUrl: a.string(),
+
         sourceType: a.string().required(),
         externalProductId: a.string(),
         externalVariantGroupId: a.string(),
+
         sku: a.string(),
         displayPrice: a.string(),
+        basePrice: a.float(),
+        currency: a.string(),
+
         productUrl: a.string(),
         variantCount: a.integer(),
+
+        materials: a.string(),
+        sizeGuide: a.string(),
+        shippingReturns: a.string(),
+        whatsIncluded: a.string(),
+        careInstructions: a.string(),
+        fitNotes: a.string(),
+
         status: a.string().required(),
         isVisible: a.boolean().required(),
         sortOrder: a.integer(),
+
+        imageRecords: a.hasMany('MerchProductImage', 'productId'),
+        variants: a.hasMany('MerchProductVariant', 'productId'),
         brandLinks: a.hasMany('MerchProductBrand', 'productId'),
         categoryLinks: a.hasMany('MerchProductCategory', 'productId'),
+      })
+      .authorization((allow) => [
+        allow.publicApiKey().to(['read']),
+        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to([
+          'create',
+          'read',
+          'update',
+          'delete',
+        ]),
+      ]),
+
+    MerchProductImage: a
+      .model({
+        productId: a.id().required(),
+        product: a.belongsTo('MerchProduct', 'productId'),
+
+        url: a.string().required(),
+        altText: a.string(),
+
+        color: a.string(),
+        colorHex: a.string(),
+
+        sortOrder: a.integer(),
+        isPrimary: a.boolean(),
+        isMockup: a.boolean(),
+
+        sourceType: a.string(),
+        externalImageId: a.string(),
+        status: a.string(),
+      })
+      .authorization((allow) => [
+        allow.publicApiKey().to(['read']),
+        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to([
+          'create',
+          'read',
+          'update',
+          'delete',
+        ]),
+      ]),
+
+    MerchProductVariant: a
+      .model({
+        productId: a.id().required(),
+        product: a.belongsTo('MerchProduct', 'productId'),
+
+        externalVariantId: a.string(),
+        sku: a.string(),
+
+        name: a.string(),
+        color: a.string(),
+        colorHex: a.string(),
+        size: a.string(),
+
+        displayPrice: a.string(),
+        retailPrice: a.float(),
+        currency: a.string(),
+
+        availabilityStatus: a.string(),
+        imageUrl: a.string(),
+
+        sortOrder: a.integer(),
+        status: a.string(),
       })
       .authorization((allow) => [
         allow.publicApiKey().to(['read']),

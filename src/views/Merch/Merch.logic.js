@@ -77,6 +77,12 @@ function getProductArray(payload) {
   return [];
 }
 
+function getRawVariants(product) {
+  if (Array.isArray(product?.sync_variants)) return product.sync_variants;
+  if (Array.isArray(product?.variants)) return product.variants;
+  return [];
+}
+
 function inferTitle(product, index = 0) {
   return firstNonEmpty(
     product?.name,
@@ -117,55 +123,15 @@ function inferProductUrl(product) {
 }
 
 function inferVariantCount(product) {
-  if (Array.isArray(product?.sync_variants)) {
-    return product.sync_variants.length;
-  }
-  if (Array.isArray(product?.variants)) {
-    return product.variants.length;
-  }
-  if (Number.isFinite(Number(product?.variantCount))) {
-    return Number(product.variantCount);
-  }
-  if (Number.isFinite(Number(product?.variant_count))) {
-    return Number(product.variant_count);
-  }
+  if (Array.isArray(product?.sync_variants)) return product.sync_variants.length;
+  if (Array.isArray(product?.variants)) return product.variants.length;
+  if (Number.isFinite(Number(product?.variantCount))) return Number(product.variantCount);
+  if (Number.isFinite(Number(product?.variant_count))) return Number(product.variant_count);
   return 0;
-}
-
-function inferCategory(product) {
-  return firstNonEmpty(
-    product?.category,
-    product?.categoryName,
-    product?.type,
-    product?.product_type,
-    product?.sync_product?.category,
-    product?.sync_product?.type
-  );
-}
-
-function inferBrand(product) {
-  return firstNonEmpty(
-    product?.brand,
-    product?.brandName,
-    product?.brand_name,
-    product?.sync_product?.brand,
-    product?.sync_product?.manufacturer
-  );
-}
-
-function getRawVariants(product) {
-  if (Array.isArray(product?.sync_variants)) {
-    return product.sync_variants;
-  }
-  if (Array.isArray(product?.variants)) {
-    return product.variants;
-  }
-  return [];
 }
 
 function inferDisplayPriceFromPrintful(product) {
   const variants = getRawVariants(product);
-
   const prices = variants
     .map((variant) =>
       inferPriceNumber(
@@ -177,10 +143,7 @@ function inferDisplayPriceFromPrintful(product) {
     )
     .filter((price) => price != null);
 
-  if (!prices.length) {
-    return 'Price unavailable';
-  }
-
+  if (!prices.length) return 'Price unavailable';
   return formatPrice(Math.min(...prices), 'GBP');
 }
 
@@ -198,11 +161,10 @@ function mapAvailabilityStatus(variant) {
   if (rawStatus === 'out of stock') return 'Out of stock';
   if (rawStatus === 'out_of_stock') return 'Out of stock';
   if (rawStatus === 'sold out') return 'Out of stock';
-
   return 'Availability unknown';
 }
 
-function normalizeVariant(variant) {
+function normalizePrintfulVariant(variant) {
   const retailPrice = inferPriceNumber(
     variant?.retail_price,
     variant?.retailPrice,
@@ -211,11 +173,12 @@ function normalizeVariant(variant) {
   );
 
   return {
-    id: variant?.id || '',
+    id: normalizeText(variant?.id),
+    externalVariantId: normalizeText(variant?.id),
     name: firstNonEmpty(variant?.name, variant?.title),
     color: titleCase(firstNonEmpty(variant?.color, variant?.colour)),
     size: firstNonEmpty(variant?.size),
-    image: firstNonEmpty(
+    imageUrl: firstNonEmpty(
       variant?.image,
       variant?.imageUrl,
       variant?.image_url,
@@ -225,82 +188,176 @@ function normalizeVariant(variant) {
     currency: firstNonEmpty(variant?.currency, 'GBP'),
     retailPrice,
     availabilityStatus: mapAvailabilityStatus(variant),
+    displayPrice:
+      retailPrice != null ? formatPrice(retailPrice, firstNonEmpty(variant?.currency, 'GBP')) : '',
   };
 }
 
-function normalizeStoredProduct(product, productBrands = [], productCategories = []) {
+function normalizeStoredImage(image) {
+  return {
+    id: image.id,
+    url: normalizeText(image.url),
+    altText: normalizeText(image.altText),
+    color: titleCase(image.color),
+    colorHex: normalizeText(image.colorHex),
+    sortOrder: Number.isFinite(Number(image.sortOrder)) ? Number(image.sortOrder) : 999999,
+    isPrimary: image.isPrimary === true,
+    isMockup: image.isMockup === true,
+    sourceType: normalizeText(image.sourceType),
+    status: normalizeText(image.status),
+  };
+}
+
+function normalizeStoredVariant(variant) {
+  const retailPrice = inferPriceNumber(variant?.retailPrice, variant?.displayPrice);
+  return {
+    id: variant.id,
+    externalVariantId: normalizeText(variant.externalVariantId),
+    sku: normalizeText(variant.sku),
+    name: normalizeText(variant.name),
+    color: titleCase(variant.color),
+    colorHex: normalizeText(variant.colorHex),
+    size: normalizeText(variant.size),
+    displayPrice:
+      firstNonEmpty(variant.displayPrice) ||
+      (retailPrice != null ? formatPrice(retailPrice, firstNonEmpty(variant.currency, 'GBP')) : ''),
+    retailPrice,
+    currency: firstNonEmpty(variant.currency, 'GBP'),
+    availabilityStatus: firstNonEmpty(variant.availabilityStatus, 'Availability unknown'),
+    imageUrl: normalizeText(variant.imageUrl),
+    sortOrder: Number.isFinite(Number(variant.sortOrder)) ? Number(variant.sortOrder) : 999999,
+    status: normalizeText(variant.status),
+  };
+}
+
+function resolvePrimaryImage(product, images = []) {
+  const activeImages = images.filter(
+    (image) => !normalizeText(image.status) || normalizeText(image.status) === 'active'
+  );
+
+  const primaryImage = activeImages.find((image) => image.isPrimary && image.url);
+  if (primaryImage?.url) return primaryImage.url;
+
+  const firstSortedImage = [...activeImages]
+    .sort((a, b) => a.sortOrder - b.sortOrder)
+    .find((image) => image.url);
+  if (firstSortedImage?.url) return firstSortedImage.url;
+
+  return firstNonEmpty(product?.thumbnailUrl, product?.imageUrl);
+}
+
+function normalizeStoredProduct(
+  product,
+  productBrands = [],
+  productCategories = [],
+  productImages = [],
+  productVariants = []
+) {
   const fallbackNumericPrice = inferPriceNumber(
+    product?.basePrice,
     product?.price,
     product?.retailPrice,
     product?.retail_price
   );
 
-  const normalizedBrands = [
-    ...new Set(productBrands.map((value) => titleCase(value)).filter(Boolean)),
-  ];
-
+  const normalizedBrands = [...new Set(productBrands.map((value) => titleCase(value)).filter(Boolean))];
   const normalizedCategories = [
     ...new Set(productCategories.map((value) => titleCase(value)).filter(Boolean)),
   ];
+  const normalizedImages = productImages
+    .map((image) => normalizeStoredImage(image))
+    .sort((a, b) => a.sortOrder - b.sortOrder);
+  const normalizedVariants = productVariants
+    .map((variant) => normalizeStoredVariant(variant))
+    .filter((variant) => !variant.status || variant.status === 'active')
+    .sort((a, b) => a.sortOrder - b.sortOrder || a.name.localeCompare(b.name));
 
   return {
     id: product.id,
     internalId: product.id,
     title: normalizeText(product.title) || 'Untitled product',
+    shortDescription: normalizeText(product.shortDescription),
     description: normalizeText(product.description),
-    image: normalizeText(product.imageUrl),
+    image: resolvePrimaryImage(product, normalizedImages),
+    thumbnailUrl: firstNonEmpty(product.thumbnailUrl, product.imageUrl),
+    images: normalizedImages,
     brand: normalizedBrands[0] || '',
     brands: normalizedBrands,
     category: normalizedCategories[0] || '',
     categories: normalizedCategories,
     sourceType: normalizeText(product.sourceType),
     externalProductId: normalizeText(product.externalProductId),
-    productUrl: firstNonEmpty(product?.productUrl),
-    variantCount: Number(product?.variantCount) || 0,
+    externalVariantGroupId: normalizeText(product.externalVariantGroupId),
+    productUrl: firstNonEmpty(product.productUrl),
+    variantCount: Number(product?.variantCount) || normalizedVariants.length,
     sortOrder: Number.isFinite(Number(product?.sortOrder)) ? Number(product.sortOrder) : null,
-    materials: normalizeText(product?.materials),
-    sizeGuide: normalizeText(product?.sizeGuide),
-    shippingReturns: normalizeText(product?.shippingReturns),
-    whatsIncluded: normalizeText(product?.whatsIncluded),
+    materials: normalizeText(product.materials),
+    sizeGuide: normalizeText(product.sizeGuide),
+    shippingReturns: normalizeText(product.shippingReturns),
+    whatsIncluded: normalizeText(product.whatsIncluded),
+    careInstructions: normalizeText(product.careInstructions),
+    fitNotes: normalizeText(product.fitNotes),
     displayPrice:
-      firstNonEmpty(product?.displayPrice) ||
-      (fallbackNumericPrice != null ? formatPrice(fallbackNumericPrice) : 'Price unavailable'),
+      firstNonEmpty(product.displayPrice) ||
+      (fallbackNumericPrice != null
+        ? formatPrice(fallbackNumericPrice, firstNonEmpty(product.currency, 'GBP'))
+        : 'Price unavailable'),
+    variants: normalizedVariants,
   };
 }
 
-function normalizeProductDetail(product, fallbackProduct = {}) {
-  const variants = getRawVariants(product).map((variant) => normalizeVariant(variant));
-  const firstVariant = variants[0] || null;
+function buildVariantImageMap(images = []) {
+  const map = new Map();
+  for (const image of images) {
+    if (!image?.url || !image?.color) continue;
+    const colorKey = titleCase(image.color).toLowerCase();
+    if (!colorKey) continue;
+    if (!map.has(colorKey) || image.isPrimary) {
+      map.set(colorKey, image.url);
+    }
+  }
+  return map;
+}
 
-  return {
-    id: fallbackProduct.id || product?.id || product?.sync_product?.id || '',
-    title: firstNonEmpty(
-      fallbackProduct.title,
-      product?.name,
-      product?.title,
-      product?.sync_product?.name,
-      'Untitled product'
-    ),
-    description: firstNonEmpty(
-      fallbackProduct.description,
-      product?.description,
-      product?.summary,
-      product?.sync_product?.description
-    ),
-    image: firstNonEmpty(inferImage(product), fallbackProduct.image),
-    brand: firstNonEmpty(fallbackProduct.brand, titleCase(inferBrand(product))),
-    category: firstNonEmpty(fallbackProduct.category, titleCase(inferCategory(product))),
-    productUrl: firstNonEmpty(fallbackProduct.productUrl, inferProductUrl(product)),
-    materials: firstNonEmpty(fallbackProduct.materials),
-    sizeGuide: firstNonEmpty(fallbackProduct.sizeGuide),
-    shippingReturns: firstNonEmpty(fallbackProduct.shippingReturns),
-    whatsIncluded: firstNonEmpty(fallbackProduct.whatsIncluded),
-    displayPrice:
-      firstVariant?.retailPrice != null
-        ? formatPrice(firstVariant.retailPrice, firstVariant.currency || 'GBP')
-        : fallbackProduct.displayPrice || inferDisplayPriceFromPrintful(product),
-    variants,
-  };
+function mergeStoredAndPrintfulVariants(storedVariants = [], printfulVariants = [], storedImages = []) {
+  const storedByExternalId = new Map(
+    storedVariants
+      .filter((variant) => variant.externalVariantId)
+      .map((variant) => [variant.externalVariantId, variant])
+  );
+  const imageByColor = buildVariantImageMap(storedImages);
+
+  const merged = printfulVariants.map((printfulVariant) => {
+    const storedVariant = storedByExternalId.get(printfulVariant.externalVariantId);
+    const colorImage = imageByColor.get(titleCase(printfulVariant.color).toLowerCase());
+
+    return {
+      ...printfulVariant,
+      ...storedVariant,
+      color: firstNonEmpty(storedVariant?.color, printfulVariant.color),
+      size: firstNonEmpty(storedVariant?.size, printfulVariant.size),
+      name: firstNonEmpty(storedVariant?.name, printfulVariant.name),
+      displayPrice: firstNonEmpty(storedVariant?.displayPrice, printfulVariant.displayPrice),
+      availabilityStatus: firstNonEmpty(
+        storedVariant?.availabilityStatus,
+        printfulVariant.availabilityStatus
+      ),
+      imageUrl: firstNonEmpty(colorImage, storedVariant?.imageUrl, printfulVariant.imageUrl),
+      retailPrice:
+        storedVariant?.retailPrice != null ? storedVariant.retailPrice : printfulVariant.retailPrice,
+      currency: firstNonEmpty(storedVariant?.currency, printfulVariant.currency, 'GBP'),
+    };
+  });
+
+  if (merged.length) return merged;
+
+  return storedVariants.map((variant) => {
+    const colorImage = imageByColor.get(titleCase(variant.color).toLowerCase());
+    return {
+      ...variant,
+      imageUrl: firstNonEmpty(colorImage, variant.imageUrl),
+    };
+  });
 }
 
 export default {
@@ -326,13 +383,15 @@ export default {
 
   computed: {
     brandOptions() {
-      return [...new Set(this.allBrands.map((brand) => titleCase(brand.name)).filter(Boolean))]
-        .sort((a, b) => a.localeCompare(b));
+      return [...new Set(this.allBrands.map((brand) => titleCase(brand.name)).filter(Boolean))].sort(
+        (a, b) => a.localeCompare(b)
+      );
     },
 
     categoryOptions() {
-      return [...new Set(this.allCategories.map((category) => titleCase(category.name)).filter(Boolean))]
-        .sort((a, b) => a.localeCompare(b));
+      return [
+        ...new Set(this.allCategories.map((category) => titleCase(category.name)).filter(Boolean)),
+      ].sort((a, b) => a.localeCompare(b));
     },
 
     filteredProducts() {
@@ -354,47 +413,30 @@ export default {
     statusMessage() {
       if (this.loading) return 'Loading products...';
       if (this.syncing) return 'Syncing products from Printful...';
-
-      if (this.selectedBrand || this.selectedCategory) {
-        if (!this.filteredProducts.length) {
-          return 'Check back for new products soon 🙂';
-        }
+      if ((this.selectedBrand || this.selectedCategory) && !this.filteredProducts.length) {
+        return 'Check back for new products soon 🙂';
       }
-
       if (!this.products.length) {
         return this.status || 'No products available right now.';
       }
-
       return `${this.filteredProducts.length} of ${this.products.length} products shown`;
     },
 
     availableColors() {
       if (!this.selectedProduct?.variants?.length) return [];
-
-      return [
-        ...new Set(
-          this.selectedProduct.variants
-            .map((variant) => variant.color)
-            .filter(Boolean)
-        ),
-      ];
+      return [...new Set(this.selectedProduct.variants.map((variant) => variant.color).filter(Boolean))];
     },
 
     availableSizes() {
       if (!this.selectedProduct?.variants?.length) return [];
-
       const matchingVariants = this.selectedColor
-        ? this.selectedProduct.variants.filter(
-            (variant) => variant.color === this.selectedColor
-          )
+        ? this.selectedProduct.variants.filter((variant) => variant.color === this.selectedColor)
         : this.selectedProduct.variants;
-
       return [...new Set(matchingVariants.map((variant) => variant.size).filter(Boolean))];
     },
 
     selectedVariant() {
       if (!this.selectedProduct?.variants?.length) return null;
-
       return (
         this.selectedProduct.variants.find((variant) => {
           const colorMatch = !this.selectedColor || variant.color === this.selectedColor;
@@ -408,33 +450,29 @@ export default {
       if (!this.selectedVariant) {
         return this.selectedProduct?.displayPrice || 'Price unavailable';
       }
-
-      if (this.selectedVariant.retailPrice == null) {
+      if (this.selectedVariant.retailPrice == null && !this.selectedVariant.displayPrice) {
         return this.selectedProduct?.displayPrice || 'Price unavailable';
       }
-
-      return formatPrice(
-        this.selectedVariant.retailPrice,
-        this.selectedVariant.currency || 'GBP'
+      return (
+        this.selectedVariant.displayPrice ||
+        formatPrice(this.selectedVariant.retailPrice, this.selectedVariant.currency || 'GBP')
       );
     },
 
     selectedVariantImage() {
-      if (!this.selectedProduct) {
-        return this.fallbackImage;
-      }
-
+      if (!this.selectedProduct) return this.fallbackImage;
       const baseImage = this.selectedProduct.image || this.fallbackImage;
+      if (!this.selectedColor) return baseImage;
 
-      if (!this.selectedColor || !this.selectedProduct.variants?.length) {
-        return baseImage;
-      }
-
-      const imageVariant = this.selectedProduct.variants.find(
-        (variant) => variant.color === this.selectedColor && variant.image
+      const variantMatch = this.selectedProduct.variants.find(
+        (variant) => variant.color === this.selectedColor && variant.imageUrl
       );
+      if (variantMatch?.imageUrl) return variantMatch.imageUrl;
 
-      return imageVariant?.image || baseImage;
+      const storedImageMatch = this.selectedProduct.images?.find(
+        (image) => image.color === this.selectedColor && image.url
+      );
+      return storedImageMatch?.url || baseImage;
     },
   },
 
@@ -454,20 +492,34 @@ export default {
       this.status = 'Syncing products from Printful...';
 
       try {
+        const client = getClient();
         const externalData = await fetchProducts();
         const printfulProducts = getProductArray(externalData);
 
-        const { data: existingProducts, errors: existingErrors } =
-          await getClient().models.MerchProduct.list({
-            authMode: 'userPool',
-          });
+        const [existingProductsResult, existingImagesResult, existingVariantsResult] = await Promise.all([
+          client.models.MerchProduct.list({ authMode: 'userPool' }),
+          client.models.MerchProductImage.list({ authMode: 'userPool' }),
+          client.models.MerchProductVariant.list({ authMode: 'userPool' }),
+        ]);
 
-        if (existingErrors?.length) {
-          throw new Error(existingErrors[0].message || 'Failed to load existing merch products.');
+        if (existingProductsResult.errors?.length) {
+          throw new Error(
+            existingProductsResult.errors[0].message || 'Failed to load existing merch products.'
+          );
+        }
+        if (existingImagesResult.errors?.length) {
+          throw new Error(
+            existingImagesResult.errors[0].message || 'Failed to load existing merch images.'
+          );
+        }
+        if (existingVariantsResult.errors?.length) {
+          throw new Error(
+            existingVariantsResult.errors[0].message || 'Failed to load existing merch variants.'
+          );
         }
 
         const existingByExternalId = new Map(
-          (existingProducts || [])
+          (existingProductsResult.data || [])
             .filter(
               (item) =>
                 normalizeText(item?.sourceType) === 'printful' &&
@@ -476,82 +528,200 @@ export default {
             .map((item) => [normalizeText(item.externalProductId), item])
         );
 
+        const imagesByProductId = new Map();
+        for (const image of existingImagesResult.data || []) {
+          const productId = normalizeText(image.productId);
+          if (!productId) continue;
+          const current = imagesByProductId.get(productId) || [];
+          current.push(image);
+          imagesByProductId.set(productId, current);
+        }
+
+        const variantsByProductId = new Map();
+        for (const variant of existingVariantsResult.data || []) {
+          const productId = normalizeText(variant.productId);
+          if (!productId) continue;
+          const current = variantsByProductId.get(productId) || [];
+          current.push(variant);
+          variantsByProductId.set(productId, current);
+        }
+
         for (let index = 0; index < printfulProducts.length; index += 1) {
           const rawProduct = printfulProducts[index];
-          const externalProductId = String(
-            rawProduct?.id || rawProduct?.sync_product?.id || ''
-          ).trim();
+          const externalProductId = String(rawProduct?.id || rawProduct?.sync_product?.id || '').trim();
+          if (!externalProductId) continue;
 
-          if (!externalProductId) {
-            continue;
+          let detailProduct = rawProduct;
+          try {
+            const detailResponse = await fetchProductById(externalProductId);
+            detailProduct = detailResponse?.product || detailResponse?.result || detailResponse || rawProduct;
+          } catch (detailError) {
+            console.warn(`Could not load detail for product ${externalProductId}`, detailError);
           }
 
-          let productForSync = rawProduct;
-          let displayPrice = inferDisplayPriceFromPrintful(productForSync);
-
-          if (displayPrice === 'Price unavailable') {
-            try {
-              const detailResponse = await fetchProductById(externalProductId);
-              const detailProduct =
-                detailResponse?.product || detailResponse?.result || detailResponse;
-
-              if (detailProduct) {
-                productForSync = detailProduct;
-                displayPrice = inferDisplayPriceFromPrintful(productForSync);
-              }
-            } catch (detailError) {
-              console.warn(
-                `Could not load detail pricing for product ${externalProductId}`,
-                detailError
-              );
-            }
-          }
-
-          const title = inferTitle(productForSync, index);
-          const description = inferDescription(productForSync);
-          const imageUrl = inferImage(productForSync);
-          const productUrl = inferProductUrl(productForSync);
-          const variantCount = inferVariantCount(productForSync);
+          const title = inferTitle(detailProduct, index);
+          const description = inferDescription(detailProduct);
+          const thumbnailUrl = inferImage(detailProduct);
+          const productUrl = inferProductUrl(detailProduct);
+          const variantCount = inferVariantCount(detailProduct);
           const slug = slugify(title) || `product-${index + 1}`;
+          const displayPrice = inferDisplayPriceFromPrintful(detailProduct);
           const existing = existingByExternalId.get(externalProductId);
 
           const payload = {
             title,
             slug,
+            shortDescription: description,
             description,
-            imageUrl,
+            thumbnailUrl,
+            imageUrl: thumbnailUrl,
             sourceType: 'printful',
             externalProductId,
+            externalVariantGroupId: normalizeText(detailProduct?.externalVariantGroupId),
+            sku: normalizeText(detailProduct?.sku),
+            displayPrice,
+            basePrice: inferPriceNumber(displayPrice),
+            currency: 'GBP',
             productUrl,
             variantCount,
-            displayPrice,
             status: 'active',
             isVisible: true,
             sortOrder: existing?.sortOrder ?? index,
           };
 
+          let productId = existing?.id || '';
+
           if (!existing) {
-            const { errors } = await getClient().models.MerchProduct.create(payload, {
+            const createResult = await client.models.MerchProduct.create(payload, {
               authMode: 'userPool',
             });
-
-            if (errors?.length) {
-              throw new Error(errors[0].message || `Failed to create ${title}.`);
+            if (createResult.errors?.length) {
+             throw new Error(updateResult.errors[0].message || `Failed to update ${title}.`);
             }
+            productId = createResult.data?.id || '';
           } else {
-            const { errors } = await getClient().models.MerchProduct.update(
+            const updateResult = await client.models.MerchProduct.update(
               {
                 id: existing.id,
                 ...payload,
                 sortOrder: existing.sortOrder ?? payload.sortOrder,
               },
-              {
-                authMode: 'userPool',
-              }
+              { authMode: 'userPool' }
             );
+            if (updateResult.errors?.length) {
+              throw new Error(createResult.errors[0].message || `Failed to update ${title}.`);
+            }
+            productId = existing.id;
+          }
 
-            if (errors?.length) {
-              throw new Error(errors[0].message || `Failed to update ${title}.`);
+          if (!productId) continue;
+
+          const existingImages = imagesByProductId.get(productId) || [];
+          const existingVariants = variantsByProductId.get(productId) || [];
+
+          const existingImageByKey = new Map(
+            existingImages.map((image) => [
+              `${normalizeText(image.color).toLowerCase()}::${
+                normalizeText(image.externalImageId) || normalizeText(image.url)
+              }`,
+              image,
+            ])
+          );
+
+          const existingVariantByExternalId = new Map(
+            existingVariants
+              .filter((variant) => normalizeText(variant.externalVariantId))
+              .map((variant) => [normalizeText(variant.externalVariantId), variant])
+          );
+
+          const normalizedVariants = getRawVariants(detailProduct).map((variant) =>
+            normalizePrintfulVariant(variant)
+          );
+
+          for (let variantIndex = 0; variantIndex < normalizedVariants.length; variantIndex += 1) {
+            const variant = normalizedVariants[variantIndex];
+
+            const variantPayload = {
+              productId,
+              externalVariantId: variant.externalVariantId,
+              sku: '',
+              name: variant.name || `${title} ${variant.color} ${variant.size}`.trim(),
+              color: variant.color,
+              size: variant.size,
+              displayPrice: variant.displayPrice,
+              retailPrice: variant.retailPrice,
+              currency: variant.currency || 'GBP',
+              availabilityStatus: variant.availabilityStatus,
+              imageUrl: variant.imageUrl,
+              sortOrder: variantIndex,
+              status: 'active',
+            };
+
+            const existingVariant = existingVariantByExternalId.get(variant.externalVariantId);
+
+            if (!existingVariant) {
+              const createVariantResult = await client.models.MerchProductVariant.create(variantPayload, {
+                authMode: 'userPool',
+              });
+              if (createVariantResult.errors?.length) {
+                throw new Error(
+                  createVariantResult.errors[0].message || `Failed to create variant for ${title}.`
+                );
+              }
+            } else {
+              const updateVariantResult = await client.models.MerchProductVariant.update(
+                { id: existingVariant.id, ...variantPayload },
+                { authMode: 'userPool' }
+              );
+              if (updateVariantResult.errors?.length) {
+                throw new Error(
+                  updateVariantResult.errors[0].message || `Failed to update variant for ${title}.`
+                );
+              }
+            }
+
+            if (variant.imageUrl) {
+              const imageKey = `${normalizeText(variant.color).toLowerCase()}::${
+                normalizeText(variant.externalVariantId) || normalizeText(variant.imageUrl)
+              }`;
+
+              const imagePayload = {
+                productId,
+                url: variant.imageUrl,
+                altText: `${title}${variant.color ? ` - ${variant.color}` : ''}${
+                  variant.size ? ` - ${variant.size}` : ''
+                }`,
+                color: variant.color,
+                sortOrder: variantIndex,
+                isPrimary: variantIndex === 0,
+                isMockup: true,
+                sourceType: 'printful',
+                externalImageId: variant.externalVariantId || variant.imageUrl,
+                status: 'active',
+              };
+
+              const existingImage = existingImageByKey.get(imageKey);
+
+              if (!existingImage) {
+                const createImageResult = await client.models.MerchProductImage.create(imagePayload, {
+                  authMode: 'userPool',
+                });
+                if (createImageResult.errors?.length) {
+                  throw new Error(
+                    createImageResult.errors[0].message || `Failed to create image for ${title}.`
+                  );
+                }
+              } else {
+                const updateImageResult = await client.models.MerchProductImage.update(
+                  { id: existingImage.id, ...imagePayload },
+                  { authMode: 'userPool' }
+                );
+                if (updateImageResult.errors?.length) {
+                  throw new Error(
+                    updateImageResult.errors[0].message || `Failed to update image for ${title}.`
+                  );
+                }
+              }
             }
           }
         }
@@ -569,41 +739,50 @@ export default {
       this.loading = true;
 
       try {
+        const client = getClient();
         const [
           productsResult,
           brandsResult,
           categoriesResult,
           productBrandsResult,
           productCategoriesResult,
+          productImagesResult,
+          productVariantsResult,
         ] = await Promise.all([
-          getClient().models.MerchProduct.list({ authMode: 'apiKey' }),
-          getClient().models.Brand.list({ authMode: 'apiKey' }),
-          getClient().models.MerchCategory.list({ authMode: 'apiKey' }),
-          getClient().models.MerchProductBrand.list({ authMode: 'apiKey' }),
-          getClient().models.MerchProductCategory.list({ authMode: 'apiKey' }),
+          client.models.MerchProduct.list({ authMode: 'apiKey' }),
+          client.models.Brand.list({ authMode: 'apiKey' }),
+          client.models.MerchCategory.list({ authMode: 'apiKey' }),
+          client.models.MerchProductBrand.list({ authMode: 'apiKey' }),
+          client.models.MerchProductCategory.list({ authMode: 'apiKey' }),
+          client.models.MerchProductImage.list({ authMode: 'apiKey' }),
+          client.models.MerchProductVariant.list({ authMode: 'apiKey' }),
         ]);
 
         if (productsResult.errors?.length) {
           throw new Error(productsResult.errors[0].message || 'Failed to load products.');
         }
-
         if (brandsResult.errors?.length) {
           throw new Error(brandsResult.errors[0].message || 'Failed to load brands.');
         }
-
         if (categoriesResult.errors?.length) {
           throw new Error(categoriesResult.errors[0].message || 'Failed to load categories.');
         }
-
         if (productBrandsResult.errors?.length) {
           throw new Error(
             productBrandsResult.errors[0].message || 'Failed to load product brand links.'
           );
         }
-
         if (productCategoriesResult.errors?.length) {
           throw new Error(
             productCategoriesResult.errors[0].message || 'Failed to load product category links.'
+          );
+        }
+        if (productImagesResult.errors?.length) {
+          throw new Error(productImagesResult.errors[0].message || 'Failed to load product images.');
+        }
+        if (productVariantsResult.errors?.length) {
+          throw new Error(
+            productVariantsResult.errors[0].message || 'Failed to load product variants.'
           );
         }
 
@@ -619,10 +798,7 @@ export default {
           })
           .sort((a, b) => (a.name || '').localeCompare(b.name || ''));
 
-        const brandsById = new Map(
-          this.allBrands.map((brand) => [brand.id, brand.name || ''])
-        );
-
+        const brandsById = new Map(this.allBrands.map((brand) => [brand.id, brand.name || '']));
         const categoriesById = new Map(
           this.allCategories.map((category) => [category.id, category.name || ''])
         );
@@ -632,7 +808,6 @@ export default {
           const productId = link.productId;
           const brandName = brandsById.get(link.brandId);
           if (!productId || !brandName) continue;
-
           const current = brandNamesByProductId.get(productId) || [];
           current.push(brandName);
           brandNamesByProductId.set(productId, current);
@@ -643,10 +818,27 @@ export default {
           const productId = link.productId;
           const categoryName = categoriesById.get(link.categoryId);
           if (!productId || !categoryName) continue;
-
           const current = categoryNamesByProductId.get(productId) || [];
           current.push(categoryName);
           categoryNamesByProductId.set(productId, current);
+        }
+
+        const imagesByProductId = new Map();
+        for (const image of productImagesResult.data || []) {
+          const productId = normalizeText(image.productId);
+          if (!productId) continue;
+          const current = imagesByProductId.get(productId) || [];
+          current.push(image);
+          imagesByProductId.set(productId, current);
+        }
+
+        const variantsByProductId = new Map();
+        for (const variant of productVariantsResult.data || []) {
+          const productId = normalizeText(variant.productId);
+          if (!productId) continue;
+          const current = variantsByProductId.get(productId) || [];
+          current.push(variant);
+          variantsByProductId.set(productId, current);
         }
 
         this.products = (productsResult.data || [])
@@ -659,7 +851,9 @@ export default {
             normalizeStoredProduct(
               product,
               brandNamesByProductId.get(product.id) || [],
-              categoryNamesByProductId.get(product.id) || []
+              categoryNamesByProductId.get(product.id) || [],
+              imagesByProductId.get(product.id) || [],
+              variantsByProductId.get(product.id) || []
             )
           )
           .sort((a, b) => {
@@ -693,8 +887,10 @@ export default {
         let selectedProduct = {
           id: product.internalId || product.id,
           title: product.title,
+          shortDescription: product.shortDescription,
           description: product.description,
           image: product.image || this.fallbackImage,
+          images: product.images || [],
           brand: product.brand,
           category: product.category,
           productUrl: product.productUrl,
@@ -703,15 +899,39 @@ export default {
           sizeGuide: product.sizeGuide || '',
           shippingReturns: product.shippingReturns || '',
           whatsIncluded: product.whatsIncluded || '',
-          variants: [],
+          careInstructions: product.careInstructions || '',
+          fitNotes: product.fitNotes || '',
+          variants: product.variants || [],
         };
 
-        if (product.sourceType === 'printful' && product.externalProductId) {
+        if (
+          product.sourceType === 'printful' &&
+          product.externalProductId &&
+          (!selectedProduct.variants.length || !selectedProduct.images.length)
+        ) {
           const response = await fetchProductById(product.externalProductId);
           const rawProduct = response?.product || response?.result || response;
 
           if (rawProduct) {
-            selectedProduct = normalizeProductDetail(rawProduct, selectedProduct);
+            const printfulVariants = getRawVariants(rawProduct).map((variant) =>
+              normalizePrintfulVariant(variant)
+            );
+            const mergedVariants = mergeStoredAndPrintfulVariants(
+              selectedProduct.variants,
+              printfulVariants,
+              selectedProduct.images
+            );
+
+            selectedProduct = {
+              ...selectedProduct,
+              image: firstNonEmpty(selectedProduct.image, inferImage(rawProduct), this.fallbackImage),
+              productUrl: firstNonEmpty(selectedProduct.productUrl, inferProductUrl(rawProduct)),
+              displayPrice:
+                selectedProduct.displayPrice !== 'Price unavailable'
+                  ? selectedProduct.displayPrice
+                  : inferDisplayPriceFromPrintful(rawProduct),
+              variants: mergedVariants,
+            };
           }
         }
 

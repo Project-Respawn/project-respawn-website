@@ -1,8 +1,34 @@
 import { generateClient } from 'aws-amplify/data';
 import { getCurrentUser } from 'aws-amplify/auth';
 
+let client = null;
 function getClient() {
-  return generateClient();
+  if (!client) client = generateClient();
+  return client;
+}
+
+function normaliseBrand(brand) {
+  return {
+    id: brand.id,
+    name: brand.name || 'Untitled brand',
+    status: brand.status || 'inactive',
+  };
+}
+
+function normaliseAssignment(assignment) {
+  return {
+    id: assignment.id,
+    brandId: assignment.brandId,
+    userId: assignment.userId,
+    username: assignment.username || '',
+    email: assignment.email || '',
+    userName:
+      assignment.displayName ||
+      assignment.name ||
+      assignment.email ||
+      'Unknown user',
+    accessLevel: assignment.accessLevel || 'assign',
+  };
 }
 
 export default {
@@ -42,7 +68,6 @@ export default {
         .filter((user) => {
           const name = (user.name || '').toLowerCase();
           const email = (user.email || '').toLowerCase();
-
           return name.includes(query) || email.includes(query);
         })
         .slice(0, 12);
@@ -55,11 +80,9 @@ export default {
 
       return this.assignments
         .filter((assignment) => assignment.brandId === this.selectedBrandFilter)
-        .sort((a, b) => {
-          const aName = (a.userName || '').toLowerCase();
-          const bName = (b.userName || '').toLowerCase();
-          return aName.localeCompare(bName);
-        });
+        .sort((a, b) =>
+          (a.userName || '').toLowerCase().localeCompare((b.userName || '').toLowerCase())
+        );
     },
 
     isSubmitDisabled() {
@@ -89,12 +112,14 @@ export default {
           this.fetchUsers(),
         ]);
 
-        if (!this.selectedBrandFilter && this.brands.length) {
-          this.selectedBrandFilter = this.brands[0].id;
+        const validBrandIds = new Set(this.brands.map((brand) => brand.id));
+
+        if (!validBrandIds.has(this.selectedBrandFilter)) {
+          this.selectedBrandFilter = this.brands[0]?.id || '';
         }
 
-        if (!this.newAssignment.brandId && this.brands.length) {
-          this.newAssignment.brandId = this.brands[0].id;
+        if (!validBrandIds.has(this.newAssignment.brandId)) {
+          this.newAssignment.brandId = this.brands[0]?.id || '';
         }
       } catch (error) {
         this.loadError =
@@ -139,20 +164,19 @@ export default {
         throw new Error(errors[0].message || 'Failed to load brands.');
       }
 
-      this.brands = [...(data || [])]
+      this.brands = (data || [])
+        .map(normaliseBrand)
         .filter((brand) => brand.status === 'active')
         .sort((a, b) => a.name.localeCompare(b.name));
     },
 
     async fetchAssignments() {
-      const client = getClient();
-
-      if (!client.models.BrandAssignment) {
+      if (!getClient().models.BrandAssignment) {
         this.assignments = [];
         return;
       }
 
-      const { data, errors } = await client.models.BrandAssignment.list({
+      const { data, errors } = await getClient().models.BrandAssignment.list({
         authMode: 'userPool',
       });
 
@@ -160,24 +184,10 @@ export default {
         throw new Error(errors[0].message || 'Failed to load brand assignments.');
       }
 
-      this.assignments = (data || []).map((assignment) => ({
-        id: assignment.id,
-        brandId: assignment.brandId,
-        userId: assignment.userId,
-        username: assignment.username || '',
-        email: assignment.email || '',
-        userName:
-          assignment.displayName ||
-          assignment.name ||
-          assignment.email ||
-          'Unknown user',
-        accessLevel: assignment.accessLevel || 'assign',
-      }));
+      this.assignments = (data || []).map(normaliseAssignment);
     },
 
     async fetchUsers() {
-      const client = getClient();
-
       const { data, errors } = await client.queries.listAdminUsers({
         authMode: 'userPool',
       });
@@ -195,7 +205,7 @@ export default {
       let profiles = [];
 
       if (userIds.length) {
-        const profileResponse = await client.models.UserProfile.list({
+        const profileResponse = await getClient().models.UserProfile.list({
           filter: {
             or: userIds.map((id) => ({
               ownerUserId: { eq: id },
@@ -217,22 +227,24 @@ export default {
         profiles.map((profile) => [profile.ownerUserId, profile])
       );
 
-      this.allUsers = adminUsers.map((user) => {
-        const internalId = user.id || user.userId || user.sub || user.username;
-        const profile = profileMap.get(internalId);
+      this.allUsers = adminUsers
+        .map((user) => {
+          const internalId = user.id || user.userId || user.sub || user.username;
+          const profile = profileMap.get(internalId);
 
-        return {
-          id: internalId,
-          username: user.username || '',
-          email: user.email || '',
-          name:
-            profile?.displayName ||
-            user.displayName ||
-            user.name ||
-            user.email ||
-            'Unnamed user',
-        };
-      });
+          return {
+            id: internalId,
+            username: user.username || '',
+            email: user.email || '',
+            name:
+              profile?.displayName ||
+              user.displayName ||
+              user.name ||
+              user.email ||
+              'Unnamed user',
+          };
+        })
+        .sort((a, b) => a.name.localeCompare(b.name));
     },
 
     selectUser(user) {
@@ -279,18 +291,15 @@ export default {
         return;
       }
 
+      if (!getClient().models.BrandAssignment) {
+        this.formError = 'BrandAssignment model is missing from the Amplify schema.';
+        return;
+      }
+
       this.saving = true;
 
       try {
-        const client = getClient();
-
-        if (!client.models.BrandAssignment) {
-          throw new Error(
-            'BrandAssignment model is missing from the Amplify schema.'
-          );
-        }
-
-        const { errors } = await client.models.BrandAssignment.create(
+        const { errors } = await getClient().models.BrandAssignment.create(
           {
             brandId: this.newAssignment.brandId,
             userId: this.selectedUser.id,
@@ -325,18 +334,16 @@ export default {
 
     async removeAssignment(assignment) {
       this.clearMessages();
+
+      if (!getClient().models.BrandAssignment) {
+        this.formError = 'BrandAssignment model is missing from the Amplify schema.';
+        return;
+      }
+
       this.saving = true;
 
       try {
-        const client = getClient();
-
-        if (!client.models.BrandAssignment) {
-          throw new Error(
-            'BrandAssignment model is missing from the Amplify schema.'
-          );
-        }
-
-        const { errors } = await client.models.BrandAssignment.delete(
+        const { errors } = await getClient().models.BrandAssignment.delete(
           { id: assignment.id },
           { authMode: 'userPool' }
         );
