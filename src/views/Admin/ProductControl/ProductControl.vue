@@ -1,5 +1,6 @@
 <template>
   <div class="admin-product-control-page">
+    <!-- Header -->
     <div class="dash-header">
       <div>
         <h1 class="dash-title">Product Control</h1>
@@ -26,6 +27,7 @@
       </div>
     </div>
 
+    <!-- Toolbar -->
     <div class="toolbar toolbar-with-sync">
       <div class="search-wrap">
         <span class="search-icon">🔍</span>
@@ -75,17 +77,23 @@
           <span v-else>Syncing...</span>
         </button>
 
-        <button class="btn-fetch" @click="loadProducts" :disabled="loadingProducts || syncingProducts">
+        <button
+          class="btn-fetch"
+          @click="loadProducts"
+          :disabled="loadingProducts || syncingProducts"
+        >
           <span v-if="!loadingProducts">↻ Refresh</span>
           <span v-else>Loading...</span>
         </button>
       </div>
     </div>
 
+    <!-- Errors -->
     <div v-if="loadError" class="page-alert error">
       {{ loadError }}
     </div>
 
+    <!-- Products table -->
     <div class="table-container">
       <div v-if="loadingProducts" class="table-loading">
         <div class="spinner"></div>
@@ -179,9 +187,19 @@
               </td>
 
               <td>
-                <button class="btn-manage" @click="openProductModal(product)">
-                  Edit Product
-                </button>
+                <div class="manage-buttons">
+                  <button class="btn-manage" @click="openProductModal(product)">
+                    Edit Product
+                  </button>
+
+                  <button
+                    class="btn-manage media-manage-button"
+                    type="button"
+                    @click="openMediaModal(product)"
+                  >
+                    Manage media
+                  </button>
+                </div>
               </td>
             </tr>
 
@@ -195,10 +213,12 @@
       </div>
     </div>
 
+    <!-- Toast -->
     <transition name="toast">
       <div v-if="toastMessage" class="toast">✓ {{ toastMessage }}</div>
     </transition>
 
+    <!-- Product edit modal -->
     <transition name="fade">
       <div v-if="productModal" class="modal-overlay" @click.self="closeProductModal">
         <div class="product-modal">
@@ -303,8 +323,7 @@
               <div class="field-grid two">
                 <label class="field">
                   <span>Brand</span>
-                  <select v-model="productForm.brandId">
-                    <option value="">No brand</option>
+                  <select v-model="productForm.brandIds" multiple>
                     <option
                       v-for="brand in brandOptions"
                       :key="brand.id"
@@ -317,8 +336,7 @@
 
                 <label class="field">
                   <span>Category</span>
-                  <select v-model="productForm.categoryId">
-                    <option value="">No category</option>
+                  <select v-model="productForm.categoryIds" multiple>
                     <option
                       v-for="category in categoryOptions"
                       :key="category.id"
@@ -368,8 +386,158 @@
         </div>
       </div>
     </transition>
+
+    <!-- Media popout modal (uses overlay, not <dialog>) -->
+    <transition name="fade">
+      <div
+        v-if="mediaModalOpen"
+        class="modal-overlay"
+        @click.self="closeMediaModal"
+      >
+        <div class="product-modal media-modal">
+          <div class="product-modal-header">
+            <div>
+              <h2>Product media</h2>
+              <p class="product-modal-subtitle">
+                Upload your own mockup images and choose which ones are visible and primary.
+              </p>
+            </div>
+
+            <button class="btn-close" @click="closeMediaModal">✕</button>
+          </div>
+
+          <div class="product-modal-body">
+            <section class="modal-section">
+              <h3>Upload mockups</h3>
+
+              <div class="media-upload-block">
+                <label class="field">
+                  <span>Upload mockups</span>
+                  <input
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    @change="handleMediaFileChange"
+                  />
+                </label>
+
+                <button
+                  type="button"
+                  class="btn-secondary"
+                  :disabled="!mediaUploadFiles.length || savingProduct"
+                  @click="uploadMediaFiles"
+                >
+                  <span v-if="!savingProduct">Upload selected files</span>
+                  <span v-else>Uploading...</span>
+                </button>
+              </div>
+            </section>
+
+            <section class="modal-section">
+              <h3>Existing images</h3>
+
+              <div v-if="selectedProductImages.length" class="media-grid">
+                <article
+                  v-for="image in selectedProductImages"
+                  :key="image.id"
+                  class="media-card"
+                >
+                  <div class="media-thumb-wrap">
+                 <img :src="image.signedUrl" :alt="image.altText || 'Product image'" />
+                  </div>
+
+                  <div class="media-card-body">
+                    <p class="media-alt">
+                      {{ image.altText || 'No description' }}
+                    </p>
+
+                    <p class="media-source">
+                      {{ image.sourceType === 'manual' ? 'Custom mockup' : 'Printful' }}
+                    </p>
+
+                    <!-- Colour mapping -->
+                    <label class="media-color">
+                      <span>Colour name</span>
+                      <input
+                        type="text"
+                        v-model="image.color"
+                        placeholder="e.g. Black, Sand, Forest Green"
+                      />
+                    </label>
+
+                    <label class="media-color">
+                      <span>Colour hex</span>
+                      <input
+                        type="text"
+                        v-model="image.colorHex"
+                        placeholder="#000000"
+                      />
+                    </label>
+
+                    <label class="media-checkbox">
+                      <input
+                        type="checkbox"
+                        :value="image.id"
+                        v-model="mediaForm.visibleImageIds"
+                      />
+                      Visible on storefront
+                    </label>
+
+                    <label class="media-radio">
+                      <input
+                        type="radio"
+                        name="featuredImage"
+                        :value="image.id"
+                        v-model="mediaForm.featuredImageId"
+                      />
+                      Set as primary image
+                    </label>
+
+                    <button
+                      type="button"
+                      class="btn-danger media-delete-button"
+                      @click="deleteImage(image.id)"
+                    >
+                      Delete image
+                    </button>
+                  </div>
+                </article>
+              </div>
+
+              <p v-else class="media-empty">
+                No images uploaded yet for this product.
+              </p>
+            </section>
+          </div>
+
+          <div class="product-modal-footer media-dialog-actions">
+            <button
+              type="button"
+              class="btn-primary sm"
+              @click="saveMediaChanges"
+              :disabled="savingProduct"
+            >
+              <span v-if="!savingProduct">Save media changes</span>
+              <span v-else>Saving...</span>
+            </button>
+            <button
+              type="button"
+              class="btn-cancel"
+              @click="closeMediaModal"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
-<script src="./ProductControl.js"></script>
+<script>
+import productControlLogic from './ProductControl.js';
+
+export default productControlLogic;
+</script>
+
 <style src="./ProductControl.css"></style>

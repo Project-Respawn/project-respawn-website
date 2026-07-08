@@ -1,51 +1,54 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 
-import Home from '../views/Home/Home.vue'
-import About from '../views/About/About.vue'
-import Contact from '../views/Contact/Contact.vue'
-import NotFound from '../views/NotFound/NotFound.vue'
-import PrivacyPolicy from '../views/PrivacyPolicy/PrivacyPolicy.vue'
-import TeamTryouts from '../views/TeamTryouts/TeamTryouts.vue'
-import Merch from '../views/Merch/Merch.vue'
-import Events from '../views/Events/Events.vue'
-import Checkout from '../views/Checkout/Checkout.vue'
-import Join from '../views/Join/Join.vue'
-import Account from '../views/Account/Account.vue'
-import Roles from '../views/About/Roles/Roles.vue'
-import UserHomepage from '../views/UserHomepage/UserHomepage.vue'
+import Home from '../views/Home/Home.vue';
+import About from '../views/About/About.vue';
+import Contact from '../views/Contact/Contact.vue';
+import NotFound from '../views/NotFound/NotFound.vue';
+import PrivacyPolicy from '../views/PrivacyPolicy/PrivacyPolicy.vue';
+import TeamTryouts from '../views/TeamTryouts/TeamTryouts.vue';
+import Merch from '../views/Merch/Merch.vue';
+import Events from '../views/Events/Events.vue';
+import Checkout from '../views/Checkout/Checkout.vue';
+import Join from '../views/Join/Join.vue';
+import Account from '../views/Account/Account.vue';
+import Roles from '../views/About/Roles/Roles.vue';
+import UserHomepage from '../views/UserHomepage/UserHomepage.vue';
 
-import BotOverview from '../views/Bot/Overview/BotOverview.vue'
-import BotTwitch from '../views/Bot/Twitch/BotTwitch.vue'
-import BotDiscord from '../views/Bot/Discord/BotDiscord.vue'
-import BotAutomation from '../views/Bot/Automation/BotAutomation.vue'
-import BotSettings from '../views/Bot/Settings/BotSettings.vue'
-import TtsOverlay from '../views/Bot/Twitch/TTS/TtsOverlay.vue'
-import Moderation from '../views/Bot/twitch/Moderation/Moderation.vue'
-import TtsSettings from '../views/Bot/Twitch/TTS/Settings/TtsSettings.vue'
-import TwitchCommands from '../views/Bot/Twitch/TwitchCommands/TwitchCommands.vue'
-import BotAlerts from '../views/Bot/Twitch/Alerts/BotAlerts.vue'
+// NEW: Applications page
+import Applications from '../views/Applications/Applications.vue';
 
-import AdminLayout from '../views/Admin/AdminLayout/AdminLayout.vue'
-import AdminHome from '../views/Admin/AdminHome/AdminHome.vue'
-import AdminUsers from '../views/Admin/AdminUsers/AdminUsers.vue'
-import AdminPermissions from '../views/Admin/AdminPermissions/AdminPermissions.vue'
-import AdminBrands from '../views/Admin/AdminBrands/AdminBrands.vue'
-import AdminMerchCategories from '../views/Admin/AdminMerchCategories/AdminMerchCategories.vue'
-import AdminBrandPermissions from '../views/Admin/AdminBrandPermissions/AdminBrandPermissions.vue'
-import AdminForums from '../views/Admin/AdminForums/AdminForums.vue'
-import AdminEvents from '../views/Admin/AdminEvents/AdminEvents.vue'
-import AdminHost from '../views/Admin/AdminHost/AdminHost.vue'
-import ProductControl from '../views/Admin/ProductControl/ProductControl.vue'
+import BotOverview from '../views/Bot/Overview/BotOverview.vue';
+import BotTwitch from '../views/Bot/Twitch/BotTwitch.vue';
+import BotDiscord from '../views/Bot/Discord/BotDiscord.vue';
+import BotAutomation from '../views/Bot/Automation/BotAutomation.vue';
+import BotSettings from '../views/Bot/Settings/BotSettings.vue';
+import TtsOverlay from '../views/Bot/Twitch/TTS/TtsOverlay.vue';
+import Moderation from '../views/Bot/twitch/Moderation/Moderation.vue';
+import TtsSettings from '../views/Bot/Twitch/TTS/Settings/TtsSettings.vue';
+import TwitchCommands from '../views/Bot/Twitch/TwitchCommands/TwitchCommands.vue';
+import BotAlerts from '../views/Bot/Twitch/Alerts/BotAlerts.vue';
 
-import ForumLayout from '../views/Forum/ForumLayout/ForumLayout.vue'
-import ForumIndex from '../views/Forum/ForumIndex/ForumIndex.vue'
-import ForumBoard from '../views/Forum/ForumBoard/ForumBoard.vue'
-import ForumThread from '../views/Forum/ForumThread/ForumThread.vue'
+import AdminLayout from '../views/Admin/AdminLayout/AdminLayout.vue';
+import AdminHome from '../views/Admin/AdminHome/AdminHome.vue';
+import AdminUsers from '../views/Admin/AdminUsers/AdminUsers.vue';
+import AdminPermissions from '../views/Admin/AdminPermissions/AdminPermissions.vue';
+import AdminBrands from '../views/Admin/AdminBrands/AdminBrands.vue';
+import AdminMerchCategories from '../views/Admin/AdminMerchCategories/AdminMerchCategories.vue';
+import AdminBrandPermissions from '../views/Admin/AdminBrandPermissions/AdminBrandPermissions.vue';
+import AdminForums from '../views/Admin/AdminForums/AdminForums.vue';
+import AdminEvents from '../views/Admin/AdminEvents/AdminEvents.vue';
+import AdminHost from '../views/Admin/AdminHost/AdminHost.vue';
+import ProductControl from '../views/Admin/ProductControl/ProductControl.vue';
+
+import ForumLayout from '../views/Forum/ForumLayout/ForumLayout.vue';
+import ForumIndex from '../views/Forum/ForumIndex/ForumIndex.vue';
+import ForumBoard from '../views/Forum/ForumBoard/ForumBoard.vue';
+import ForumThread from '../views/Forum/ForumThread/ForumThread.vue';
 
 const routes = [
   { path: '/', component: Home },
   { path: '/about', component: About },
-  { path: '/about/Roles', component: Roles },
+  { path: '/about/roles', component: Roles },
   { path: '/contact', component: Contact },
   { path: '/privacy-policy', component: PrivacyPolicy },
   { path: '/team-tryouts', component: TeamTryouts },
@@ -54,6 +57,14 @@ const routes = [
   { path: '/events', component: Events },
   { path: '/join', component: Join },
   { path: '/account', component: Account },
+
+  // NEW: public Applications page
+  {
+    path: '/apply',
+    name: 'Applications',
+    component: Applications,
+  },
+
   {
     path: '/home',
     name: 'UserHomepage',
@@ -155,14 +166,14 @@ const routes = [
   { path: '/bot/settings', component: BotSettings },
 
   { path: '/:pathMatch(.*)', component: NotFound },
-]
+];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior() {
-    return { top: 0 }
+    return { top: 0 };
   },
-})
+});
 
-export default router
+export default router;

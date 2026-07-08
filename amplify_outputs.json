@@ -558,6 +558,13 @@
               "isRequired": false,
               "attributes": []
             },
+            "brandId": {
+              "name": "brandId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false,
+              "attributes": []
+            },
             "rewardText": {
               "name": "rewardText",
               "isArray": false,
@@ -1835,22 +1842,22 @@
               "isRequired": false,
               "attributes": []
             },
-            "status": {
-              "name": "status",
+            "sortOrder": {
+              "name": "sortOrder",
               "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "logoUrl": {
-              "name": "logoUrl",
-              "isArray": false,
-              "type": "String",
+              "type": "Int",
               "isRequired": false,
               "attributes": []
             },
-            "productLinks": {
-              "name": "productLinks",
+            "isActive": {
+              "name": "isActive",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false,
+              "attributes": []
+            },
+            "productBrandLinks": {
+              "name": "productBrandLinks",
               "isArray": true,
               "type": {
                 "model": "MerchProductBrand"
@@ -1865,11 +1872,11 @@
                 ]
               }
             },
-            "assignments": {
-              "name": "assignments",
+            "brandAccesses": {
+              "name": "brandAccesses",
               "isArray": true,
               "type": {
-                "model": "BrandAssignment"
+                "model": "BrandAccess"
               },
               "isRequired": false,
               "attributes": [],
@@ -1917,6 +1924,12 @@
                     ]
                   },
                   {
+                    "allow": "private",
+                    "operations": [
+                      "read"
+                    ]
+                  },
+                  {
                     "groupClaim": "cognito:groups",
                     "provider": "userPools",
                     "allow": "groups",
@@ -1928,7 +1941,8 @@
                     ],
                     "groups": [
                       "SuperAdmin",
-                      "Admin"
+                      "Admin",
+                      "Staff"
                     ]
                   }
                 ]
@@ -1976,32 +1990,18 @@
               "name": "sortOrder",
               "isArray": false,
               "type": "Int",
-              "isRequired": true,
+              "isRequired": false,
               "attributes": []
             },
             "isActive": {
               "name": "isActive",
               "isArray": false,
               "type": "Boolean",
-              "isRequired": true,
+              "isRequired": false,
               "attributes": []
             },
-            "showInMenu": {
-              "name": "showInMenu",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": true,
-              "attributes": []
-            },
-            "status": {
-              "name": "status",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "productLinks": {
-              "name": "productLinks",
+            "productCategoryLinks": {
+              "name": "productCategoryLinks",
               "isArray": true,
               "type": {
                 "model": "MerchProductCategory"
@@ -2052,6 +2052,12 @@
                     ]
                   },
                   {
+                    "allow": "private",
+                    "operations": [
+                      "read"
+                    ]
+                  },
+                  {
                     "groupClaim": "cognito:groups",
                     "provider": "userPools",
                     "allow": "groups",
@@ -2063,7 +2069,8 @@
                     ],
                     "groups": [
                       "SuperAdmin",
-                      "Admin"
+                      "Admin",
+                      "Staff"
                     ]
                   }
                 ]
@@ -2455,6 +2462,20 @@
             },
             "isMockup": {
               "name": "isMockup",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false,
+              "attributes": []
+            },
+            "isVisible": {
+              "name": "isVisible",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false,
+              "attributes": []
+            },
+            "isFeatured": {
+              "name": "isFeatured",
               "isArray": false,
               "type": "Boolean",
               "isRequired": false,
@@ -2956,8 +2977,8 @@
             "sortKeyFieldNames": []
           }
         },
-        "BrandAssignment": {
-          "name": "BrandAssignment",
+        "BrandAccess": {
+          "name": "BrandAccess",
           "fields": {
             "id": {
               "name": "id",
@@ -3030,122 +3051,17 @@
               "isRequired": false,
               "attributes": []
             },
-            "createdAt": {
-              "name": "createdAt",
+            "canManageMerch": {
+              "name": "canManageMerch",
               "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": [],
-              "isReadOnly": true
-            },
-            "updatedAt": {
-              "name": "updatedAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": [],
-              "isReadOnly": true
-            }
-          },
-          "syncable": true,
-          "pluralName": "BrandAssignments",
-          "attributes": [
-            {
-              "type": "model",
-              "properties": {}
-            },
-            {
-              "type": "auth",
-              "properties": {
-                "rules": [
-                  {
-                    "groupClaim": "cognito:groups",
-                    "provider": "userPools",
-                    "allow": "groups",
-                    "operations": [
-                      "create",
-                      "read",
-                      "update",
-                      "delete"
-                    ],
-                    "groups": [
-                      "SuperAdmin",
-                      "Admin"
-                    ]
-                  }
-                ]
-              }
-            }
-          ],
-          "primaryKeyInfo": {
-            "isCustomPrimaryKey": false,
-            "primaryKeyFieldName": "id",
-            "sortKeyFieldNames": []
-          }
-        },
-        "HostAssignment": {
-          "name": "HostAssignment",
-          "fields": {
-            "id": {
-              "name": "id",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true,
-              "attributes": []
-            },
-            "hostUserId": {
-              "name": "hostUserId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "managerUserId": {
-              "name": "managerUserId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "managerUsername": {
-              "name": "managerUsername",
-              "isArray": false,
-              "type": "String",
+              "type": "Boolean",
               "isRequired": false,
               "attributes": []
             },
-            "managerEmail": {
-              "name": "managerEmail",
+            "canHostEvents": {
+              "name": "canHostEvents",
               "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "managerDisplayName": {
-              "name": "managerDisplayName",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "hostDisplayName": {
-              "name": "hostDisplayName",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "accessLevel": {
-              "name": "accessLevel",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "assignedBy": {
-              "name": "assignedBy",
-              "isArray": false,
-              "type": "String",
+              "type": "Boolean",
               "isRequired": false,
               "attributes": []
             },
@@ -3167,7 +3083,7 @@
             }
           },
           "syncable": true,
-          "pluralName": "HostAssignments",
+          "pluralName": "BrandAccesses",
           "attributes": [
             {
               "type": "model",
@@ -3478,6 +3394,29 @@
         }
       },
       "mutations": {
+        "updateUserRoles": {
+          "name": "updateUserRoles",
+          "isArray": false,
+          "type": {
+            "nonModel": "UpdateUserRolesResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "username": {
+              "name": "username",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "roles": {
+              "name": "roles",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "isArrayNullable": false
+            }
+          }
+        },
         "cloneEvent": {
           "name": "cloneEvent",
           "isArray": false,
@@ -3694,29 +3633,6 @@
               "isRequired": true
             }
           }
-        },
-        "updateUserRoles": {
-          "name": "updateUserRoles",
-          "isArray": false,
-          "type": {
-            "nonModel": "UpdateUserRolesResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "username": {
-              "name": "username",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "roles": {
-              "name": "roles",
-              "isArray": true,
-              "type": "String",
-              "isRequired": false,
-              "isArrayNullable": false
-            }
-          }
         }
       }
     }
@@ -3731,17 +3647,29 @@
         "aws_region": "eu-north-1",
         "paths": {
           "public/*": {
+            "guest": [
+              "get",
+              "list"
+            ],
             "authenticated": [
               "get",
               "list",
-              "write"
+              "write",
+              "delete"
+            ],
+            "groupsSuperAdmin": [
+              "get",
+              "list",
+              "write",
+              "delete"
             ]
           },
           "private/${cognito-identity.amazonaws.com:sub}/*": {
             "entityidentity": [
               "get",
               "list",
-              "write"
+              "write",
+              "delete"
             ]
           }
         }

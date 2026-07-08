@@ -164,6 +164,33 @@ function mapAvailabilityStatus(variant) {
   return 'Availability unknown';
 }
 
+// NEW: extract mockup URLs from a raw Printful variant
+function getMockupUrlsFromVariant(rawVariant) {
+  const urls = [];
+
+  const files = Array.isArray(rawVariant?.files) ? rawVariant.files : [];
+  for (const file of files) {
+    const type = normalizeText(file.type).toLowerCase();
+    if (type === 'mockup') {
+      const url = firstNonEmpty(file.preview_url, file.url);
+      if (url) {
+        urls.push(url);
+      }
+    }
+  }
+
+  if (!urls.length) {
+    const fallback = firstNonEmpty(
+      rawVariant?.image,
+      rawVariant?.imageUrl,
+      rawVariant?.image_url
+    );
+    if (fallback) urls.push(fallback);
+  }
+
+  return urls;
+}
+
 function normalizePrintfulVariant(variant) {
   const retailPrice = inferPriceNumber(
     variant?.retail_price,
@@ -172,19 +199,21 @@ function normalizePrintfulVariant(variant) {
     variant?.sync_variant?.retail_price
   );
 
+  const imageUrl = firstNonEmpty(
+    variant?.image,
+    variant?.imageUrl,
+    variant?.image_url,
+    variant?.files?.[0]?.preview_url,
+    variant?.files?.[0]?.url
+  );
+
   return {
     id: normalizeText(variant?.id),
     externalVariantId: normalizeText(variant?.id),
     name: firstNonEmpty(variant?.name, variant?.title),
     color: titleCase(firstNonEmpty(variant?.color, variant?.colour)),
     size: firstNonEmpty(variant?.size),
-    imageUrl: firstNonEmpty(
-      variant?.image,
-      variant?.imageUrl,
-      variant?.image_url,
-      variant?.files?.[0]?.preview_url,
-      variant?.files?.[0]?.url
-    ),
+    imageUrl,
     currency: firstNonEmpty(variant?.currency, 'GBP'),
     retailPrice,
     availabilityStatus: mapAvailabilityStatus(variant),
@@ -596,7 +625,7 @@ export default {
               authMode: 'userPool',
             });
             if (createResult.errors?.length) {
-             throw new Error(updateResult.errors[0].message || `Failed to update ${title}.`);
+              throw new Error(createResult.errors[0].message || `Failed to create ${title}.`);
             }
             productId = createResult.data?.id || '';
           } else {
@@ -609,7 +638,7 @@ export default {
               { authMode: 'userPool' }
             );
             if (updateResult.errors?.length) {
-              throw new Error(createResult.errors[0].message || `Failed to update ${title}.`);
+              throw new Error(updateResult.errors[0].message || `Failed to update ${title}.`);
             }
             productId = existing.id;
           }
@@ -634,9 +663,8 @@ export default {
               .map((variant) => [normalizeText(variant.externalVariantId), variant])
           );
 
-          const normalizedVariants = getRawVariants(detailProduct).map((variant) =>
-            normalizePrintfulVariant(variant)
-          );
+          const rawVariants = getRawVariants(detailProduct);
+          const normalizedVariants = rawVariants.map((variant) => normalizePrintfulVariant(variant));
 
           for (let variantIndex = 0; variantIndex < normalizedVariants.length; variantIndex += 1) {
             const variant = normalizedVariants[variantIndex];
@@ -680,23 +708,29 @@ export default {
               }
             }
 
-            if (variant.imageUrl) {
+            // NEW: create images from all mockup URLs
+            const rawVariant = rawVariants[variantIndex] || {};
+            const mockupUrls = getMockupUrlsFromVariant(rawVariant);
+
+            for (let imageIndex = 0; imageIndex < mockupUrls.length; imageIndex += 1) {
+              const imageUrl = mockupUrls[imageIndex];
+
               const imageKey = `${normalizeText(variant.color).toLowerCase()}::${
-                normalizeText(variant.externalVariantId) || normalizeText(variant.imageUrl)
+                normalizeText(variant.externalVariantId) || normalizeText(imageUrl)
               }`;
 
               const imagePayload = {
                 productId,
-                url: variant.imageUrl,
+                url: imageUrl,
                 altText: `${title}${variant.color ? ` - ${variant.color}` : ''}${
                   variant.size ? ` - ${variant.size}` : ''
                 }`,
                 color: variant.color,
-                sortOrder: variantIndex,
-                isPrimary: variantIndex === 0,
+                sortOrder: imageIndex,
+                isPrimary: imageIndex === 0,
                 isMockup: true,
                 sourceType: 'printful',
-                externalImageId: variant.externalVariantId || variant.imageUrl,
+                externalImageId: variant.externalVariantId || imageUrl,
                 status: 'active',
               };
 

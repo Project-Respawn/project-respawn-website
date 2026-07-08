@@ -1,4 +1,6 @@
+// 1. Imports and Amplify setup
 import { generateClient } from 'aws-amplify/data';
+import { uploadData, getUrl } from 'aws-amplify/storage';
 import { fetchProducts, fetchProductById } from '../../Merch/merchService';
 
 let client = null;
@@ -15,15 +17,18 @@ function getModelOrThrow(modelName) {
   const model = models[modelName];
 
   if (!model) {
-    // Log what Amplify actually generated so you can see the mismatch immediately.
     console.error('Available Amplify models:', Object.keys(models));
     throw new Error(
-      `Amplify model "${modelName}" is unavailable. Available models: ${Object.keys(models).join(', ')}`
+      `Amplify model "${modelName}" is unavailable. Available models: ${Object.keys(models).join(
+        ', '
+      )}`
     );
   }
 
   return model;
 }
+
+// 2. Text and value helpers
 
 function normalizeText(value) {
   return typeof value === 'string' ? value.trim() : '';
@@ -149,6 +154,8 @@ function inferVariantCount(product) {
   return 0;
 }
 
+// 3. Printful-specific helpers
+
 function inferDisplayPriceFromPrintful(product) {
   const variants = getRawVariants(product);
   const prices = variants
@@ -212,6 +219,8 @@ function normalizePrintfulVariant(variant) {
   };
 }
 
+// 4. Toast helper
+
 function makeToast(vm, message) {
   vm.toastMessage = message;
   window.clearTimeout(vm.toastTimeout);
@@ -219,6 +228,8 @@ function makeToast(vm, message) {
     vm.toastMessage = '';
   }, 3000);
 }
+
+// 5. Vue component: state and lifecycle
 
 export default {
   name: 'ProductControl',
@@ -258,6 +269,7 @@ export default {
         { label: 'Hidden', value: 'hidden' },
       ],
 
+      // Product edit modal
       productModal: null,
       selectedProductId: '',
       productForm: {
@@ -274,13 +286,24 @@ export default {
         fitNotes: '',
         status: 'active',
         isVisible: true,
-        brandId: '',
-        categoryId: '',
+        brandIds: [],
+        categoryIds: [],
         sourceType: '',
         displayPrice: '',
         variantCount: 0,
         imageCount: 0,
       },
+
+      // Media popout
+      mediaModalOpen: false,
+      selectedProductImages: [],
+      mediaForm: {
+        featuredImageId: '',
+        visibleImageIds: [],
+      },
+
+      // Upload state for manual mockups
+      mediaUploadFiles: [],
     };
   },
 
@@ -346,6 +369,8 @@ export default {
   },
 
   methods: {
+    // 6. Methods: Printful sync
+
     async handlePrintfulSync() {
       if (this.syncingProducts) return;
 
@@ -371,11 +396,12 @@ export default {
       const externalData = await fetchProducts();
       const printfulProducts = getProductArray(externalData);
 
-      const [existingProductsResult, existingImagesResult, existingVariantsResult] = await Promise.all([
-        getModelOrThrow('MerchProduct').list({ authMode: 'userPool' }),
-        getModelOrThrow('MerchProductImage').list({ authMode: 'userPool' }),
-        getModelOrThrow('MerchProductVariant').list({ authMode: 'userPool' }),
-      ]);
+      const [existingProductsResult, existingImagesResult, existingVariantsResult] =
+        await Promise.all([
+          getModelOrThrow('MerchProduct').list({ authMode: 'userPool' }),
+          getModelOrThrow('MerchProductImage').list({ authMode: 'userPool' }),
+          getModelOrThrow('MerchProductVariant').list({ authMode: 'userPool' }),
+        ]);
 
       const firstExistingError = [
         existingProductsResult,
@@ -397,15 +423,6 @@ export default {
           .map((item) => [normalizeText(item.externalProductId), item])
       );
 
-      const imagesByProductId = new Map();
-      for (const image of existingImagesResult.data || []) {
-        const productId = normalizeText(image.productId);
-        if (!productId) continue;
-        const current = imagesByProductId.get(productId) || [];
-        current.push(image);
-        imagesByProductId.set(productId, current);
-      }
-
       const variantsByProductId = new Map();
       for (const variant of existingVariantsResult.data || []) {
         const productId = normalizeText(variant.productId);
@@ -417,13 +434,15 @@ export default {
 
       for (let index = 0; index < printfulProducts.length; index += 1) {
         const rawProduct = printfulProducts[index];
-        const externalProductId = String(rawProduct?.id || rawProduct?.sync_product?.id || '').trim();
+        const externalProductId = String(rawProduct?.id || rawProduct?.sync_product?.id || '')
+          .trim();
         if (!externalProductId) continue;
 
         let detailProduct = rawProduct;
         try {
           const detailResponse = await fetchProductById(externalProductId);
-          detailProduct = detailResponse?.product || detailResponse?.result || detailResponse || rawProduct;
+          detailProduct =
+            detailResponse?.product || detailResponse?.result || detailResponse || rawProduct;
         } catch (detailError) {
           console.warn(`Could not load detail for product ${externalProductId}`, detailError);
         }
@@ -488,20 +507,10 @@ export default {
 
         if (!productId) continue;
 
-        const existingImages = imagesByProductId.get(productId) || [];
-        const existingVariants = variantsByProductId.get(productId) || [];
-
-        const existingImageByKey = new Map(
-          existingImages.map((image) => [
-            `${normalizeText(image.color).toLowerCase()}::${
-              normalizeText(image.externalImageId) || normalizeText(image.url)
-            }`,
-            image,
-          ])
-        );
+        const existingVariantsForProduct = variantsByProductId.get(productId) || [];
 
         const existingVariantByExternalId = new Map(
-          existingVariants
+          existingVariantsForProduct
             .filter((variant) => normalizeText(variant.externalVariantId))
             .map((variant) => [normalizeText(variant.externalVariantId), variant])
         );
@@ -532,13 +541,15 @@ export default {
           const existingVariant = existingVariantByExternalId.get(variant.externalVariantId);
 
           if (!existingVariant) {
-            const createVariantResult = await getModelOrThrow('MerchProductVariant').create(variantPayload, {
-              authMode: 'userPool',
-            });
+            const createVariantResult = await getModelOrThrow('MerchProductVariant').create(
+              variantPayload,
+              { authMode: 'userPool' }
+            );
 
             if (createVariantResult.errors?.length) {
               throw new Error(
-                createVariantResult.errors[0].message || `Failed to create variant for ${title}.`
+                createVariantResult.errors[0].message ||
+                  `Failed to create variant for ${title}.`
               );
             }
           } else {
@@ -549,59 +560,16 @@ export default {
 
             if (updateVariantResult.errors?.length) {
               throw new Error(
-                updateVariantResult.errors[0].message || `Failed to update variant for ${title}.`
+                updateVariantResult.errors[0].message ||
+                  `Failed to update variant for ${title}.`
               );
-            }
-          }
-
-          if (variant.imageUrl) {
-            const imageKey = `${normalizeText(variant.color).toLowerCase()}::${
-              normalizeText(variant.externalVariantId) || normalizeText(variant.imageUrl)
-            }`;
-
-            const imagePayload = {
-              productId,
-              url: variant.imageUrl,
-              altText: `${title}${variant.color ? ` - ${variant.color}` : ''}${
-                variant.size ? ` - ${variant.size}` : ''
-              }`,
-              color: variant.color,
-              sortOrder: variantIndex,
-              isPrimary: variantIndex === 0,
-              isMockup: true,
-              sourceType: 'printful',
-              externalImageId: variant.externalVariantId || variant.imageUrl,
-              status: 'active',
-            };
-
-            const existingImage = existingImageByKey.get(imageKey);
-
-            if (!existingImage) {
-              const createImageResult = await getModelOrThrow('MerchProductImage').create(imagePayload, {
-                authMode: 'userPool',
-              });
-
-              if (createImageResult.errors?.length) {
-                throw new Error(
-                  createImageResult.errors[0].message || `Failed to create image for ${title}.`
-                );
-              }
-            } else {
-              const updateImageResult = await getModelOrThrow('MerchProductImage').update(
-                { id: existingImage.id, ...imagePayload },
-                { authMode: 'userPool' }
-              );
-
-              if (updateImageResult.errors?.length) {
-                throw new Error(
-                  updateImageResult.errors[0].message || `Failed to update image for ${title}.`
-                );
-              }
             }
           }
         }
       }
     },
+
+    // 7. Methods: product loading and editing
 
     async loadProducts() {
       this.loadingProducts = true;
@@ -648,7 +616,9 @@ export default {
         this.productImages = productImagesResult.data || [];
         this.productVariants = productVariantsResult.data || [];
 
-        const brandNameById = new Map(this.brands.map((brand) => [brand.id, normalizeText(brand.name)]));
+        const brandNameById = new Map(
+          this.brands.map((brand) => [brand.id, normalizeText(brand.name)])
+        );
         const categoryNameById = new Map(
           this.categories.map((category) => [category.id, normalizeText(category.name)])
         );
@@ -708,9 +678,19 @@ export default {
               return aOrder - bOrder;
             });
 
+            const manualImages = sortedImages.filter(
+              (image) => image.sourceType === 'manual' && image.isVisible !== false
+            );
+            const printfulImages = sortedImages.filter(
+              (image) => image.sourceType === 'printful' && image.isVisible !== false
+            );
+
+            const candidates = manualImages.length ? manualImages : printfulImages;
+
             const primaryImage =
-              sortedImages.find((image) => image.isPrimary && normalizeText(image.url)) ||
-              sortedImages.find((image) => normalizeText(image.url));
+              candidates.find((image) => image.isFeatured && normalizeText(image.url)) ||
+              candidates.find((image) => image.isPrimary && normalizeText(image.url)) ||
+              candidates.find((image) => normalizeText(image.url));
 
             const sourceType = normalizeText(product.sourceType).toLowerCase() || 'other';
             const status = normalizeText(product.status).toLowerCase() || 'inactive';
@@ -730,10 +710,7 @@ export default {
               variantCount: Number(product.variantCount) || variantRecords.length,
               imageCount: sortedImages.length,
               hasPrimaryImage: Boolean(primaryImage),
-              thumbnail:
-                normalizeText(product.thumbnailUrl) ||
-                normalizeText(product.imageUrl) ||
-                normalizeText(primaryImage?.url),
+              thumbnailKey: normalizeText(primaryImage?.url), // raw key for getUrl
               isVisible: product.isVisible === true,
               shortDescription: normalizeText(product.shortDescription),
               description: normalizeText(product.description),
@@ -751,6 +728,17 @@ export default {
             if (aOrder !== bOrder) return aOrder - bOrder;
             return a.title.localeCompare(b.title);
           });
+
+        // If you want thumbnails pre-resolved for the admin table:
+        // for (const product of this.products) {
+        //   if (product.thumbnailKey) {
+        //     const urlResult = await getUrl({
+        //       key: product.thumbnailKey,
+        //       options: { expiresIn: 3600 },
+        //     });
+        //     product.thumbnail = urlResult.url.toString();
+        //   }
+        // }
       } catch (error) {
         console.error(error);
         this.loadError = error?.message || 'Failed to load products.';
@@ -760,8 +748,8 @@ export default {
     },
 
     openProductModal(product) {
-      const existingBrandLink = this.productBrands.find((link) => link.productId === product.id);
-      const existingCategoryLink = this.productCategories.find((link) => link.productId === product.id);
+      const brandLinks = this.productBrands.filter((link) => link.productId === product.id);
+      const categoryLinks = this.productCategories.filter((link) => link.productId === product.id);
 
       this.selectedProductId = product.id;
       this.productModal = product;
@@ -779,8 +767,8 @@ export default {
         fitNotes: product.fitNotes || '',
         status: normalizeText(product.status) || 'active',
         isVisible: product.isVisible === true,
-        brandId: existingBrandLink?.brandId || '',
-        categoryId: existingCategoryLink?.categoryId || '',
+        brandIds: brandLinks.map((link) => link.brandId),
+        categoryIds: categoryLinks.map((link) => link.categoryId),
         sourceType: product.sourceLabel || product.sourceType || '',
         displayPrice: product.displayPrice || '',
         variantCount: product.variantCount || 0,
@@ -845,11 +833,11 @@ export default {
           );
         }
 
-        if (this.productForm.brandId) {
+        for (const brandId of this.productForm.brandIds || []) {
           const brandCreate = await getModelOrThrow('MerchProductBrand').create(
             {
               productId: this.productForm.id,
-              brandId: this.productForm.brandId,
+              brandId,
             },
             { authMode: 'userPool' }
           );
@@ -859,11 +847,11 @@ export default {
           }
         }
 
-        if (this.productForm.categoryId) {
+        for (const categoryId of this.productForm.categoryIds || []) {
           const categoryCreate = await getModelOrThrow('MerchProductCategory').create(
             {
               productId: this.productForm.id,
-              categoryId: this.productForm.categoryId,
+              categoryId,
             },
             { authMode: 'userPool' }
           );
@@ -884,6 +872,206 @@ export default {
       } finally {
         this.savingProduct = false;
       }
+    },
+
+    // 8. Methods: media management (view/update/delete) with signed URLs
+
+    async openMediaModal(product) {
+      const images = this.productImages.filter(
+        (image) => normalizeText(image.productId) === normalizeText(product.id)
+      );
+
+      this.selectedProductId = product.id;
+      this.selectedProductImages = images;
+
+      this.mediaForm = {
+        featuredImageId: images.find((img) => img.isFeatured)?.id || '',
+        visibleImageIds: images
+          .filter((img) => img.isVisible !== false)
+          .map((img) => img.id),
+      };
+
+      // Resolve signed URLs from keys
+      for (const image of this.selectedProductImages) {
+        const key = normalizeText(image.url);
+        if (!key) continue;
+
+        try {
+          const urlResult = await getUrl({
+            key,
+            options: { expiresIn: 3600 }, // 1 hour for admin viewing
+          });
+          image.signedUrl = urlResult.url.toString();
+        } catch (e) {
+          console.error('Failed to resolve media URL', e);
+          image.signedUrl = '';
+        }
+      }
+
+      this.mediaModalOpen = true;
+    },
+
+    closeMediaModal() {
+      this.mediaModalOpen = false;
+      this.selectedProductImages = [];
+      this.mediaForm = {
+        featuredImageId: '',
+        visibleImageIds: [],
+      };
+      this.mediaUploadFiles = [];
+    },
+
+    async saveMediaChanges() {
+      if (!this.selectedProductId) return;
+
+      this.savingProduct = true;
+      this.loadError = '';
+
+      try {
+        for (const image of this.selectedProductImages) {
+          const isVisible = this.mediaForm.visibleImageIds.includes(image.id);
+          const isFeatured = this.mediaForm.featuredImageId === image.id;
+
+          const updateResult = await getModelOrThrow('MerchProductImage').update(
+            {
+              id: image.id,
+              isVisible,
+              isFeatured,
+              color: normalizeText(image.color),
+              colorHex: normalizeText(image.colorHex),
+            },
+            { authMode: 'userPool' }
+          );
+
+          if (updateResult.errors?.length) {
+            throw new Error(updateResult.errors[0].message || 'Failed to save image settings.');
+          }
+        }
+
+        makeToast(this, 'Media updated');
+        this.closeMediaModal();
+        await this.loadProducts();
+      } catch (error) {
+        console.error(error);
+        this.loadError = error?.message || 'Failed to save media settings.';
+      } finally {
+        this.savingProduct = false;
+      }
+    },
+
+    async deleteImage(imageId) {
+      if (!imageId) return;
+
+      try {
+        const deleteResult = await getModelOrThrow('MerchProductImage').delete(
+          { id: imageId },
+          { authMode: 'userPool' }
+        );
+
+        if (deleteResult.errors?.length) {
+          throw new Error(deleteResult.errors[0].message || 'Failed to delete image.');
+        }
+
+        this.selectedProductImages = this.selectedProductImages.filter(
+          (img) => img.id !== imageId
+        );
+        this.mediaForm.visibleImageIds = this.mediaForm.visibleImageIds.filter(
+          (id) => id !== imageId
+        );
+        if (this.mediaForm.featuredImageId === imageId) {
+          this.mediaForm.featuredImageId = '';
+        }
+      } catch (error) {
+        console.error(error);
+        this.loadError = error?.message || 'Failed to delete image.';
+      }
+    },
+
+    // 9. Methods: media upload (file input, upload to Storage, create MerchProductImage)
+
+    handleMediaFileChange(event) {
+      const files = Array.from(event.target.files || []);
+      this.mediaUploadFiles = files;
+    },
+
+    async uploadMediaFiles() {
+      if (!this.selectedProductId || !this.mediaUploadFiles.length) return;
+
+      this.savingProduct = true;
+      this.loadError = '';
+
+      try {
+        const hadImages = this.selectedProductImages.length > 0;
+
+        for (const file of this.mediaUploadFiles) {
+          const key = await this.uploadFileToStorage(file);
+
+          const createResult = await getModelOrThrow('MerchProductImage').create(
+            {
+              productId: this.selectedProductId,
+              url: key, // raw key
+              altText: file.name,
+              sortOrder: this.selectedProductImages.length,
+              sourceType: 'manual',
+              isVisible: true,
+              isFeatured: !hadImages && this.selectedProductImages.length === 0,
+            },
+            { authMode: 'userPool' }
+          );
+
+          if (createResult.errors?.length) {
+            throw new Error(
+              createResult.errors[0].message || 'Failed to create mockup image.'
+            );
+          }
+
+          const newImage = createResult.data;
+          this.selectedProductImages.push(newImage);
+          this.mediaForm.visibleImageIds.push(newImage.id);
+
+          if (newImage.isFeatured) {
+            this.mediaForm.featuredImageId = newImage.id;
+          }
+        }
+
+        this.mediaUploadFiles = [];
+        makeToast(this, 'Mockup images uploaded');
+
+        await this.loadProducts();
+      } catch (error) {
+        console.error(error);
+        this.loadError = error?.message || 'Failed to upload mockup images.';
+      } finally {
+        this.savingProduct = false;
+      }
+    },
+
+    async uploadFileToStorage(file) {
+      if (!file) {
+        throw new Error('No file provided for upload.');
+      }
+      if (!this.selectedProductId) {
+        throw new Error('No selected productId for upload.');
+      }
+
+      const fileName = file.name || 'file';
+      const safeName = fileName.replace(/\s+/g, '-');
+
+      // Write under products/<productId>/..., letting accessLevel handle public prefix
+      const key = `products/${this.selectedProductId}/${Date.now()}-${safeName}`;
+
+      const uploadTask = uploadData({
+        key,
+        data: file,
+        options: {
+          accessLevel: 'public', // public images for merch storefront
+          contentType: file.type || 'application/octet-stream',
+        },
+      });
+
+      await uploadTask.result; // ensure upload completes [web:31][web:19]
+
+      return key;
     },
   },
 };
