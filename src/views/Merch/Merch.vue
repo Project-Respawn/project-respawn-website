@@ -127,7 +127,7 @@
               <button
                 class="btn-primary"
                 type="button"
-                @click="openPrintfulProduct(product)"
+                @click="openProduct(product)"
               >
                 View details
               </button>
@@ -166,8 +166,58 @@
           <div class="dialog-image-wrap dialog-image-large">
             <img
               :src="selectedVariantImage"
-              :alt="selectedProduct.title || 'Product image'"
+              :alt="activeGalleryImage?.altText || selectedProduct.title || 'Product image'"
             />
+
+            <button
+              v-if="selectedProductGallery.length > 1"
+              type="button"
+              class="gallery-nav gallery-nav-prev"
+              @click="prevGalleryImage"
+              aria-label="Previous product image"
+            >
+              ‹
+            </button>
+
+            <button
+              v-if="selectedProductGallery.length > 1"
+              type="button"
+              class="gallery-nav gallery-nav-next"
+              @click="nextGalleryImage"
+              aria-label="Next product image"
+            >
+              ›
+            </button>
+          </div>
+
+          <div
+            v-if="selectedProductGallery.length > 1"
+            class="gallery-meta"
+          >
+            <span>
+              {{ activeGalleryIndex + 1 }} / {{ selectedProductGallery.length }}
+            </span>
+          </div>
+
+          <div
+            v-if="selectedProductGallery.length > 1"
+            class="gallery-thumbnails"
+          >
+            <button
+              v-for="(image, index) in selectedProductGallery"
+              :key="image.id || `${image.url}-${index}`"
+              type="button"
+              class="gallery-thumb"
+              :class="{ active: index === activeGalleryIndex }"
+              @click="selectGalleryImage(index)"
+              :aria-label="`Show image ${index + 1}`"
+            >
+              <img
+                :src="image.url"
+                :alt="image.altText || `${selectedProduct.title} thumbnail ${index + 1}`"
+                loading="lazy"
+              />
+            </button>
           </div>
 
           <div
@@ -215,6 +265,7 @@
                 type="number"
                 min="1"
                 step="1"
+                @change="normalizeQuantity"
               />
             </div>
 
@@ -246,6 +297,12 @@
               'Pick a colour and size to view the current price and availability.'
             }}
           </p>
+
+          <ul v-if="selectedVariant" class="variant-details">
+            <li><strong>Colour:</strong> {{ selectedVariant.color || 'N/A' }}</li>
+            <li><strong>Size:</strong> {{ selectedVariant.size || 'N/A' }}</li>
+            <li><strong>Availability:</strong> {{ selectedVariant.availabilityStatus || 'Availability unknown' }}</li>
+          </ul>
 
           <div class="product-detail-sections">
             <details class="product-detail-block" open>
@@ -280,13 +337,21 @@
                 <p>{{ selectedProduct.whatsIncluded || 'What’s included will be added soon.' }}</p>
               </div>
             </details>
-          </div>
 
-          <ul v-if="selectedVariant" class="variant-details">
-            <li><strong>Colour:</strong> {{ selectedVariant.color || 'N/A' }}</li>
-            <li><strong>Size:</strong> {{ selectedVariant.size || 'N/A' }}</li>
-            <li><strong>Availability:</strong> {{ selectedVariant.availabilityStatus || 'Availability unknown' }}</li>
-          </ul>
+            <details class="product-detail-block">
+              <summary>Care instructions</summary>
+              <div class="product-detail-body">
+                <p>{{ selectedProduct.careInstructions || 'Care instructions will be added soon.' }}</p>
+              </div>
+            </details>
+
+            <details class="product-detail-block">
+              <summary>Fit notes</summary>
+              <div class="product-detail-body">
+                <p>{{ selectedProduct.fitNotes || 'Fit notes will be added soon.' }}</p>
+              </div>
+            </details>
+          </div>
 
           <a
             v-if="selectedProduct.productUrl"

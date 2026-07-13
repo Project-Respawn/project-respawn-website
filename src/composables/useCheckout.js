@@ -1,6 +1,18 @@
 import { computed, nextTick, reactive, ref, watch } from 'vue'
 import RevolutCheckout from '@revolut/checkout'
 
+function getErrorMessage(error, fallback) {
+  if (error instanceof Error && error.message) {
+    return error.message
+  }
+
+  if (typeof error === 'string' && error.trim()) {
+    return error
+  }
+
+  return fallback
+}
+
 export function useCheckout() {
   const originalShipping = 5
 
@@ -25,7 +37,9 @@ export function useCheckout() {
     ? '/api'
     : (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')
 
-  const revolutMode = import.meta.env.VITE_REVOLUT_MODE || 'sandbox'
+  const revolutMode = (import.meta.env.VITE_REVOLUT_MODE || 'sandbox')
+    .trim()
+    .toLowerCase()
 
   const cartItems = ref([
     {
@@ -78,7 +92,9 @@ export function useCheckout() {
 
   function destroyCardField() {
     try {
-      revolutCardField.value?.destroy?.()
+      if (revolutCardField.value && typeof revolutCardField.value.destroy === 'function') {
+        revolutCardField.value.destroy()
+      }
     } catch (error) {
       console.warn('Failed to destroy card field', error)
     }
@@ -105,7 +121,10 @@ export function useCheckout() {
       resetPaymentState()
     } catch (error) {
       addressComplete.value = false
-      addressError.value = error?.message || 'Please complete all required fields.'
+      addressError.value = getErrorMessage(
+        error,
+        'Please complete all required fields.'
+      )
     }
   }
 
@@ -116,7 +135,7 @@ export function useCheckout() {
 
   async function createRevolutOrder() {
     if (!apiBase) {
-      throw new Error('Missing API base URL')
+      throw new Error('Missing API base URL for checkout')
     }
 
     const payload = {
@@ -150,17 +169,27 @@ export function useCheckout() {
     const data = await response.json().catch(() => null)
 
     if (!response.ok) {
-      throw new Error(data?.message || data?.error || 'Failed to create Revolut order')
+      throw new Error(
+        data?.message ||
+          data?.error ||
+          data?.revolut?.message ||
+          'Failed to create Revolut order'
+      )
     }
 
-    const token = data?.token || data?.public_id || data?.orderToken
+    const token =
+      data?.order?.token ||
+      data?.token ||
+      data?.public_id ||
+      data?.orderToken
+
     if (!token) {
       throw new Error('Backend did not return a Revolut order token')
     }
 
     return {
       token,
-      id: data?.id || data?.orderId || `PR-${Date.now()}`,
+      id: data?.order?.id || data?.id || data?.orderId || `PR-${Date.now()}`,
     }
   }
 
@@ -194,7 +223,10 @@ export function useCheckout() {
           submittingPayment.value = false
         },
         onError(error) {
-          revolutError.value = error?.message || 'Payment failed. Please try again.'
+          revolutError.value = getErrorMessage(
+            error,
+            'Payment failed. Please try again.'
+          )
           submittingPayment.value = false
         },
         onValidation(errors) {
@@ -208,7 +240,7 @@ export function useCheckout() {
       revolutCardField.value = cardField
       paymentReady.value = true
     } catch (error) {
-      revolutError.value = error?.message || 'Unable to load payment form.'
+      revolutError.value = getErrorMessage(error, 'Unable to load payment form.')
       paymentReady.value = false
     } finally {
       revolutLoading.value = false
@@ -244,7 +276,7 @@ export function useCheckout() {
         },
       })
     } catch (error) {
-      revolutError.value = error?.message || 'Unable to submit payment.'
+      revolutError.value = getErrorMessage(error, 'Unable to submit payment.')
       submittingPayment.value = false
     }
   }

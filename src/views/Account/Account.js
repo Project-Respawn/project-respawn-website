@@ -7,14 +7,9 @@ import { generateClient } from "aws-amplify/data";
 import { getCurrentUser } from "aws-amplify/auth";
 import { useAuth } from "../../composables/useAuth.js";
 
-/* =========================================================
-   2. CLIENT SETUP
-   Amplify data client
-   ========================================================= */
-const client = generateClient();
 
 /* =========================================================
-   3. MODULE RELEASE FLAGS
+   2. MODULE RELEASE FLAGS
    Turn modules on/off here as they become available
    true  = live / unlocked
    false = coming soon
@@ -35,8 +30,9 @@ const MODULE_RELEASES = {
   currentGoals: false,
 };
 
+
 /* =========================================================
-   4. MODULE LIBRARY
+   3. MODULE LIBRARY
    Master definitions for every available module type
    comingSoon is now driven by MODULE_RELEASES
    ========================================================= */
@@ -121,8 +117,9 @@ const MODULE_LIBRARY = {
   },
 };
 
+
 /* =========================================================
-   5. MODULE TYPE OPTIONS
+   4. MODULE TYPE OPTIONS
    Options shown in selectors / add box modal
    ========================================================= */
 const MODULE_TYPE_OPTIONS = [
@@ -141,8 +138,9 @@ const MODULE_TYPE_OPTIONS = [
   { value: "currentGoals", label: "Current Goals" },
 ];
 
+
 /* =========================================================
-   6. PROFILE DEFAULT STATE
+   5. PROFILE DEFAULT STATE
    Empty/fallback profile object
    ========================================================= */
 const EMPTY_PROFILE = {
@@ -154,8 +152,9 @@ const EMPTY_PROFILE = {
   avatarObjectUrl: null,
 };
 
+
 /* =========================================================
-   7. BOARD CONFIG
+   6. BOARD CONFIG
    Master board sizing
    Change these to make all boxes larger/smaller
    ========================================================= */
@@ -168,16 +167,18 @@ const BOARD_CONFIG = {
   padding: 18,
 };
 
+
 /* =========================================================
-   8. MODULE RELEASE HELPERS
+   7. MODULE RELEASE HELPERS
    Utility helpers for feature availability
    ========================================================= */
 function isModuleReleased(type) {
   return MODULE_RELEASES[type] === true;
 }
 
+
 /* =========================================================
-   9. MODULE FACTORY
+   8. MODULE FACTORY
    Creates a module instance with defaults
    w / h control actual module footprint on the board
    ========================================================= */
@@ -201,8 +202,9 @@ function createModule(type, overrides = {}) {
   };
 }
 
+
 /* =========================================================
-   10. DEFAULT MODULE LAYOUT
+   9. DEFAULT MODULE LAYOUT
    Starting modules shown on the board
    w = width in cells
    h = height in cells
@@ -225,13 +227,20 @@ const DEFAULT_MODULES = [
   createModule("currentGoals", { id: "goals-1", x: 2, y: 5, w: 2, h: 1 }),
 ];
 
+
 /* =========================================================
-   11. COMPONENT
+   10. COMPONENT
    Main account page component
    ========================================================= */
 export default {
   name: "AccountPage",
   setup() {
+    /* =====================================================
+       11. CLIENT SETUP
+       Amplify data client
+       ===================================================== */
+    const client = generateClient();
+
     /* =====================================================
        12. AUTH / COMPOSABLES
        ===================================================== */

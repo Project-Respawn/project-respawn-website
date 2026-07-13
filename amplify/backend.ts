@@ -15,7 +15,7 @@ import { myFunction } from './myFunction/resource';
 import { adminUserManagement } from './functions/admin-user-management/resource';
 
 // =============================================================================
-//  Core backend resources
+// Core backend resources
 // =============================================================================
 
 const backend = defineBackend({
@@ -27,7 +27,7 @@ const backend = defineBackend({
 });
 
 // =============================================================================
-//  IAM permissions
+// IAM permissions
 // =============================================================================
 
 // Admin user management permissions
@@ -55,7 +55,7 @@ backend.adminUserManagement.resources.lambda.addToRolePolicy(
 // );
 
 // =============================================================================
-//  API stack
+// API stack
 // =============================================================================
 
 const apiStack = backend.createStack('api-stack');
@@ -84,7 +84,7 @@ const httpApi = new HttpApi(apiStack, 'HttpApi', {
 });
 
 // =============================================================================
-//  Printful routes
+// Printful routes
 // =============================================================================
 
 httpApi.addRoutes({
@@ -112,7 +112,7 @@ httpApi.addRoutes({
 });
 
 // =============================================================================
-//  Revolut routes
+// Revolut routes
 // =============================================================================
 
 httpApi.addRoutes({
@@ -128,7 +128,7 @@ httpApi.addRoutes({
 });
 
 // =============================================================================
-//  Twitch Bot routes
+// Twitch Bot routes
 // =============================================================================
 
 // Bot/runtime lookup by broadcasterId
@@ -159,7 +159,7 @@ httpApi.addRoutes({
 });
 
 // =============================================================================
-//  API outputs
+// API outputs
 // =============================================================================
 
 backend.addOutput({
