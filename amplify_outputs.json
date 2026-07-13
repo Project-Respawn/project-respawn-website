@@ -3646,6 +3646,36 @@
         "bucket_name": "amplify-projectrespawnweb-projectrespawnstoragebuc-9iduepye9i6n",
         "aws_region": "eu-north-1",
         "paths": {
+          "public/merch/*": {
+            "guest": [
+              "get",
+              "list"
+            ],
+            "authenticated": [
+              "get",
+              "list",
+              "write",
+              "delete"
+            ],
+            "groupsSuperAdmin": [
+              "get",
+              "list",
+              "write",
+              "delete"
+            ],
+            "groupsAdmin": [
+              "get",
+              "list",
+              "write",
+              "delete"
+            ],
+            "groupsStaff": [
+              "get",
+              "list",
+              "write",
+              "delete"
+            ]
+          },
           "public/*": {
             "guest": [
               "get",
@@ -3658,6 +3688,18 @@
               "delete"
             ],
             "groupsSuperAdmin": [
+              "get",
+              "list",
+              "write",
+              "delete"
+            ],
+            "groupsAdmin": [
+              "get",
+              "list",
+              "write",
+              "delete"
+            ],
+            "groupsStaff": [
               "get",
               "list",
               "write",

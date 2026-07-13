@@ -1,4 +1,3 @@
-// 1. Imports and Amplify setup
 import { generateClient } from 'aws-amplify/data';
 import { uploadData, getUrl } from 'aws-amplify/storage';
 import { fetchProducts, fetchProductById } from '../../Merch/merchService';
@@ -19,19 +18,20 @@ function getModelOrThrow(modelName) {
   if (!model) {
     console.error('Available Amplify models:', Object.keys(models));
     throw new Error(
-      `Amplify model "${modelName}" is unavailable. Available models: ${Object.keys(models).join(
-        ', '
-      )}`
+      `Amplify model "${modelName}" is unavailable. Available models: ${Object.keys(models).join(', ')}`
     );
   }
 
   return model;
 }
 
-// 2. Text and value helpers
-
 function normalizeText(value) {
   return typeof value === 'string' ? value.trim() : '';
+}
+
+function isHttpUrl(value) {
+  const text = normalizeText(value);
+  return /^https?:\/\//i.test(text);
 }
 
 function firstNonEmpty(...values) {
@@ -125,18 +125,6 @@ function inferDescription(product) {
   );
 }
 
-function inferImage(product) {
-  return firstNonEmpty(
-    product?.thumbnail_url,
-    product?.thumbnailUrl,
-    product?.image,
-    product?.imageUrl,
-    product?.sync_product?.thumbnail_url,
-    product?.sync_product?.thumbnail,
-    product?.sync_product?.image
-  );
-}
-
 function inferProductUrl(product) {
   return firstNonEmpty(
     product?.productUrl,
@@ -153,8 +141,6 @@ function inferVariantCount(product) {
   if (Number.isFinite(Number(product?.variant_count))) return Number(product.variant_count);
   return 0;
 }
-
-// 3. Printful-specific helpers
 
 function inferDisplayPriceFromPrintful(product) {
   const variants = getRawVariants(product);
@@ -219,8 +205,6 @@ function normalizePrintfulVariant(variant) {
   };
 }
 
-// 4. Toast helper
-
 function makeToast(vm, message) {
   vm.toastMessage = message;
   window.clearTimeout(vm.toastTimeout);
@@ -229,7 +213,25 @@ function makeToast(vm, message) {
   }, 3000);
 }
 
-// 5. Vue component: state and lifecycle
+async function resolveStorageUrl(value) {
+  const cleanValue = normalizeText(value);
+  if (!cleanValue) return '';
+
+  if (isHttpUrl(cleanValue)) {
+    return cleanValue;
+  }
+
+  try {
+    const result = await getUrl({
+      path: cleanValue,
+      options: { expiresIn: 3600 },
+    });
+    return result.url.toString();
+  } catch (error) {
+    console.error('Failed to resolve storage URL for value:', cleanValue, error);
+    return '';
+  }
+}
 
 export default {
   name: 'ProductControl',
@@ -269,7 +271,6 @@ export default {
         { label: 'Hidden', value: 'hidden' },
       ],
 
-      // Product edit modal
       productModal: null,
       selectedProductId: '',
       productForm: {
@@ -294,15 +295,14 @@ export default {
         imageCount: 0,
       },
 
-      // Media popout
       mediaModalOpen: false,
       selectedProductImages: [],
+      selectedMediaIndex: 0,
       mediaForm: {
         featuredImageId: '',
         visibleImageIds: [],
       },
 
-      // Upload state for manual mockups
       mediaUploadFiles: [],
     };
   },
@@ -358,6 +358,10 @@ export default {
         return matchesQuery && matchesSource && matchesVisibility;
       });
     },
+
+    activeMediaImage() {
+      return this.selectedProductImages[this.selectedMediaIndex] || {};
+    },
   },
 
   async mounted() {
@@ -369,8 +373,6 @@ export default {
   },
 
   methods: {
-    // 6. Methods: Printful sync
-
     async handlePrintfulSync() {
       if (this.syncingProducts) return;
 
@@ -396,16 +398,13 @@ export default {
       const externalData = await fetchProducts();
       const printfulProducts = getProductArray(externalData);
 
-      const [existingProductsResult, existingImagesResult, existingVariantsResult] =
-        await Promise.all([
-          getModelOrThrow('MerchProduct').list({ authMode: 'userPool' }),
-          getModelOrThrow('MerchProductImage').list({ authMode: 'userPool' }),
-          getModelOrThrow('MerchProductVariant').list({ authMode: 'userPool' }),
-        ]);
+      const [existingProductsResult, existingVariantsResult] = await Promise.all([
+        getModelOrThrow('MerchProduct').list({ authMode: 'userPool' }),
+        getModelOrThrow('MerchProductVariant').list({ authMode: 'userPool' }),
+      ]);
 
       const firstExistingError = [
         existingProductsResult,
-        existingImagesResult,
         existingVariantsResult,
       ].find((result) => result?.errors?.length)?.errors?.[0];
 
@@ -434,22 +433,19 @@ export default {
 
       for (let index = 0; index < printfulProducts.length; index += 1) {
         const rawProduct = printfulProducts[index];
-        const externalProductId = String(rawProduct?.id || rawProduct?.sync_product?.id || '')
-          .trim();
+        const externalProductId = String(rawProduct?.id || rawProduct?.sync_product?.id || '').trim();
         if (!externalProductId) continue;
 
         let detailProduct = rawProduct;
         try {
           const detailResponse = await fetchProductById(externalProductId);
-          detailProduct =
-            detailResponse?.product || detailResponse?.result || detailResponse || rawProduct;
+          detailProduct = detailResponse?.product || detailResponse?.result || detailResponse || rawProduct;
         } catch (detailError) {
           console.warn(`Could not load detail for product ${externalProductId}`, detailError);
         }
 
         const title = inferTitle(detailProduct, index);
         const description = inferDescription(detailProduct);
-        const thumbnailUrl = inferImage(detailProduct);
         const productUrl = inferProductUrl(detailProduct);
         const variantCount = inferVariantCount(detailProduct);
         const slug = slugify(title) || `product-${index + 1}`;
@@ -461,8 +457,6 @@ export default {
           slug,
           shortDescription: description,
           description,
-          thumbnailUrl,
-          imageUrl: thumbnailUrl,
           sourceType: 'printful',
           externalProductId,
           externalVariantGroupId: normalizeText(detailProduct?.externalVariantGroupId),
@@ -548,8 +542,7 @@ export default {
 
             if (createVariantResult.errors?.length) {
               throw new Error(
-                createVariantResult.errors[0].message ||
-                  `Failed to create variant for ${title}.`
+                createVariantResult.errors[0].message || `Failed to create variant for ${title}.`
               );
             }
           } else {
@@ -560,16 +553,13 @@ export default {
 
             if (updateVariantResult.errors?.length) {
               throw new Error(
-                updateVariantResult.errors[0].message ||
-                  `Failed to update variant for ${title}.`
+                updateVariantResult.errors[0].message || `Failed to update variant for ${title}.`
               );
             }
           }
         }
       }
     },
-
-    // 7. Methods: product loading and editing
 
     async loadProducts() {
       this.loadingProducts = true;
@@ -619,6 +609,7 @@ export default {
         const brandNameById = new Map(
           this.brands.map((brand) => [brand.id, normalizeText(brand.name)])
         );
+
         const categoryNameById = new Map(
           this.categories.map((category) => [category.id, normalizeText(category.name)])
         );
@@ -655,7 +646,7 @@ export default {
           variantsByProductId.get(variant.productId).push(variant);
         }
 
-        this.products = (productsResult.data || [])
+        const mappedProducts = (productsResult.data || [])
           .map((product) => {
             const brandLinks = brandLinksByProductId.get(product.id) || [];
             const categoryLinks = categoryLinksByProductId.get(product.id) || [];
@@ -678,19 +669,14 @@ export default {
               return aOrder - bOrder;
             });
 
-            const manualImages = sortedImages.filter(
-              (image) => image.sourceType === 'manual' && image.isVisible !== false
+            const visibleImages = sortedImages.filter(
+              (image) => image.isVisible !== false && normalizeText(image.url)
             );
-            const printfulImages = sortedImages.filter(
-              (image) => image.sourceType === 'printful' && image.isVisible !== false
-            );
-
-            const candidates = manualImages.length ? manualImages : printfulImages;
 
             const primaryImage =
-              candidates.find((image) => image.isFeatured && normalizeText(image.url)) ||
-              candidates.find((image) => image.isPrimary && normalizeText(image.url)) ||
-              candidates.find((image) => normalizeText(image.url));
+              visibleImages.find((image) => image.isFeatured) ||
+              visibleImages[0] ||
+              null;
 
             const sourceType = normalizeText(product.sourceType).toLowerCase() || 'other';
             const status = normalizeText(product.status).toLowerCase() || 'inactive';
@@ -710,7 +696,9 @@ export default {
               variantCount: Number(product.variantCount) || variantRecords.length,
               imageCount: sortedImages.length,
               hasPrimaryImage: Boolean(primaryImage),
-              thumbnailKey: normalizeText(primaryImage?.url), // raw key for getUrl
+              primaryImageId: primaryImage?.id || '',
+              thumbnailSource: normalizeText(primaryImage?.url),
+              thumbnail: '',
               isVisible: product.isVisible === true,
               shortDescription: normalizeText(product.shortDescription),
               description: normalizeText(product.description),
@@ -729,16 +717,13 @@ export default {
             return a.title.localeCompare(b.title);
           });
 
-        // If you want thumbnails pre-resolved for the admin table:
-        // for (const product of this.products) {
-        //   if (product.thumbnailKey) {
-        //     const urlResult = await getUrl({
-        //       key: product.thumbnailKey,
-        //       options: { expiresIn: 3600 },
-        //     });
-        //     product.thumbnail = urlResult.url.toString();
-        //   }
-        // }
+        await Promise.all(
+          mappedProducts.map(async (product) => {
+            product.thumbnail = await resolveStorageUrl(product.thumbnailSource);
+          })
+        );
+
+        this.products = mappedProducts;
       } catch (error) {
         console.error(error);
         this.loadError = error?.message || 'Failed to load products.';
@@ -874,39 +859,31 @@ export default {
       }
     },
 
-    // 8. Methods: media management (view/update/delete) with signed URLs
-
     async openMediaModal(product) {
-      const images = this.productImages.filter(
-        (image) => normalizeText(image.productId) === normalizeText(product.id)
+      const images = this.productImages
+        .filter((image) => normalizeText(image.productId) === normalizeText(product.id))
+        .sort((a, b) => {
+          const aOrder = Number.isFinite(Number(a.sortOrder)) ? Number(a.sortOrder) : 9999;
+          const bOrder = Number.isFinite(Number(b.sortOrder)) ? Number(b.sortOrder) : 9999;
+          return aOrder - bOrder;
+        });
+
+      const resolvedImages = await Promise.all(
+        images.map(async (image) => ({
+          ...image,
+          signedUrl: await resolveStorageUrl(image.url),
+        }))
       );
 
       this.selectedProductId = product.id;
-      this.selectedProductImages = images;
-
+      this.selectedProductImages = resolvedImages;
+      this.selectedMediaIndex = 0;
       this.mediaForm = {
-        featuredImageId: images.find((img) => img.isFeatured)?.id || '',
-        visibleImageIds: images
+        featuredImageId: resolvedImages.find((img) => img.isFeatured)?.id || '',
+        visibleImageIds: resolvedImages
           .filter((img) => img.isVisible !== false)
           .map((img) => img.id),
       };
-
-      // Resolve signed URLs from keys
-      for (const image of this.selectedProductImages) {
-        const key = normalizeText(image.url);
-        if (!key) continue;
-
-        try {
-          const urlResult = await getUrl({
-            key,
-            options: { expiresIn: 3600 }, // 1 hour for admin viewing
-          });
-          image.signedUrl = urlResult.url.toString();
-        } catch (e) {
-          console.error('Failed to resolve media URL', e);
-          image.signedUrl = '';
-        }
-      }
 
       this.mediaModalOpen = true;
     },
@@ -914,11 +891,24 @@ export default {
     closeMediaModal() {
       this.mediaModalOpen = false;
       this.selectedProductImages = [];
+      this.selectedMediaIndex = 0;
       this.mediaForm = {
         featuredImageId: '',
         visibleImageIds: [],
       };
       this.mediaUploadFiles = [];
+    },
+
+    prevMediaImage() {
+      if (this.selectedMediaIndex > 0) {
+        this.selectedMediaIndex -= 1;
+      }
+    },
+
+    nextMediaImage() {
+      if (this.selectedMediaIndex < this.selectedProductImages.length - 1) {
+        this.selectedMediaIndex += 1;
+      }
     },
 
     async saveMediaChanges() {
@@ -935,6 +925,7 @@ export default {
           const updateResult = await getModelOrThrow('MerchProductImage').update(
             {
               id: image.id,
+              altText: normalizeText(image.altText),
               isVisible,
               isFeatured,
               color: normalizeText(image.color),
@@ -972,22 +963,25 @@ export default {
           throw new Error(deleteResult.errors[0].message || 'Failed to delete image.');
         }
 
-        this.selectedProductImages = this.selectedProductImages.filter(
-          (img) => img.id !== imageId
-        );
+        this.selectedProductImages = this.selectedProductImages.filter((img) => img.id !== imageId);
         this.mediaForm.visibleImageIds = this.mediaForm.visibleImageIds.filter(
           (id) => id !== imageId
         );
+
         if (this.mediaForm.featuredImageId === imageId) {
-          this.mediaForm.featuredImageId = '';
+          this.mediaForm.featuredImageId = this.selectedProductImages[0]?.id || '';
         }
+
+        if (this.selectedMediaIndex >= this.selectedProductImages.length) {
+          this.selectedMediaIndex = Math.max(0, this.selectedProductImages.length - 1);
+        }
+
+        makeToast(this, 'Image deleted');
       } catch (error) {
         console.error(error);
         this.loadError = error?.message || 'Failed to delete image.';
       }
     },
-
-    // 9. Methods: media upload (file input, upload to Storage, create MerchProductImage)
 
     handleMediaFileChange(event) {
       const files = Array.from(event.target.files || []);
@@ -1001,42 +995,45 @@ export default {
       this.loadError = '';
 
       try {
-        const hadImages = this.selectedProductImages.length > 0;
+        let currentImageCount = this.selectedProductImages.length;
 
         for (const file of this.mediaUploadFiles) {
-          const key = await this.uploadFileToStorage(file);
+          const imageUrl = await this.uploadFileToStorage(file);
 
           const createResult = await getModelOrThrow('MerchProductImage').create(
             {
               productId: this.selectedProductId,
-              url: key, // raw key
+              url: imageUrl,
               altText: file.name,
-              sortOrder: this.selectedProductImages.length,
+              sortOrder: currentImageCount,
               sourceType: 'manual',
               isVisible: true,
-              isFeatured: !hadImages && this.selectedProductImages.length === 0,
+              isFeatured: currentImageCount === 0,
             },
             { authMode: 'userPool' }
           );
 
           if (createResult.errors?.length) {
-            throw new Error(
-              createResult.errors[0].message || 'Failed to create mockup image.'
-            );
+            throw new Error(createResult.errors[0].message || 'Failed to create mockup image.');
           }
 
-          const newImage = createResult.data;
+          const newImage = {
+            ...createResult.data,
+            signedUrl: normalizeText(createResult.data?.url),
+          };
+
           this.selectedProductImages.push(newImage);
           this.mediaForm.visibleImageIds.push(newImage.id);
 
           if (newImage.isFeatured) {
             this.mediaForm.featuredImageId = newImage.id;
           }
+
+          currentImageCount += 1;
         }
 
         this.mediaUploadFiles = [];
         makeToast(this, 'Mockup images uploaded');
-
         await this.loadProducts();
       } catch (error) {
         console.error(error);
@@ -1056,22 +1053,28 @@ export default {
 
       const fileName = file.name || 'file';
       const safeName = fileName.replace(/\s+/g, '-');
-
-      // Write under products/<productId>/..., letting accessLevel handle public prefix
-      const key = `products/${this.selectedProductId}/${Date.now()}-${safeName}`;
+      const path = `products/${this.selectedProductId}/${Date.now()}-${safeName}`;
 
       const uploadTask = uploadData({
-        key,
+        path,
         data: file,
         options: {
-          accessLevel: 'public', // public images for merch storefront
+          accessLevel: 'public',
           contentType: file.type || 'application/octet-stream',
         },
       });
 
-      await uploadTask.result; // ensure upload completes [web:31][web:19]
+      await uploadTask.result;
 
-      return key;
+      const urlResult = await getUrl({
+        path,
+        options: {
+          accessLevel: 'public',
+          expiresIn: 3600,
+        },
+      });
+
+      return urlResult.url.toString();
     },
   },
 };
