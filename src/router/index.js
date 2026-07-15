@@ -23,7 +23,7 @@ import BotDiscord from '../views/Bot/Discord/BotDiscord.vue';
 import BotAutomation from '../views/Bot/Automation/BotAutomation.vue';
 import BotSettings from '../views/Bot/Settings/BotSettings.vue';
 import TtsOverlay from '../views/Bot/Twitch/TTS/TtsOverlay.vue';
-import Moderation from '../views/Bot/twitch/Moderation/Moderation.vue';
+import Moderation from '../views/Bot/Twitch/Moderation/Moderation.vue';
 import TtsSettings from '../views/Bot/Twitch/TTS/Settings/TtsSettings.vue';
 import TwitchCommands from '../views/Bot/Twitch/TwitchCommands/TwitchCommands.vue';
 import BotAlerts from '../views/Bot/Twitch/Alerts/BotAlerts.vue';
