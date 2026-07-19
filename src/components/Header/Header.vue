@@ -62,11 +62,30 @@
             </li> -->
             <li class="nav-item">
               <router-link v-if="!isSignedIn" to="/join" class="btn btn-secondary ms-3" :class="{ active: $route.path === '/join' }">Join</router-link>
-                <router-link v-else to="/home" class="btn btn-secondary ms-3 header-account-btn text-truncate d-flex align-items-center gap-2"
-  :class="{ active: $route.path === '/home' }" :title="displayName">
-                <span class="profile-avatar" aria-hidden="true">{{ initials }}</span>
-                <span class="text-truncate">{{ truncatedNavName }}</span>
-              </router-link>
+              <!-- Signed-in account dropdown -->
+              <div v-else class="ms-3 position-relative">
+                <button
+                  class="btn btn-secondary header-account-btn d-flex align-items-center"
+                  :title="displayName"
+                  @click="toggleDropdown"
+                  type="button">
+                  <span class="profile-avatar me-2" aria-hidden="true">{{ initials }}</span>
+                  <span class="text-truncate">{{ truncatedNavName }}</span>
+                  <i class="bi bi-caret-down-fill ms-2"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" :class="{ show: showDropdown }" style="min-width: 12rem;">
+                  <li>
+                    <router-link to="/home" class="dropdown-item">Dashboard</router-link>
+                  </li>
+                  <li>
+                    <router-link to="/account" class="dropdown-item">Profile Settings</router-link>
+                  </li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li>
+                    <button class="dropdown-item text-danger" @click="handleLogout">Sign out</button>
+                  </li>
+                </ul>
+              </div>
             </li>
           </ul>
         </div>
@@ -76,13 +95,16 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, nextTick } from "vue";
+import { computed, onMounted, ref, nextTick, onBeforeUnmount, watch } from "vue";
 import { useAuth } from "../../composables/useAuth.js";
+import { useRouter } from "vue-router";
 
-const { isSignedIn, displayName, truncatedDisplayName, refreshAuth, initials } = useAuth();
+const { isSignedIn, displayName, truncatedDisplayName, refreshAuth, initials, logout } = useAuth();
 const truncatedNavName = computed(() => truncatedDisplayName(10));
+const router = useRouter();
 
 const cartCount = ref(0);
+const showDropdown = ref(false);
 
 function updateCartCount() {
   const cart = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -97,10 +119,35 @@ function closeNavbar() {
   }
 }
 
+function toggleDropdown() {
+  showDropdown.value = !showDropdown.value;
+}
+
+async function handleLogout() {
+  try {
+    await logout();
+    showDropdown.value = false;
+    // refresh auth state in case useAuth needs it
+    await refreshAuth();
+    router.push('/');
+  } catch (err) {
+    console.error('Logout failed', err);
+  }
+}
+
+function onDocClick(e) {
+  const btn = document.querySelector('.header-account-btn');
+  const menu = document.querySelector('.dropdown-menu');
+  if (!btn) return;
+  if (btn.contains(e.target) || (menu && menu.contains(e.target))) return;
+  showDropdown.value = false;
+}
+
 onMounted(() => {
   refreshAuth();
   updateCartCount();
   window.addEventListener("storage", updateCartCount);
+  document.addEventListener('click', onDocClick);
 
   // Close navbar when a link is clicked
   const navLinks = document.querySelectorAll(".navbar-collapse .nav-link, .navbar-collapse .btn");
@@ -115,6 +162,16 @@ onMounted(() => {
       closeNavbar();
     }
   });
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("storage", updateCartCount);
+  document.removeEventListener('click', onDocClick);
+});
+
+// Close dropdown when route changes
+watch(() => window.location.pathname, () => {
+  showDropdown.value = false;
 });
 </script>
 
