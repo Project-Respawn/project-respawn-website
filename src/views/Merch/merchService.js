@@ -9,6 +9,12 @@ const API_BASE = (() => {
     throw new Error('Missing VITE_API_BASE_URL for production merch API requests.');
   }
 
+  if (/<stage>|%3Cstage%3E/i.test(productionBase)) {
+    throw new Error(
+      'Invalid VITE_API_BASE_URL for production merch API requests. Remove placeholder "<stage>" and set the real API Gateway base URL in Amplify environment variables.'
+    );
+  }
+
   return productionBase.replace(/\/+$/, '');
 })();
 

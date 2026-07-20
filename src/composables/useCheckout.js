@@ -35,7 +35,21 @@ export function useCheckout() {
 
   const apiBase = import.meta.env.DEV
     ? '/api'
-    : (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')
+    : (() => {
+        const productionBase = import.meta.env.VITE_API_BASE_URL?.trim() || '';
+
+        if (!productionBase) {
+          throw new Error('Missing VITE_API_BASE_URL for production checkout API requests.');
+        }
+
+        if (/<stage>|%3Cstage%3E/i.test(productionBase)) {
+          throw new Error(
+            'Invalid VITE_API_BASE_URL for production checkout API requests. Remove placeholder "<stage>" and set the real API Gateway base URL in Amplify environment variables.'
+          );
+        }
+
+        return productionBase.replace(/\/$/, '');
+      })();
 
   const revolutMode = (import.meta.env.VITE_REVOLUT_MODE || 'sandbox')
     .trim()

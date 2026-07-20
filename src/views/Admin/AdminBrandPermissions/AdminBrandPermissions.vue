@@ -229,4 +229,4 @@
 </template>
 
 <script src="./AdminBrandPermissions.js"></script>
-<style scoped src="./AdminBrandPermissions.css"></style>
+<style src="./AdminBrandPermissions.css"></style>
