@@ -303,7 +303,7 @@
               <div v-if="selectedProductImages.length" class="media-gallery">
                 <div class="media-viewer">
                   <img
-                    :src="activeMediaImage.signedUrl"
+                    :src="activeMediaImage.signedUrl || activeMediaImage.url"
                     :alt="activeMediaImage.altText || 'Product image'"
                   />
                 </div>
@@ -344,7 +344,7 @@
                     @click="selectedMediaIndex = index"
                   >
                     <img
-                      :src="image.signedUrl"
+                      :src="image.signedUrl || image.url"
                       :alt="image.altText || `Product image ${index + 1}`"
                     />
                   </button>

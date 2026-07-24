@@ -1,5 +1,7 @@
 import { nextTick } from 'vue';
 import { generateClient } from 'aws-amplify/data';
+import { getUrl } from 'aws-amplify/storage';
+import outputs from '../../../amplify_outputs.json';
 
 let client = null;
 
@@ -72,7 +74,80 @@ function normalizeImageUrl(value) {
   const text = normalizeText(value);
   if (!text) return '';
   if (isHttpUrl(text)) return text;
-  return '';
+  return text;
+}
+
+function getPublicStorageBucketUrl() {
+  const storageConfig = outputs?.storage || {};
+  const bucketName = normalizeText(storageConfig.bucket_name || storageConfig.buckets?.[0]?.bucket_name);
+  const region = normalizeText(storageConfig.aws_region || outputs?.auth?.aws_region || '');
+
+  if (!bucketName || !region) {
+    return '';
+  }
+
+  return `https://${bucketName}.s3.${region}.amazonaws.com`;
+}
+
+function normalizeStoragePath(value) {
+  const cleanValue = normalizeText(value);
+  if (!cleanValue) return '';
+
+  const withoutLeadingSlash = cleanValue.replace(/^\/+/, '');
+  if (/^(public|protected|private)\//i.test(withoutLeadingSlash)) {
+    return withoutLeadingSlash;
+  }
+
+  if (/^products\//i.test(withoutLeadingSlash)) {
+    return `public/${withoutLeadingSlash}`;
+  }
+
+  return `public/${withoutLeadingSlash}`;
+}
+
+function buildPublicStorageUrl(value) {
+  const cleanValue = normalizeText(value);
+  if (!cleanValue) return '';
+
+  if (isHttpUrl(cleanValue)) {
+    return cleanValue;
+  }
+
+  const baseUrl = getPublicStorageBucketUrl();
+  if (!baseUrl) return '';
+
+  return `${baseUrl}/${normalizeStoragePath(cleanValue)}`;
+}
+
+async function resolveStorageUrl(value) {
+  const cleanValue = normalizeText(value);
+  if (!cleanValue) return '';
+
+  if (isHttpUrl(cleanValue)) {
+    return cleanValue;
+  }
+
+  const normalizedPath = normalizeStoragePath(cleanValue);
+  const publicUrl = buildPublicStorageUrl(cleanValue);
+
+  if (publicUrl) {
+    return publicUrl;
+  }
+
+  try {
+    const result = await getUrl({
+      path: normalizedPath,
+      options: {
+        accessLevel: 'public',
+        expiresIn: 3600,
+      },
+    });
+
+    return result.url.toString();
+  } catch (error) {
+    console.warn('Failed to resolve merch image URL:', cleanValue);
+    return publicUrl;
+  }
 }
 
 function normalizeStoredImage(image) {
@@ -445,87 +520,106 @@ export default {
           variantsByProductId.set(productId, current);
         }
 
-        const mappedProducts = (productsResult.data || [])
-          .filter((product) => product.isVisible !== false)
-          .filter((product) => {
-            const status = normalizeText(product?.status).toLowerCase();
-            return !status || status === 'active';
-          })
-          .map((product) => {
-            const rawImages = imagesByProductId.get(product.id) || [];
-            const normalizedImages = rawImages
-              .map((image) => normalizeStoredImage(image))
-              .filter((image) => image.url)
-              .sort((a, b) => a.sortOrder - b.sortOrder);
+        const mappedProducts = await Promise.all(
+          (productsResult.data || [])
+            .filter((product) => product.isVisible !== false)
+            .filter((product) => {
+              const status = normalizeText(product?.status).toLowerCase();
+              return !status || status === 'active';
+            })
+            .map(async (product) => {
+              const rawImages = imagesByProductId.get(product.id) || [];
+              const normalizedImages = rawImages
+                .map((image) => normalizeStoredImage(image))
+                .filter((image) => image.url)
+                .sort((a, b) => a.sortOrder - b.sortOrder);
 
-            const normalizedVariants = (variantsByProductId.get(product.id) || [])
-              .map((variant) => normalizeStoredVariant(variant))
-              .filter((variant) => {
-                const status = normalizeText(variant.status).toLowerCase();
-                return !status || status === 'active';
-              })
-              .sort((a, b) => {
-                if (a.sortOrder !== b.sortOrder) return a.sortOrder - b.sortOrder;
-                return a.name.localeCompare(b.name);
-              });
+              const normalizedVariants = (variantsByProductId.get(product.id) || [])
+                .map((variant) => normalizeStoredVariant(variant))
+                .filter((variant) => {
+                  const status = normalizeText(variant.status).toLowerCase();
+                  return !status || status === 'active';
+                })
+                .sort((a, b) => {
+                  if (a.sortOrder !== b.sortOrder) return a.sortOrder - b.sortOrder;
+                  return a.name.localeCompare(b.name);
+                });
 
-            const imageByColor = buildVariantImageMap(normalizedImages);
+              const imageByColor = buildVariantImageMap(normalizedImages);
 
-            const variantsWithImages = normalizedVariants.map((variant) => ({
-              ...variant,
-              imageUrl: imageByColor.get(titleCase(variant.color.toLowerCase())) || variant.imageUrl || '',
-            }));
+              const variantsWithImages = normalizedVariants.map((variant) => ({
+                ...variant,
+                imageUrl: imageByColor.get(titleCase(variant.color.toLowerCase())) || variant.imageUrl || '',
+              }));
 
-            const fallbackNumericPrice = inferPriceNumber(
-              product?.basePrice,
-              product?.price,
-              product?.retailPrice,
-              product?.retail_price
-            );
+              const fallbackNumericPrice = inferPriceNumber(
+                product?.basePrice,
+                product?.price,
+                product?.retailPrice,
+                product?.retail_price
+              );
 
-            const brandNames = [...new Set((brandNamesByProductId.get(product.id) || []).map(titleCase).filter(Boolean))];
-            const categoryNames = [...new Set((categoryNamesByProductId.get(product.id) || []).map(titleCase).filter(Boolean))];
+              const brandNames = [...new Set((brandNamesByProductId.get(product.id) || []).map(titleCase).filter(Boolean))];
+              const categoryNames = [...new Set((categoryNamesByProductId.get(product.id) || []).map(titleCase).filter(Boolean))];
 
-            const fallbackDirectUrl = firstNonEmpty(
-              normalizeImageUrl(product.thumbnailUrl),
-              normalizeImageUrl(product.imageUrl),
-              this.fallbackImage
-            );
+              const fallbackDirectUrl = firstNonEmpty(
+                normalizeImageUrl(product.thumbnailUrl),
+                normalizeImageUrl(product.imageUrl),
+                this.fallbackImage
+              );
 
-            return {
-              id: product.id,
-              internalId: product.id,
-              title: normalizeText(product.title) || 'Untitled product',
-              shortDescription: normalizeText(product.shortDescription),
-              description: normalizeText(product.description),
-              image: resolvePrimaryImage(normalizedImages, fallbackDirectUrl),
-              thumbnailUrl: fallbackDirectUrl,
-              images: normalizedImages,
-              brand: brandNames[0] || '',
-              brands: brandNames,
-              category: categoryNames[0] || '',
-              categories: categoryNames,
-              sourceType: normalizeText(product.sourceType),
-              externalProductId: normalizeText(product.externalProductId),
-              externalVariantGroupId: normalizeText(product.externalVariantGroupId),
-              productUrl: firstNonEmpty(product.productUrl),
-              variantCount: Number(product?.variantCount) || variantsWithImages.length,
-              sortOrder: Number.isFinite(Number(product?.sortOrder)) ? Number(product.sortOrder) : 999999,
-              materials: normalizeText(product.materials),
-              sizeGuide: normalizeText(product.sizeGuide),
-              shippingReturns: normalizeText(product.shippingReturns),
-              whatsIncluded: normalizeText(product.whatsIncluded),
-              careInstructions: normalizeText(product.careInstructions),
-              fitNotes: normalizeText(product.fitNotes),
-              displayPrice: firstNonEmpty(
-                product.displayPrice,
-                fallbackNumericPrice != null
-                  ? formatPrice(fallbackNumericPrice, firstNonEmpty(product.currency, 'GBP'))
-                  : 'Price unavailable'
-              ),
-              variants: variantsWithImages,
-            };
-          });
+              const resolvedPrimaryImage = await resolveStorageUrl(
+                resolvePrimaryImage(normalizedImages, fallbackDirectUrl)
+              );
+              const resolvedFallbackImage = await resolveStorageUrl(fallbackDirectUrl);
+              const resolvedImages = await Promise.all(
+                normalizedImages.map(async (image) => ({
+                  ...image,
+                  url: await resolveStorageUrl(image.url),
+                }))
+              );
+              const resolvedVariants = await Promise.all(
+                variantsWithImages.map(async (variant) => ({
+                  ...variant,
+                  imageUrl: await resolveStorageUrl(variant.imageUrl || variant.rawImageUrl || ''),
+                }))
+              );
+
+              return {
+                id: product.id,
+                internalId: product.id,
+                title: normalizeText(product.title) || 'Untitled product',
+                shortDescription: normalizeText(product.shortDescription),
+                description: normalizeText(product.description),
+                image: resolvedPrimaryImage || resolvedFallbackImage || this.fallbackImage,
+                thumbnailUrl: resolvedPrimaryImage || resolvedFallbackImage || this.fallbackImage,
+                images: resolvedImages,
+                brand: brandNames[0] || '',
+                brands: brandNames,
+                category: categoryNames[0] || '',
+                categories: categoryNames,
+                sourceType: normalizeText(product.sourceType),
+                externalProductId: normalizeText(product.externalProductId),
+                externalVariantGroupId: normalizeText(product.externalVariantGroupId),
+                productUrl: firstNonEmpty(product.productUrl),
+                variantCount: Number(product?.variantCount) || resolvedVariants.length,
+                sortOrder: Number.isFinite(Number(product?.sortOrder)) ? Number(product.sortOrder) : 999999,
+                materials: normalizeText(product.materials),
+                sizeGuide: normalizeText(product.sizeGuide),
+                shippingReturns: normalizeText(product.shippingReturns),
+                whatsIncluded: normalizeText(product.whatsIncluded),
+                careInstructions: normalizeText(product.careInstructions),
+                fitNotes: normalizeText(product.fitNotes),
+                displayPrice: firstNonEmpty(
+                  product.displayPrice,
+                  fallbackNumericPrice != null
+                    ? formatPrice(fallbackNumericPrice, firstNonEmpty(product.currency, 'GBP'))
+                    : 'Price unavailable'
+                ),
+                variants: resolvedVariants,
+              };
+            })
+        );
 
         this.products = mappedProducts.sort((a, b) => {
           if (a.sortOrder !== b.sortOrder) return a.sortOrder - b.sortOrder;
