@@ -98,6 +98,10 @@ function normalizeStoragePath(value) {
     return withoutLeadingSlash;
   }
 
+  if (/^products\//i.test(withoutLeadingSlash)) {
+    return `public/${withoutLeadingSlash}`;
+  }
+
   return `public/${withoutLeadingSlash}`;
 }
 
@@ -123,30 +127,27 @@ async function resolveStorageUrl(value) {
     return cleanValue;
   }
 
-  const candidatePaths = [cleanValue];
   const normalizedPath = normalizeStoragePath(cleanValue);
-  if (normalizedPath && !candidatePaths.includes(normalizedPath)) {
-    candidatePaths.push(normalizedPath);
+  const publicUrl = buildPublicStorageUrl(cleanValue);
+
+  if (publicUrl) {
+    return publicUrl;
   }
 
-  for (const candidatePath of candidatePaths) {
-    try {
-      const result = await getUrl({
-        path: candidatePath,
-        options: {
-          accessLevel: 'public',
-          expiresIn: 3600,
-        },
-      });
+  try {
+    const result = await getUrl({
+      path: normalizedPath,
+      options: {
+        accessLevel: 'public',
+        expiresIn: 3600,
+      },
+    });
 
-      return result.url.toString();
-    } catch (error) {
-      // Try the next candidate path until one works.
-    }
+    return result.url.toString();
+  } catch (error) {
+    console.warn('Failed to resolve merch image URL:', cleanValue);
+    return publicUrl;
   }
-
-  console.warn('Failed to resolve merch image URL:', cleanValue);
-  return buildPublicStorageUrl(cleanValue);
 }
 
 function normalizeStoredImage(image) {

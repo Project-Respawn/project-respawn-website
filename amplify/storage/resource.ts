@@ -5,20 +5,20 @@ export const storage = defineStorage({
   access: (allow) => ({
     'public/merch/*': [
       allow.guest.to(['read']),
-      allow.authenticated.to(['read', 'write', 'delete']),
-      allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read', 'write', 'delete']),
+      allow.authenticated.to(['read', 'list', 'write', 'delete']),
+      allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read', 'list', 'write', 'delete']),
     ],
 
     'public/*': [
       allow.guest.to(['read']),
-      allow.authenticated.to(['read', 'write', 'delete']),
-      allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read', 'write', 'delete']),
+      allow.authenticated.to(['read', 'list', 'write', 'delete']),
+      allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read', 'list', 'write', 'delete']),
     ],
 
     'products/*': [
       allow.guest.to(['read']),
-      allow.authenticated.to(['read', 'write', 'delete']),
-      allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read', 'write', 'delete']),
+      allow.authenticated.to(['read', 'list', 'write', 'delete']),
+      allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read', 'list', 'write', 'delete']),
     ],
 
     'private/{entity_id}/*': [
