@@ -15,6 +15,12 @@ export const storage = defineStorage({
       allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read', 'write', 'delete']),
     ],
 
+    'products/*': [
+      allow.guest.to(['read']),
+      allow.authenticated.to(['read', 'write', 'delete']),
+      allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read', 'write', 'delete']),
+    ],
+
     'private/{entity_id}/*': [
       allow.entity('identity').to(['read', 'write', 'delete']),
     ],

@@ -1,5 +1,6 @@
 import { generateClient } from 'aws-amplify/data';
 import { uploadData, getUrl } from 'aws-amplify/storage';
+import outputs from '../../../../amplify_outputs.json';
 import { fetchProducts, fetchProductById } from '../../Merch/merchService';
 
 let client = null;
@@ -213,6 +214,44 @@ function makeToast(vm, message) {
   }, 3000);
 }
 
+function getPublicStorageBucketUrl() {
+  const storageConfig = outputs?.storage || {};
+  const bucketName = normalizeText(storageConfig.bucket_name || storageConfig.buckets?.[0]?.bucket_name);
+  const region = normalizeText(storageConfig.aws_region || outputs?.auth?.aws_region || '');
+
+  if (!bucketName || !region) {
+    return '';
+  }
+
+  return `https://${bucketName}.s3.${region}.amazonaws.com`;
+}
+
+function normalizeStoragePath(value) {
+  const cleanValue = normalizeText(value);
+  if (!cleanValue) return '';
+
+  const withoutLeadingSlash = cleanValue.replace(/^\/+/, '');
+  if (/^(public|protected|private)\//i.test(withoutLeadingSlash)) {
+    return withoutLeadingSlash;
+  }
+
+  return `public/${withoutLeadingSlash}`;
+}
+
+function buildPublicStorageUrl(value) {
+  const cleanValue = normalizeText(value);
+  if (!cleanValue) return '';
+
+  if (isHttpUrl(cleanValue)) {
+    return cleanValue;
+  }
+
+  const baseUrl = getPublicStorageBucketUrl();
+  if (!baseUrl) return '';
+
+  return `${baseUrl}/${normalizeStoragePath(cleanValue)}`;
+}
+
 async function resolveStorageUrl(value) {
   const cleanValue = normalizeText(value);
   if (!cleanValue) return '';
@@ -221,16 +260,29 @@ async function resolveStorageUrl(value) {
     return cleanValue;
   }
 
-  try {
-    const result = await getUrl({
-      path: cleanValue,
-      options: { expiresIn: 3600 },
-    });
-    return result.url.toString();
-  } catch (error) {
-    console.error('Failed to resolve storage URL for value:', cleanValue, error);
-    return '';
+  const candidatePaths = [cleanValue];
+  const normalizedPath = normalizeStoragePath(cleanValue);
+  if (normalizedPath && !candidatePaths.includes(normalizedPath)) {
+    candidatePaths.push(normalizedPath);
   }
+
+  for (const candidatePath of candidatePaths) {
+    try {
+      const result = await getUrl({
+        path: candidatePath,
+        options: {
+          accessLevel: 'public',
+          expiresIn: 3600,
+        },
+      });
+      return result.url.toString();
+    } catch (error) {
+      // Try the next candidate path until one works.
+    }
+  }
+
+  console.warn('Failed to resolve storage URL for value:', cleanValue);
+  return buildPublicStorageUrl(cleanValue);
 }
 
 export default {
@@ -1019,7 +1071,7 @@ export default {
 
           const newImage = {
             ...createResult.data,
-            signedUrl: normalizeText(createResult.data?.url),
+            signedUrl: await resolveStorageUrl(createResult.data?.url),
           };
 
           this.selectedProductImages.push(newImage);
