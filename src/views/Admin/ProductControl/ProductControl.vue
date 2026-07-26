@@ -1,6 +1,30 @@
+<!--
+ProductControl.vue
+
+TABLE OF CONTENTS (SECTION NUMBERS)
+1. Template: Page shell (header, toolbar, toast)
+2. Template: Products table
+3. Template: Product edit modal (numbered subsections)
+   3.1 Modal header
+   3.2 Modal body overview & copy
+   3.3 Modal body detail sections
+   3.4 Modal body assignments & visibility (brands/categories checkboxes)
+   3.5 Modal body read-only meta
+   3.6 Modal footer
+4. Template: Media modal (upload + viewer)
+5. Script: Imports & extension
+6. Script: Data (includes productForm / media state)
+7. Script: Computed properties
+8. Script: Methods (product + media actions)
+9. Style: External CSS import
+-->
+
 <template>
+  <!-- ========================================================= -->
+  <!-- 1. TEMPLATE: PAGE SHELL (HEADER, TOOLBAR, TOAST)          -->
+  <!-- ========================================================= -->
   <div class="admin-product-control-page">
-    <!-- Header -->
+    <!-- 1.1 Header -->
     <div class="dash-header">
       <div>
         <h1 class="dash-title">Product Control</h1>
@@ -27,7 +51,7 @@
       </div>
     </div>
 
-    <!-- Toolbar -->
+    <!-- 1.2 Toolbar -->
     <div class="toolbar toolbar-with-sync">
       <div class="search-wrap">
         <span class="search-icon">🔍</span>
@@ -88,12 +112,18 @@
       </div>
     </div>
 
-    <!-- Errors -->
+    <!-- 1.3 Error + toast -->
     <div v-if="loadError" class="page-alert error">
       {{ loadError }}
     </div>
 
-    <!-- Products table -->
+    <transition name="toast">
+      <div v-if="toastMessage" class="toast">✓ {{ toastMessage }}</div>
+    </transition>
+
+    <!-- =============================================== -->
+    <!-- 2. TEMPLATE: PRODUCTS TABLE                    -->
+    <!-- =============================================== -->
     <div class="table-container">
       <div v-if="loadingProducts" class="table-loading">
         <div class="spinner"></div>
@@ -213,15 +243,13 @@
       </div>
     </div>
 
-    <!-- Toast -->
-    <transition name="toast">
-      <div v-if="toastMessage" class="toast">✓ {{ toastMessage }}</div>
-    </transition>
-
-    <!-- Product edit modal (unchanged) -->
+    <!-- ===================================================== -->
+    <!-- 3. TEMPLATE: PRODUCT EDIT MODAL (NUMBERED SECTIONS)   -->
+    <!-- ===================================================== -->
     <transition name="fade">
       <div v-if="productModal" class="modal-overlay" @click.self="closeProductModal">
         <div class="product-modal">
+          <!-- 3.1 Modal header -->
           <div class="product-modal-header">
             <div>
               <h2>{{ productForm.title || 'Edit product' }}</h2>
@@ -233,11 +261,199 @@
             <button class="btn-close" @click="closeProductModal">✕</button>
           </div>
 
+          <!-- 3.2–3.5 Modal body -->
           <div class="product-modal-body">
-            <!-- overview, copy, assignments, readonly sections unchanged -->
-            <!-- ... your existing sections exactly as before ... -->
+            <!-- 3.2 Overview & basic copy -->
+            <section class="modal-section" id="section-1-overview">
+              <h3>1. Overview & basic copy</h3>
+
+              <label class="field">
+                <span>Title</span>
+                <input
+                  type="text"
+                  v-model="productForm.title"
+                  placeholder="Product title"
+                />
+              </label>
+
+              <label class="field">
+                <span>Slug</span>
+                <input
+                  type="text"
+                  v-model="productForm.slug"
+                  placeholder="product-respawn-sports-top"
+                />
+              </label>
+
+              <label class="field">
+                <span>Short description</span>
+                <textarea
+                  v-model="productForm.shortDescription"
+                  placeholder="Short summary used on listings"
+                ></textarea>
+              </label>
+
+              <label class="field">
+                <span>Full description</span>
+                <textarea
+                  v-model="productForm.description"
+                  placeholder="Detailed description for the product page"
+                ></textarea>
+              </label>
+            </section>
+
+            <!-- 3.3 Detail sections -->
+            <section class="modal-section" id="section-2-details">
+              <h3>2. Detail sections</h3>
+
+              <label class="field">
+                <span>Materials</span>
+                <textarea
+                  v-model="productForm.materials"
+                  placeholder="Fabric composition, key materials, etc."
+                ></textarea>
+              </label>
+
+              <label class="field">
+                <span>Size guide</span>
+                <textarea
+                  v-model="productForm.sizeGuide"
+                  placeholder="Sizing guidance and measurements"
+                ></textarea>
+              </label>
+
+              <label class="field">
+                <span>Shipping & returns</span>
+                <textarea
+                  v-model="productForm.shippingReturns"
+                  placeholder="Delivery times, shipping info, and returns"
+                ></textarea>
+              </label>
+
+              <label class="field">
+                <span>What's included</span>
+                <textarea
+                  v-model="productForm.whatsIncluded"
+                  placeholder="What the customer receives with this product"
+                ></textarea>
+              </label>
+
+              <label class="field">
+                <span>Care instructions</span>
+                <textarea
+                  v-model="productForm.careInstructions"
+                  placeholder="Washing, drying, and care guidance"
+                ></textarea>
+              </label>
+
+              <label class="field">
+                <span>Fit notes</span>
+                <textarea
+                  v-model="productForm.fitNotes"
+                  placeholder="How it fits, sizing advice, and other notes"
+                ></textarea>
+              </label>
+            </section>
+
+<!-- 3.4 Assignments & visibility (boxed check groups) -->
+<section class="modal-section" id="section-3-assignments">
+  <h3>3. Assignments & visibility</h3>
+
+  <!-- Brand boxes -->
+  <div class="field">
+    <span class="field-label">Brand assignments</span>
+    <div class="option-box-grid">
+      <label
+        v-for="brand in brandOptions"
+        :key="brand.id"
+        class="option-box"
+        :class="{
+          selected: productForm.brandIds.includes(brand.id)
+        }"
+      >
+        <!-- Hidden checkbox used for v-model binding -->
+        <input
+          type="checkbox"
+          class="option-box-input"
+          :value="brand.id"
+          v-model="productForm.brandIds"
+        />
+        <div class="option-box-content">
+          <span class="option-box-title">{{ brand.name }}</span>
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <!-- Category boxes -->
+  <div class="field">
+    <span class="field-label">Category assignments</span>
+    <div class="option-box-grid">
+      <label
+        v-for="category in categoryOptions"
+        :key="category.id"
+        class="option-box"
+        :class="{
+          selected: productForm.categoryIds.includes(category.id)
+        }"
+      >
+        <input
+          type="checkbox"
+          class="option-box-input"
+          :value="category.id"
+          v-model="productForm.categoryIds"
+        />
+        <div class="option-box-content">
+          <span class="option-box-title">{{ category.name }}</span>
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <label class="field inline-field">
+    <span>Status</span>
+    <select v-model="productForm.status">
+      <option value="active">Active</option>
+      <option value="inactive">Inactive</option>
+      <option value="archived">Archived</option>
+    </select>
+  </label>
+
+  <label class="field inline-checkbox">
+    <input
+      type="checkbox"
+      v-model="productForm.isVisible"
+    />
+    <span>Visible on storefront</span>
+  </label>
+</section>
+
+            <!-- 3.5 Read-only meta -->
+            <section class="modal-section readonly-section" id="section-4-meta">
+              <h3>4. Read-only meta</h3>
+
+              <div class="readonly-grid">
+                <div class="readonly-item">
+                  <span class="readonly-label">Display price</span>
+                  <span class="readonly-value">{{ productForm.displayPrice || '—' }}</span>
+                </div>
+                <div class="readonly-item">
+                  <span class="readonly-label">Variants</span>
+                  <span class="readonly-value">{{ productForm.variantCount }}</span>
+                </div>
+                <div class="readonly-item">
+                  <span class="readonly-label">Images</span>
+                  <span class="readonly-value">{{ productForm.imageCount }}</span>
+                </div>
+                <div class="readonly-item">
+                  <span class="readonly-label">Source</span>
+                  <span class="readonly-value">{{ productForm.sourceType || 'Other' }}</span>
+                </div>
+              </div>
+            </section>
           </div>
 
+          <!-- 3.6 Modal footer -->
           <div class="product-modal-footer">
             <button class="btn-cancel" @click="closeProductModal">Cancel</button>
             <button class="btn-primary sm" @click="saveProduct" :disabled="savingProduct">
@@ -249,7 +465,9 @@
       </div>
     </transition>
 
-    <!-- Media popout modal -->
+    <!-- ================================================ -->
+    <!-- 4. TEMPLATE: MEDIA MODAL (UPLOAD + VIEWER)      -->
+    <!-- ================================================ -->
     <transition name="fade">
       <div
         v-if="mediaModalOpen"
@@ -269,9 +487,9 @@
           </div>
 
           <div class="product-modal-body">
-            <!-- Upload block (unchanged) -->
+            <!-- 4.1 Upload block -->
             <section class="modal-section">
-              <h3>Upload mockups</h3>
+              <h3>Media section A: Upload mockups</h3>
 
               <div class="media-upload-block">
                 <label class="field">
@@ -296,9 +514,9 @@
               </div>
             </section>
 
-            <!-- New media viewer -->
+            <!-- 4.2 Existing images viewer/editor -->
             <section class="modal-section">
-              <h3>Existing images</h3>
+              <h3>Media section B: Existing images</h3>
 
               <div v-if="selectedProductImages.length" class="media-gallery">
                 <div class="media-viewer">
@@ -438,52 +656,78 @@
 </template>
 
 <script>
+/*
+5. SCRIPT: IMPORTS & EXTENSION
+   - Imports base logic and extends it to add UI-specific state
+*/
+
 import productControlLogic from './ProductControl.js';
 
 export default {
+  /*
+  6. SCRIPT: DATA
+     - Base data from productControlLogic
+     - UI additions (selectedMediaIndex)
+  */
   extends: productControlLogic,
   data() {
-    const base = typeof productControlLogic.data === 'function'
-      ? productControlLogic.data.call(this)
-      : {};
+    const base =
+      typeof productControlLogic.data === 'function'
+        ? productControlLogic.data.call(this)
+        : {};
     return {
       ...base,
-      selectedMediaIndex: 0
+      selectedMediaIndex: 0,
     };
   },
+
+  /*
+  7. SCRIPT: COMPUTED PROPERTIES
+     - activeMediaImage: convenience accessor for current image
+  */
   computed: {
     activeMediaImage() {
       return this.selectedProductImages[this.selectedMediaIndex] || {};
-    }
+    },
   },
+
+  /*
+  8. SCRIPT: METHODS
+     - Overrides / wraps base methods for media modal navigation
+  */
   methods: {
     ...productControlLogic.methods,
 
+    // 8.1 Open media modal for a product
     openMediaModal(product) {
       if (productControlLogic.methods?.openMediaModal) {
         productControlLogic.methods.openMediaModal.call(this, product);
       } else {
-        // your existing open logic if it was in data/methods
         this.mediaModalOpen = true;
         this.selectedProduct = product;
-        // and you probably set selectedProductImages here already
       }
       this.selectedMediaIndex = 0;
     },
 
+    // 8.2 Navigate to previous image
     prevMediaImage() {
       if (this.selectedMediaIndex > 0) {
         this.selectedMediaIndex -= 1;
       }
     },
 
+    // 8.3 Navigate to next image
     nextMediaImage() {
       if (this.selectedMediaIndex < this.selectedProductImages.length - 1) {
         this.selectedMediaIndex += 1;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
+<!--
+9. STYLE: EXTERNAL CSS IMPORT
+   - See ProductControl.css for layout and visual styles
+-->
 <style src="./ProductControl.css"></style>

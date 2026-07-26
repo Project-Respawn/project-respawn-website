@@ -1,5 +1,10 @@
+// src/router/index.js
+
 import { createRouter, createWebHistory } from 'vue-router';
 
+/*
+ * PUBLIC VIEWS
+ */
 import Home from '../views/Home/Home.vue';
 import About from '../views/About/About.vue';
 import Contact from '../views/Contact/Contact.vue';
@@ -17,6 +22,9 @@ import UserHomepage from '../views/UserHomepage/UserHomepage.vue';
 // NEW: Applications page
 import Applications from '../views/Applications/Applications.vue';
 
+/*
+ * BOT VIEWS
+ */
 import BotOverview from '../views/Bot/Overview/BotOverview.vue';
 import BotTwitch from '../views/Bot/Twitch/BotTwitch.vue';
 import BotDiscord from '../views/Bot/Discord/BotDiscord.vue';
@@ -28,6 +36,9 @@ import TtsSettings from '../views/Bot/Twitch/TTS/Settings/TtsSettings.vue';
 import TwitchCommands from '../views/Bot/Twitch/TwitchCommands/TwitchCommands.vue';
 import BotAlerts from '../views/Bot/Twitch/Alerts/BotAlerts.vue';
 
+/*
+ * ADMIN VIEWS
+ */
 import AdminLayout from '../views/Admin/AdminLayout/AdminLayout.vue';
 import AdminHome from '../views/Admin/AdminHome/AdminHome.vue';
 import AdminUsers from '../views/Admin/AdminUsers/AdminUsers.vue';
@@ -39,13 +50,18 @@ import AdminForums from '../views/Admin/AdminForums/AdminForums.vue';
 import AdminEvents from '../views/Admin/AdminEvents/AdminEvents.vue';
 import AdminHost from '../views/Admin/AdminHost/AdminHost.vue';
 import ProductControl from '../views/Admin/ProductControl/ProductControl.vue';
+import MediaLibrary from '../views/Admin/MediaLibrary/MediaLibrary.vue';
 
+/*
+ * FORUM VIEWS
+ */
 import ForumLayout from '../views/Forum/ForumLayout/ForumLayout.vue';
 import ForumIndex from '../views/Forum/ForumIndex/ForumIndex.vue';
 import ForumBoard from '../views/Forum/ForumBoard/ForumBoard.vue';
 import ForumThread from '../views/Forum/ForumThread/ForumThread.vue';
 
 const routes = [
+  // Public routes
   { path: '/', component: Home },
   { path: '/about', component: About },
   { path: '/about/roles', component: Roles },
@@ -65,6 +81,7 @@ const routes = [
     component: Applications,
   },
 
+  // Authenticated user home
   {
     path: '/home',
     name: 'UserHomepage',
@@ -72,6 +89,7 @@ const routes = [
     meta: { requiresAuth: true },
   },
 
+  // Admin dashboard (with AdminLayout shell + sidebar)
   {
     path: '/dashboard',
     component: AdminLayout,
@@ -123,6 +141,11 @@ const routes = [
         component: ProductControl,
       },
       {
+        path: 'media-library',
+        name: 'MediaLibrary',
+        component: MediaLibrary,
+      },
+      {
         path: 'host-permissions',
         name: 'AdminHost',
         component: AdminHost,
@@ -130,6 +153,7 @@ const routes = [
     ],
   },
 
+  // Forum routes
   {
     path: '/forum',
     component: ForumLayout,
@@ -154,6 +178,7 @@ const routes = [
     ],
   },
 
+  // Bot routes
   { path: '/bot', component: BotOverview },
   { path: '/bot/twitch', component: BotTwitch },
   { path: '/bot/twitch/commands', component: TwitchCommands },
@@ -165,6 +190,7 @@ const routes = [
   { path: '/bot/automation', component: BotAutomation },
   { path: '/bot/settings', component: BotSettings },
 
+  // 404 catch-all
   { path: '/:pathMatch(.*)', component: NotFound },
 ];
 

@@ -2,25 +2,40 @@ import { defineStorage } from '@aws-amplify/backend';
 
 export const storage = defineStorage({
   name: 'projectRespawnStorage',
+
   access: (allow) => ({
-    'public/merch/*': [
+    /*
+     * 1. PUBLIC MEDIA LIBRARY
+     *    - All shared, publicly readable assets (product images, branding, etc.)
+     */
+    'public/media/*': [
       allow.guest.to(['read']),
-      allow.authenticated.to(['read', 'list', 'write', 'delete']),
-      allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read', 'list', 'write', 'delete']),
+      allow.authenticated.to(['read', 'write', 'delete']),
+      allow.groups(['SuperAdmin', 'Admin', 'Staff']).to([
+        'read',
+        'write',
+        'delete',
+      ]),
     ],
 
-    'public/*': [
+    /*
+     * 2. PUBLIC MEDIA: PRODUCT SUBFOLDERS
+     *    - Example key: public/media/products/<productId>/<filename>.jpg
+     */
+    'public/media/products/*': [
       allow.guest.to(['read']),
-      allow.authenticated.to(['read', 'list', 'write', 'delete']),
-      allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read', 'list', 'write', 'delete']),
+      allow.authenticated.to(['read', 'write', 'delete']),
+      allow.groups(['SuperAdmin', 'Admin', 'Staff']).to([
+        'read',
+        'write',
+        'delete',
+      ]),
     ],
 
-    'products/*': [
-      allow.guest.to(['read']),
-      allow.authenticated.to(['read', 'list', 'write', 'delete']),
-      allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read', 'list', 'write', 'delete']),
-    ],
-
+    /*
+     * 3. PRIVATE USER FILES
+     *    - Example key: private/{entity_id}/... (user-only access)
+     */
     'private/{entity_id}/*': [
       allow.entity('identity').to(['read', 'write', 'delete']),
     ],

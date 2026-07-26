@@ -1,7 +1,27 @@
+/*
+amplify/data/resource.ts
+
+TABLE OF CONTENTS (SECTION NUMBERS)
+1. Imports
+2. Admin user management types & operations
+3. Twitch & user profile models
+4. Event system (events, suggestions, mutations)
+5. Forum system (categories, boards, threads, posts, permissions)
+6. Merch system (brands, categories, products, variants, assignments)
+7. Media library (collections, items) and merch-media join
+8. Global schema authorization (functions)
+9. defineData configuration
+*/
+
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 import { adminUserManagement } from '../functions/admin-user-management/resource';
 import { myFunction } from '../myFunction/resource';
 
+/*
+ * 2. ADMIN USER MANAGEMENT TYPES & OPERATIONS
+ *    - AdminUser, UpdateUserRolesResult
+ *    - listAdminUsers, updateUserRoles
+ */
 const schema = a
   .schema({
     AdminUser: a.customType({
@@ -38,6 +58,12 @@ const schema = a
       .authorization((allow) => [allow.groups(['SuperAdmin'])])
       .handler(a.handler.function(adminUserManagement)),
 
+    /*
+     * 3. TWITCH & USER PROFILE MODELS
+     *    - TwitchCommand
+     *    - UserProfile
+     */
+
     TwitchCommand: a
       .model({
         streamerId: a.string().required(),
@@ -67,6 +93,13 @@ const schema = a
         allow.owner(),
         allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),
       ]),
+
+    /*
+     * 4. EVENT SYSTEM
+     *    - EventTicketTier, CloneEventResult, RecurringEventSeriesResult
+     *    - EventTag, Event, EventSuggestion
+     *    - cloneEvent, createRecurringEventSeries, generateRecurringInstances
+     */
 
     EventTicketTier: a.customType({
       name: a.string().required(),
@@ -234,6 +267,13 @@ const schema = a
       .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin', 'Staff'])])
       .handler(a.handler.function(myFunction)),
 
+    /*
+     * 5. FORUM SYSTEM
+     *    - ForumMutationResult
+     *    - ForumCategory, ForumBoard, ForumThread, ForumPost, BoardPermissionRule
+     *    - submitForumThread, submitForumReply, recordForumThreadView
+     */
+
     ForumMutationResult: a.customType({
       success: a.boolean().required(),
       message: a.string(),
@@ -387,6 +427,13 @@ const schema = a
       .authorization((allow) => [allow.publicApiKey(), allow.authenticated()])
       .handler(a.handler.function(myFunction)),
 
+    /*
+     * 6. MERCH SYSTEM
+     *    - Brand, MerchCategory, MerchProduct
+     *    - MerchProductVariant, MerchProductBrand, MerchProductCategory
+     *    - BrandAccess
+     */
+
     Brand: a
       .model({
         name: a.string().required(),
@@ -458,33 +505,6 @@ const schema = a
         variants: a.hasMany('MerchProductVariant', 'productId'),
         brandLinks: a.hasMany('MerchProductBrand', 'productId'),
         categoryLinks: a.hasMany('MerchProductCategory', 'productId'),
-      })
-      .authorization((allow) => [
-        allow.publicApiKey().to(['read']),
-        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to([
-          'create',
-          'read',
-          'update',
-          'delete',
-        ]),
-      ]),
-
-    MerchProductImage: a
-      .model({
-        productId: a.id().required(),
-        product: a.belongsTo('MerchProduct', 'productId'),
-        url: a.string().required(),
-        altText: a.string(),
-        color: a.string(),
-        colorHex: a.string(),
-        sortOrder: a.integer(),
-        isPrimary: a.boolean(),
-        isMockup: a.boolean(),
-        isVisible: a.boolean(),
-        isFeatured: a.boolean(),
-        sourceType: a.string(),
-        externalImageId: a.string(),
-        status: a.string(),
       })
       .authorization((allow) => [
         allow.publicApiKey().to(['read']),
@@ -580,11 +600,113 @@ const schema = a
         ]),
         allow.groups(['Staff']).to(['read']),
       ]),
+
+    /*
+     * 7. MEDIA LIBRARY
+     *    - MediaCollection: logical folders
+     *    - MediaItem: global assets
+     *    - MerchProductImage: product–media join
+     */
+
+MediaCollection: a
+  .model({
+    name: a.string().required(),
+    slug: a.string().required(),
+    type: a.string(),
+    // Parent collection reference for nesting (optional)
+    parentId: a.id(),
+    sortOrder: a.integer(),
+    isActive: a.boolean(),
+    mediaItems: a.hasMany('MediaItem', 'collectionId'),
   })
+  .authorization((allow) => [
+    allow.authenticated().to(['read']),
+    allow.groups(['SuperAdmin', 'Admin', 'Staff']).to([
+      'create',
+      'read',
+      'update',
+      'delete',
+    ]),
+  ]),
+
+MediaItem: a
+  .model({
+    collectionId: a.id(),
+    collection: a.belongsTo('MediaCollection', 'collectionId'),
+
+    url: a.string().required(),
+    title: a.string(),
+    altText: a.string(),
+
+    type: a.string(),
+    tags: a.string().array(),
+
+    color: a.string(),
+    colorHex: a.string(),
+
+    sourceType: a.string(),
+    externalImageId: a.string(),
+
+    status: a.string(),
+    createdBy: a.string(),
+    createdAt: a.datetime(),
+
+    // Link back to product image assignments
+    productImageLinks: a.hasMany('MerchProductImage', 'mediaItemId'),
+  })
+  .authorization((allow) => [
+    allow.publicApiKey().to(['read']),
+    allow.authenticated().to(['read']),
+    allow.groups(['SuperAdmin', 'Admin', 'Staff']).to([
+      'create',
+      'read',
+      'update',
+      'delete',
+    ]),
+  ]),
+  
+    MerchProductImage: a
+      .model({
+        productId: a.id().required(),
+        product: a.belongsTo('MerchProduct', 'productId'),
+
+        mediaItemId: a.id().required(),
+        mediaItem: a.belongsTo('MediaItem', 'mediaItemId'),
+
+        sortOrder: a.integer(),
+        isPrimary: a.boolean(),
+        isMockup: a.boolean(),
+        isVisible: a.boolean(),
+        isFeatured: a.boolean(),
+
+        altTextOverride: a.string(),
+        colorOverride: a.string(),
+        colorHexOverride: a.string(),
+
+        status: a.string(),
+      })
+      .authorization((allow) => [
+        allow.publicApiKey().to(['read']),
+        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to([
+          'create',
+          'read',
+          'update',
+          'delete',
+        ]),
+      ]),
+  })
+  /*
+   * 8. GLOBAL SCHEMA AUTHORIZATION
+   *    - Allow functions to call queries/mutations internally
+   */
   .authorization((allow) => [
     allow.resource(myFunction).to(['query', 'mutate']),
     allow.resource(adminUserManagement).to(['query', 'mutate']),
   ]);
+
+/*
+ * 9. DEFINE DATA CONFIGURATION
+ */
 
 export type Schema = ClientSchema<typeof schema>;
 
