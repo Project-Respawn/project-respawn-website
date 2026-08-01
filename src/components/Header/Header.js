@@ -5,7 +5,7 @@ import { useRouter } from "vue-router";
 export default {
   name: 'Header',
   setup() {
-    const { isSignedIn, displayName, truncatedDisplayName, refreshAuth, initials, logout } = useAuth();
+    const { isSignedIn, authStatus, displayName, truncatedDisplayName, ensureAuthReady, refreshAuth, initials, logout } = useAuth();
     const truncatedNavName = computed(() => truncatedDisplayName(10));
     const router = useRouter();
 
@@ -49,7 +49,7 @@ export default {
     }
 
     onMounted(() => {
-      refreshAuth();
+      ensureAuthReady();
       updateCartCount();
       window.addEventListener("storage", updateCartCount);
       document.addEventListener('click', onDocClick);
@@ -78,6 +78,7 @@ export default {
 
     return {
       isSignedIn,
+      authStatus,
       displayName,
       truncatedDisplayName,
       truncatedNavName,

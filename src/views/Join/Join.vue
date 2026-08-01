@@ -8,7 +8,13 @@
             Create an account or sign in to stay connected with the community.
           </p>
 
-          <div v-if="isSignedIn" class="card border mb-4">
+          <div v-if="authStatus === 'loading'" class="card border mb-4">
+            <div class="card-body d-flex flex-wrap align-items-center gap-3">
+              <p class="mb-0">Checking your session…</p>
+            </div>
+          </div>
+
+          <div v-else-if="isSignedIn" class="card border mb-4">
             <div class="card-body d-flex flex-wrap align-items-center gap-3">
               <p class="mb-0">You're signed in.</p>
               <router-link to="/account" class="btn btn-primary btn-sm">
@@ -17,41 +23,37 @@
             </div>
           </div>
 
-          <ul
-            v-else
-            class="nav nav-pills join-tabs mb-4"
-            role="tablist"
-          >
-            <li class="nav-item" role="presentation">
-              <button
-                type="button"
-                class="nav-link"
-                :class="{ active: activeTab === 'signin' }"
-                @click="switchTab('signin')"
-              >
-                Sign in
-              </button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button
-                type="button"
-                class="nav-link"
-                :class="{ active: activeTab === 'signup' }"
-                @click="switchTab('signup')"
-              >
-                Create account
-              </button>
-            </li>
-          </ul>
+          <template v-else>
+            <ul class="nav nav-pills join-tabs mb-4" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  type="button"
+                  class="nav-link"
+                  :class="{ active: activeTab === 'signin' }"
+                  @click="switchTab('signin')"
+                >
+                  Sign in
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  type="button"
+                  class="nav-link"
+                  :class="{ active: activeTab === 'signup' }"
+                  @click="switchTab('signup')"
+                >
+                  Create account
+                </button>
+              </li>
+            </ul>
 
-          <div v-if="errorMessage" class="alert alert-danger" role="alert">
-            {{ errorMessage }}
-          </div>
-          <div v-if="successMessage" class="alert alert-success" role="alert">
-            {{ successMessage }}
-          </div>
+            <div v-if="errorMessage" class="alert alert-danger" role="alert">
+              {{ errorMessage }}
+            </div>
+            <div v-if="successMessage" class="alert alert-success" role="alert">
+              {{ successMessage }}
+            </div>
 
-          <template v-if="!isSignedIn">
             <form
               v-if="activeTab === 'signin' && signInSubView === 'signin'"
               class="join-form"
@@ -69,9 +71,7 @@
                 />
               </div>
               <div class="mb-3">
-                <label for="join-signin-password" class="form-label"
-                  >Password</label
-                >
+                <label for="join-signin-password" class="form-label">Password</label>
                 <input
                   id="join-signin-password"
                   v-model="signInForm.password"
@@ -106,8 +106,7 @@
               @submit.prevent="handleForgotPasswordRequest"
             >
               <p class="text-secondary mb-3">
-                Enter your account email. We'll send a code to reset your
-                password.
+                Enter your account email. We'll send a code to reset your password.
               </p>
               <div class="mb-3">
                 <label for="join-forgot-email" class="form-label">Email</label>
@@ -146,9 +145,7 @@
                 Enter the code we sent and choose a new password.
               </p>
               <div class="mb-3">
-                <label for="join-reset-code" class="form-label"
-                  >Verification code</label
-                >
+                <label for="join-reset-code" class="form-label">Verification code</label>
                 <input
                   id="join-reset-code"
                   v-model="forgotForm.code"
@@ -160,9 +157,7 @@
                 />
               </div>
               <div class="mb-3">
-                <label for="join-new-password" class="form-label"
-                  >New password</label
-                >
+                <label for="join-new-password" class="form-label">New password</label>
                 <input
                   id="join-new-password"
                   v-model="forgotForm.newPassword"
@@ -173,14 +168,11 @@
                   minlength="8"
                 />
                 <p class="form-text mb-0">
-                  At least 8 characters, with uppercase, lowercase, number, and
-                  symbol.
+                  At least 8 characters, with uppercase, lowercase, number, and symbol.
                 </p>
               </div>
               <div class="mb-3">
-                <label for="join-new-password-confirm" class="form-label"
-                  >Confirm new password</label
-                >
+                <label for="join-new-password-confirm" class="form-label">Confirm new password</label>
                 <input
                   id="join-new-password-confirm"
                   v-model="forgotForm.confirmPassword"
@@ -260,14 +252,11 @@
                     minlength="8"
                   />
                   <p class="form-text mb-0">
-                    At least 8 characters, with uppercase, lowercase, number,
-                    and symbol.
+                    At least 8 characters, with uppercase, lowercase, number, and symbol.
                   </p>
                 </div>
                 <div class="mb-3">
-                  <label for="join-password-confirm" class="form-label">
-                    Confirm password
-                  </label>
+                  <label for="join-password-confirm" class="form-label">Confirm password</label>
                   <input
                     id="join-password-confirm"
                     v-model="signUpForm.confirmPassword"
@@ -294,13 +283,10 @@
               >
                 <p class="mb-3">
                   We sent a confirmation code to
-                  <strong>{{ pendingSignUpEmail }}</strong
-                  >. Enter it below.
+                  <strong>{{ pendingSignUpEmail }}</strong>. Enter it below.
                 </p>
                 <div class="mb-3">
-                  <label for="join-confirm-code" class="form-label">
-                    Confirmation code
-                  </label>
+                  <label for="join-confirm-code" class="form-label">Confirmation code</label>
                   <input
                     id="join-confirm-code"
                     v-model="confirmCode"
@@ -345,10 +331,10 @@ import {
   resetPassword,
   confirmResetPassword,
 } from "aws-amplify/auth";
-import { useAuth } from "../../composables/useAuth.js";
+import { useAuth, ensureAuthReady, refreshAuth } from "../../composables/useAuth.js";
 
 const router = useRouter();
-const { isSignedIn, refreshAuth } = useAuth();
+const { isSignedIn, authStatus } = useAuth();
 
 const activeTab = ref("signin");
 const signInSubView = ref("signin");
@@ -427,11 +413,19 @@ function backToSignUpForm() {
 }
 
 onMounted(() => {
-  refreshAuth();
+  ensureAuthReady();
 });
 
 async function handleSignIn() {
   clearAlerts();
+  await ensureAuthReady();
+
+  if (isSignedIn.value) {
+    signInForm.value.password = "";
+    await router.push("/account");
+    return;
+  }
+
   loading.value = true;
   try {
     const addr = signInForm.value.email.trim();
@@ -440,6 +434,21 @@ async function handleSignIn() {
     signInForm.value.password = "";
     await router.push("/account");
   } catch (err) {
+    const alreadySignedIn =
+      err?.name === "UserAlreadyAuthenticatedException" ||
+      /already (?:a )?signed in user|already authenticated/i.test(
+        String(err?.message || "")
+      );
+
+    if (alreadySignedIn) {
+      await refreshAuth();
+      if (isSignedIn.value) {
+        signInForm.value.password = "";
+        await router.push("/account");
+        return;
+      }
+    }
+
     errorMessage.value = authErrorMessage(err);
   } finally {
     loading.value = false;
