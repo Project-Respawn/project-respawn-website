@@ -1,19 +1,30 @@
 <template>
   <div id="app">
-    <Header v-if="!$route.meta.hideLayout" />
+    <Header v-if="!hidePublicLayout" />
     <div>
       <main>
         <router-view />
       </main>
     </div>
-    <Footer v-if="!$route.meta.hideLayout" />
+    <Footer v-if="!hidePublicLayout" />
   </div>
 </template>
 
 <script setup>
+  import { computed } from 'vue'
+  import { useRoute } from 'vue-router'
   import Header from './components/Header/Header.vue'
   import Footer from './components/Footer/Footer.vue'
-  import BotSidebar from './components/BotSidebar/BotSidebar.vue'
+
+  const route = useRoute()
+
+  const hidePublicLayout = computed(() => {
+    if (route.path.startsWith('/dashboard')) {
+      return true
+    }
+
+    return Boolean(route.meta?.hideLayout)
+  })
 </script>
 
 <style scoped>
