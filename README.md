@@ -53,6 +53,15 @@ src/
    npm run build
    ```
 
+## Environment Variables
+
+- `VITE_API_BASE_URL` is required for production builds.
+- Use a real API Gateway base URL including the deployed stage path, for example:
+   `https://your-api-id.execute-api.eu-west-2.amazonaws.com/prod`
+- Do not use stage placeholder tokens.
+- For local setup, copy `.env.example` to `.env.local` and set your real value.
+- For AWS Amplify Hosting, set `VITE_API_BASE_URL` per branch in Amplify environment variables.
+
 4. **Preview production build:**
    ```bash
    npm run preview

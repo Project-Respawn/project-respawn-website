@@ -1,30 +1,9 @@
-import amplifyOutputs from '../../../amplify_outputs.json';
+import { getApiBaseUrl, joinApiUrl } from '../../config/apiBaseUrl';
 
-function getApiBase() {
-  if (import.meta.env.DEV) {
-    return '/api';
-  }
-
-  const productionBase = import.meta.env.VITE_API_BASE_URL?.trim();
-
-  if (productionBase) {
-    return productionBase.replace(/\/+$/, '');
-  }
-
-  const endpoint = amplifyOutputs?.custom?.API?.projectRespawnApi?.endpoint?.trim();
-
-  if (endpoint) {
-    return endpoint.replace(/\/+$/, '');
-  }
-
-  throw new Error('Missing VITE_API_BASE_URL for production merch API requests.');
-}
-
-const API_BASE = getApiBase();
+const API_BASE = getApiBaseUrl('merch API requests');
 
 function buildUrl(path) {
-  const safePath = String(path || '').replace(/^\/+/, '');
-  return `${API_BASE}/${safePath}`;
+  return joinApiUrl(API_BASE, path);
 }
 
 async function readResponseBody(response) {
