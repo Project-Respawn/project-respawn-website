@@ -12,6 +12,7 @@ frontend:
     preBuild:
       commands:
         - npm install
+        - npx ampx generate outputs --branch "$AWS_BRANCH" --app-id d2cux232bpa951 --format json --out-dir .
         - test -n "$VITE_API_BASE_URL" || (echo "Missing Amplify env var VITE_API_BASE_URL" && exit 1)
         - printf "VITE_API_BASE_URL=%s\n" "$VITE_API_BASE_URL" > .env.production
     build:
