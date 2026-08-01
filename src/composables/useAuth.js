@@ -213,6 +213,7 @@ export function useAuth() {
     hasGroup,
     hasAnyGroup,
     truncatedDisplayName,
+    ensureAuthReady,
     refreshAuth,
     logout,
   };
