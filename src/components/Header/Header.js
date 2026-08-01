@@ -13,8 +13,13 @@ export default {
     const showDropdown = ref(false);
 
     function updateCartCount() {
-      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-      cartCount.value = cart.reduce((acc, item) => acc + (item.qty || 1), 0);
+      try {
+        const parsedCart = JSON.parse(localStorage.getItem("cart") || "[]");
+        const cartItems = Array.isArray(parsedCart) ? parsedCart : [];
+        cartCount.value = cartItems.reduce((acc, item) => acc + (item?.qty || 1), 0);
+      } catch {
+        cartCount.value = 0;
+      }
     }
 
     function closeNavbar() {
