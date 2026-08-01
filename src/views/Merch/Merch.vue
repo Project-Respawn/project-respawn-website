@@ -95,7 +95,7 @@
         >
           <div class="product-image-wrap">
             <img
-              :src="product.image || fallbackImage"
+              :src="product.image || product.thumbnailUrl || product.images?.[0]?.url || fallbackImage"
               :alt="product.title || 'Product image'"
               loading="lazy"
             />
@@ -165,7 +165,7 @@
         <div class="dialog-media-column">
           <div class="dialog-image-wrap dialog-image-large">
             <img
-              :src="selectedVariantImage"
+              :src="selectedVariantImage || selectedProduct?.image || selectedProduct?.thumbnailUrl || selectedProduct?.images?.[0]?.url || fallbackImage"
               :alt="activeGalleryImage?.altText || selectedProduct.title || 'Product image'"
             />
 
@@ -213,7 +213,7 @@
               :aria-label="`Show image ${index + 1}`"
             >
               <img
-                :src="image.url"
+                :src="image.url || fallbackImage"
                 :alt="image.altText || `${selectedProduct.title} thumbnail ${index + 1}`"
                 loading="lazy"
               />

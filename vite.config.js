@@ -1,9 +1,21 @@
 import { defineConfig, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
+import { readFileSync } from 'fs';
+
+function getAmplifyApiGatewayUrl() {
+  try {
+    const outputsPath = resolve(__dirname, './amplify_outputs.json');
+    const outputs = JSON.parse(readFileSync(outputsPath, 'utf8'));
+    return outputs?.custom?.API?.projectRespawnApi?.endpoint?.replace(/\/+$/, '') || '';
+  } catch {
+    return '';
+  }
+}
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
+  const apiGatewayUrl = env.VITE_API_PROXY_TARGET || getAmplifyApiGatewayUrl();
 
   return {
     plugins: [vue()],
@@ -17,9 +29,7 @@ export default defineConfig(({ mode }) => {
       open: true,
       proxy: {
         '/api': {
-          target:
-            env.VITE_API_PROXY_TARGET ||
-            'https://uw43xdf6d6.execute-api.eu-north-1.amazonaws.com',
+          target: apiGatewayUrl,
           changeOrigin: true,
           secure: true,
           rewrite: (path) => path.replace(/^\/api/, ''),

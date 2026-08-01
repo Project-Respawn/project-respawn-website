@@ -21,7 +21,12 @@ export default {
       tabs: [
         { id: 'home', icon: '🏠', label: 'Home', route: '/dashboard' },
         { id: 'users', icon: '👥', label: 'Users', route: '/dashboard/users' },
-        { id: 'permissions', icon: '🛡️', label: 'Permissions', route: '/dashboard/permissions' },
+        {
+          id: 'permissions',
+          icon: '🛡️',
+          label: 'Permissions',
+          route: '/dashboard/permissions',
+        },
         { id: 'events', icon: '📅', label: 'Events', route: '/dashboard/events' },
         { id: 'forums', icon: '🧵', label: 'Forums', route: '/dashboard/forums' },
         { id: 'brands', icon: '🏷️', label: 'Brands', route: '/dashboard/brands' },
@@ -42,6 +47,12 @@ export default {
           icon: '🛍️',
           label: 'Product Control',
           route: '/dashboard/product-control',
+        },
+        {
+          id: 'media-library',
+          icon: '🗂️',
+          label: 'Media Library',
+          route: '/dashboard/media-library',
         },
         {
           id: 'host-permissions',
@@ -74,6 +85,7 @@ export default {
 
       if (path === '/dashboard' || path === '/dashboard/') return 'home';
       if (path.includes('/product-control')) return 'product-control';
+      if (path.includes('/media-library')) return 'media-library';
       if (path.includes('/host-permissions')) return 'host-permissions';
       if (path.includes('/brand-permissions')) return 'brand-permissions';
       if (path.includes('/merch-categories')) return 'merch-categories';
@@ -111,7 +123,8 @@ export default {
           !groups.some((group) => ADMIN_ALLOWED_GROUPS.includes(group))
         ) {
           this.isAuthenticated = false;
-          this.authError = 'Access denied. Your account does not have dashboard permissions.';
+          this.authError =
+            'Access denied. Your account does not have dashboard permissions.';
           return;
         }
 

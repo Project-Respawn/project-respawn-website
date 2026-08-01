@@ -1,16 +1,26 @@
-const API_BASE = (() => {
+import amplifyOutputs from '../../../amplify_outputs.json';
+
+function getApiBase() {
   if (import.meta.env.DEV) {
     return '/api';
   }
 
   const productionBase = import.meta.env.VITE_API_BASE_URL?.trim();
 
-  if (!productionBase) {
-    throw new Error('Missing VITE_API_BASE_URL for production merch API requests.');
+  if (productionBase) {
+    return productionBase.replace(/\/+$/, '');
   }
 
-  return productionBase.replace(/\/+$/, '');
-})();
+  const endpoint = amplifyOutputs?.custom?.API?.projectRespawnApi?.endpoint?.trim();
+
+  if (endpoint) {
+    return endpoint.replace(/\/+$/, '');
+  }
+
+  throw new Error('Missing VITE_API_BASE_URL for production merch API requests.');
+}
+
+const API_BASE = getApiBase();
 
 function buildUrl(path) {
   const safePath = String(path || '').replace(/^\/+/, '');

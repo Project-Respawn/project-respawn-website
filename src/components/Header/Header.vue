@@ -62,11 +62,30 @@
             </li> -->
             <li class="nav-item">
               <router-link v-if="!isSignedIn" to="/join" class="btn btn-secondary ms-3" :class="{ active: $route.path === '/join' }">Join</router-link>
-                <router-link v-else to="/home" class="btn btn-secondary ms-3 header-account-btn text-truncate d-flex align-items-center gap-2"
-  :class="{ active: $route.path === '/home' }" :title="displayName">
-                <span class="profile-avatar" aria-hidden="true">{{ initials }}</span>
-                <span class="text-truncate">{{ truncatedNavName }}</span>
-              </router-link>
+              <!-- Signed-in account dropdown -->
+              <div v-else class="ms-3 position-relative">
+                <button
+                  class="btn btn-secondary header-account-btn d-flex align-items-center"
+                  :title="displayName"
+                  @click="toggleDropdown"
+                  type="button">
+                  <span class="profile-avatar me-2" aria-hidden="true">{{ initials }}</span>
+                  <span class="text-truncate">{{ truncatedNavName }}</span>
+                  <i class="bi bi-caret-down-fill ms-2"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" :class="{ show: showDropdown }" style="min-width: 12rem;">
+                  <li>
+                    <router-link to="/home" class="dropdown-item">Dashboard</router-link>
+                  </li>
+                  <li>
+                    <router-link to="/account" class="dropdown-item">Profile Settings</router-link>
+                  </li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li>
+                    <button class="dropdown-item text-danger" @click="handleLogout">Sign out</button>
+                  </li>
+                </ul>
+              </div>
             </li>
           </ul>
         </div>
@@ -75,47 +94,6 @@
   </header>
 </template>
 
-<script setup>
-import { computed, onMounted, ref, nextTick } from "vue";
-import { useAuth } from "../../composables/useAuth.js";
 
-const { isSignedIn, displayName, truncatedDisplayName, refreshAuth, initials } = useAuth();
-const truncatedNavName = computed(() => truncatedDisplayName(10));
-
-const cartCount = ref(0);
-
-function updateCartCount() {
-  const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-  cartCount.value = cart.reduce((acc, item) => acc + (item.qty || 1), 0);
-}
-
-function closeNavbar() {
-  const navbarCollapse = document.getElementById("navbarNav");
-  const toggler = document.querySelector(".navbar-toggler");
-  if (navbarCollapse && navbarCollapse.classList.contains("show")) {
-    toggler.click();
-  }
-}
-
-onMounted(() => {
-  refreshAuth();
-  updateCartCount();
-  window.addEventListener("storage", updateCartCount);
-
-  // Close navbar when a link is clicked
-  const navLinks = document.querySelectorAll(".navbar-collapse .nav-link, .navbar-collapse .btn");
-  navLinks.forEach(link => {
-    link.addEventListener("click", closeNavbar);
-  });
-
-  // Close navbar when clicking the backdrop
-  const navbarCollapse = document.getElementById("navbarNav");
-  navbarCollapse?.addEventListener("click", (e) => {
-    if (e.target === navbarCollapse) {
-      closeNavbar();
-    }
-  });
-});
-</script>
-
+<script src="./Header.js"></script>
 <style scoped src="./Header.css"></style>

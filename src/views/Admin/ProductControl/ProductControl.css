@@ -1,3 +1,21 @@
+/*
+ProductControl.css
+
+TABLE OF CONTENTS (SECTION NUMBERS)
+1. Layout & page shell
+2. Toolbar & controls (search, filters, buttons, alerts)
+3. Products table & rows
+4. Toast notifications
+5. Product modal (layout, sections, fields, buttons)
+6. Media modal & viewer
+7. Responsive tweaks
+8. Option boxes (brands & categories)
+*/
+
+/* ======================================= */
+/* 1. LAYOUT & PAGE SHELL                  */
+/* ======================================= */
+
 .admin-product-control-page {
   display: grid;
   gap: 24px;
@@ -57,6 +75,11 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
+
+/* ======================================= */
+/* 2. TOOLBAR & CONTROLS                   */
+/*    - search, filters, actions, alerts   */
+/* ======================================= */
 
 .toolbar {
   display: flex;
@@ -130,6 +153,8 @@
   white-space: nowrap;
 }
 
+/* Buttons: shared base */
+
 .filter-btn,
 .btn-fetch,
 .btn-manage,
@@ -140,6 +165,8 @@
   cursor: pointer;
   transition: all 0.18s ease;
 }
+
+/* Filter buttons */
 
 .filter-btn {
   min-height: 40px;
@@ -159,6 +186,8 @@
   background: linear-gradient(135deg, #55b98a, #328f67);
   color: #09110d;
 }
+
+/* Fetch / sync buttons */
 
 .btn-fetch {
   min-height: 42px;
@@ -185,12 +214,16 @@
   background: linear-gradient(135deg, rgba(108, 211, 159, 0.28), rgba(60, 167, 116, 0.24));
 }
 
+/* Disabled states */
+
 .btn-fetch:disabled,
 .btn-sync:disabled,
 .btn-primary.sm:disabled {
   opacity: 0.7;
   cursor: wait;
 }
+
+/* Alerts */
 
 .page-alert.error {
   padding: 12px 14px;
@@ -199,6 +232,10 @@
   background: rgba(84, 24, 24, 0.42);
   color: #ffdede;
 }
+
+/* ======================================= */
+/* 3. PRODUCTS TABLE & ROWS               */
+/* ======================================= */
 
 .table-container {
   border-radius: 22px;
@@ -260,6 +297,8 @@
   box-shadow: inset 3px 0 0 rgba(91, 202, 151, 0.45);
 }
 
+/* Row content */
+
 .product-cell {
   display: flex;
   align-items: center;
@@ -316,6 +355,8 @@
   align-items: center;
 }
 
+/* Source / status badges */
+
 .source-badge,
 .product-status {
   display: inline-flex;
@@ -354,6 +395,8 @@
   color: #ffe0a4;
 }
 
+/* Assignments & meta cells */
+
 .assignment-stack,
 .meta-stack {
   display: grid;
@@ -376,6 +419,8 @@
 .meta-cell {
   color: #edf7f1;
 }
+
+/* Visibility indicator */
 
 .visibility-wrap {
   display: inline-flex;
@@ -404,6 +449,8 @@
   font-weight: 600;
 }
 
+/* Manage buttons */
+
 .btn-manage {
   min-height: 40px;
   padding: 0 14px;
@@ -424,6 +471,10 @@
   color: rgba(211, 223, 216, 0.72);
 }
 
+/* ======================================= */
+/* 4. TOAST NOTIFICATIONS                  */
+/* ======================================= */
+
 .toast {
   position: fixed;
   right: 24px;
@@ -436,6 +487,11 @@
   font-weight: 800;
   box-shadow: 0 18px 36px rgba(0, 0, 0, 0.24);
 }
+
+/* ======================================= */
+/* 5. PRODUCT MODAL                        */
+/*    - layout, sections, fields, buttons  */
+/* ======================================= */
 
 .modal-overlay {
   position: fixed;
@@ -489,6 +545,8 @@
   font-size: 0.92rem;
 }
 
+/* Close button */
+
 .btn-close {
   width: 40px;
   height: 40px;
@@ -502,6 +560,8 @@
   transform: translateY(-1px);
   background: rgba(255, 255, 255, 0.1);
 }
+
+/* Modal body & sections */
 
 .product-modal-body {
   display: grid;
@@ -528,6 +588,8 @@
   font-size: 1rem;
   color: #f4fbf7;
 }
+
+/* Field layout */
 
 .field-grid {
   display: grid;
@@ -573,6 +635,8 @@
   resize: vertical;
 }
 
+/* Checkbox field (single) */
+
 .checkbox-field {
   align-content: end;
 }
@@ -583,6 +647,8 @@
   padding: 0;
   justify-self: start;
 }
+
+/* Read-only meta cards */
 
 .readonly-grid {
   display: grid;
@@ -610,6 +676,8 @@
   color: #f5fbf7;
   font-weight: 700;
 }
+
+/* Modal footer buttons */
 
 .btn-cancel,
 .btn-primary.sm {
@@ -639,6 +707,8 @@
   filter: brightness(1.03);
 }
 
+/* Transitions */
+
 .fade-enter-active,
 .fade-leave-active,
 .toast-enter-active,
@@ -653,6 +723,354 @@
   opacity: 0;
   transform: translateY(8px);
 }
+
+/* ======================================= */
+/* 6. MEDIA MODAL & VIEWER                */
+/* ======================================= */
+
+/* Product media viewer */
+
+.media-gallery {
+  display: grid;
+  gap: 14px;
+}
+
+.media-viewer {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 320px;
+  max-height: 420px;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(135, 173, 157, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  overflow: hidden;
+}
+
+.media-viewer img {
+  display: block;
+  max-width: 100%;
+  max-height: 360px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Media controls & nav */
+
+.media-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.media-nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.media-counter {
+  font-size: 0.8rem;
+  color: rgba(211, 226, 218, 0.74);
+  white-space: nowrap;
+}
+
+.btn-media-nav {
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(138, 180, 164, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: #edf7f1;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.btn-media-nav:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.btn-media-nav:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Thumbnail strip */
+
+.media-thumb-strip {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.media-thumb-btn {
+  flex: 0 0 auto;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border: 1px solid rgba(132, 170, 154, 0.14);
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.media-thumb-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.media-thumb-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(108, 211, 159, 0.42);
+}
+
+.media-thumb-btn.active {
+  border-color: rgba(108, 211, 159, 0.7);
+  box-shadow: 0 0 0 3px rgba(74, 160, 124, 0.18);
+}
+
+/* Empty state */
+
+.media-empty {
+  min-height: 220px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  color: rgba(211, 223, 216, 0.72);
+  border-radius: 16px;
+  border: 1px dashed rgba(135, 173, 157, 0.18);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.media-explorer {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.media-explorer-sidebar,
+.media-explorer-main {
+  min-width: 0;
+}
+
+.media-explorer-sidebar {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(135, 173, 157, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  max-height: 520px;
+  overflow: auto;
+}
+
+.media-folder-tree {
+  display: grid;
+  gap: 8px;
+}
+
+.media-folder-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(132, 170, 154, 0.14);
+  background: rgba(255, 255, 255, 0.03);
+  color: #ecf5ef;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.media-folder-item:hover {
+  transform: translateY(-1px);
+  border-color: rgba(108, 211, 159, 0.34);
+}
+
+.media-folder-item.active {
+  border-color: rgba(108, 211, 159, 0.72);
+  background: rgba(78, 176, 126, 0.12);
+}
+
+.media-folder-icon {
+  flex: 0 0 auto;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.media-folder-main {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.media-folder-name {
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.media-folder-meta {
+  font-size: 0.78rem;
+  color: rgba(212, 226, 219, 0.66);
+}
+
+.media-explorer-main {
+  display: grid;
+  gap: 10px;
+}
+
+.media-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(135, 173, 157, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.media-breadcrumb-link {
+  border: none;
+  background: transparent;
+  color: #c9f4de;
+  padding: 0;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.media-breadcrumb-link.current {
+  color: #ffffff;
+  cursor: default;
+}
+
+.media-breadcrumb-segment {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.media-breadcrumb-separator {
+  color: rgba(211, 226, 218, 0.56);
+}
+
+.media-thumb-grid {
+  flex-wrap: wrap;
+  overflow-x: visible;
+  gap: 12px;
+}
+
+.media-library-thumb {
+  position: relative;
+  width: 92px;
+  height: 92px;
+}
+
+.media-library-thumb.attached {
+  opacity: 0.72;
+  border-color: rgba(108, 211, 159, 0.28);
+}
+
+.media-thumb-checkbox {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(10, 10, 10, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  display: grid;
+  place-items: center;
+}
+
+.media-thumb-checkbox input {
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+}
+
+.media-thumb-checkbox.checked {
+  background: rgba(18, 95, 45, 0.9);
+  border-color: rgba(146, 246, 186, 0.95);
+}
+
+.media-thumb-actions {
+  position: absolute;
+  inset: auto 4px 4px 4px;
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  pointer-events: none;
+}
+
+.media-mini-action {
+  pointer-events: auto;
+  border: none;
+  border-radius: 999px;
+  padding: 4px 8px;
+  background: rgba(7, 17, 12, 0.78);
+  color: #d9f9e7;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.media-mini-action:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.media-thumb-attached-badge {
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  padding: 3px 6px;
+  border-radius: 999px;
+  background: rgba(108, 211, 159, 0.92);
+  color: #07110c;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.media-thumb-main-badge {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  padding: 3px 6px;
+  border-radius: 999px;
+  background: rgba(108, 211, 159, 0.92);
+  color: #07110c;
+  font-size: 0.64rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ======================================= */
+/* 7. RESPONSIVE TWEAKS                   */
+/* ======================================= */
 
 @keyframes spin {
   to {
@@ -715,128 +1133,7 @@
   .products-table {
     min-width: 980px;
   }
-}
-/* Product media viewer */
-.media-gallery {
-  display: grid;
-  gap: 14px;
-}
 
-.media-viewer {
-  position: relative;
-  display: grid;
-  place-items: center;
-  min-height: 320px;
-  max-height: 420px;
-  padding: 16px;
-  border-radius: 16px;
-  border: 1px solid rgba(135, 173, 157, 0.12);
-  background: rgba(255, 255, 255, 0.03);
-  overflow: hidden;
-}
-
-.media-viewer img {
-  display: block;
-  max-width: 100%;
-  max-height: 360px;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.media-controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.media-nav {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.media-counter {
-  font-size: 0.8rem;
-  color: rgba(211, 226, 218, 0.74);
-  white-space: nowrap;
-}
-
-.btn-media-nav {
-  min-height: 38px;
-  padding: 0 14px;
-  border-radius: 10px;
-  border: 1px solid rgba(138, 180, 164, 0.16);
-  background: rgba(255, 255, 255, 0.06);
-  color: #edf7f1;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.18s ease;
-}
-
-.btn-media-nav:hover:not(:disabled) {
-  transform: translateY(-1px);
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.btn-media-nav:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
-.media-thumb-strip {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-}
-
-.media-thumb-btn {
-  flex: 0 0 auto;
-  width: 64px;
-  height: 64px;
-  padding: 0;
-  border: 1px solid rgba(132, 170, 154, 0.14);
-  border-radius: 12px;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.04);
-  cursor: pointer;
-  transition: all 0.18s ease;
-}
-
-.media-thumb-btn img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.media-thumb-btn:hover {
-  transform: translateY(-1px);
-  border-color: rgba(108, 211, 159, 0.42);
-}
-
-.media-thumb-btn.active {
-  border-color: rgba(108, 211, 159, 0.7);
-  box-shadow: 0 0 0 3px rgba(74, 160, 124, 0.18);
-}
-
-.media-empty {
-  min-height: 220px;
-  display: grid;
-  place-items: center;
-  text-align: center;
-  color: rgba(211, 223, 216, 0.72);
-  border-radius: 16px;
-  border: 1px dashed rgba(135, 173, 157, 0.18);
-  background: rgba(255, 255, 255, 0.02);
-}
-
-@media (max-width: 720px) {
   .media-viewer {
     min-height: 240px;
     max-height: 320px;
@@ -855,4 +1152,61 @@
     width: 100%;
     justify-content: space-between;
   }
+}
+
+/* ======================================= */
+/* 8. OPTION BOXES (BRANDS & CATEGORIES)  */
+/* ======================================= */
+
+.option-box-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.option-box {
+  position: relative;
+  cursor: pointer;
+  border-radius: 8px;
+  border: 1px solid rgba(138, 180, 164, 0.18);
+  padding: 0.5rem 0.75rem;
+  min-width: 120px;
+  background-color: rgba(18, 24, 21, 0.98);
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Native checkbox hidden but still accessible */
+.option-box-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.option-box-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.option-box-title {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(215, 228, 221, 0.82);
+  text-align: center;
+}
+
+/* Selected state */
+.option-box.selected {
+  border-color: #00ff80;
+  background-color: rgba(0, 255, 128, 0.08);
+  box-shadow: 0 0 0 1px rgba(0, 255, 128, 0.25);
+}
+
+.option-box.selected .option-box-title {
+  color: #ffffff;
+}
+
+/* Hover state */
+.option-box:hover {
+  border-color: #00c46b;
 }
