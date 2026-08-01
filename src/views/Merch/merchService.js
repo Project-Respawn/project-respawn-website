@@ -1,22 +1,26 @@
-const API_BASE = (() => {
+import amplifyOutputs from '../../../amplify_outputs.json';
+
+function getApiBase() {
   if (import.meta.env.DEV) {
     return '/api';
   }
 
   const productionBase = import.meta.env.VITE_API_BASE_URL?.trim();
 
-  if (!productionBase) {
-    throw new Error('Missing VITE_API_BASE_URL for production merch API requests.');
+  if (productionBase) {
+    return productionBase.replace(/\/+$/, '');
   }
 
-  if (/<stage>|%3Cstage%3E/i.test(productionBase)) {
-    throw new Error(
-      'Invalid VITE_API_BASE_URL for production merch API requests. Remove placeholder "<stage>" and set the real API Gateway base URL in Amplify environment variables.'
-    );
+  const endpoint = amplifyOutputs?.custom?.API?.projectRespawnApi?.endpoint?.trim();
+
+  if (endpoint) {
+    return endpoint.replace(/\/+$/, '');
   }
 
-  return productionBase.replace(/\/+$/, '');
-})();
+  throw new Error('Missing VITE_API_BASE_URL for production merch API requests.');
+}
+
+const API_BASE = getApiBase();
 
 function buildUrl(path) {
   const safePath = String(path || '').replace(/^\/+/, '');

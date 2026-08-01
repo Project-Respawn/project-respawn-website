@@ -855,6 +855,219 @@ TABLE OF CONTENTS (SECTION NUMBERS)
   background: rgba(255, 255, 255, 0.02);
 }
 
+.media-explorer {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.media-explorer-sidebar,
+.media-explorer-main {
+  min-width: 0;
+}
+
+.media-explorer-sidebar {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(135, 173, 157, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  max-height: 520px;
+  overflow: auto;
+}
+
+.media-folder-tree {
+  display: grid;
+  gap: 8px;
+}
+
+.media-folder-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(132, 170, 154, 0.14);
+  background: rgba(255, 255, 255, 0.03);
+  color: #ecf5ef;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.media-folder-item:hover {
+  transform: translateY(-1px);
+  border-color: rgba(108, 211, 159, 0.34);
+}
+
+.media-folder-item.active {
+  border-color: rgba(108, 211, 159, 0.72);
+  background: rgba(78, 176, 126, 0.12);
+}
+
+.media-folder-icon {
+  flex: 0 0 auto;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.media-folder-main {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.media-folder-name {
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.media-folder-meta {
+  font-size: 0.78rem;
+  color: rgba(212, 226, 219, 0.66);
+}
+
+.media-explorer-main {
+  display: grid;
+  gap: 10px;
+}
+
+.media-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(135, 173, 157, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.media-breadcrumb-link {
+  border: none;
+  background: transparent;
+  color: #c9f4de;
+  padding: 0;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.media-breadcrumb-link.current {
+  color: #ffffff;
+  cursor: default;
+}
+
+.media-breadcrumb-segment {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.media-breadcrumb-separator {
+  color: rgba(211, 226, 218, 0.56);
+}
+
+.media-thumb-grid {
+  flex-wrap: wrap;
+  overflow-x: visible;
+  gap: 12px;
+}
+
+.media-library-thumb {
+  position: relative;
+  width: 92px;
+  height: 92px;
+}
+
+.media-library-thumb.attached {
+  opacity: 0.72;
+  border-color: rgba(108, 211, 159, 0.28);
+}
+
+.media-thumb-checkbox {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(10, 10, 10, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  display: grid;
+  place-items: center;
+}
+
+.media-thumb-checkbox input {
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+}
+
+.media-thumb-checkbox.checked {
+  background: rgba(18, 95, 45, 0.9);
+  border-color: rgba(146, 246, 186, 0.95);
+}
+
+.media-thumb-actions {
+  position: absolute;
+  inset: auto 4px 4px 4px;
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  pointer-events: none;
+}
+
+.media-mini-action {
+  pointer-events: auto;
+  border: none;
+  border-radius: 999px;
+  padding: 4px 8px;
+  background: rgba(7, 17, 12, 0.78);
+  color: #d9f9e7;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.media-mini-action:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.media-thumb-attached-badge {
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  padding: 3px 6px;
+  border-radius: 999px;
+  background: rgba(108, 211, 159, 0.92);
+  color: #07110c;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.media-thumb-main-badge {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  padding: 3px 6px;
+  border-radius: 999px;
+  background: rgba(108, 211, 159, 0.92);
+  color: #07110c;
+  font-size: 0.64rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
 /* ======================================= */
 /* 7. RESPONSIVE TWEAKS                   */
 /* ======================================= */

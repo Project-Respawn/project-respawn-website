@@ -101,7 +101,7 @@ TABLE OF CONTENTS (SECTION NUMBERS)
           </button>
         </div>
 
-        <div class="collection-list" v-if="collections && collections.length">
+        <div class="collection-list" v-if="folderRows && folderRows.length">
           <!-- All media -->
           <button
             type="button"
@@ -117,19 +117,20 @@ TABLE OF CONTENTS (SECTION NUMBERS)
             </div>
           </button>
 
-          <!-- Individual collections -->
+          <!-- Folder tree -->
           <button
-            v-for="collection in collections"
+            v-for="collection in folderRows"
             :key="collection.id"
             type="button"
             class="collection-item"
             :class="{ active: currentFolderId === collection.id }"
+            :style="{ marginLeft: `${collection.depth * 16}px` }"
             @click="handleFolderSelect(collection)"
           >
             <div class="collection-main">
-              <span class="collection-name">{{ collection.name }}</span>
+              <span class="collection-name">📁 {{ collection.name }}</span>
               <span class="collection-meta">
-                {{ collection.mediaCount || 0 }} items
+                {{ collectionMediaCount(collection.id) }} items
               </span>
             </div>
           </button>

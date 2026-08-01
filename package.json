@@ -7,7 +7,9 @@
   "scripts": {
     "dev": "vite",
     "build": "node ./scripts/validate-vite-api-base-url.mjs && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "cleanup:media:dry": "node ./scripts/cleanup-orphaned-media.mjs",
+    "cleanup:media:apply": "node ./scripts/cleanup-orphaned-media.mjs --apply"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.20",
@@ -23,6 +25,7 @@
     "@aws-amplify/backend": "^1.22.0",
     "@aws-amplify/backend-cli": "^1.8.2",
     "@aws-sdk/client-cognito-identity-provider": "^3.1047.0",
+    "@aws-sdk/client-s3": "^3.1047.0",
     "@types/aws-lambda": "^8.10.161",
     "@types/node": "25.9.1",
     "@vitejs/plugin-vue": "^6.0.6",

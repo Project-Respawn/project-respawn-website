@@ -5,10 +5,10 @@ export const storage = defineStorage({
 
   access: (allow) => ({
     /*
-     * 1. PUBLIC MEDIA LIBRARY
-     *    - All shared, publicly readable assets (product images, branding, etc.)
+     * 1. PUBLIC FILES
+     *    - Covers public/media/products/<productId>/..., public/products/<...>/..., and other public assets.
      */
-    'public/media/*': [
+    'public/*': [
       allow.guest.to(['read']),
       allow.authenticated.to(['read', 'write', 'delete']),
       allow.groups(['SuperAdmin', 'Admin', 'Staff']).to([
@@ -19,21 +19,7 @@ export const storage = defineStorage({
     ],
 
     /*
-     * 2. PUBLIC MEDIA: PRODUCT SUBFOLDERS
-     *    - Example key: public/media/products/<productId>/<filename>.jpg
-     */
-    'public/media/products/*': [
-      allow.guest.to(['read']),
-      allow.authenticated.to(['read', 'write', 'delete']),
-      allow.groups(['SuperAdmin', 'Admin', 'Staff']).to([
-        'read',
-        'write',
-        'delete',
-      ]),
-    ],
-
-    /*
-     * 3. PRIVATE USER FILES
+     * 2. PRIVATE USER FILES
      *    - Example key: private/{entity_id}/... (user-only access)
      */
     'private/{entity_id}/*': [

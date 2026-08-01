@@ -9,6 +9,149 @@
 // 7. Exported API for MediaLibrary.vue
 
 import { ref, computed, watch } from 'vue' // Vue 3 Composition API[web:127]
+import { generateClient } from 'aws-amplify/data'
+import { uploadData, getUrl, remove } from 'aws-amplify/storage'
+
+function getClient() {
+  return generateClient()
+}
+
+function getModelOrThrow(modelName) {
+  const client = getClient()
+  const model = client?.models?.[modelName]
+  if (!model) {
+    throw new Error(`Amplify model "${modelName}" is unavailable.`)
+  }
+  return model
+}
+
+function slugify(value) {
+  return String(value || '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80)
+}
+
+function isRemoteUrl(value) {
+  const text = String(value || '').trim()
+  return /^(https?:\/\/|blob:|data:)/i.test(text)
+}
+
+function normalizeText(value) {
+  return typeof value === 'string' ? value.trim() : ''
+}
+
+function extractStoragePathFromUrl(value) {
+  const cleanValue = normalizeText(value)
+  if (!cleanValue) return ''
+
+  try {
+    const parsed = new URL(cleanValue)
+    return decodeURIComponent(parsed.pathname || '').replace(/^\/+/, '')
+  } catch {
+    return ''
+  }
+}
+
+function normalizeStoragePath(value) {
+  const cleanValue = normalizeText(value)
+  if (!cleanValue) return ''
+
+  const withoutLeadingSlash = cleanValue.replace(/^\/+/, '')
+  if (/^(public|protected|private)\//i.test(withoutLeadingSlash)) {
+    return withoutLeadingSlash
+  }
+
+  if (/^media\//i.test(withoutLeadingSlash)) {
+    return `public/${withoutLeadingSlash}`
+  }
+
+  if (/^products\//i.test(withoutLeadingSlash)) {
+    return `public/media/${withoutLeadingSlash}`
+  }
+
+  return `public/media/${withoutLeadingSlash}`
+}
+
+function getStoragePathForDelete(value) {
+  const cleanValue = normalizeText(value)
+  if (!cleanValue) return ''
+
+  if (/^blob:/i.test(cleanValue) || /^data:/i.test(cleanValue)) {
+    return ''
+  }
+
+  if (isRemoteUrl(cleanValue)) {
+    const extracted = extractStoragePathFromUrl(cleanValue)
+    if (/^(public|protected|private)\//i.test(extracted)) {
+      return extracted
+    }
+    return ''
+  }
+
+  if (/^\/?images\//i.test(cleanValue)) {
+    return ''
+  }
+
+  return normalizeStoragePath(cleanValue)
+}
+
+async function listAllModelRecords(modelName) {
+  const model = getModelOrThrow(modelName)
+  const records = []
+  let nextToken
+
+  do {
+    const result = await model.list({
+      authMode: 'userPool',
+      nextToken,
+      limit: 1000,
+    })
+
+    if (result.errors?.length) {
+      throw new Error(result.errors[0].message || `Failed to list ${modelName}.`)
+    }
+
+    records.push(...(result.data || []))
+    nextToken = result.nextToken
+  } while (nextToken)
+
+  return records
+}
+
+async function uploadLibraryFileToStorage(file, folderId) {
+  if (!file) {
+    throw new Error('No file provided for upload.')
+  }
+
+  const fileName = file.name || 'file'
+  const safeName = fileName.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9._-]+/g, '-')
+  const folderSegment = folderId ? String(folderId).replace(/[^a-zA-Z0-9._-]+/g, '-') : 'root'
+  const path = `public/media/library/${folderSegment}/${Date.now()}-${safeName}`
+
+  const uploadTask = uploadData({
+    path,
+    data: file,
+    options: {
+      accessLevel: 'public',
+      contentType: file.type || 'application/octet-stream',
+    },
+  })
+
+  await uploadTask.result
+
+  const urlResult = await getUrl({
+    path,
+    options: {
+      accessLevel: 'public',
+      expiresIn: 3600,
+    },
+  })
+
+  return urlResult.url.toString()
+}
 
 export function useMediaLibrary (props, ctx) {
   // ========================================
@@ -98,6 +241,27 @@ export function useMediaLibrary (props, ctx) {
     return roots
   }) // Folder tree patterns follow common Vue file explorer designs.[web:157][web:138]
 
+  const folderRows = computed(() => {
+    const rows = []
+
+    const walk = (nodes, depth) => {
+      nodes.forEach(node => {
+        rows.push({ ...node, depth })
+        if (node.children?.length) {
+          walk(node.children, depth + 1)
+        }
+      })
+    }
+
+    walk(folderTree.value, 0)
+    return rows
+  })
+
+  const collectionMediaCount = (collectionId) => {
+    if (!collectionId) return 0
+    return mediaItems.value.filter(item => item.collectionId === collectionId).length
+  }
+
   // 2.2 Current folder and breadcrumb path
   const currentFolderId = ref(null)
   const currentFolderPath = ref([])
@@ -126,8 +290,11 @@ export function useMediaLibrary (props, ctx) {
         return
       }
 
-      if (!currentFolderId.value) {
-        currentFolderId.value = newVal[0].id
+      if (
+        !currentFolderId.value ||
+        !newVal.some(collection => collection.id === currentFolderId.value)
+      ) {
+        currentFolderId.value = null
       }
 
       currentFolderPath.value = buildFolderPath(currentFolderId.value)
@@ -161,22 +328,42 @@ export function useMediaLibrary (props, ctx) {
     selectedMediaId.value = null
   }
 
-  function createFolder () {
+  async function createFolder () {
     const name = window.prompt('New folder name')
     if (!name) return
 
-    const maxId = collections.value.reduce(
-      (max, c) => Math.max(max, Number(c.id) || 0),
-      0
-    )
-    const newFolder = {
-      id: maxId + 1,
-      name,
-      parentId: currentFolderId.value
-    }
+    loadingCollections.value = true
+    try {
+      const createResult = await getModelOrThrow('MediaCollection').create(
+        {
+          name,
+          slug: slugify(name) || `collection-${Date.now()}`,
+          parentId: currentFolderId.value || null,
+          type: 'folder',
+          sortOrder: collections.value.length,
+          isActive: true,
+        },
+        { authMode: 'userPool' }
+      )
 
-    collections.value = [...collections.value, newFolder]
-    if (ctx.emit) ctx.emit('update:collections', collections.value)
+      if (createResult.errors?.length) {
+        throw new Error(createResult.errors[0].message || 'Failed to create folder.')
+      }
+
+      const created = createResult.data
+      if (created) {
+        collections.value = [...collections.value, created]
+        if (ctx.emit) ctx.emit('update:collections', collections.value)
+        toastMessage.value = 'Folder created'
+        setTimeout(() => {
+          toastMessage.value = ''
+        }, 2000)
+      }
+    } catch (error) {
+      loadError.value = error?.message || 'Failed to create folder.'
+    } finally {
+      loadingCollections.value = false
+    }
   }
 
   // ========================================
@@ -322,6 +509,8 @@ export function useMediaLibrary (props, ctx) {
 
     savingMedia.value = true
     try {
+      await hardDeleteLibraryMediaAsset(activeMediaItem.value.id)
+
       mediaItems.value = mediaItems.value.filter(
         m => m.id !== activeMediaItem.value.id
       )
@@ -332,6 +521,10 @@ export function useMediaLibrary (props, ctx) {
       setTimeout(() => {
         toastMessage.value = ''
       }, 2000)
+
+      await refreshLibrary()
+    } catch (error) {
+      loadError.value = error?.message || 'Failed to delete asset.'
     } finally {
       savingMedia.value = false
     }
@@ -362,15 +555,82 @@ export function useMediaLibrary (props, ctx) {
     const confirmed = window.confirm('Delete selected assets?')
     if (!confirmed) return
 
-    const idsToDelete = new Set(selectedMediaIds.value)
-    mediaItems.value = mediaItems.value.filter(item => !idsToDelete.has(item.id))
-    if (ctx.emit) ctx.emit('update:mediaItems', mediaItems.value)
+    savingMedia.value = true
+    loadError.value = ''
+    try {
+      const idsToDelete = [...selectedMediaIds.value]
+      for (const id of idsToDelete) {
+        await hardDeleteLibraryMediaAsset(id)
+      }
 
-    selectedMediaIds.value = []
-    toastMessage.value = 'Deleted selected assets'
-    setTimeout(() => {
-      toastMessage.value = ''
-    }, 2000)
+      mediaItems.value = mediaItems.value.filter(item => !idsToDelete.includes(item.id))
+      if (ctx.emit) ctx.emit('update:mediaItems', mediaItems.value)
+
+      selectedMediaIds.value = []
+      selectedMediaId.value = null
+      toastMessage.value = 'Deleted selected assets'
+      setTimeout(() => {
+        toastMessage.value = ''
+      }, 2000)
+
+      await refreshLibrary()
+    } catch (error) {
+      loadError.value = error?.message || 'Failed to delete selected assets.'
+    } finally {
+      savingMedia.value = false
+    }
+  }
+
+  async function hardDeleteLibraryMediaAsset (mediaItemId) {
+    const normalizedMediaItemId = normalizeText(mediaItemId)
+    if (!normalizedMediaItemId) return
+
+    const [allMediaItems, allProductImages] = await Promise.all([
+      listAllModelRecords('MediaItem'),
+      listAllModelRecords('MerchProductImage'),
+    ])
+
+    const mediaItem = allMediaItems.find(
+      item => normalizeText(item.id) === normalizedMediaItemId
+    )
+
+    const linkedProductImages = allProductImages.filter(
+      image => normalizeText(image.mediaItemId) === normalizedMediaItemId
+    )
+
+    for (const link of linkedProductImages) {
+      const deleteLinkResult = await getModelOrThrow('MerchProductImage').delete(
+        { id: link.id },
+        { authMode: 'userPool' }
+      )
+
+      if (deleteLinkResult.errors?.length) {
+        throw new Error(deleteLinkResult.errors[0].message || 'Failed to delete media link.')
+      }
+    }
+
+    const deleteResult = await getModelOrThrow('MediaItem').delete(
+      { id: normalizedMediaItemId },
+      { authMode: 'userPool' }
+    )
+
+    if (deleteResult.errors?.length) {
+      throw new Error(deleteResult.errors[0].message || 'Failed to delete media item.')
+    }
+
+    const storagePath = getStoragePathForDelete(mediaItem?.url)
+    if (storagePath) {
+      try {
+        await remove({
+          path: storagePath,
+          options: {
+            accessLevel: 'public',
+          },
+        })
+      } catch (storageError) {
+        console.warn('Deleted media record but failed to remove storage object:', storagePath, storageError)
+      }
+    }
   }
 
   // ========================================
@@ -384,6 +644,7 @@ export function useMediaLibrary (props, ctx) {
 
   async function uploadMediaItems () {
     if (!uploadFiles.value.length) return
+
     savingMedia.value = true
     try {
       const targetCollectionId =
@@ -391,24 +652,31 @@ export function useMediaLibrary (props, ctx) {
           ? uploadCollectionId.value
           : currentFolderId.value
 
-      const baseId = mediaItems.value.reduce(
-        (max, m) => Math.max(max, Number(m.id) || 0),
-        0
-      )
+      const createdItems = []
+      for (const file of uploadFiles.value) {
+        const assetUrl = await uploadLibraryFileToStorage(file, targetCollectionId)
+        const createResult = await getModelOrThrow('MediaItem').create(
+          {
+            title: file.name,
+            altText: file.name,
+            url: assetUrl,
+            type: file.type || 'image',
+            status: 'active',
+            collectionId: targetCollectionId || null,
+            tags: [],
+            sourceType: uploadSourceType.value,
+          },
+          { authMode: 'userPool' }
+        )
 
-      const newItems = uploadFiles.value.map((file, index) => ({
-        id: baseId + index + 1,
-        title: file.name,
-        altText: '',
-        url: URL.createObjectURL(file),
-        type: file.type || 'image',
-        status: 'active',
-        collectionId: targetCollectionId,
-        tags: [],
-        sourceType: uploadSourceType.value
-      }))
+        if (createResult.errors?.length) {
+          throw new Error(createResult.errors[0].message || 'Failed to upload file.')
+        }
 
-      mediaItems.value = [...mediaItems.value, ...newItems]
+        createdItems.push(createResult.data)
+      }
+
+      mediaItems.value = [...mediaItems.value, ...createdItems.filter(Boolean)]
       if (ctx.emit) ctx.emit('update:mediaItems', mediaItems.value)
 
       uploadFiles.value = []
@@ -418,6 +686,8 @@ export function useMediaLibrary (props, ctx) {
       setTimeout(() => {
         toastMessage.value = ''
       }, 2000)
+    } catch (error) {
+      loadError.value = error?.message || 'Failed to upload files.'
     } finally {
       savingMedia.value = false
     }
@@ -432,16 +702,27 @@ export function useMediaLibrary (props, ctx) {
     loadingCollections.value = true
     loadError.value = ''
     try {
-      // TODO: hook this up to your backend
-      // const { collections: c, media: m } = await api.fetchMediaLibrary()
-      // collections.value = c
-      // mediaItems.value = m
-      // if (ctx.emit) {
-      //   ctx.emit('update:collections', c)
-      //   ctx.emit('update:mediaItems', m)
-      // }
+      const [collectionsResult, mediaItemsResult] = await Promise.all([
+        getModelOrThrow('MediaCollection').list({ authMode: 'userPool' }),
+        getModelOrThrow('MediaItem').list({ authMode: 'userPool' })
+      ])
+
+      if (collectionsResult.errors?.length) {
+        throw new Error(collectionsResult.errors[0].message || 'Failed to load collections.')
+      }
+      if (mediaItemsResult.errors?.length) {
+        throw new Error(mediaItemsResult.errors[0].message || 'Failed to load media items.')
+      }
+
+      collections.value = collectionsResult.data || []
+      mediaItems.value = mediaItemsResult.data || []
+
+      if (ctx.emit) {
+        ctx.emit('update:collections', collections.value)
+        ctx.emit('update:mediaItems', mediaItems.value)
+      }
     } catch (e) {
-      loadError.value = 'Failed to load media library'
+      loadError.value = e?.message || 'Failed to load media library'
     } finally {
       loadingMedia.value = false
       loadingCollections.value = false
@@ -471,6 +752,8 @@ export function useMediaLibrary (props, ctx) {
 
     // Folders
     folderTree,
+    folderRows,
+    collectionMediaCount,
     currentFolderId,
     currentFolderPath,
     currentFolder,

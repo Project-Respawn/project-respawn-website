@@ -514,9 +514,136 @@ TABLE OF CONTENTS (SECTION NUMBERS)
               </div>
             </section>
 
-            <!-- 4.2 Existing images viewer/editor -->
+            <!-- 4.2 Library picker -->
             <section class="modal-section">
-              <h3>Media section B: Existing images</h3>
+              <h3>Media section B: Select from media library</h3>
+
+              <div class="media-explorer">
+                <div class="media-explorer-sidebar">
+                  <div class="media-upload-block">
+                    <label class="field">
+                      <span>Search library</span>
+                      <input
+                        v-model="librarySearchQuery"
+                        type="text"
+                        placeholder="Search by title, type, or source"
+                      />
+                    </label>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="btn-secondary sm"
+                    @click="createLibraryFolder"
+                  >
+                    + New folder here
+                  </button>
+
+                  <button
+                    type="button"
+                    class="media-folder-item"
+                    :class="{ active: !mediaLibraryCurrentFolderId }"
+                    @click="selectAllLibraryMedia"
+                  >
+                    <span class="media-folder-icon">⌂</span>
+                    <span class="media-folder-main">
+                      <span class="media-folder-name">All media</span>
+                      <span class="media-folder-meta">{{ mediaLibraryItems.length }} items</span>
+                    </span>
+                  </button>
+
+                  <div v-if="mediaLibraryFolderRows.length" class="media-folder-tree">
+                    <button
+                      v-for="folder in mediaLibraryFolderRows"
+                      :key="folder.id"
+                      type="button"
+                      class="media-folder-item"
+                      :class="{ active: mediaLibraryCurrentFolderId === folder.id }"
+                      :style="{ marginLeft: `${folder.depth * 14}px` }"
+                      @click="handleLibraryFolderSelect(folder)"
+                    >
+                      <span class="media-folder-icon">📁</span>
+                      <span class="media-folder-main">
+                        <span class="media-folder-name">{{ folder.name }}</span>
+                        <span class="media-folder-meta">{{ collectionMediaCount(folder.id) }} items</span>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="media-explorer-main">
+                  <nav v-if="mediaLibraryCurrentFolderPath.length" class="media-breadcrumb" aria-label="Media folder breadcrumb">
+                    <button type="button" class="media-breadcrumb-link" @click="selectAllLibraryMedia">
+                      All media
+                    </button>
+                    <span
+                      v-for="(folder, index) in mediaLibraryCurrentFolderPath"
+                      :key="folder.id"
+                      class="media-breadcrumb-segment"
+                    >
+                      <span class="media-breadcrumb-separator">/</span>
+                      <button
+                        type="button"
+                        class="media-breadcrumb-link"
+                        :class="{ current: index === mediaLibraryCurrentFolderPath.length - 1 }"
+                        @click="handleLibraryBreadcrumbClick(folder)"
+                      >
+                        {{ folder.name }}
+                      </button>
+                    </span>
+                  </nav>
+
+                  <div v-if="filteredLibraryMediaItems.length" class="media-gallery">
+                    <div class="media-thumb-strip media-thumb-grid">
+                      <button
+                        v-for="item in filteredLibraryMediaItems"
+                        :key="item.id"
+                        type="button"
+                        class="media-thumb-btn media-library-thumb"
+                        @click="attachLibraryMediaItem(item)"
+                        :class="{ attached: selectedProductMediaIds.has(item.id) }"
+                      >
+                        <span class="media-thumb-checkbox" :class="{ checked: selectedProductMediaIds.has(item.id) }">
+                          <input
+                            type="checkbox"
+                            :checked="selectedProductMediaIds.has(item.id)"
+                            tabindex="-1"
+                            aria-label="Selected for this product"
+                          />
+                        </span>
+                        <img
+                          :src="item.url"
+                          :alt="item.altText || item.title || 'Library media'"
+                        />
+                        <span class="media-thumb-label">{{ item.title || 'Untitled asset' }}</span>
+                        <span v-if="selectedProductMediaIds.has(item.id)" class="media-thumb-attached-badge">
+                          Attached
+                        </span>
+                        <span class="media-thumb-actions">
+                          <button
+                            type="button"
+                            class="media-mini-action"
+                            @click.stop="moveLibraryMediaItemToCurrentFolder(item)"
+                            :disabled="!mediaLibraryCurrentFolderId"
+                          >
+                            Move here
+                          </button>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <p v-else class="media-empty">
+                    <span v-if="mediaLibraryCurrentFolderId">No media items in this folder yet.</span>
+                    <span v-else>No media items in the library yet. Upload them from the media library first.</span>
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- 4.3 Existing images viewer/editor -->
+            <section class="modal-section">
+              <h3>Media section C: Existing product images</h3>
 
               <div v-if="selectedProductImages.length" class="media-gallery">
                 <div class="media-viewer">
@@ -565,6 +692,9 @@ TABLE OF CONTENTS (SECTION NUMBERS)
                       :src="image.signedUrl || image.url"
                       :alt="image.altText || `Product image ${index + 1}`"
                     />
+                    <span v-if="mediaForm.primaryImageId === image.id" class="media-thumb-main-badge">
+                      Main
+                    </span>
                   </button>
                 </div>
 
@@ -608,12 +738,20 @@ TABLE OF CONTENTS (SECTION NUMBERS)
                   <label class="media-radio">
                     <input
                       type="radio"
-                      name="featuredImage"
+                      name="primaryImage"
                       :value="activeMediaImage.id"
-                      v-model="mediaForm.featuredImageId"
+                      v-model="mediaForm.primaryImageId"
                     />
                     Set as primary image
                   </label>
+
+                  <button
+                    type="button"
+                    class="btn-secondary sm"
+                    @click="setPrimaryMediaImage(activeMediaImage.id)"
+                  >
+                    Make this the main image
+                  </button>
 
                   <button
                     type="button"
@@ -699,9 +837,9 @@ export default {
     ...productControlLogic.methods,
 
     // 8.1 Open media modal for a product
-    openMediaModal(product) {
+    async openMediaModal(product, options = {}) {
       if (productControlLogic.methods?.openMediaModal) {
-        productControlLogic.methods.openMediaModal.call(this, product);
+        await productControlLogic.methods.openMediaModal.call(this, product, options);
       } else {
         this.mediaModalOpen = true;
         this.selectedProduct = product;

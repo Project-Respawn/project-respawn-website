@@ -21,6 +21,11 @@ function isHttpUrl(value) {
   return /^https?:\/\//i.test(text);
 }
 
+function isRemoteUrl(value) {
+  const text = normalizeText(value);
+  return /^(https?:\/\/|blob:|data:)/i.test(text);
+}
+
 function firstNonEmpty(...values) {
   for (const value of values) {
     if (typeof value === 'string' && value.trim()) {
@@ -73,7 +78,7 @@ function formatPrice(price, currency = 'GBP') {
 function normalizeImageUrl(value) {
   const text = normalizeText(value);
   if (!text) return '';
-  if (isHttpUrl(text)) return text;
+  if (isRemoteUrl(text)) return text;
   return text;
 }
 
@@ -105,11 +110,29 @@ function normalizeStoragePath(value) {
   return `public/${withoutLeadingSlash}`;
 }
 
+function extractStoragePathFromUrl(value) {
+  const cleanValue = normalizeText(value);
+  if (!cleanValue) return '';
+
+  try {
+    const parsedUrl = new URL(cleanValue);
+    const pathname = decodeURIComponent(parsedUrl.pathname || '').replace(/^\/+/, '');
+    return pathname;
+  } catch (error) {
+    return '';
+  }
+}
+
+function isLocalAssetPath(value) {
+  const cleanValue = normalizeText(value);
+  return /^\/(images|assets)\//i.test(cleanValue);
+}
+
 function buildPublicStorageUrl(value) {
   const cleanValue = normalizeText(value);
   if (!cleanValue) return '';
 
-  if (isHttpUrl(cleanValue)) {
+  if (isRemoteUrl(cleanValue)) {
     return cleanValue;
   }
 
@@ -123,7 +146,27 @@ async function resolveStorageUrl(value) {
   const cleanValue = normalizeText(value);
   if (!cleanValue) return '';
 
-  if (isHttpUrl(cleanValue)) {
+  if (isLocalAssetPath(cleanValue)) {
+    return cleanValue;
+  }
+
+  if (isRemoteUrl(cleanValue)) {
+    const remotePath = extractStoragePathFromUrl(cleanValue);
+    if (remotePath && /^(public|protected|private)\//i.test(remotePath)) {
+      try {
+        const result = await getUrl({
+          path: remotePath,
+          options: {
+            accessLevel: 'public',
+            expiresIn: 3600,
+          },
+        });
+        return result.url.toString();
+      } catch (error) {
+        return buildPublicStorageUrl(remotePath) || cleanValue;
+      }
+    }
+
     return cleanValue;
   }
 
@@ -202,11 +245,11 @@ function getActiveImages(images) {
 function resolvePrimaryImage(images, fallbackImage = '') {
   const activeImages = getActiveImages(images);
 
-  const featuredImage = activeImages.find((image) => image.isFeatured && image.url);
-  if (featuredImage?.url) return featuredImage.url;
-
   const primaryImage = activeImages.find((image) => image.isPrimary && image.url);
   if (primaryImage?.url) return primaryImage.url;
+
+  const featuredImage = activeImages.find((image) => image.isFeatured && image.url);
+  if (featuredImage?.url) return featuredImage.url;
 
   const firstSortedImage = [...activeImages]
     .sort((a, b) => a.sortOrder - b.sortOrder)
@@ -247,11 +290,19 @@ function getGalleryImagesForProduct(product, selectedColor, fallbackImage) {
   const colorMatchedImages = getColorMatchedImages(allImages, selectedColor);
 
   if (colorMatchedImages.length) {
-    return colorMatchedImages;
+    return [...colorMatchedImages].sort((a, b) => {
+      if (a.isPrimary !== b.isPrimary) return a.isPrimary ? -1 : 1;
+      if (a.isFeatured !== b.isFeatured) return a.isFeatured ? -1 : 1;
+      return a.sortOrder - b.sortOrder;
+    });
   }
 
   if (allImages.length) {
-    return [...allImages].sort((a, b) => a.sortOrder - b.sortOrder);
+    return [...allImages].sort((a, b) => {
+      if (a.isPrimary !== b.isPrimary) return a.isPrimary ? -1 : 1;
+      if (a.isFeatured !== b.isFeatured) return a.isFeatured ? -1 : 1;
+      return a.sortOrder - b.sortOrder;
+    });
   }
 
   const variantImage = normalizeImageUrl(product?.variants?.find(
@@ -289,7 +340,7 @@ export default {
       allCategories: [],
       loading: true,
       status: '',
-      fallbackImage: 'https://via.placeholder.com/600x600?text=Project+Respawn',
+        fallbackImage: '/images/ImageTier2.png',
 
       selectedProduct: null,
       selectedColor: '',
@@ -434,6 +485,7 @@ export default {
           productBrandsResult,
           productCategoriesResult,
           productImagesResult,
+          mediaItemsResult,
           productVariantsResult,
         ] = await Promise.all([
           client.models.MerchProduct.list({ authMode: 'apiKey' }),
@@ -442,6 +494,7 @@ export default {
           client.models.MerchProductBrand.list({ authMode: 'apiKey' }),
           client.models.MerchProductCategory.list({ authMode: 'apiKey' }),
           client.models.MerchProductImage.list({ authMode: 'apiKey' }),
+          client.models.MediaItem.list({ authMode: 'apiKey' }),
           client.models.MerchProductVariant.list({ authMode: 'apiKey' }),
         ]);
 
@@ -462,6 +515,9 @@ export default {
         }
         if (productImagesResult.errors?.length) {
           throw new Error(productImagesResult.errors[0].message || 'Failed to load product images.');
+        }
+        if (mediaItemsResult.errors?.length) {
+          throw new Error(mediaItemsResult.errors[0].message || 'Failed to load media items.');
         }
         if (productVariantsResult.errors?.length) {
           throw new Error(productVariantsResult.errors[0].message || 'Failed to load product variants.');
@@ -503,11 +559,23 @@ export default {
         }
 
         const imagesByProductId = new Map();
+        const mediaItemsById = new Map((mediaItemsResult.data || []).map((item) => [normalizeText(item.id), item]));
+
         for (const image of productImagesResult.data || []) {
           const productId = normalizeText(image.productId);
           if (!productId) continue;
+          const mediaItem = mediaItemsById.get(normalizeText(image.mediaItemId));
           const current = imagesByProductId.get(productId) || [];
-          current.push(image);
+          current.push({
+            ...image,
+            url: normalizeText(mediaItem?.url) || '',
+            title: normalizeText(mediaItem?.title) || '',
+            altText: firstNonEmpty(image.altTextOverride, mediaItem?.altText, mediaItem?.title),
+            color: firstNonEmpty(image.colorOverride, mediaItem?.color),
+            colorHex: firstNonEmpty(image.colorHexOverride, mediaItem?.colorHex),
+            sourceType: normalizeText(mediaItem?.sourceType) || '',
+            status: firstNonEmpty(image.status, mediaItem?.status, 'active'),
+          });
           imagesByProductId.set(productId, current);
         }
 

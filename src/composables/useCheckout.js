@@ -1,5 +1,6 @@
 import { computed, nextTick, reactive, ref, watch } from 'vue'
 import RevolutCheckout from '@revolut/checkout'
+import amplifyOutputs from '../../amplify_outputs.json'
 
 function getErrorMessage(error, fallback) {
   if (error instanceof Error && error.message) {
@@ -38,17 +39,23 @@ export function useCheckout() {
     : (() => {
         const productionBase = import.meta.env.VITE_API_BASE_URL?.trim() || '';
 
-        if (!productionBase) {
+        if (productionBase) {
+          if (/<stage>|%3Cstage%3E/i.test(productionBase)) {
+            throw new Error(
+              'Invalid VITE_API_BASE_URL for production checkout API requests. Remove placeholder "<stage>" and set the real API Gateway base URL in Amplify environment variables.'
+            );
+          }
+
+          return productionBase.replace(/\/$/, '');
+        }
+
+        const endpoint = amplifyOutputs?.custom?.API?.projectRespawnApi?.endpoint?.trim() || '';
+
+        if (!endpoint) {
           throw new Error('Missing VITE_API_BASE_URL for production checkout API requests.');
         }
 
-        if (/<stage>|%3Cstage%3E/i.test(productionBase)) {
-          throw new Error(
-            'Invalid VITE_API_BASE_URL for production checkout API requests. Remove placeholder "<stage>" and set the real API Gateway base URL in Amplify environment variables.'
-          );
-        }
-
-        return productionBase.replace(/\/$/, '');
+        return endpoint.replace(/\/$/, '');
       })();
 
   const revolutMode = (import.meta.env.VITE_REVOLUT_MODE || 'sandbox')
