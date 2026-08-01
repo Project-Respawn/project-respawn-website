@@ -61,7 +61,8 @@
               >
             </li> -->
             <li class="nav-item">
-              <router-link v-if="!isSignedIn" to="/join" class="btn btn-secondary ms-3" :class="{ active: $route.path === '/join' }">Join</router-link>
+              <span v-if="authStatus === 'loading'" class="btn btn-secondary ms-3 disabled" aria-busy="true">Checking session…</span>
+              <router-link v-else-if="!isSignedIn" to="/join" class="btn btn-secondary ms-3" :class="{ active: $route.path === '/join' }">Join</router-link>
               <!-- Signed-in account dropdown -->
               <div v-else class="ms-3 position-relative">
                 <button

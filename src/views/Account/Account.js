@@ -244,7 +244,7 @@ export default {
     /* =====================================================
        12. AUTH / COMPOSABLES
        ===================================================== */
-    const { displayName, email, isSignedIn, refreshAuth } = useAuth();
+    const { displayName, email, isSignedIn, authStatus, ensureAuthReady, refreshAuth } = useAuth();
 
     /* =====================================================
        13. CORE REACTIVE STATE
@@ -948,6 +948,7 @@ export default {
        44. LIFECYCLE
        ===================================================== */
     onMounted(async () => {
+      await ensureAuthReady();
       await refreshAuth();
       await loadProfile();
       repackModules();
@@ -974,6 +975,7 @@ export default {
       draggedModuleId,
       draft,
       editMode,
+      authStatus,
       hoveredCellKey,
       identityEditorOpen,
       isSignedIn,
