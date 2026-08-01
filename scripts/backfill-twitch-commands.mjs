@@ -1,7 +1,7 @@
 import { Amplify, Auth } from 'aws-amplify';
 import { generateClient } from 'aws-amplify/data';
 import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import { dirname } from 'path';
 import outputs from '../amplify_outputs.json' assert { type: 'json' };
 
 const __filename = fileURLToPath(import.meta.url);
