@@ -7,6 +7,14 @@
         <p class="merch-subtitle">
           Browse merch, digital extras, and future custom products in one place.
         </p>
+
+        <div class="shipping-notice" role="note">
+          <p>
+            We currently ship to the UK, Europe, and the USA.
+            If you'd like to order from another location, please contact us to discuss pricing —
+            we'd love to hear from anyone wanting to showcase the Project Respawn brand.
+          </p>
+        </div>
       </div>
     </section>
 
