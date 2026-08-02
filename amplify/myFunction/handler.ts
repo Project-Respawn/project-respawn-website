@@ -1028,35 +1028,56 @@ async function handlePrintfulProducts() {
 }
 
 async function handlePrintfulProductLookup(path: string) {
-  const productId = path.split('/').pop()
+  try {
+    const productId = path.split('/').pop()
 
-  if (!productId) {
-    return jsonResponse(400, { error: 'Missing productId' })
+    if (!productId) {
+      return jsonResponse(400, { error: 'Missing productId' })
+    }
+
+    console.log('Printful product lookup:', productId)
+    console.log('Printful key configured:', Boolean(PRINTFUL_API_KEY))
+
+    const result = await makeRequest(
+      `https://api.printful.com/store/products/${productId}`,
+      'GET',
+      null,
+      buildPrintfulAuthHeader()
+    )
+
+    console.log('Printful product lookup status:', result.statusCode)
+
+    if (result.statusCode !== 200) {
+      console.error('Printful product lookup failed:', result.body)
+      return jsonResponse(result.statusCode, {
+        error: 'Failed to fetch Printful product',
+        printful: result.body,
+      })
+    }
+
+    const product = result.body?.result
+
+    return jsonResponse(200, {
+      product: {
+        id: product?.sync_product?.id,
+        name: product?.sync_product?.name,
+        thumbnailUrl: product?.sync_product?.thumbnail_url || '',
+        variants: (product?.sync_variants || []).map((variant: any) =>
+          normalizePrintfulVariant(
+            variant,
+            product?.sync_product?.thumbnail_url || ''
+          )
+        ),
+      },
+    })
+  } catch (error: any) {
+    console.error('Printful product lookup error:', error)
+
+    return jsonResponse(500, {
+      error: 'Failed to fetch Printful product',
+      message: error?.message || 'Unknown error',
+    })
   }
-
-  const result = await makeRequest(
-    `https://api.printful.com/store/products/${productId}`,
-    'GET',
-    null,
-    buildPrintfulAuthHeader()
-  )
-
-  if (result.statusCode !== 200) {
-    return jsonResponse(result.statusCode, result.body)
-  }
-
-  const product = result.body?.result
-
-  return jsonResponse(200, {
-    product: {
-      id: product?.sync_product?.id,
-      name: product?.sync_product?.name,
-      thumbnailUrl: product?.sync_product?.thumbnail_url || '',
-      variants: (product?.sync_variants || []).map((variant: any) =>
-        normalizePrintfulVariant(variant, product?.sync_product?.thumbnail_url || '')
-      ),
-    },
-  })
 }
 
 async function handlePrintfulCreateOrder(body: any) {
