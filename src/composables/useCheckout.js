@@ -14,6 +14,18 @@ function getErrorMessage(error, fallback) {
   return fallback
 }
 
+function normaliseCartItem(item, index) {
+  return {
+    id: item?.id ?? `item-${index}`,
+    name: item?.name ?? 'Product',
+    variant: item?.variant ?? '',
+    color: item?.color ?? '',
+    price: Number(item?.price ?? 0),
+    quantity: Number(item?.quantity ?? item?.qty ?? 1),
+    image: item?.image ?? '',
+  }
+}
+
 export function useCheckout() {
   const originalShipping = 5
 
@@ -40,26 +52,7 @@ export function useCheckout() {
     .trim()
     .toLowerCase()
 
-  const cartItems = ref([
-    {
-      id: 1,
-      name: 'Project Respawn Hoodie',
-      variant: 'Large',
-      color: 'Black',
-      price: 35,
-      quantity: 1,
-      image: '',
-    },
-    {
-      id: 2,
-      name: 'Project Respawn Mug',
-      variant: '11oz',
-      color: 'White',
-      price: 12,
-      quantity: 1,
-      image: '',
-    },
-  ])
+  const cartItems = ref([])
 
   const customer = reactive({
     fullName: '',
@@ -69,6 +62,16 @@ export function useCheckout() {
     city: '',
     postcode: '',
   })
+
+  function loadCart() {
+    try {
+      const parsedCart = JSON.parse(localStorage.getItem('cart') || '[]')
+      const rawItems = Array.isArray(parsedCart) ? parsedCart : []
+      cartItems.value = rawItems.map(normaliseCartItem)
+    } catch {
+      cartItems.value = []
+    }
+  }
 
   const cartCount = computed(() =>
     cartItems.value.reduce((sum, item) => sum + item.quantity, 0)
@@ -87,6 +90,7 @@ export function useCheckout() {
     if (!customer.address.trim()) throw new Error('Street address is required')
     if (!customer.city.trim()) throw new Error('City is required')
     if (!customer.postcode.trim()) throw new Error('Postcode is required')
+    if (!cartItems.value.length) throw new Error('Your cart is empty')
   }
 
   function destroyCardField() {
@@ -193,7 +197,7 @@ export function useCheckout() {
   }
 
   async function mountPaymentField() {
-    if (revolutLoading.value || !addressComplete.value) return
+    if (revolutLoading.value || !addressComplete.value || !cartItems.value.length) return
 
     revolutLoading.value = true
     revolutError.value = ''
@@ -220,6 +224,8 @@ export function useCheckout() {
           orderId.value = order.id
           orderComplete.value = true
           submittingPayment.value = false
+          localStorage.removeItem('cart')
+          cartItems.value = []
         },
         onError(error) {
           revolutError.value = getErrorMessage(
@@ -281,6 +287,7 @@ export function useCheckout() {
   }
 
   function resetCheckout() {
+    loadCart()
     orderComplete.value = false
     orderId.value = ''
     addressComplete.value = false
@@ -294,6 +301,8 @@ export function useCheckout() {
     customer.postcode = ''
     resetPaymentState()
   }
+
+  loadCart()
 
   watch(
     () => ({
@@ -312,6 +321,7 @@ export function useCheckout() {
       if (!addressComplete.value) return
       if (activeStep.value !== 'payment') return
       if (orderComplete.value) return
+      if (!cartItems.value.length) return
       if (revolutLoading.value || submittingPayment.value || autoMountQueued.value) return
       if (paymentReady.value) return
 
