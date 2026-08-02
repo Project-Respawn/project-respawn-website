@@ -305,9 +305,11 @@ function getGalleryImagesForProduct(product, selectedColor, fallbackImage) {
     });
   }
 
-  const variantImage = normalizeImageUrl(product?.variants?.find(
-    (variant) => (!selectedColor || variant.color === selectedColor) && variant.imageUrl
-  )?.imageUrl);
+  const variantImage = normalizeImageUrl(
+    product?.variants?.find(
+      (variant) => (!selectedColor || variant.color === selectedColor) && variant.imageUrl
+    )?.imageUrl
+  );
 
   const productFallback = normalizeImageUrl(product?.image) || variantImage || fallbackImage;
 
@@ -340,7 +342,7 @@ export default {
       allCategories: [],
       loading: true,
       status: '',
-        fallbackImage: '/images/ImageTier2.png',
+      fallbackImage: '/images/ImageTier2.png',
 
       selectedProduct: null,
       selectedColor: '',
@@ -350,6 +352,10 @@ export default {
 
       selectedCategory: '',
       selectedBrand: '',
+
+      cartNotice: '',
+      cartNoticeType: 'success',
+      cartNoticeTimeout: null,
     };
   },
 
@@ -800,32 +806,77 @@ export default {
     addToCart() {
       if (!this.selectedProduct) {
         this.status = 'No product selected.';
+        this.cartNotice = 'No product selected.';
+        this.cartNoticeType = 'error';
         return;
       }
 
       if (this.selectedProduct.variants?.length && !this.selectedVariant) {
         this.status = 'Please select a valid colour and size.';
+        this.cartNotice = 'Please select a valid colour and size.';
+        this.cartNoticeType = 'error';
         return;
       }
 
       const safeQuantity = Math.max(1, Number(this.selectedQuantity) || 1);
 
+      const numericPrice =
+        this.selectedVariant?.retailPrice ??
+        inferPriceNumber(this.selectedVariantPrice, this.selectedProduct.displayPrice) ??
+        0;
+
       const cartItem = {
+        id: this.selectedProduct.id,
         productId: this.selectedProduct.id,
+        name: this.selectedProduct.title,
         title: this.selectedProduct.title,
         image: this.selectedVariantImage || this.selectedProduct.image || this.fallbackImage,
-        price: this.selectedVariantPrice,
+        price: Number(numericPrice),
         productUrl: this.selectedProduct.productUrl || '',
         quantity: safeQuantity,
         variantId: this.selectedVariant?.id || '',
+        variant: this.selectedVariant?.name || this.selectedSize || '',
         variantName: this.selectedVariant?.name || '',
-        color: this.selectedVariant?.color || this.selectedColor,
-        size: this.selectedVariant?.size || this.selectedSize,
+        color: this.selectedVariant?.color || this.selectedColor || '',
+        size: this.selectedVariant?.size || this.selectedSize || '',
         availabilityStatus: this.selectedVariant?.availabilityStatus || '',
       };
 
+      const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+      const existingIndex = existingCart.findIndex((item) => {
+        return (
+          String(item.productId || item.id) === String(cartItem.productId) &&
+          String(item.variantId || '') === String(cartItem.variantId || '') &&
+          String(item.color || '') === String(cartItem.color || '')
+        );
+      });
+
+      if (existingIndex >= 0) {
+        existingCart[existingIndex].quantity =
+          Number(existingCart[existingIndex].quantity || 1) + safeQuantity;
+      } else {
+        existingCart.push(cartItem);
+      }
+
+      localStorage.setItem('cart', JSON.stringify(existingCart));
+      window.dispatchEvent(new Event('cart-updated'));
+
       console.log('Add to cart item:', cartItem);
+
       this.status = `${cartItem.title} added to cart`;
+      this.cartNotice = `${cartItem.title} added to cart`;
+      this.cartNoticeType = 'success';
+
+      if (this.cartNoticeTimeout) {
+        clearTimeout(this.cartNoticeTimeout);
+      }
+
+      this.cartNoticeTimeout = setTimeout(() => {
+        this.cartNotice = '';
+        this.cartNoticeType = 'success';
+        this.cartNoticeTimeout = null;
+      }, 2500);
     },
 
     closeDialog() {
@@ -833,12 +884,21 @@ export default {
         this.$refs.productDialog.close();
       }
 
+      if (this.cartNoticeTimeout) {
+        clearTimeout(this.cartNoticeTimeout);
+        this.cartNoticeTimeout = null;
+      }
+      this.cartNotice = '';
+      this.cartNoticeType = 'success';
+
       this.selectedProduct = null;
       this.selectedColor = '';
       this.selectedSize = '';
       this.selectedQuantity = 1;
       this.activeGalleryIndex = 0;
-      this.status = this.products.length ? `${this.products.length} products loaded` : 'No products available right now.';
+      this.status = this.products.length
+        ? `${this.products.length} products loaded`
+        : 'No products available right now.';
     },
   },
 };

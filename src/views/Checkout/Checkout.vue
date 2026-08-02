@@ -207,6 +207,14 @@
                       <p v-if="item.variant">{{ item.variant }}</p>
                       <p v-if="item.color">Colour: {{ item.color }}</p>
                       <p>Quantity: {{ item.quantity }}</p>
+
+                      <button
+                        type="button"
+                        class="remove-item-btn"
+                        @click="removeCartItem(item)"
+                      >
+                        Remove
+                      </button>
                     </div>
 
                     <div class="review-price">
@@ -218,7 +226,7 @@
                 <button
                   type="button"
                   class="primary-btn"
-                  :disabled="submittingPayment || !paymentReady"
+                  :disabled="submittingPayment || !paymentReady || !cartItems.length"
                   @click="handlePayment"
                 >
                   {{ submittingPayment ? 'Processing...' : 'Place order' }}
@@ -232,16 +240,28 @@
           <div class="checkout-card checkout-summary sticky">
             <h2>Order Summary</h2>
 
-            <div class="summary-items">
-              <div
-                v-for="item in cartItems"
-                :key="`summary-${item.id}-${item.variant || ''}-${item.color || ''}-${item.quantity}`"
-                class="summary-item"
-              >
-                <span>{{ item.name }} × {{ item.quantity }}</span>
-                <span>£{{ (item.price * item.quantity).toFixed(2) }}</span>
-              </div>
-            </div>
+           <div class="summary-items">
+  <div
+    v-for="item in cartItems"
+    :key="`summary-${item.id}-${item.variant || ''}-${item.color || ''}-${item.quantity}`"
+    class="summary-item"
+  >
+    <div class="summary-item-main">
+      <div class="summary-item-info">
+        <span>{{ item.name }} × {{ item.quantity }}</span>
+        <button
+          type="button"
+          class="remove-item-btn summary-remove-btn"
+          @click="removeCartItem(item)"
+        >
+          Remove
+        </button>
+      </div>
+
+      <span>£{{ (item.price * item.quantity).toFixed(2) }}</span>
+    </div>
+  </div>
+</div>
 
             <div class="summary-block">
               <div class="summary-row">
@@ -302,6 +322,7 @@ const {
   goToReview,
   handlePayment,
   resetCheckout,
+  removeCartItem,
 } = useCheckout()
 </script>
 

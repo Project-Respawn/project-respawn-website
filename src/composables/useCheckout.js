@@ -15,15 +15,47 @@ function getErrorMessage(error, fallback) {
 }
 
 function normaliseCartItem(item, index) {
+  const title =
+    item?.name ??
+    item?.title ??
+    item?.productTitle ??
+    item?.product_name
+
   return {
-    id: item?.id ?? `item-${index}`,
-    name: item?.name ?? 'Product',
-    variant: item?.variant ?? '',
+    id: item?.id ?? item?.productId ?? `item-${index}`,
+    name: title || 'Product',
+    variant: item?.variant ?? item?.variantName ?? item?.size ?? '',
     color: item?.color ?? '',
-    price: Number(item?.price ?? 0),
+    price: Number(item?.price ?? item?.unitPrice ?? 0),
     quantity: Number(item?.quantity ?? item?.qty ?? 1),
-    image: item?.image ?? '',
+    image: item?.image ?? item?.thumbnailUrl ?? '',
+    variantId: item?.variantId ?? '',
+    productId: item?.productId ?? item?.id ?? `item-${index}`,
   }
+}
+
+const ALLOWED_COUNTRIES = new Set([
+  'GB',
+  'US',
+  'IE',
+  'FR',
+  'DE',
+  'ES',
+  'IT',
+  'NL',
+  'BE',
+  'PT',
+  'SE',
+  'DK',
+  'FI',
+  'NO',
+  'PL',
+  'AT',
+  'CH',
+])
+
+function isAllowedShippingCountry(countryCode) {
+  return ALLOWED_COUNTRIES.has(String(countryCode || '').trim().toUpperCase())
 }
 
 export function useCheckout() {
@@ -61,6 +93,7 @@ export function useCheckout() {
     address: '',
     city: '',
     postcode: '',
+    country: '',
   })
 
   function loadCart() {
@@ -70,6 +103,29 @@ export function useCheckout() {
       cartItems.value = rawItems.map(normaliseCartItem)
     } catch {
       cartItems.value = []
+    }
+  }
+
+  function persistCart(items) {
+    localStorage.setItem('cart', JSON.stringify(items))
+    cartItems.value = items.map(normaliseCartItem)
+    window.dispatchEvent(new Event('cart-updated'))
+  }
+
+  function removeCartItem(itemToRemove) {
+    const updated = cartItems.value.filter((item) => {
+      return !(
+        String(item.productId || item.id) === String(itemToRemove.productId || itemToRemove.id) &&
+        String(item.variantId || '') === String(itemToRemove.variantId || '') &&
+        String(item.color || '') === String(itemToRemove.color || '')
+      )
+    })
+
+    persistCart(updated)
+    if (!updated.length) {
+      paymentReady.value = false
+      activeStep.value = addressComplete.value ? 'address' : 'address'
+      resetPaymentState()
     }
   }
 
@@ -90,6 +146,12 @@ export function useCheckout() {
     if (!customer.address.trim()) throw new Error('Street address is required')
     if (!customer.city.trim()) throw new Error('City is required')
     if (!customer.postcode.trim()) throw new Error('Postcode is required')
+    if (!customer.country.trim()) throw new Error('Country is required')
+
+    if (!isAllowedShippingCountry(customer.country)) {
+      throw new Error('We currently only ship to the UK, Europe, and the USA. Please contact us for other locations.')
+    }
+
     if (!cartItems.value.length) throw new Error('Your cart is empty')
   }
 
@@ -152,7 +214,7 @@ export function useCheckout() {
       address: customer.address,
       city: customer.city,
       postcode: customer.postcode,
-      country: 'GB',
+      country: customer.country,
       items: cartItems.value.map((item) => ({
         id: item.id,
         name: item.name,
@@ -226,6 +288,7 @@ export function useCheckout() {
           submittingPayment.value = false
           localStorage.removeItem('cart')
           cartItems.value = []
+          window.dispatchEvent(new Event('cart-updated'))
         },
         onError(error) {
           revolutError.value = getErrorMessage(
@@ -268,13 +331,13 @@ export function useCheckout() {
         email: customer.email,
         phone: customer.phone,
         billingAddress: {
-          countryCode: 'GB',
+          countryCode: customer.country,
           city: customer.city,
           postcode: customer.postcode,
           streetLine1: customer.address,
         },
         shippingAddress: {
-          countryCode: 'GB',
+          countryCode: customer.country,
           city: customer.city,
           postcode: customer.postcode,
           streetLine1: customer.address,
@@ -299,10 +362,18 @@ export function useCheckout() {
     customer.address = ''
     customer.city = ''
     customer.postcode = ''
+    customer.country = ''
     resetPaymentState()
   }
 
+  function handleLocalCartUpdate() {
+    loadCart()
+  }
+
   loadCart()
+
+  window.addEventListener('storage', handleLocalCartUpdate)
+  window.addEventListener('cart-updated', handleLocalCartUpdate)
 
   watch(
     () => ({
@@ -314,6 +385,7 @@ export function useCheckout() {
       address: customer.address,
       city: customer.city,
       postcode: customer.postcode,
+      country: customer.country,
       total: total.value,
       cart: cartItems.value.map((item) => `${item.id}:${item.quantity}`).join('|'),
     }),
@@ -352,5 +424,6 @@ export function useCheckout() {
     goToReview,
     handlePayment,
     resetCheckout,
+    removeCartItem,
   }
 }

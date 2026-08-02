@@ -288,6 +288,14 @@
               >
                 Add to cart
               </button>
+
+              <div
+                v-if="cartNotice"
+                class="cart-notice"
+                :class="`cart-notice--${cartNoticeType}`"
+              >
+                {{ cartNotice }}
+              </div>
             </div>
           </div>
         </div>
