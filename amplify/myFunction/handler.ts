@@ -4,7 +4,7 @@ import type { Handler } from 'aws-lambda'
 import { Amplify } from 'aws-amplify'
 import { generateClient } from 'aws-amplify/data'
 import { getAmplifyDataClientConfig } from '@aws-amplify/backend/function/runtime'
-import { env } from '$amplify/env/myFunction'
+import { env } from '$amplify/env/myFunction-rebuild'
 import type { Schema } from '../data/resource'
 
 const REVOLUT_API_SECRET = process.env.REVOLUT_API_SECRET
