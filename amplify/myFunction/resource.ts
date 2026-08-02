@@ -5,7 +5,7 @@ import { defineFunction, secret } from '@aws-amplify/backend';
 // =============================================================================
 
 export const myFunction = defineFunction({
-  name: 'myFunction',
+  name: 'myFunction-rebuild',
   entry: './handler.ts',
   resourceGroupName: 'data',
 
