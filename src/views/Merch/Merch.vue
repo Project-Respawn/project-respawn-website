@@ -288,14 +288,6 @@
               >
                 Add to cart
               </button>
-
-              <div
-                v-if="cartNotice"
-                class="cart-notice"
-                :class="`cart-notice--${cartNoticeType}`"
-              >
-                {{ cartNotice }}
-              </div>
             </div>
           </div>
         </div>
@@ -378,6 +370,51 @@
           >
             View full product page
           </a>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog
+      ref="cartConfirmDialog"
+      class="cart-confirm-dialog"
+      @close="closeCartConfirm"
+    >
+      <div v-if="cartConfirmItem" class="cart-confirm-content">
+        <button
+          class="dialog-close"
+          type="button"
+          @click="closeCartConfirm"
+          aria-label="Close cart confirmation"
+        >
+          ×
+        </button>
+
+        <p class="cart-confirm-kicker">Cart updated</p>
+        <h2>Added to cart</h2>
+
+        <div class="cart-confirm-summary">
+          <p><strong>{{ cartConfirmItem.title }}</strong></p>
+          <p v-if="cartConfirmItem.color">Colour: {{ cartConfirmItem.color }}</p>
+          <p v-if="cartConfirmItem.size">Size: {{ cartConfirmItem.size }}</p>
+          <p>Quantity: {{ cartConfirmItem.quantity }}</p>
+        </div>
+
+        <div class="cart-confirm-actions">
+          <button
+            type="button"
+            class="btn-secondary"
+            @click="closeCartConfirm"
+          >
+            Continue shopping
+          </button>
+
+          <router-link
+            class="btn-primary"
+            to="/checkout"
+            @click="closeCartConfirm"
+          >
+            Go to checkout
+          </router-link>
         </div>
       </div>
     </dialog>

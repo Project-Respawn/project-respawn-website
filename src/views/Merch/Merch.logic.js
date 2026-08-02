@@ -16,11 +16,6 @@ function normalizeText(value) {
   return typeof value === 'string' ? value.trim() : '';
 }
 
-function isHttpUrl(value) {
-  const text = normalizeText(value);
-  return /^https?:\/\//i.test(text);
-}
-
 function isRemoteUrl(value) {
   const text = normalizeText(value);
   return /^(https?:\/\/|blob:|data:)/i.test(text);
@@ -78,7 +73,6 @@ function formatPrice(price, currency = 'GBP') {
 function normalizeImageUrl(value) {
   const text = normalizeText(value);
   if (!text) return '';
-  if (isRemoteUrl(text)) return text;
   return text;
 }
 
@@ -353,9 +347,8 @@ export default {
       selectedCategory: '',
       selectedBrand: '',
 
-      cartNotice: '',
-      cartNoticeType: 'success',
-      cartNoticeTimeout: null,
+      cartConfirmOpen: false,
+      cartConfirmItem: null,
     };
   },
 
@@ -504,30 +497,14 @@ export default {
           client.models.MerchProductVariant.list({ authMode: 'apiKey' }),
         ]);
 
-        if (productsResult.errors?.length) {
-          throw new Error(productsResult.errors[0].message || 'Failed to load products.');
-        }
-        if (brandsResult.errors?.length) {
-          throw new Error(brandsResult.errors[0].message || 'Failed to load brands.');
-        }
-        if (categoriesResult.errors?.length) {
-          throw new Error(categoriesResult.errors[0].message || 'Failed to load categories.');
-        }
-        if (productBrandsResult.errors?.length) {
-          throw new Error(productBrandsResult.errors[0].message || 'Failed to load product brand links.');
-        }
-        if (productCategoriesResult.errors?.length) {
-          throw new Error(productCategoriesResult.errors[0].message || 'Failed to load product category links.');
-        }
-        if (productImagesResult.errors?.length) {
-          throw new Error(productImagesResult.errors[0].message || 'Failed to load product images.');
-        }
-        if (mediaItemsResult.errors?.length) {
-          throw new Error(mediaItemsResult.errors[0].message || 'Failed to load media items.');
-        }
-        if (productVariantsResult.errors?.length) {
-          throw new Error(productVariantsResult.errors[0].message || 'Failed to load product variants.');
-        }
+        if (productsResult.errors?.length) throw new Error(productsResult.errors[0].message || 'Failed to load products.');
+        if (brandsResult.errors?.length) throw new Error(brandsResult.errors[0].message || 'Failed to load brands.');
+        if (categoriesResult.errors?.length) throw new Error(categoriesResult.errors[0].message || 'Failed to load categories.');
+        if (productBrandsResult.errors?.length) throw new Error(productBrandsResult.errors[0].message || 'Failed to load product brand links.');
+        if (productCategoriesResult.errors?.length) throw new Error(productCategoriesResult.errors[0].message || 'Failed to load product category links.');
+        if (productImagesResult.errors?.length) throw new Error(productImagesResult.errors[0].message || 'Failed to load product images.');
+        if (mediaItemsResult.errors?.length) throw new Error(mediaItemsResult.errors[0].message || 'Failed to load media items.');
+        if (productVariantsResult.errors?.length) throw new Error(productVariantsResult.errors[0].message || 'Failed to load product variants.');
 
         this.allBrands = (brandsResult.data || [])
           .filter((brand) => normalizeText(brand?.status).toLowerCase() !== 'inactive')
@@ -806,15 +783,11 @@ export default {
     addToCart() {
       if (!this.selectedProduct) {
         this.status = 'No product selected.';
-        this.cartNotice = 'No product selected.';
-        this.cartNoticeType = 'error';
         return;
       }
 
       if (this.selectedProduct.variants?.length && !this.selectedVariant) {
         this.status = 'Please select a valid colour and size.';
-        this.cartNotice = 'Please select a valid colour and size.';
-        this.cartNoticeType = 'error';
         return;
       }
 
@@ -862,21 +835,32 @@ export default {
       localStorage.setItem('cart', JSON.stringify(existingCart));
       window.dispatchEvent(new Event('cart-updated'));
 
-      console.log('Add to cart item:', cartItem);
-
       this.status = `${cartItem.title} added to cart`;
-      this.cartNotice = `${cartItem.title} added to cart`;
-      this.cartNoticeType = 'success';
+      this.cartConfirmItem = cartItem;
+      this.cartConfirmOpen = true;
 
-      if (this.cartNoticeTimeout) {
-        clearTimeout(this.cartNoticeTimeout);
+      this.$nextTick(() => {
+        if (
+          this.$refs.cartConfirmDialog &&
+          typeof this.$refs.cartConfirmDialog.showModal === 'function' &&
+          !this.$refs.cartConfirmDialog.open
+        ) {
+          this.$refs.cartConfirmDialog.showModal();
+        }
+      });
+    },
+
+    closeCartConfirm() {
+      if (
+        this.$refs.cartConfirmDialog &&
+        typeof this.$refs.cartConfirmDialog.close === 'function' &&
+        this.$refs.cartConfirmDialog.open
+      ) {
+        this.$refs.cartConfirmDialog.close();
       }
 
-      this.cartNoticeTimeout = setTimeout(() => {
-        this.cartNotice = '';
-        this.cartNoticeType = 'success';
-        this.cartNoticeTimeout = null;
-      }, 2500);
+      this.cartConfirmOpen = false;
+      this.cartConfirmItem = null;
     },
 
     closeDialog() {
@@ -884,12 +868,7 @@ export default {
         this.$refs.productDialog.close();
       }
 
-      if (this.cartNoticeTimeout) {
-        clearTimeout(this.cartNoticeTimeout);
-        this.cartNoticeTimeout = null;
-      }
-      this.cartNotice = '';
-      this.cartNoticeType = 'success';
+      this.closeCartConfirm();
 
       this.selectedProduct = null;
       this.selectedColor = '';
