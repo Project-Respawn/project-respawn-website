@@ -1,118 +1,17 @@
-const MOCK_EVENTS = [
-  {
-    id: "event-1",
-    title: "Respawn Community Kickoff",
-    description: "A relaxed community hangout to welcome new members, talk through the platform, and help people find where to start.",
-    startAt: "2026-06-19T19:00:00Z",
-    endAt: "2026-06-19T20:30:00Z",
-    locationType: "online",
-    platform: "discord",
-    category: "community",
-    featured: true,
-    status: "upcoming",
-    host: "Project Respawn Team",
-    rewardText: "+50 XP · Community intro badge",
-    recapText: "Highlights and member takeaways",
-    ctaLabel: "Join event",
-  },
-  {
-    id: "event-2",
-    title: "Courage Quest Planning Session",
-    description: "Plan your next challenge with others and get ideas for easy confidence-building wins.",
-    startAt: "2026-06-20T18:30:00Z",
-    endAt: "2026-06-20T19:30:00Z",
-    locationType: "online",
-    platform: "site",
-    category: "quest",
-    featured: false,
-    status: "upcoming",
-    host: "Quest Guides",
-    rewardText: "+30 XP · Quest prep bonus",
-    recapText: "Quest planning notes",
-    ctaLabel: "RSVP",
-  },
-  {
-    id: "event-3",
-    title: "Twitch Challenge Night",
-    description: "A live stream event with shared progress moments and community challenge prompts.",
-    startAt: "2026-06-22T20:00:00Z",
-    endAt: "2026-06-22T22:00:00Z",
-    locationType: "online",
-    platform: "twitch",
-    category: "gaming",
-    featured: false,
-    status: "upcoming",
-    host: "Ravens Community Gaming",
-    rewardText: "+40 XP · Live participation",
-    recapText: "Challenge clips and recap",
-    ctaLabel: "Watch live",
-  },
-  {
-    id: "event-4",
-    title: "Beginner Support Meetup",
-    description: "A low-pressure event for people who want help getting started with quests and community spaces.",
-    startAt: "2026-06-24T17:00:00Z",
-    endAt: "2026-06-24T18:00:00Z",
-    locationType: "online",
-    platform: "discord",
-    category: "support",
-    featured: false,
-    status: "upcoming",
-    host: "Community Helpers",
-    rewardText: "+20 XP · Welcome support reward",
-    recapText: "Tips shared during the meetup",
-    ctaLabel: "Reserve spot",
-  },
-  {
-    id: "event-5",
-    title: "Project Respawn Dev Update Live",
-    description: "A live look at platform progress, upcoming features, and what the community wants next.",
-    startAt: "2026-06-27T19:30:00Z",
-    endAt: "2026-06-27T20:30:00Z",
-    locationType: "online",
-    platform: "site",
-    category: "development",
-    featured: false,
-    status: "upcoming",
-    host: "Project Respawn Dev",
-    rewardText: "+25 XP · Early feature insight",
-    recapText: "Feature roadmap notes",
-    ctaLabel: "View event",
-  },
-  {
-    id: "event-6",
-    title: "Community Achievement Showcase",
-    description: "Members share recent wins, progress milestones, and moments they are proud of.",
-    startAt: "2026-06-12T18:00:00Z",
-    endAt: "2026-06-12T19:15:00Z",
-    locationType: "online",
-    platform: "discord",
-    category: "community",
-    featured: false,
-    status: "past",
-    host: "Community Team",
-    rewardText: "+15 XP",
-    recapText: "Achievement highlights from the session",
-    ctaLabel: "View details",
-  },
-  {
-    id: "event-7",
-    title: "Quest Reflection Circle",
-    description: "A slower session focused on reflection, encouragement, and building momentum after recent challenges.",
-    startAt: "2026-06-10T19:00:00Z",
-    endAt: "2026-06-10T20:00:00Z",
-    locationType: "online",
-    platform: "site",
-    category: "quest",
-    featured: false,
-    status: "past",
-    host: "Quest Support",
-    rewardText: "+15 XP",
-    recapText: "Reflection prompts and takeaways",
-    ctaLabel: "View details",
-  },
-];
+import { getCurrentUser, fetchAuthSession } from "aws-amplify/auth";
+import { generateClient } from "aws-amplify/data";
 
+let client = null;
+function getClient() {
+  if (!client) {
+    client = generateClient();
+  }
+  return client;
+}
+
+/* =========================
+   SHARED HELPERS
+========================= */
 function startOfMonth(date) {
   return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1));
 }
@@ -127,6 +26,21 @@ function addDays(date, amount) {
   return clone;
 }
 
+function startOfUtcWeek(dateInput) {
+  const date = new Date(dateInput);
+  const day = date.getUTCDay();
+  const diff = day === 0 ? -6 : 1 - day;
+  const monday = addDays(date, diff);
+  return new Date(Date.UTC(monday.getUTCFullYear(), monday.getUTCMonth(), monday.getUTCDate()));
+}
+
+function endOfUtcWeek(dateInput) {
+  const start = startOfUtcWeek(dateInput);
+  return new Date(
+    Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate() + 6, 23, 59, 59, 999)
+  );
+}
+
 function isSameUtcDay(a, b) {
   return (
     a.getUTCFullYear() === b.getUTCFullYear() &&
@@ -135,79 +49,135 @@ function isSameUtcDay(a, b) {
   );
 }
 
-function normaliseEvent(event) {
-  const start = new Date(event.startAt);
-  const end = new Date(event.endAt);
-
-  const locationLabelMap = {
+function toDisplayLocationLabel(value) {
+  const map = {
     online: "Online",
+    in_person: "In person",
     "in-person": "In person",
   };
+  return map[value] || value || "Unknown";
+}
 
-  const platformLabelMap = {
+function toDisplayPlatformLabel(value) {
+  const map = {
     discord: "Discord",
     twitch: "Twitch",
     site: "Project Respawn",
+    other: "Other",
   };
+  return map[value] || value || "Platform";
+}
 
-  const categoryLabelMap = {
+function toDisplayCategoryLabel(value) {
+  const map = {
     community: "Community",
     quest: "Quest",
     gaming: "Gaming",
     support: "Support",
     development: "Development",
   };
+  return map[value] || value || "General";
+}
 
-  const statusLabelMap = {
+function toDisplayStatusLabel(value) {
+  const map = {
     upcoming: "Upcoming",
     live: "Live",
     past: "Past",
+    cancelled: "Cancelled",
   };
+  return map[value] || value || "Planned";
+}
+
+function deriveEventStatus(startAt, endAt, persistedStatus) {
+  if (persistedStatus === "cancelled") return "cancelled";
+
+  const now = new Date();
+  const start = new Date(startAt);
+  const end = new Date(endAt);
+
+  if (now < start) return "upcoming";
+  if (now >= start && now <= end) return "live";
+  return "past";
+}
+
+function normaliseEvent(event) {
+  const start = new Date(event.startAt);
+  const end = new Date(event.endAt);
+  const status = deriveEventStatus(event.startAt, event.endAt, event.status);
 
   return {
     ...event,
     startDate: start,
     endDate: end,
-    locationLabel: locationLabelMap[event.locationType] || event.locationType,
-    platformLabel: platformLabelMap[event.platform] || event.platform,
-    categoryLabel: categoryLabelMap[event.category] || event.category,
-    statusLabel: statusLabelMap[event.status] || event.status,
+    status,
+    statusLabel: toDisplayStatusLabel(status),
+    locationLabel: toDisplayLocationLabel(event.locationType),
+    platformLabel: toDisplayPlatformLabel(event.platform),
+    categoryLabel: toDisplayCategoryLabel(event.category),
+    featured: Boolean(event.featured),
+    rewardText: event.rewardText || "",
+    recapText: event.recapText || "",
+    ctaLabel: event.ctaLabel || "View event",
   };
+}
+
+function emptySuggestForm() {
+  return {
+    title: "",
+    description: "",
+    startAt: "",
+    endAt: "",
+    locationType: "online",
+    platform: "discord",
+    category: "community",
+    host: "",
+    rewardText: "",
+    notes: "",
+  };
+}
+
+function getErrorMessage(error, fallback) {
+  if (error?.message) return error.message;
+
+  if (Array.isArray(error?.errors) && error.errors.length) {
+    return error.errors.map((item) => item.message).join(", ");
+  }
+
+  return fallback;
 }
 
 export default {
   name: "EventsPage",
 
+  /* =========================
+     DATA SECTION
+  ========================= */
   data() {
     return {
+      events: [],
+      isLoadingEvents: false,
+      eventsError: "",
+
+      currentUser: null,
+      currentUserRole: "guest",
+
       activeView: "upcoming",
       selectedLocation: "all",
       selectedCategory: "all",
       showPastEvents: false,
       showSuggestModal: false,
-      calendarBaseDate: new Date("2026-06-01T00:00:00Z"),
-      events: MOCK_EVENTS.map(normaliseEvent),
+      calendarBaseDate: new Date(),
 
-      sectionStatus: {
-        hero: { inProgress: true },
-
-        summaryNext: { comingSoon: true },
-        summaryUpcoming: { comingSoon: true },
-        summaryThisWeek: { comingSoon: true },
-        summaryPast: { comingSoon: true },
-
-        upcoming: { comingSoon: true },
-        filters: { comingSoon: true },
-        featured: { comingSoon: true },
-        thisWeek: { comingSoon: true },
-        pastEvents: { comingSoon: true },
-        suggestEvent: { comingSoon: true },
-      },
+      isSubmittingSuggestion: false,
+      suggestionError: "",
+      suggestionSuccess: false,
+      suggestEventForm: emptySuggestForm(),
 
       locationFilters: [
         { label: "All formats", value: "all" },
         { label: "Online", value: "online" },
-        { label: "In person", value: "in-person" },
+        { label: "In person", value: "in_person" },
       ],
 
       categoryFilters: [
@@ -221,6 +191,9 @@ export default {
     };
   },
 
+  /* =========================
+     COMPUTED: FILTER SECTION
+  ========================= */
   computed: {
     filteredEvents() {
       return this.events.filter((event) => {
@@ -234,27 +207,52 @@ export default {
       });
     },
 
+    /* =========================
+       COMPUTED: UPCOMING SECTION
+    ========================= */
     filteredUpcomingEvents() {
       return this.filteredEvents
         .filter((event) => event.status === "upcoming" || event.status === "live")
         .sort((a, b) => a.startDate - b.startDate);
     },
 
+    /* =========================
+       COMPUTED: FEATURED SECTION
+    ========================= */
     featuredEvent() {
       const featured = this.filteredUpcomingEvents.find((event) => event.featured);
       return featured || this.filteredUpcomingEvents[0] || null;
     },
 
-    upcomingSoonEvents() {
-      return this.filteredUpcomingEvents.slice(0, 3);
+    /* =========================
+       COMPUTED: THIS WEEK SECTION
+    ========================= */
+    thisWeekEvents() {
+      const now = new Date();
+      const weekStart = startOfUtcWeek(now);
+      const weekEnd = endOfUtcWeek(now);
+
+      return this.filteredUpcomingEvents.filter((event) => {
+        return event.startDate >= weekStart && event.startDate <= weekEnd;
+      });
     },
 
+    upcomingSoonEvents() {
+      return this.thisWeekEvents.slice(0, 3);
+    },
+
+    /* =========================
+       COMPUTED: PAST EVENTS SECTION
+    ========================= */
     pastEvents() {
       return this.filteredEvents
         .filter((event) => event.status === "past")
         .sort((a, b) => b.startDate - a.startDate);
     },
 
+    /* =========================
+       COMPUTED: SUMMARY SECTION
+    ========================= */
     nextEventTitle() {
       return this.filteredUpcomingEvents[0]?.title || "No event planned";
     },
@@ -265,6 +263,9 @@ export default {
       return `${this.formatEventDate(nextEvent.startAt)} · ${this.formatEventTimeRange(nextEvent.startAt, nextEvent.endAt)}`;
     },
 
+    /* =========================
+       COMPUTED: CALENDAR SECTION
+    ========================= */
     currentCalendarLabel() {
       return this.calendarBaseDate.toLocaleDateString("en-GB", {
         month: "long",
@@ -299,13 +300,91 @@ export default {
 
       return days;
     },
+
+    /* =========================
+       COMPUTED: ACCESS SECTION
+    ========================= */
+    canSuggestEvents() {
+      return this.currentUserRole !== "guest";
+    },
+
+    canManageEvents() {
+      return this.currentUserRole === "admin" || this.currentUserRole === "staff";
+    },
+  },
+
+  /* =========================
+     LIFECYCLE SECTION
+  ========================= */
+  async mounted() {
+    await Promise.all([this.loadCurrentUser(), this.loadEvents()]);
   },
 
   methods: {
+    /* =========================
+       METHODS: DATA ACCESS SECTION
+    ========================= */
+    async loadCurrentUser() {
+      try {
+        const user = await getCurrentUser();
+        const session = await fetchAuthSession();
+
+        this.currentUser = user;
+
+        const groups = session?.tokens?.accessToken?.payload?.["cognito:groups"] || [];
+
+        if (groups.includes("SuperAdmin") || groups.includes("Admin")) {
+          this.currentUserRole = "admin";
+          return;
+        }
+
+        if (groups.includes("Staff")) {
+          this.currentUserRole = "staff";
+          return;
+        }
+
+        this.currentUserRole = "member";
+      } catch (error) {
+        this.currentUser = null;
+        this.currentUserRole = "guest";
+      }
+    },
+
+    async loadEvents() {
+      this.isLoadingEvents = true;
+      this.eventsError = "";
+
+      try {
+        const response = await getClient().models.Event.list({
+          limit: 200,
+        });
+
+        if (response?.errors?.length) {
+          throw new Error(response.errors.map((item) => item.message).join(", "));
+        }
+
+        this.events = (response?.data || [])
+          .filter(Boolean)
+          .map(normaliseEvent)
+          .sort((a, b) => a.startDate - b.startDate);
+      } catch (error) {
+        this.events = [];
+        this.eventsError = getErrorMessage(error, "Unable to load events right now.");
+      } finally {
+        this.isLoadingEvents = false;
+      }
+    },
+
+    /* =========================
+       METHODS: HERO SECTION
+    ========================= */
     setActiveView(view) {
       this.activeView = view;
     },
 
+    /* =========================
+       METHODS: FILTER SECTION
+    ========================= */
     setLocationFilter(value) {
       this.selectedLocation = value;
     },
@@ -314,37 +393,124 @@ export default {
       this.selectedCategory = value;
     },
 
+    /* =========================
+       METHODS: PAST EVENTS SECTION
+    ========================= */
     toggleShowPast() {
       this.showPastEvents = !this.showPastEvents;
     },
 
+    /* =========================
+       METHODS: SUGGEST EVENT SECTION
+    ========================= */
     openSuggestEvent() {
+      this.suggestionError = "";
+      this.suggestionSuccess = false;
       this.showSuggestModal = true;
     },
 
     closeSuggestEvent() {
+      if (this.isSubmittingSuggestion) return;
       this.showSuggestModal = false;
+      this.suggestionError = "";
     },
 
-    markSectionDone(sectionKey) {
-      if (!this.sectionStatus[sectionKey]) return;
-
-      this.sectionStatus[sectionKey] = {
-        ...this.sectionStatus[sectionKey],
-        comingSoon: false,
-        inProgress: false,
-      };
+    resetSuggestEventForm() {
+      this.suggestEventForm = emptySuggestForm();
     },
 
-    markSectionComingSoon(sectionKey) {
-      if (!this.sectionStatus[sectionKey]) return;
+    validateSuggestEventForm() {
+      if (!this.currentUser) {
+        return "You need to sign in before suggesting an event.";
+      }
 
-      this.sectionStatus[sectionKey] = {
-        ...this.sectionStatus[sectionKey],
-        comingSoon: true,
-      };
+      if (!this.suggestEventForm.title.trim()) {
+        return "Please add an event title.";
+      }
+
+      if (!this.suggestEventForm.description.trim()) {
+        return "Please add an event description.";
+      }
+
+      if (
+        this.suggestEventForm.startAt &&
+        this.suggestEventForm.endAt &&
+        new Date(this.suggestEventForm.endAt) < new Date(this.suggestEventForm.startAt)
+      ) {
+        return "The end time must be after the start time.";
+      }
+
+      return "";
     },
 
+    async submitSuggestEvent() {
+      this.suggestionError = "";
+      this.suggestionSuccess = false;
+
+      const validationError = this.validateSuggestEventForm();
+      if (validationError) {
+        this.suggestionError = validationError;
+        return;
+      }
+
+      this.isSubmittingSuggestion = true;
+
+      try {
+        const input = {
+          title: this.suggestEventForm.title.trim(),
+          description: this.suggestEventForm.description.trim(),
+          startAt: this.suggestEventForm.startAt || null,
+          endAt: this.suggestEventForm.endAt || null,
+          locationType: this.suggestEventForm.locationType || null,
+          platform: this.suggestEventForm.platform || null,
+          category: this.suggestEventForm.category || null,
+          host: this.suggestEventForm.host?.trim() || null,
+          rewardText: this.suggestEventForm.rewardText?.trim() || null,
+          notes: this.suggestEventForm.notes?.trim() || null,
+          status: "pending",
+          owner: this.currentUser?.userId || null,
+          ownerUserId: this.currentUser?.userId || null,
+          ownerDisplayName: this.currentUser?.signInDetails?.loginId || this.currentUser?.username || null,
+        };
+
+        const response = await getClient().models.EventSuggestion.create(input);
+
+        if (response?.errors?.length) {
+          throw new Error(response.errors.map((item) => item.message).join(", "));
+        }
+
+        this.suggestionSuccess = true;
+        this.resetSuggestEventForm();
+      } catch (error) {
+        this.suggestionError = getErrorMessage(
+          error,
+          "We could not submit your suggestion right now."
+        );
+      } finally {
+        this.isSubmittingSuggestion = false;
+      }
+    },
+
+    /* =========================
+       METHODS: UPCOMING SECTION
+    ========================= */
+    handleEventCta(event) {
+      if (event?.ctaUrl) {
+        window.open(event.ctaUrl, "_blank", "noopener");
+        return;
+      }
+
+      if (event?.slug) {
+        this.$router.push({ name: "event-details", params: { slug: event.slug } });
+        return;
+      }
+
+      this.$router.push({ name: "events" });
+    },
+
+    /* =========================
+       METHODS: FORMATTER SECTION
+    ========================= */
     formatEventDate(dateInput) {
       const date = new Date(dateInput);
       return date.toLocaleDateString("en-GB", {
@@ -398,6 +564,7 @@ export default {
         "is-upcoming": status === "upcoming",
         "is-live": status === "live",
         "is-past": status === "past",
+        "is-cancelled": status === "cancelled",
       };
     },
   },

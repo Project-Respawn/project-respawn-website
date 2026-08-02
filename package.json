@@ -6,15 +6,17 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "node ./scripts/validate-vite-api-base-url.mjs && vite build",
+    "preview": "vite preview",
+    "cleanup:media:dry": "node ./scripts/cleanup-orphaned-media.mjs",
+    "cleanup:media:apply": "node ./scripts/cleanup-orphaned-media.mjs --apply"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.20",
     "@fullcalendar/daygrid": "^6.1.20",
     "@fullcalendar/vue3": "^6.1.20",
     "@revolut/checkout": "1.1.25",
-    "aws-amplify": "^6.17.0",
+    "aws-amplify": "6.18.0",
     "bootstrap": "^5.3.8",
     "vue": "^3.5.34",
     "vue-router": "^5.0.6"
@@ -23,14 +25,16 @@
     "@aws-amplify/backend": "^1.22.0",
     "@aws-amplify/backend-cli": "^1.8.2",
     "@aws-sdk/client-cognito-identity-provider": "^3.1047.0",
+    "@aws-sdk/client-s3": "^3.1047.0",
     "@types/aws-lambda": "^8.10.161",
     "@types/node": "25.9.1",
     "@vitejs/plugin-vue": "^6.0.6",
-    "aws-cdk-lib": "^2.253.1",
+    "aws-cdk-lib": "2.260.0",
     "constructs": "^10.6.0",
     "esbuild": "^0.28.0",
     "tsx": "^4.21.0",
     "typescript": "^6.0.3",
-    "vite": "^8.0.11"
+    "vite": "^8.0.11",
+    "xlsx": "0.18.5"
   }
 }

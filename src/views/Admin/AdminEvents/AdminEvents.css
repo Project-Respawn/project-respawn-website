@@ -1,0 +1,500 @@
+.admin-events-page {
+  display: grid;
+  gap: 22px;
+  color: #f3f7f4;
+}
+
+.admin-events-hero,
+.admin-events-card,
+.admin-events-summary-card,
+.admin-events-wizard,
+.admin-events-wizard-side {
+  background: linear-gradient(180deg, rgba(14, 22, 19, 0.98) 0%, rgba(10, 16, 14, 0.98) 100%);
+  border: 1px solid rgba(143, 212, 160, 0.12);
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.22);
+}
+
+.admin-events-hero {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 24px;
+  align-items: flex-end;
+}
+
+.admin-events-kicker,
+.admin-events-card-kicker,
+.admin-events-summary-label,
+.admin-events-suggestion-label,
+.admin-events-field-label {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #8fd4a0;
+}
+
+.admin-events-title,
+.admin-events-card-title,
+.admin-events-list-title,
+.admin-events-suggestion-title,
+.admin-events-tag-group-title {
+  margin: 0;
+  color: #f5fff7;
+}
+
+.admin-events-title {
+  font-size: clamp(2rem, 1.6rem + 1vw, 2.9rem);
+  line-height: 1;
+}
+
+.admin-events-copy,
+.admin-events-list-copy,
+.admin-events-suggestion-copy,
+.admin-events-meta-row,
+.admin-events-empty,
+.admin-events-free-note,
+.admin-events-field-help {
+  color: rgba(226, 241, 231, 0.76);
+}
+
+.admin-events-hero-copy {
+  max-width: 780px;
+}
+
+.admin-events-hero-actions,
+.admin-events-inline-actions,
+.admin-events-list-actions,
+.admin-events-suggestion-actions,
+.admin-events-ticket-actions,
+.admin-events-wizard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.admin-events-btn,
+.admin-events-mode-chip,
+.admin-events-step,
+.admin-events-tag-chip,
+.admin-events-close {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  transition: all 0.2s ease;
+}
+
+.admin-events-btn {
+  min-height: 42px;
+  padding: 11px 16px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.admin-events-btn--primary {
+  color: #041012;
+  background: linear-gradient(135deg, #97fba9 0%, #59d98e 100%);
+  box-shadow: 0 10px 24px rgba(89, 217, 142, 0.2);
+}
+
+.admin-events-btn--secondary,
+.admin-events-btn--ghost,
+.admin-events-mode-chip,
+.admin-events-step,
+.admin-events-tag-chip,
+.admin-events-close {
+  color: #e9f8ec;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(143, 212, 160, 0.14);
+}
+
+.admin-events-btn--ghost:hover,
+.admin-events-btn--secondary:hover,
+.admin-events-mode-chip:hover,
+.admin-events-step:hover,
+.admin-events-tag-chip:hover,
+.admin-events-close:hover {
+  background: rgba(109, 255, 139, 0.08);
+  border-color: rgba(109, 255, 139, 0.24);
+}
+
+.admin-events-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.admin-events-summary-card {
+  padding: 18px 20px;
+}
+
+.admin-events-summary-value {
+  margin: 0;
+  font-size: clamp(1.8rem, 1.5rem + 1vw, 2.6rem);
+  color: #f5fff7;
+}
+
+.admin-events-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(320px, 0.95fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.admin-events-card {
+  padding: 20px;
+  display: grid;
+  gap: 16px;
+}
+
+.admin-events-card--wide {
+  grid-column: 1 / 2;
+  grid-row: span 2;
+}
+
+.admin-events-card-header,
+.admin-events-list-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+/* Inputs and selects */
+
+.admin-events-search,
+.admin-events-input,
+.admin-events-select,
+.admin-events-textarea {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid rgba(143, 212, 160, 0.14);
+  color: #f3f7f4;
+  padding: 12px 14px;
+  font: inherit;
+}
+
+.admin-events-search,
+.admin-events-input,
+.admin-events-textarea {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.admin-events-select {
+  background: #101916;
+  appearance: auto;
+  -webkit-appearance: menulist;
+  -moz-appearance: menulist;
+}
+
+.admin-events-select option {
+  color: #08110d;
+  background: #f3f7f4;
+}
+
+.admin-events-select option:checked {
+  color: #ffffff;
+  background: #2f6fcc;
+}
+
+.admin-events-search::placeholder,
+.admin-events-input::placeholder,
+.admin-events-textarea::placeholder {
+  color: rgba(226, 241, 231, 0.45);
+}
+
+.admin-events-search:focus,
+.admin-events-input:focus,
+.admin-events-select:focus,
+.admin-events-textarea:focus {
+  outline: none;
+  border-color: rgba(109, 255, 139, 0.45);
+  box-shadow: 0 0 0 3px rgba(109, 255, 139, 0.12);
+}
+
+.admin-events-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.admin-events-textarea--short {
+  min-height: 100px;
+}
+
+.admin-events-textarea--large {
+  min-height: 220px;
+}
+
+.admin-events-list,
+.admin-events-suggestion-list,
+.admin-events-tag-groups,
+.admin-events-tag-group,
+.admin-events-ticket-builder,
+.admin-events-step-panel,
+.admin-events-suggestion-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-events-list-item,
+.admin-events-suggestion-item,
+.admin-events-ticket-card {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(143, 212, 160, 0.12);
+}
+
+.admin-events-list-item {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+.admin-events-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8fd4a0;
+  background: rgba(109, 255, 139, 0.08);
+  border: 1px solid rgba(109, 255, 139, 0.16);
+}
+
+.admin-events-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  font-size: 13px;
+}
+
+.admin-events-tag-form,
+.admin-events-field-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-events-field-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.admin-events-field {
+  display: grid;
+  gap: 8px;
+}
+
+.admin-events-field span {
+  font-size: 13px;
+  font-weight: 700;
+  color: #dff0e3;
+}
+
+.admin-events-field-help {
+  margin: 0;
+  font-size: 12px;
+}
+
+.admin-events-field--full {
+  grid-column: 1 / -1;
+}
+
+.admin-events-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #dff0e3;
+  font-size: 14px;
+}
+
+.admin-events-tag-list,
+.admin-events-ticket-mode,
+.admin-events-stepper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.admin-events-tag-chip.is-selected,
+.admin-events-mode-chip.is-active,
+.admin-events-step.is-active {
+  color: #041012;
+  background: linear-gradient(135deg, #97fba9 0%, #59d98e 100%);
+  border-color: transparent;
+}
+
+.admin-events-empty,
+.admin-events-free-note {
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(143, 212, 160, 0.14);
+}
+
+/* Category cards */
+
+.admin-events-choice-group {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.admin-events-category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.admin-events-category-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 58px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(143, 212, 160, 0.14);
+  background: rgba(255, 255, 255, 0.03);
+  color: #e9f8ec;
+  cursor: pointer;
+  text-align: center;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.admin-events-category-card:hover {
+  background: rgba(109, 255, 139, 0.08);
+  border-color: rgba(109, 255, 139, 0.24);
+  transform: translateY(-1px);
+}
+
+.admin-events-category-card.is-selected {
+  color: #041012;
+  background: linear-gradient(135deg, #97fba9 0%, #59d98e 100%);
+  border-color: transparent;
+  box-shadow: 0 10px 24px rgba(89, 217, 142, 0.18);
+}
+
+.admin-events-category-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.admin-events-category-input:focus-visible + .admin-events-category-label {
+  outline: 2px solid #baf8c8;
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
+.admin-events-category-label {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Wizard */
+
+.admin-events-wizard-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 28px;
+  background: rgba(5, 9, 8, 0.78);
+  backdrop-filter: blur(8px);
+  overflow-y: auto;
+}
+
+.admin-events-wizard {
+  width: min(1400px, 100%);
+  padding: 20px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(320px, 0.8fr);
+  gap: 18px;
+}
+
+.admin-events-wizard-main,
+.admin-events-wizard-side {
+  display: grid;
+  gap: 18px;
+}
+
+.admin-events-wizard-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.admin-events-close {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.admin-events-wizard-form {
+  display: grid;
+  gap: 18px;
+}
+
+.admin-events-suggestion-block {
+  display: grid;
+  gap: 6px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(143, 212, 160, 0.1);
+}
+
+@media (max-width: 1180px) {
+  .admin-events-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-events-grid,
+  .admin-events-wizard {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-events-card--wide {
+    grid-column: auto;
+    grid-row: auto;
+  }
+}
+
+@media (max-width: 780px) {
+  .admin-events-hero,
+  .admin-events-card-header,
+  .admin-events-list-item,
+  .admin-events-list-top,
+  .admin-events-wizard-header {
+    display: grid;
+  }
+
+  .admin-events-field-grid,
+  .admin-events-summary-grid,
+  .admin-events-category-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-events-page {
+    gap: 16px;
+  }
+}

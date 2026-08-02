@@ -1,0 +1,68 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyInsecureTransport",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-9iduepye9i6n",
+        "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-9iduepye9i6n/*"
+      ],
+      "Condition": {
+        "Bool": {
+          "aws:SecureTransport": "false"
+        }
+      }
+    },
+    {
+      "Sid": "AllowPublicReadForProductAndPublicPaths",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": [
+        "s3:GetObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-9iduepye9i6n/products/*",
+        "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-9iduepye9i6n/public/*",
+        "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-9iduepye9i6n/public/merch/*"
+      ]
+    },
+    {
+      "Sid": "AllowListBucketForPublicPrefixes",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": [
+        "s3:ListBucket"
+      ],
+      "Resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-9iduepye9i6n",
+      "Condition": {
+        "StringLike": {
+          "s3:prefix": [
+            "products/*",
+            "public/*",
+            "public/merch/*"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "AllowAmplifyAutoDeleteRole",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-QfjEGI3chKCs"
+      },
+      "Action": [
+        "s3:PutBucketPolicy",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:DeleteObject*"
+      ],
+      "Resource": [
+        "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-9iduepye9i6n",
+        "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-9iduepye9i6n/*"
+      ]
+    }
+  ]
+}

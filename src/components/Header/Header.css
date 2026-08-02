@@ -54,6 +54,36 @@
   color: inherit;
 }
 
+/* Dropdown themed using global variables */
+.dropdown-menu {
+  background: linear-gradient(180deg, var(--bg2), var(--surface));
+  border: 1px solid rgba(255,255,255,0.04);
+  color: var(--text);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+}
+
+.dropdown-menu .dropdown-item {
+  color: var(--text);
+  background: transparent;
+}
+
+.dropdown-menu .dropdown-item:hover,
+.dropdown-menu .dropdown-item:focus {
+  background: rgba(212,165,255,0.04); /* soft purple hover */
+  color: var(--accent-2);
+}
+
+.dropdown-menu .dropdown-divider {
+  border-top: 1px solid rgba(255,255,255,0.03);
+  opacity: 0.6;
+}
+
+/* Ensure .show uses same background (Bootstrap may toggle visibility only) */
+.dropdown-menu.show {
+  display: block;
+}
+
+
 .cart-nav-item {
   position: relative;
   display: flex;

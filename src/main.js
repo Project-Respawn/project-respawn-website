@@ -15,6 +15,7 @@ try {
   const app = createApp(App);
   app.use(router);
   app.mount('#app');
+
 } catch (error) {
   console.error('Failed to configure Amplify:', error);
 }

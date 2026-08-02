@@ -1,0 +1,290 @@
+.applications-page {
+  color: #f3f7ff;
+  background: radial-gradient(circle at top, #151122, #05030b 55%, #020108 100%);
+  min-height: 100vh;
+  padding-bottom: 4rem;
+}
+
+.applications-shell {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3.5rem 1.5rem 4rem;
+}
+
+/* Header */
+
+.applications-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.applications-header-copy h1 {
+  font-size: 2.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.applications-subtitle {
+  max-width: 640px;
+  line-height: 1.55;
+  color: #cfd6ff;
+}
+
+.applications-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+  color: #b7c3ff;
+  margin-bottom: 0.4rem;
+}
+
+/* Step indicator */
+
+.applications-step-indicator {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.step-label {
+  font-size: 0.85rem;
+  color: #b1b9ff;
+}
+
+.step-bar {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.step-bar-segment {
+  flex: 1;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(90, 72, 160, 0.6);
+}
+
+.step-bar-segment.is-active {
+  background: linear-gradient(90deg, #7a5cff, #c05cff);
+}
+
+/* Form */
+
+.applications-form {
+  background: rgba(12, 8, 32, 0.95);
+  border-radius: 1.25rem;
+  border: 1px solid rgba(147, 122, 255, 0.55);
+  padding: 1.75rem 1.6rem 1.6rem;
+  box-shadow: 0 24px 70px rgba(4, 3, 18, 0.85);
+}
+
+.application-step {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.step-title {
+  font-size: 1.6rem;
+}
+
+.step-intro {
+  font-size: 0.95rem;
+  color: #c9d2ff;
+}
+
+/* Role grid */
+
+.role-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.role-card {
+  text-align: left;
+  padding: 1rem 1.05rem;
+  border-radius: 0.9rem;
+  background: rgba(17, 10, 41, 0.9);
+  border: 1px solid rgba(138, 112, 255, 0.6);
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.08s ease;
+}
+
+.role-card h3 {
+  font-size: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.role-card p {
+  font-size: 0.9rem;
+  color: #d6deff;
+}
+
+.role-card:hover {
+  background: rgba(155, 130, 255, 0.14);
+  transform: translateY(-1px);
+}
+
+.role-card.is-selected {
+  background: linear-gradient(135deg, rgba(110, 86, 255, 0.35), rgba(190, 90, 255, 0.35));
+  border-color: rgba(201, 177, 255, 0.9);
+}
+
+/* Fields */
+
+.fields-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.field-label {
+  font-size: 0.9rem;
+  color: #dbe2ff;
+}
+
+.field-input,
+.field-textarea,
+.field-select {
+  background: rgba(10, 7, 30, 0.95);
+  border-radius: 0.6rem;
+  border: 1px solid rgba(122, 101, 220, 0.7);
+  padding: 0.55rem 0.7rem;
+  color: #f3f7ff;
+  font-size: 0.94rem;
+}
+
+.field-input:focus,
+.field-textarea:focus {
+  outline: none;
+  border-color: rgba(196, 151, 255, 0.95);
+  box-shadow: 0 0 0 1px rgba(196, 151, 255, 0.6);
+}
+
+.field-textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* Inline checkbox */
+
+.field-inline {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+.field-checkbox {
+  margin-top: 0.3rem;
+}
+
+.field-label-inline {
+  font-size: 0.9rem;
+  color: #dbe2ff;
+}
+
+/* Chips */
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.chip {
+  border-radius: 999px;
+  border: 1px solid rgba(145, 120, 255, 0.8);
+  background: rgba(15, 10, 40, 0.9);
+  color: #d7ddff;
+  padding: 0.25rem 0.8rem;
+  font-size: 0.86rem;
+  cursor: pointer;
+  transition: background 0.16s ease, border-color 0.16s ease, transform 0.08s ease;
+}
+
+.chip.is-selected {
+  background: linear-gradient(135deg, #7659ff, #c75bff);
+  border-color: rgba(210, 184, 255, 0.95);
+  color: #f7f8ff;
+}
+
+/* Step nav */
+
+.step-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+/* Buttons */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.55rem 1.3rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, transform 0.1s ease, box-shadow 0.18s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #6c52ff, #c45aff);
+  color: #f7f8ff;
+  box-shadow: 0 10px 28px rgba(52, 28, 135, 0.7);
+}
+
+.btn-primary:hover:enabled {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 32px rgba(52, 28, 135, 0.9);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-outline {
+  background: transparent;
+  color: #d1d7ff;
+  border: 1px solid rgba(169, 145, 255, 0.7);
+}
+
+.btn-outline:hover {
+  background: rgba(169, 145, 255, 0.12);
+}
+
+/* Responsive */
+
+@media (max-width: 800px) {
+  .applications-shell {
+    padding-top: 2.5rem;
+  }
+
+  .applications-header-copy h1 {
+    font-size: 2rem;
+  }
+
+  .role-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .step-nav {
+    flex-direction: column-reverse;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}

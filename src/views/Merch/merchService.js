@@ -1,20 +1,87 @@
-const API_BASE = '/api';
+import { getApiBaseUrl, joinApiUrl } from '../../config/apiBaseUrl';
 
-async function handleResponse(response, errorMessage) {
-  if (!response.ok) {
-    const text = await response.text();
-    throw new Error(`${errorMessage}: ${response.status} ${text}`);
+const API_BASE = getApiBaseUrl('merch API requests');
+
+function buildUrl(path) {
+  return joinApiUrl(API_BASE, path);
+}
+
+async function readResponseBody(response) {
+  const contentType = response.headers.get('content-type') || '';
+
+  if (contentType.includes('application/json')) {
+    try {
+      return await response.json();
+    } catch {
+      return null;
+    }
   }
 
-  return await response.json();
+  try {
+    return await response.text();
+  } catch {
+    return null;
+  }
+}
+
+function summarizeBody(body) {
+  if (body == null) return '';
+  if (typeof body === 'string') return body.slice(0, 300);
+
+  try {
+    return JSON.stringify(body).slice(0, 300);
+  } catch {
+    return String(body).slice(0, 300);
+  }
+}
+
+async function handleResponse(response, errorMessage) {
+  const contentType = response.headers.get('content-type') || '';
+  const body = await readResponseBody(response);
+
+  if (!response.ok) {
+    throw new Error(
+      `${errorMessage}: ${response.status} ${response.statusText} - ${summarizeBody(body)}`
+    );
+  }
+
+  if (!contentType.includes('application/json')) {
+    throw new Error(
+      `${errorMessage}: Expected JSON but received ${
+        contentType || 'unknown content type'
+      } - ${summarizeBody(body)}`
+    );
+  }
+
+  if (body == null || typeof body !== 'object') {
+    throw new Error(`${errorMessage}: Response JSON was empty or invalid.`);
+  }
+
+  return body;
 }
 
 export async function fetchProducts() {
-  const response = await fetch(`${API_BASE}/printful/products`);
+  const response = await fetch(buildUrl('/printful/products'), {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+    },
+  });
+
   return handleResponse(response, 'Failed to load products');
 }
 
 export async function fetchProductById(id) {
-  const response = await fetch(`${API_BASE}/printful/products/${id}`);
+  if (!id) {
+    throw new Error('Failed to load product: missing product id.');
+  }
+
+  const response = await fetch(buildUrl(`/printful/products/${encodeURIComponent(id)}`), {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+    },
+  });
+
   return handleResponse(response, `Failed to load product ${id}`);
 }

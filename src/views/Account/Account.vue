@@ -1,7 +1,13 @@
 <template>
   <main class="account-page">
     <section class="account-shell">
-      <template v-if="isSignedIn">
+      <div v-if="authStatus === 'loading'" class="card border mb-4">
+          <div class="card-body d-flex flex-wrap align-items-center gap-3">
+            <p class="mb-0">Checking your session…</p>
+          </div>
+      </div>
+
+      <template v-else-if="isSignedIn">
         <header class="account-topbar">
           <div>
             <div class="account-status-row">

@@ -126,11 +126,11 @@
                     </p>
 
                     <div
-                      v-if="board.allowedGroupLabels && board.allowedGroupLabels.length"
+                      v-if="board.threadCreateGroupLabels && board.threadCreateGroupLabels.length"
                       class="admin-forums-board-permissions"
                     >
                       <span
-                        v-for="groupLabel in board.allowedGroupLabels"
+                        v-for="groupLabel in board.threadCreateGroupLabels"
                         :key="groupLabel"
                         class="admin-forums-permission-tag"
                       >
@@ -335,8 +335,8 @@
               >
                 <input
                   type="checkbox"
-                  :checked="boardForm.allowedGroups.includes(group.value)"
-                  @change="toggleAllowedGroup(group.value)"
+                  :checked="(boardForm.threadCreateGroups || []).includes(group.value)"
+                  @change="toggleThreadCreateGroup(group.value)"
                 />
                 <span>{{ group.label }}</span>
               </label>

@@ -6,13 +6,6 @@
       ========================== -->
       <section class="events-card events-hero-card">
         <div class="events-hero-copy">
-          <div
-            v-if="sectionStatus.hero?.inProgress"
-            class="events-page-status-row"
-          >
-            <span class="events-page-status-badge">In Progress Layout Not Final</span>
-          </div>
-
           <p class="events-card-kicker">Project Respawn</p>
           <h1 class="events-hero-title">Events hub</h1>
           <p class="events-card-description">
@@ -43,10 +36,7 @@
         2. SUMMARY STRIP
       ========================== -->
       <section class="events-summary-grid">
-        <article
-          class="events-card events-summary-card"
-          :class="{ 'events-card--coming-soon': sectionStatus.summaryNext?.comingSoon }"
-        >
+        <article class="events-card events-summary-card">
           <p class="events-card-kicker">Next event</p>
           <h2 class="events-summary-value">
             {{ nextEventTitle }}
@@ -56,10 +46,7 @@
           </p>
         </article>
 
-        <article
-          class="events-card events-summary-card"
-          :class="{ 'events-card--coming-soon': sectionStatus.summaryUpcoming?.comingSoon }"
-        >
+        <article class="events-card events-summary-card">
           <p class="events-card-kicker">Upcoming</p>
           <h2 class="events-summary-number">
             {{ filteredUpcomingEvents.length }}
@@ -69,10 +56,7 @@
           </p>
         </article>
 
-        <article
-          class="events-card events-summary-card"
-          :class="{ 'events-card--coming-soon': sectionStatus.summaryThisWeek?.comingSoon }"
-        >
+        <article class="events-card events-summary-card">
           <p class="events-card-kicker">This week</p>
           <h2 class="events-summary-number">
             {{ upcomingSoonEvents.length }}
@@ -82,10 +66,7 @@
           </p>
         </article>
 
-        <article
-          class="events-card events-summary-card"
-          :class="{ 'events-card--coming-soon': sectionStatus.summaryPast?.comingSoon }"
-        >
+        <article class="events-card events-summary-card">
           <p class="events-card-kicker">Past recaps</p>
           <h2 class="events-summary-number">
             {{ pastEvents.length }}
@@ -103,10 +84,7 @@
         <!-- =========================
           3A. UPCOMING MAIN CARD
         ========================== -->
-        <article
-          class="events-card events-main-card"
-          :class="{ 'events-card--coming-soon': sectionStatus.upcoming?.comingSoon }"
-        >
+        <article class="events-card events-main-card">
           <div class="events-card-header">
             <div>
               <p class="events-card-kicker">Upcoming</p>
@@ -134,7 +112,17 @@
           </div>
 
           <template v-if="activeView === 'upcoming'">
-            <div v-if="filteredUpcomingEvents.length" class="events-main-list">
+            <div v-if="isLoadingEvents" class="events-empty-state">
+              <h3 class="events-empty-title">Loading events</h3>
+              <p class="events-empty-copy">Fetching the latest schedule now.</p>
+            </div>
+
+            <div v-else-if="eventsError" class="events-empty-state">
+              <h3 class="events-empty-title">Could not load events</h3>
+              <p class="events-empty-copy">{{ eventsError }}</p>
+            </div>
+
+            <div v-else-if="filteredUpcomingEvents.length" class="events-main-list">
               <article
                 v-for="event in filteredUpcomingEvents"
                 :key="event.id"
@@ -170,7 +158,11 @@
                 </div>
 
                 <div class="events-main-list-actions">
-                  <button type="button" class="events-btn events-btn--secondary">
+                  <button
+                    type="button"
+                    class="events-btn events-btn--secondary"
+                    @click="handleEventCta(event)"
+                  >
                     {{ event.ctaLabel }}
                   </button>
                 </div>
@@ -186,7 +178,17 @@
           </template>
 
           <template v-else>
-            <div class="events-mini-calendar">
+            <div v-if="isLoadingEvents" class="events-empty-state">
+              <h3 class="events-empty-title">Loading calendar</h3>
+              <p class="events-empty-copy">Fetching the latest event dates now.</p>
+            </div>
+
+            <div v-else-if="eventsError" class="events-empty-state">
+              <h3 class="events-empty-title">Could not load calendar</h3>
+              <p class="events-empty-copy">{{ eventsError }}</p>
+            </div>
+
+            <div v-else class="events-mini-calendar">
               <div class="events-mini-calendar-header">
                 <h3 class="events-mini-calendar-title">{{ currentCalendarLabel }}</h3>
                 <p class="events-mini-calendar-subtitle">
@@ -226,10 +228,7 @@
         <!-- =========================
           3B. FILTERS CARD
         ========================== -->
-        <article
-          class="events-card events-side-card"
-          :class="{ 'events-card--coming-soon': sectionStatus.filters?.comingSoon }"
-        >
+        <article class="events-card events-side-card">
           <div class="events-card-header">
             <div>
               <p class="events-card-kicker">Filters</p>
@@ -278,7 +277,6 @@
         <article
           v-if="featuredEvent"
           class="events-card events-side-card"
-          :class="{ 'events-card--coming-soon': sectionStatus.featured?.comingSoon }"
         >
           <div class="events-card-header">
             <div>
@@ -307,7 +305,11 @@
               <span>{{ featuredEvent.rewardText }}</span>
             </div>
 
-            <button type="button" class="events-btn events-btn--primary">
+            <button
+              type="button"
+              class="events-btn events-btn--primary"
+              @click="handleEventCta(featuredEvent)"
+            >
               {{ featuredEvent.ctaLabel }}
             </button>
           </div>
@@ -316,10 +318,7 @@
         <!-- =========================
           3D. THIS WEEK CARD
         ========================== -->
-        <article
-          class="events-card events-side-card"
-          :class="{ 'events-card--coming-soon': sectionStatus.thisWeek?.comingSoon }"
-        >
+        <article class="events-card events-side-card">
           <div class="events-card-header">
             <div>
               <p class="events-card-kicker">Soon</p>
@@ -349,10 +348,7 @@
         <!-- =========================
           3E. PAST EVENTS CARD
         ========================== -->
-        <article
-          class="events-card events-wide-card"
-          :class="{ 'events-card--coming-soon': sectionStatus.pastEvents?.comingSoon }"
-        >
+        <article class="events-card events-wide-card">
           <div class="events-card-header">
             <div>
               <p class="events-card-kicker">Recaps</p>
@@ -404,10 +400,7 @@
         <!-- =========================
           3F. SUGGEST CARD
         ========================== -->
-        <article
-          class="events-card events-side-card"
-          :class="{ 'events-card--coming-soon': sectionStatus.suggestEvent?.comingSoon }"
-        >
+        <article class="events-card events-side-card">
           <div class="events-card-header">
             <div>
               <p class="events-card-kicker">Community</p>
@@ -416,8 +409,12 @@
           </div>
 
           <div class="events-suggest-card-body">
-            <p class="events-card-description">
+            <p v-if="canSuggestEvents" class="events-card-description">
               Suggest a Discord hangout, stream session, challenge night, support meetup, or future community event.
+            </p>
+
+            <p v-else class="events-card-description">
+              Sign in to suggest a Discord hangout, stream session, challenge night, support meetup, or future community event.
             </p>
 
             <button
@@ -452,27 +449,140 @@
           <p class="events-card-kicker">Suggest event</p>
           <h2 class="events-card-title">Help shape the schedule</h2>
           <p class="events-card-description">
-            Later this can connect to your forum flow, a submission form, or an admin approval queue.
+            Submit an event idea for the Project Respawn team to review.
           </p>
 
-          <div class="events-modal-panels">
-            <div class="events-modal-panel">
-              <span class="events-filter-label">Ideas</span>
-              <ul class="events-modal-list">
-                <li>Weekly community hangout</li>
-                <li>Quest support meetup</li>
-                <li>Twitch challenge night</li>
-                <li>Beginner onboarding session</li>
-              </ul>
+          <form class="events-modal-form" @submit.prevent="submitSuggestEvent">
+            <label class="events-field">
+              <span class="events-filter-label">Title</span>
+              <input
+                v-model="suggestEventForm.title"
+                type="text"
+                class="events-input"
+                placeholder="Weekly community hangout"
+              />
+            </label>
+
+            <label class="events-field">
+              <span class="events-filter-label">Description</span>
+              <textarea
+                v-model="suggestEventForm.description"
+                class="events-textarea"
+                rows="4"
+                placeholder="What is the event about?"
+              ></textarea>
+            </label>
+
+            <div class="events-modal-grid">
+              <label class="events-field">
+                <span class="events-filter-label">Start time</span>
+                <input
+                  v-model="suggestEventForm.startAt"
+                  type="datetime-local"
+                  class="events-input"
+                />
+              </label>
+
+              <label class="events-field">
+                <span class="events-filter-label">End time</span>
+                <input
+                  v-model="suggestEventForm.endAt"
+                  type="datetime-local"
+                  class="events-input"
+                />
+              </label>
             </div>
 
-            <div class="events-modal-panel">
-              <span class="events-filter-label">Next step</span>
-              <p class="events-card-description">
-                Once the layout feels right, this button can open a forum thread creator, event request form, or moderation workflow.
-              </p>
+            <div class="events-modal-grid">
+              <label class="events-field">
+                <span class="events-filter-label">Format</span>
+                <select v-model="suggestEventForm.locationType" class="events-input">
+                  <option value="online">Online</option>
+                  <option value="in_person">In person</option>
+                </select>
+              </label>
+
+              <label class="events-field">
+                <span class="events-filter-label">Platform</span>
+                <select v-model="suggestEventForm.platform" class="events-input">
+                  <option value="discord">Discord</option>
+                  <option value="twitch">Twitch</option>
+                  <option value="site">Project Respawn</option>
+                  <option value="other">Other</option>
+                </select>
+              </label>
             </div>
-          </div>
+
+            <label class="events-field">
+              <span class="events-filter-label">Category</span>
+              <select v-model="suggestEventForm.category" class="events-input">
+                <option value="community">Community</option>
+                <option value="quest">Quest</option>
+                <option value="gaming">Gaming</option>
+                <option value="support">Support</option>
+                <option value="development">Development</option>
+              </select>
+            </label>
+
+            <div class="events-modal-grid">
+              <label class="events-field">
+                <span class="events-filter-label">Host</span>
+                <input
+                  v-model="suggestEventForm.host"
+                  type="text"
+                  class="events-input"
+                  placeholder="Who is running it?"
+                />
+              </label>
+
+              <label class="events-field">
+                <span class="events-filter-label">Reward text</span>
+                <input
+                  v-model="suggestEventForm.rewardText"
+                  type="text"
+                  class="events-input"
+                  placeholder="+25 XP · Community bonus"
+                />
+              </label>
+            </div>
+
+            <label class="events-field">
+              <span class="events-filter-label">Extra notes</span>
+              <textarea
+                v-model="suggestEventForm.notes"
+                class="events-textarea"
+                rows="3"
+                placeholder="Anything else the team should know?"
+              ></textarea>
+            </label>
+
+            <p v-if="suggestionError" class="events-form-message events-form-message--error">
+              {{ suggestionError }}
+            </p>
+
+            <p v-if="suggestionSuccess" class="events-form-message events-form-message--success">
+              Your suggestion has been submitted for review.
+            </p>
+
+            <div class="events-hero-actions">
+              <button
+                type="submit"
+                class="events-btn events-btn--primary"
+                :disabled="isSubmittingSuggestion"
+              >
+                {{ isSubmittingSuggestion ? 'Submitting...' : 'Submit suggestion' }}
+              </button>
+
+              <button
+                type="button"
+                class="events-btn events-btn--secondary"
+                @click="closeSuggestEvent"
+                :disabled="isSubmittingSuggestion"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </section>

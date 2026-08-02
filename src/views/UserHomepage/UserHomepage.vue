@@ -16,14 +16,23 @@
           </p>
         </div>
 
-        <div class="user-homepage-hero-actions">
-          <router-link class="user-homepage-btn user-homepage-btn-primary" to="/forum">
-            Go to forums
-          </router-link>
-          <router-link class="user-homepage-btn user-homepage-btn-secondary" to="/account">
-            Edit profile
-          </router-link>
-        </div>
+<div class="user-homepage-hero-actions">
+  <router-link class="user-homepage-btn user-homepage-btn-primary" to="/forum">
+    Go to forums
+  </router-link>
+  <router-link class="user-homepage-btn user-homepage-btn-secondary" to="/account">
+    Edit profile
+  </router-link>
+
+  <!-- New sign-out button we’ll wire up -->
+  <button
+    class="user-homepage-btn user-homepage-btn-secondary user-homepage-btn-danger"
+    @click="handleSignOut"
+    type="button"
+  >
+    Sign out
+  </button>
+</div>
       </header>
 
       <nav class="user-homepage-topnav" aria-label="User homepage navigation">
