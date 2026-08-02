@@ -16,11 +16,6 @@ function normalizeText(value) {
   return typeof value === 'string' ? value.trim() : '';
 }
 
-function isHttpUrl(value) {
-  const text = normalizeText(value);
-  return /^https?:\/\//i.test(text);
-}
-
 function isRemoteUrl(value) {
   const text = normalizeText(value);
   return /^(https?:\/\/|blob:|data:)/i.test(text);
@@ -78,7 +73,6 @@ function formatPrice(price, currency = 'GBP') {
 function normalizeImageUrl(value) {
   const text = normalizeText(value);
   if (!text) return '';
-  if (isRemoteUrl(text)) return text;
   return text;
 }
 
@@ -305,9 +299,11 @@ function getGalleryImagesForProduct(product, selectedColor, fallbackImage) {
     });
   }
 
-  const variantImage = normalizeImageUrl(product?.variants?.find(
-    (variant) => (!selectedColor || variant.color === selectedColor) && variant.imageUrl
-  )?.imageUrl);
+  const variantImage = normalizeImageUrl(
+    product?.variants?.find(
+      (variant) => (!selectedColor || variant.color === selectedColor) && variant.imageUrl
+    )?.imageUrl
+  );
 
   const productFallback = normalizeImageUrl(product?.image) || variantImage || fallbackImage;
 
@@ -340,7 +336,7 @@ export default {
       allCategories: [],
       loading: true,
       status: '',
-        fallbackImage: '/images/ImageTier2.png',
+      fallbackImage: '/images/ImageTier2.png',
 
       selectedProduct: null,
       selectedColor: '',
@@ -350,6 +346,9 @@ export default {
 
       selectedCategory: '',
       selectedBrand: '',
+
+      cartConfirmOpen: false,
+      cartConfirmItem: null,
     };
   },
 
@@ -498,30 +497,14 @@ export default {
           client.models.MerchProductVariant.list({ authMode: 'apiKey' }),
         ]);
 
-        if (productsResult.errors?.length) {
-          throw new Error(productsResult.errors[0].message || 'Failed to load products.');
-        }
-        if (brandsResult.errors?.length) {
-          throw new Error(brandsResult.errors[0].message || 'Failed to load brands.');
-        }
-        if (categoriesResult.errors?.length) {
-          throw new Error(categoriesResult.errors[0].message || 'Failed to load categories.');
-        }
-        if (productBrandsResult.errors?.length) {
-          throw new Error(productBrandsResult.errors[0].message || 'Failed to load product brand links.');
-        }
-        if (productCategoriesResult.errors?.length) {
-          throw new Error(productCategoriesResult.errors[0].message || 'Failed to load product category links.');
-        }
-        if (productImagesResult.errors?.length) {
-          throw new Error(productImagesResult.errors[0].message || 'Failed to load product images.');
-        }
-        if (mediaItemsResult.errors?.length) {
-          throw new Error(mediaItemsResult.errors[0].message || 'Failed to load media items.');
-        }
-        if (productVariantsResult.errors?.length) {
-          throw new Error(productVariantsResult.errors[0].message || 'Failed to load product variants.');
-        }
+        if (productsResult.errors?.length) throw new Error(productsResult.errors[0].message || 'Failed to load products.');
+        if (brandsResult.errors?.length) throw new Error(brandsResult.errors[0].message || 'Failed to load brands.');
+        if (categoriesResult.errors?.length) throw new Error(categoriesResult.errors[0].message || 'Failed to load categories.');
+        if (productBrandsResult.errors?.length) throw new Error(productBrandsResult.errors[0].message || 'Failed to load product brand links.');
+        if (productCategoriesResult.errors?.length) throw new Error(productCategoriesResult.errors[0].message || 'Failed to load product category links.');
+        if (productImagesResult.errors?.length) throw new Error(productImagesResult.errors[0].message || 'Failed to load product images.');
+        if (mediaItemsResult.errors?.length) throw new Error(mediaItemsResult.errors[0].message || 'Failed to load media items.');
+        if (productVariantsResult.errors?.length) throw new Error(productVariantsResult.errors[0].message || 'Failed to load product variants.');
 
         this.allBrands = (brandsResult.data || [])
           .filter((brand) => normalizeText(brand?.status).toLowerCase() !== 'inactive')
@@ -810,22 +793,74 @@ export default {
 
       const safeQuantity = Math.max(1, Number(this.selectedQuantity) || 1);
 
+      const numericPrice =
+        this.selectedVariant?.retailPrice ??
+        inferPriceNumber(this.selectedVariantPrice, this.selectedProduct.displayPrice) ??
+        0;
+
       const cartItem = {
+        id: this.selectedProduct.id,
         productId: this.selectedProduct.id,
+        name: this.selectedProduct.title,
         title: this.selectedProduct.title,
         image: this.selectedVariantImage || this.selectedProduct.image || this.fallbackImage,
-        price: this.selectedVariantPrice,
+        price: Number(numericPrice),
         productUrl: this.selectedProduct.productUrl || '',
         quantity: safeQuantity,
         variantId: this.selectedVariant?.id || '',
+        variant: this.selectedVariant?.name || this.selectedSize || '',
         variantName: this.selectedVariant?.name || '',
-        color: this.selectedVariant?.color || this.selectedColor,
-        size: this.selectedVariant?.size || this.selectedSize,
+        color: this.selectedVariant?.color || this.selectedColor || '',
+        size: this.selectedVariant?.size || this.selectedSize || '',
         availabilityStatus: this.selectedVariant?.availabilityStatus || '',
       };
 
-      console.log('Add to cart item:', cartItem);
+      const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+      const existingIndex = existingCart.findIndex((item) => {
+        return (
+          String(item.productId || item.id) === String(cartItem.productId) &&
+          String(item.variantId || '') === String(cartItem.variantId || '') &&
+          String(item.color || '') === String(cartItem.color || '')
+        );
+      });
+
+      if (existingIndex >= 0) {
+        existingCart[existingIndex].quantity =
+          Number(existingCart[existingIndex].quantity || 1) + safeQuantity;
+      } else {
+        existingCart.push(cartItem);
+      }
+
+      localStorage.setItem('cart', JSON.stringify(existingCart));
+      window.dispatchEvent(new Event('cart-updated'));
+
       this.status = `${cartItem.title} added to cart`;
+      this.cartConfirmItem = cartItem;
+      this.cartConfirmOpen = true;
+
+      this.$nextTick(() => {
+        if (
+          this.$refs.cartConfirmDialog &&
+          typeof this.$refs.cartConfirmDialog.showModal === 'function' &&
+          !this.$refs.cartConfirmDialog.open
+        ) {
+          this.$refs.cartConfirmDialog.showModal();
+        }
+      });
+    },
+
+    closeCartConfirm() {
+      if (
+        this.$refs.cartConfirmDialog &&
+        typeof this.$refs.cartConfirmDialog.close === 'function' &&
+        this.$refs.cartConfirmDialog.open
+      ) {
+        this.$refs.cartConfirmDialog.close();
+      }
+
+      this.cartConfirmOpen = false;
+      this.cartConfirmItem = null;
     },
 
     closeDialog() {
@@ -833,12 +868,16 @@ export default {
         this.$refs.productDialog.close();
       }
 
+      this.closeCartConfirm();
+
       this.selectedProduct = null;
       this.selectedColor = '';
       this.selectedSize = '';
       this.selectedQuantity = 1;
       this.activeGalleryIndex = 0;
-      this.status = this.products.length ? `${this.products.length} products loaded` : 'No products available right now.';
+      this.status = this.products.length
+        ? `${this.products.length} products loaded`
+        : 'No products available right now.';
     },
   },
 };
