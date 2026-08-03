@@ -10,6 +10,8 @@ import { Hub } from "aws-amplify/utils";
 const cognitoUser = ref(null);
 const userAttributes = ref({});
 const userGroups = ref([]);
+const authStatus = ref('loading');
+let authCheckPromise = null;
 let hubStarted = false;
 
 function computeInitials(display, email) {
@@ -30,10 +32,12 @@ function computeInitials(display, email) {
   return s.slice(0, 2).toUpperCase();
 }
 
-export async function refreshAuth() {
+async function loadAuthState() {
+  authStatus.value = 'loading';
+
   try {
-    cognitoUser.value = await getCurrentUser();
-    userAttributes.value = await fetchUserAttributes();
+    const user = await getCurrentUser();
+    const attributes = await fetchUserAttributes();
 
     const session = await fetchAuthSession();
 
@@ -45,12 +49,36 @@ export async function refreshAuth() {
 
     const groups = groupsFromAccessToken || groupsFromIdToken || [];
 
+    cognitoUser.value = user;
+    userAttributes.value = attributes;
     userGroups.value = Array.isArray(groups) ? groups : [];
+    authStatus.value = 'authenticated';
   } catch {
     cognitoUser.value = null;
     userAttributes.value = {};
     userGroups.value = [];
+    authStatus.value = 'unauthenticated';
   }
+}
+
+export async function refreshAuth() {
+  if (authCheckPromise) {
+    return authCheckPromise;
+  }
+
+  authCheckPromise = loadAuthState().finally(() => {
+    authCheckPromise = null;
+  });
+
+  return authCheckPromise;
+}
+
+export async function ensureAuthReady() {
+  if (authStatus.value !== 'loading' && (cognitoUser.value || authStatus.value === 'unauthenticated')) {
+    return;
+  }
+
+  return refreshAuth();
 }
 
 function startHubListener() {
@@ -73,6 +101,7 @@ function startHubListener() {
 
 export function useAuth() {
   startHubListener();
+  void ensureAuthReady();
 
   const displayName = computed(() => {
     const a = userAttributes.value;
@@ -95,6 +124,8 @@ export function useAuth() {
   );
 
   const isSignedIn = computed(() => !!cognitoUser.value);
+  const isAuthLoading = computed(() => authStatus.value === 'loading');
+  const isAuthReady = computed(() => authStatus.value !== 'loading');
 
   const groups = computed(() => userGroups.value);
 
@@ -158,6 +189,9 @@ export function useAuth() {
     email,
     initials,
     isSignedIn,
+    authStatus,
+    isAuthLoading,
+    isAuthReady,
     groups,
 
     isSuperAdmin,
@@ -179,6 +213,7 @@ export function useAuth() {
     hasGroup,
     hasAnyGroup,
     truncatedDisplayName,
+    ensureAuthReady,
     refreshAuth,
     logout,
   };

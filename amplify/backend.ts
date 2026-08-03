@@ -26,6 +26,13 @@ const backend = defineBackend({
   adminUserManagement,
 });
 
+// Explicitly pin Identity Pool role attachments so branch environments
+// cannot drift into an invalid role mapping state.
+backend.auth.resources.cfnResources.cfnIdentityPoolRoleAttachment.roles = {
+  authenticated: backend.auth.resources.authenticatedUserIamRole.roleArn,
+  unauthenticated: backend.auth.resources.unauthenticatedUserIamRole.roleArn,
+};
+
 // =============================================================================
 // IAM permissions
 // =============================================================================

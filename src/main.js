@@ -10,17 +10,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './css/styles.css';
 
 try {
-  // Amplify.configure(outputs);
-  Amplify.configure({
-    ...outputs,
-    Auth: {
-      ...(outputs.Auth ?? {}),
-      Cognito: {
-        ...(outputs.Auth?.Cognito ?? {}),
-        allowGuestAccess: true,
-      },
-    },
-  });
+  Amplify.configure(outputs);
 
   const app = createApp(App);
   app.use(router);

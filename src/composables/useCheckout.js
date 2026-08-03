@@ -1,5 +1,6 @@
 import { computed, nextTick, reactive, ref, watch } from 'vue'
 import RevolutCheckout from '@revolut/checkout'
+import { getApiBaseUrl, joinApiUrl } from '../config/apiBaseUrl'
 
 function getErrorMessage(error, fallback) {
   if (error instanceof Error && error.message) {
@@ -11,6 +12,50 @@ function getErrorMessage(error, fallback) {
   }
 
   return fallback
+}
+
+function normaliseCartItem(item, index) {
+  const title =
+    item?.name ??
+    item?.title ??
+    item?.productTitle ??
+    item?.product_name
+
+  return {
+    id: item?.id ?? item?.productId ?? `item-${index}`,
+    name: title || 'Product',
+    variant: item?.variant ?? item?.variantName ?? item?.size ?? '',
+    color: item?.color ?? '',
+    price: Number(item?.price ?? item?.unitPrice ?? 0),
+    quantity: Number(item?.quantity ?? item?.qty ?? 1),
+    image: item?.image ?? item?.thumbnailUrl ?? '',
+    variantId: item?.variantId ?? '',
+    productId: item?.productId ?? item?.id ?? `item-${index}`,
+  }
+}
+
+const ALLOWED_COUNTRIES = new Set([
+  'GB',
+  'US',
+  'IE',
+  'FR',
+  'DE',
+  'ES',
+  'IT',
+  'NL',
+  'BE',
+  'PT',
+  'SE',
+  'DK',
+  'FI',
+  'NO',
+  'PL',
+  'AT',
+  'CH',
+])
+
+function isAllowedShippingCountry(countryCode) {
+  return ALLOWED_COUNTRIES.has(String(countryCode || '').trim().toUpperCase())
 }
 
 export function useCheckout() {
@@ -33,48 +78,13 @@ export function useCheckout() {
   const latestOrderToken = ref('')
   const autoMountQueued = ref(false)
 
-  const apiBase = import.meta.env.DEV
-    ? '/api'
-    : (() => {
-        const productionBase = import.meta.env.VITE_API_BASE_URL?.trim() || '';
-
-        if (!productionBase) {
-          throw new Error('Missing VITE_API_BASE_URL for production checkout API requests.');
-        }
-
-        if (/<stage>|%3Cstage%3E/i.test(productionBase)) {
-          throw new Error(
-            'Invalid VITE_API_BASE_URL for production checkout API requests. Remove placeholder "<stage>" and set the real API Gateway base URL in Amplify environment variables.'
-          );
-        }
-
-        return productionBase.replace(/\/$/, '');
-      })();
+  const apiBase = getApiBaseUrl('checkout API requests')
 
   const revolutMode = (import.meta.env.VITE_REVOLUT_MODE || 'sandbox')
     .trim()
     .toLowerCase()
 
-  const cartItems = ref([
-    {
-      id: 1,
-      name: 'Project Respawn Hoodie',
-      variant: 'Large',
-      color: 'Black',
-      price: 35,
-      quantity: 1,
-      image: '',
-    },
-    {
-      id: 2,
-      name: 'Project Respawn Mug',
-      variant: '11oz',
-      color: 'White',
-      price: 12,
-      quantity: 1,
-      image: '',
-    },
-  ])
+  const cartItems = ref([])
 
   const customer = reactive({
     fullName: '',
@@ -83,7 +93,41 @@ export function useCheckout() {
     address: '',
     city: '',
     postcode: '',
+    country: '',
   })
+
+  function loadCart() {
+    try {
+      const parsedCart = JSON.parse(localStorage.getItem('cart') || '[]')
+      const rawItems = Array.isArray(parsedCart) ? parsedCart : []
+      cartItems.value = rawItems.map(normaliseCartItem)
+    } catch {
+      cartItems.value = []
+    }
+  }
+
+  function persistCart(items) {
+    localStorage.setItem('cart', JSON.stringify(items))
+    cartItems.value = items.map(normaliseCartItem)
+    window.dispatchEvent(new Event('cart-updated'))
+  }
+
+  function removeCartItem(itemToRemove) {
+    const updated = cartItems.value.filter((item) => {
+      return !(
+        String(item.productId || item.id) === String(itemToRemove.productId || itemToRemove.id) &&
+        String(item.variantId || '') === String(itemToRemove.variantId || '') &&
+        String(item.color || '') === String(itemToRemove.color || '')
+      )
+    })
+
+    persistCart(updated)
+    if (!updated.length) {
+      paymentReady.value = false
+      activeStep.value = addressComplete.value ? 'address' : 'address'
+      resetPaymentState()
+    }
+  }
 
   const cartCount = computed(() =>
     cartItems.value.reduce((sum, item) => sum + item.quantity, 0)
@@ -102,6 +146,13 @@ export function useCheckout() {
     if (!customer.address.trim()) throw new Error('Street address is required')
     if (!customer.city.trim()) throw new Error('City is required')
     if (!customer.postcode.trim()) throw new Error('Postcode is required')
+    if (!customer.country.trim()) throw new Error('Country is required')
+
+    if (!isAllowedShippingCountry(customer.country)) {
+      throw new Error('We currently only ship to the UK, Europe, and the USA. Please contact us for other locations.')
+    }
+
+    if (!cartItems.value.length) throw new Error('Your cart is empty')
   }
 
   function destroyCardField() {
@@ -163,7 +214,7 @@ export function useCheckout() {
       address: customer.address,
       city: customer.city,
       postcode: customer.postcode,
-      country: 'GB',
+      country: customer.country,
       items: cartItems.value.map((item) => ({
         id: item.id,
         name: item.name,
@@ -172,7 +223,7 @@ export function useCheckout() {
       })),
     }
 
-    const response = await fetch(`${apiBase}/revolut/checkout`, {
+    const response = await fetch(joinApiUrl(apiBase, '/revolut/checkout'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -208,7 +259,7 @@ export function useCheckout() {
   }
 
   async function mountPaymentField() {
-    if (revolutLoading.value || !addressComplete.value) return
+    if (revolutLoading.value || !addressComplete.value || !cartItems.value.length) return
 
     revolutLoading.value = true
     revolutError.value = ''
@@ -235,6 +286,9 @@ export function useCheckout() {
           orderId.value = order.id
           orderComplete.value = true
           submittingPayment.value = false
+          localStorage.removeItem('cart')
+          cartItems.value = []
+          window.dispatchEvent(new Event('cart-updated'))
         },
         onError(error) {
           revolutError.value = getErrorMessage(
@@ -277,13 +331,13 @@ export function useCheckout() {
         email: customer.email,
         phone: customer.phone,
         billingAddress: {
-          countryCode: 'GB',
+          countryCode: customer.country,
           city: customer.city,
           postcode: customer.postcode,
           streetLine1: customer.address,
         },
         shippingAddress: {
-          countryCode: 'GB',
+          countryCode: customer.country,
           city: customer.city,
           postcode: customer.postcode,
           streetLine1: customer.address,
@@ -296,6 +350,7 @@ export function useCheckout() {
   }
 
   function resetCheckout() {
+    loadCart()
     orderComplete.value = false
     orderId.value = ''
     addressComplete.value = false
@@ -307,8 +362,18 @@ export function useCheckout() {
     customer.address = ''
     customer.city = ''
     customer.postcode = ''
+    customer.country = ''
     resetPaymentState()
   }
+
+  function handleLocalCartUpdate() {
+    loadCart()
+  }
+
+  loadCart()
+
+  window.addEventListener('storage', handleLocalCartUpdate)
+  window.addEventListener('cart-updated', handleLocalCartUpdate)
 
   watch(
     () => ({
@@ -320,6 +385,7 @@ export function useCheckout() {
       address: customer.address,
       city: customer.city,
       postcode: customer.postcode,
+      country: customer.country,
       total: total.value,
       cart: cartItems.value.map((item) => `${item.id}:${item.quantity}`).join('|'),
     }),
@@ -327,6 +393,7 @@ export function useCheckout() {
       if (!addressComplete.value) return
       if (activeStep.value !== 'payment') return
       if (orderComplete.value) return
+      if (!cartItems.value.length) return
       if (revolutLoading.value || submittingPayment.value || autoMountQueued.value) return
       if (paymentReady.value) return
 
@@ -357,5 +424,6 @@ export function useCheckout() {
     goToReview,
     handlePayment,
     resetCheckout,
+    removeCartItem,
   }
 }

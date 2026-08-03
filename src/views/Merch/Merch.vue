@@ -7,6 +7,14 @@
         <p class="merch-subtitle">
           Browse merch, digital extras, and future custom products in one place.
         </p>
+
+        <div class="shipping-notice" role="note">
+          <p>
+            We currently ship to the UK, Europe, and the USA.
+            If you'd like to order from another location, please contact us to discuss pricing —
+            we'd love to hear from anyone wanting to showcase the Project Respawn brand.
+          </p>
+        </div>
       </div>
     </section>
 
@@ -95,7 +103,7 @@
         >
           <div class="product-image-wrap">
             <img
-              :src="product.image || fallbackImage"
+              :src="product.image || product.thumbnailUrl || product.images?.[0]?.url || fallbackImage"
               :alt="product.title || 'Product image'"
               loading="lazy"
             />
@@ -165,7 +173,7 @@
         <div class="dialog-media-column">
           <div class="dialog-image-wrap dialog-image-large">
             <img
-              :src="selectedVariantImage"
+              :src="selectedVariantImage || selectedProduct?.image || selectedProduct?.thumbnailUrl || selectedProduct?.images?.[0]?.url || fallbackImage"
               :alt="activeGalleryImage?.altText || selectedProduct.title || 'Product image'"
             />
 
@@ -213,7 +221,7 @@
               :aria-label="`Show image ${index + 1}`"
             >
               <img
-                :src="image.url"
+                :src="image.url || fallbackImage"
                 :alt="image.altText || `${selectedProduct.title} thumbnail ${index + 1}`"
                 loading="lazy"
               />
@@ -362,6 +370,51 @@
           >
             View full product page
           </a>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog
+      ref="cartConfirmDialog"
+      class="cart-confirm-dialog"
+      @close="closeCartConfirm"
+    >
+      <div v-if="cartConfirmItem" class="cart-confirm-content">
+        <button
+          class="dialog-close"
+          type="button"
+          @click="closeCartConfirm"
+          aria-label="Close cart confirmation"
+        >
+          ×
+        </button>
+
+        <p class="cart-confirm-kicker">Cart updated</p>
+        <h2>Added to cart</h2>
+
+        <div class="cart-confirm-summary">
+          <p><strong>{{ cartConfirmItem.title }}</strong></p>
+          <p v-if="cartConfirmItem.color">Colour: {{ cartConfirmItem.color }}</p>
+          <p v-if="cartConfirmItem.size">Size: {{ cartConfirmItem.size }}</p>
+          <p>Quantity: {{ cartConfirmItem.quantity }}</p>
+        </div>
+
+        <div class="cart-confirm-actions">
+          <button
+            type="button"
+            class="btn-secondary"
+            @click="closeCartConfirm"
+          >
+            Continue shopping
+          </button>
+
+          <router-link
+            class="btn-primary"
+            to="/checkout"
+            @click="closeCartConfirm"
+          >
+            Go to checkout
+          </router-link>
         </div>
       </div>
     </dialog>

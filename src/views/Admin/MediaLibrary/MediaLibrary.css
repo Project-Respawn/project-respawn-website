@@ -1,0 +1,454 @@
+/*
+MediaLibrary.css
+
+TABLE OF CONTENTS (SECTION NUMBERS)
+1. Layout & page shell
+2. Toolbar & stats
+3. Sidebar: folders (file-explorer)
+4. Main pane: media grid & inspector
+5. Upload panel
+6. Buttons & utilities
+7. Responsive tweaks
+*/
+
+/* ======================================= */
+/* 1. LAYOUT & PAGE SHELL                  */
+/* ======================================= */
+
+.admin-media-library-page {
+  display: grid;
+  gap: 24px;
+  color: #f3f7f4;
+}
+
+.media-layout {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr) 320px;
+  gap: 18px;
+}
+
+/* ======================================= */
+/* 2. TOOLBAR & STATS                      */
+/* ======================================= */
+
+.media-toolbar {
+  align-items: center;
+}
+
+.media-toolbar-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ======================================= */
+/* 3. SIDEBAR: COLLECTIONS                 */
+/* ======================================= */
+
+.media-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(138, 180, 164, 0.16);
+  background: rgba(15, 20, 18, 0.9);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.sidebar-header h2 {
+  margin: 0;
+  font-size: 1rem;
+  color: #f4fbf7;
+}
+
+.collection-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 420px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.collection-item {
+  width: 100%;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  color: #edf7f1;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.collection-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-1px);
+}
+
+.collection-item.active {
+  background: rgba(108, 211, 159, 0.18);
+  border: 1px solid rgba(108, 211, 159, 0.4);
+}
+
+.collection-main {
+  display: grid;
+  gap: 2px;
+  text-align: left;
+}
+
+.collection-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #f7fcf8;
+}
+
+.collection-meta {
+  font-size: 0.76rem;
+  color: rgba(200, 216, 208, 0.75);
+}
+
+.collection-empty {
+  font-size: 0.84rem;
+  color: rgba(211, 223, 216, 0.74);
+}
+
+/* ======================================= */
+/* 4. MAIN PANE: MEDIA GRID & INSPECTOR    */
+/* ======================================= */
+
+.media-main {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  gap: 14px;
+}
+
+.media-grid-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.media-grid-header h2 {
+  margin: 0;
+  font-size: 1rem;
+  color: #f4fbf7;
+}
+
+.media-grid-count {
+  font-size: 0.8rem;
+  color: rgba(211, 226, 218, 0.78);
+}
+
+/* Breadcrumb inside header */
+
+.media-breadcrumb-wrap {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 0.86rem;
+}
+
+.breadcrumb-item {
+  cursor: pointer;
+  color: rgba(220, 232, 225, 0.9);
+}
+
+.breadcrumb-item.is-current {
+  font-weight: 600;
+  cursor: default;
+}
+
+.breadcrumb-separator {
+  margin: 0 4px;
+  color: rgba(190, 206, 198, 0.74);
+}
+
+/* Media grid container */
+
+.media-grid-container {
+  border-radius: 18px;
+  border: 1px solid rgba(138, 180, 164, 0.16);
+  background: rgba(10, 14, 13, 0.96);
+  padding: 14px;
+  min-height: 220px;
+}
+
+.media-loading {
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  min-height: 180px;
+  color: rgba(220, 232, 225, 0.75);
+}
+
+.media-empty-state {
+  display: grid;
+  place-items: center;
+  gap: 6px;
+  min-height: 180px;
+  text-align: center;
+  color: rgba(211, 223, 216, 0.78);
+}
+
+.media-empty-hint {
+  font-size: 0.8rem;
+  color: rgba(190, 206, 198, 0.74);
+}
+
+/* Media grid */
+
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+/* Media cards */
+
+.media-card {
+  border: none;
+  padding: 8px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.media-card:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.media-card.selected {
+  border: 1px solid rgba(108, 211, 159, 0.6);
+  box-shadow: 0 0 0 3px rgba(108, 211, 159, 0.25);
+}
+
+/* Thumbnail */
+
+.media-thumb {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 10px;
+  border: 1px solid rgba(132, 170, 154, 0.16);
+  background: rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.media-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.media-thumb-fallback {
+  font-size: 0.78rem;
+  color: rgba(211, 223, 216, 0.78);
+  text-align: center;
+}
+
+/* Card text */
+
+.media-card-info {
+  display: grid;
+  gap: 2px;
+  text-align: left;
+}
+
+.media-card-title {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #f7fcf8;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.media-card-meta {
+  font-size: 0.76rem;
+  color: rgba(198, 213, 205, 0.78);
+}
+
+/* Inspector */
+
+.media-inspector {
+  margin-top: 8px;
+  padding: 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(138, 180, 164, 0.16);
+  background: rgba(15, 20, 18, 0.95);
+  display: grid;
+  gap: 12px;
+}
+
+.media-inspector h3 {
+  margin: 0;
+  font-size: 0.98rem;
+  color: #f4fbf7;
+}
+
+.media-inspector-preview {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(132, 170, 154, 0.16);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 8px;
+  display: grid;
+  place-items: center;
+}
+
+.media-inspector-preview img {
+  max-width: 100%;
+  max-height: 220px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.media-inspector-fields {
+  display: grid;
+  gap: 10px;
+}
+
+.media-inspector-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ======================================= */
+/* 5. UPLOAD PANEL                         */
+/* ======================================= */
+
+.media-upload-panel {
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(138, 180, 164, 0.16);
+  background: rgba(15, 20, 18, 0.94);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
+  display: grid;
+  align-content: flex-start;
+}
+
+.media-upload-panel .modal-section {
+  border: none;
+  padding: 0;
+  background: transparent;
+}
+
+.media-upload-panel h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  color: #f4fbf7;
+}
+
+.media-upload-hint {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: rgba(201, 216, 208, 0.8);
+}
+
+/* ======================================= */
+/* 6. BUTTONS & UTILITIES                  */
+/* ======================================= */
+
+.btn-secondary.sm {
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(138, 180, 164, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: #edf7f1;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.btn-secondary.sm:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.btn-danger.sm {
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255, 105, 105, 0.22);
+  color: #ffecec;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.btn-danger.sm:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: rgba(255, 105, 105, 0.3);
+}
+
+/* ======================================= */
+/* 7. RESPONSIVE TWEAKS                    */
+/* ======================================= */
+
+@media (max-width: 1080px) {
+  .media-layout {
+    grid-template-columns: 220px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+  }
+
+  .media-upload-panel {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 720px) {
+  .media-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+
+  .media-sidebar {
+    order: 1;
+  }
+
+  .media-main {
+    order: 2;
+  }
+
+  .media-upload-panel {
+    order: 3;
+  }
+
+  .media-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+}

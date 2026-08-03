@@ -25,44 +25,24 @@
             <li class="nav-item">
               <router-link to="/contact" class="nav-link" :class="{ active: $route.path === '/contact' }">Contact</router-link>
             </li>
-            <!-- <li class="nav-item">
+            <li class="nav-item">
               <router-link
                 to="/merch"
                 class="nav-link"
                 :class="{ active: $route.path === '/merch' }"
-                >Merch</router-link
-              >
-            </li> -->
-            <!-- <li class="nav-item cart-nav-item">
+              >Store</router-link>
+            </li>
+            <li class="nav-item cart-nav-item">
               <router-link to="/checkout" class="nav-link cart-icon-link">
                 <i class="bi bi-cart3"></i>
                 <span v-if="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
               </router-link>
-            </li> -->
+            </li>
 
-            <!-- Admin Dashboard link — only visible when signed in -->
-            <!-- <li v-if="isSignedIn" class="nav-item">
-              <router-link
-                to="/dashboard"
-                class="nav-link dashboard-link"
-                :class="{ active: $route.path === '/dashboard' }"
-                title="Admin Dashboard"
-              >
-                <i class="bi bi-sliders"></i>
-              </router-link>
-            </li> -->
-            
-            <!-- <li class="nav-item">
-              <router-link
-                to="/events"
-                class="nav-link"
-                :class="{ active: $route.path === '/events' }"
-                >Events</router-link
-              >
-            </li> -->
             <li class="nav-item">
-              <router-link v-if="!isSignedIn" to="/join" class="btn btn-secondary ms-3" :class="{ active: $route.path === '/join' }">Join</router-link>
-              <!-- Signed-in account dropdown -->
+              <span v-if="authStatus === 'loading'" class="btn btn-secondary ms-3 disabled" aria-busy="true">Checking session…</span>
+              <router-link v-else-if="!isSignedIn" to="/join" class="btn btn-secondary ms-3" :class="{ active: $route.path === '/join' }">Join</router-link>
+
               <div v-else class="ms-3 position-relative">
                 <button
                   class="btn btn-secondary header-account-btn d-flex align-items-center"
@@ -93,7 +73,6 @@
     </nav>
   </header>
 </template>
-
 
 <script src="./Header.js"></script>
 <style scoped src="./Header.css"></style>

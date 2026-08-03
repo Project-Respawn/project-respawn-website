@@ -1,26 +1,9 @@
-const API_BASE = (() => {
-  if (import.meta.env.DEV) {
-    return '/api';
-  }
+import { getApiBaseUrl, joinApiUrl } from '../../config/apiBaseUrl';
 
-  const productionBase = import.meta.env.VITE_API_BASE_URL?.trim();
-
-  if (!productionBase) {
-    throw new Error('Missing VITE_API_BASE_URL for production merch API requests.');
-  }
-
-  if (/<stage>|%3Cstage%3E/i.test(productionBase)) {
-    throw new Error(
-      'Invalid VITE_API_BASE_URL for production merch API requests. Remove placeholder "<stage>" and set the real API Gateway base URL in Amplify environment variables.'
-    );
-  }
-
-  return productionBase.replace(/\/+$/, '');
-})();
+const API_BASE = getApiBaseUrl('merch API requests');
 
 function buildUrl(path) {
-  const safePath = String(path || '').replace(/^\/+/, '');
-  return `${API_BASE}/${safePath}`;
+  return joinApiUrl(API_BASE, path);
 }
 
 async function readResponseBody(response) {

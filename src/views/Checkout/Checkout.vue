@@ -12,6 +12,14 @@
         </div>
       </header>
 
+      <div v-if="!orderComplete" class="shipping-notice" role="note">
+        <p>
+          We currently ship to the UK, Europe, and the USA only.
+          If you are ordering from another location, please contact us before placing an order
+          so we can discuss shipping options and pricing.
+        </p>
+      </div>
+
       <section v-if="!orderComplete" class="checkout-grid">
         <div class="checkout-main">
           <div class="checkout-card checkout-flow">
@@ -24,7 +32,7 @@
                 <div class="step-heading">
                   <h2>Delivery address</h2>
                   <p v-if="addressComplete" class="step-summary">
-                    {{ customer.fullName }}, {{ customer.address }}, {{ customer.city }}, {{ customer.postcode }}
+                    {{ customer.fullName }}, {{ customer.address }}, {{ customer.city }}, {{ customer.postcode }}, {{ customer.country }}
                   </p>
                   <p v-else class="step-copy">
                     Enter your delivery details before payment.
@@ -73,6 +81,30 @@
                       <label for="postcode">Postcode *</label>
                       <input id="postcode" v-model="customer.postcode" type="text" required />
                     </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="country">Country *</label>
+                    <select id="country" v-model="customer.country" required>
+                      <option value="">Select your country</option>
+                      <option value="GB">United Kingdom</option>
+                      <option value="US">United States</option>
+                      <option value="IE">Ireland</option>
+                      <option value="FR">France</option>
+                      <option value="DE">Germany</option>
+                      <option value="ES">Spain</option>
+                      <option value="IT">Italy</option>
+                      <option value="NL">Netherlands</option>
+                      <option value="BE">Belgium</option>
+                      <option value="PT">Portugal</option>
+                      <option value="SE">Sweden</option>
+                      <option value="DK">Denmark</option>
+                      <option value="FI">Finland</option>
+                      <option value="NO">Norway</option>
+                      <option value="PL">Poland</option>
+                      <option value="AT">Austria</option>
+                      <option value="CH">Switzerland</option>
+                    </select>
                   </div>
 
                   <div v-if="addressError" class="inline-error">
@@ -175,6 +207,14 @@
                       <p v-if="item.variant">{{ item.variant }}</p>
                       <p v-if="item.color">Colour: {{ item.color }}</p>
                       <p>Quantity: {{ item.quantity }}</p>
+
+                      <button
+                        type="button"
+                        class="remove-item-btn"
+                        @click="removeCartItem(item)"
+                      >
+                        Remove
+                      </button>
                     </div>
 
                     <div class="review-price">
@@ -186,7 +226,7 @@
                 <button
                   type="button"
                   class="primary-btn"
-                  :disabled="submittingPayment || !paymentReady"
+                  :disabled="submittingPayment || !paymentReady || !cartItems.length"
                   @click="handlePayment"
                 >
                   {{ submittingPayment ? 'Processing...' : 'Place order' }}
@@ -200,16 +240,28 @@
           <div class="checkout-card checkout-summary sticky">
             <h2>Order Summary</h2>
 
-            <div class="summary-items">
-              <div
-                v-for="item in cartItems"
-                :key="`summary-${item.id}-${item.variant || ''}-${item.color || ''}-${item.quantity}`"
-                class="summary-item"
-              >
-                <span>{{ item.name }} × {{ item.quantity }}</span>
-                <span>£{{ (item.price * item.quantity).toFixed(2) }}</span>
-              </div>
-            </div>
+           <div class="summary-items">
+  <div
+    v-for="item in cartItems"
+    :key="`summary-${item.id}-${item.variant || ''}-${item.color || ''}-${item.quantity}`"
+    class="summary-item"
+  >
+    <div class="summary-item-main">
+      <div class="summary-item-info">
+        <span>{{ item.name }} × {{ item.quantity }}</span>
+        <button
+          type="button"
+          class="remove-item-btn summary-remove-btn"
+          @click="removeCartItem(item)"
+        >
+          Remove
+        </button>
+      </div>
+
+      <span>£{{ (item.price * item.quantity).toFixed(2) }}</span>
+    </div>
+  </div>
+</div>
 
             <div class="summary-block">
               <div class="summary-row">
@@ -270,6 +322,7 @@ const {
   goToReview,
   handlePayment,
   resetCheckout,
+  removeCartItem,
 } = useCheckout()
 </script>
 

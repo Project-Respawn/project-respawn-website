@@ -16,9 +16,9 @@ function normalizeText(value) {
   return typeof value === 'string' ? value.trim() : '';
 }
 
-function isHttpUrl(value) {
+function isRemoteUrl(value) {
   const text = normalizeText(value);
-  return /^https?:\/\//i.test(text);
+  return /^(https?:\/\/|blob:|data:)/i.test(text);
 }
 
 function firstNonEmpty(...values) {
@@ -73,7 +73,6 @@ function formatPrice(price, currency = 'GBP') {
 function normalizeImageUrl(value) {
   const text = normalizeText(value);
   if (!text) return '';
-  if (isHttpUrl(text)) return text;
   return text;
 }
 
@@ -105,11 +104,29 @@ function normalizeStoragePath(value) {
   return `public/${withoutLeadingSlash}`;
 }
 
+function extractStoragePathFromUrl(value) {
+  const cleanValue = normalizeText(value);
+  if (!cleanValue) return '';
+
+  try {
+    const parsedUrl = new URL(cleanValue);
+    const pathname = decodeURIComponent(parsedUrl.pathname || '').replace(/^\/+/, '');
+    return pathname;
+  } catch (error) {
+    return '';
+  }
+}
+
+function isLocalAssetPath(value) {
+  const cleanValue = normalizeText(value);
+  return /^\/(images|assets)\//i.test(cleanValue);
+}
+
 function buildPublicStorageUrl(value) {
   const cleanValue = normalizeText(value);
   if (!cleanValue) return '';
 
-  if (isHttpUrl(cleanValue)) {
+  if (isRemoteUrl(cleanValue)) {
     return cleanValue;
   }
 
@@ -123,7 +140,27 @@ async function resolveStorageUrl(value) {
   const cleanValue = normalizeText(value);
   if (!cleanValue) return '';
 
-  if (isHttpUrl(cleanValue)) {
+  if (isLocalAssetPath(cleanValue)) {
+    return cleanValue;
+  }
+
+  if (isRemoteUrl(cleanValue)) {
+    const remotePath = extractStoragePathFromUrl(cleanValue);
+    if (remotePath && /^(public|protected|private)\//i.test(remotePath)) {
+      try {
+        const result = await getUrl({
+          path: remotePath,
+          options: {
+            accessLevel: 'public',
+            expiresIn: 3600,
+          },
+        });
+        return result.url.toString();
+      } catch (error) {
+        return buildPublicStorageUrl(remotePath) || cleanValue;
+      }
+    }
+
     return cleanValue;
   }
 
@@ -202,11 +239,11 @@ function getActiveImages(images) {
 function resolvePrimaryImage(images, fallbackImage = '') {
   const activeImages = getActiveImages(images);
 
-  const featuredImage = activeImages.find((image) => image.isFeatured && image.url);
-  if (featuredImage?.url) return featuredImage.url;
-
   const primaryImage = activeImages.find((image) => image.isPrimary && image.url);
   if (primaryImage?.url) return primaryImage.url;
+
+  const featuredImage = activeImages.find((image) => image.isFeatured && image.url);
+  if (featuredImage?.url) return featuredImage.url;
 
   const firstSortedImage = [...activeImages]
     .sort((a, b) => a.sortOrder - b.sortOrder)
@@ -247,16 +284,26 @@ function getGalleryImagesForProduct(product, selectedColor, fallbackImage) {
   const colorMatchedImages = getColorMatchedImages(allImages, selectedColor);
 
   if (colorMatchedImages.length) {
-    return colorMatchedImages;
+    return [...colorMatchedImages].sort((a, b) => {
+      if (a.isPrimary !== b.isPrimary) return a.isPrimary ? -1 : 1;
+      if (a.isFeatured !== b.isFeatured) return a.isFeatured ? -1 : 1;
+      return a.sortOrder - b.sortOrder;
+    });
   }
 
   if (allImages.length) {
-    return [...allImages].sort((a, b) => a.sortOrder - b.sortOrder);
+    return [...allImages].sort((a, b) => {
+      if (a.isPrimary !== b.isPrimary) return a.isPrimary ? -1 : 1;
+      if (a.isFeatured !== b.isFeatured) return a.isFeatured ? -1 : 1;
+      return a.sortOrder - b.sortOrder;
+    });
   }
 
-  const variantImage = normalizeImageUrl(product?.variants?.find(
-    (variant) => (!selectedColor || variant.color === selectedColor) && variant.imageUrl
-  )?.imageUrl);
+  const variantImage = normalizeImageUrl(
+    product?.variants?.find(
+      (variant) => (!selectedColor || variant.color === selectedColor) && variant.imageUrl
+    )?.imageUrl
+  );
 
   const productFallback = normalizeImageUrl(product?.image) || variantImage || fallbackImage;
 
@@ -289,7 +336,7 @@ export default {
       allCategories: [],
       loading: true,
       status: '',
-      fallbackImage: 'https://via.placeholder.com/600x600?text=Project+Respawn',
+      fallbackImage: '/images/ImageTier2.png',
 
       selectedProduct: null,
       selectedColor: '',
@@ -299,6 +346,9 @@ export default {
 
       selectedCategory: '',
       selectedBrand: '',
+
+      cartConfirmOpen: false,
+      cartConfirmItem: null,
     };
   },
 
@@ -434,6 +484,7 @@ export default {
           productBrandsResult,
           productCategoriesResult,
           productImagesResult,
+          mediaItemsResult,
           productVariantsResult,
         ] = await Promise.all([
           client.models.MerchProduct.list({ authMode: 'apiKey' }),
@@ -442,30 +493,18 @@ export default {
           client.models.MerchProductBrand.list({ authMode: 'apiKey' }),
           client.models.MerchProductCategory.list({ authMode: 'apiKey' }),
           client.models.MerchProductImage.list({ authMode: 'apiKey' }),
+          client.models.MediaItem.list({ authMode: 'apiKey' }),
           client.models.MerchProductVariant.list({ authMode: 'apiKey' }),
         ]);
 
-        if (productsResult.errors?.length) {
-          throw new Error(productsResult.errors[0].message || 'Failed to load products.');
-        }
-        if (brandsResult.errors?.length) {
-          throw new Error(brandsResult.errors[0].message || 'Failed to load brands.');
-        }
-        if (categoriesResult.errors?.length) {
-          throw new Error(categoriesResult.errors[0].message || 'Failed to load categories.');
-        }
-        if (productBrandsResult.errors?.length) {
-          throw new Error(productBrandsResult.errors[0].message || 'Failed to load product brand links.');
-        }
-        if (productCategoriesResult.errors?.length) {
-          throw new Error(productCategoriesResult.errors[0].message || 'Failed to load product category links.');
-        }
-        if (productImagesResult.errors?.length) {
-          throw new Error(productImagesResult.errors[0].message || 'Failed to load product images.');
-        }
-        if (productVariantsResult.errors?.length) {
-          throw new Error(productVariantsResult.errors[0].message || 'Failed to load product variants.');
-        }
+        if (productsResult.errors?.length) throw new Error(productsResult.errors[0].message || 'Failed to load products.');
+        if (brandsResult.errors?.length) throw new Error(brandsResult.errors[0].message || 'Failed to load brands.');
+        if (categoriesResult.errors?.length) throw new Error(categoriesResult.errors[0].message || 'Failed to load categories.');
+        if (productBrandsResult.errors?.length) throw new Error(productBrandsResult.errors[0].message || 'Failed to load product brand links.');
+        if (productCategoriesResult.errors?.length) throw new Error(productCategoriesResult.errors[0].message || 'Failed to load product category links.');
+        if (productImagesResult.errors?.length) throw new Error(productImagesResult.errors[0].message || 'Failed to load product images.');
+        if (mediaItemsResult.errors?.length) throw new Error(mediaItemsResult.errors[0].message || 'Failed to load media items.');
+        if (productVariantsResult.errors?.length) throw new Error(productVariantsResult.errors[0].message || 'Failed to load product variants.');
 
         this.allBrands = (brandsResult.data || [])
           .filter((brand) => normalizeText(brand?.status).toLowerCase() !== 'inactive')
@@ -503,11 +542,23 @@ export default {
         }
 
         const imagesByProductId = new Map();
+        const mediaItemsById = new Map((mediaItemsResult.data || []).map((item) => [normalizeText(item.id), item]));
+
         for (const image of productImagesResult.data || []) {
           const productId = normalizeText(image.productId);
           if (!productId) continue;
+          const mediaItem = mediaItemsById.get(normalizeText(image.mediaItemId));
           const current = imagesByProductId.get(productId) || [];
-          current.push(image);
+          current.push({
+            ...image,
+            url: normalizeText(mediaItem?.url) || '',
+            title: normalizeText(mediaItem?.title) || '',
+            altText: firstNonEmpty(image.altTextOverride, mediaItem?.altText, mediaItem?.title),
+            color: firstNonEmpty(image.colorOverride, mediaItem?.color),
+            colorHex: firstNonEmpty(image.colorHexOverride, mediaItem?.colorHex),
+            sourceType: normalizeText(mediaItem?.sourceType) || '',
+            status: firstNonEmpty(image.status, mediaItem?.status, 'active'),
+          });
           imagesByProductId.set(productId, current);
         }
 
@@ -742,22 +793,74 @@ export default {
 
       const safeQuantity = Math.max(1, Number(this.selectedQuantity) || 1);
 
+      const numericPrice =
+        this.selectedVariant?.retailPrice ??
+        inferPriceNumber(this.selectedVariantPrice, this.selectedProduct.displayPrice) ??
+        0;
+
       const cartItem = {
+        id: this.selectedProduct.id,
         productId: this.selectedProduct.id,
+        name: this.selectedProduct.title,
         title: this.selectedProduct.title,
         image: this.selectedVariantImage || this.selectedProduct.image || this.fallbackImage,
-        price: this.selectedVariantPrice,
+        price: Number(numericPrice),
         productUrl: this.selectedProduct.productUrl || '',
         quantity: safeQuantity,
         variantId: this.selectedVariant?.id || '',
+        variant: this.selectedVariant?.name || this.selectedSize || '',
         variantName: this.selectedVariant?.name || '',
-        color: this.selectedVariant?.color || this.selectedColor,
-        size: this.selectedVariant?.size || this.selectedSize,
+        color: this.selectedVariant?.color || this.selectedColor || '',
+        size: this.selectedVariant?.size || this.selectedSize || '',
         availabilityStatus: this.selectedVariant?.availabilityStatus || '',
       };
 
-      console.log('Add to cart item:', cartItem);
+      const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+      const existingIndex = existingCart.findIndex((item) => {
+        return (
+          String(item.productId || item.id) === String(cartItem.productId) &&
+          String(item.variantId || '') === String(cartItem.variantId || '') &&
+          String(item.color || '') === String(cartItem.color || '')
+        );
+      });
+
+      if (existingIndex >= 0) {
+        existingCart[existingIndex].quantity =
+          Number(existingCart[existingIndex].quantity || 1) + safeQuantity;
+      } else {
+        existingCart.push(cartItem);
+      }
+
+      localStorage.setItem('cart', JSON.stringify(existingCart));
+      window.dispatchEvent(new Event('cart-updated'));
+
       this.status = `${cartItem.title} added to cart`;
+      this.cartConfirmItem = cartItem;
+      this.cartConfirmOpen = true;
+
+      this.$nextTick(() => {
+        if (
+          this.$refs.cartConfirmDialog &&
+          typeof this.$refs.cartConfirmDialog.showModal === 'function' &&
+          !this.$refs.cartConfirmDialog.open
+        ) {
+          this.$refs.cartConfirmDialog.showModal();
+        }
+      });
+    },
+
+    closeCartConfirm() {
+      if (
+        this.$refs.cartConfirmDialog &&
+        typeof this.$refs.cartConfirmDialog.close === 'function' &&
+        this.$refs.cartConfirmDialog.open
+      ) {
+        this.$refs.cartConfirmDialog.close();
+      }
+
+      this.cartConfirmOpen = false;
+      this.cartConfirmItem = null;
     },
 
     closeDialog() {
@@ -765,12 +868,16 @@ export default {
         this.$refs.productDialog.close();
       }
 
+      this.closeCartConfirm();
+
       this.selectedProduct = null;
       this.selectedColor = '';
       this.selectedSize = '';
       this.selectedQuantity = 1;
       this.activeGalleryIndex = 0;
-      this.status = this.products.length ? `${this.products.length} products loaded` : 'No products available right now.';
+      this.status = this.products.length
+        ? `${this.products.length} products loaded`
+        : 'No products available right now.';
     },
   },
 };
