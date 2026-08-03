@@ -148,6 +148,132 @@ Utility scripts live here.
 - [src/api/products.ts](src/api/products.ts) expects `PRINTFUL_API_KEY` on the backend and returns transformed Printful product data to the frontend.
 - [src/composables/useCheckout.js](src/composables/useCheckout.js) reads the API base URL from [src/config/apiBaseUrl.js](src/config/apiBaseUrl.js), then calls the Revolut checkout route with the current cart and customer details.
 
+## Core Features Deep Dive
+
+This section is meant as a handoff reference for developers integrating this app with external systems.
+
+### Twitch Dashboard (Core Feature)
+
+Primary files:
+
+- [src/views/Bot/Twitch/BotTwitch.vue](src/views/Bot/Twitch/BotTwitch.vue)
+- [src/views/Bot/Twitch/TwitchCommands/TwitchCommands.vue](src/views/Bot/Twitch/TwitchCommands/TwitchCommands.vue)
+- [src/views/Bot/Twitch/TwitchCommands/TwitchCommands.js](src/views/Bot/Twitch/TwitchCommands/TwitchCommands.js)
+- [src/views/Bot/Twitch/Alerts/BotAlerts.vue](src/views/Bot/Twitch/Alerts/BotAlerts.vue)
+- [src/views/Bot/Twitch/Moderation/Moderation.vue](src/views/Bot/Twitch/Moderation/Moderation.vue)
+- [src/views/Bot/Twitch/TTS/Settings/TtsSettings.vue](src/views/Bot/Twitch/TTS/Settings/TtsSettings.vue)
+- [src/views/Bot/Settings/BotSettings.vue](src/views/Bot/Settings/BotSettings.vue)
+
+Current behavior:
+
+- The Twitch dashboard is the most mature bot area and acts as the main control surface.
+- The command manager uses Amplify auth to resolve the signed-in user, looks up their Twitch broadcaster connection, and then loads and persists command data.
+- Command records are fetched and updated through Amplify Data models (for example `client.models.TwitchCommand`).
+- Suggested commands are pre-seeded in UI logic and can be enabled/edited into streamer-specific commands.
+- The settings page handles Twitch connect/reconnect UX and status refresh.
+- Alerts, moderation, and TTS pages are implemented UI surfaces with active structures for future persistence and runtime linkage.
+
+Integration significance:
+
+- This is the primary place to integrate external bot runtimes, command sync services, overlay systems, moderation engines, and event processors.
+- It already spans auth, route-level dashboard UX, backend lookup calls, and persisted command records.
+
+### Discord Dashboard (Core Feature, In Build)
+
+Primary files:
+
+- [src/views/Bot/Discord/BotDiscord.vue](src/views/Bot/Discord/BotDiscord.vue)
+- [src/views/Bot/Discord/DiscordLayout/DiscordLayout.vue](src/views/Bot/Discord/DiscordLayout/DiscordLayout.vue)
+- [src/views/Bot/Discord/DiscordLayout/DiscordLayout.js](src/views/Bot/Discord/DiscordLayout/DiscordLayout.js)
+
+Current behavior:
+
+- `/bot/discord` currently presents a placeholder dashboard message.
+- `DiscordLayout` defines the intended operational shell: selected server context, connection status, access label, server switching, refresh action, and nested child-view area.
+- The current server list and metadata are local mock data.
+- Refresh and server-switch actions currently emit component events and do not yet trigger backend sync.
+
+Planned role in platform integration:
+
+- Server OAuth/linking flow
+- Guild and role sync
+- Discord moderation tools
+- Cross-platform automation with Twitch and site systems
+
+Known implementation note:
+
+- `openDiscordSettings()` currently routes to `/dashboard/settings`, and that route is not present in [src/router/index.js](src/router/index.js). Adjust this route when wiring the live Discord settings page.
+
+### Profile System (Key Feature)
+
+Primary files:
+
+- [src/views/Account/Account.vue](src/views/Account/Account.vue)
+- [src/views/Account/Account.js](src/views/Account/Account.js)
+- [src/views/UserHomepage/UserHomepage.vue](src/views/UserHomepage/UserHomepage.vue)
+- [src/composables/useAuth.js](src/composables/useAuth.js)
+
+Legacy profile files:
+
+- [src/views/Profile_old/Account.vue](src/views/Profile_old/Account.vue)
+
+Current behavior:
+
+- The active profile hub is `/account`, not the legacy profile folder.
+- Profile identity data is loaded and saved through Amplify Data (`UserProfile`) and tied to the signed-in Cognito user.
+- The page includes a runtime-configured board layout system where modules can be repositioned, resized, duplicated, removed, and visibility-scoped.
+- Board layout is calculated client-side with collision handling, repack logic, and drag-and-drop placement.
+- Module availability is controlled by release flags, allowing partial rollout of profile capabilities.
+- The signed-in homepage links into profile management and displays profile progression summaries.
+
+Integration significance:
+
+- The profile hub is the future anchor for user identity, personalization, social visibility, and connected app metadata.
+- External app integrations can map profile modules to additional data providers without changing the board system architecture.
+
+### Events Hub (Key Feature)
+
+Primary files:
+
+- [src/views/Events/Events.vue](src/views/Events/Events.vue)
+- [src/views/Events/Events.js](src/views/Events/Events.js)
+
+Current behavior:
+
+- The events page supports list and calendar views for upcoming events.
+- Events are loaded from Amplify Data (`Event`) and normalized in-client for status, labels, and display formatting.
+- Filtering is available by location format and category.
+- Featured event, upcoming this week, and past recap sections are derived from the same core event data.
+- Signed-in users can submit event suggestions through an event suggestion modal.
+- Suggestions are persisted through Amplify Data (`EventSuggestion`) with owner metadata for later moderation/review workflows.
+
+Integration significance:
+
+- The events system is positioned to become the orchestration layer for community schedule data across website, Discord, Twitch, and partner apps.
+- It already supports an extensible event shape (status, category, platform, CTA fields, notes, host, rewards) that can map to external scheduling and notification systems.
+
+### Bot Navigation Architecture
+
+Primary files:
+
+- [src/components/BotSidebar/BotSidebar.vue](src/components/BotSidebar/BotSidebar.vue)
+- [src/components/BotSidebar/MenuLevel.vue](src/components/BotSidebar/MenuLevel.vue)
+- [src/components/Stores/SidebarStore.js](src/components/Stores/SidebarStore.js)
+
+Current behavior:
+
+- Twitch, Discord, Automation, and Settings all use a shared sidebar shell.
+- Menu expand/collapse state and brand styling are managed by a central reactive store.
+- This keeps cross-dashboard navigation and visual identity consistent while the feature pages evolve independently.
+
+## Integration Notes For External Apps
+
+- Treat Twitch as the first-class operational integration surface today.
+- Treat Discord as the next integration surface with UI shell ready and backend wiring still in progress.
+- Use Cognito user identity as the base mapping key for per-user dashboard contexts.
+- Use broadcaster/server IDs as secondary mapping keys for platform-specific integrations.
+- Keep feature flags or rollout guards for profile modules and dashboard subtools to avoid blocking release when one integration is incomplete.
+
 ## Running The Project
 
 1. Install dependencies with `npm install`.
