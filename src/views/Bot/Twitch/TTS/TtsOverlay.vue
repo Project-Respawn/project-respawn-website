@@ -23,6 +23,7 @@ export default {
       socket: null,
       socketConnected: false,
       reconnectTimer: null,
+      shouldReconnect: true,
       queue: [],
       speaking: false,
       activeMessage: null,
@@ -48,7 +49,22 @@ export default {
     this.connectSocket();
   },
 
+  watch: {
+    '$route.query.broadcasterId'(newValue) {
+      const nextBroadcasterId = String(newValue || '').trim();
+
+      if (nextBroadcasterId === this.broadcasterId) {
+        return;
+      }
+
+      this.broadcasterId = nextBroadcasterId;
+      console.log('TTS overlay broadcasterId updated from route:', this.broadcasterId || '');
+      this.connectSocket();
+    }
+  },
+
   beforeUnmount() {
+    this.shouldReconnect = false;
     this.cleanupSocket();
     this.cleanupTimers();
 
@@ -115,7 +131,18 @@ export default {
     },
 
 connectSocket() {
+  this.shouldReconnect = true;
   this.cleanupSocket();
+
+  if (this.reconnectTimer) {
+    clearTimeout(this.reconnectTimer);
+    this.reconnectTimer = null;
+  }
+
+  if (!this.broadcasterId) {
+    console.warn('TTS overlay socket skipped: missing broadcasterId');
+    return;
+  }
 
   const params = new URLSearchParams();
 
@@ -124,7 +151,12 @@ connectSocket() {
   }
 
   const queryString = params.toString();
-  const wsUrl = `ws://localhost:3000/tts-ws${queryString ? `?${queryString}` : ''}`;
+  const wsUrl = `ws://localhost:3000/events-ws${queryString ? `?${queryString}` : ''}`;
+
+  console.log('TTS overlay socket connecting:', {
+    wsUrl,
+    broadcasterId: this.broadcasterId || ''
+  });
 
   this.socket = new WebSocket(wsUrl);
 
@@ -136,20 +168,30 @@ connectSocket() {
   this.socket.onmessage = (event) => {
     try {
       const payload = JSON.parse(event.data);
+      console.log('TTS overlay socket message:', payload);
 
-      if (payload.type === 'tts-status') {
-        console.log('TTS status:', payload);
+      if (payload.type === 'events-status') {
+        console.log('TTS overlay events status:', payload);
         return;
       }
 
-      if (payload.type !== 'tts') return;
+      if (payload.type !== 'overlay-event') return;
+      if (String(payload.eventType || '').trim() !== 'tts') return;
+
+      const ttsPayload = payload.payload || {};
 
       const item = {
-        username: String(payload.username || 'Anonymous').trim() || 'Anonymous',
-        text: String(payload.text || '').trim()
+        username: String(ttsPayload.username || 'Anonymous').trim() || 'Anonymous',
+        text: String(ttsPayload.text || '').trim()
       };
 
       if (!item.text) return;
+
+      console.log('TTS overlay received TTS event:', {
+        broadcasterId: ttsPayload.broadcasterId || payload.broadcasterId || '',
+        username: item.username,
+        textLength: item.text.length
+      });
 
       this.queue.push(item);
       this.speakNext();
@@ -158,9 +200,17 @@ connectSocket() {
     }
   };
 
-  this.socket.onclose = () => {
+  this.socket.onclose = (event) => {
     this.socketConnected = false;
-    console.log('TTS overlay socket disconnected');
+    console.log('TTS overlay socket disconnected', {
+      code: event.code,
+      reason: event.reason || '',
+      shouldReconnect: this.shouldReconnect
+    });
+
+    if (!this.shouldReconnect) {
+      return;
+    }
 
     this.reconnectTimer = setTimeout(() => {
       this.connectSocket();

@@ -9,7 +9,7 @@
 
 
 import { generateClient } from 'aws-amplify/data';
-import { getCurrentUser } from 'aws-amplify/auth';
+import { getCurrentUser, fetchAuthSession } from 'aws-amplify/auth';
 import BotSidebar from '@/components/BotSidebar/BotSidebar.vue';
 
 let generatedClient = null;
@@ -193,18 +193,42 @@ export default {
 
       try {
         const user = await getCurrentUser();
-        const userId = user?.userId || user?.username;
+        const session = await fetchAuthSession();
 
-        if (!userId) {
+        const tokenSub = session?.tokens?.idToken?.payload?.sub || '';
+        const amplifyUserId = user?.userId || '';
+        const amplifyUsername = user?.username || '';
+
+        const lookupUserIds = [tokenSub, amplifyUserId, amplifyUsername]
+          .map((value) => String(value || '').trim())
+          .filter((value, index, list) => value && list.indexOf(value) === index);
+
+        if (!lookupUserIds.length) {
           throw new Error('No authenticated user found');
         }
 
-        const response = await fetch(
-          `${TWITCH_API_BASE}/api/twitch/connection-by-user?userId=${encodeURIComponent(userId)}`
-        );
+        let connection = null;
 
-        const data = await response.json();
-        const connection = data?.connection || null;
+        for (const userId of lookupUserIds) {
+          const response = await fetch(
+            `${TWITCH_API_BASE}/api/twitch/connection-by-user?userId=${encodeURIComponent(userId)}&t=${Date.now()}`,
+            {
+              cache: 'no-store'
+            }
+          );
+
+          if (!response.ok) {
+            continue;
+          }
+
+          const data = await response.json();
+          const candidate = data?.connection || null;
+
+          if (candidate) {
+            connection = candidate;
+            break;
+          }
+        }
 
         if (!connection?.broadcasterUserId) {
           throw new Error('No connected Twitch broadcaster found for this account');
