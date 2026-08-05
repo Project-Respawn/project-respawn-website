@@ -606,7 +606,14 @@ async function listForumPostsByThreadId(client: any, threadId: string) {
   return result.data || []
 }
 
-async function createForumActivity(client: any, identity: any, activityType: string, threadId: string, postId?: string, recipientUserId?: string) {
+async function createForumActivity(
+  client: any,
+  identity: any,
+  activityType: string,
+  threadId: string,
+  postId?: string,
+  recipientUserId?: string
+) {
   const actorUserId = getIdentityUsername(identity)
   const userId = recipientUserId || actorUserId
 
@@ -646,19 +653,20 @@ async function notifyInterestedUsersOfReply(client: any, identity: any, threadId
     throw new Error(result.errors[0].message || 'Failed to load interested forum users')
   }
 
-  const recipients = new Set(
-    (result.data || [])
-      .map((activity: any) => activity.userId)
-      .filter((userId: string) => userId && userId !== actorUserId)
-  )
+  const userIds = (result.data || [])
+    .map((activity: any) => activity.userId)
+    .filter((userId: unknown): userId is string =>
+      typeof userId === 'string' && userId.length > 0 && userId !== actorUserId
+    )
+
+  const recipients = new Set<string>(userIds)
 
   await Promise.all(
-    [...recipients].map((recipientUserId) =>
+    [...recipients].map((recipientUserId: string) =>
       createForumActivity(client, identity, 'reply_received', threadId, postId, recipientUserId)
     )
   )
 }
-
 /* ============================================================================
    Forums: permission checks
 ============================================================================ */

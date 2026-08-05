@@ -1678,6 +1678,140 @@
             "sortKeyFieldNames": []
           }
         },
+        "ForumActivity": {
+          "name": "ForumActivity",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "owner": {
+              "name": "owner",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "userId": {
+              "name": "userId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "activityType": {
+              "name": "activityType",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "threadId": {
+              "name": "threadId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false,
+              "attributes": []
+            },
+            "postId": {
+              "name": "postId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false,
+              "attributes": []
+            },
+            "boardId": {
+              "name": "boardId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false,
+              "attributes": []
+            },
+            "threadTitle": {
+              "name": "threadTitle",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "boardName": {
+              "name": "boardName",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "actorUserId": {
+              "name": "actorUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "actorDisplayName": {
+              "name": "actorDisplayName",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "occurredAt": {
+              "name": "occurredAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "ForumActivities",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "provider": "userPools",
+                    "ownerField": "owner",
+                    "allow": "owner",
+                    "operations": [
+                      "read"
+                    ],
+                    "identityClaim": "cognito:username"
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
         "BoardPermissionRule": {
           "name": "BoardPermissionRule",
           "fields": {
@@ -3701,6 +3835,32 @@
               "attributes": []
             }
           }
+        },
+        "ForumActivityResult": {
+          "name": "ForumActivityResult",
+          "fields": {
+            "success": {
+              "name": "success",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "message": {
+              "name": "message",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "activityId": {
+              "name": "activityId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false,
+              "attributes": []
+            }
+          }
         }
       },
       "queries": {
@@ -3954,6 +4114,34 @@
               "isRequired": true
             }
           }
+        },
+        "recordForumActivity": {
+          "name": "recordForumActivity",
+          "isArray": false,
+          "type": {
+            "nonModel": "ForumActivityResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "activityType": {
+              "name": "activityType",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "threadId": {
+              "name": "threadId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            },
+            "postId": {
+              "name": "postId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false
+            }
+          }
         }
       }
     }
@@ -4009,7 +4197,7 @@
       }
     ]
   },
-  "version": "1.4",
+  "version": "1.5",
   "custom": {
     "API": {
       "projectRespawnApi": {
