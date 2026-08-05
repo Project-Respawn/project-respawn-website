@@ -1,0 +1,65 @@
+html,
+body,
+#app {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent !important;
+    overflow: hidden;
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.debug-pill {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+
+    padding: 8px 14px;
+
+    border-radius: 999px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    backdrop-filter: blur(12px);
+
+    color: white;
+
+    z-index: 9999;
+
+    transition: all .25s ease;
+}
+
+.debug-pill.online {
+    background: rgba(20,180,80,.75);
+}
+
+.debug-pill.offline {
+    background: rgba(220,60,60,.75);
+}
+
+.alert-enter-active,
+.alert-leave-active {
+    transition:
+        opacity .35s ease,
+        transform .35s ease;
+}
+
+.alert-enter-from,
+.alert-leave-to {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.alert-enter-to,
+.alert-leave-from {
+    opacity: 1;
+    transform: translateY(0);
+}

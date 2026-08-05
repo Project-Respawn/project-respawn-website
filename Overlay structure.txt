@@ -1,0 +1,931 @@
+# Project Respawn
+# Overlay Engine
+## Technical Design Specification
+
+Version: 0.2.0 Foundation
+
+---
+
+# Purpose
+
+The Overlay Engine is the presentation layer for Project Respawn.
+
+Its purpose is to receive standardized events from any supported platform and render them as beautiful, animated widgets inside OBS.
+
+The Overlay Engine should never contain platform-specific business logic.
+
+Instead, every external system converts its own events into a common Overlay Event which the engine can display.
+
+This separation makes the system completely platform agnostic and future proof.
+
+---
+
+# Vision
+
+Most streaming software treats every alert individually.
+
+Follow Alert
+
+Subscription Alert
+
+Raid Alert
+
+Donation Alert
+
+Prediction Alert
+
+Goal Alert
+
+All separate systems.
+
+Project Respawn takes a different approach.
+
+Everything becomes an Overlay Event.
+
+The Overlay Engine simply renders Overlay Events.
+
+This allows the same engine to support Twitch, Discord, YouTube, Kick, the Project Respawn website and future integrations without rewriting the overlay.
+
+---
+
+# Current Status
+
+Current Sprint
+
+Build the first production-ready version of the Overlay Engine.
+
+The objective is NOT to add Twitch features.
+
+The objective is to build the foundation.
+
+Current systems being completed
+
+• Overlay Engine
+
+• Overlay Socket
+
+• Overlay Event Factory
+
+• Queue Service
+
+• Widget Framework
+
+• Alert Widget
+
+No additional widgets should be developed until the foundation has been tested.
+
+---
+
+# Architecture
+
+The Overlay Engine follows one simple pipeline.
+
+External Platform
+
+↓
+
+Overlay Socket
+
+↓
+
+Overlay Event Factory
+
+↓
+
+Queue Service
+
+↓
+
+Overlay Controller
+
+↓
+
+Widget
+
+↓
+
+OBS
+
+Every feature added to the project should fit somewhere inside this pipeline.
+
+Nothing should bypass it.
+
+---
+
+# Folder Structure
+
+OverlayEngine/
+
+    Assets/
+
+    Components/
+
+    Services/
+
+        OverlaySocket.js
+
+        OverlayEventFactory.js
+
+        QueueService.js
+
+        AnimationService.js
+
+        ThemeService.js
+
+    Widgets/
+
+        AlertWidget/
+
+            AlertCard.vue
+
+            AlertCard.js
+
+            AlertCard.css
+
+        GoalWidget/
+
+            GoalWidget.vue
+
+            GoalWidget.js
+
+            GoalWidget.css
+
+        ProgressBar/
+
+        Avatar/
+
+        TextBlock/
+
+    Overlay.vue
+
+    Overlay.js
+
+    Overlay.css
+
+---
+
+# Responsibilities
+
+Overlay.vue
+
+Responsible only for displaying widgets.
+
+No business logic.
+
+No socket logic.
+
+No Twitch logic.
+
+Overlay.js
+
+Controls the Overlay Engine.
+
+Initialises services.
+
+Receives overlay events.
+
+Controls the active widget.
+
+Nothing more.
+
+OverlaySocket
+
+Responsible only for communication.
+
+Connect
+
+Reconnect
+
+Disconnect
+
+Receive JSON
+
+No Twitch logic.
+
+No widget logic.
+
+OverlayEventFactory
+
+Responsible for converting raw events into Overlay Events.
+
+Every platform should produce exactly the same output.
+
+QueueService
+
+Controls display order.
+
+Ensures only one overlay is displayed at a time.
+
+AnimationService
+
+Provides reusable animation methods.
+
+ThemeService
+
+Provides colours, themes and styling.
+
+Widgets
+
+Responsible only for presentation.
+
+---
+
+# Overlay Event
+
+Every event inside the engine should use the same format.
+
+```javascript
+{
+    id: "",
+
+    type: "",
+
+    widget: "",
+
+    priority: 0,
+
+    title: "",
+
+    subtitle: "",
+
+    message: "",
+
+    username: "",
+
+    icon: "",
+
+    image: "",
+
+    sound: "",
+
+    animation: "",
+
+    theme: "",
+
+    duration: 5000,
+
+    payload: {}
+}
+```
+
+No widget should receive Twitch data directly.
+
+Every widget receives an Overlay Event.
+
+---
+
+# Widget Lifecycle
+
+Every widget should follow the same lifecycle.
+
+Receive Overlay Event
+
+↓
+
+Load Assets
+
+↓
+
+Animate In
+
+↓
+
+Display
+
+↓
+
+Optional Interaction
+
+↓
+
+Animate Out
+
+↓
+
+Notify Queue
+
+↓
+
+Destroy
+
+Every widget should implement this lifecycle.
+
+---
+
+# Development Workflow
+
+Every new feature follows the same process.
+
+1.
+
+Update README if architecture changes.
+
+2.
+
+Build service.
+
+3.
+
+Build widget.
+
+4.
+
+Test widget.
+
+5.
+
+Test overlay.
+
+6.
+
+Test OBS.
+
+7.
+
+Commit.
+
+8.
+
+Move to next feature.
+
+Never build multiple unfinished systems simultaneously.
+
+---
+
+# Current Development Order
+
+Foundation
+
+✔ Overlay Engine
+
+✔ Router
+
+✔ Overlay Socket
+
+✔ Queue Service
+
+✔ Overlay Event Factory
+
+✔ Widget Framework
+
+In Progress
+
+• Alert Widget
+
+• End-to-end integration
+
+• Foundation testing
+
+Future Widgets
+
+• Follow Widget
+
+• Subscription Widget
+
+• Raid Widget
+
+• Gift Widget
+
+• Bits Widget
+
+• Goal Widget
+
+• Prediction Widget
+
+• Poll Widget
+
+• Charity Widget
+
+• Sponsor Widget
+
+• Timer Widget
+
+• Community Widget
+
+---
+
+# Future Platforms
+
+The Overlay Engine should eventually support
+
+Twitch
+
+Discord
+
+Kick
+
+YouTube
+
+TikTok
+
+Project Respawn Website
+
+Community Platform
+
+Merchandise Store
+
+Automation Engine
+
+AI Systems
+
+The engine should never need changing to support another platform.
+
+Only the Event Factory should require updating.
+
+---
+
+# Overlay Designer
+
+One of the long-term goals is to create a complete Overlay Designer.
+
+Rather than hard coding widget positions,
+
+every streamer should be able to
+
+Add widgets
+
+Remove widgets
+
+Drag widgets
+
+Resize widgets
+
+Choose animations
+
+Choose themes
+
+Choose fonts
+
+Choose sounds
+
+Create multiple layouts
+
+Automatically switch layouts
+
+The Overlay Engine should eventually render saved layouts rather than hard coded Vue templates.
+
+---
+
+# Future Configuration
+
+Eventually every streamer will have a configuration similar to
+
+Overlay
+
+↓
+
+Layout
+
+↓
+
+Widget
+
+↓
+
+Position
+
+↓
+
+Animation
+
+↓
+
+Theme
+
+↓
+
+Behaviour
+
+Nothing should be hard coded.
+
+Everything should become configurable.
+
+---
+
+# Design Principles
+
+Single Responsibility
+
+Every file should do one thing.
+
+Loose Coupling
+
+Services should not know about widgets.
+
+Widgets should not know about sockets.
+
+Overlay should not know about Twitch.
+
+Platform Agnostic
+
+Everything should work with any platform.
+
+Scalable
+
+New widgets should require little or no modification to existing systems.
+
+Readable
+
+Prefer simple code over clever code.
+
+Reusable
+
+If code is repeated, move it into a service.
+
+---
+
+# Testing Checklist
+
+Every feature must pass the following tests.
+
+✓ Project builds
+
+✓ Overlay loads
+
+✓ Socket connects
+
+✓ Event received
+
+✓ Event converted
+
+✓ Queue updated
+
+✓ Widget displayed
+
+✓ Animation completed
+
+✓ Queue advances
+
+✓ Overlay clears
+
+✓ OBS displays correctly
+
+---
+
+# Long-Term Roadmap
+
+Phase 1
+
+Foundation
+
+Overlay Engine
+
+Socket
+
+Queue
+
+Widgets
+
+Phase 2
+
+Complete Twitch Integration
+
+Follow
+
+Raid
+
+Subscription
+
+Bits
+
+Goals
+
+Predictions
+
+Phase 3
+
+Overlay Designer
+
+Drag and Drop
+
+Themes
+
+Animations
+
+Layouts
+
+Profiles
+
+Phase 4
+
+Multi Platform
+
+Discord
+
+Kick
+
+Website
+
+Automation
+
+Phase 5
+
+AI Powered Overlays
+
+Smart notifications
+
+Automatic highlights
+
+Dynamic widgets
+
+Adaptive layouts
+
+---
+
+# Core Principle
+
+The Overlay Engine should never need rewriting.
+
+Every new feature should extend the engine rather than replacing it.
+
+If implementing a feature requires modifying several existing services,
+
+the architecture should be reconsidered before development continues.
+
+Build Once.
+
+Extend Forever.
+
+---
+
+# Final Goal
+
+The Overlay Engine is not a Twitch overlay.
+
+It is a universal event rendering engine for Project Respawn.
+
+Every future live interaction should eventually pass through this engine before appearing on a creator's stream.
+
+This ensures one consistent architecture, one reusable rendering pipeline and one highly maintainable codebase.
+
+---
+
+# Development Continuity
+
+This document is the official source of truth for the Project Respawn Overlay Engine.
+
+Before making any architectural decisions, every developer should review this specification.
+
+The Overlay Engine has been intentionally designed as a modular, platform-agnostic rendering system.
+
+Future development should continue extending this architecture rather than redesigning existing systems.
+
+---
+
+# Current Build State
+
+Current Version
+
+0.2.0 Foundation
+
+Current Status
+
+Foundation Under Development
+
+Completed
+
+✓ Router modularised
+
+✓ Overlay Engine folder structure
+
+✓ Overlay.vue
+
+✓ Overlay.js
+
+✓ Overlay.css
+
+✓ OverlaySocket.js
+
+✓ OverlayEventFactory.js
+
+✓ QueueService.js
+
+✓ Widget Framework
+
+✓ Initial Alert Widget
+
+✓ Architecture documented
+
+Currently In Progress
+
+• Integrating all services together
+
+• Testing Overlay Event pipeline
+
+• Testing Queue Service
+
+• Testing first widget rendering
+
+• Testing OBS compatibility
+
+Next Development Goal
+
+Complete the first fully functioning Overlay Event.
+
+The complete event flow should become
+
+WebSocket
+
+↓
+
+OverlaySocket
+
+↓
+
+OverlayEventFactory
+
+↓
+
+QueueService
+
+↓
+
+Overlay Controller
+
+↓
+
+Alert Widget
+
+↓
+
+OBS
+
+Once this flow is working correctly, every future overlay feature should reuse exactly the same pipeline.
+
+---
+
+# Rules For Future Development
+
+The following rules should be followed throughout the lifetime of the Overlay Engine.
+
+1.
+
+Never place platform-specific logic inside the Overlay Engine.
+
+The Overlay Engine should never know whether an event originated from Twitch, Discord, Kick, YouTube or any future platform.
+
+2.
+
+Never bypass the Overlay Event Factory.
+
+Every external event must be converted into a standard Overlay Event before entering the Queue.
+
+3.
+
+Every service should have one responsibility.
+
+OverlaySocket handles communication.
+
+OverlayEventFactory converts events.
+
+QueueService manages display order.
+
+AnimationService manages animations.
+
+ThemeService manages themes.
+
+Widgets display content.
+
+Nothing more.
+
+4.
+
+Widgets should never communicate directly with sockets.
+
+Widgets should only receive Overlay Events.
+
+5.
+
+Avoid hard-coded behaviour wherever possible.
+
+If a feature can become configurable in the future, it should be designed with that in mind.
+
+6.
+
+Never rewrite the Overlay Engine without updating this specification.
+
+The documentation should always represent the current architecture.
+
+7.
+
+Complete one system before starting another.
+
+Foundation first.
+
+Features second.
+
+Optimisation third.
+
+8.
+
+If implementing a new feature requires modifying several existing services, stop and review the architecture.
+
+The goal is to extend the engine, not repeatedly modify it.
+
+---
+
+# Starting A New Development Session
+
+When continuing development in a new conversation or with a new developer, use the following workflow.
+
+Step 1
+
+Read this specification completely.
+
+Step 2
+
+Review the Current Build State.
+
+Step 3
+
+Identify the next unfinished item.
+
+Step 4
+
+Continue development from that point.
+
+Do not redesign completed systems unless a genuine architectural problem has been identified.
+
+The goal is continuity rather than restarting.
+
+---
+
+# Long-Term Objective
+
+The Overlay Engine should eventually become the universal presentation layer for Project Respawn.
+
+Every live interaction should eventually pass through this engine.
+
+Examples include
+
+• Twitch
+
+• Discord
+
+• Kick
+
+• YouTube
+
+• TikTok
+
+• Website Notifications
+
+• Merchandise Purchases
+
+• Community Achievements
+
+• AI Generated Events
+
+• Sponsor Integrations
+
+• Charity Campaigns
+
+• Automation Engine
+
+The Overlay Engine should not care where an event originated.
+
+It should only know how to display Overlay Events.
+
+---
+
+# Core Philosophy
+
+Project Respawn is not building another Twitch overlay.
+
+Project Respawn is building a universal Overlay Engine capable of powering every future creator interaction.
+
+The architecture should always prioritise
+
+Maintainability
+
+Scalability
+
+Readability
+
+Reusability
+
+Configurability
+
+Consistency
+
+Every decision should move the engine closer to those goals.
+
+---
+
+# Final Principle
+
+Build Once.
+
+Extend Forever.
+
+The Overlay Engine should never need rewriting.
+
+Every future feature should be implemented by extending the existing architecture rather than replacing it.
+
+If a future developer is unsure how to proceed,
+
+this document is the source of truth.
+
+Update the specification whenever the architecture changes.
+
+Then continue building.
