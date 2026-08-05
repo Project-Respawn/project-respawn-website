@@ -6,6 +6,8 @@ import { computed, onMounted, onUnmounted, ref } from "vue";
 import { generateClient } from "aws-amplify/data";
 import { getCurrentUser } from "aws-amplify/auth";
 import { useAuth } from "../../composables/useAuth.js";
+import { getRecentForumActivity } from "../Forum/Services/forumApi.js";
+import { formatRelativeTime } from "../Forum/Helpers/dateHelpers.js";
 
 
 /* =========================================================
@@ -19,7 +21,7 @@ const MODULE_RELEASES = {
   achievements: false,
   friends: false,
   events: false,
-  activity: false,
+  activity: true,
   orders: false,
   favoriteGames: false,
   mediaShowcase: false,
@@ -252,6 +254,7 @@ export default {
     const boardConfig = ref({ ...BOARD_CONFIG });
     const profile = ref({ ...EMPTY_PROFILE });
     const modules = ref(DEFAULT_MODULES.map((item) => ({ ...item })));
+    const recentForumActivity = ref([]);
 
     /* =====================================================
        14. SAVE / LOAD STATE
@@ -796,6 +799,15 @@ export default {
       }
     }
 
+    async function loadRecentForumActivity() {
+      try {
+        recentForumActivity.value = await getRecentForumActivity(5);
+      } catch (error) {
+        console.error("Failed to load recent forum activity:", error);
+        recentForumActivity.value = [];
+      }
+    }
+
     /* =====================================================
        41. IDENTITY EDITOR ACTIONS
        ===================================================== */
@@ -951,6 +963,7 @@ export default {
       await ensureAuthReady();
       await refreshAuth();
       await loadProfile();
+      await loadRecentForumActivity();
       repackModules();
     });
 
@@ -993,6 +1006,8 @@ export default {
       openTextEditor,
       placedModules,
       profile,
+      recentForumActivity,
+      formatRelativeTime,
       profileCompletion,
       profileInitials,
       profileLoadError,

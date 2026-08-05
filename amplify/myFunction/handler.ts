@@ -606,6 +606,59 @@ async function listForumPostsByThreadId(client: any, threadId: string) {
   return result.data || []
 }
 
+async function createForumActivity(client: any, identity: any, activityType: string, threadId: string, postId?: string, recipientUserId?: string) {
+  const actorUserId = getIdentityUsername(identity)
+  const userId = recipientUserId || actorUserId
+
+  if (!userId) {
+    throw new Error('Authentication required')
+  }
+
+  const thread = await getForumThreadById(client, threadId)
+  const board = await getForumBoardById(client, thread.boardId)
+  const result = await client.models.ForumActivity.create({
+    owner: userId,
+    userId,
+    activityType,
+    threadId: thread.id,
+    postId: postId || null,
+    boardId: board.id,
+    threadTitle: thread.title,
+    boardName: board.name,
+    actorUserId,
+    occurredAt: new Date().toISOString(),
+  })
+
+  if (result.errors?.length) {
+    throw new Error(result.errors[0].message || 'Failed to record forum activity')
+  }
+
+  return result.data
+}
+
+async function notifyInterestedUsersOfReply(client: any, identity: any, threadId: string, postId: string) {
+  const actorUserId = getIdentityUsername(identity)
+  const result = await client.models.ForumActivity.list({
+    filter: { threadId: { eq: threadId } },
+  })
+
+  if (result.errors?.length) {
+    throw new Error(result.errors[0].message || 'Failed to load interested forum users')
+  }
+
+  const recipients = new Set(
+    (result.data || [])
+      .map((activity: any) => activity.userId)
+      .filter((userId: string) => userId && userId !== actorUserId)
+  )
+
+  await Promise.all(
+    [...recipients].map((recipientUserId) =>
+      createForumActivity(client, identity, 'reply_received', threadId, postId, recipientUserId)
+    )
+  )
+}
+
 /* ============================================================================
    Forums: permission checks
 ============================================================================ */
@@ -669,6 +722,15 @@ async function handleRecordForumThreadView(event: any) {
 
     if (updateResult.errors?.length) {
       throw new Error(updateResult.errors[0].message || 'Failed to update thread view count')
+    }
+
+    if (getIdentityUsername(getResolverIdentity(event))) {
+      await createForumActivity(
+        client,
+        getResolverIdentity(event),
+        'thread_viewed',
+        threadId
+      )
     }
 
     return forumResult({
@@ -772,6 +834,13 @@ async function handleCreateForumThread(event: any) {
     if (!createdThread?.id) {
       throw new Error('Thread was created without an id')
     }
+
+    await createForumActivity(
+      client,
+      identity,
+      'thread_created',
+      createdThread.id
+    )
 
     const postCreateResult = await client.models.ForumPost.create({
       threadId: createdThread.id,
@@ -882,6 +951,14 @@ async function handleCreateForumReply(event: any) {
       throw new Error('Reply was created without an id')
     }
 
+    await createForumActivity(
+      client,
+      identity,
+      'reply_created',
+      threadId,
+      createdPost.id
+    )
+
     const posts = await listForumPostsByThreadId(client, threadId)
     const nextReplyCount = Math.max(posts.length - 1, 0)
 
@@ -896,6 +973,13 @@ async function handleCreateForumReply(event: any) {
     }
 
     const updatedThread = updateThreadResult.data || thread
+
+    await notifyInterestedUsersOfReply(
+      client,
+      identity,
+      threadId,
+      createdPost.id
+    )
 
     return forumResult({
       success: true,
@@ -920,6 +1004,29 @@ async function handleCreateForumReply(event: any) {
    AppSync resolver router
 ============================================================================ */
 
+async function handleRecordForumActivity(event: any) {
+  const client = await getDataClient()
+  const { activityType, threadId, postId } = event.arguments || {}
+
+  if (!activityType || !threadId) {
+    return { success: false, message: 'Missing required activity fields', activityId: null }
+  }
+
+  try {
+    const activity = await createForumActivity(
+      client,
+      getResolverIdentity(event),
+      activityType,
+      threadId,
+      postId
+    )
+
+    return { success: true, message: null, activityId: activity?.id || null }
+  } catch (error: any) {
+    return { success: false, message: error?.message || 'Failed to record forum activity', activityId: null }
+  }
+}
+
 async function handleAppSyncResolvers(event: any) {
   const fieldName = getResolverFieldName(event)
 
@@ -933,6 +1040,10 @@ async function handleAppSyncResolvers(event: any) {
 
   if (fieldName === 'submitForumReply') {
     return handleCreateForumReply(event)
+  }
+
+  if (fieldName === 'recordForumActivity') {
+    return handleRecordForumActivity(event)
   }
 
   if (fieldName === 'cloneEvent') {

@@ -1,5 +1,6 @@
 const STORAGE_KEY = 'tts-settings-v1';
 
+import { getCurrentUser, fetchAuthSession } from 'aws-amplify/auth';
 import BotSidebar from '@/components/BotSidebar/BotSidebar.vue';
 
 export default {
@@ -11,6 +12,8 @@ export default {
   data() {
     return {
       broadcasterId: '',
+      broadcasterName: '',
+      lookupUserIds: [],
       rewardTitle: 'Text To Speech',
       maxLength: 200,
 
@@ -25,6 +28,7 @@ export default {
       reconnectTimer: null,
       reconnectDelayMs: 3000,
       useSocket: true,
+      suppressSocketReconnect: false,
 
       events: [],
       queue: [],
@@ -54,7 +58,7 @@ export default {
       const params = new URLSearchParams();
       if (this.broadcasterId) params.set('broadcasterId', this.broadcasterId);
       const query = params.toString();
-      return `ws://127.0.0.1:3000/tts-ws${query ? `?${query}` : ''}`;
+      return `ws://localhost:3000/events-ws${query ? `?${query}` : ''}`;
     },
     overlayUrl() {
       const params = new URLSearchParams();
@@ -81,7 +85,7 @@ export default {
     },
   },
 
-  mounted() {
+  async mounted() {
     this.broadcasterId =
       this.$route?.params?.broadcasterId ||
       this.$route?.query?.broadcasterId ||
@@ -94,10 +98,33 @@ export default {
       window.speechSynthesis.onvoiceschanged = this.loadVoices;
     }
 
+    await this.resolveBroadcasterContext();
     this.connectSocket();
   },
 
+  watch: {
+    '$route.query.broadcasterId': {
+      async handler(newValue) {
+        const nextBroadcasterId = String(newValue || '').trim();
+
+        if (nextBroadcasterId && nextBroadcasterId !== this.broadcasterId) {
+          this.broadcasterId = nextBroadcasterId;
+          console.log('[TTS Settings] broadcasterId updated from route query:', nextBroadcasterId);
+          this.reconnectSocket();
+          return;
+        }
+
+        if (!nextBroadcasterId && !this.broadcasterId) {
+          await this.resolveBroadcasterContext();
+          this.reconnectSocket();
+        }
+      }
+    }
+  },
+
   beforeUnmount() {
+    this.suppressSocketReconnect = true;
+    this.useSocket = false;
     this.cleanupSocket();
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
@@ -107,6 +134,139 @@ export default {
   },
 
   methods: {
+    async loadCurrentUserIdentifiers() {
+      try {
+        const user = await getCurrentUser();
+        const session = await fetchAuthSession();
+
+        const tokenSub = session?.tokens?.idToken?.payload?.sub || '';
+        const amplifyUserId = user?.userId || '';
+        const amplifyUsername = user?.username || '';
+
+        this.lookupUserIds = [tokenSub, amplifyUserId, amplifyUsername]
+          .map((value) => String(value || '').trim())
+          .filter((value, index, list) => value && list.indexOf(value) === index);
+      } catch (error) {
+        console.warn('[TTS Settings] failed to load current user identifiers:', error);
+        this.lookupUserIds = [];
+      }
+    },
+
+    async fetchConnectionForUser(userId) {
+      const response = await fetch(
+        `http://localhost:3000/api/twitch/connection-by-user?userId=${encodeURIComponent(userId)}&t=${Date.now()}`,
+        {
+          cache: 'no-store'
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Connection request failed');
+      }
+
+      const data = await response.json();
+      return data?.connection || null;
+    },
+
+    async fetchConnectedBroadcaster() {
+      const response = await fetch(
+        `http://localhost:3000/api/twitch/connections?t=${Date.now()}`,
+        {
+          cache: 'no-store'
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Connections request failed');
+      }
+
+      const data = await response.json();
+      const connections = Array.isArray(data?.connections) ? data.connections : [];
+
+      return connections.find((item) => item?.isConnected && item?.broadcasterUserId) || null;
+    },
+
+    async fetchBotStatus() {
+      const response = await fetch(
+        `http://localhost:3000/api/twitch/status?t=${Date.now()}`,
+        {
+          cache: 'no-store'
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Status request failed');
+      }
+
+      return response.json();
+    },
+
+    async resolveBroadcasterContext() {
+      if (this.broadcasterId) {
+        console.log('[TTS Settings] using broadcasterId from route:', this.broadcasterId);
+        return this.broadcasterId;
+      }
+
+      await this.loadCurrentUserIdentifiers();
+
+      try {
+        for (const userId of this.lookupUserIds) {
+          const connection = await this.fetchConnectionForUser(userId);
+
+          if (!connection?.broadcasterUserId) {
+            continue;
+          }
+
+          this.broadcasterId = String(connection.broadcasterUserId);
+          this.broadcasterName = connection.twitchDisplayName || connection.twitchLogin || '';
+
+          console.log('[TTS Settings] broadcaster resolved by user connection:', {
+            userId,
+            broadcasterId: this.broadcasterId,
+            broadcasterName: this.broadcasterName
+          });
+
+          return this.broadcasterId;
+        }
+
+        const connectedBroadcaster = await this.fetchConnectedBroadcaster();
+
+        if (connectedBroadcaster?.broadcasterUserId) {
+          this.broadcasterId = String(connectedBroadcaster.broadcasterUserId);
+          this.broadcasterName = connectedBroadcaster.twitchDisplayName || connectedBroadcaster.twitchLogin || '';
+
+          console.log('[TTS Settings] broadcaster resolved by connections fallback:', {
+            broadcasterId: this.broadcasterId,
+            broadcasterName: this.broadcasterName
+          });
+
+          return this.broadcasterId;
+        }
+
+        const botStatus = await this.fetchBotStatus();
+        const fallbackBroadcasterId = botStatus?.broadcasterId || botStatus?.broadcasterUserId || '';
+
+        if (fallbackBroadcasterId) {
+          this.broadcasterId = String(fallbackBroadcasterId);
+          this.broadcasterName = botStatus?.displayName || botStatus?.username || '';
+
+          console.log('[TTS Settings] broadcaster resolved by status fallback:', {
+            broadcasterId: this.broadcasterId,
+            broadcasterName: this.broadcasterName
+          });
+
+          return this.broadcasterId;
+        }
+      } catch (error) {
+        console.error('[TTS Settings] failed to resolve broadcaster context:', error);
+      }
+
+      this.broadcasterId = '';
+      this.broadcasterName = '';
+      this.showStatus('No connected broadcaster found for TTS', 'error');
+      return '';
+    },
+
     // ── Persistence ────────────────────────────────────────────────
     loadSavedSettings() {
       try {
@@ -215,6 +375,15 @@ export default {
         this.showStatus('Socket disabled.');
         return;
       }
+
+      if (!this.broadcasterId) {
+        this.socketState = 'idle';
+        console.warn('[TTS Settings] socket connect skipped: missing broadcasterId');
+        this.showStatus('Connect a broadcaster before opening TTS socket', 'error');
+        return;
+      }
+
+      this.suppressSocketReconnect = false;
       if (this.reconnectTimer) {
         clearTimeout(this.reconnectTimer);
         this.reconnectTimer = null;
@@ -230,27 +399,51 @@ export default {
       const wsUrl = this.socketUrl;
       this.socketState = 'connecting';
       this.showStatus(`Connecting to ${wsUrl}`);
+      console.log('[TTS Settings] socket connecting:', {
+        wsUrl,
+        broadcasterId: this.broadcasterId || ''
+      });
 
       const socket = new WebSocket(wsUrl);
       this.socket = socket;
 
       socket.addEventListener('open', () => {
         this.socketState = 'open';
+        console.log('[TTS Settings] socket open:', wsUrl);
         this.showStatus('Socket connected', 'success');
       });
 
       socket.addEventListener('message', (event) => {
         try {
           const payload = JSON.parse(event.data);
-          if (payload.type === 'tts-status') return;
-          if (payload.type !== 'tts') return;
+          console.log('[TTS Settings] socket message:', payload);
+
+          if (payload.type === 'events-status') {
+            return;
+          }
+
+          if (payload.type !== 'overlay-event') return;
+          if (String(payload.eventType || '').trim() !== 'tts') return;
+
+          const ttsPayload = payload.payload || {};
 
           const item = {
             id: `${Date.now()}-${Math.random()}`,
-            username: payload.username || 'Anonymous',
-            text: payload.text || '',
+            username: ttsPayload.username || 'Anonymous',
+            text: ttsPayload.text || '',
             receivedAt: new Date().toISOString(),
           };
+
+          if (!String(item.text || '').trim()) {
+            return;
+          }
+
+          console.log('[TTS Settings] received TTS event:', {
+            broadcasterId: ttsPayload.broadcasterId || payload.broadcasterId || '',
+            username: item.username,
+            textLength: String(item.text).length
+          });
+
           this.events.unshift(item);
           this.events = this.events.slice(0, 20);
           this.queue.push(item);
@@ -262,8 +455,15 @@ export default {
 
       socket.addEventListener('close', (event) => {
         this.socketState = 'closed';
+        console.log('[TTS Settings] socket closed:', {
+          code: event.code,
+          reason: event.reason || '',
+          suppressReconnect: this.suppressSocketReconnect,
+          useSocket: this.useSocket
+        });
         this.showStatus('Socket closed');
-        if (this.useSocket) {
+
+        if (!this.suppressSocketReconnect && this.useSocket) {
           this.reconnectTimer = setTimeout(
             () => this.connectSocket(),
             this.reconnectDelayMs,
@@ -271,14 +471,17 @@ export default {
         }
       });
 
-      socket.addEventListener('error', () => {
+      socket.addEventListener('error', (error) => {
         this.socketState = 'error';
+        console.error('[TTS Settings] socket error:', error);
         this.showStatus(`Socket connection failed: ${wsUrl}`, 'error');
       });
     },
 
     reconnectSocket() {
+      this.suppressSocketReconnect = true;
       this.cleanupSocket();
+      this.suppressSocketReconnect = false;
       this.useSocket = true;
       this.connectSocket();
     },
@@ -294,12 +497,25 @@ export default {
         } catch (e) {}
         this.socket = null;
       }
+      this.socketState = 'closed';
     },
 
     // ── API ────────────────────────────────────────────────────────
     async sendTestTts() {
+      if (!this.broadcasterId) {
+        console.warn('[TTS Settings] test TTS blocked: missing broadcasterId');
+        this.showStatus('Select a connected broadcaster before running a TTS test', 'error');
+        return;
+      }
+
       try {
         this.sendingTest = true;
+        console.log('[TTS Settings] sending test TTS:', {
+          broadcasterId: this.broadcasterId,
+          username: this.testUsername,
+          textLength: String(this.testMessage || '').length
+        });
+
         const response = await fetch(`${this.apiBaseUrl}/api/tts/test`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

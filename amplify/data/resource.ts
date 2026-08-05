@@ -284,6 +284,12 @@ const schema = a
       lastReplyAt: a.datetime(),
     }),
 
+    ForumActivityResult: a.customType({
+      success: a.boolean().required(),
+      message: a.string(),
+      activityId: a.id(),
+    }),
+
     ForumCategory: a
       .model({
         name: a.string().required(),
@@ -374,6 +380,26 @@ const schema = a
         ]),
       ]),
 
+    ForumActivity: a
+      .model({
+        owner: a
+          .string()
+          .authorization((allow) => [allow.owner().to(['read', 'delete'])]),
+        userId: a.string().required(),
+        activityType: a.string().required(),
+        threadId: a.id(),
+        postId: a.id(),
+        boardId: a.id(),
+        threadTitle: a.string(),
+        boardName: a.string(),
+        actorUserId: a.string(),
+        actorDisplayName: a.string(),
+        occurredAt: a.datetime().required(),
+      })
+      .authorization((allow) => [
+        allow.ownerDefinedIn('owner').to(['read']),
+      ]),
+
     BoardPermissionRule: a
       .model({
         boardId: a.id().required(),
@@ -425,6 +451,17 @@ const schema = a
       })
       .returns(a.ref('ForumMutationResult').required())
       .authorization((allow) => [allow.publicApiKey(), allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    recordForumActivity: a
+      .mutation()
+      .arguments({
+        activityType: a.string().required(),
+        threadId: a.id().required(),
+        postId: a.id(),
+      })
+      .returns(a.ref('ForumActivityResult').required())
+      .authorization((allow) => [allow.authenticated()])
       .handler(a.handler.function(myFunction)),
 
     /*

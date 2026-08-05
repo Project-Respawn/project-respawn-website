@@ -1,3 +1,19 @@
+import { getRecentForumActivity } from '../Services/forumApi';
+import { formatRelativeTime } from '../Helpers/dateHelpers';
+
+const ACTIVITY_PRESENTATION = {
+  thread_viewed: { icon: '👁️', label: 'You viewed' },
+  thread_created: { icon: '📝', label: 'You started' },
+  reply_created: { icon: '💬', label: 'You replied to' },
+  post_edited: { icon: '✏️', label: 'You edited a reply in' },
+  post_deleted: { icon: '🗑️', label: 'You deleted a reply in' },
+  thread_deleted: { icon: '🗑️', label: 'You deleted' },
+  thread_pinned: { icon: '📌', label: 'You pinned' },
+  thread_featured: { icon: '⭐', label: 'You featured' },
+  thread_locked: { icon: '🔒', label: 'You locked' },
+  thread_unlocked: { icon: '🔓', label: 'You unlocked' },
+};
+
 export default {
   name: 'ForumLayout',
 
@@ -32,43 +48,7 @@ export default {
         },
       ],
 
-      recentActivity: [
-        {
-          id: 'activity-1',
-          icon: '💬',
-          title: 'You replied to “How should forum permissions work by role?”',
-          board: 'App Development',
-          time: '18m ago',
-        },
-        {
-          id: 'activity-2',
-          icon: '⭐',
-          title: 'Your post was featured in Feature Ideas',
-          board: 'Feature Ideas',
-          time: '1h ago',
-        },
-        {
-          id: 'activity-3',
-          icon: '↩️',
-          title: 'New reply on your creator rewards discussion',
-          board: 'Feature Ideas',
-          time: '2h ago',
-        },
-        {
-          id: 'activity-4',
-          icon: '📌',
-          title: 'A followed thread was pinned by staff',
-          board: 'Discord Communities',
-          time: '5h ago',
-        },
-        {
-          id: 'activity-5',
-          icon: '📝',
-          title: 'You posted in Achievements',
-          board: 'Achievements',
-          time: '9h ago',
-        },
-      ],
+      recentActivity: [],
 
       friendsOnline: [
         {
@@ -118,7 +98,34 @@ export default {
     },
   },
 
+  async mounted() {
+    await this.loadRecentActivity();
+  },
+
   methods: {
+    async loadRecentActivity() {
+      try {
+        const activity = await getRecentForumActivity(5);
+        this.recentActivity = activity.map((item) => {
+          const presentation = ACTIVITY_PRESENTATION[item.activityType] || {
+            icon: '💬',
+            label: 'Recent activity in',
+          };
+
+          return {
+            id: item.id,
+            icon: presentation.icon,
+            title: `${presentation.label} “${item.threadTitle || 'a discussion'}”`,
+            board: item.boardName || 'Forum',
+            time: formatRelativeTime(item.occurredAt),
+          };
+        });
+      } catch (error) {
+        console.error('Failed to load recent forum activity:', error);
+        this.recentActivity = [];
+      }
+    },
+
     goToForumHome() {
       this.$router.push('/forum');
     },
