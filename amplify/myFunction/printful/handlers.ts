@@ -130,9 +130,9 @@ export async function handlePrintfulProductLookup(path: string) {
   }
 }
 
-export async function handlePrintfulCreateOrder(body: any) {
+export async function createPrintfulOrder(body: any) {
   if (!body?.items || !Array.isArray(body.items) || body.items.length === 0) {
-    return jsonResponse(400, { error: 'Missing order items' })
+    throw new Error('Missing order items')
   }
 
   const orderData = buildPrintfulOrderPayload(body)
@@ -144,7 +144,16 @@ export async function handlePrintfulCreateOrder(body: any) {
     buildPrintfulAuthHeader()
   )
 
-  return jsonResponse(result.statusCode, result.body)
+  return result
+}
+
+export async function handlePrintfulCreateOrder(body: any) {
+  try {
+    const result = await createPrintfulOrder(body)
+    return jsonResponse(result.statusCode, result.body)
+  } catch (error) {
+    return jsonResponse(400, { error: error instanceof Error ? error.message : 'Missing order items' })
+  }
 }
 
 export async function handlePrintfulOrderLookup(path: string) {

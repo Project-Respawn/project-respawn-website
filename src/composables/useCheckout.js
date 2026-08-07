@@ -50,6 +50,8 @@ function normaliseCartItem(item, index) {
     quantity: Number(item?.quantity ?? item?.qty ?? 1),
     image: item?.image ?? item?.thumbnailUrl ?? '',
     variantId: item?.variantId ?? '',
+    fulfillmentProvider: item?.fulfillmentProvider ?? '',
+    fulfillmentVariantId: item?.fulfillmentVariantId ?? '',
     productId: item?.productId ?? item?.id ?? `item-${index}`,
   }
 }
@@ -97,6 +99,8 @@ export function useCheckout() {
   const revolutCardField = ref(null)
   const latestOrderToken = ref('')
   const autoMountQueued = ref(false)
+  const fulfillmentError = ref('')
+  const fulfillmentAttempts = new Set()
 
   const apiBase = getApiBaseUrl('checkout API requests')
 
@@ -285,6 +289,77 @@ export function useCheckout() {
     }
   }
 
+  async function dispatchFulfillment(revolutOrderId) {
+    if (!apiBase) {
+      throw new Error('Missing API base URL for fulfillment')
+    }
+
+    if (fulfillmentAttempts.has(revolutOrderId)) {
+      return false
+    }
+
+    fulfillmentAttempts.add(revolutOrderId)
+
+    const payload = {
+      projectOrderId: revolutOrderId,
+      revolutOrderId,
+      paymentAmount: Number(total.value.toFixed(2)),
+      currency: 'GBP',
+      items: cartItems.value.map((item) => ({
+        productId: item.productId,
+        quantity: item.quantity,
+        fulfillmentProvider: item.fulfillmentProvider || 'manual',
+        fulfillmentVariantId: item.fulfillmentVariantId || null,
+      })),
+      customerName: customer.fullName,
+      email: customer.email,
+      shippingAddress: { address: customer.address, city: customer.city, postcode: customer.postcode, country: customer.country },
+    }
+
+    console.log('Dispatching fulfillment')
+
+    const response = await fetch(joinApiUrl(apiBase, '/orders/fulfill'), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+
+    console.log('Fulfillment response status:', response.status)
+
+    if (!response.ok) {
+      throw new Error('Fulfillment dispatch failed')
+    }
+
+    const result = await response.json().catch(() => null)
+    return Boolean(result?.success)
+  }
+
+  async function completePaidOrder(order) {
+    if (fulfillmentAttempts.has(order.id)) {
+      return
+    }
+
+    console.log('Revolut payment successful')
+    orderId.value = order.id
+    orderComplete.value = true
+    submittingPayment.value = false
+
+    try {
+      const created = await dispatchFulfillment(order.id)
+
+      if (created) {
+        localStorage.removeItem('cart')
+        cartItems.value = []
+        window.dispatchEvent(new Event('cart-updated'))
+      }
+    } catch (error) {
+      fulfillmentError.value = 'Payment succeeded, but we could not submit your order for fulfillment. Please contact support with your order ID.'
+      console.error('Fulfillment dispatch failed after successful payment', error)
+    }
+  }
+
   async function mountPaymentField() {
     if (revolutLoading.value || !addressComplete.value || !cartItems.value.length) return
 
@@ -310,12 +385,7 @@ export function useCheckout() {
         target: mountTarget,
         locale: 'en',
         onSuccess() {
-          orderId.value = order.id
-          orderComplete.value = true
-          submittingPayment.value = false
-          localStorage.removeItem('cart')
-          cartItems.value = []
-          window.dispatchEvent(new Event('cart-updated'))
+          void completePaidOrder(order)
         },
         onError(error) {
           revolutError.value = getErrorMessage(
@@ -439,6 +509,7 @@ export function useCheckout() {
     addressError,
     revolutLoading,
     revolutError,
+    fulfillmentError,
     paymentReady,
     submittingPayment,
     originalShipping,

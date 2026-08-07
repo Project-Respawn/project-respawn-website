@@ -709,6 +709,7 @@ export default {
           brands: product.brands || [],
           category: product.category,
           categories: product.categories || [],
+          sourceType: product.sourceType || '',
           productUrl: product.productUrl,
           displayPrice: product.displayPrice,
           materials: product.materials,
@@ -808,6 +809,14 @@ export default {
         productUrl: this.selectedProduct.productUrl || '',
         quantity: safeQuantity,
         variantId: this.selectedVariant?.id || '',
+        fulfillmentProvider:
+          String(this.selectedProduct.sourceType || '').trim().toLowerCase() === 'printful'
+            ? 'printful'
+            : 'manual',
+        fulfillmentVariantId:
+          String(this.selectedProduct.sourceType || '').trim().toLowerCase() === 'printful'
+            ? this.selectedVariant?.id || ''
+            : '',
         variant: this.selectedVariant?.name || this.selectedSize || '',
         variantName: this.selectedVariant?.name || '',
         color: this.selectedVariant?.color || this.selectedColor || '',

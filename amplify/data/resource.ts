@@ -581,6 +581,25 @@ const schema = a
         ]),
       ]),
 
+    FulfillmentOrder: a
+      .model({
+        projectOrderId: a.string().required(),
+        revolutOrderId: a.string().required(),
+        paymentStatus: a.string().required(),
+        paymentAmount: a.float(),
+        currency: a.string(),
+        customerName: a.string().required(),
+        email: a.string().required(),
+        shippingAddress: a.json().required(),
+        items: a.json().required(),
+        providerStatuses: a.json().required(),
+        createdAt: a.datetime(),
+        updatedAt: a.datetime(),
+      })
+      .authorization((allow) => [
+        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read', 'update']),
+      ]),
+
     MerchProductBrand: a
       .model({
         productId: a.id().required(),
