@@ -3,6 +3,10 @@ import { makeRequest } from '../shared/http'
 import { jsonResponse } from '../shared/responses'
 import { logger } from '../shared/logger'
 
+const REVOLUT_API_HEADERS = {
+  'Revolut-Api-Version': '2026-04-20',
+}
+
 function normalizeCurrency(value: unknown) {
   const currency = String(value || 'GBP').trim().toUpperCase()
   return currency || 'GBP'
@@ -121,7 +125,8 @@ async function createRevolutMerchantOrder(body: any) {
     getRevolutOrdersUrl(),
     'POST',
     payload,
-    buildRevolutAuthHeader()
+    buildRevolutAuthHeader(),
+    REVOLUT_API_HEADERS,
   )
 }
 
@@ -130,7 +135,8 @@ async function fetchRevolutMerchantOrder(orderId: string) {
     `${getRevolutOrdersUrl()}/${encodeURIComponent(orderId)}`,
     'GET',
     null,
-    buildRevolutAuthHeader()
+    buildRevolutAuthHeader(),
+    REVOLUT_API_HEADERS,
   )
 }
 
