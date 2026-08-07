@@ -109,8 +109,8 @@ async function createRevolutMerchantOrder(body: any) {
   const payload = buildRevolutOrderPayload(body)
 
   logger.info('APP_ENV:', process.env.APP_ENV)
-  logger.info('REVOLUT_MODE:', process.env.REVOLUT_MODE)
-  logger.info('Revolut mode:', getRevolutMode())
+  logger.info('process.env.REVOLUT_MODE:', process.env.REVOLUT_MODE)
+  logger.info('Resolved Revolut mode:', REVOLUT_MODE)
   logger.info('Revolut base URL:', getRevolutBaseUrl())
   logger.info('Revolut orders URL:', getRevolutOrdersUrl())
   logger.info('Revolut API key configured:', Boolean(REVOLUT_API_KEY))
