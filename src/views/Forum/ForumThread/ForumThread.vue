@@ -46,7 +46,7 @@
         <div class="forum-thread-hero-header">
           <div class="forum-thread-hero-actions">
             <button
-              v-if="hasModerationAccess()"
+              v-if="isModerator"
               class="forum-thread-secondary-btn forum-thread-lock-btn"
               type="button"
               @click="toggleThreadLock"
@@ -60,7 +60,7 @@
             </button>
 
             <button
-              v-if="canDeleteThread()"
+              v-if="canDeleteCurrentThread"
               class="forum-thread-secondary-btn forum-thread-danger-btn"
               type="button"
               @click="deleteThread"
@@ -241,7 +241,7 @@
               </button>
 
               <button
-                v-if="canDeletePost(post)"
+                v-if="post.canDelete"
                 class="forum-post-action forum-post-action-danger"
                 type="button"
                 @click="deletePost(post)"

@@ -1021,7 +1021,7 @@ export async function getRecentForumActivity(limit = 5) {
             },
         });
 
-    return throwIfErrors(
+    const activities = throwIfErrors(
         result,
         "Failed to load recent forum activity."
     )
@@ -1029,6 +1029,17 @@ export async function getRecentForumActivity(limit = 5) {
             (a, b) => new Date(b.occurredAt || 0).getTime() - new Date(a.occurredAt || 0).getTime()
         )
         .slice(0, limit);
+
+    const threads = await getThreads();
+
+    const threadSlugsById = new Map(
+        threads.map(thread => [thread.id, thread.slug])
+    );
+
+    return activities.map(activity => ({
+        ...activity,
+        threadSlug: threadSlugsById.get(activity.threadId) || "",
+    }));
 
 }
 

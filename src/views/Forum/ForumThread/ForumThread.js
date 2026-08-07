@@ -31,6 +31,7 @@ import {
     canDeletePost,
     canDeleteThread,
     hasModerationAccess,
+    isSignedIn as isForumSignedIn,
 
 } from "../Services/forumPermissions";
 
@@ -388,7 +389,7 @@ export default {
 
                 this.currentUser,
 
-                this.threadPosts
+                this.threadRecord
 
             );
 
@@ -397,6 +398,16 @@ export default {
         isModerator() {
 
             return hasModerationAccess(
+
+                this.currentUser
+
+            );
+
+        },
+
+        isSignedIn() {
+
+            return isForumSignedIn(
 
                 this.currentUser
 

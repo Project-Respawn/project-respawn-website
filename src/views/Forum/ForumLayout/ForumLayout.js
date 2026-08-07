@@ -118,7 +118,7 @@ export default {
             title: `${presentation.label} "${item.threadTitle || 'a discussion'}"`,
             board: item.boardName || 'Forum',
             time: formatRelativeTime(item.occurredAt),
-            threadSlug: item.threadSlug || item.slug || item.thread_slug || '',
+            threadSlug: item.threadSlug,
           };
         });
       } catch (error) {
@@ -136,7 +136,13 @@ export default {
     },
 
     goToThread(threadSlug) {
-      if (!threadSlug) return;
+      console.log('goToThread called with:', threadSlug);
+
+      if (!threadSlug) {
+        console.warn('No threadSlug, not navigating');
+        return;
+      }
+
       this.$router.push({ name: 'ForumThread', params: { threadSlug } });
     },
 

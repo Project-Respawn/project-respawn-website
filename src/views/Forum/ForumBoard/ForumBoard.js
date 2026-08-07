@@ -132,6 +132,7 @@ export default {
         mappedThreads() {
             return this.boardThreads.map(thread => ({
                 ...thread,
+                threadSlug: thread.slug || thread.threadSlug || "",
                 createdAt: formatRelativeTime(thread.createdAt),
             }));
         },
@@ -266,7 +267,12 @@ export default {
         // ==============================================================
 
         goToThread(threadSlug) {
-            if (!threadSlug) return;
+            console.log("goToThread called with:", threadSlug);
+
+            if (!threadSlug) {
+                console.warn("No threadSlug, not navigating");
+                return;
+            }
 
             this.$router.push({
                 name: "ForumThread",
