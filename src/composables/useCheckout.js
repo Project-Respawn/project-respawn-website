@@ -14,6 +14,26 @@ function getErrorMessage(error, fallback) {
   return fallback
 }
 
+function resolveRevolutMode() {
+  const configuredMode = String(import.meta.env.VITE_REVOLUT_MODE || '')
+    .trim()
+    .toLowerCase()
+
+  if (!configuredMode) {
+    return import.meta.env.PROD ? 'prod' : 'sandbox'
+  }
+
+  if (configuredMode === 'prod' || configuredMode === 'production' || configuredMode === 'live') {
+    return 'prod'
+  }
+
+  if (configuredMode === 'sandbox') {
+    return 'sandbox'
+  }
+
+  throw new Error('Invalid VITE_REVOLUT_MODE. Expected prod, production, live, or sandbox.')
+}
+
 function normaliseCartItem(item, index) {
   const title =
     item?.name ??
@@ -80,9 +100,8 @@ export function useCheckout() {
 
   const apiBase = getApiBaseUrl('checkout API requests')
 
-  const revolutMode = (import.meta.env.VITE_REVOLUT_MODE || 'sandbox')
-    .trim()
-    .toLowerCase()
+  const revolutMode = resolveRevolutMode()
+  console.log('Resolved frontend Revolut mode:', revolutMode)
 
   const cartItems = ref([])
 
