@@ -261,11 +261,19 @@ export function useCheckout() {
       )
     }
 
+    console.log('Revolut checkout response status:', response.status)
+
     const token =
       data?.order?.token ||
       data?.token ||
       data?.public_id ||
       data?.orderToken
+
+    const id = data?.order?.id || data?.id || data?.orderId
+
+    console.log('Revolut order token present:', Boolean(token))
+    console.log('Revolut order id present:', Boolean(id))
+    console.log('Resolved frontend Revolut mode:', revolutMode)
 
     if (!token) {
       throw new Error('Backend did not return a Revolut order token')
@@ -273,7 +281,7 @@ export function useCheckout() {
 
     return {
       token,
-      id: data?.order?.id || data?.id || data?.orderId || `PR-${Date.now()}`,
+      id: id || `PR-${Date.now()}`,
     }
   }
 
