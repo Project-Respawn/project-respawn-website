@@ -132,7 +132,7 @@ httpApi.addRoutes({
 });
 
 httpApi.addRoutes({
-  path: '/orders/import-legacy',
+  path: '/orders/import-existing-revolut',
   methods: [HttpMethod.POST],
   integration: httpLambdaIntegration,
 });
