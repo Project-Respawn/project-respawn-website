@@ -1,1 +1,1 @@
-export { dispatchFulfillment, handleFulfillmentRequest, handleRecoveryFulfillment, handleLegacyOrderImport } from './index'
+export { dispatchFulfillment, handleExistingRevolutOrderImport, handleFulfillmentRequest, handleRecoveryFulfillment } from './index'

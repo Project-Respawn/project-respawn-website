@@ -5,13 +5,19 @@ let client
 function getClient() { return client ||= generateClient() }
 
 function providerSummary(statuses = {}) {
-  if (statuses?.legacy?.status === 'pending') return 'recovery_required'
   const values = Object.values(statuses || {})
   if (!values.length) return 'recovery_required'
   if (values.every((status) => status?.status === 'fulfilled')) return 'fulfilled'
   if (values.some((status) => status?.status === 'failed')) return 'failed'
   if (values.some((status) => status?.status === 'fulfilled')) return 'partially_fulfilled'
   return 'pending'
+}
+
+function fulfillmentSummary(order) {
+  const recovered = (order.auditHistory || []).some((entry) => entry?.action === 'Admin recovery started' && entry?.result === 'verified')
+  return recovered && order.overallFulfillmentStatus === 'fulfilled'
+    ? 'recovered'
+    : order.overallFulfillmentStatus || providerSummary(order.providerStatuses)
 }
 
 export default {
@@ -23,7 +29,7 @@ export default {
     filteredOrders() {
       const query = this.search.trim().toLowerCase()
       return this.orders.filter((order) => {
-        const fulfillment = providerSummary(order.providerStatuses)
+        const fulfillment = fulfillmentSummary(order)
         const matchesQuery = !query || [order.projectOrderId, order.revolutOrderId, order.email, order.customerName].some((value) => String(value || '').toLowerCase().includes(query))
         return matchesQuery && (!this.paymentFilter || order.paymentStatus === this.paymentFilter) && (!this.fulfillmentFilter || fulfillment === this.fulfillmentFilter)
       })
@@ -32,6 +38,7 @@ export default {
   async mounted() { await this.loadOrders() },
   methods: {
     providerSummary,
+    fulfillmentSummary,
     formatDate(value) { return value ? new Date(value).toLocaleString() : '—' },
     async loadOrders() {
       this.loading = true; this.error = ''
@@ -60,18 +67,18 @@ export default {
         await this.loadOrders()
       } catch (error) { this.error = error?.message || 'Fulfillment recovery failed' } finally { this.actionLoading = false }
     },
-    async importLegacyOrder() {
+    async importExistingRevolutOrder() {
       if (!this.apiBase || !this.legacyRevolutOrderId.trim() || this.actionLoading) return
       this.actionLoading = true; this.error = ''; this.message = ''
       try {
-        const response = await fetch(joinApiUrl(this.apiBase, '/orders/import-legacy'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ revolutOrderId: this.legacyRevolutOrderId.trim() }) })
+        const response = await fetch(joinApiUrl(this.apiBase, '/orders/import-existing-revolut'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ revolutOrderId: this.legacyRevolutOrderId.trim() }) })
         const data = await response.json().catch(() => null)
-        if (!response.ok || !data?.success) throw new Error(data?.error || 'Legacy order import failed')
-        this.message = data.recoveryRequired ? `Legacy order imported. ${data.missingData}` : 'Existing stored order loaded.'
+        if (!response.ok || !data?.success) throw new Error(data?.error || 'Existing Revolut order import failed')
+        this.message = data.recoveryRequired ? `Order imported. ${data.missingData}` : 'Existing stored order loaded.'
         this.legacyRevolutOrderId = ''
         await this.loadOrders()
         this.selectedOrder = this.orders.find((order) => order.revolutOrderId === data.order?.revolutOrderId) || null
-      } catch (error) { this.error = error?.message || 'Legacy order import failed' } finally { this.actionLoading = false }
+      } catch (error) { this.error = error?.message || 'Existing Revolut order import failed' } finally { this.actionLoading = false }
     },
   },
 }
