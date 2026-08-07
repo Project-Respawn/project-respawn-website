@@ -24,6 +24,6 @@ export const myFunction = defineFunction({
     // =========================================================================
     // Twitch / shared app config
     // =========================================================================
-    APP_ENV: 'sandbox',
+    APP_ENV: process.env.APP_ENV || 'sandbox',
   },
 });

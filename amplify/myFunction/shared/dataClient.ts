@@ -1,7 +1,7 @@
 import { Amplify } from 'aws-amplify'
 import { generateClient } from 'aws-amplify/data'
 import { getAmplifyDataClientConfig } from '@aws-amplify/backend/function/runtime'
-import { env } from '$amplify/env/myFunction'
+import { env } from '$amplify/env/myFunction-rebuild'
 import type { Schema } from '../../data/resource'
 
 let clientPromise: Promise<ReturnType<typeof generateClient<Schema>>> | null = null
