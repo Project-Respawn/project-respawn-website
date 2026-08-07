@@ -8,12 +8,14 @@ export async function makeRequest<T = unknown>(
   method: string,
   body: unknown = null,
   authHeader?: string,
+  extraHeaders?: Record<string, string>,
 ): Promise<OutboundResponse<T>> {
   const response = await fetch(url, {
     method,
     headers: {
       ...(authHeader ? { Authorization: authHeader } : {}),
       'Content-Type': 'application/json',
+      ...extraHeaders,
     },
     body: body ? JSON.stringify(body) : undefined,
   })
