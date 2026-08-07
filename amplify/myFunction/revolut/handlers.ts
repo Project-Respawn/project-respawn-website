@@ -27,7 +27,7 @@ function buildRevolutOrderPayload(body: Record<string, unknown>) {
     amount: normalizeAmountToMinorUnits(body?.amount),
     currency: normalizeCurrency(body?.currency),
     description: body?.description || 'Project Respawn Merch Order',
-    capture_mode: 'AUTOMATIC',
+    capture_mode: 'automatic',
     merchant_order_ext_ref: body?.orderId || undefined,
     email: body?.email || undefined,
     metadata: {
