@@ -70,7 +70,12 @@
           <article
             v-for="item in recentActivity"
             :key="item.id"
-            class="forum-layout-activity-item"
+            class="forum-layout-activity-item forum-clickable-activity"
+            @click="goToThread(item.threadSlug)"
+            role="button"
+            tabindex="0"
+            @keydown.enter="goToThread(item.threadSlug)"
+            @keydown.space.prevent="goToThread(item.threadSlug)"
           >
             <div class="forum-layout-activity-icon">
               <span>{{ item.icon }}</span>
