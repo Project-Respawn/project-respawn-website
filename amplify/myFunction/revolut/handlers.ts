@@ -130,7 +130,7 @@ async function createRevolutMerchantOrder(body: any) {
   )
 }
 
-async function fetchRevolutMerchantOrder(orderId: string) {
+export async function fetchRevolutMerchantOrder(orderId: string) {
   return makeRequest(
     `${getRevolutOrdersUrl()}/${encodeURIComponent(orderId)}`,
     'GET',

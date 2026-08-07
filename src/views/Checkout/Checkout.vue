@@ -288,7 +288,10 @@
           <h2>✅ Order Confirmed!</h2>
           <p>Thank you for your purchase.</p>
           <p>Order ID: <strong>{{ orderId }}</strong></p>
-          <p>Your order will be printed and shipped within 3–5 business days.</p>
+          <p v-if="fulfillmentError" class="payment-status payment-status--error">
+            {{ fulfillmentError }}
+          </p>
+          <p v-else>Your order will be printed and shipped within 3–5 business days.</p>
 
           <button type="button" class="primary-btn" @click="resetCheckout">
             Continue Shopping
@@ -310,6 +313,7 @@ const {
   addressError,
   revolutLoading,
   revolutError,
+  fulfillmentError,
   paymentReady,
   submittingPayment,
   originalShipping,

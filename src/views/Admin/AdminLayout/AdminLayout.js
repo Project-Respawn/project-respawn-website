@@ -29,6 +29,7 @@ export default {
         },
         { id: 'events', icon: '📅', label: 'Events', route: '/dashboard/events' },
         { id: 'forums', icon: '🧵', label: 'Forums', route: '/dashboard/forums' },
+        { id: 'orders', icon: '📦', label: 'Orders', route: '/dashboard/orders' },
         { id: 'brands', icon: '🏷️', label: 'Brands', route: '/dashboard/brands' },
         {
           id: 'merch-categories',
@@ -91,6 +92,7 @@ export default {
       if (path.includes('/merch-categories')) return 'merch-categories';
       if (path.includes('/brands')) return 'brands';
       if (path.includes('/forums')) return 'forums';
+      if (path.includes('/orders')) return 'orders';
       if (path.includes('/events')) return 'events';
       if (path.includes('/permissions')) return 'permissions';
       if (path.includes('/users')) return 'users';

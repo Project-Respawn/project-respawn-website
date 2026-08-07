@@ -13,6 +13,7 @@ import AdminEvents from '../views/Admin/AdminEvents/AdminEvents.vue';
 import AdminHost from '../views/Admin/AdminHost/AdminHost.vue';
 import ProductControl from '../views/Admin/ProductControl/ProductControl.vue';
 import MediaLibrary from '../views/Admin/MediaLibrary/MediaLibrary.vue';
+import AdminOrders from '../views/Admin/AdminOrders/AdminOrders.vue';
 
 export default [
 
@@ -72,6 +73,11 @@ export default [
                 path: 'media-library',
                 name: 'MediaLibrary',
                 component: MediaLibrary
+            },
+            {
+                path: 'orders',
+                name: 'AdminOrders',
+                component: AdminOrders
             },
             {
                 path: 'host-permissions',

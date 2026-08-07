@@ -118,6 +118,25 @@ httpApi.addRoutes({
   integration: httpLambdaIntegration,
 });
 
+// Generic provider-aware fulfillment routes.
+httpApi.addRoutes({
+  path: '/orders/fulfill',
+  methods: [HttpMethod.POST],
+  integration: httpLambdaIntegration,
+});
+
+httpApi.addRoutes({
+  path: '/orders/recover-fulfillment',
+  methods: [HttpMethod.POST],
+  integration: httpLambdaIntegration,
+});
+
+httpApi.addRoutes({
+  path: '/orders/import-legacy',
+  methods: [HttpMethod.POST],
+  integration: httpLambdaIntegration,
+});
+
 // =============================================================================
 // Revolut routes
 // =============================================================================
