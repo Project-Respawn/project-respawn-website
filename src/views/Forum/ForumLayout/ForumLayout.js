@@ -115,9 +115,10 @@ export default {
           return {
             id: item.id,
             icon: presentation.icon,
-            title: `${presentation.label} “${item.threadTitle || 'a discussion'}”`,
+            title: `${presentation.label} "${item.threadTitle || 'a discussion'}"`,
             board: item.boardName || 'Forum',
             time: formatRelativeTime(item.occurredAt),
+            threadSlug: item.threadSlug || item.slug || item.thread_slug || '',
           };
         });
       } catch (error) {
@@ -132,6 +133,11 @@ export default {
 
     goToBoard(boardSlug) {
       this.$router.push(`/forum/board/${boardSlug}`);
+    },
+
+    goToThread(threadSlug) {
+      if (!threadSlug) return;
+      this.$router.push({ name: 'ForumThread', params: { threadSlug } });
     },
 
     isBoardActive(boardSlug) {

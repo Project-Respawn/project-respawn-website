@@ -300,15 +300,26 @@
               </div>
             </div>
 
-            <div class="forum-thread-latest">
-              <div class="forum-thread-latest-label">Latest Reply</div>
-              <div class="forum-thread-latest-title">
-                {{ thread.latestReply.title }}
-              </div>
-              <div class="forum-thread-latest-meta">
-                {{ thread.latestReply.authorUsername }} · {{ thread.latestReply.time }}
-              </div>
-            </div>
+       <div
+  v-if="thread.latestReply"
+  class="forum-thread-latest"
+>
+  <div class="forum-thread-latest-label">Latest Reply</div>
+  <div class="forum-thread-latest-title">
+    {{ thread.latestReply.title }}
+  </div>
+  <div class="forum-thread-latest-meta">
+    {{ thread.latestReply.authorUsername }} · {{ thread.latestReply.time }}
+  </div>
+</div>
+<div
+  v-else
+  class="forum-thread-latest forum-thread-latest-empty"
+>
+  <div class="forum-thread-latest-label">No replies yet</div>
+  <div class="forum-thread-latest-title">—</div>
+  <div class="forum-thread-latest-meta">—</div>
+</div>
 
             <div class="forum-thread-actions" @click.stop>
               <button
