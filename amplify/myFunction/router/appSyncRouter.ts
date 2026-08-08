@@ -6,6 +6,7 @@ import { handleCreateManagedMerchProduct, handleDeleteManagedMerchProductImage, 
 import { handleCreateManagedTwitchCommand, handleDeleteManagedTwitchCommand, handleListManagedTwitchCommands, handleUpdateManagedTwitchCommand } from '../twitch'
 import { handleCreateOrUpdateManagedDiscordConfiguration, handleGetManagedDiscordConfiguration } from '../discord'
 import { handleCreateManagedMediaCollection, handleCreateManagedMediaItem, handleDeleteManagedMediaItem, handleListManagedMediaLibrary, handleListPublicMerchProductImages, handleUpdateManagedMediaItem } from '../media'
+import { handleImportManagedRevolutOrder, handleListManagedOrders, handleListManagedProfiles, handleManageSimpleResource, handleRecoverManagedOrder } from '../stage9/handlers'
 
 export interface AppSyncEvent { arguments?: unknown; info?: { fieldName?: string }; fieldName?: string; identity?: unknown }
 
@@ -31,6 +32,17 @@ export async function routeAppSync(event: AppSyncEvent) {
     case 'updateManagedMediaItem': return handleUpdateManagedMediaItem(event)
     case 'deleteManagedMediaItem': return handleDeleteManagedMediaItem(event)
     case 'listPublicMerchProductImages': return handleListPublicMerchProductImages(event)
+    case 'listManagedOrders': return handleListManagedOrders(event)
+    case 'listManagedProfiles': return handleListManagedProfiles(event)
+    case 'recoverManagedOrder': return handleRecoverManagedOrder(event)
+    case 'importManagedRevolutOrder': return handleImportManagedRevolutOrder(event)
+    case 'manageMerchCategory':
+    case 'manageEventTag':
+    case 'reviewEventSuggestion':
+    case 'manageForumCategory':
+    case 'manageForumBoard':
+    case 'moderateForumThread':
+    case 'moderateForumPost': return handleManageSimpleResource(event)
     case 'createManagedBrand': return handleCreateBrand(event)
     case 'updateManagedBrand': return handleUpdateBrand(event)
     case 'setBrandOwner': return handleSetBrandOwner(event)

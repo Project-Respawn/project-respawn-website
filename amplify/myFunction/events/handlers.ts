@@ -1,6 +1,7 @@
 import { addDays, addMonths, addWeeks, isValidDate } from '../shared/dates'
 import { logger } from '../shared/logger'
 import { authorizeBrandEventCommand } from './managedHandlers'
+import { writePermissionAudit } from '../shared/audit'
 
 function generateSeriesId() { return `series-${Date.now()}-${Math.random().toString(36).slice(2, 8)}` }
 function buildOccurrenceDates(params: { startAt: string; recurrenceFrequency: string; recurrenceInterval?: number | null; recurrenceEndsAt?: string | null; recurrenceCount?: number | null }) {
@@ -60,16 +61,7 @@ function eventAuditSnapshot(event: any) {
 }
 
 async function writeEventAudit(client: any, actorUserId: string, action: string, targetId: string, before: unknown, after: unknown) {
-  const result = await client.models.PermissionAuditEvent.create({
-    actorUserId,
-    action,
-    targetType: 'Event',
-    targetId,
-    before,
-    after,
-    occurredAt: new Date().toISOString(),
-  })
-  if (result.errors?.length) throw new Error(result.errors[0].message || 'Failed to write Event audit event')
+  return writePermissionAudit(client, actorUserId, action, 'Event', targetId, before, after)
 }
 
 function copyEventForCreate(event: any) {

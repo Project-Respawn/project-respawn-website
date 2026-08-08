@@ -125,18 +125,6 @@ httpApi.addRoutes({
   integration: httpLambdaIntegration,
 });
 
-httpApi.addRoutes({
-  path: '/orders/recover-fulfillment',
-  methods: [HttpMethod.POST],
-  integration: httpLambdaIntegration,
-});
-
-httpApi.addRoutes({
-  path: '/orders/import-existing-revolut',
-  methods: [HttpMethod.POST],
-  integration: httpLambdaIntegration,
-});
-
 // =============================================================================
 // Revolut routes
 // =============================================================================

@@ -2,7 +2,7 @@
 function asAuditJson(value: unknown) {
   if (value === undefined) return null
   const serialized = JSON.stringify(value)
-  return serialized === undefined ? null : JSON.parse(serialized)
+  return serialized === undefined ? null : serialized
 }
 
 export async function writePermissionAudit(

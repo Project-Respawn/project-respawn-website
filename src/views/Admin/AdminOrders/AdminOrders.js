@@ -1,5 +1,4 @@
 import { generateClient } from 'aws-amplify/data'
-import { getApiBaseUrl, joinApiUrl } from '../../../config/apiBaseUrl'
 
 let client
 function getClient() { return client ||= generateClient() }
@@ -23,7 +22,7 @@ function fulfillmentSummary(order) {
 export default {
   name: 'AdminOrders',
   data() {
-    return { orders: [], selectedOrder: null, loading: true, actionLoading: false, error: '', message: '', search: '', paymentFilter: '', fulfillmentFilter: '', legacyRevolutOrderId: '', apiBase: getApiBaseUrl('order fulfillment recovery') }
+    return { orders: [], selectedOrder: null, loading: true, actionLoading: false, error: '', message: '', search: '', paymentFilter: '', fulfillmentFilter: '', legacyRevolutOrderId: '' }
   },
   computed: {
     filteredOrders() {
@@ -43,41 +42,33 @@ export default {
     async loadOrders() {
       this.loading = true; this.error = ''
       try {
-        const orders = []
-        let nextToken = null
-        do {
-          const result = await getClient().models.FulfillmentOrder.list({ limit: 1000, nextToken: nextToken || undefined })
-          if (result.errors?.length) throw new Error(result.errors[0].message || 'Failed to load orders')
-          orders.push(...(result.data || []))
-          nextToken = result.nextToken || null
-        } while (nextToken)
+        const result = await getClient().queries.listManagedOrders()
+        if (result.errors?.length) throw new Error(result.errors[0].message || 'Failed to load orders')
+        const orders = result.data?.orders || []
         this.orders = orders.sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')))
         if (this.selectedOrder) this.selectedOrder = this.orders.find((order) => order.id === this.selectedOrder.id) || null
       } catch (error) { this.error = error?.message || 'Failed to load orders' } finally { this.loading = false }
     },
     selectOrder(order) { this.selectedOrder = order; this.message = ''; this.error = '' },
     async recoverOrder(order) {
-      if (!this.apiBase || !order || this.actionLoading) return
+      if (!order || this.actionLoading) return
       this.actionLoading = true; this.error = ''; this.message = ''
       try {
-        const response = await fetch(joinApiUrl(this.apiBase, '/orders/recover-fulfillment'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ revolutOrderId: order.revolutOrderId }) })
-        const data = await response.json().catch(() => null)
-        if (!response.ok || !data?.success) throw new Error(data?.error || 'Fulfillment recovery failed')
-        this.message = data.alreadyFulfilled ? 'All providers were already fulfilled.' : 'Fulfillment recovery completed.'
+        const result = await getClient().mutations.recoverManagedOrder({ orderId: order.id })
+        if (result.errors?.length || !result.data?.success) throw new Error(result.errors?.[0]?.message || 'Fulfillment recovery failed')
+        this.message = 'Fulfillment recovery completed.'
         await this.loadOrders()
       } catch (error) { this.error = error?.message || 'Fulfillment recovery failed' } finally { this.actionLoading = false }
     },
     async importExistingRevolutOrder() {
-      if (!this.apiBase || !this.legacyRevolutOrderId.trim() || this.actionLoading) return
+      if (!this.legacyRevolutOrderId.trim() || this.actionLoading) return
       this.actionLoading = true; this.error = ''; this.message = ''
       try {
-        const response = await fetch(joinApiUrl(this.apiBase, '/orders/import-existing-revolut'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ revolutOrderId: this.legacyRevolutOrderId.trim() }) })
-        const data = await response.json().catch(() => null)
-        if (!response.ok || !data?.success) throw new Error(data?.error || 'Existing Revolut order import failed')
-        this.message = data.recoveryRequired ? `Order imported. ${data.missingData}` : 'Existing stored order loaded.'
+        const result = await getClient().mutations.importManagedRevolutOrder({ revolutOrderId: this.legacyRevolutOrderId.trim() })
+        if (result.errors?.length || !result.data?.success) throw new Error(result.errors?.[0]?.message || 'Existing Revolut order import failed')
+        this.message = result.data.message || 'Existing Revolut order imported.'
         this.legacyRevolutOrderId = ''
         await this.loadOrders()
-        this.selectedOrder = this.orders.find((order) => order.revolutOrderId === data.order?.revolutOrderId) || null
       } catch (error) { this.error = error?.message || 'Existing Revolut order import failed' } finally { this.actionLoading = false }
     },
   },

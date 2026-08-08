@@ -133,8 +133,8 @@ async function writeRoleChangeAudit(
     action: 'user.roles.update',
     targetType: 'CognitoUser',
     targetId: username,
-    before,
-    after,
+    before: JSON.stringify(before),
+    after: JSON.stringify(after),
     occurredAt: new Date().toISOString(),
   })
 

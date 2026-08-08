@@ -314,12 +314,9 @@ export default {
         let result;
 
         if (this.categoryForm.id) {
-          result = await getClient().models.ForumCategory.update({
-            id: this.categoryForm.id,
-            ...payload,
-          });
+          result = await getClient().mutations.manageForumCategory({ action: 'update', resourceId: this.categoryForm.id, input: JSON.stringify(payload) });
         } else {
-          result = await getClient().models.ForumCategory.create(payload);
+          result = await getClient().mutations.manageForumCategory({ action: 'create', input: JSON.stringify(payload) });
         }
 
         if (result.errors?.length) {
@@ -365,12 +362,9 @@ export default {
         let result;
 
         if (this.boardForm.id) {
-          result = await getClient().models.ForumBoard.update({
-            id: this.boardForm.id,
-            ...payload,
-          });
+          result = await getClient().mutations.manageForumBoard({ action: 'update', resourceId: this.boardForm.id, input: JSON.stringify(payload) });
         } else {
-          result = await getClient().models.ForumBoard.create(payload);
+          result = await getClient().mutations.manageForumBoard({ action: 'create', input: JSON.stringify(payload) });
         }
 
         if (result.errors?.length) {
@@ -397,10 +391,7 @@ export default {
       this.saveMessage = '';
 
       try {
-        const result = await getClient().models.ForumThread.update({
-          id: thread.id,
-          isLocked: newLockState,
-        });
+        const result = await getClient().mutations.moderateForumThread({ action: 'update', resourceId: thread.id, input: JSON.stringify({ isLocked: newLockState }) });
 
         if (result.errors?.length) {
           throw new Error(result.errors[0].message || 'Failed to update thread');
@@ -442,9 +433,7 @@ export default {
       if (!confirmed) return;
 
       try {
-        const result = await getClient().models.ForumCategory.delete({
-          id: category.id,
-        });
+        const result = await getClient().mutations.manageForumCategory({ action: 'delete', resourceId: category.id });
 
         if (result.errors?.length) {
           throw new Error(
@@ -478,9 +467,7 @@ export default {
       if (!confirmed) return;
 
       try {
-        const result = await getClient().models.ForumBoard.delete({
-          id: board.id,
-        });
+        const result = await getClient().mutations.manageForumBoard({ action: 'delete', resourceId: board.id });
 
         if (result.errors?.length) {
           throw new Error(result.errors[0].message || 'Failed to delete board');

@@ -170,18 +170,13 @@ export default {
       this.saving = true;
 
       try {
-        const { errors } = await getClient().models.MerchCategory.create(
-          {
+        const { errors } = await getClient().mutations.manageMerchCategory({ action: 'create', input: JSON.stringify({
             name,
             slug: generatedSlug,
             description: this.newCategory.description.trim(),
             sortOrder: Number(this.newCategory.sortOrder) || 0,
             isActive: !!this.newCategory.isActive,
-          },
-          {
-            authMode: 'userPool',
-          }
-        );
+          }) });
 
         if (errors?.length) {
           throw new Error(errors[0].message || 'Failed to create category.');
@@ -215,14 +210,10 @@ export default {
       try {
         const nextIsActive = !category.isActive;
 
-        const { errors } = await getClient().models.MerchCategory.update(
-          {
-            id: category.id,
+        const { errors } = await getClient().mutations.manageMerchCategory(
+          { action: 'update', resourceId: category.id, input: JSON.stringify({
             isActive: nextIsActive,
-          },
-          {
-            authMode: 'userPool',
-          }
+          }) }
         );
 
         if (errors?.length) {

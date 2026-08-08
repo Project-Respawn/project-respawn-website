@@ -29,7 +29,7 @@ assert.deepEqual(success, { success: true, message: 'Brand created', brandId: 'p
 assert.equal(successClient.created[0].id, undefined, 'the browser cannot supply or choose a Brand ID')
 assert.equal(successClient.persisted[0].id, success.brandId, 'the command returns the ID of the persisted Brand')
 assert.equal(successClient.audits[0].targetId, 'persisted-brand-id')
-assert.deepEqual(successClient.audits[0].after, {
+assert.deepEqual(JSON.parse(successClient.audits[0].after), {
   id: 'persisted-brand-id', name: 'Ravens', slug: null, description: null, sortOrder: null,
   isActive: null, ownerUserId: null, ownerAssignedBy: null, ownerAssignedAt: null,
 }, 'Brand creation audits a plain JSON snapshot rather than a generated model object')

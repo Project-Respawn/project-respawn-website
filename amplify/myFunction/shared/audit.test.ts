@@ -9,5 +9,5 @@ await writePermissionAudit(
 )
 
 assert.equal(writes[0].before, null)
-assert.deepEqual(writes[0].after, { id: 'brand-1', ownerUserId: null })
+assert.deepEqual(JSON.parse(writes[0].after), { id: 'brand-1', ownerUserId: null })
 console.log('permission audit JSON tests passed')

@@ -360,7 +360,8 @@ export default {
           return;
         }
 
-        const { data: profiles, errors: profileErrors } = await getClient().models.UserProfile.list();
+        const { data: profileResult, errors: profileErrors } = await getClient().queries.listManagedProfiles();
+        const profiles = profileResult?.profiles || [];
 
         if (profileErrors?.length) {
           console.error('Host profile list errors:', profileErrors);
@@ -506,10 +507,7 @@ export default {
       try {
         if (!getClient().models.EventSuggestion) return;
 
-        const { errors } = await getClient().models.EventSuggestion.update({
-          id: suggestion.id,
-          status: 'rejected',
-        });
+        const { errors } = await getClient().mutations.reviewEventSuggestion({ action: 'update', resourceId: suggestion.id, input: JSON.stringify({ status: 'rejected' }) });
 
         if (errors?.length) {
           console.error('Reject suggestion errors:', errors);
@@ -548,7 +546,7 @@ export default {
           isActive: true,
         };
 
-        const { errors } = await client.models.EventTag.create(payload);
+        const { errors } = await getClient().mutations.manageEventTag({ action: 'create', input: JSON.stringify(payload) });
 
         if (errors?.length) {
           console.error('Create tag errors:', errors);
@@ -571,10 +569,7 @@ export default {
       try {
         if (!getClient().models.EventTag) return;
 
-        const { errors } = await getClient().models.EventTag.update({
-          id: tag.id,
-          isActive: !tag.isActive,
-        });
+        const { errors } = await getClient().mutations.manageEventTag({ action: 'update', resourceId: tag.id, input: JSON.stringify({ isActive: !tag.isActive }) });
 
         if (errors?.length) {
           console.error('Toggle tag errors:', errors);
@@ -673,10 +668,7 @@ export default {
           this.selectedSuggestion &&
           getClient().models.EventSuggestion
         ) {
-          const { errors } = await getClient().models.EventSuggestion.update({
-            id: this.selectedSuggestion.id,
-            status: 'approved',
-          });
+          const { errors } = await getClient().mutations.reviewEventSuggestion({ action: 'update', resourceId: this.selectedSuggestion.id, input: JSON.stringify({ status: 'approved' }) });
 
           if (errors?.length) {
             console.error('Approve suggestion errors:', errors);

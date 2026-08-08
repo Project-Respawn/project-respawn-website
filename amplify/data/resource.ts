@@ -108,15 +108,15 @@ const schema = a
     MerchProductMutationResult: a.customType({
       success: a.boolean().required(),
       message: a.string(),
-      productId: a.id().required(),
+      productId: a.id(),
     }),
 
     MerchProductVariantMutationResult: a.customType({
       success: a.boolean().required(),
       message: a.string(),
-      variantId: a.id().required(),
+      variantId: a.id(),
     }),
-    MerchProductImageMutationResult: a.customType({ success: a.boolean().required(), message: a.string(), imageId: a.id().required(), productId: a.id().required() }),
+    MerchProductImageMutationResult: a.customType({ success: a.boolean().required(), message: a.string(), imageId: a.id(), productId: a.id() }),
 
     MediaMutationResult: a.customType({ success: a.boolean().required(), message: a.string(), mediaItemId: a.id() }),
     ManagedMediaLibraryResult: a.customType({ collections: a.json().required(), mediaItems: a.json().required() }),
@@ -130,8 +130,8 @@ const schema = a
     MerchProductRelationshipMutationResult: a.customType({
       success: a.boolean().required(),
       message: a.string(),
-      productId: a.id().required(),
-      changedCount: a.integer().required(),
+      productId: a.id(),
+      changedCount: a.integer(),
     }),
 
     AccessContextResult: a.customType({
@@ -226,6 +226,32 @@ const schema = a
       .returns(a.ref('AccessContextResult').required())
       .authorization((allow) => [allow.authenticated()])
       .handler(a.handler.function(myFunction)),
+
+    Stage9MutationResult: a.customType({ success: a.boolean().required(), message: a.string(), resourceId: a.id() }),
+    ManagedOrderListResult: a.customType({ orders: a.json().required() }),
+    ManagedProfileListResult: a.customType({ profiles: a.json().required() }),
+    listManagedOrders: a.query().returns(a.ref('ManagedOrderListResult').required())
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    listManagedProfiles: a.query().returns(a.ref('ManagedProfileListResult').required())
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    recoverManagedOrder: a.mutation().arguments({ orderId: a.id().required() }).returns(a.ref('Stage9MutationResult').required())
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    importManagedRevolutOrder: a.mutation().arguments({ revolutOrderId: a.string().required() }).returns(a.ref('Stage9MutationResult').required())
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    manageMerchCategory: a.mutation().arguments({ action: a.string().required(), resourceId: a.id(), input: a.string() }).returns(a.ref('Stage9MutationResult').required())
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    manageEventTag: a.mutation().arguments({ action: a.string().required(), resourceId: a.id(), input: a.string() }).returns(a.ref('Stage9MutationResult').required())
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    reviewEventSuggestion: a.mutation().arguments({ action: a.string().required(), resourceId: a.id(), input: a.string() }).returns(a.ref('Stage9MutationResult').required())
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    manageForumCategory: a.mutation().arguments({ action: a.string().required(), resourceId: a.id(), input: a.string() }).returns(a.ref('Stage9MutationResult').required())
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    manageForumBoard: a.mutation().arguments({ action: a.string().required(), resourceId: a.id(), input: a.string() }).returns(a.ref('Stage9MutationResult').required())
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    moderateForumThread: a.mutation().arguments({ action: a.string().required(), resourceId: a.id().required(), input: a.string() }).returns(a.ref('Stage9MutationResult').required())
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    moderateForumPost: a.mutation().arguments({ action: a.string().required(), resourceId: a.id().required(), input: a.string() }).returns(a.ref('Stage9MutationResult').required())
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
 
     listManagedMediaLibrary: a.query().returns(a.ref('ManagedMediaLibraryResult').required())
       .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
@@ -415,7 +441,7 @@ const schema = a
     ManagedTwitchCommandMutationResult: a.customType({
       success: a.boolean().required(),
       message: a.string(),
-      commandId: a.id().required(),
+      commandId: a.id(),
     }),
 
     ManagedTwitchCommand: a.customType({
@@ -485,13 +511,13 @@ const schema = a
         brandId: a.id().required(),
       })
       .authorization((allow) => [
-        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),
+        allow.groups(['SuperAdmin', 'Admin']).to(['read']),
       ]),
 
     ManagedDiscordConfigurationResult: a.customType({
       success: a.boolean().required(),
       message: a.string(),
-      brandId: a.id().required(),
+      brandId: a.id(),
       configurationId: a.id(),
     }),
 
@@ -543,7 +569,7 @@ const schema = a
     ManagedEventMutationResult: a.customType({
       success: a.boolean().required(),
       message: a.string(),
-      eventId: a.id().required(),
+      eventId: a.id(),
     }),
 
     CloneEventResult: a.customType({
@@ -571,12 +597,6 @@ const schema = a
       .authorization((allow) => [
         allow.publicApiKey().to(['read']),
         allow.authenticated().to(['read']),
-        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to([
-          'create',
-          'read',
-          'update',
-          'delete',
-        ]),
       ]),
 
     Event: a
@@ -656,11 +676,6 @@ const schema = a
       .authorization((allow) => [
         allow.authenticated().to(['create']),
         allow.ownerDefinedIn('owner').to(['read']),
-        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to([
-          'read',
-          'update',
-          'delete',
-        ]),
       ]),
 
     createManagedEvent: a
@@ -773,7 +788,6 @@ const schema = a
       .authorization((allow) => [
         allow.publicApiKey().to(['read']),
         allow.authenticated().to(['read']),
-        allow.groups(['SuperAdmin']).to(['create', 'read', 'update', 'delete']),
       ]),
 
     ForumBoard: a
@@ -793,7 +807,6 @@ const schema = a
       .authorization((allow) => [
         allow.publicApiKey().to(['read']),
         allow.authenticated().to(['read']),
-        allow.groups(['SuperAdmin']).to(['create', 'read', 'update', 'delete']),
       ]),
 
     ForumThread: a
@@ -820,12 +833,6 @@ const schema = a
         allow.publicApiKey().to(['read']),
         allow.authenticated().to(['read']),
         allow.ownerDefinedIn('owner').to(['read', 'update', 'delete']),
-        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to([
-          'create',
-          'read',
-          'update',
-          'delete',
-        ]),
       ]),
 
     ForumPost: a
@@ -844,11 +851,6 @@ const schema = a
         allow.publicApiKey().to(['read']),
         allow.authenticated().to(['read', 'create']),
         allow.ownerDefinedIn('owner').to(['read', 'update', 'delete']),
-        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to([
-          'read',
-          'update',
-          'delete',
-        ]),
       ]),
 
     ForumActivity: a
@@ -973,12 +975,6 @@ const schema = a
       .authorization((allow) => [
         allow.publicApiKey().to(['read']),
         allow.authenticated().to(['read']),
-        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to([
-          'create',
-          'read',
-          'update',
-          'delete',
-        ]),
       ]),
 
     MerchProduct: a
@@ -1059,7 +1055,7 @@ const schema = a
         updatedAt: a.datetime(),
       })
       .authorization((allow) => [
-        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read', 'update']),
+        allow.groups(['SuperAdmin', 'Admin']).to(['read']),
       ]),
 
     MerchProductBrand: a

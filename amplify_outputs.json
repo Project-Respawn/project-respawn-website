@@ -586,8 +586,7 @@
                     ],
                     "groups": [
                       "SuperAdmin",
-                      "Admin",
-                      "Staff"
+                      "Admin"
                     ]
                   }
                 ]
@@ -806,22 +805,6 @@
                     "allow": "private",
                     "operations": [
                       "read"
-                    ]
-                  },
-                  {
-                    "groupClaim": "cognito:groups",
-                    "provider": "userPools",
-                    "allow": "groups",
-                    "operations": [
-                      "create",
-                      "read",
-                      "update",
-                      "delete"
-                    ],
-                    "groups": [
-                      "SuperAdmin",
-                      "Admin",
-                      "Staff"
                     ]
                   }
                 ]
@@ -1387,21 +1370,6 @@
                       "read"
                     ],
                     "identityClaim": "cognito:username"
-                  },
-                  {
-                    "groupClaim": "cognito:groups",
-                    "provider": "userPools",
-                    "allow": "groups",
-                    "operations": [
-                      "read",
-                      "update",
-                      "delete"
-                    ],
-                    "groups": [
-                      "SuperAdmin",
-                      "Admin",
-                      "Staff"
-                    ]
                   }
                 ]
               }
@@ -1513,20 +1481,6 @@
                     "allow": "private",
                     "operations": [
                       "read"
-                    ]
-                  },
-                  {
-                    "groupClaim": "cognito:groups",
-                    "provider": "userPools",
-                    "allow": "groups",
-                    "operations": [
-                      "create",
-                      "read",
-                      "update",
-                      "delete"
-                    ],
-                    "groups": [
-                      "SuperAdmin"
                     ]
                   }
                 ]
@@ -1693,20 +1647,6 @@
                     "allow": "private",
                     "operations": [
                       "read"
-                    ]
-                  },
-                  {
-                    "groupClaim": "cognito:groups",
-                    "provider": "userPools",
-                    "allow": "groups",
-                    "operations": [
-                      "create",
-                      "read",
-                      "update",
-                      "delete"
-                    ],
-                    "groups": [
-                      "SuperAdmin"
                     ]
                   }
                 ]
@@ -1902,22 +1842,6 @@
                       "delete"
                     ],
                     "identityClaim": "cognito:username"
-                  },
-                  {
-                    "groupClaim": "cognito:groups",
-                    "provider": "userPools",
-                    "allow": "groups",
-                    "operations": [
-                      "create",
-                      "read",
-                      "update",
-                      "delete"
-                    ],
-                    "groups": [
-                      "SuperAdmin",
-                      "Admin",
-                      "Staff"
-                    ]
                   }
                 ]
               }
@@ -2048,21 +1972,6 @@
                       "delete"
                     ],
                     "identityClaim": "cognito:username"
-                  },
-                  {
-                    "groupClaim": "cognito:groups",
-                    "provider": "userPools",
-                    "allow": "groups",
-                    "operations": [
-                      "read",
-                      "update",
-                      "delete"
-                    ],
-                    "groups": [
-                      "SuperAdmin",
-                      "Admin",
-                      "Staff"
-                    ]
                   }
                 ]
               }
@@ -2603,22 +2512,6 @@
                     "allow": "private",
                     "operations": [
                       "read"
-                    ]
-                  },
-                  {
-                    "groupClaim": "cognito:groups",
-                    "provider": "userPools",
-                    "allow": "groups",
-                    "operations": [
-                      "create",
-                      "read",
-                      "update",
-                      "delete"
-                    ],
-                    "groups": [
-                      "SuperAdmin",
-                      "Admin",
-                      "Staff"
                     ]
                   }
                 ]
@@ -3244,13 +3137,11 @@
                     "provider": "userPools",
                     "allow": "groups",
                     "operations": [
-                      "read",
-                      "update"
+                      "read"
                     ],
                     "groups": [
                       "SuperAdmin",
-                      "Admin",
-                      "Staff"
+                      "Admin"
                     ]
                   }
                 ]
@@ -4654,7 +4545,7 @@
               "name": "productId",
               "isArray": false,
               "type": "ID",
-              "isRequired": true,
+              "isRequired": false,
               "attributes": []
             }
           }
@@ -4680,7 +4571,7 @@
               "name": "variantId",
               "isArray": false,
               "type": "ID",
-              "isRequired": true,
+              "isRequired": false,
               "attributes": []
             }
           }
@@ -4706,14 +4597,14 @@
               "name": "imageId",
               "isArray": false,
               "type": "ID",
-              "isRequired": true,
+              "isRequired": false,
               "attributes": []
             },
             "productId": {
               "name": "productId",
               "isArray": false,
               "type": "ID",
-              "isRequired": true,
+              "isRequired": false,
               "attributes": []
             }
           }
@@ -4915,14 +4806,14 @@
               "name": "productId",
               "isArray": false,
               "type": "ID",
-              "isRequired": true,
+              "isRequired": false,
               "attributes": []
             },
             "changedCount": {
               "name": "changedCount",
               "isArray": false,
               "type": "Int",
-              "isRequired": true,
+              "isRequired": false,
               "attributes": []
             }
           }
@@ -4972,6 +4863,56 @@
             }
           }
         },
+        "Stage9MutationResult": {
+          "name": "Stage9MutationResult",
+          "fields": {
+            "success": {
+              "name": "success",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "message": {
+              "name": "message",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "resourceId": {
+              "name": "resourceId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false,
+              "attributes": []
+            }
+          }
+        },
+        "ManagedOrderListResult": {
+          "name": "ManagedOrderListResult",
+          "fields": {
+            "orders": {
+              "name": "orders",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": true,
+              "attributes": []
+            }
+          }
+        },
+        "ManagedProfileListResult": {
+          "name": "ManagedProfileListResult",
+          "fields": {
+            "profiles": {
+              "name": "profiles",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": true,
+              "attributes": []
+            }
+          }
+        },
         "ManagedTwitchCommandMutationResult": {
           "name": "ManagedTwitchCommandMutationResult",
           "fields": {
@@ -4993,7 +4934,7 @@
               "name": "commandId",
               "isArray": false,
               "type": "ID",
-              "isRequired": true,
+              "isRequired": false,
               "attributes": []
             }
           }
@@ -5094,7 +5035,7 @@
               "name": "brandId",
               "isArray": false,
               "type": "ID",
-              "isRequired": true,
+              "isRequired": false,
               "attributes": []
             },
             "configurationId": {
@@ -5160,7 +5101,7 @@
               "name": "eventId",
               "isArray": false,
               "type": "ID",
-              "isRequired": true,
+              "isRequired": false,
               "attributes": []
             }
           }
@@ -5338,6 +5279,22 @@
           },
           "isRequired": true
         },
+        "listManagedOrders": {
+          "name": "listManagedOrders",
+          "isArray": false,
+          "type": {
+            "nonModel": "ManagedOrderListResult"
+          },
+          "isRequired": true
+        },
+        "listManagedProfiles": {
+          "name": "listManagedProfiles",
+          "isArray": false,
+          "type": {
+            "nonModel": "ManagedProfileListResult"
+          },
+          "isRequired": true
+        },
         "listManagedMediaLibrary": {
           "name": "listManagedMediaLibrary",
           "isArray": false,
@@ -5471,6 +5428,234 @@
               "type": "String",
               "isRequired": false,
               "isArrayNullable": false
+            }
+          }
+        },
+        "recoverManagedOrder": {
+          "name": "recoverManagedOrder",
+          "isArray": false,
+          "type": {
+            "nonModel": "Stage9MutationResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "orderId": {
+              "name": "orderId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            }
+          }
+        },
+        "importManagedRevolutOrder": {
+          "name": "importManagedRevolutOrder",
+          "isArray": false,
+          "type": {
+            "nonModel": "Stage9MutationResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "revolutOrderId": {
+              "name": "revolutOrderId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            }
+          }
+        },
+        "manageMerchCategory": {
+          "name": "manageMerchCategory",
+          "isArray": false,
+          "type": {
+            "nonModel": "Stage9MutationResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "action": {
+              "name": "action",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "resourceId": {
+              "name": "resourceId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false
+            },
+            "input": {
+              "name": "input",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            }
+          }
+        },
+        "manageEventTag": {
+          "name": "manageEventTag",
+          "isArray": false,
+          "type": {
+            "nonModel": "Stage9MutationResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "action": {
+              "name": "action",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "resourceId": {
+              "name": "resourceId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false
+            },
+            "input": {
+              "name": "input",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            }
+          }
+        },
+        "reviewEventSuggestion": {
+          "name": "reviewEventSuggestion",
+          "isArray": false,
+          "type": {
+            "nonModel": "Stage9MutationResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "action": {
+              "name": "action",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "resourceId": {
+              "name": "resourceId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false
+            },
+            "input": {
+              "name": "input",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            }
+          }
+        },
+        "manageForumCategory": {
+          "name": "manageForumCategory",
+          "isArray": false,
+          "type": {
+            "nonModel": "Stage9MutationResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "action": {
+              "name": "action",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "resourceId": {
+              "name": "resourceId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false
+            },
+            "input": {
+              "name": "input",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            }
+          }
+        },
+        "manageForumBoard": {
+          "name": "manageForumBoard",
+          "isArray": false,
+          "type": {
+            "nonModel": "Stage9MutationResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "action": {
+              "name": "action",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "resourceId": {
+              "name": "resourceId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false
+            },
+            "input": {
+              "name": "input",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            }
+          }
+        },
+        "moderateForumThread": {
+          "name": "moderateForumThread",
+          "isArray": false,
+          "type": {
+            "nonModel": "Stage9MutationResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "action": {
+              "name": "action",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "resourceId": {
+              "name": "resourceId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            },
+            "input": {
+              "name": "input",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            }
+          }
+        },
+        "moderateForumPost": {
+          "name": "moderateForumPost",
+          "isArray": false,
+          "type": {
+            "nonModel": "Stage9MutationResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "action": {
+              "name": "action",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "resourceId": {
+              "name": "resourceId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            },
+            "input": {
+              "name": "input",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
             }
           }
         },

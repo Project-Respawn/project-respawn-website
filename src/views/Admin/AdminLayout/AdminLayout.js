@@ -22,7 +22,7 @@ export default {
       effectivePermissions: [],
       tabs: [
         { id: 'home', icon: '🏠', label: 'Home', route: '/dashboard' },
-        { id: 'users', icon: '👥', label: 'Users', route: '/dashboard/users' },
+        { id: 'users', icon: '👥', label: 'Users', route: '/dashboard/users', requiredPermission: 'users.view' },
         {
           id: 'permissions',
           icon: '🛡️',
@@ -30,10 +30,10 @@ export default {
           route: '/dashboard/permissions',
           requiredGroups: ['SuperAdmin', 'Admin'],
         },
-        { id: 'events', icon: '📅', label: 'Events', route: '/dashboard/events' },
-        { id: 'forums', icon: '🧵', label: 'Forums', route: '/dashboard/forums' },
-        { id: 'orders', icon: '📦', label: 'Orders', route: '/dashboard/orders' },
-        { id: 'brands', icon: '🏷️', label: 'Brands', route: '/dashboard/brands' },
+        { id: 'events', icon: '📅', label: 'Events', route: '/dashboard/events', requiredPermission: 'events.manage' },
+        { id: 'forums', icon: '🧵', label: 'Forums', route: '/dashboard/forums', requiredPermission: 'forums.structure.manage' },
+        { id: 'orders', icon: '📦', label: 'Orders', route: '/dashboard/orders', requiredPermission: 'orders.view' },
+        { id: 'brands', icon: '🏷️', label: 'Brands', route: '/dashboard/brands', requiredPermission: 'brands.manage' },
         {
           id: 'brand-permissions',
           icon: '🔐',
@@ -46,12 +46,14 @@ export default {
           icon: '📦',
           label: 'Merch Categories',
           route: '/dashboard/merch-categories',
+          requiredPermission: 'merch.categories.manage',
         },
         {
           id: 'product-control',
           icon: '🛍️',
           label: 'Product Control',
           route: '/dashboard/product-control',
+          requiredPermission: 'products.edit',
         },
         {
           id: 'media-library',
