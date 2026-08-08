@@ -5,6 +5,8 @@ export interface ResolverIdentity {
   claims?: Record<string, unknown>
 }
 
+export const PLATFORM_ADMIN_GROUPS = ['SuperAdmin', 'Admin'] as const
+
 export function getResolverIdentity(event: { identity?: ResolverIdentity }): ResolverIdentity {
   return event.identity || {}
 }
@@ -15,7 +17,19 @@ export function getIdentityUsername(identity: ResolverIdentity | undefined): str
 
 export function getIdentityGroups(identity: ResolverIdentity | undefined): string[] {
   const raw = identity?.claims?.['cognito:groups'] || identity?.groups || []
-  return Array.isArray(raw) ? raw.map(String) : []
+  if (Array.isArray(raw)) return raw.map(String)
+  return typeof raw === 'string' && raw.length > 0 ? [raw] : []
+}
+
+export function isPlatformAdmin(identity: ResolverIdentity | undefined) {
+  const groups = getIdentityGroups(identity).map((group) => group.toLowerCase())
+  return PLATFORM_ADMIN_GROUPS.some((group) => groups.includes(group.toLowerCase()))
+}
+
+export function assertPlatformAdmin(identity: ResolverIdentity | undefined) {
+  if (!isPlatformAdmin(identity)) {
+    throw new Error('Platform administrator access is required')
+  }
 }
 
 export function hasForumModerationAccess(identity: ResolverIdentity | undefined) {

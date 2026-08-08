@@ -1,1 +1,1 @@
-export * from './handlers'
+export { handleCreateManagedTwitchCommand, handleDeleteManagedTwitchCommand, handleListManagedTwitchCommands, handleUpdateManagedTwitchCommand } from './managedHandlers'

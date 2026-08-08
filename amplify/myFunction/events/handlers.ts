@@ -1,7 +1,6 @@
-import { getDataClient } from '../shared/dataClient'
-import { getIdentityUsername, getResolverIdentity } from '../shared/auth'
 import { addDays, addMonths, addWeeks, isValidDate } from '../shared/dates'
 import { logger } from '../shared/logger'
+import { authorizeBrandEventCommand } from './managedHandlers'
 
 function generateSeriesId() { return `series-${Date.now()}-${Math.random().toString(36).slice(2, 8)}` }
 function buildOccurrenceDates(params: { startAt: string; recurrenceFrequency: string; recurrenceInterval?: number | null; recurrenceEndsAt?: string | null; recurrenceCount?: number | null }) {
@@ -51,8 +50,31 @@ async function getEventById(client: any, eventId: string) {
   return result.data
 }
 
+function eventAuditSnapshot(event: any) {
+  return {
+    id: event.id,
+    brandId: event.brandId,
+    eventType: event.eventType || null,
+    seriesId: event.seriesId || null,
+  }
+}
+
+async function writeEventAudit(client: any, actorUserId: string, action: string, targetId: string, before: unknown, after: unknown) {
+  const result = await client.models.PermissionAuditEvent.create({
+    actorUserId,
+    action,
+    targetType: 'Event',
+    targetId,
+    before,
+    after,
+    occurredAt: new Date().toISOString(),
+  })
+  if (result.errors?.length) throw new Error(result.errors[0].message || 'Failed to write Event audit event')
+}
+
 function copyEventForCreate(event: any) {
   return {
+    brandId: event.brandId,
     title: event.title,
     slug: event.slug || null,
     shortDescription: event.shortDescription || null,
@@ -94,10 +116,8 @@ function copyEventForCreate(event: any) {
   }
 }
 
-export async function handleCloneEvent(event: any) {
-  const client = await getDataClient()
-  const identity = getResolverIdentity(event)
-  const actor = getIdentityUsername(identity)
+export async function handleCloneEvent(event: any, injectedClient?: any) {
+  const client = injectedClient || await loadDataClient()
   const { eventId, newStartAt, newEndAt, status } = event.arguments || {}
 
   if (!eventId) {
@@ -106,6 +126,7 @@ export async function handleCloneEvent(event: any) {
 
   try {
     const sourceEvent = await getEventById(client, eventId)
+    const actor = await authorizeBrandEventCommand(client, event, sourceEvent.brandId)
     const payload = copyEventForCreate(sourceEvent)
 
     payload.startAt = newStartAt && isValidDate(newStartAt) ? new Date(newStartAt).toISOString() : sourceEvent.startAt
@@ -118,13 +139,23 @@ export async function handleCloneEvent(event: any) {
     payload.seriesId = null
     payload.parentEventId = null
     payload.clonedFromEventId = sourceEvent.id
-    payload.updatedBy = actor || null
+    payload.createdBy = actor.userId
+    payload.updatedBy = actor.userId
 
     const createResult = await client.models.Event.create(payload)
 
     if (createResult.errors?.length) {
       throw new Error(createResult.errors[0].message || 'Failed to clone event')
     }
+
+    await writeEventAudit(
+      client,
+      actor.userId,
+      'event.clone',
+      createResult.data?.id || sourceEvent.id,
+      eventAuditSnapshot(sourceEvent),
+      eventAuditSnapshot({ ...payload, id: createResult.data?.id || null }),
+    )
 
     return eventResult({
       success: true,
@@ -137,10 +168,8 @@ export async function handleCloneEvent(event: any) {
   }
 }
 
-export async function handleCreateRecurringEventSeries(event: any) {
-  const client = await getDataClient()
-  const identity = getResolverIdentity(event)
-  const actor = getIdentityUsername(identity)
+export async function handleCreateRecurringEventSeries(event: any, injectedClient?: any) {
+  const client = injectedClient || await loadDataClient()
   const {
     eventId,
     recurrenceFrequency,
@@ -156,6 +185,7 @@ export async function handleCreateRecurringEventSeries(event: any) {
 
   try {
     const sourceEvent = await getEventById(client, eventId)
+    const actor = await authorizeBrandEventCommand(client, event, sourceEvent.brandId)
     const seriesId = generateSeriesId()
 
     const updateMasterResult = await client.models.Event.update({
@@ -168,7 +198,7 @@ export async function handleCreateRecurringEventSeries(event: any) {
       recurrenceByWeekday: Array.isArray(recurrenceByWeekday) ? recurrenceByWeekday : [],
       recurrenceEndsAt: recurrenceEndsAt || null,
       recurrenceCount: recurrenceCount ?? 12,
-      updatedBy: actor || null,
+      updatedBy: actor.userId,
     })
 
     if (updateMasterResult.errors?.length) {
@@ -208,7 +238,8 @@ export async function handleCreateRecurringEventSeries(event: any) {
       payload.recurrenceByWeekday = Array.isArray(recurrenceByWeekday) ? recurrenceByWeekday : []
       payload.recurrenceEndsAt = recurrenceEndsAt || null
       payload.recurrenceCount = recurrenceCount ?? 12
-      payload.updatedBy = actor || null
+      payload.createdBy = actor.userId
+      payload.updatedBy = actor.userId
 
       const createResult = await client.models.Event.create(payload)
 
@@ -218,6 +249,15 @@ export async function handleCreateRecurringEventSeries(event: any) {
 
       generatedCount += 1
     }
+
+    await writeEventAudit(
+      client,
+      actor.userId,
+      'event.recurring_series.create',
+      sourceEvent.id,
+      eventAuditSnapshot(sourceEvent),
+      { brandId: sourceEvent.brandId, seriesId, generatedCount },
+    )
 
     return eventResult({
       success: true,
@@ -232,10 +272,8 @@ export async function handleCreateRecurringEventSeries(event: any) {
   }
 }
 
-export async function handleGenerateRecurringInstances(event: any) {
-  const client = await getDataClient()
-  const identity = getResolverIdentity(event)
-  const actor = getIdentityUsername(identity)
+export async function handleGenerateRecurringInstances(event: any, injectedClient?: any) {
+  const client = injectedClient || await loadDataClient()
   const { masterEventId, rangeStart, rangeEnd } = event.arguments || {}
 
   if (!masterEventId) {
@@ -244,6 +282,7 @@ export async function handleGenerateRecurringInstances(event: any) {
 
   try {
     const masterEvent = await getEventById(client, masterEventId)
+    const actor = await authorizeBrandEventCommand(client, event, masterEvent.brandId)
 
     if (masterEvent.eventType !== 'recurring-master') {
       throw new Error('Event is not a recurring master')
@@ -304,7 +343,8 @@ export async function handleGenerateRecurringInstances(event: any) {
       payload.seriesId = seriesId
       payload.parentEventId = masterEvent.id
       payload.clonedFromEventId = masterEvent.id
-      payload.updatedBy = actor || null
+      payload.createdBy = actor.userId
+      payload.updatedBy = actor.userId
 
       const createResult = await client.models.Event.create(payload)
 
@@ -314,6 +354,15 @@ export async function handleGenerateRecurringInstances(event: any) {
 
       generatedCount += 1
     }
+
+    await writeEventAudit(
+      client,
+      actor.userId,
+      'event.recurring_instances.generate',
+      masterEvent.id,
+      eventAuditSnapshot(masterEvent),
+      { brandId: masterEvent.brandId, seriesId, generatedCount },
+    )
 
     return eventResult({
       success: true,
@@ -326,6 +375,11 @@ export async function handleGenerateRecurringInstances(event: any) {
     logger.error('generateRecurringInstances failed:', error)
     return eventResult({ success: false, message: error?.message || 'Failed to generate recurring instances' })
   }
+}
+
+async function loadDataClient() {
+  const { getDataClient } = await import('../shared/dataClient')
+  return getDataClient()
 }
 
 /* ============================================================================

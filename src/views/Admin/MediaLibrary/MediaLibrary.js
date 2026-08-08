@@ -11,6 +11,7 @@
 import { ref, computed, watch } from 'vue' // Vue 3 Composition API[web:127]
 import { generateClient } from 'aws-amplify/data'
 import { uploadData, getUrl, remove } from 'aws-amplify/storage'
+import { useAccessContext } from '@/composables/useAccessContext.js'
 
 function getClient() {
   return generateClient()
@@ -142,15 +143,7 @@ async function uploadLibraryFileToStorage(file, folderId) {
 
   await uploadTask.result
 
-  const urlResult = await getUrl({
-    path,
-    options: {
-      accessLevel: 'public',
-      expiresIn: 3600,
-    },
-  })
-
-  return urlResult.url.toString()
+  return path
 }
 
 export function useMediaLibrary (props, ctx) {
@@ -161,6 +154,8 @@ export function useMediaLibrary (props, ctx) {
   // 1.1 Base state from props
   const collections = ref(props.collections || [])
   const mediaItems = ref(props.mediaItems || [])
+  const { hasPermission, refreshAccessContext } = useAccessContext()
+  const canManageMedia = computed(() => hasPermission('media.library.manage'))
 
   // Keep local refs in sync when parent props change
   watch(
@@ -334,7 +329,7 @@ export function useMediaLibrary (props, ctx) {
 
     loadingCollections.value = true
     try {
-      const createResult = await getModelOrThrow('MediaCollection').create(
+      const createResult = await getClient().mutations.createManagedMediaCollection(
         {
           name,
           slug: slugify(name) || `collection-${Date.now()}`,
@@ -342,15 +337,14 @@ export function useMediaLibrary (props, ctx) {
           type: 'folder',
           sortOrder: collections.value.length,
           isActive: true,
-        },
-        { authMode: 'userPool' }
+        }
       )
 
       if (createResult.errors?.length) {
         throw new Error(createResult.errors[0].message || 'Failed to create folder.')
       }
 
-      const created = createResult.data
+      const created = createResult.data?.mediaItemId ? { id: createResult.data.mediaItemId, name, slug: slugify(name), parentId: currentFolderId.value || null, type: 'folder', sortOrder: collections.value.length, isActive: true } : null
       if (created) {
         collections.value = [...collections.value, created]
         if (ctx.emit) ctx.emit('update:collections', collections.value)
@@ -487,6 +481,20 @@ export function useMediaLibrary (props, ctx) {
         tags
       }
 
+      const updateResult = await getClient().mutations.updateManagedMediaItem({
+        mediaItemId: updated.id,
+        collectionId: updated.collectionId,
+        title: updated.title,
+        altText: updated.altText,
+        tags: updated.tags,
+        type: updated.type,
+        status: updated.status,
+        color: updated.color,
+        colorHex: updated.colorHex,
+        sourceType: updated.sourceType,
+      })
+      if (updateResult.errors?.length) throw new Error(updateResult.errors[0].message || 'Failed to save asset.')
+
       const copy = mediaItems.value.slice()
       copy.splice(idx, 1, updated)
       mediaItems.value = copy
@@ -534,6 +542,10 @@ export function useMediaLibrary (props, ctx) {
     if (!activeMediaItem.value || !selectedMediaIds.value.length) return
     const targetCollectionId = activeMediaCollectionId.value
 
+    for (const mediaItemId of selectedMediaIds.value) {
+      const result = await getClient().mutations.updateManagedMediaItem({ mediaItemId, collectionId: targetCollectionId })
+      if (result.errors?.length) throw new Error(result.errors[0].message || 'Failed to move selected asset.')
+    }
     const updated = mediaItems.value.map(item => {
       if (selectedMediaIds.value.includes(item.id)) {
         return { ...item, collectionId: targetCollectionId }
@@ -585,34 +597,10 @@ export function useMediaLibrary (props, ctx) {
     const normalizedMediaItemId = normalizeText(mediaItemId)
     if (!normalizedMediaItemId) return
 
-    const [allMediaItems, allProductImages] = await Promise.all([
-      listAllModelRecords('MediaItem'),
-      listAllModelRecords('MerchProductImage'),
-    ])
-
-    const mediaItem = allMediaItems.find(
+    const mediaItem = mediaItems.value.find(
       item => normalizeText(item.id) === normalizedMediaItemId
     )
-
-    const linkedProductImages = allProductImages.filter(
-      image => normalizeText(image.mediaItemId) === normalizedMediaItemId
-    )
-
-    for (const link of linkedProductImages) {
-      const deleteLinkResult = await getModelOrThrow('MerchProductImage').delete(
-        { id: link.id },
-        { authMode: 'userPool' }
-      )
-
-      if (deleteLinkResult.errors?.length) {
-        throw new Error(deleteLinkResult.errors[0].message || 'Failed to delete media link.')
-      }
-    }
-
-    const deleteResult = await getModelOrThrow('MediaItem').delete(
-      { id: normalizedMediaItemId },
-      { authMode: 'userPool' }
-    )
+    const deleteResult = await getClient().mutations.deleteManagedMediaItem({ mediaItemId: normalizedMediaItemId })
 
     if (deleteResult.errors?.length) {
       throw new Error(deleteResult.errors[0].message || 'Failed to delete media item.')
@@ -655,7 +643,7 @@ export function useMediaLibrary (props, ctx) {
       const createdItems = []
       for (const file of uploadFiles.value) {
         const assetUrl = await uploadLibraryFileToStorage(file, targetCollectionId)
-        const createResult = await getModelOrThrow('MediaItem').create(
+        const createResult = await getClient().mutations.createManagedMediaItem(
           {
             title: file.name,
             altText: file.name,
@@ -665,15 +653,18 @@ export function useMediaLibrary (props, ctx) {
             collectionId: targetCollectionId || null,
             tags: [],
             sourceType: uploadSourceType.value,
-          },
-          { authMode: 'userPool' }
+          }
         )
 
         if (createResult.errors?.length) {
           throw new Error(createResult.errors[0].message || 'Failed to upload file.')
         }
 
-        createdItems.push(createResult.data)
+        createdItems.push({
+          id: createResult.data?.mediaItemId, title: file.name, altText: file.name, url: assetUrl,
+          type: file.type || 'image', status: 'active', collectionId: targetCollectionId || null,
+          tags: [], sourceType: uploadSourceType.value,
+        })
       }
 
       mediaItems.value = [...mediaItems.value, ...createdItems.filter(Boolean)]
@@ -702,20 +693,12 @@ export function useMediaLibrary (props, ctx) {
     loadingCollections.value = true
     loadError.value = ''
     try {
-      const [collectionsResult, mediaItemsResult] = await Promise.all([
-        getModelOrThrow('MediaCollection').list({ authMode: 'userPool' }),
-        getModelOrThrow('MediaItem').list({ authMode: 'userPool' })
-      ])
-
-      if (collectionsResult.errors?.length) {
-        throw new Error(collectionsResult.errors[0].message || 'Failed to load collections.')
-      }
-      if (mediaItemsResult.errors?.length) {
-        throw new Error(mediaItemsResult.errors[0].message || 'Failed to load media items.')
-      }
-
-      collections.value = collectionsResult.data || []
-      mediaItems.value = mediaItemsResult.data || []
+      await refreshAccessContext()
+      if (!canManageMedia.value) throw new Error('You do not have permission to view the Media Library.')
+      const result = await getClient().queries.listManagedMediaLibrary()
+      if (result.errors?.length) throw new Error(result.errors[0].message || 'Failed to load Media Library.')
+      collections.value = result.data?.collections || []
+      mediaItems.value = result.data?.mediaItems || []
 
       if (ctx.emit) {
         ctx.emit('update:collections', collections.value)
@@ -789,6 +772,7 @@ export function useMediaLibrary (props, ctx) {
     uploadMediaItems,
 
     // Refresh
-    refreshLibrary
+    refreshLibrary,
+    canManageMedia
   }
 }

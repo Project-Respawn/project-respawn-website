@@ -54,15 +54,27 @@
           </div>
 
           <div class="form-row">
-            <label for="brand-status">Status</label>
-            <select
-              id="brand-status"
-              v-model="newBrand.status"
+            <label for="brand-sort-order">Sort order</label>
+            <input
+              id="brand-sort-order"
+              v-model.number="newBrand.sortOrder"
+              type="number"
+              min="0"
+              step="1"
               :disabled="saving"
-            >
-              <option value="active">Active</option>
-              <option value="archived">Archived</option>
-            </select>
+            />
+          </div>
+
+          <div class="form-row form-row-checkbox">
+            <label class="checkbox-row" for="brand-is-active">
+              <input
+                id="brand-is-active"
+                v-model="newBrand.isActive"
+                type="checkbox"
+                :disabled="saving"
+              />
+              <span>Brand is active</span>
+            </label>
           </div>
 
           <p v-if="formError" class="form-error">{{ formError }}</p>
@@ -126,9 +138,9 @@
                 <h3>{{ brand.name }}</h3>
                 <span
                   class="status-badge"
-                  :class="brand.status === 'active' ? 'is-active' : 'is-archived'"
+                  :class="brand.isActive ? 'is-active' : 'is-archived'"
                 >
-                  {{ brand.status }}
+                  {{ brand.isActive ? 'active' : 'archived' }}
                 </span>
               </div>
 
@@ -139,13 +151,24 @@
             </div>
 
             <div class="brand-item-actions">
+              <label class="owner-control">
+                <span>Brand Owner</span>
+                <select v-model="ownerInputs[brand.id]" :disabled="saving || loadingOwnerUsers">
+                  <option value="">Not assigned — select an eligible user</option>
+                  <option v-for="user in ownerUsers" :key="user.userId" :value="user.userId">{{ user.label }}</option>
+                </select>
+              </label>
+              <p v-if="ownerUsersError" class="owner-error">{{ ownerUsersError }}</p>
+              <button class="btn-secondary" type="button" @click="saveBrandOwner(brand)" :disabled="saving">
+                {{ brand.ownerUserId ? 'Change owner' : 'Assign owner' }}
+              </button>
               <button
                 class="btn-secondary"
                 type="button"
                 @click="toggleBrandStatus(brand)"
                 :disabled="saving"
               >
-                {{ brand.status === 'active' ? 'Archive' : 'Restore' }}
+                {{ brand.isActive ? 'Archive' : 'Restore' }}
               </button>
             </div>
           </article>

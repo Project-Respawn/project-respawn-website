@@ -483,8 +483,6 @@ export default {
           categoriesResult,
           productBrandsResult,
           productCategoriesResult,
-          productImagesResult,
-          mediaItemsResult,
           productVariantsResult,
         ] = await Promise.all([
           client.models.MerchProduct.list({ authMode: 'apiKey' }),
@@ -492,8 +490,6 @@ export default {
           client.models.MerchCategory.list({ authMode: 'apiKey' }),
           client.models.MerchProductBrand.list({ authMode: 'apiKey' }),
           client.models.MerchProductCategory.list({ authMode: 'apiKey' }),
-          client.models.MerchProductImage.list({ authMode: 'apiKey' }),
-          client.models.MediaItem.list({ authMode: 'apiKey' }),
           client.models.MerchProductVariant.list({ authMode: 'apiKey' }),
         ]);
 
@@ -502,8 +498,6 @@ export default {
         if (categoriesResult.errors?.length) throw new Error(categoriesResult.errors[0].message || 'Failed to load categories.');
         if (productBrandsResult.errors?.length) throw new Error(productBrandsResult.errors[0].message || 'Failed to load product brand links.');
         if (productCategoriesResult.errors?.length) throw new Error(productCategoriesResult.errors[0].message || 'Failed to load product category links.');
-        if (productImagesResult.errors?.length) throw new Error(productImagesResult.errors[0].message || 'Failed to load product images.');
-        if (mediaItemsResult.errors?.length) throw new Error(mediaItemsResult.errors[0].message || 'Failed to load media items.');
         if (productVariantsResult.errors?.length) throw new Error(productVariantsResult.errors[0].message || 'Failed to load product variants.');
 
         this.allBrands = (brandsResult.data || [])
@@ -542,25 +536,15 @@ export default {
         }
 
         const imagesByProductId = new Map();
-        const mediaItemsById = new Map((mediaItemsResult.data || []).map((item) => [normalizeText(item.id), item]));
-
-        for (const image of productImagesResult.data || []) {
-          const productId = normalizeText(image.productId);
-          if (!productId) continue;
-          const mediaItem = mediaItemsById.get(normalizeText(image.mediaItemId));
-          const current = imagesByProductId.get(productId) || [];
-          current.push({
-            ...image,
-            url: normalizeText(mediaItem?.url) || '',
-            title: normalizeText(mediaItem?.title) || '',
-            altText: firstNonEmpty(image.altTextOverride, mediaItem?.altText, mediaItem?.title),
-            color: firstNonEmpty(image.colorOverride, mediaItem?.color),
-            colorHex: firstNonEmpty(image.colorHexOverride, mediaItem?.colorHex),
-            sourceType: normalizeText(mediaItem?.sourceType) || '',
-            status: firstNonEmpty(image.status, mediaItem?.status, 'active'),
-          });
-          imagesByProductId.set(productId, current);
-        }
+        const publicProducts = (productsResult.data || []).filter((product) => product.isVisible === true);
+        await Promise.all(publicProducts.map(async (product) => {
+          const result = await client.queries.listPublicMerchProductImages(
+            { productId: product.id },
+            { authMode: 'apiKey' },
+          );
+          if (result.errors?.length) throw new Error(result.errors[0].message || 'Failed to load product images.');
+          imagesByProductId.set(product.id, result.data || []);
+        }));
 
         const variantsByProductId = new Map();
         for (const variant of productVariantsResult.data || []) {

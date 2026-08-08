@@ -42,10 +42,110 @@ const schema = a
       roles: a.string().array().required(),
     }),
 
+    PermissionDefinitionSummary: a.customType({
+      id: a.id().required(),
+      key: a.string().required(),
+      displayName: a.string().required(),
+      description: a.string(),
+      domain: a.string().required(),
+      module: a.string().required(),
+      isActive: a.boolean().required(),
+      platformEnforced: a.boolean().required(),
+      sortOrder: a.integer().required(),
+    }),
+
+    GroupPermissionSummary: a.customType({
+      id: a.id().required(),
+      groupName: a.string().required(),
+      permissionKey: a.string().required(),
+      enabled: a.boolean().required(),
+      assignedBy: a.string(),
+      changedBy: a.string(),
+    }),
+
+    PermissionCatalogResult: a.customType({
+      requiresBootstrap: a.boolean().required(),
+      definitions: a.ref('PermissionDefinitionSummary').array().required(),
+      assignments: a.ref('GroupPermissionSummary').array().required(),
+    }),
+
+    PermissionMutationResult: a.customType({
+      success: a.boolean().required(),
+      message: a.string(),
+      changedCount: a.integer(),
+    }),
+
+    AccessibleBrandSummary: a.customType({
+      brandId: a.id().required(),
+      name: a.string().required(),
+      ownerUserId: a.string(),
+      isOwner: a.boolean().required(),
+      permissionKeys: a.string().array().required(),
+    }),
+
+    BrandHelperSummary: a.customType({
+      userId: a.string().required(),
+      username: a.string(),
+      email: a.string(),
+      displayName: a.string(),
+      permissionKeys: a.string().array().required(),
+    }),
+
+    BrandPermissionDetailResult: a.customType({
+      brand: a.ref('AccessibleBrandSummary').required(),
+      helpers: a.ref('BrandHelperSummary').array().required(),
+      availablePermissionKeys: a.string().array().required(),
+    }),
+
+    BrandMutationResult: a.customType({
+      success: a.boolean().required(),
+      message: a.string(),
+      // AppSync's shared resolver error boundary returns { success, message }
+      // for failures, so an ID is present only after a persisted Brand exists.
+      brandId: a.id(),
+    }),
+
+    MerchProductMutationResult: a.customType({
+      success: a.boolean().required(),
+      message: a.string(),
+      productId: a.id().required(),
+    }),
+
+    MerchProductVariantMutationResult: a.customType({
+      success: a.boolean().required(),
+      message: a.string(),
+      variantId: a.id().required(),
+    }),
+    MerchProductImageMutationResult: a.customType({ success: a.boolean().required(), message: a.string(), imageId: a.id().required(), productId: a.id().required() }),
+
+    MediaMutationResult: a.customType({ success: a.boolean().required(), message: a.string(), mediaItemId: a.id() }),
+    ManagedMediaLibraryResult: a.customType({ collections: a.json().required(), mediaItems: a.json().required() }),
+    PublicMerchProductImageSummary: a.customType({
+      id: a.id().required(), productId: a.id().required(), mediaItemId: a.id().required(), url: a.string().required(),
+      title: a.string(), altText: a.string(), type: a.string(), color: a.string(), colorHex: a.string(),
+      sortOrder: a.integer(), isPrimary: a.boolean(), isMockup: a.boolean(), isVisible: a.boolean(), isFeatured: a.boolean(),
+      altTextOverride: a.string(), colorOverride: a.string(), colorHexOverride: a.string(), status: a.string(),
+    }),
+
+    MerchProductRelationshipMutationResult: a.customType({
+      success: a.boolean().required(),
+      message: a.string(),
+      productId: a.id().required(),
+      changedCount: a.integer().required(),
+    }),
+
+    AccessContextResult: a.customType({
+      userId: a.string().required(),
+      groups: a.string().array().required(),
+      permissions: a.string().array().required(),
+      isPlatformAdmin: a.boolean().required(),
+      brands: a.ref('AccessibleBrandSummary').array().required(),
+    }),
+
     listAdminUsers: a
       .query()
       .returns(a.ref('AdminUser').array().required())
-      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])])
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin', 'Staff'])])
       .handler(a.handler.function(adminUserManagement)),
 
     updateUserRoles: a
@@ -55,8 +155,242 @@ const schema = a
         roles: a.string().array().required(),
       })
       .returns(a.ref('UpdateUserRolesResult').required())
-      .authorization((allow) => [allow.groups(['SuperAdmin'])])
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin', 'Staff'])])
       .handler(a.handler.function(adminUserManagement)),
+
+    PermissionDefinition: a
+      .model({
+        key: a.string().required(),
+        displayName: a.string().required(),
+        description: a.string(),
+        domain: a.string().required(),
+        module: a.string().required(),
+        isActive: a.boolean().required(),
+        sortOrder: a.integer().required(),
+        createdBy: a.string(),
+      })
+      .authorization((allow) => [
+        allow.groups(['SuperAdmin', 'Admin']).to(['read']),
+      ]),
+
+    GroupPermission: a
+      .model({
+        groupName: a.string().required(),
+        permissionKey: a.string().required(),
+        enabled: a.boolean().required(),
+        assignedBy: a.string(),
+        changedBy: a.string(),
+      })
+      .authorization((allow) => [
+        allow.groups(['SuperAdmin', 'Admin']).to(['read']),
+      ]),
+
+    PermissionAuditEvent: a
+      .model({
+        actorUserId: a.string().required(),
+        action: a.string().required(),
+        targetType: a.string().required(),
+        targetId: a.string().required(),
+        before: a.json(),
+        after: a.json(),
+        occurredAt: a.datetime().required(),
+      })
+      .authorization((allow) => [
+        allow.groups(['SuperAdmin', 'Admin']).to(['read']),
+      ]),
+
+    listPermissionCatalog: a
+      .query()
+      .returns(a.ref('PermissionCatalogResult').required())
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])])
+      .handler(a.handler.function(myFunction)),
+
+    seedPermissionCatalog: a
+      .mutation()
+      .returns(a.ref('PermissionMutationResult').required())
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])])
+      .handler(a.handler.function(myFunction)),
+
+    replaceGroupPermissions: a
+      .mutation()
+      .arguments({
+        groupName: a.string().required(),
+        permissionKeys: a.string().array().required(),
+      })
+      .returns(a.ref('PermissionMutationResult').required())
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])])
+      .handler(a.handler.function(myFunction)),
+
+    getMyAccessContext: a
+      .query()
+      .returns(a.ref('AccessContextResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    listManagedMediaLibrary: a.query().returns(a.ref('ManagedMediaLibraryResult').required())
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    createManagedMediaItem: a.mutation().arguments({
+      url: a.string().required(), title: a.string(), altText: a.string(), type: a.string(), tags: a.string().array(),
+      color: a.string(), colorHex: a.string(), sourceType: a.string(), externalImageId: a.string(), status: a.string(), collectionId: a.id(),
+    }).returns(a.ref('MediaMutationResult').required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    updateManagedMediaItem: a.mutation().arguments({
+      mediaItemId: a.id().required(), title: a.string(), altText: a.string(), type: a.string(), tags: a.string().array(),
+      color: a.string(), colorHex: a.string(), sourceType: a.string(), externalImageId: a.string(), status: a.string(), collectionId: a.id(),
+    }).returns(a.ref('MediaMutationResult').required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    deleteManagedMediaItem: a.mutation().arguments({ mediaItemId: a.id().required() })
+      .returns(a.ref('MediaMutationResult').required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    createManagedMediaCollection: a.mutation().arguments({
+      name: a.string().required(), slug: a.string().required(), type: a.string(), parentId: a.id(), sortOrder: a.integer(), isActive: a.boolean(),
+    }).returns(a.ref('MediaMutationResult').required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    listPublicMerchProductImages: a.query().arguments({ productId: a.id().required() })
+      .returns(a.ref('PublicMerchProductImageSummary').array().required())
+      .authorization((allow) => [allow.publicApiKey(), allow.authenticated()]).handler(a.handler.function(myFunction)),
+
+    createManagedBrand: a
+      .mutation()
+      .arguments({
+        name: a.string().required(),
+        slug: a.string().required(),
+        description: a.string(),
+        sortOrder: a.integer(),
+        isActive: a.boolean(),
+        ownerUserId: a.string(),
+      })
+      .returns(a.ref('BrandMutationResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    updateManagedBrand: a
+      .mutation()
+      .arguments({
+        brandId: a.id().required(),
+        name: a.string(),
+        slug: a.string(),
+        description: a.string(),
+        sortOrder: a.integer(),
+        isActive: a.boolean(),
+      })
+      .returns(a.ref('BrandMutationResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    setBrandOwner: a
+      .mutation()
+      .arguments({ brandId: a.id().required(), ownerUserId: a.string().required() })
+      .returns(a.ref('BrandMutationResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    getBrandPermissionDetails: a
+      .query()
+      .arguments({ brandId: a.id().required() })
+      .returns(a.ref('BrandPermissionDetailResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    upsertBrandHelper: a
+      .mutation()
+      .arguments({
+        brandId: a.id().required(),
+        userId: a.string().required(),
+        username: a.string(),
+        email: a.string(),
+        displayName: a.string(),
+        permissionKeys: a.string().array().required(),
+      })
+      .returns(a.ref('BrandMutationResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    removeBrandHelper: a
+      .mutation()
+      .arguments({ brandId: a.id().required(), userId: a.string().required() })
+      .returns(a.ref('BrandMutationResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    updateManagedMerchProduct: a
+      .mutation()
+      .arguments({
+        productId: a.id().required(),
+        brandId: a.id(),
+        title: a.string(),
+        slug: a.string(),
+        shortDescription: a.string(),
+        description: a.string(),
+        materials: a.string(),
+        sizeGuide: a.string(),
+        shippingReturns: a.string(),
+        whatsIncluded: a.string(),
+        careInstructions: a.string(),
+        fitNotes: a.string(),
+        status: a.string(),
+        isVisible: a.boolean(),
+        thumbnailUrl: a.string(),
+        imageUrl: a.string(),
+        sourceType: a.string(),
+        externalProductId: a.string(),
+        externalVariantGroupId: a.string(),
+        sku: a.string(),
+        displayPrice: a.string(),
+        basePrice: a.float(),
+        currency: a.string(),
+        productUrl: a.string(),
+        variantCount: a.integer(),
+        sortOrder: a.integer(),
+      })
+      .returns(a.ref('MerchProductMutationResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    createManagedMerchProduct: a
+      .mutation()
+      .arguments({
+        title: a.string().required(), slug: a.string().required(), shortDescription: a.string(), description: a.string(),
+        thumbnailUrl: a.string(), imageUrl: a.string(), sourceType: a.string().required(), externalProductId: a.string(),
+        externalVariantGroupId: a.string(), sku: a.string(), displayPrice: a.string(), basePrice: a.float(),
+        currency: a.string(), productUrl: a.string(), variantCount: a.integer(), materials: a.string(), sizeGuide: a.string(),
+        shippingReturns: a.string(), whatsIncluded: a.string(), careInstructions: a.string(), fitNotes: a.string(),
+        status: a.string().required(), isVisible: a.boolean().required(), sortOrder: a.integer(),
+      })
+      .returns(a.ref('MerchProductMutationResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    upsertManagedMerchProductVariant: a
+      .mutation()
+      .arguments({
+        variantId: a.id(), productId: a.id().required(), externalVariantId: a.string(), sku: a.string(),
+        name: a.string(), color: a.string(), colorHex: a.string(), size: a.string(), displayPrice: a.string(),
+        retailPrice: a.float(), currency: a.string(), availabilityStatus: a.string(), imageUrl: a.string(),
+        sortOrder: a.integer(), status: a.string(),
+      })
+      .returns(a.ref('MerchProductVariantMutationResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    upsertManagedMerchProductImage: a.mutation().arguments({
+      imageId: a.id(), productId: a.id().required(), mediaItemId: a.id(), sortOrder: a.integer(), isPrimary: a.boolean(),
+      isMockup: a.boolean(), isVisible: a.boolean(), isFeatured: a.boolean(), altTextOverride: a.string(),
+      colorOverride: a.string(), colorHexOverride: a.string(), status: a.string(),
+    }).returns(a.ref('MerchProductImageMutationResult').required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+
+    deleteManagedMerchProductImage: a.mutation().arguments({ imageId: a.id().required() })
+      .returns(a.ref('MerchProductImageMutationResult').required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+
+    replaceManagedMerchProductBrands: a
+      .mutation()
+      .arguments({ productId: a.id().required(), brandIds: a.id().array().required() })
+      .returns(a.ref('MerchProductRelationshipMutationResult').required())
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin', 'Staff'])])
+      .handler(a.handler.function(myFunction)),
+
+    replaceManagedMerchProductCategories: a
+      .mutation()
+      .arguments({ productId: a.id().required(), categoryIds: a.id().array().required() })
+      .returns(a.ref('MerchProductRelationshipMutationResult').required())
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin', 'Staff'])])
+      .handler(a.handler.function(myFunction)),
 
     /*
      * 3. TWITCH & USER PROFILE MODELS
@@ -66,6 +400,7 @@ const schema = a
 
     TwitchCommand: a
       .model({
+        brandId: a.id(),
         streamerId: a.string().required(),
         name: a.string().required(),
         reply: a.string().required(),
@@ -75,7 +410,104 @@ const schema = a
         category: a.string().required(),
         permissionLevel: a.string().required(),
       })
-      .authorization((allow) => [allow.authenticated()]),
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read'])]),
+
+    ManagedTwitchCommandMutationResult: a.customType({
+      success: a.boolean().required(),
+      message: a.string(),
+      commandId: a.id().required(),
+    }),
+
+    ManagedTwitchCommand: a.customType({
+      id: a.id().required(),
+      brandId: a.id(),
+      streamerId: a.string().required(),
+      name: a.string().required(),
+      reply: a.string().required(),
+      enabled: a.boolean().required(),
+      cooldownSeconds: a.integer().required(),
+      isCustom: a.boolean().required(),
+      category: a.string().required(),
+      permissionLevel: a.string().required(),
+    }),
+
+    listManagedTwitchCommands: a
+      .query()
+      .arguments({ brandId: a.id().required(), includeUnscoped: a.boolean() })
+      .returns(a.ref('ManagedTwitchCommand').array().required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    createManagedTwitchCommand: a
+      .mutation()
+      .arguments({
+        brandId: a.id().required(),
+        streamerId: a.string().required(),
+        name: a.string().required(),
+        reply: a.string().required(),
+        enabled: a.boolean().required(),
+        cooldownSeconds: a.integer().required(),
+        isCustom: a.boolean().required(),
+        category: a.string().required(),
+        permissionLevel: a.string().required(),
+      })
+      .returns(a.ref('ManagedTwitchCommandMutationResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    updateManagedTwitchCommand: a
+      .mutation()
+      .arguments({
+        commandId: a.id().required(),
+        brandId: a.id().required(),
+        streamerId: a.string(),
+        name: a.string(),
+        reply: a.string(),
+        enabled: a.boolean(),
+        cooldownSeconds: a.integer(),
+        isCustom: a.boolean(),
+        category: a.string(),
+        permissionLevel: a.string(),
+      })
+      .returns(a.ref('ManagedTwitchCommandMutationResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    deleteManagedTwitchCommand: a
+      .mutation()
+      .arguments({ commandId: a.id().required(), brandId: a.id().required() })
+      .returns(a.ref('ManagedTwitchCommandMutationResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    DiscordBotConfiguration: a
+      .model({
+        brandId: a.id().required(),
+      })
+      .authorization((allow) => [
+        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),
+      ]),
+
+    ManagedDiscordConfigurationResult: a.customType({
+      success: a.boolean().required(),
+      message: a.string(),
+      brandId: a.id().required(),
+      configurationId: a.id(),
+    }),
+
+    getManagedDiscordConfiguration: a
+      .query()
+      .arguments({ brandId: a.id().required() })
+      .returns(a.ref('ManagedDiscordConfigurationResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    createOrUpdateManagedDiscordConfiguration: a
+      .mutation()
+      .arguments({ brandId: a.id().required() })
+      .returns(a.ref('ManagedDiscordConfigurationResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
 
     UserProfile: a
       .model({
@@ -106,6 +538,12 @@ const schema = a
       price: a.float().required(),
       perks: a.string(),
       quantityAvailable: a.integer(),
+    }),
+
+    ManagedEventMutationResult: a.customType({
+      success: a.boolean().required(),
+      message: a.string(),
+      eventId: a.id().required(),
     }),
 
     CloneEventResult: a.customType({
@@ -186,12 +624,7 @@ const schema = a
       .authorization((allow) => [
         allow.publicApiKey().to(['read']),
         allow.authenticated().to(['read']),
-        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to([
-          'create',
-          'read',
-          'update',
-          'delete',
-        ]),
+        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),
       ]),
 
     EventSuggestion: a
@@ -230,6 +663,44 @@ const schema = a
         ]),
       ]),
 
+    createManagedEvent: a
+      .mutation()
+      .arguments({
+        brandId: a.id(), title: a.string().required(), slug: a.string(), shortDescription: a.string(),
+        description: a.string().required(), longDescription: a.string(), startAt: a.datetime().required(),
+        endAt: a.datetime().required(), locationType: a.string().required(), platform: a.string(),
+        category: a.string(), categories: a.string().array(), featured: a.boolean(), status: a.string().required(),
+        host: a.string(), hostUserId: a.string(), hostDisplayName: a.string(), rewardText: a.string(),
+        recapText: a.string(), ctaLabel: a.string(), ctaUrl: a.string(), tagIds: a.string().array(),
+        ticketMode: a.string(), ticketTiers: a.ref('EventTicketTier').array(), signupMode: a.string(),
+        eventType: a.string(), isTemplate: a.boolean(), isRecurring: a.boolean(), seriesId: a.string(),
+        parentEventId: a.string(), clonedFromEventId: a.string(), recurrenceRule: a.string(),
+        recurrenceFrequency: a.string(), recurrenceInterval: a.integer(), recurrenceByWeekday: a.string().array(),
+        recurrenceEndsAt: a.datetime(), recurrenceCount: a.integer(),
+      })
+      .returns(a.ref('ManagedEventMutationResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    updateManagedEvent: a
+      .mutation()
+      .arguments({
+        eventId: a.id().required(), brandId: a.id(), title: a.string(), slug: a.string(),
+        shortDescription: a.string(), description: a.string(), longDescription: a.string(), startAt: a.datetime(),
+        endAt: a.datetime(), locationType: a.string(), platform: a.string(), category: a.string(),
+        categories: a.string().array(), featured: a.boolean(), status: a.string(), host: a.string(),
+        hostUserId: a.string(), hostDisplayName: a.string(), rewardText: a.string(), recapText: a.string(),
+        ctaLabel: a.string(), ctaUrl: a.string(), tagIds: a.string().array(), ticketMode: a.string(),
+        ticketTiers: a.ref('EventTicketTier').array(), signupMode: a.string(), eventType: a.string(),
+        isTemplate: a.boolean(), isRecurring: a.boolean(), seriesId: a.string(), parentEventId: a.string(),
+        clonedFromEventId: a.string(), recurrenceRule: a.string(), recurrenceFrequency: a.string(),
+        recurrenceInterval: a.integer(), recurrenceByWeekday: a.string().array(), recurrenceEndsAt: a.datetime(),
+        recurrenceCount: a.integer(),
+      })
+      .returns(a.ref('ManagedEventMutationResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
     cloneEvent: a
       .mutation()
       .arguments({
@@ -239,7 +710,7 @@ const schema = a
         status: a.string(),
       })
       .returns(a.ref('CloneEventResult').required())
-      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin', 'Staff'])])
+      .authorization((allow) => [allow.authenticated()])
       .handler(a.handler.function(myFunction)),
 
     createRecurringEventSeries: a
@@ -253,7 +724,7 @@ const schema = a
         recurrenceCount: a.integer(),
       })
       .returns(a.ref('RecurringEventSeriesResult').required())
-      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin', 'Staff'])])
+      .authorization((allow) => [allow.authenticated()])
       .handler(a.handler.function(myFunction)),
 
     generateRecurringInstances: a
@@ -264,7 +735,7 @@ const schema = a
         rangeEnd: a.datetime(),
       })
       .returns(a.ref('RecurringEventSeriesResult').required())
-      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin', 'Staff'])])
+      .authorization((allow) => [allow.authenticated()])
       .handler(a.handler.function(myFunction)),
 
     /*
@@ -478,18 +949,16 @@ const schema = a
         description: a.string(),
         sortOrder: a.integer(),
         isActive: a.boolean(),
+        ownerUserId: a.string(),
+        ownerAssignedBy: a.string(),
+        ownerAssignedAt: a.datetime(),
         productBrandLinks: a.hasMany('MerchProductBrand', 'brandId'),
         brandAccesses: a.hasMany('BrandAccess', 'brandId'),
       })
       .authorization((allow) => [
         allow.publicApiKey().to(['read']),
         allow.authenticated().to(['read']),
-        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to([
-          'create',
-          'read',
-          'update',
-          'delete',
-        ]),
+        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),
       ]),
 
     MerchCategory: a
@@ -545,12 +1014,7 @@ const schema = a
       })
       .authorization((allow) => [
         allow.publicApiKey().to(['read']),
-        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to([
-          'create',
-          'read',
-          'update',
-          'delete',
-        ]),
+        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),
       ]),
 
     MerchProductVariant: a
@@ -573,12 +1037,7 @@ const schema = a
       })
       .authorization((allow) => [
         allow.publicApiKey().to(['read']),
-        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to([
-          'create',
-          'read',
-          'update',
-          'delete',
-        ]),
+        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),
       ]),
 
     FulfillmentOrder: a
@@ -612,12 +1071,7 @@ const schema = a
       })
       .authorization((allow) => [
         allow.publicApiKey().to(['read']),
-        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to([
-          'create',
-          'read',
-          'update',
-          'delete',
-        ]),
+        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),
       ]),
 
     MerchProductCategory: a
@@ -629,12 +1083,7 @@ const schema = a
       })
       .authorization((allow) => [
         allow.publicApiKey().to(['read']),
-        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to([
-          'create',
-          'read',
-          'update',
-          'delete',
-        ]),
+        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),
       ]),
 
     BrandAccess: a
@@ -647,17 +1096,25 @@ const schema = a
         displayName: a.string(),
         accessLevel: a.string().required(),
         assignedBy: a.string(),
+        assignedAt: a.datetime(),
         canManageMerch: a.boolean(),
         canHostEvents: a.boolean(),
+        permissions: a.hasMany('BrandAccessPermission', 'brandAccessId'),
       })
       .authorization((allow) => [
-        allow.groups(['SuperAdmin', 'Admin']).to([
-          'create',
-          'read',
-          'update',
-          'delete',
-        ]),
-        allow.groups(['Staff']).to(['read']),
+        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),
+      ]),
+
+    BrandAccessPermission: a
+      .model({
+        brandAccessId: a.id().required(),
+        brandAccess: a.belongsTo('BrandAccess', 'brandAccessId'),
+        permissionKey: a.string().required(),
+        assignedBy: a.string(),
+        assignedAt: a.datetime(),
+      })
+      .authorization((allow) => [
+        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),
       ]),
 
     /*
@@ -679,13 +1136,7 @@ MediaCollection: a
     mediaItems: a.hasMany('MediaItem', 'collectionId'),
   })
   .authorization((allow) => [
-    allow.authenticated().to(['read']),
-    allow.groups(['SuperAdmin', 'Admin', 'Staff']).to([
-      'create',
-      'read',
-      'update',
-      'delete',
-    ]),
+    allow.groups(['SuperAdmin', 'Admin']).to(['read']),
   ]),
 
 MediaItem: a
@@ -714,14 +1165,7 @@ MediaItem: a
     productImageLinks: a.hasMany('MerchProductImage', 'mediaItemId'),
   })
   .authorization((allow) => [
-    allow.publicApiKey().to(['read']),
-    allow.authenticated().to(['read']),
-    allow.groups(['SuperAdmin', 'Admin', 'Staff']).to([
-      'create',
-      'read',
-      'update',
-      'delete',
-    ]),
+    allow.groups(['SuperAdmin', 'Admin']).to(['read']),
   ]),
   
     MerchProductImage: a
@@ -746,12 +1190,7 @@ MediaItem: a
       })
       .authorization((allow) => [
         allow.publicApiKey().to(['read']),
-        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to([
-          'create',
-          'read',
-          'update',
-          'delete',
-        ]),
+        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),
       ]),
   })
   /*

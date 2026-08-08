@@ -2,6 +2,8 @@ import { generateClient } from 'aws-amplify/data';
 import { uploadData, getUrl, remove } from 'aws-amplify/storage';
 import outputs from '../../../../amplify_outputs.json';
 import { fetchProducts, fetchProductById } from '../../Merch/merchService';
+import { refreshAccessContext } from '@/composables/useAccessContext.js';
+import { filterProductsForProductControl, getProductControlCapabilities } from './ProductControl.access.js';
 
 let client = null;
 function getClient() {
@@ -310,6 +312,10 @@ async function listAllModelRecords(modelName, authMode = 'userPool') {
   return records;
 }
 
+function uniqueIds(values = []) {
+  return [...new Set(values.map(normalizeText).filter(Boolean))];
+}
+
 function buildFolderTree(collections) {
   const nodes = (collections || []).map((collection) => ({
     ...collection,
@@ -432,6 +438,9 @@ export default {
       productCategories: [],
       productImages: [],
       productVariants: [],
+      accessContext: { groups: [], brands: [] },
+      selectedBrandId: '',
+      accessLoading: false,
 
       searchQuery: '',
       sourceFilter: 'all',
@@ -472,6 +481,15 @@ export default {
         displayPrice: '',
         variantCount: 0,
         imageCount: 0,
+        thumbnailUrl: '',
+        imageUrl: '',
+        externalProductId: '',
+        externalVariantGroupId: '',
+        sku: '',
+        basePrice: null,
+        currency: '',
+        productUrl: '',
+        sortOrder: 0,
       },
 
       mediaModalOpen: false,
@@ -495,11 +513,36 @@ export default {
 
   computed: {
     visibleProductsCount() {
-      return this.products.filter((product) => product.isVisible).length;
+      return this.accessibleProducts.filter((product) => product.isVisible).length;
     },
 
     printfulProductsCount() {
-      return this.products.filter((product) => product.sourceType === 'printful').length;
+      return this.accessibleProducts.filter((product) => product.sourceType === 'printful').length;
+    },
+
+    productControlCapabilities() {
+      return getProductControlCapabilities(this.accessContext, this.selectedBrandId);
+    },
+
+    isPlatformOperator() {
+      return this.productControlCapabilities.isPlatformOperator;
+    },
+
+    canManageProductRelationships() {
+      return this.productControlCapabilities.canManageRelationships;
+    },
+
+    accessibleBrandOptions() {
+      return this.accessContext.brands || [];
+    },
+
+    accessibleProducts() {
+      return filterProductsForProductControl(
+        this.products,
+        this.productBrands,
+        this.productControlCapabilities,
+        this.selectedBrandId
+      );
     },
 
     brandOptions() {
@@ -522,7 +565,7 @@ export default {
     filteredProducts() {
       const query = normalizeText(this.searchQuery).toLowerCase();
 
-      return this.products.filter((product) => {
+      return this.accessibleProducts.filter((product) => {
         const matchesQuery =
           !query ||
           product.title.toLowerCase().includes(query) ||
@@ -614,6 +657,7 @@ export default {
   },
 
   async mounted() {
+    await this.loadAccessContext();
     await this.loadProducts();
   },
 
@@ -622,6 +666,42 @@ export default {
   },
 
   methods: {
+    async loadAccessContext() {
+      this.accessLoading = true;
+      try {
+        const context = await refreshAccessContext();
+        this.accessContext = context;
+        if (!getProductControlCapabilities(context, '').isPlatformOperator) {
+          this.selectedBrandId = context.brands?.some((brand) => brand.brandId === this.selectedBrandId)
+            ? this.selectedBrandId
+            : context.brands?.[0]?.brandId || '';
+        }
+      } catch (error) {
+        this.accessContext = { groups: [], brands: [] };
+        this.selectedBrandId = '';
+        this.loadError = error?.message || 'Unable to load product access.';
+      } finally {
+        this.accessLoading = false;
+      }
+    },
+
+    async selectBrandContext() {
+      await this.loadProducts();
+    },
+
+    canEditProduct(product) {
+      if (this.isPlatformOperator) return true;
+      return this.productControlCapabilities.canEditScalarProduct && this.productBrands.some(
+        (link) => link.productId === product.id && link.brandId === this.selectedBrandId
+      );
+    },
+
+    assertPlatformMediaAccess() {
+      if (!this.productControlCapabilities.canManageMedia) {
+        throw new Error('Only platform staff can manage product media.');
+      }
+    },
+
     async handlePrintfulSync() {
       if (this.syncingProducts) return;
 
@@ -723,23 +803,18 @@ export default {
         let productId = existing?.id || '';
 
         if (!existing) {
-          const createResult = await getModelOrThrow('MerchProduct').create(payload, {
-            authMode: 'userPool',
-          });
+          const createResult = await getClient().mutations.createManagedMerchProduct(payload);
 
           if (createResult.errors?.length) {
             throw new Error(createResult.errors[0].message || `Failed to create ${title}.`);
           }
 
-          productId = createResult.data?.id || '';
+          productId = createResult.data?.productId || '';
         } else {
-          const updateResult = await getModelOrThrow('MerchProduct').update(
-            {
-              id: existing.id,
-              ...payload,
-            },
-            { authMode: 'userPool' }
-          );
+          const updateResult = await getClient().mutations.updateManagedMerchProduct({
+            productId: existing.id,
+            ...payload,
+          });
 
           if (updateResult.errors?.length) {
             throw new Error(updateResult.errors[0].message || `Failed to update ${title}.`);
@@ -783,28 +858,15 @@ export default {
 
           const existingVariant = existingVariantByExternalId.get(variant.externalVariantId);
 
-          if (!existingVariant) {
-            const createVariantResult = await getModelOrThrow('MerchProductVariant').create(
-              variantPayload,
-              { authMode: 'userPool' }
-            );
+          const variantResult = await getClient().mutations.upsertManagedMerchProductVariant({
+            ...(existingVariant ? { variantId: existingVariant.id } : {}),
+            ...variantPayload,
+          });
 
-            if (createVariantResult.errors?.length) {
-              throw new Error(
-                createVariantResult.errors[0].message || `Failed to create variant for ${title}.`
-              );
-            }
-          } else {
-            const updateVariantResult = await getModelOrThrow('MerchProductVariant').update(
-              { id: existingVariant.id, ...variantPayload },
-              { authMode: 'userPool' }
+          if (variantResult.errors?.length) {
+            throw new Error(
+              variantResult.errors[0].message || `Failed to save variant for ${title}.`
             );
-
-            if (updateVariantResult.errors?.length) {
-              throw new Error(
-                updateVariantResult.errors[0].message || `Failed to update variant for ${title}.`
-              );
-            }
           }
         }
       }
@@ -815,52 +877,42 @@ export default {
       this.loadError = '';
 
       try {
+        const managedMediaResult = this.productControlCapabilities.canManageMedia
+          ? await getClient().queries.listManagedMediaLibrary()
+          : { data: { mediaItems: [], collections: [] }, errors: [] };
+        if (managedMediaResult.errors?.length) {
+          throw new Error(managedMediaResult.errors[0].message || 'Failed to load Media Library.');
+        }
+        const managedMedia = managedMediaResult.data || { mediaItems: [], collections: [] };
         const [
-          productsResult,
-          brandsResult,
-          categoriesResult,
-          productBrandsResult,
-          productCategoriesResult,
-          productImagesResult,
-          productVariantsResult,
-          mediaItemsResult,
-          mediaCollectionsResult,
+          products,
+          brands,
+          categories,
+          productBrands,
+          productCategories,
+          productImages,
+          productVariants,
+          mediaItems,
+          mediaCollections,
         ] = await Promise.all([
-          getModelOrThrow('MerchProduct').list({ authMode: 'userPool' }),
-          getModelOrThrow('Brand').list({ authMode: 'userPool' }),
-          getModelOrThrow('MerchCategory').list({ authMode: 'userPool' }),
-          getModelOrThrow('MerchProductBrand').list({ authMode: 'userPool' }),
-          getModelOrThrow('MerchProductCategory').list({ authMode: 'userPool' }),
-          getModelOrThrow('MerchProductImage').list({ authMode: 'userPool' }),
-          getModelOrThrow('MerchProductVariant').list({ authMode: 'userPool' }),
-          getModelOrThrow('MediaItem').list({ authMode: 'userPool' }),
-          getModelOrThrow('MediaCollection').list({ authMode: 'userPool' }),
+          listAllModelRecords('MerchProduct'),
+          listAllModelRecords('Brand'),
+          listAllModelRecords('MerchCategory'),
+          listAllModelRecords('MerchProductBrand'),
+          listAllModelRecords('MerchProductCategory'),
+          this.productControlCapabilities.canManageMedia ? listAllModelRecords('MerchProductImage') : Promise.resolve([]),
+          listAllModelRecords('MerchProductVariant'),
+          Promise.resolve(managedMedia.mediaItems || []),
+          Promise.resolve(managedMedia.collections || []),
         ]);
 
-        const resultSet = [
-          productsResult,
-          brandsResult,
-          categoriesResult,
-          productBrandsResult,
-          productCategoriesResult,
-          productImagesResult,
-          productVariantsResult,
-          mediaItemsResult,
-          mediaCollectionsResult,
-        ];
-
-        const firstError = resultSet.find((result) => result?.errors?.length)?.errors?.[0];
-        if (firstError) {
-          throw new Error(firstError.message || 'Failed to load merch admin data.');
-        }
-
-        this.brands = brandsResult.data || [];
-        this.categories = categoriesResult.data || [];
-        this.productBrands = productBrandsResult.data || [];
-        this.productCategories = productCategoriesResult.data || [];
-        this.productVariants = productVariantsResult.data || [];
-        this.mediaLibraryItems = (mediaItemsResult.data || []).map((item) => ({ ...item }));
-        this.mediaCollections = (mediaCollectionsResult.data || []).map((collection) => ({ ...collection }));
+        this.brands = brands;
+        this.categories = categories;
+        this.productBrands = productBrands;
+        this.productCategories = productCategories;
+        this.productVariants = productVariants;
+        this.mediaLibraryItems = mediaItems.map((item) => ({ ...item }));
+        this.mediaCollections = mediaCollections.map((collection) => ({ ...collection }));
         this.mediaLibraryFolderTree = buildFolderTree(this.mediaCollections);
         this.mediaLibraryCurrentFolderPath = buildFolderPath(
           this.mediaCollections,
@@ -870,7 +922,7 @@ export default {
         const mediaItemsById = new Map(
           this.mediaLibraryItems.map((item) => [normalizeText(item.id), item])
         );
-        this.productImages = (productImagesResult.data || []).map((image) => {
+        this.productImages = productImages.map((image) => {
           const mediaItem = mediaItemsById.get(normalizeText(image.mediaItemId));
 
           return {
@@ -928,7 +980,7 @@ export default {
           variantsByProductId.get(variant.productId).push(variant);
         }
 
-        const mappedProducts = (productsResult.data || [])
+        const mappedProducts = products
           .map((product) => {
             const brandLinks = brandLinksByProductId.get(product.id) || [];
             const categoryLinks = categoryLinksByProductId.get(product.id) || [];
@@ -1043,10 +1095,19 @@ export default {
         isVisible: product.isVisible === true,
         brandIds: brandLinks.map((link) => link.brandId),
         categoryIds: categoryLinks.map((link) => link.categoryId),
-        sourceType: product.sourceLabel || product.sourceType || '',
+        sourceType: product.sourceType || '',
         displayPrice: product.displayPrice || '',
         variantCount: product.variantCount || 0,
         imageCount: product.imageCount || 0,
+        thumbnailUrl: product.thumbnailUrl || '',
+        imageUrl: product.imageUrl || '',
+        externalProductId: product.externalProductId || '',
+        externalVariantGroupId: product.externalVariantGroupId || '',
+        sku: product.sku || '',
+        basePrice: product.basePrice ?? null,
+        currency: product.currency || '',
+        productUrl: product.productUrl || '',
+        sortOrder: product.sortOrder ?? 0,
       };
     },
 
@@ -1062,8 +1123,12 @@ export default {
       this.loadError = '';
 
       try {
+        if (!this.canEditProduct(this.productModal || { id: this.productForm.id })) {
+          throw new Error('You do not have permission to edit this product in the selected Brand context.');
+        }
+
         const payload = {
-          id: this.productForm.id,
+          productId: this.productForm.id,
           title: normalizeText(this.productForm.title),
           slug: normalizeText(this.productForm.slug),
           shortDescription: normalizeText(this.productForm.shortDescription),
@@ -1078,63 +1143,46 @@ export default {
           isVisible: this.productForm.isVisible === true,
         };
 
-        const updateResult = await getModelOrThrow('MerchProduct').update(payload, {
-          authMode: 'userPool',
-        });
+        if (this.isPlatformOperator) {
+          Object.assign(payload, {
+            thumbnailUrl: normalizeText(this.productForm.thumbnailUrl),
+            imageUrl: normalizeText(this.productForm.imageUrl),
+            sourceType: normalizeText(this.productForm.sourceType),
+            externalProductId: normalizeText(this.productForm.externalProductId),
+            externalVariantGroupId: normalizeText(this.productForm.externalVariantGroupId),
+            sku: normalizeText(this.productForm.sku),
+            displayPrice: normalizeText(this.productForm.displayPrice),
+            basePrice: this.productForm.basePrice === '' || this.productForm.basePrice == null
+              ? null
+              : Number(this.productForm.basePrice),
+            currency: normalizeText(this.productForm.currency),
+            productUrl: normalizeText(this.productForm.productUrl),
+            variantCount: Number(this.productForm.variantCount) || 0,
+            sortOrder: Number(this.productForm.sortOrder) || 0,
+          });
+        } else {
+          payload.brandId = this.selectedBrandId;
+        }
+
+        const updateResult = await getClient().mutations.updateManagedMerchProduct(payload);
 
         if (updateResult.errors?.length) {
           throw new Error(updateResult.errors[0].message || 'Failed to save product.');
         }
 
-        const existingBrandLinks = this.productBrands.filter(
-          (link) => link.productId === this.productForm.id
-        );
-        const existingCategoryLinks = this.productCategories.filter(
-          (link) => link.productId === this.productForm.id
-        );
-
-        for (const link of existingBrandLinks) {
-          await getModelOrThrow('MerchProductBrand').delete(
-            { id: link.id },
-            { authMode: 'userPool' }
-          );
-        }
-
-        for (const link of existingCategoryLinks) {
-          await getModelOrThrow('MerchProductCategory').delete(
-            { id: link.id },
-            { authMode: 'userPool' }
-          );
-        }
-
-        for (const brandId of this.productForm.brandIds || []) {
-          const brandCreate = await getModelOrThrow('MerchProductBrand').create(
-            {
+        if (this.isPlatformOperator) {
+          const [brandResult, categoryResult] = await Promise.all([
+            getClient().mutations.replaceManagedMerchProductBrands({
               productId: this.productForm.id,
-              brandId,
-            },
-            { authMode: 'userPool' }
-          );
-
-          if (brandCreate.errors?.length) {
-            throw new Error(brandCreate.errors[0].message || 'Failed to save brand assignment.');
-          }
-        }
-
-        for (const categoryId of this.productForm.categoryIds || []) {
-          const categoryCreate = await getModelOrThrow('MerchProductCategory').create(
-            {
+              brandIds: uniqueIds(this.productForm.brandIds),
+            }),
+            getClient().mutations.replaceManagedMerchProductCategories({
               productId: this.productForm.id,
-              categoryId,
-            },
-            { authMode: 'userPool' }
-          );
-
-          if (categoryCreate.errors?.length) {
-            throw new Error(
-              categoryCreate.errors[0].message || 'Failed to save category assignment.'
-            );
-          }
+              categoryIds: uniqueIds(this.productForm.categoryIds),
+            }),
+          ]);
+          const relationshipError = brandResult.errors?.[0] || categoryResult.errors?.[0];
+          if (relationshipError) throw new Error(relationshipError.message || 'Failed to save product assignments.');
         }
 
         makeToast(this, 'Product updated');
@@ -1149,6 +1197,7 @@ export default {
     },
 
     async openMediaModal(product, options = {}) {
+      this.assertPlatformMediaAccess();
       const {
         preserveLibraryState = false,
         focusMediaItemId = '',
@@ -1262,6 +1311,7 @@ export default {
     },
 
     async createLibraryFolder() {
+      this.assertPlatformMediaAccess();
       const name = window.prompt('New folder name');
       if (!name) return;
 
@@ -1269,7 +1319,7 @@ export default {
       this.loadError = '';
 
       try {
-        const createResult = await getModelOrThrow('MediaCollection').create(
+        const createResult = await getClient().mutations.createManagedMediaCollection(
           {
             name,
             slug: slugify(name) || `collection-${Date.now()}`,
@@ -1277,8 +1327,7 @@ export default {
             type: 'folder',
             sortOrder: this.mediaCollections.length,
             isActive: true,
-          },
-          { authMode: 'userPool' }
+          }
         );
 
         if (createResult.errors?.length) {
@@ -1286,7 +1335,7 @@ export default {
         }
 
         await this.loadProducts();
-        this.mediaLibraryCurrentFolderId = createResult.data?.id || this.mediaLibraryCurrentFolderId;
+        this.mediaLibraryCurrentFolderId = createResult.data?.mediaItemId || this.mediaLibraryCurrentFolderId;
         this.mediaLibraryCurrentFolderPath = buildFolderPath(
           this.mediaCollections,
           this.mediaLibraryCurrentFolderId
@@ -1300,18 +1349,18 @@ export default {
     },
 
     async moveLibraryMediaItemToCurrentFolder(item) {
+      this.assertPlatformMediaAccess();
       if (!item?.id) return;
 
       this.savingProduct = true;
       this.loadError = '';
 
       try {
-        const updateResult = await getModelOrThrow('MediaItem').update(
+        const updateResult = await getClient().mutations.updateManagedMediaItem(
           {
-            id: item.id,
+            mediaItemId: item.id,
             collectionId: this.mediaLibraryCurrentFolderId || null,
-          },
-          { authMode: 'userPool' }
+          }
         );
 
         if (updateResult.errors?.length) {
@@ -1332,6 +1381,7 @@ export default {
     },
 
     async deleteLibraryMediaItem(item) {
+      this.assertPlatformMediaAccess();
       if (!item?.id) return;
 
       const confirmed = window.confirm('Delete this media asset from the library? This also removes it from linked products.');
@@ -1358,38 +1408,30 @@ export default {
     },
 
     async hardDeleteMediaAsset(mediaItemId, fallbackUrl = '') {
+      this.assertPlatformMediaAccess();
       const normalizedMediaItemId = normalizeText(mediaItemId);
       if (!normalizedMediaItemId) return;
 
-      const [allLinks, allMediaItems] = await Promise.all([
-        listAllModelRecords('MerchProductImage', 'userPool'),
-        listAllModelRecords('MediaItem', 'userPool'),
-      ]);
+      const allLinks = await listAllModelRecords('MerchProductImage', 'userPool');
 
       const linkedImages = allLinks.filter(
         (link) => normalizeText(link.mediaItemId) === normalizedMediaItemId
       );
 
       for (const link of linkedImages) {
-        const linkDeleteResult = await getModelOrThrow('MerchProductImage').delete(
-          { id: link.id },
-          { authMode: 'userPool' }
-        );
+        const linkDeleteResult = await getClient().mutations.deleteManagedMerchProductImage({ imageId: link.id });
 
         if (linkDeleteResult.errors?.length) {
           throw new Error(linkDeleteResult.errors[0].message || 'Failed to remove product image link.');
         }
       }
 
-      const mediaItem = allMediaItems.find(
+      const mediaItem = this.mediaLibraryItems.find(
         (item) => normalizeText(item.id) === normalizedMediaItemId
       );
 
       if (mediaItem) {
-        const mediaDeleteResult = await getModelOrThrow('MediaItem').delete(
-          { id: normalizedMediaItemId },
-          { authMode: 'userPool' }
-        );
+        const mediaDeleteResult = await getClient().mutations.deleteManagedMediaItem({ mediaItemId: normalizedMediaItemId });
 
         if (mediaDeleteResult.errors?.length) {
           throw new Error(mediaDeleteResult.errors[0].message || 'Failed to delete media asset.');
@@ -1412,6 +1454,7 @@ export default {
     },
 
     async deleteProductImageCluster(targetImage) {
+      this.assertPlatformMediaAccess();
       if (!targetImage?.id) return;
 
       const targetId = normalizeText(targetImage.id);
@@ -1442,10 +1485,7 @@ export default {
       }
 
       for (const linkId of siblingLinkIds) {
-        const deleteResult = await getModelOrThrow('MerchProductImage').delete(
-          { id: linkId },
-          { authMode: 'userPool' }
-        );
+        const deleteResult = await getClient().mutations.deleteManagedMerchProductImage({ imageId: linkId });
 
         if (deleteResult.errors?.length) {
           throw new Error(deleteResult.errors[0].message || 'Failed to delete product image link.');
@@ -1492,6 +1532,7 @@ export default {
     },
 
     async saveMediaChanges() {
+      this.assertPlatformMediaAccess();
       if (!this.selectedProductId) return;
 
       this.savingProduct = true;
@@ -1503,16 +1544,14 @@ export default {
           const isPrimary = this.mediaForm.primaryImageId === image.id;
           const isFeatured = this.mediaForm.featuredImageId === image.id || isPrimary;
 
-          const merchImageUpdateResult = await getModelOrThrow('MerchProductImage').update(
-            {
-              id: image.id,
+          const merchImageUpdateResult = await getClient().mutations.upsertManagedMerchProductImage({
+              imageId: image.id,
+              productId: this.selectedProductId,
               isVisible,
               isFeatured,
               isPrimary,
               isMockup: true,
-            },
-            { authMode: 'userPool' }
-          );
+          });
 
           if (merchImageUpdateResult.errors?.length) {
             throw new Error(
@@ -1521,14 +1560,13 @@ export default {
           }
 
           if (image.mediaItemId) {
-            const mediaItemUpdateResult = await getModelOrThrow('MediaItem').update(
+            const mediaItemUpdateResult = await getClient().mutations.updateManagedMediaItem(
               {
-                id: image.mediaItemId,
+                mediaItemId: image.mediaItemId,
                 altText: normalizeText(image.altText),
                 color: normalizeText(image.color),
                 colorHex: normalizeText(image.colorHex),
-              },
-              { authMode: 'userPool' }
+              }
             );
 
             if (mediaItemUpdateResult.errors?.length) {
@@ -1551,6 +1589,7 @@ export default {
     },
 
     async deleteImage(imageId) {
+      this.assertPlatformMediaAccess();
       if (!imageId) return;
 
       const targetImage = this.selectedProductImages.find((img) => img.id === imageId);
@@ -1573,6 +1612,7 @@ export default {
     },
 
     async uploadMediaFiles() {
+      this.assertPlatformMediaAccess();
       if (!this.selectedProductId || !this.mediaUploadFiles.length) return;
 
       this.savingProduct = true;
@@ -1584,7 +1624,7 @@ export default {
         for (const file of this.mediaUploadFiles) {
           const imageUrl = await this.uploadFileToStorage(file);
 
-          const mediaItemCreateResult = await getModelOrThrow('MediaItem').create(
+          const mediaItemCreateResult = await getClient().mutations.createManagedMediaItem(
             {
               url: imageUrl,
               title: file.name,
@@ -1592,18 +1632,16 @@ export default {
               type: file.type || 'image',
               sourceType: 'manual',
               status: 'active',
-            },
-            { authMode: 'userPool' }
+            }
           );
 
           if (mediaItemCreateResult.errors?.length) {
             throw new Error(mediaItemCreateResult.errors[0].message || 'Failed to create media library item.');
           }
 
-          const createResult = await getModelOrThrow('MerchProductImage').create(
-            {
+          const createResult = await getClient().mutations.upsertManagedMerchProductImage({
               productId: this.selectedProductId,
-              mediaItemId: mediaItemCreateResult.data?.id,
+              mediaItemId: mediaItemCreateResult.data?.mediaItemId,
               sortOrder: currentImageCount,
               isVisible: true,
               isFeatured: currentImageCount === 0,
@@ -1613,9 +1651,7 @@ export default {
               colorOverride: '',
               colorHexOverride: '',
               status: 'active',
-            },
-            { authMode: 'userPool' }
-          );
+            });
 
           if (createResult.errors?.length) {
             throw new Error(createResult.errors[0].message || 'Failed to create mockup image.');
@@ -1625,14 +1661,14 @@ export default {
             ...createResult.data,
             ...mediaItemCreateResult.data,
             id: createResult.data?.id,
-            mediaItemId: mediaItemCreateResult.data?.id,
-            url: normalizeText(mediaItemCreateResult.data?.url) || imageUrl,
-            altText: normalizeText(mediaItemCreateResult.data?.altText) || file.name,
-            title: normalizeText(mediaItemCreateResult.data?.title) || file.name,
-            sourceType: normalizeText(mediaItemCreateResult.data?.sourceType) || 'manual',
-            type: normalizeText(mediaItemCreateResult.data?.type) || file.type || 'image',
-            status: normalizeText(createResult.data?.status) || normalizeText(mediaItemCreateResult.data?.status) || 'active',
-            signedUrl: await resolveStorageUrl(mediaItemCreateResult.data?.url || imageUrl),
+            mediaItemId: mediaItemCreateResult.data?.mediaItemId,
+            url: imageUrl,
+            altText: file.name,
+            title: file.name,
+            sourceType: 'manual',
+            type: file.type || 'image',
+            status: normalizeText(createResult.data?.status) || 'active',
+            signedUrl: await resolveStorageUrl(imageUrl),
             isVisible: createResult.data?.isVisible !== false,
             isFeatured: createResult.data?.isFeatured === true,
           };
@@ -1663,6 +1699,7 @@ export default {
     },
 
     async attachLibraryMediaItem(mediaItem) {
+      this.assertPlatformMediaAccess();
       if (!this.selectedProductId || !mediaItem?.id) return;
 
       this.savingProduct = true;
@@ -1685,8 +1722,7 @@ export default {
         }
 
         const currentImageCount = this.selectedProductImages.length;
-        const createResult = await getModelOrThrow('MerchProductImage').create(
-          {
+        const createResult = await getClient().mutations.upsertManagedMerchProductImage({
             productId: this.selectedProductId,
             mediaItemId: mediaItem.id,
             sortOrder: currentImageCount,
@@ -1698,9 +1734,7 @@ export default {
             colorOverride: normalizeText(mediaItem.color),
             colorHexOverride: normalizeText(mediaItem.colorHex),
             status: 'active',
-          },
-          { authMode: 'userPool' }
-        );
+        });
 
         if (createResult.errors?.length) {
           throw new Error(createResult.errors[0].message || 'Failed to attach media library item.');
@@ -1757,15 +1791,7 @@ export default {
 
       await uploadTask.result;
 
-      const urlResult = await getUrl({
-        path,
-        options: {
-          accessLevel: 'public',
-          expiresIn: 3600,
-        },
-      });
-
-      return urlResult.url.toString();
+      return path;
     },
   },
 };

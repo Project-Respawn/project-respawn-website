@@ -151,7 +151,7 @@
           </p>
 
           <div class="role-groups">
-            <div v-for="group in roleGroups" :key="group.label" class="role-group">
+            <div v-for="group in visibleRoleGroups" :key="group.label" class="role-group">
               <div class="group-label">{{ group.label }}</div>
               <div class="role-checkboxes">
                 <label
@@ -179,7 +179,7 @@
                         v-if="isRoleDisabled(role) && role !== 'Member'"
                         class="checkbox-desc"
                       >
-                        You cannot assign a role above your own level.
+                        Member is retained automatically.
                       </span>
                     </div>
                   </div>

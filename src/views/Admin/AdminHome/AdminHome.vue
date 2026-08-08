@@ -18,6 +18,7 @@
           Manage Forums
         </button>
         <button
+          v-if="canManagePermissions"
           type="button"
           class="admin-home-btn admin-home-btn-secondary"
           @click="goToRoute('/dashboard/permissions')"
@@ -77,6 +78,7 @@
         </button>
 
         <button
+          v-if="canManagePermissions"
           type="button"
           class="admin-home-link-card"
           @click="goToRoute('/dashboard/permissions')"
@@ -132,19 +134,6 @@
           </div>
         </button>
 
-        <button
-          type="button"
-          class="admin-home-link-card"
-          @click="goToRoute('/dashboard/brand-permissions')"
-        >
-          <span class="admin-home-link-icon">🔐</span>
-          <div class="admin-home-link-copy">
-            <h3 class="admin-home-link-title">Brand Permissions</h3>
-            <p class="admin-home-link-text">
-              Assign access so staff and approved users only manage the brands they should control.
-            </p>
-          </div>
-        </button>
       </div>
     </section>
   </section>

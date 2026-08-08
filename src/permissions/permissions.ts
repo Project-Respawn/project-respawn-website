@@ -1,9 +1,15 @@
+/**
+ * @deprecated Diagnostic-only legacy metadata for scan-permissions.js. Runtime
+ * authorization is derived by the backend PermissionDefinition/GroupPermission
+ * resolver and must not import this module.
+ */
 export const ROLE_DEFINITIONS = {
   SuperAdmin: { label: 'Super Admin' },
   Admin: { label: 'Admin' },
   Staff: { label: 'Staff' },
   Moderator: { label: 'Moderator' },
   Trainer: { label: 'Trainer' },
+  Therapist: { label: 'Therapist' },
   StreamingPartner: { label: 'Streaming Partner' },
   AffiliatePartner: { label: 'Affiliate Partner' },
   Member: { label: 'Member' },

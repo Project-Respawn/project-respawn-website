@@ -23,17 +23,10 @@ const ROLE_DEFINITIONS = {
   BetaMember: { label: 'Beta Member', icon: '🧪', desc: 'Early access to beta areas and features' },
 };
 
-const ROLE_RANK = {
-  SuperAdmin: 0,
-  Admin: 1,
-  Staff: 2,
-  Moderator: 3,
-  Trainer: 4,
-  Therapist: 5,
-  StreamingPartner: 6,
-  AffiliatePartner: 7,
-  Member: 8,
-  BetaMember: 9,
+const ASSIGNABLE_ROLES = {
+  SuperAdmin: ['Admin', 'Staff', 'Moderator', 'Trainer', 'Therapist', 'StreamingPartner', 'AffiliatePartner', 'Member', 'BetaMember'],
+  Admin: ['Staff', 'Moderator', 'Trainer', 'Therapist', 'StreamingPartner', 'AffiliatePartner', 'Member', 'BetaMember'],
+  Staff: ['Trainer', 'Therapist', 'StreamingPartner', 'AffiliatePartner', 'Member', 'BetaMember'],
 };
 
 const ROLE_GROUPS = [
@@ -58,18 +51,11 @@ function normalizeRoles(roles = []) {
   return Array.from(new Set((Array.isArray(roles) ? roles : []).filter(Boolean)));
 }
 
-function getHighestPrivilegeRole(roles = []) {
-  const normalized = normalizeRoles(roles).filter((role) => role in ROLE_RANK);
-
-  if (!normalized.length) return 'Member';
-
-  return normalized.reduce((bestRole, currentRole) => {
-    return ROLE_RANK[currentRole] < ROLE_RANK[bestRole] ? currentRole : bestRole;
-  }, normalized[0]);
-}
-
-function getRoleRank(role) {
-  return role in ROLE_RANK ? ROLE_RANK[role] : Number.POSITIVE_INFINITY;
+function getRoleManager(groups = []) {
+  if (groups.includes('SuperAdmin')) return 'SuperAdmin';
+  if (groups.includes('Admin')) return 'Admin';
+  if (groups.includes('Staff')) return 'Staff';
+  return null;
 }
 
 export default {
@@ -88,7 +74,6 @@ export default {
       toastMessage: '',
       toastTimer: null,
       ROLE_DEFINITIONS,
-      roleGroups: ROLE_GROUPS,
       currentUserGroups: [],
     };
   },
@@ -110,18 +95,17 @@ export default {
       });
     },
 
-    currentHighestRole() {
-      return getHighestPrivilegeRole(this.currentUserGroups);
+    currentRoleManager() {
+      return getRoleManager(this.currentUserGroups);
     },
 
-    currentUserRank() {
-      return getRoleRank(this.currentHighestRole);
-    },
-
-    editableRoles() {
-      return Object.keys(ROLE_DEFINITIONS).filter(
-        (role) => getRoleRank(role) >= this.currentUserRank
-      );
+    visibleRoleGroups() {
+      return ROLE_GROUPS
+        .map((group) => ({
+          ...group,
+          roles: group.roles.filter((role) => this.canAssignRole(role)),
+        }))
+        .filter((group) => group.roles.length > 0);
     },
   },
 
@@ -147,25 +131,24 @@ export default {
       }
     },
 
-    getUserHighestRole(user) {
-      return getHighestPrivilegeRole(user?.roles || []);
-    },
-
-    getUserRank(user) {
-      return getRoleRank(this.getUserHighestRole(user));
-    },
-
     canEditUser(user) {
-      return this.getUserRank(user) >= this.currentUserRank;
+      const roles = normalizeRoles(user?.roles || []);
+
+      if (!this.currentRoleManager || roles.includes('SuperAdmin')) return false;
+      if (this.currentRoleManager === 'Admin') return !roles.includes('Admin');
+      if (this.currentRoleManager === 'Staff') {
+        return roles.every((role) => ASSIGNABLE_ROLES.Staff.includes(role));
+      }
+
+      return true;
     },
 
     canAssignRole(role) {
-      return getRoleRank(role) >= this.currentUserRank;
+      return Boolean(this.currentRoleManager && ASSIGNABLE_ROLES[this.currentRoleManager].includes(role));
     },
 
     isRoleDisabled(role) {
-      if (role === 'Member') return true;
-      return !this.canAssignRole(role);
+      return role === 'Member' || !this.canAssignRole(role);
     },
 
     async fetchUsers() {
@@ -238,7 +221,7 @@ export default {
 
     openRoleModal(user) {
       if (!this.canEditUser(user)) {
-        this.showToast('You cannot edit a user with a higher role than your own');
+        this.showToast('You cannot manage this user’s roles');
         return;
       }
 
@@ -280,7 +263,7 @@ export default {
       if (!this.roleModalUser) return;
 
       if (!this.canEditUser(this.roleModalUser)) {
-        this.showToast('You cannot edit a user with a higher role than your own');
+        this.showToast('You cannot manage this user’s roles');
         return;
       }
 

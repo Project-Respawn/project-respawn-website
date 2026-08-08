@@ -431,6 +431,7 @@ TABLE OF CONTENTS (SECTION NUMBERS)
 
 <script>
 import { useMediaLibrary } from './MediaLibrary.js'
+import { onMounted } from 'vue'
 
 export default {
   name: 'MediaLibrary',
@@ -446,6 +447,7 @@ export default {
   },
   setup (props, ctx) {
     const logic = useMediaLibrary(props, ctx)
+    onMounted(() => logic.refreshLibrary())
     return {
       ...logic
     }

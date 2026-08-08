@@ -92,17 +92,6 @@
             </label>
           </div>
 
-          <div class="form-row form-row-checkbox">
-            <label class="checkbox-row" for="category-show-in-menu">
-              <input
-                id="category-show-in-menu"
-                v-model="newCategory.showInMenu"
-                type="checkbox"
-                :disabled="saving"
-              />
-              <span>Show in storefront menu</span>
-            </label>
-          </div>
 
           <p v-if="formError" class="form-error">
             {{ formError }}
@@ -179,9 +168,6 @@
               <div class="category-meta">
                 <span class="meta-chip">
                   Sort: {{ category.sortOrder }}
-                </span>
-                <span class="meta-chip" :class="{ muted: !category.showInMenu }">
-                  {{ category.showInMenu ? 'Shown in menu' : 'Hidden from menu' }}
                 </span>
               </div>
             </div>

@@ -157,20 +157,6 @@ httpApi.addRoutes({
 // Twitch Bot routes
 // =============================================================================
 
-// Bot/runtime lookup by broadcasterId
-httpApi.addRoutes({
-  path: '/twitch/commands',
-  methods: [HttpMethod.GET],
-  integration: httpLambdaIntegration,
-});
-
-// Dashboard self-service routes for the signed-in Cognito user
-httpApi.addRoutes({
-  path: '/twitch/commands/me',
-  methods: [HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT, HttpMethod.DELETE],
-  integration: httpLambdaIntegration,
-});
-
 // Optional future Twitch routes
 httpApi.addRoutes({
   path: '/twitch/status',
