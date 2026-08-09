@@ -5,6 +5,7 @@ import {
   handleCreateRecurringEventSeries,
   handleGenerateRecurringInstances,
 } from './handlers'
+import { testPermissionModels } from '../shared/testPermissionModels'
 
 function eventRecord(overrides: Record<string, unknown> = {}) {
   return {
@@ -22,6 +23,7 @@ function makeClient(options: { source?: any; accesses?: any[]; permissions?: any
   return {
     created, updated, audits,
     models: {
+      ...testPermissionModels(['events.manage']),
       Brand: { get: async ({ id }: { id: string }) => ({ data: ['brand-a', 'brand-b'].includes(id) ? { id, ownerUserId: id === 'brand-a' ? 'owner-a' : 'owner-b' } : null }) },
       BrandAccess: { list: async () => ({ data: options.accesses || [] }) },
       BrandAccessPermission: { list: async () => ({ data: options.permissions || [] }) },

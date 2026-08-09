@@ -485,7 +485,7 @@ export default {
           productCategoriesResult,
           productVariantsResult,
         ] = await Promise.all([
-          client.models.MerchProduct.list({ authMode: 'apiKey' }),
+          client.queries.listPublicMerchProducts({}, { authMode: 'apiKey' }),
           client.models.Brand.list({ authMode: 'apiKey' }),
           client.models.MerchCategory.list({ authMode: 'apiKey' }),
           client.models.MerchProductBrand.list({ authMode: 'apiKey' }),

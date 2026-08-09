@@ -1,6 +1,7 @@
 import { writePermissionAudit } from '../shared/audit'
-import { getIdentityGroups, getIdentityUsername, getResolverIdentity } from '../shared/auth'
-import { BRAND_PERMISSION_KEYS, assertCanChangeBrandOwner, canManageBrandPermissions, isPlatformBrandOperator } from './policy'
+import { getIdentityUsername, getResolverIdentity } from '../shared/auth'
+import { getEffectivePermissions } from '../shared/requirePermission'
+import { BRAND_PERMISSION_KEYS, assertCanChangeBrandOwner, canManageBrandPermissions } from './policy'
 
 export { BRAND_PERMISSION_KEYS } from './policy'
 
@@ -32,15 +33,12 @@ function brandAuditSnapshot(brand: any) {
   }
 }
 
-function isPlatformBrandOperatorIdentity(identity: unknown) {
-  return isPlatformBrandOperator(getIdentityGroups(identity as any))
-}
-
-function getActor(event: any) {
+async function getActor(event: any, client: any) {
   const identity = getResolverIdentity(event)
   const userId = getIdentityUsername(identity)
   if (!userId) throw new Error('Authenticated user identity is required')
-  return { identity, userId, isPlatformOperator: isPlatformBrandOperatorIdentity(identity) }
+  const { effective } = await getEffectivePermissions(event, client)
+  return { identity, userId, isPlatformOperator: effective.has('brands.manage') }
 }
 
 function assertPlatformBrandOperator(actor: ReturnType<typeof getActor>) {
@@ -78,7 +76,7 @@ async function getBrandAccessRows(client: any, brandId?: string) {
   return brandId ? rows.filter((row) => row.brandId === brandId) : rows
 }
 
-async function assertBrandPermissionManager(client: any, actor: ReturnType<typeof getActor>, brandId: string) {
+async function assertBrandPermissionManager(client: any, actor: Awaited<ReturnType<typeof getActor>>, brandId: string) {
   const brand = await requireBrand(client, brandId)
   if (!canManageBrandPermissions(actor.isPlatformOperator, actor.userId, brand.ownerUserId)) {
     throw new Error('You can manage helpers only for brands you own')
@@ -127,7 +125,8 @@ export async function getAccessibleBrandSummaries(client: any, userId: string, i
 }
 
 export async function handleCreateBrand(event: any, injectedClient?: any) {
-  const actor = getActor(event)
+  const client = injectedClient || await loadDataClient()
+  const actor = await getActor(event, client)
   assertPlatformBrandOperator(actor)
   const args = event.arguments || {}
   if (typeof args.name !== 'string' || !args.name.trim() || typeof args.slug !== 'string' || !args.slug.trim()) {
@@ -140,7 +139,6 @@ export async function handleCreateBrand(event: any, injectedClient?: any) {
   const ownerUserId = typeof args.ownerUserId === 'string' && args.ownerUserId.trim()
     ? args.ownerUserId.trim()
     : null
-  const client = injectedClient || await loadDataClient()
   const result = await client.models.Brand.create({
     name: args.name.trim(),
     slug: args.slug.trim(),
@@ -156,12 +154,12 @@ export async function handleCreateBrand(event: any, injectedClient?: any) {
   return { success: true, message: 'Brand created', brandId: result.data.id }
 }
 
-export async function handleUpdateBrand(event: any) {
-  const actor = getActor(event)
+export async function handleUpdateBrand(event: any, injectedClient?: any) {
+  const client = injectedClient || await loadDataClient()
+  const actor = await getActor(event, client)
   assertPlatformBrandOperator(actor)
   const args = event.arguments || {}
   if (typeof args.brandId !== 'string') throw new Error('brandId is required')
-  const client = await loadDataClient()
   const before = await requireBrand(client, args.brandId)
   const updates: { id: string; [key: string]: any } = { id: args.brandId }
   for (const key of ['name', 'slug', 'description', 'sortOrder', 'isActive']) {
@@ -174,13 +172,13 @@ export async function handleUpdateBrand(event: any) {
 }
 
 export async function handleSetBrandOwner(event: any, injectedClient?: any) {
-  const actor = getActor(event)
+  const client = injectedClient || await loadDataClient()
+  const actor = await getActor(event, client)
   assertPlatformBrandOperator(actor)
   const { brandId, ownerUserId } = event.arguments || {}
   if (typeof brandId !== 'string' || typeof ownerUserId !== 'string' || !ownerUserId.trim()) {
     throw new Error('brandId and ownerUserId are required')
   }
-  const client = injectedClient || await loadDataClient()
   const brand = await requireBrand(client, brandId)
   const result = await client.models.Brand.update({
     id: brandId,
@@ -193,11 +191,11 @@ export async function handleSetBrandOwner(event: any, injectedClient?: any) {
   return { success: true, message: 'Brand owner updated', brandId }
 }
 
-export async function handleGetBrandPermissionDetails(event: any) {
-  const actor = getActor(event)
+export async function handleGetBrandPermissionDetails(event: any, injectedClient?: any) {
+  const client = injectedClient || await loadDataClient()
+  const actor = await getActor(event, client)
   const { brandId } = event.arguments || {}
   if (typeof brandId !== 'string') throw new Error('brandId is required')
-  const client = await loadDataClient()
   const brand = await assertBrandPermissionManager(client, actor, brandId)
   const [accesses, permissionRows] = await Promise.all([
     getBrandAccessRows(client, brandId),
@@ -225,15 +223,15 @@ export async function handleGetBrandPermissionDetails(event: any) {
   }
 }
 
-export async function handleUpsertBrandHelper(event: any) {
-  const actor = getActor(event)
+export async function handleUpsertBrandHelper(event: any, injectedClient?: any) {
+  const client = injectedClient || await loadDataClient()
+  const actor = await getActor(event, client)
   const args = event.arguments || {}
   const { brandId, userId } = args
   if (typeof brandId !== 'string' || typeof userId !== 'string' || !userId.trim()) {
     throw new Error('brandId and userId are required')
   }
   const permissionKeys = normalizePermissionKeys(args.permissionKeys)
-  const client = await loadDataClient()
   const brand = await assertBrandPermissionManager(client, actor, brandId)
   if (brand.ownerUserId === userId.trim()) throw new Error('The Brand Owner already has full brand access')
 
@@ -281,11 +279,11 @@ export async function handleUpsertBrandHelper(event: any) {
   return { success: true, message: 'Brand helper updated', brandId }
 }
 
-export async function handleRemoveBrandHelper(event: any) {
-  const actor = getActor(event)
+export async function handleRemoveBrandHelper(event: any, injectedClient?: any) {
+  const client = injectedClient || await loadDataClient()
+  const actor = await getActor(event, client)
   const { brandId, userId } = event.arguments || {}
   if (typeof brandId !== 'string' || typeof userId !== 'string') throw new Error('brandId and userId are required')
-  const client = await loadDataClient()
   const brand = await assertBrandPermissionManager(client, actor, brandId)
   if (brand.ownerUserId === userId) throw new Error('The Brand Owner cannot be removed as a helper')
   const accesses = (await getBrandAccessRows(client, brandId)).filter((access) => access.userId === userId)

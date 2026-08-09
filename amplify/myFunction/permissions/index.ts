@@ -34,25 +34,10 @@ interface CatalogDefinition {
   defaultGroups: CognitoGroup[]
 }
 
-export const PLATFORM_CONTROL_PERMISSION_KEYS = [
-  'users.view',
-  'permissions.manage',
-  'users.manage',
-  'forums.moderate',
-  'forums.structure.manage',
-  'events.manage',
-  'events.tags.manage',
-  'brands.manage',
-  'merch.categories.manage',
-  'products.edit',
-  'products.brand.assign',
-  'products.category.assign',
-  'media.library.manage',
-  'orders.view',
-  'orders.fulfillment.manage',
-  'bots.twitch.manage',
-  'profiles.staff.view',
-] as const
+// Effective access comes from the catalog assignments, including for platform
+// groups. Keeping this list empty prevents group membership from silently
+// overriding an explicit permission removal.
+export const PLATFORM_CONTROL_PERMISSION_KEYS = [] as const
 
 const ALL_MEMBERS: CognitoGroup[] = [
   'SuperAdmin', 'Admin', 'Staff', 'Moderator', 'Trainer', 'Therapist',
@@ -247,6 +232,10 @@ function requiresPermissionCatalogBootstrap(definitions: any[], assignments: any
 
 export async function ensurePermissionCatalog(actorUserId: string) {
   const client = await getDataClient()
+  return ensurePermissionCatalogWithClient(client, actorUserId)
+}
+
+export async function ensurePermissionCatalogWithClient(client: any, actorUserId: string) {
   const [existingDefinitions, existingAssignments] = await Promise.all([
     listAll(client, 'PermissionDefinition'),
     listAll(client, 'GroupPermission'),

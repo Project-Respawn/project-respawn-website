@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import { handleCreateManagedTwitchCommand, handleDeleteManagedTwitchCommand, handleListManagedTwitchCommands, handleUpdateManagedTwitchCommand } from './managedHandlers'
+import { testPermissionModels } from '../shared/testPermissionModels'
 
 function makeClient(options: { commandBrandId?: string | null; accesses?: any[]; permissions?: any[] } = {}) {
   const created: any[] = []
@@ -9,6 +10,7 @@ function makeClient(options: { commandBrandId?: string | null; accesses?: any[];
   return {
     created, updated, deleted, audits,
     models: {
+      ...testPermissionModels(['bots.twitch.manage']),
       Brand: { get: async ({ id }: { id: string }) => ({ data: ['brand-a', 'brand-b'].includes(id) ? { id, ownerUserId: id === 'brand-a' ? 'owner-a' : 'owner-b' } : null }) },
       BrandAccess: { list: async () => ({ data: options.accesses || [] }) },
       BrandAccessPermission: { list: async () => ({ data: options.permissions || [] }) },

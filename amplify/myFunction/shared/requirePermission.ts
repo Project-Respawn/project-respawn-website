@@ -14,6 +14,12 @@ async function listAll(client: any, modelName: string) {
 }
 
 export async function requireEffectivePermission(event: any, client: any, permissionKey: string) {
+  const { actorUserId, effective } = await getEffectivePermissions(event, client)
+  if (!effective.has(permissionKey)) throw new Error(`Permission ${permissionKey} is required`)
+  return { actorUserId, effective }
+}
+
+export async function getEffectivePermissions(event: any, client: any) {
   const identity = getResolverIdentity(event)
   const actorUserId = getIdentityUsername(identity)
   if (!actorUserId) throw new Error('Authenticated identity is required')
@@ -21,6 +27,5 @@ export async function requireEffectivePermission(event: any, client: any, permis
     listAll(client, 'PermissionDefinition'), listAll(client, 'GroupPermission'),
   ])
   const effective = resolveEffectivePermissionKeys(identity, definitions, assignments, PLATFORM_CONTROL_PERMISSION_KEYS)
-  if (!effective.has(permissionKey)) throw new Error(`Permission ${permissionKey} is required`)
   return { actorUserId, effective }
 }

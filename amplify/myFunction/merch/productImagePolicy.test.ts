@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import { handleDeleteManagedMerchProductImage, handleUpsertManagedMerchProductImage } from './handlers'
+import { testPermissionModels } from '../shared/testPermissionModels'
 
 function event(username: string, groups: string[], arguments_: any) {
   return { identity: { username, claims: { 'cognito:groups': groups } }, arguments: arguments_ }
@@ -10,6 +11,7 @@ function makeClient() {
   return {
     audits,
     models: {
+      ...testPermissionModels(['products.edit']),
       MerchProduct: { get: async () => ({ data: { id: 'product-a' } }) },
       MediaItem: { get: async () => ({ data: { id: 'media-a', url: 'public/media/a.png' } }) },
       MerchProductImage: {
@@ -36,11 +38,11 @@ for (const actor of [
 ]) {
   await assert.rejects(
     handleUpsertManagedMerchProductImage(event(actor.username, actor.groups, { productId: 'product-a', mediaItemId: 'media-a', brandPermissionKeys: ['brand.products.manage'] }), makeClient()),
-    /Platform product management access/i,
+    /Permission products\.edit is required/i,
   )
   await assert.rejects(
     handleDeleteManagedMerchProductImage(event(actor.username, actor.groups, { imageId: 'image-a', brandPermissionKeys: ['brand.products.manage'] }), makeClient()),
-    /Platform product management access/i,
+    /Permission products\.edit is required/i,
   )
 }
 

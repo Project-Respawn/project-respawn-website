@@ -1,6 +1,6 @@
-import { getIdentityGroups, getIdentityUsername, getResolverIdentity } from '../shared/auth'
+import { getIdentityUsername, getResolverIdentity } from '../shared/auth'
 import { writePermissionAudit } from '../shared/audit'
-import { isPlatformBrandOperator } from '../brands/policy'
+import { getEffectivePermissions, requireEffectivePermission } from '../shared/requirePermission'
 import {
   PLATFORM_EDITABLE_MERCH_PRODUCT_FIELDS,
   assertBrandProductFieldsAreAllowed,
@@ -20,23 +20,21 @@ async function listAll(client: any, modelName: string) {
   return records
 }
 
-function getActor(event: any) {
+async function getActor(event: any, client: any) {
   const identity = getResolverIdentity(event)
   const userId = getIdentityUsername(identity)
   if (!userId) throw new Error('Authenticated user identity is required')
-  return { userId, isPlatformOperator: isPlatformBrandOperator(getIdentityGroups(identity)) }
+  const { effective } = await getEffectivePermissions(event, client)
+  return { userId, isPlatformOperator: effective.has('products.edit') }
 }
 
 async function writeProductAudit(client: any, actorUserId: string, action: string, targetType: string, targetId: string, before: unknown, after: unknown) {
   return writePermissionAudit(client, actorUserId, action, targetType, targetId, before, after)
 }
 
-function assertPlatformProductOperator(event: any) {
-  const actor = getActor(event)
-  if (!actor.isPlatformOperator) {
-    throw new Error('Platform product management access is required')
-  }
-  return actor
+async function requirePlatformProductPermission(event: any, client: any, permissionKey: string) {
+  const { actorUserId } = await requireEffectivePermission(event, client, permissionKey)
+  return { userId: actorUserId, isPlatformOperator: true }
 }
 
 function selectProductFields(args: Record<string, unknown>) {
@@ -47,15 +45,21 @@ function selectProductFields(args: Record<string, unknown>) {
   return fields
 }
 
+export async function handleListPublicMerchProducts(_event: any, injectedClient?: any) {
+  const client = injectedClient || await loadDataClient()
+  const products = await listAll(client, 'MerchProduct')
+  return products.filter((product) => product.isVisible === true)
+}
+
 export async function handleCreateManagedMerchProduct(event: any, injectedClient?: any) {
-  const actor = assertPlatformProductOperator(event)
+  const client = injectedClient || await loadDataClient()
+  const actor = await requirePlatformProductPermission(event, client, 'products.edit')
   const args = event.arguments || {}
   for (const field of ['title', 'slug', 'sourceType', 'status']) {
     if (typeof args[field] !== 'string' || !args[field]) throw new Error(`${field} is required`)
   }
   if (typeof args.isVisible !== 'boolean') throw new Error('isVisible is required')
 
-  const client = injectedClient || await loadDataClient()
   const result = await client.models.MerchProduct.create(selectProductFields(args))
   if (result.errors?.length || !result.data) throw new Error(result.errors?.[0]?.message || 'Failed to create product')
   await writeProductAudit(client, actor.userId, 'product.create', 'MerchProduct', result.data.id, null, result.data)
@@ -63,11 +67,11 @@ export async function handleCreateManagedMerchProduct(event: any, injectedClient
 }
 
 export async function handleUpdateManagedMerchProduct(event: any, injectedClient?: any) {
-  const actor = getActor(event)
   const args = event.arguments || {}
   if (typeof args.productId !== 'string' || !args.productId) throw new Error('productId is required')
 
   const client = injectedClient || await loadDataClient()
+  const actor = await getActor(event, client)
   const productResult = await client.models.MerchProduct.get({ id: args.productId })
   if (productResult.errors?.length) throw new Error(productResult.errors[0].message || 'Failed to load product')
   if (!productResult.data) throw new Error('Product not found')
@@ -157,11 +161,11 @@ async function reconcileProductRelationships(
 }
 
 export async function handleReplaceManagedMerchProductBrands(event: any, injectedClient?: any) {
-  const actor = assertPlatformProductOperator(event)
   const args = event.arguments || {}
   if (typeof args.productId !== 'string' || !args.productId) throw new Error('productId is required')
   const brandIds = normalizeRelationshipIds(args.brandIds, 'brandIds')
   const client = injectedClient || await loadDataClient()
+  const actor = await requirePlatformProductPermission(event, client, 'products.brand.assign')
   await requireProduct(client, args.productId)
   await requireRelationshipTargets(client, 'Brand', brandIds)
   const changedCount = await reconcileProductRelationships(client, args.productId, brandIds, 'MerchProductBrand', 'brandId')
@@ -170,11 +174,11 @@ export async function handleReplaceManagedMerchProductBrands(event: any, injecte
 }
 
 export async function handleReplaceManagedMerchProductCategories(event: any, injectedClient?: any) {
-  const actor = assertPlatformProductOperator(event)
   const args = event.arguments || {}
   if (typeof args.productId !== 'string' || !args.productId) throw new Error('productId is required')
   const categoryIds = normalizeRelationshipIds(args.categoryIds, 'categoryIds')
   const client = injectedClient || await loadDataClient()
+  const actor = await requirePlatformProductPermission(event, client, 'products.category.assign')
   await requireProduct(client, args.productId)
   await requireRelationshipTargets(client, 'MerchCategory', categoryIds)
   const changedCount = await reconcileProductRelationships(client, args.productId, categoryIds, 'MerchProductCategory', 'categoryId')
@@ -188,11 +192,11 @@ const MANAGED_PRODUCT_VARIANT_FIELDS = [
 ] as const
 
 export async function handleUpsertManagedMerchProductVariant(event: any, injectedClient?: any) {
-  const actor = assertPlatformProductOperator(event)
   const args = event.arguments || {}
   if (typeof args.productId !== 'string' || !args.productId) throw new Error('productId is required')
 
   const client = injectedClient || await loadDataClient()
+  const actor = await requirePlatformProductPermission(event, client, 'products.edit')
   await requireProduct(client, args.productId)
   const fields: Record<string, unknown> = { productId: args.productId }
   for (const field of MANAGED_PRODUCT_VARIANT_FIELDS) {
@@ -220,10 +224,10 @@ async function writeProductImageAudit(client: any, actorUserId: string, action: 
 }
 
 export async function handleUpsertManagedMerchProductImage(event: any, injectedClient?: any) {
-  const actor = assertPlatformProductOperator(event)
   const args = event.arguments || {}
   if (typeof args.productId !== 'string' || !args.productId) throw new Error('productId is required')
   const client = injectedClient || await loadDataClient()
+  const actor = await requirePlatformProductPermission(event, client, 'products.edit')
   await requireProduct(client, args.productId)
   const fields: Record<string, unknown> = { productId: args.productId }
   for (const field of MANAGED_PRODUCT_IMAGE_FIELDS) if (args[field] !== undefined) fields[field] = args[field]
@@ -247,10 +251,10 @@ export async function handleUpsertManagedMerchProductImage(event: any, injectedC
 }
 
 export async function handleDeleteManagedMerchProductImage(event: any, injectedClient?: any) {
-  const actor = assertPlatformProductOperator(event)
   const imageId = event.arguments?.imageId
   if (typeof imageId !== 'string' || !imageId) throw new Error('imageId is required')
   const client = injectedClient || await loadDataClient()
+  const actor = await requirePlatformProductPermission(event, client, 'products.edit')
   const existing = await client.models.MerchProductImage.get({ id: imageId })
   if (existing.errors?.length || !existing.data) throw new Error(existing.errors?.[0]?.message || 'Product image not found')
   const result = await client.models.MerchProductImage.delete({ id: imageId })

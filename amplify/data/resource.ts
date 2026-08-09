@@ -127,6 +127,16 @@ const schema = a
       altTextOverride: a.string(), colorOverride: a.string(), colorHexOverride: a.string(), status: a.string(),
     }),
 
+    PublicMerchProductSummary: a.customType({
+      id: a.id().required(), title: a.string().required(), slug: a.string().required(),
+      shortDescription: a.string(), description: a.string(), thumbnailUrl: a.string(), imageUrl: a.string(),
+      sourceType: a.string().required(), externalProductId: a.string(), externalVariantGroupId: a.string(), sku: a.string(),
+      displayPrice: a.string(), basePrice: a.float(), currency: a.string(), productUrl: a.string(), variantCount: a.integer(),
+      materials: a.string(), sizeGuide: a.string(), shippingReturns: a.string(), whatsIncluded: a.string(),
+      careInstructions: a.string(), fitNotes: a.string(), status: a.string().required(), isVisible: a.boolean().required(),
+      sortOrder: a.integer(),
+    }),
+
     MerchProductRelationshipMutationResult: a.customType({
       success: a.boolean().required(),
       message: a.string(),
@@ -270,6 +280,9 @@ const schema = a
     }).returns(a.ref('MediaMutationResult').required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
     listPublicMerchProductImages: a.query().arguments({ productId: a.id().required() })
       .returns(a.ref('PublicMerchProductImageSummary').array().required())
+      .authorization((allow) => [allow.publicApiKey(), allow.authenticated()]).handler(a.handler.function(myFunction)),
+    listPublicMerchProducts: a.query()
+      .returns(a.ref('PublicMerchProductSummary').array().required())
       .authorization((allow) => [allow.publicApiKey(), allow.authenticated()]).handler(a.handler.function(myFunction)),
 
     createManagedBrand: a
@@ -1009,7 +1022,7 @@ const schema = a
         categoryLinks: a.hasMany('MerchProductCategory', 'productId'),
       })
       .authorization((allow) => [
-        allow.publicApiKey().to(['read']),
+        allow.authenticated().to(['read']),
         allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),
       ]),
 

@@ -6,6 +6,7 @@ import {
   handleUpdateManagedMerchProduct,
   handleUpsertManagedMerchProductVariant,
 } from './handlers'
+import { testPermissionModels } from '../shared/testPermissionModels'
 
 function makeClient(options: {
   productLinked?: boolean
@@ -28,6 +29,7 @@ function makeClient(options: {
   return {
     updates, creates, variantCreates, variantUpdates, audits,
     models: {
+      ...testPermissionModels(['products.edit', 'products.brand.assign', 'products.category.assign']),
       MerchProduct: {
         get: async () => ({ data: { id: 'product-a', title: 'Original' } }),
         create: async (input: any) => { creates.push(input); return { data: { id: 'product-created', ...input } } },
@@ -126,7 +128,7 @@ await assert.rejects(
   handleCreateManagedMerchProduct(event('owner-a', ['Member'], {
     title: 'Bypass product', slug: 'bypass-product', sourceType: 'manual', status: 'active', isVisible: true,
   }), makeClient()),
-  /Platform product management access/i,
+  /Permission products\.edit is required/i,
 )
 
 const platformVariantClient = makeClient()
@@ -139,7 +141,7 @@ await assert.rejects(
   handleUpsertManagedMerchProductVariant(event('owner-a', ['Member'], {
     productId: 'product-a', externalVariantId: 'variant-a', name: 'Bypass variant', status: 'active',
   }), makeClient()),
-  /Platform product management access/i,
+  /Permission products\.edit is required/i,
 )
 
 function relationshipClient() {
@@ -147,6 +149,7 @@ function relationshipClient() {
   return {
     created,
     models: {
+      ...testPermissionModels(['products.brand.assign', 'products.category.assign']),
       MerchProduct: { get: async () => ({ data: { id: 'product-a' } }) },
       Brand: { get: async () => ({ data: { id: 'brand-a' } }) },
       MerchCategory: { get: async () => ({ data: { id: 'category-a' } }) },
@@ -159,11 +162,11 @@ function relationshipClient() {
 
 await assert.rejects(
   handleReplaceManagedMerchProductBrands(event('owner-a', ['Member'], { productId: 'product-a', brandIds: ['brand-a'] }), relationshipClient()),
-  /Platform product management access/i,
+  /Permission products\.brand\.assign is required/i,
 )
 await assert.rejects(
   handleReplaceManagedMerchProductCategories(event('owner-a', ['Member'], { productId: 'product-a', categoryIds: ['category-a'] }), relationshipClient()),
-  /Platform product management access/i,
+  /Permission products\.category\.assign is required/i,
 )
 
 const platformRelationshipClient = relationshipClient()

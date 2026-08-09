@@ -1,6 +1,6 @@
-import { isPlatformBrandOperator } from '../brands/policy'
-import { getIdentityGroups, getIdentityUsername, getResolverIdentity } from '../shared/auth'
+import { getIdentityUsername, getResolverIdentity } from '../shared/auth'
 import { writePermissionAudit } from '../shared/audit'
+import { getEffectivePermissions } from '../shared/requirePermission'
 import {
   BRAND_USER_EDITABLE_EVENT_FIELDS,
   PLATFORM_EDITABLE_EVENT_FIELDS,
@@ -21,11 +21,12 @@ async function listAll(client: any, modelName: string) {
   return records
 }
 
-function getActor(event: any) {
+async function getActor(event: any, client: any) {
   const identity = getResolverIdentity(event)
   const userId = getIdentityUsername(identity)
   if (!userId) throw new Error('Authenticated user identity is required')
-  return { userId, isPlatformOperator: isPlatformBrandOperator(getIdentityGroups(identity)) }
+  const { effective } = await getEffectivePermissions(event, client)
+  return { userId, isPlatformOperator: effective.has('events.manage') }
 }
 
 async function requireBrand(client: any, brandId: string) {
@@ -35,7 +36,7 @@ async function requireBrand(client: any, brandId: string) {
   return result.data
 }
 
-async function assertBrandEventManager(client: any, actor: ReturnType<typeof getActor>, brandId: string) {
+async function assertBrandEventManager(client: any, actor: Awaited<ReturnType<typeof getActor>>, brandId: string) {
   const [brand, accesses, permissions] = await Promise.all([
     requireBrand(client, brandId),
     listAll(client, 'BrandAccess'),
@@ -51,7 +52,7 @@ export async function authorizeBrandEventCommand(client: any, event: any, brandI
     throw new Error('Event must belong to a Brand')
   }
 
-  const actor = getActor(event)
+  const actor = await getActor(event, client)
   if (actor.isPlatformOperator) {
     await requireBrand(client, brandId)
   } else {
@@ -82,10 +83,10 @@ async function getEvent(client: any, eventId: string) {
 }
 
 export async function handleCreateManagedEvent(event: any, injectedClient?: any) {
-  const actor = getActor(event)
   const args = event.arguments || {}
   validateCreateFields(args)
   const client = injectedClient || await loadDataClient()
+  const actor = await getActor(event, client)
   const brandId = typeof args.brandId === 'string' && args.brandId ? args.brandId : ''
 
   if (!actor.isPlatformOperator) {
@@ -104,10 +105,10 @@ export async function handleCreateManagedEvent(event: any, injectedClient?: any)
 }
 
 export async function handleUpdateManagedEvent(event: any, injectedClient?: any) {
-  const actor = getActor(event)
   const args = event.arguments || {}
   if (typeof args.eventId !== 'string' || !args.eventId) throw new Error('eventId is required')
   const client = injectedClient || await loadDataClient()
+  const actor = await getActor(event, client)
   const existingEvent = await getEvent(client, args.eventId)
   const requestedBrandId = typeof args.brandId === 'string' && args.brandId ? args.brandId : ''
 

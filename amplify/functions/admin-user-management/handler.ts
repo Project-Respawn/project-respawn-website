@@ -8,6 +8,7 @@ import {
 } from '@aws-sdk/client-cognito-identity-provider'
 import type { ListUsersCommandOutput } from '@aws-sdk/client-cognito-identity-provider'
 import { getDataClient } from './dataClient'
+import { authorizeAdminUserOperation } from './authorization'
 import {
   assertRoleChangeAllowed,
   getRoleManager,
@@ -179,12 +180,14 @@ export const handler: AppSyncResolverHandler<any, any> = async (event) => {
   const fieldName = getFieldName(event)
   const args = getArguments(event)
 
-  assertRoleManagementAccess(event)
+  const dataClient = await getDataClient()
 
   switch (fieldName) {
     case 'listAdminUsers':
+      await authorizeAdminUserOperation(event, dataClient, 'users.view')
       return listAllUsers()
     case 'updateUserRoles':
+      await authorizeAdminUserOperation(event, dataClient, 'users.manage')
       return updateUserRoles(event, args.username, args.roles)
     default:
       throw new Error(`Unknown field: ${fieldName || 'undefined'}`)

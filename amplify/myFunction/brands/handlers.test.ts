@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { handleCreateBrand, handleSetBrandOwner } from './index'
+import { testPermissionModels } from '../shared/testPermissionModels'
 
 function event(username: string, groups: string[], arguments_: Record<string, unknown>) {
   return { identity: { username, claims: { 'cognito:groups': groups } }, arguments: arguments_ }
@@ -15,6 +16,7 @@ function makeClient(createResult: any) {
     persisted,
     audits,
     models: {
+      ...testPermissionModels(['brands.manage']),
       Brand: { create: async (input: any) => { created.push(input); if (createResult.data) persisted.push(createResult.data); return createResult } },
       PermissionAuditEvent: { create: async (input: any) => { audits.push(input); return { data: input } } },
     },
@@ -45,6 +47,7 @@ assert.equal(ownerlessClient.created[0].ownerAssignedBy, null)
 const ownerUpdates: any[] = []
 const ownerClient = {
   models: {
+    ...testPermissionModels(['brands.manage']),
     Brand: {
       get: async () => ({ data: { id: 'persisted-brand-id', ownerUserId: 'old-owner' } }),
       update: async (input: any) => { ownerUpdates.push(input); return { data: input } },

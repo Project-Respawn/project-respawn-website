@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import { handleReplaceManagedMerchProductBrands, handleReplaceManagedMerchProductCategories } from './handlers'
+import { testPermissionModels } from '../shared/testPermissionModels'
 
 function makeClient(options: { brands?: string[]; categories?: string[]; brandLinks?: any[]; categoryLinks?: any[] } = {}) {
   const brandLinks = [...(options.brandLinks || [])]
@@ -31,6 +32,7 @@ function makeClient(options: { brands?: string[]; categories?: string[]; brandLi
     deleted,
     audits,
     models: {
+      ...testPermissionModels(['products.brand.assign', 'products.category.assign']),
       MerchProduct: { get: async () => ({ data: { id: 'product-a' } }) },
       Brand: { get: async ({ id }: { id: string }) => ({ data: existingBrands.has(id) ? { id } : null }) },
       MerchCategory: { get: async ({ id }: { id: string }) => ({ data: existingCategories.has(id) ? { id } : null }) },
@@ -75,14 +77,14 @@ await assert.rejects(
   handleReplaceManagedMerchProductBrands(event('brand-owner', ['Member'], {
     productId: 'product-a', brandIds: ['brand-a'],
   }), makeClient()),
-  /platform product management access/i,
+  /Permission products\.brand\.assign is required/i,
 )
 
 await assert.rejects(
   handleReplaceManagedMerchProductBrands(event('brand-helper', ['Member'], {
     productId: 'product-a', brandIds: ['brand-a'],
   }), makeClient()),
-  /platform product management access/i,
+  /Permission products\.brand\.assign is required/i,
 )
 
 await assert.rejects(
@@ -111,7 +113,7 @@ await assert.rejects(
   handleReplaceManagedMerchProductCategories(event('brand-user', ['Member'], {
     productId: 'product-a', categoryIds: ['category-a'],
   }), makeClient()),
-  /platform product management access/i,
+  /Permission products\.category\.assign is required/i,
 )
 
 await assert.rejects(

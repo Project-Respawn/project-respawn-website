@@ -7,7 +7,7 @@ Requires a User Pool ID and permanent password. This script deliberately does no
 assign Cognito groups; assign roles separately through Cognito/Admin tooling.
 
 .EXAMPLE
-.\scripts\create-test-users.ps1 -UserPoolId "eu-north-1_bobxwoc8n" -Password "Respawn123!"
+.\scripts\create-test-users.ps1 -UserPoolId "<USER_POOL_ID>" -Password "<TEST_PASSWORD>"
 #>
 
 [CmdletBinding()]

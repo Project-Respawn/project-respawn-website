@@ -1,9 +1,9 @@
 {
   "auth": {
-    "user_pool_id": "eu-north-1_bobxwoc8n",
+    "user_pool_id": "eu-north-1_QBLhcAt9s",
     "aws_region": "eu-north-1",
-    "user_pool_client_id": "225g3ra9qqbfcn8bs24nmhva7k",
-    "identity_pool_id": "eu-north-1:1be93270-de8f-423f-a2e9-12e36548069c",
+    "user_pool_client_id": "5tt1hltuijus9sqf08a6tm3kh6",
+    "identity_pool_id": "eu-north-1:fe39d6c8-f774-4709-9e93-c02963710611",
     "mfa_methods": [],
     "standard_required_attributes": [
       "email"
@@ -77,9 +77,9 @@
     "unauthenticated_identities_enabled": true
   },
   "data": {
-    "url": "https://2y6c26bounc4vj56bcieota4cu.appsync-api.eu-north-1.amazonaws.com/graphql",
+    "url": "https://do3mryivjzblhkmoucyujorp5m.appsync-api.eu-north-1.amazonaws.com/graphql",
     "aws_region": "eu-north-1",
-    "api_key": "da2-bsl7f3jtvzbhjkeo6mfmqnurhe",
+    "api_key": "da2-rxjwqyc5lfg7rhkn7oj25bv6zi",
     "default_authorization_type": "AMAZON_COGNITO_USER_POOLS",
     "authorization_types": [
       "API_KEY",
@@ -88,326 +88,6 @@
     "model_introspection": {
       "version": 1,
       "models": {
-        "PermissionDefinition": {
-          "name": "PermissionDefinition",
-          "fields": {
-            "id": {
-              "name": "id",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true,
-              "attributes": []
-            },
-            "key": {
-              "name": "key",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "displayName": {
-              "name": "displayName",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "description": {
-              "name": "description",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "domain": {
-              "name": "domain",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "module": {
-              "name": "module",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "isActive": {
-              "name": "isActive",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": true,
-              "attributes": []
-            },
-            "sortOrder": {
-              "name": "sortOrder",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": true,
-              "attributes": []
-            },
-            "createdBy": {
-              "name": "createdBy",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "createdAt": {
-              "name": "createdAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": [],
-              "isReadOnly": true
-            },
-            "updatedAt": {
-              "name": "updatedAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": [],
-              "isReadOnly": true
-            }
-          },
-          "syncable": true,
-          "pluralName": "PermissionDefinitions",
-          "attributes": [
-            {
-              "type": "model",
-              "properties": {}
-            },
-            {
-              "type": "auth",
-              "properties": {
-                "rules": [
-                  {
-                    "groupClaim": "cognito:groups",
-                    "provider": "userPools",
-                    "allow": "groups",
-                    "operations": [
-                      "read"
-                    ],
-                    "groups": [
-                      "SuperAdmin",
-                      "Admin"
-                    ]
-                  }
-                ]
-              }
-            }
-          ],
-          "primaryKeyInfo": {
-            "isCustomPrimaryKey": false,
-            "primaryKeyFieldName": "id",
-            "sortKeyFieldNames": []
-          }
-        },
-        "GroupPermission": {
-          "name": "GroupPermission",
-          "fields": {
-            "id": {
-              "name": "id",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true,
-              "attributes": []
-            },
-            "groupName": {
-              "name": "groupName",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "permissionKey": {
-              "name": "permissionKey",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "enabled": {
-              "name": "enabled",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": true,
-              "attributes": []
-            },
-            "assignedBy": {
-              "name": "assignedBy",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "changedBy": {
-              "name": "changedBy",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "createdAt": {
-              "name": "createdAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": [],
-              "isReadOnly": true
-            },
-            "updatedAt": {
-              "name": "updatedAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": [],
-              "isReadOnly": true
-            }
-          },
-          "syncable": true,
-          "pluralName": "GroupPermissions",
-          "attributes": [
-            {
-              "type": "model",
-              "properties": {}
-            },
-            {
-              "type": "auth",
-              "properties": {
-                "rules": [
-                  {
-                    "groupClaim": "cognito:groups",
-                    "provider": "userPools",
-                    "allow": "groups",
-                    "operations": [
-                      "read"
-                    ],
-                    "groups": [
-                      "SuperAdmin",
-                      "Admin"
-                    ]
-                  }
-                ]
-              }
-            }
-          ],
-          "primaryKeyInfo": {
-            "isCustomPrimaryKey": false,
-            "primaryKeyFieldName": "id",
-            "sortKeyFieldNames": []
-          }
-        },
-        "PermissionAuditEvent": {
-          "name": "PermissionAuditEvent",
-          "fields": {
-            "id": {
-              "name": "id",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true,
-              "attributes": []
-            },
-            "actorUserId": {
-              "name": "actorUserId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "action": {
-              "name": "action",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "targetType": {
-              "name": "targetType",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "targetId": {
-              "name": "targetId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "before": {
-              "name": "before",
-              "isArray": false,
-              "type": "AWSJSON",
-              "isRequired": false,
-              "attributes": []
-            },
-            "after": {
-              "name": "after",
-              "isArray": false,
-              "type": "AWSJSON",
-              "isRequired": false,
-              "attributes": []
-            },
-            "occurredAt": {
-              "name": "occurredAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": true,
-              "attributes": []
-            },
-            "createdAt": {
-              "name": "createdAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": [],
-              "isReadOnly": true
-            },
-            "updatedAt": {
-              "name": "updatedAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": [],
-              "isReadOnly": true
-            }
-          },
-          "syncable": true,
-          "pluralName": "PermissionAuditEvents",
-          "attributes": [
-            {
-              "type": "model",
-              "properties": {}
-            },
-            {
-              "type": "auth",
-              "properties": {
-                "rules": [
-                  {
-                    "groupClaim": "cognito:groups",
-                    "provider": "userPools",
-                    "allow": "groups",
-                    "operations": [
-                      "read"
-                    ],
-                    "groups": [
-                      "SuperAdmin",
-                      "Admin"
-                    ]
-                  }
-                ]
-              }
-            }
-          ],
-          "primaryKeyInfo": {
-            "isCustomPrimaryKey": false,
-            "primaryKeyFieldName": "id",
-            "sortKeyFieldNames": []
-          }
-        },
         "TwitchCommand": {
           "name": "TwitchCommand",
           "fields": {
@@ -416,13 +96,6 @@
               "isArray": false,
               "type": "ID",
               "isRequired": true,
-              "attributes": []
-            },
-            "brandId": {
-              "name": "brandId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false,
               "attributes": []
             },
             "streamerId": {
@@ -510,83 +183,12 @@
               "properties": {
                 "rules": [
                   {
-                    "groupClaim": "cognito:groups",
-                    "provider": "userPools",
-                    "allow": "groups",
+                    "allow": "private",
                     "operations": [
+                      "create",
+                      "update",
+                      "delete",
                       "read"
-                    ],
-                    "groups": [
-                      "SuperAdmin",
-                      "Admin",
-                      "Staff"
-                    ]
-                  }
-                ]
-              }
-            }
-          ],
-          "primaryKeyInfo": {
-            "isCustomPrimaryKey": false,
-            "primaryKeyFieldName": "id",
-            "sortKeyFieldNames": []
-          }
-        },
-        "DiscordBotConfiguration": {
-          "name": "DiscordBotConfiguration",
-          "fields": {
-            "id": {
-              "name": "id",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true,
-              "attributes": []
-            },
-            "brandId": {
-              "name": "brandId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true,
-              "attributes": []
-            },
-            "createdAt": {
-              "name": "createdAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": [],
-              "isReadOnly": true
-            },
-            "updatedAt": {
-              "name": "updatedAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": [],
-              "isReadOnly": true
-            }
-          },
-          "syncable": true,
-          "pluralName": "DiscordBotConfigurations",
-          "attributes": [
-            {
-              "type": "model",
-              "properties": {}
-            },
-            {
-              "type": "auth",
-              "properties": {
-                "rules": [
-                  {
-                    "groupClaim": "cognito:groups",
-                    "provider": "userPools",
-                    "allow": "groups",
-                    "operations": [
-                      "read"
-                    ],
-                    "groups": [
-                      "SuperAdmin",
-                      "Admin"
                     ]
                   }
                 ]
@@ -805,6 +407,22 @@
                     "allow": "private",
                     "operations": [
                       "read"
+                    ]
+                  },
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [
+                      "create",
+                      "read",
+                      "update",
+                      "delete"
+                    ],
+                    "groups": [
+                      "SuperAdmin",
+                      "Admin",
+                      "Staff"
                     ]
                   }
                 ]
@@ -1152,7 +770,10 @@
                     "provider": "userPools",
                     "allow": "groups",
                     "operations": [
-                      "read"
+                      "create",
+                      "read",
+                      "update",
+                      "delete"
                     ],
                     "groups": [
                       "SuperAdmin",
@@ -1370,6 +991,21 @@
                       "read"
                     ],
                     "identityClaim": "cognito:username"
+                  },
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [
+                      "read",
+                      "update",
+                      "delete"
+                    ],
+                    "groups": [
+                      "SuperAdmin",
+                      "Admin",
+                      "Staff"
+                    ]
                   }
                 ]
               }
@@ -1481,6 +1117,20 @@
                     "allow": "private",
                     "operations": [
                       "read"
+                    ]
+                  },
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [
+                      "create",
+                      "read",
+                      "update",
+                      "delete"
+                    ],
+                    "groups": [
+                      "SuperAdmin"
                     ]
                   }
                 ]
@@ -1647,6 +1297,20 @@
                     "allow": "private",
                     "operations": [
                       "read"
+                    ]
+                  },
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [
+                      "create",
+                      "read",
+                      "update",
+                      "delete"
+                    ],
+                    "groups": [
+                      "SuperAdmin"
                     ]
                   }
                 ]
@@ -1842,6 +1506,22 @@
                       "delete"
                     ],
                     "identityClaim": "cognito:username"
+                  },
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [
+                      "create",
+                      "read",
+                      "update",
+                      "delete"
+                    ],
+                    "groups": [
+                      "SuperAdmin",
+                      "Admin",
+                      "Staff"
+                    ]
                   }
                 ]
               }
@@ -1972,6 +1652,21 @@
                       "delete"
                     ],
                     "identityClaim": "cognito:username"
+                  },
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [
+                      "read",
+                      "update",
+                      "delete"
+                    ],
+                    "groups": [
+                      "SuperAdmin",
+                      "Admin",
+                      "Staff"
+                    ]
                   }
                 ]
               }
@@ -2295,27 +1990,6 @@
               "isRequired": false,
               "attributes": []
             },
-            "ownerUserId": {
-              "name": "ownerUserId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "ownerAssignedBy": {
-              "name": "ownerAssignedBy",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "ownerAssignedAt": {
-              "name": "ownerAssignedAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": []
-            },
             "productBrandLinks": {
               "name": "productBrandLinks",
               "isArray": true,
@@ -2394,7 +2068,10 @@
                     "provider": "userPools",
                     "allow": "groups",
                     "operations": [
-                      "read"
+                      "create",
+                      "read",
+                      "update",
+                      "delete"
                     ],
                     "groups": [
                       "SuperAdmin",
@@ -2512,6 +2189,22 @@
                     "allow": "private",
                     "operations": [
                       "read"
+                    ]
+                  },
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [
+                      "create",
+                      "read",
+                      "update",
+                      "delete"
+                    ],
+                    "groups": [
+                      "SuperAdmin",
+                      "Admin",
+                      "Staff"
                     ]
                   }
                 ]
@@ -2806,7 +2499,10 @@
                     "provider": "userPools",
                     "allow": "groups",
                     "operations": [
-                      "read"
+                      "create",
+                      "read",
+                      "update",
+                      "delete"
                     ],
                     "groups": [
                       "SuperAdmin",
@@ -2987,161 +2683,15 @@
                     "provider": "userPools",
                     "allow": "groups",
                     "operations": [
-                      "read"
+                      "create",
+                      "read",
+                      "update",
+                      "delete"
                     ],
                     "groups": [
                       "SuperAdmin",
                       "Admin",
                       "Staff"
-                    ]
-                  }
-                ]
-              }
-            }
-          ],
-          "primaryKeyInfo": {
-            "isCustomPrimaryKey": false,
-            "primaryKeyFieldName": "id",
-            "sortKeyFieldNames": []
-          }
-        },
-        "FulfillmentOrder": {
-          "name": "FulfillmentOrder",
-          "fields": {
-            "id": {
-              "name": "id",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true,
-              "attributes": []
-            },
-            "projectOrderId": {
-              "name": "projectOrderId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "revolutOrderId": {
-              "name": "revolutOrderId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "paymentStatus": {
-              "name": "paymentStatus",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "paymentDate": {
-              "name": "paymentDate",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": []
-            },
-            "paymentAmount": {
-              "name": "paymentAmount",
-              "isArray": false,
-              "type": "Float",
-              "isRequired": false,
-              "attributes": []
-            },
-            "currency": {
-              "name": "currency",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "overallFulfillmentStatus": {
-              "name": "overallFulfillmentStatus",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "customerName": {
-              "name": "customerName",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "email": {
-              "name": "email",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "shippingAddress": {
-              "name": "shippingAddress",
-              "isArray": false,
-              "type": "AWSJSON",
-              "isRequired": true,
-              "attributes": []
-            },
-            "items": {
-              "name": "items",
-              "isArray": false,
-              "type": "AWSJSON",
-              "isRequired": true,
-              "attributes": []
-            },
-            "providerStatuses": {
-              "name": "providerStatuses",
-              "isArray": false,
-              "type": "AWSJSON",
-              "isRequired": true,
-              "attributes": []
-            },
-            "auditHistory": {
-              "name": "auditHistory",
-              "isArray": false,
-              "type": "AWSJSON",
-              "isRequired": true,
-              "attributes": []
-            },
-            "createdAt": {
-              "name": "createdAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": []
-            },
-            "updatedAt": {
-              "name": "updatedAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": []
-            }
-          },
-          "syncable": true,
-          "pluralName": "FulfillmentOrders",
-          "attributes": [
-            {
-              "type": "model",
-              "properties": {}
-            },
-            {
-              "type": "auth",
-              "properties": {
-                "rules": [
-                  {
-                    "groupClaim": "cognito:groups",
-                    "provider": "userPools",
-                    "allow": "groups",
-                    "operations": [
-                      "read"
-                    ],
-                    "groups": [
-                      "SuperAdmin",
-                      "Admin"
                     ]
                   }
                 ]
@@ -3248,7 +2798,10 @@
                     "provider": "userPools",
                     "allow": "groups",
                     "operations": [
-                      "read"
+                      "create",
+                      "read",
+                      "update",
+                      "delete"
                     ],
                     "groups": [
                       "SuperAdmin",
@@ -3360,7 +2913,10 @@
                     "provider": "userPools",
                     "allow": "groups",
                     "operations": [
-                      "read"
+                      "create",
+                      "read",
+                      "update",
+                      "delete"
                     ],
                     "groups": [
                       "SuperAdmin",
@@ -3452,13 +3008,6 @@
               "isRequired": false,
               "attributes": []
             },
-            "assignedAt": {
-              "name": "assignedAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": []
-            },
             "canManageMerch": {
               "name": "canManageMerch",
               "isArray": false,
@@ -3472,22 +3021,6 @@
               "type": "Boolean",
               "isRequired": false,
               "attributes": []
-            },
-            "permissions": {
-              "name": "permissions",
-              "isArray": true,
-              "type": {
-                "model": "BrandAccessPermission"
-              },
-              "isRequired": false,
-              "attributes": [],
-              "isArrayNullable": true,
-              "association": {
-                "connectionType": "HAS_MANY",
-                "associatedWith": [
-                  "brandAccessId"
-                ]
-              }
             },
             "createdAt": {
               "name": "createdAt",
@@ -3522,105 +3055,16 @@
                     "provider": "userPools",
                     "allow": "groups",
                     "operations": [
-                      "read"
+                      "create",
+                      "read",
+                      "update",
+                      "delete"
                     ],
                     "groups": [
                       "SuperAdmin",
-                      "Admin",
-                      "Staff"
+                      "Admin"
                     ]
-                  }
-                ]
-              }
-            }
-          ],
-          "primaryKeyInfo": {
-            "isCustomPrimaryKey": false,
-            "primaryKeyFieldName": "id",
-            "sortKeyFieldNames": []
-          }
-        },
-        "BrandAccessPermission": {
-          "name": "BrandAccessPermission",
-          "fields": {
-            "id": {
-              "name": "id",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true,
-              "attributes": []
-            },
-            "brandAccessId": {
-              "name": "brandAccessId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true,
-              "attributes": []
-            },
-            "brandAccess": {
-              "name": "brandAccess",
-              "isArray": false,
-              "type": {
-                "model": "BrandAccess"
-              },
-              "isRequired": false,
-              "attributes": [],
-              "association": {
-                "connectionType": "BELONGS_TO",
-                "targetNames": [
-                  "brandAccessId"
-                ]
-              }
-            },
-            "permissionKey": {
-              "name": "permissionKey",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "assignedBy": {
-              "name": "assignedBy",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "assignedAt": {
-              "name": "assignedAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": []
-            },
-            "createdAt": {
-              "name": "createdAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": [],
-              "isReadOnly": true
-            },
-            "updatedAt": {
-              "name": "updatedAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false,
-              "attributes": [],
-              "isReadOnly": true
-            }
-          },
-          "syncable": true,
-          "pluralName": "BrandAccessPermissions",
-          "attributes": [
-            {
-              "type": "model",
-              "properties": {}
-            },
-            {
-              "type": "auth",
-              "properties": {
-                "rules": [
+                  },
                   {
                     "groupClaim": "cognito:groups",
                     "provider": "userPools",
@@ -3629,8 +3073,6 @@
                       "read"
                     ],
                     "groups": [
-                      "SuperAdmin",
-                      "Admin",
                       "Staff"
                     ]
                   }
@@ -3741,15 +3183,25 @@
               "properties": {
                 "rules": [
                   {
+                    "allow": "private",
+                    "operations": [
+                      "read"
+                    ]
+                  },
+                  {
                     "groupClaim": "cognito:groups",
                     "provider": "userPools",
                     "allow": "groups",
                     "operations": [
-                      "read"
+                      "create",
+                      "read",
+                      "update",
+                      "delete"
                     ],
                     "groups": [
                       "SuperAdmin",
-                      "Admin"
+                      "Admin",
+                      "Staff"
                     ]
                   }
                 ]
@@ -3916,15 +3368,32 @@
               "properties": {
                 "rules": [
                   {
+                    "allow": "public",
+                    "provider": "apiKey",
+                    "operations": [
+                      "read"
+                    ]
+                  },
+                  {
+                    "allow": "private",
+                    "operations": [
+                      "read"
+                    ]
+                  },
+                  {
                     "groupClaim": "cognito:groups",
                     "provider": "userPools",
                     "allow": "groups",
                     "operations": [
-                      "read"
+                      "create",
+                      "read",
+                      "update",
+                      "delete"
                     ],
                     "groups": [
                       "SuperAdmin",
-                      "Admin"
+                      "Admin",
+                      "Staff"
                     ]
                   }
                 ]
@@ -4094,7 +3563,10 @@
                     "provider": "userPools",
                     "allow": "groups",
                     "operations": [
-                      "read"
+                      "create",
+                      "read",
+                      "update",
+                      "delete"
                     ],
                     "groups": [
                       "SuperAdmin",
@@ -4211,842 +3683,6 @@
             }
           }
         },
-        "PermissionDefinitionSummary": {
-          "name": "PermissionDefinitionSummary",
-          "fields": {
-            "id": {
-              "name": "id",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true,
-              "attributes": []
-            },
-            "key": {
-              "name": "key",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "displayName": {
-              "name": "displayName",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "description": {
-              "name": "description",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "domain": {
-              "name": "domain",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "module": {
-              "name": "module",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "isActive": {
-              "name": "isActive",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": true,
-              "attributes": []
-            },
-            "platformEnforced": {
-              "name": "platformEnforced",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": true,
-              "attributes": []
-            },
-            "sortOrder": {
-              "name": "sortOrder",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": true,
-              "attributes": []
-            }
-          }
-        },
-        "GroupPermissionSummary": {
-          "name": "GroupPermissionSummary",
-          "fields": {
-            "id": {
-              "name": "id",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true,
-              "attributes": []
-            },
-            "groupName": {
-              "name": "groupName",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "permissionKey": {
-              "name": "permissionKey",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "enabled": {
-              "name": "enabled",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": true,
-              "attributes": []
-            },
-            "assignedBy": {
-              "name": "assignedBy",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "changedBy": {
-              "name": "changedBy",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            }
-          }
-        },
-        "PermissionCatalogResult": {
-          "name": "PermissionCatalogResult",
-          "fields": {
-            "requiresBootstrap": {
-              "name": "requiresBootstrap",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": true,
-              "attributes": []
-            },
-            "definitions": {
-              "name": "definitions",
-              "isArray": true,
-              "type": {
-                "nonModel": "PermissionDefinitionSummary"
-              },
-              "isRequired": false,
-              "attributes": [],
-              "isArrayNullable": false
-            },
-            "assignments": {
-              "name": "assignments",
-              "isArray": true,
-              "type": {
-                "nonModel": "GroupPermissionSummary"
-              },
-              "isRequired": false,
-              "attributes": [],
-              "isArrayNullable": false
-            }
-          }
-        },
-        "PermissionMutationResult": {
-          "name": "PermissionMutationResult",
-          "fields": {
-            "success": {
-              "name": "success",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": true,
-              "attributes": []
-            },
-            "message": {
-              "name": "message",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "changedCount": {
-              "name": "changedCount",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": false,
-              "attributes": []
-            }
-          }
-        },
-        "AccessibleBrandSummary": {
-          "name": "AccessibleBrandSummary",
-          "fields": {
-            "brandId": {
-              "name": "brandId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true,
-              "attributes": []
-            },
-            "name": {
-              "name": "name",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "ownerUserId": {
-              "name": "ownerUserId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "isOwner": {
-              "name": "isOwner",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": true,
-              "attributes": []
-            },
-            "permissionKeys": {
-              "name": "permissionKeys",
-              "isArray": true,
-              "type": "String",
-              "isRequired": false,
-              "attributes": [],
-              "isArrayNullable": false
-            }
-          }
-        },
-        "BrandHelperSummary": {
-          "name": "BrandHelperSummary",
-          "fields": {
-            "userId": {
-              "name": "userId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "username": {
-              "name": "username",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "email": {
-              "name": "email",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "displayName": {
-              "name": "displayName",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "permissionKeys": {
-              "name": "permissionKeys",
-              "isArray": true,
-              "type": "String",
-              "isRequired": false,
-              "attributes": [],
-              "isArrayNullable": false
-            }
-          }
-        },
-        "BrandPermissionDetailResult": {
-          "name": "BrandPermissionDetailResult",
-          "fields": {
-            "brand": {
-              "name": "brand",
-              "isArray": false,
-              "type": {
-                "nonModel": "AccessibleBrandSummary"
-              },
-              "isRequired": true,
-              "attributes": []
-            },
-            "helpers": {
-              "name": "helpers",
-              "isArray": true,
-              "type": {
-                "nonModel": "BrandHelperSummary"
-              },
-              "isRequired": false,
-              "attributes": [],
-              "isArrayNullable": false
-            },
-            "availablePermissionKeys": {
-              "name": "availablePermissionKeys",
-              "isArray": true,
-              "type": "String",
-              "isRequired": false,
-              "attributes": [],
-              "isArrayNullable": false
-            }
-          }
-        },
-        "BrandMutationResult": {
-          "name": "BrandMutationResult",
-          "fields": {
-            "success": {
-              "name": "success",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": true,
-              "attributes": []
-            },
-            "message": {
-              "name": "message",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "brandId": {
-              "name": "brandId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false,
-              "attributes": []
-            }
-          }
-        },
-        "MerchProductMutationResult": {
-          "name": "MerchProductMutationResult",
-          "fields": {
-            "success": {
-              "name": "success",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": true,
-              "attributes": []
-            },
-            "message": {
-              "name": "message",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "productId": {
-              "name": "productId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false,
-              "attributes": []
-            }
-          }
-        },
-        "MerchProductVariantMutationResult": {
-          "name": "MerchProductVariantMutationResult",
-          "fields": {
-            "success": {
-              "name": "success",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": true,
-              "attributes": []
-            },
-            "message": {
-              "name": "message",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "variantId": {
-              "name": "variantId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false,
-              "attributes": []
-            }
-          }
-        },
-        "MerchProductImageMutationResult": {
-          "name": "MerchProductImageMutationResult",
-          "fields": {
-            "success": {
-              "name": "success",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": true,
-              "attributes": []
-            },
-            "message": {
-              "name": "message",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "imageId": {
-              "name": "imageId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false,
-              "attributes": []
-            },
-            "productId": {
-              "name": "productId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false,
-              "attributes": []
-            }
-          }
-        },
-        "MediaMutationResult": {
-          "name": "MediaMutationResult",
-          "fields": {
-            "success": {
-              "name": "success",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": true,
-              "attributes": []
-            },
-            "message": {
-              "name": "message",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "mediaItemId": {
-              "name": "mediaItemId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false,
-              "attributes": []
-            }
-          }
-        },
-        "ManagedMediaLibraryResult": {
-          "name": "ManagedMediaLibraryResult",
-          "fields": {
-            "collections": {
-              "name": "collections",
-              "isArray": false,
-              "type": "AWSJSON",
-              "isRequired": true,
-              "attributes": []
-            },
-            "mediaItems": {
-              "name": "mediaItems",
-              "isArray": false,
-              "type": "AWSJSON",
-              "isRequired": true,
-              "attributes": []
-            }
-          }
-        },
-        "PublicMerchProductImageSummary": {
-          "name": "PublicMerchProductImageSummary",
-          "fields": {
-            "id": {
-              "name": "id",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true,
-              "attributes": []
-            },
-            "productId": {
-              "name": "productId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true,
-              "attributes": []
-            },
-            "mediaItemId": {
-              "name": "mediaItemId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true,
-              "attributes": []
-            },
-            "url": {
-              "name": "url",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "title": {
-              "name": "title",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "altText": {
-              "name": "altText",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "type": {
-              "name": "type",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "color": {
-              "name": "color",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "colorHex": {
-              "name": "colorHex",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "sortOrder": {
-              "name": "sortOrder",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": false,
-              "attributes": []
-            },
-            "isPrimary": {
-              "name": "isPrimary",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": false,
-              "attributes": []
-            },
-            "isMockup": {
-              "name": "isMockup",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": false,
-              "attributes": []
-            },
-            "isVisible": {
-              "name": "isVisible",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": false,
-              "attributes": []
-            },
-            "isFeatured": {
-              "name": "isFeatured",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": false,
-              "attributes": []
-            },
-            "altTextOverride": {
-              "name": "altTextOverride",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "colorOverride": {
-              "name": "colorOverride",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "colorHexOverride": {
-              "name": "colorHexOverride",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "status": {
-              "name": "status",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            }
-          }
-        },
-        "MerchProductRelationshipMutationResult": {
-          "name": "MerchProductRelationshipMutationResult",
-          "fields": {
-            "success": {
-              "name": "success",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": true,
-              "attributes": []
-            },
-            "message": {
-              "name": "message",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "productId": {
-              "name": "productId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false,
-              "attributes": []
-            },
-            "changedCount": {
-              "name": "changedCount",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": false,
-              "attributes": []
-            }
-          }
-        },
-        "AccessContextResult": {
-          "name": "AccessContextResult",
-          "fields": {
-            "userId": {
-              "name": "userId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "groups": {
-              "name": "groups",
-              "isArray": true,
-              "type": "String",
-              "isRequired": false,
-              "attributes": [],
-              "isArrayNullable": false
-            },
-            "permissions": {
-              "name": "permissions",
-              "isArray": true,
-              "type": "String",
-              "isRequired": false,
-              "attributes": [],
-              "isArrayNullable": false
-            },
-            "isPlatformAdmin": {
-              "name": "isPlatformAdmin",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": true,
-              "attributes": []
-            },
-            "brands": {
-              "name": "brands",
-              "isArray": true,
-              "type": {
-                "nonModel": "AccessibleBrandSummary"
-              },
-              "isRequired": false,
-              "attributes": [],
-              "isArrayNullable": false
-            }
-          }
-        },
-        "Stage9MutationResult": {
-          "name": "Stage9MutationResult",
-          "fields": {
-            "success": {
-              "name": "success",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": true,
-              "attributes": []
-            },
-            "message": {
-              "name": "message",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "resourceId": {
-              "name": "resourceId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false,
-              "attributes": []
-            }
-          }
-        },
-        "ManagedOrderListResult": {
-          "name": "ManagedOrderListResult",
-          "fields": {
-            "orders": {
-              "name": "orders",
-              "isArray": false,
-              "type": "AWSJSON",
-              "isRequired": true,
-              "attributes": []
-            }
-          }
-        },
-        "ManagedProfileListResult": {
-          "name": "ManagedProfileListResult",
-          "fields": {
-            "profiles": {
-              "name": "profiles",
-              "isArray": false,
-              "type": "AWSJSON",
-              "isRequired": true,
-              "attributes": []
-            }
-          }
-        },
-        "ManagedTwitchCommandMutationResult": {
-          "name": "ManagedTwitchCommandMutationResult",
-          "fields": {
-            "success": {
-              "name": "success",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": true,
-              "attributes": []
-            },
-            "message": {
-              "name": "message",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "commandId": {
-              "name": "commandId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false,
-              "attributes": []
-            }
-          }
-        },
-        "ManagedTwitchCommand": {
-          "name": "ManagedTwitchCommand",
-          "fields": {
-            "id": {
-              "name": "id",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true,
-              "attributes": []
-            },
-            "brandId": {
-              "name": "brandId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false,
-              "attributes": []
-            },
-            "streamerId": {
-              "name": "streamerId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "name": {
-              "name": "name",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "reply": {
-              "name": "reply",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "enabled": {
-              "name": "enabled",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": true,
-              "attributes": []
-            },
-            "cooldownSeconds": {
-              "name": "cooldownSeconds",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": true,
-              "attributes": []
-            },
-            "isCustom": {
-              "name": "isCustom",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": true,
-              "attributes": []
-            },
-            "category": {
-              "name": "category",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            },
-            "permissionLevel": {
-              "name": "permissionLevel",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true,
-              "attributes": []
-            }
-          }
-        },
-        "ManagedDiscordConfigurationResult": {
-          "name": "ManagedDiscordConfigurationResult",
-          "fields": {
-            "success": {
-              "name": "success",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": true,
-              "attributes": []
-            },
-            "message": {
-              "name": "message",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "brandId": {
-              "name": "brandId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false,
-              "attributes": []
-            },
-            "configurationId": {
-              "name": "configurationId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false,
-              "attributes": []
-            }
-          }
-        },
         "EventTicketTier": {
           "name": "EventTicketTier",
           "fields": {
@@ -5075,32 +3711,6 @@
               "name": "quantityAvailable",
               "isArray": false,
               "type": "Int",
-              "isRequired": false,
-              "attributes": []
-            }
-          }
-        },
-        "ManagedEventMutationResult": {
-          "name": "ManagedEventMutationResult",
-          "fields": {
-            "success": {
-              "name": "success",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": true,
-              "attributes": []
-            },
-            "message": {
-              "name": "message",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false,
-              "attributes": []
-            },
-            "eventId": {
-              "name": "eventId",
-              "isArray": false,
-              "type": "ID",
               "isRequired": false,
               "attributes": []
             }
@@ -5262,118 +3872,6 @@
           },
           "isRequired": false,
           "isArrayNullable": false
-        },
-        "listPermissionCatalog": {
-          "name": "listPermissionCatalog",
-          "isArray": false,
-          "type": {
-            "nonModel": "PermissionCatalogResult"
-          },
-          "isRequired": true
-        },
-        "getMyAccessContext": {
-          "name": "getMyAccessContext",
-          "isArray": false,
-          "type": {
-            "nonModel": "AccessContextResult"
-          },
-          "isRequired": true
-        },
-        "listManagedOrders": {
-          "name": "listManagedOrders",
-          "isArray": false,
-          "type": {
-            "nonModel": "ManagedOrderListResult"
-          },
-          "isRequired": true
-        },
-        "listManagedProfiles": {
-          "name": "listManagedProfiles",
-          "isArray": false,
-          "type": {
-            "nonModel": "ManagedProfileListResult"
-          },
-          "isRequired": true
-        },
-        "listManagedMediaLibrary": {
-          "name": "listManagedMediaLibrary",
-          "isArray": false,
-          "type": {
-            "nonModel": "ManagedMediaLibraryResult"
-          },
-          "isRequired": true
-        },
-        "listPublicMerchProductImages": {
-          "name": "listPublicMerchProductImages",
-          "isArray": true,
-          "type": {
-            "nonModel": "PublicMerchProductImageSummary"
-          },
-          "isRequired": false,
-          "isArrayNullable": false,
-          "arguments": {
-            "productId": {
-              "name": "productId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            }
-          }
-        },
-        "getBrandPermissionDetails": {
-          "name": "getBrandPermissionDetails",
-          "isArray": false,
-          "type": {
-            "nonModel": "BrandPermissionDetailResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "brandId": {
-              "name": "brandId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            }
-          }
-        },
-        "listManagedTwitchCommands": {
-          "name": "listManagedTwitchCommands",
-          "isArray": true,
-          "type": {
-            "nonModel": "ManagedTwitchCommand"
-          },
-          "isRequired": false,
-          "isArrayNullable": false,
-          "arguments": {
-            "brandId": {
-              "name": "brandId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            },
-            "includeUnscoped": {
-              "name": "includeUnscoped",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": false
-            }
-          }
-        },
-        "getManagedDiscordConfiguration": {
-          "name": "getManagedDiscordConfiguration",
-          "isArray": false,
-          "type": {
-            "nonModel": "ManagedDiscordConfigurationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "brandId": {
-              "name": "brandId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            }
-          }
         }
       },
       "mutations": {
@@ -5397,1882 +3895,6 @@
               "type": "String",
               "isRequired": false,
               "isArrayNullable": false
-            }
-          }
-        },
-        "seedPermissionCatalog": {
-          "name": "seedPermissionCatalog",
-          "isArray": false,
-          "type": {
-            "nonModel": "PermissionMutationResult"
-          },
-          "isRequired": true
-        },
-        "replaceGroupPermissions": {
-          "name": "replaceGroupPermissions",
-          "isArray": false,
-          "type": {
-            "nonModel": "PermissionMutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "groupName": {
-              "name": "groupName",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "permissionKeys": {
-              "name": "permissionKeys",
-              "isArray": true,
-              "type": "String",
-              "isRequired": false,
-              "isArrayNullable": false
-            }
-          }
-        },
-        "recoverManagedOrder": {
-          "name": "recoverManagedOrder",
-          "isArray": false,
-          "type": {
-            "nonModel": "Stage9MutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "orderId": {
-              "name": "orderId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            }
-          }
-        },
-        "importManagedRevolutOrder": {
-          "name": "importManagedRevolutOrder",
-          "isArray": false,
-          "type": {
-            "nonModel": "Stage9MutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "revolutOrderId": {
-              "name": "revolutOrderId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            }
-          }
-        },
-        "manageMerchCategory": {
-          "name": "manageMerchCategory",
-          "isArray": false,
-          "type": {
-            "nonModel": "Stage9MutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "action": {
-              "name": "action",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "resourceId": {
-              "name": "resourceId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false
-            },
-            "input": {
-              "name": "input",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            }
-          }
-        },
-        "manageEventTag": {
-          "name": "manageEventTag",
-          "isArray": false,
-          "type": {
-            "nonModel": "Stage9MutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "action": {
-              "name": "action",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "resourceId": {
-              "name": "resourceId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false
-            },
-            "input": {
-              "name": "input",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            }
-          }
-        },
-        "reviewEventSuggestion": {
-          "name": "reviewEventSuggestion",
-          "isArray": false,
-          "type": {
-            "nonModel": "Stage9MutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "action": {
-              "name": "action",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "resourceId": {
-              "name": "resourceId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false
-            },
-            "input": {
-              "name": "input",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            }
-          }
-        },
-        "manageForumCategory": {
-          "name": "manageForumCategory",
-          "isArray": false,
-          "type": {
-            "nonModel": "Stage9MutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "action": {
-              "name": "action",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "resourceId": {
-              "name": "resourceId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false
-            },
-            "input": {
-              "name": "input",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            }
-          }
-        },
-        "manageForumBoard": {
-          "name": "manageForumBoard",
-          "isArray": false,
-          "type": {
-            "nonModel": "Stage9MutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "action": {
-              "name": "action",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "resourceId": {
-              "name": "resourceId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false
-            },
-            "input": {
-              "name": "input",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            }
-          }
-        },
-        "moderateForumThread": {
-          "name": "moderateForumThread",
-          "isArray": false,
-          "type": {
-            "nonModel": "Stage9MutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "action": {
-              "name": "action",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "resourceId": {
-              "name": "resourceId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            },
-            "input": {
-              "name": "input",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            }
-          }
-        },
-        "moderateForumPost": {
-          "name": "moderateForumPost",
-          "isArray": false,
-          "type": {
-            "nonModel": "Stage9MutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "action": {
-              "name": "action",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "resourceId": {
-              "name": "resourceId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            },
-            "input": {
-              "name": "input",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            }
-          }
-        },
-        "createManagedMediaItem": {
-          "name": "createManagedMediaItem",
-          "isArray": false,
-          "type": {
-            "nonModel": "MediaMutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "url": {
-              "name": "url",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "title": {
-              "name": "title",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "altText": {
-              "name": "altText",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "type": {
-              "name": "type",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "tags": {
-              "name": "tags",
-              "isArray": true,
-              "type": "String",
-              "isRequired": false,
-              "isArrayNullable": true
-            },
-            "color": {
-              "name": "color",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "colorHex": {
-              "name": "colorHex",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "sourceType": {
-              "name": "sourceType",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "externalImageId": {
-              "name": "externalImageId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "status": {
-              "name": "status",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "collectionId": {
-              "name": "collectionId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false
-            }
-          }
-        },
-        "updateManagedMediaItem": {
-          "name": "updateManagedMediaItem",
-          "isArray": false,
-          "type": {
-            "nonModel": "MediaMutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "mediaItemId": {
-              "name": "mediaItemId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            },
-            "title": {
-              "name": "title",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "altText": {
-              "name": "altText",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "type": {
-              "name": "type",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "tags": {
-              "name": "tags",
-              "isArray": true,
-              "type": "String",
-              "isRequired": false,
-              "isArrayNullable": true
-            },
-            "color": {
-              "name": "color",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "colorHex": {
-              "name": "colorHex",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "sourceType": {
-              "name": "sourceType",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "externalImageId": {
-              "name": "externalImageId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "status": {
-              "name": "status",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "collectionId": {
-              "name": "collectionId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false
-            }
-          }
-        },
-        "deleteManagedMediaItem": {
-          "name": "deleteManagedMediaItem",
-          "isArray": false,
-          "type": {
-            "nonModel": "MediaMutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "mediaItemId": {
-              "name": "mediaItemId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            }
-          }
-        },
-        "createManagedMediaCollection": {
-          "name": "createManagedMediaCollection",
-          "isArray": false,
-          "type": {
-            "nonModel": "MediaMutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "name": {
-              "name": "name",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "slug": {
-              "name": "slug",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "type": {
-              "name": "type",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "parentId": {
-              "name": "parentId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false
-            },
-            "sortOrder": {
-              "name": "sortOrder",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": false
-            },
-            "isActive": {
-              "name": "isActive",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": false
-            }
-          }
-        },
-        "createManagedBrand": {
-          "name": "createManagedBrand",
-          "isArray": false,
-          "type": {
-            "nonModel": "BrandMutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "name": {
-              "name": "name",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "slug": {
-              "name": "slug",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "description": {
-              "name": "description",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "sortOrder": {
-              "name": "sortOrder",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": false
-            },
-            "isActive": {
-              "name": "isActive",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": false
-            },
-            "ownerUserId": {
-              "name": "ownerUserId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            }
-          }
-        },
-        "updateManagedBrand": {
-          "name": "updateManagedBrand",
-          "isArray": false,
-          "type": {
-            "nonModel": "BrandMutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "brandId": {
-              "name": "brandId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            },
-            "name": {
-              "name": "name",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "slug": {
-              "name": "slug",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "description": {
-              "name": "description",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "sortOrder": {
-              "name": "sortOrder",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": false
-            },
-            "isActive": {
-              "name": "isActive",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": false
-            }
-          }
-        },
-        "setBrandOwner": {
-          "name": "setBrandOwner",
-          "isArray": false,
-          "type": {
-            "nonModel": "BrandMutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "brandId": {
-              "name": "brandId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            },
-            "ownerUserId": {
-              "name": "ownerUserId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            }
-          }
-        },
-        "upsertBrandHelper": {
-          "name": "upsertBrandHelper",
-          "isArray": false,
-          "type": {
-            "nonModel": "BrandMutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "brandId": {
-              "name": "brandId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            },
-            "userId": {
-              "name": "userId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "username": {
-              "name": "username",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "email": {
-              "name": "email",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "displayName": {
-              "name": "displayName",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "permissionKeys": {
-              "name": "permissionKeys",
-              "isArray": true,
-              "type": "String",
-              "isRequired": false,
-              "isArrayNullable": false
-            }
-          }
-        },
-        "removeBrandHelper": {
-          "name": "removeBrandHelper",
-          "isArray": false,
-          "type": {
-            "nonModel": "BrandMutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "brandId": {
-              "name": "brandId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            },
-            "userId": {
-              "name": "userId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            }
-          }
-        },
-        "updateManagedMerchProduct": {
-          "name": "updateManagedMerchProduct",
-          "isArray": false,
-          "type": {
-            "nonModel": "MerchProductMutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "productId": {
-              "name": "productId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            },
-            "brandId": {
-              "name": "brandId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false
-            },
-            "title": {
-              "name": "title",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "slug": {
-              "name": "slug",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "shortDescription": {
-              "name": "shortDescription",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "description": {
-              "name": "description",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "materials": {
-              "name": "materials",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "sizeGuide": {
-              "name": "sizeGuide",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "shippingReturns": {
-              "name": "shippingReturns",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "whatsIncluded": {
-              "name": "whatsIncluded",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "careInstructions": {
-              "name": "careInstructions",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "fitNotes": {
-              "name": "fitNotes",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "status": {
-              "name": "status",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "isVisible": {
-              "name": "isVisible",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": false
-            },
-            "thumbnailUrl": {
-              "name": "thumbnailUrl",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "imageUrl": {
-              "name": "imageUrl",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "sourceType": {
-              "name": "sourceType",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "externalProductId": {
-              "name": "externalProductId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "externalVariantGroupId": {
-              "name": "externalVariantGroupId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "sku": {
-              "name": "sku",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "displayPrice": {
-              "name": "displayPrice",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "basePrice": {
-              "name": "basePrice",
-              "isArray": false,
-              "type": "Float",
-              "isRequired": false
-            },
-            "currency": {
-              "name": "currency",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "productUrl": {
-              "name": "productUrl",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "variantCount": {
-              "name": "variantCount",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": false
-            },
-            "sortOrder": {
-              "name": "sortOrder",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": false
-            }
-          }
-        },
-        "createManagedMerchProduct": {
-          "name": "createManagedMerchProduct",
-          "isArray": false,
-          "type": {
-            "nonModel": "MerchProductMutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "title": {
-              "name": "title",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "slug": {
-              "name": "slug",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "shortDescription": {
-              "name": "shortDescription",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "description": {
-              "name": "description",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "thumbnailUrl": {
-              "name": "thumbnailUrl",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "imageUrl": {
-              "name": "imageUrl",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "sourceType": {
-              "name": "sourceType",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "externalProductId": {
-              "name": "externalProductId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "externalVariantGroupId": {
-              "name": "externalVariantGroupId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "sku": {
-              "name": "sku",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "displayPrice": {
-              "name": "displayPrice",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "basePrice": {
-              "name": "basePrice",
-              "isArray": false,
-              "type": "Float",
-              "isRequired": false
-            },
-            "currency": {
-              "name": "currency",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "productUrl": {
-              "name": "productUrl",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "variantCount": {
-              "name": "variantCount",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": false
-            },
-            "materials": {
-              "name": "materials",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "sizeGuide": {
-              "name": "sizeGuide",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "shippingReturns": {
-              "name": "shippingReturns",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "whatsIncluded": {
-              "name": "whatsIncluded",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "careInstructions": {
-              "name": "careInstructions",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "fitNotes": {
-              "name": "fitNotes",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "status": {
-              "name": "status",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "isVisible": {
-              "name": "isVisible",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": true
-            },
-            "sortOrder": {
-              "name": "sortOrder",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": false
-            }
-          }
-        },
-        "upsertManagedMerchProductVariant": {
-          "name": "upsertManagedMerchProductVariant",
-          "isArray": false,
-          "type": {
-            "nonModel": "MerchProductVariantMutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "variantId": {
-              "name": "variantId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false
-            },
-            "productId": {
-              "name": "productId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            },
-            "externalVariantId": {
-              "name": "externalVariantId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "sku": {
-              "name": "sku",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "name": {
-              "name": "name",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "color": {
-              "name": "color",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "colorHex": {
-              "name": "colorHex",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "size": {
-              "name": "size",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "displayPrice": {
-              "name": "displayPrice",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "retailPrice": {
-              "name": "retailPrice",
-              "isArray": false,
-              "type": "Float",
-              "isRequired": false
-            },
-            "currency": {
-              "name": "currency",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "availabilityStatus": {
-              "name": "availabilityStatus",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "imageUrl": {
-              "name": "imageUrl",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "sortOrder": {
-              "name": "sortOrder",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": false
-            },
-            "status": {
-              "name": "status",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            }
-          }
-        },
-        "upsertManagedMerchProductImage": {
-          "name": "upsertManagedMerchProductImage",
-          "isArray": false,
-          "type": {
-            "nonModel": "MerchProductImageMutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "imageId": {
-              "name": "imageId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false
-            },
-            "productId": {
-              "name": "productId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            },
-            "mediaItemId": {
-              "name": "mediaItemId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false
-            },
-            "sortOrder": {
-              "name": "sortOrder",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": false
-            },
-            "isPrimary": {
-              "name": "isPrimary",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": false
-            },
-            "isMockup": {
-              "name": "isMockup",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": false
-            },
-            "isVisible": {
-              "name": "isVisible",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": false
-            },
-            "isFeatured": {
-              "name": "isFeatured",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": false
-            },
-            "altTextOverride": {
-              "name": "altTextOverride",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "colorOverride": {
-              "name": "colorOverride",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "colorHexOverride": {
-              "name": "colorHexOverride",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "status": {
-              "name": "status",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            }
-          }
-        },
-        "deleteManagedMerchProductImage": {
-          "name": "deleteManagedMerchProductImage",
-          "isArray": false,
-          "type": {
-            "nonModel": "MerchProductImageMutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "imageId": {
-              "name": "imageId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            }
-          }
-        },
-        "replaceManagedMerchProductBrands": {
-          "name": "replaceManagedMerchProductBrands",
-          "isArray": false,
-          "type": {
-            "nonModel": "MerchProductRelationshipMutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "productId": {
-              "name": "productId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            },
-            "brandIds": {
-              "name": "brandIds",
-              "isArray": true,
-              "type": "ID",
-              "isRequired": false,
-              "isArrayNullable": false
-            }
-          }
-        },
-        "replaceManagedMerchProductCategories": {
-          "name": "replaceManagedMerchProductCategories",
-          "isArray": false,
-          "type": {
-            "nonModel": "MerchProductRelationshipMutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "productId": {
-              "name": "productId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            },
-            "categoryIds": {
-              "name": "categoryIds",
-              "isArray": true,
-              "type": "ID",
-              "isRequired": false,
-              "isArrayNullable": false
-            }
-          }
-        },
-        "createManagedTwitchCommand": {
-          "name": "createManagedTwitchCommand",
-          "isArray": false,
-          "type": {
-            "nonModel": "ManagedTwitchCommandMutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "brandId": {
-              "name": "brandId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            },
-            "streamerId": {
-              "name": "streamerId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "name": {
-              "name": "name",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "reply": {
-              "name": "reply",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "enabled": {
-              "name": "enabled",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": true
-            },
-            "cooldownSeconds": {
-              "name": "cooldownSeconds",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": true
-            },
-            "isCustom": {
-              "name": "isCustom",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": true
-            },
-            "category": {
-              "name": "category",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "permissionLevel": {
-              "name": "permissionLevel",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            }
-          }
-        },
-        "updateManagedTwitchCommand": {
-          "name": "updateManagedTwitchCommand",
-          "isArray": false,
-          "type": {
-            "nonModel": "ManagedTwitchCommandMutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "commandId": {
-              "name": "commandId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            },
-            "brandId": {
-              "name": "brandId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            },
-            "streamerId": {
-              "name": "streamerId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "name": {
-              "name": "name",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "reply": {
-              "name": "reply",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "enabled": {
-              "name": "enabled",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": false
-            },
-            "cooldownSeconds": {
-              "name": "cooldownSeconds",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": false
-            },
-            "isCustom": {
-              "name": "isCustom",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": false
-            },
-            "category": {
-              "name": "category",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "permissionLevel": {
-              "name": "permissionLevel",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            }
-          }
-        },
-        "deleteManagedTwitchCommand": {
-          "name": "deleteManagedTwitchCommand",
-          "isArray": false,
-          "type": {
-            "nonModel": "ManagedTwitchCommandMutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "commandId": {
-              "name": "commandId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            },
-            "brandId": {
-              "name": "brandId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            }
-          }
-        },
-        "createOrUpdateManagedDiscordConfiguration": {
-          "name": "createOrUpdateManagedDiscordConfiguration",
-          "isArray": false,
-          "type": {
-            "nonModel": "ManagedDiscordConfigurationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "brandId": {
-              "name": "brandId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            }
-          }
-        },
-        "createManagedEvent": {
-          "name": "createManagedEvent",
-          "isArray": false,
-          "type": {
-            "nonModel": "ManagedEventMutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "brandId": {
-              "name": "brandId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false
-            },
-            "title": {
-              "name": "title",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "slug": {
-              "name": "slug",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "shortDescription": {
-              "name": "shortDescription",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "description": {
-              "name": "description",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "longDescription": {
-              "name": "longDescription",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "startAt": {
-              "name": "startAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": true
-            },
-            "endAt": {
-              "name": "endAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": true
-            },
-            "locationType": {
-              "name": "locationType",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "platform": {
-              "name": "platform",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "category": {
-              "name": "category",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "categories": {
-              "name": "categories",
-              "isArray": true,
-              "type": "String",
-              "isRequired": false,
-              "isArrayNullable": true
-            },
-            "featured": {
-              "name": "featured",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": false
-            },
-            "status": {
-              "name": "status",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "host": {
-              "name": "host",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "hostUserId": {
-              "name": "hostUserId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "hostDisplayName": {
-              "name": "hostDisplayName",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "rewardText": {
-              "name": "rewardText",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "recapText": {
-              "name": "recapText",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "ctaLabel": {
-              "name": "ctaLabel",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "ctaUrl": {
-              "name": "ctaUrl",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "tagIds": {
-              "name": "tagIds",
-              "isArray": true,
-              "type": "String",
-              "isRequired": false,
-              "isArrayNullable": true
-            },
-            "ticketMode": {
-              "name": "ticketMode",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "ticketTiers": {
-              "name": "ticketTiers",
-              "isArray": true,
-              "type": {
-                "input": "EventTicketTierInput"
-              },
-              "isRequired": false,
-              "isArrayNullable": true
-            },
-            "signupMode": {
-              "name": "signupMode",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "eventType": {
-              "name": "eventType",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "isTemplate": {
-              "name": "isTemplate",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": false
-            },
-            "isRecurring": {
-              "name": "isRecurring",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": false
-            },
-            "seriesId": {
-              "name": "seriesId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "parentEventId": {
-              "name": "parentEventId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "clonedFromEventId": {
-              "name": "clonedFromEventId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "recurrenceRule": {
-              "name": "recurrenceRule",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "recurrenceFrequency": {
-              "name": "recurrenceFrequency",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "recurrenceInterval": {
-              "name": "recurrenceInterval",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": false
-            },
-            "recurrenceByWeekday": {
-              "name": "recurrenceByWeekday",
-              "isArray": true,
-              "type": "String",
-              "isRequired": false,
-              "isArrayNullable": true
-            },
-            "recurrenceEndsAt": {
-              "name": "recurrenceEndsAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false
-            },
-            "recurrenceCount": {
-              "name": "recurrenceCount",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": false
-            }
-          }
-        },
-        "updateManagedEvent": {
-          "name": "updateManagedEvent",
-          "isArray": false,
-          "type": {
-            "nonModel": "ManagedEventMutationResult"
-          },
-          "isRequired": true,
-          "arguments": {
-            "eventId": {
-              "name": "eventId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": true
-            },
-            "brandId": {
-              "name": "brandId",
-              "isArray": false,
-              "type": "ID",
-              "isRequired": false
-            },
-            "title": {
-              "name": "title",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "slug": {
-              "name": "slug",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "shortDescription": {
-              "name": "shortDescription",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "description": {
-              "name": "description",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "longDescription": {
-              "name": "longDescription",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "startAt": {
-              "name": "startAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false
-            },
-            "endAt": {
-              "name": "endAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false
-            },
-            "locationType": {
-              "name": "locationType",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "platform": {
-              "name": "platform",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "category": {
-              "name": "category",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "categories": {
-              "name": "categories",
-              "isArray": true,
-              "type": "String",
-              "isRequired": false,
-              "isArrayNullable": true
-            },
-            "featured": {
-              "name": "featured",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": false
-            },
-            "status": {
-              "name": "status",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "host": {
-              "name": "host",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "hostUserId": {
-              "name": "hostUserId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "hostDisplayName": {
-              "name": "hostDisplayName",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "rewardText": {
-              "name": "rewardText",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "recapText": {
-              "name": "recapText",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "ctaLabel": {
-              "name": "ctaLabel",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "ctaUrl": {
-              "name": "ctaUrl",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "tagIds": {
-              "name": "tagIds",
-              "isArray": true,
-              "type": "String",
-              "isRequired": false,
-              "isArrayNullable": true
-            },
-            "ticketMode": {
-              "name": "ticketMode",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "ticketTiers": {
-              "name": "ticketTiers",
-              "isArray": true,
-              "type": {
-                "input": "EventTicketTierInput"
-              },
-              "isRequired": false,
-              "isArrayNullable": true
-            },
-            "signupMode": {
-              "name": "signupMode",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "eventType": {
-              "name": "eventType",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "isTemplate": {
-              "name": "isTemplate",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": false
-            },
-            "isRecurring": {
-              "name": "isRecurring",
-              "isArray": false,
-              "type": "Boolean",
-              "isRequired": false
-            },
-            "seriesId": {
-              "name": "seriesId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "parentEventId": {
-              "name": "parentEventId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "clonedFromEventId": {
-              "name": "clonedFromEventId",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "recurrenceRule": {
-              "name": "recurrenceRule",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "recurrenceFrequency": {
-              "name": "recurrenceFrequency",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "recurrenceInterval": {
-              "name": "recurrenceInterval",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": false
-            },
-            "recurrenceByWeekday": {
-              "name": "recurrenceByWeekday",
-              "isArray": true,
-              "type": "String",
-              "isRequired": false,
-              "isArrayNullable": true
-            },
-            "recurrenceEndsAt": {
-              "name": "recurrenceEndsAt",
-              "isArray": false,
-              "type": "AWSDateTime",
-              "isRequired": false
-            },
-            "recurrenceCount": {
-              "name": "recurrenceCount",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": false
             }
           }
         },
@@ -7521,47 +4143,16 @@
             }
           }
         }
-      },
-      "inputs": {
-        "EventTicketTierInput": {
-          "name": "EventTicketTierInput",
-          "attributes": {
-            "name": {
-              "name": "name",
-              "isArray": false,
-              "type": "String",
-              "isRequired": true
-            },
-            "price": {
-              "name": "price",
-              "isArray": false,
-              "type": "Float",
-              "isRequired": true
-            },
-            "perks": {
-              "name": "perks",
-              "isArray": false,
-              "type": "String",
-              "isRequired": false
-            },
-            "quantityAvailable": {
-              "name": "quantityAvailable",
-              "isArray": false,
-              "type": "Int",
-              "isRequired": false
-            }
-          }
-        }
       }
     }
   },
   "storage": {
     "aws_region": "eu-north-1",
-    "bucket_name": "amplify-projectrespawnweb-projectrespawnstoragebuc-bgbevu95nycb",
+    "bucket_name": "amplify-projectrespawnweb-projectrespawnstoragebuc-rtuzdjofeln9",
     "buckets": [
       {
         "name": "projectRespawnStorage",
-        "bucket_name": "amplify-projectrespawnweb-projectrespawnstoragebuc-bgbevu95nycb",
+        "bucket_name": "amplify-projectrespawnweb-projectrespawnstoragebuc-rtuzdjofeln9",
         "aws_region": "eu-north-1",
         "paths": {
           "public/*": {
@@ -7571,7 +4162,9 @@
             ],
             "authenticated": [
               "get",
-              "list"
+              "list",
+              "write",
+              "delete"
             ],
             "groupsSuperAdmin": [
               "get",
@@ -7608,7 +4201,7 @@
   "custom": {
     "API": {
       "projectRespawnApi": {
-        "endpoint": "https://pbbz0ux4ta.execute-api.eu-north-1.amazonaws.com/",
+        "endpoint": "https://b13o0x6ypi.execute-api.eu-north-1.amazonaws.com/",
         "region": "eu-north-1",
         "apiName": "projectRespawnApi"
       }

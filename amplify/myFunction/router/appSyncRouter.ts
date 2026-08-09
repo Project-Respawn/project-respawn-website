@@ -2,7 +2,7 @@ import { handleCloneEvent, handleCreateManagedEvent, handleCreateRecurringEventS
 import { handleCreateBrand, handleGetBrandPermissionDetails, handleRemoveBrandHelper, handleSetBrandOwner, handleUpdateBrand, handleUpsertBrandHelper } from '../brands'
 import { handleCreateForumReply, handleCreateForumThread, handleRecordForumActivity, handleRecordForumThreadView } from '../forums'
 import { handleGetMyAccessContext, handleListPermissionCatalog, handleReplaceGroupPermissions, handleSeedPermissionCatalog } from '../permissions'
-import { handleCreateManagedMerchProduct, handleDeleteManagedMerchProductImage, handleReplaceManagedMerchProductBrands, handleReplaceManagedMerchProductCategories, handleUpdateManagedMerchProduct, handleUpsertManagedMerchProductImage, handleUpsertManagedMerchProductVariant } from '../merch'
+import { handleCreateManagedMerchProduct, handleDeleteManagedMerchProductImage, handleListPublicMerchProducts, handleReplaceManagedMerchProductBrands, handleReplaceManagedMerchProductCategories, handleUpdateManagedMerchProduct, handleUpsertManagedMerchProductImage, handleUpsertManagedMerchProductVariant } from '../merch'
 import { handleCreateManagedTwitchCommand, handleDeleteManagedTwitchCommand, handleListManagedTwitchCommands, handleUpdateManagedTwitchCommand } from '../twitch'
 import { handleCreateOrUpdateManagedDiscordConfiguration, handleGetManagedDiscordConfiguration } from '../discord'
 import { handleCreateManagedMediaCollection, handleCreateManagedMediaItem, handleDeleteManagedMediaItem, handleListManagedMediaLibrary, handleListPublicMerchProductImages, handleUpdateManagedMediaItem } from '../media'
@@ -32,6 +32,7 @@ export async function routeAppSync(event: AppSyncEvent) {
     case 'updateManagedMediaItem': return handleUpdateManagedMediaItem(event)
     case 'deleteManagedMediaItem': return handleDeleteManagedMediaItem(event)
     case 'listPublicMerchProductImages': return handleListPublicMerchProductImages(event)
+    case 'listPublicMerchProducts': return handleListPublicMerchProducts(event)
     case 'listManagedOrders': return handleListManagedOrders(event)
     case 'listManagedProfiles': return handleListManagedProfiles(event)
     case 'recoverManagedOrder': return handleRecoverManagedOrder(event)

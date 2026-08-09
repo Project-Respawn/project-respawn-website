@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import { handleCreateManagedEvent, handleUpdateManagedEvent } from './managedHandlers'
+import { testPermissionModels } from '../shared/testPermissionModels'
 
 function makeClient(options: { eventBrandId?: string; brands?: string[]; accesses?: any[]; permissions?: any[] } = {}) {
   const created: any[] = []
@@ -11,6 +12,7 @@ function makeClient(options: { eventBrandId?: string; brands?: string[]; accesse
     updated,
     audits,
     models: {
+      ...testPermissionModels(['events.manage']),
       Brand: {
         get: async ({ id }: { id: string }) => ({ data: brands.has(id) ? { id, ownerUserId: id === 'brand-a' ? 'owner-a' : 'owner-b' } : null }),
       },

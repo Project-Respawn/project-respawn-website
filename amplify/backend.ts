@@ -125,6 +125,18 @@ httpApi.addRoutes({
   integration: httpLambdaIntegration,
 });
 
+httpApi.addRoutes({
+  path: '/orders/recover-fulfillment',
+  methods: [HttpMethod.POST],
+  integration: httpLambdaIntegration,
+});
+
+httpApi.addRoutes({
+  path: '/orders/import-existing-revolut',
+  methods: [HttpMethod.POST],
+  integration: httpLambdaIntegration,
+});
+
 // =============================================================================
 // Revolut routes
 // =============================================================================
@@ -144,6 +156,18 @@ httpApi.addRoutes({
 // =============================================================================
 // Twitch Bot routes
 // =============================================================================
+
+httpApi.addRoutes({
+  path: '/twitch/commands',
+  methods: [HttpMethod.GET],
+  integration: httpLambdaIntegration,
+});
+
+httpApi.addRoutes({
+  path: '/twitch/commands/me',
+  methods: [HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT, HttpMethod.DELETE],
+  integration: httpLambdaIntegration,
+});
 
 // Optional future Twitch routes
 httpApi.addRoutes({

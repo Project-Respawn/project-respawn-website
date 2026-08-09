@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import { handleCreateOrUpdateManagedDiscordConfiguration, handleGetManagedDiscordConfiguration } from './handlers'
+import { testPermissionModels } from '../shared/testPermissionModels'
 
 function makeClient(options: { configurations?: any[]; accesses?: any[]; permissions?: any[] } = {}) {
   const configurations = [...(options.configurations || [])]
@@ -9,6 +10,7 @@ function makeClient(options: { configurations?: any[]; accesses?: any[]; permiss
   return {
     configurations, created, updated, audits,
     models: {
+      ...testPermissionModels(['brands.manage']),
       Brand: { get: async ({ id }: { id: string }) => ({ data: ['brand-a', 'brand-b'].includes(id) ? { id, ownerUserId: id === 'brand-a' ? 'owner-a' : 'owner-b' } : null }) },
       BrandAccess: { list: async () => ({ data: options.accesses || [] }) },
       BrandAccessPermission: { list: async () => ({ data: options.permissions || [] }) },

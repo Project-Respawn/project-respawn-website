@@ -1,6 +1,6 @@
-import { isPlatformBrandOperator } from '../brands/policy'
-import { getIdentityGroups, getIdentityUsername, getResolverIdentity } from '../shared/auth'
+import { getIdentityUsername, getResolverIdentity } from '../shared/auth'
 import { writePermissionAudit } from '../shared/audit'
+import { getEffectivePermissions } from '../shared/requirePermission'
 import { MANAGED_TWITCH_COMMAND_FIELDS, getRequestedTwitchCommandFields, hasBrandTwitchManagePermission } from './managedPolicy'
 
 async function listAll(client: any, modelName: string) {
@@ -15,11 +15,12 @@ async function listAll(client: any, modelName: string) {
   return records
 }
 
-function getActor(event: any) {
+async function getActor(event: any, client: any) {
   const identity = getResolverIdentity(event)
   const userId = getIdentityUsername(identity)
   if (!userId) throw new Error('Authenticated user identity is required')
-  return { userId, isPlatformOperator: isPlatformBrandOperator(getIdentityGroups(identity)) }
+  const { effective } = await getEffectivePermissions(event, client)
+  return { userId, isPlatformOperator: effective.has('bots.twitch.manage') }
 }
 
 async function requireBrand(client: any, brandId: string) {
@@ -29,7 +30,7 @@ async function requireBrand(client: any, brandId: string) {
   return result.data
 }
 
-async function assertBrandTwitchManager(client: any, actor: ReturnType<typeof getActor>, brandId: string) {
+async function assertBrandTwitchManager(client: any, actor: Awaited<ReturnType<typeof getActor>>, brandId: string) {
   const [brand, accesses, permissions] = await Promise.all([
     requireBrand(client, brandId),
     listAll(client, 'BrandAccess'),
@@ -67,7 +68,7 @@ async function getCommand(client: any, commandId: string) {
   return result.data
 }
 
-async function authorizeScope(client: any, actor: ReturnType<typeof getActor>, brandId: string) {
+async function authorizeScope(client: any, actor: Awaited<ReturnType<typeof getActor>>, brandId: string) {
   if (actor.isPlatformOperator) {
     await requireBrand(client, brandId)
   } else {
@@ -75,7 +76,7 @@ async function authorizeScope(client: any, actor: ReturnType<typeof getActor>, b
   }
 }
 
-async function assertBrandTwitchAccess(client: any, actor: ReturnType<typeof getActor>, brandId: string) {
+async function assertBrandTwitchAccess(client: any, actor: Awaited<ReturnType<typeof getActor>>, brandId: string) {
   const [brand, accesses] = await Promise.all([requireBrand(client, brandId), listAll(client, 'BrandAccess')])
   if (!actor.isPlatformOperator && brand.ownerUserId !== actor.userId && !accesses.some((access) => access.brandId === brandId && access.userId === actor.userId)) {
     throw new Error('Brand access is required to view Twitch commands')
@@ -83,10 +84,10 @@ async function assertBrandTwitchAccess(client: any, actor: ReturnType<typeof get
 }
 
 export async function handleListManagedTwitchCommands(event: any, injectedClient?: any) {
-  const actor = getActor(event)
   const args = event.arguments || {}
   const brandId = requireBrandId(args)
   const client = injectedClient || await loadDataClient()
+  const actor = await getActor(event, client)
   await assertBrandTwitchAccess(client, actor, brandId)
   const commands = await listAll(client, 'TwitchCommand')
   const includeUnscoped = actor.isPlatformOperator && args.includeUnscoped === true
@@ -107,11 +108,11 @@ export async function handleListManagedTwitchCommands(event: any, injectedClient
 }
 
 export async function handleCreateManagedTwitchCommand(event: any, injectedClient?: any) {
-  const actor = getActor(event)
   const args = event.arguments || {}
   requireCreateFields(args)
   const brandId = requireBrandId(args)
   const client = injectedClient || await loadDataClient()
+  const actor = await getActor(event, client)
   await authorizeScope(client, actor, brandId)
   const result = await client.models.TwitchCommand.create({ ...selectFields(args), brandId })
   if (result.errors?.length || !result.data) throw new Error(result.errors?.[0]?.message || 'Failed to create Twitch command')
@@ -120,11 +121,11 @@ export async function handleCreateManagedTwitchCommand(event: any, injectedClien
 }
 
 export async function handleUpdateManagedTwitchCommand(event: any, injectedClient?: any) {
-  const actor = getActor(event)
   const args = event.arguments || {}
   if (typeof args.commandId !== 'string' || !args.commandId) throw new Error('commandId is required')
   const brandId = requireBrandId(args)
   const client = injectedClient || await loadDataClient()
+  const actor = await getActor(event, client)
   const command = await getCommand(client, args.commandId)
 
   if (!command.brandId && !actor.isPlatformOperator) {
@@ -144,11 +145,11 @@ export async function handleUpdateManagedTwitchCommand(event: any, injectedClien
 }
 
 export async function handleDeleteManagedTwitchCommand(event: any, injectedClient?: any) {
-  const actor = getActor(event)
   const args = event.arguments || {}
   if (typeof args.commandId !== 'string' || !args.commandId) throw new Error('commandId is required')
   const brandId = requireBrandId(args)
   const client = injectedClient || await loadDataClient()
+  const actor = await getActor(event, client)
   const command = await getCommand(client, args.commandId)
   if (!command.brandId) throw new Error('Unscoped Twitch commands must be assigned to a Brand by a platform administrator before deletion')
   if (command.brandId !== brandId) throw new Error('Twitch command does not belong to the selected brand')

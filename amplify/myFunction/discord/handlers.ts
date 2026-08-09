@@ -1,6 +1,6 @@
-import { isPlatformBrandOperator } from '../brands/policy'
-import { getIdentityGroups, getIdentityUsername, getResolverIdentity } from '../shared/auth'
+import { getIdentityUsername, getResolverIdentity } from '../shared/auth'
 import { writePermissionAudit } from '../shared/audit'
+import { getEffectivePermissions } from '../shared/requirePermission'
 import { hasBrandDiscordManagePermission } from './policy'
 
 async function listAll(client: any, modelName: string) {
@@ -15,11 +15,12 @@ async function listAll(client: any, modelName: string) {
   return records
 }
 
-function getActor(event: any) {
+async function getActor(event: any, client: any) {
   const identity = getResolverIdentity(event)
   const userId = getIdentityUsername(identity)
   if (!userId) throw new Error('Authenticated user identity is required')
-  return { userId, isPlatformOperator: isPlatformBrandOperator(getIdentityGroups(identity)) }
+  const { effective } = await getEffectivePermissions(event, client)
+  return { userId, isPlatformOperator: effective.has('brands.manage') }
 }
 
 function requireBrandId(args: Record<string, unknown>) {
@@ -34,7 +35,7 @@ async function requireBrand(client: any, brandId: string) {
   return result.data
 }
 
-async function assertDiscordConfigurationManager(client: any, actor: ReturnType<typeof getActor>, brandId: string) {
+async function assertDiscordConfigurationManager(client: any, actor: Awaited<ReturnType<typeof getActor>>, brandId: string) {
   const [brand, accesses, permissions] = await Promise.all([
     requireBrand(client, brandId),
     listAll(client, 'BrandAccess'),
@@ -50,10 +51,10 @@ function configurationResult(brandId: string, configuration: any | null, message
 }
 
 export async function handleGetManagedDiscordConfiguration(event: any, injectedClient?: any) {
-  const actor = getActor(event)
   const args = event.arguments || {}
   const brandId = requireBrandId(args)
   const client = injectedClient || await loadDataClient()
+  const actor = await getActor(event, client)
   await assertDiscordConfigurationManager(client, actor, brandId)
   const configurations = await listAll(client, 'DiscordBotConfiguration')
   const configuration = configurations.find((item) => item.brandId === brandId) || null
@@ -61,10 +62,10 @@ export async function handleGetManagedDiscordConfiguration(event: any, injectedC
 }
 
 export async function handleCreateOrUpdateManagedDiscordConfiguration(event: any, injectedClient?: any) {
-  const actor = getActor(event)
   const args = event.arguments || {}
   const brandId = requireBrandId(args)
   const client = injectedClient || await loadDataClient()
+  const actor = await getActor(event, client)
   await assertDiscordConfigurationManager(client, actor, brandId)
   const configurations = await listAll(client, 'DiscordBotConfiguration')
   const existing = configurations.find((item) => item.brandId === brandId)
