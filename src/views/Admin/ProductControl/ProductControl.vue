@@ -35,7 +35,7 @@ TABLE OF CONTENTS (SECTION NUMBERS)
 
       <div class="header-stats">
         <div class="stat-pill">
-          <span class="stat-num">{{ products.length }}</span>
+          <span class="stat-num">{{ accessibleProducts.length }}</span>
           <span class="stat-lbl">Total Products</span>
         </div>
 
@@ -75,6 +75,15 @@ TABLE OF CONTENTS (SECTION NUMBERS)
         </button>
       </div>
 
+      <label v-if="!isPlatformOperator" class="field inline-field">
+        <span>Brand context</span>
+        <select v-model="selectedBrandId" :disabled="accessLoading" @change="selectBrandContext">
+          <option v-for="brand in accessibleBrandOptions" :key="brand.brandId" :value="brand.brandId">
+            {{ brand.name }}
+          </option>
+        </select>
+      </label>
+
       <div class="filter-group">
         <button
           v-for="filter in visibilityFilters"
@@ -93,6 +102,7 @@ TABLE OF CONTENTS (SECTION NUMBERS)
         </p>
 
         <button
+          v-if="isPlatformOperator"
           class="btn-fetch btn-sync"
           @click="handlePrintfulSync"
           :disabled="syncingProducts || loadingProducts"
@@ -218,11 +228,12 @@ TABLE OF CONTENTS (SECTION NUMBERS)
 
               <td>
                 <div class="manage-buttons">
-                  <button class="btn-manage" @click="openProductModal(product)">
+                  <button class="btn-manage" :disabled="!canEditProduct(product)" @click="openProductModal(product)">
                     Edit Product
                   </button>
 
                   <button
+                    v-if="isPlatformOperator"
                     class="btn-manage media-manage-button"
                     type="button"
                     @click="openMediaModal(product)"
@@ -355,10 +366,28 @@ TABLE OF CONTENTS (SECTION NUMBERS)
               </label>
             </section>
 
+            <section v-if="isPlatformOperator" class="modal-section" id="section-platform-fields">
+              <h3>Platform product fields</h3>
+
+              <label class="field"><span>Source type</span><input v-model="productForm.sourceType" type="text" /></label>
+              <label class="field"><span>External product ID</span><input v-model="productForm.externalProductId" type="text" /></label>
+              <label class="field"><span>External variant group ID</span><input v-model="productForm.externalVariantGroupId" type="text" /></label>
+              <label class="field"><span>SKU</span><input v-model="productForm.sku" type="text" /></label>
+              <label class="field"><span>Display price</span><input v-model="productForm.displayPrice" type="text" /></label>
+              <label class="field"><span>Base price</span><input v-model="productForm.basePrice" type="number" step="0.01" /></label>
+              <label class="field"><span>Currency</span><input v-model="productForm.currency" type="text" /></label>
+              <label class="field"><span>Product URL</span><input v-model="productForm.productUrl" type="url" /></label>
+              <label class="field"><span>Variant count</span><input v-model="productForm.variantCount" type="number" min="0" /></label>
+              <label class="field"><span>Sort order</span><input v-model="productForm.sortOrder" type="number" /></label>
+              <label class="field"><span>Thumbnail URL</span><input v-model="productForm.thumbnailUrl" type="url" /></label>
+              <label class="field"><span>Image URL</span><input v-model="productForm.imageUrl" type="url" /></label>
+            </section>
+
 <!-- 3.4 Assignments & visibility (boxed check groups) -->
 <section class="modal-section" id="section-3-assignments">
   <h3>3. Assignments & visibility</h3>
 
+  <template v-if="canManageProductRelationships">
   <!-- Brand boxes -->
   <div class="field">
     <span class="field-label">Brand assignments</span>
@@ -410,6 +439,11 @@ TABLE OF CONTENTS (SECTION NUMBERS)
     </div>
   </div>
 
+  </template>
+  <p v-else class="product-modal-subtitle">
+    Brand and Category assignments are managed by platform staff.
+  </p>
+
   <label class="field inline-field">
     <span>Status</span>
     <select v-model="productForm.status">
@@ -456,7 +490,7 @@ TABLE OF CONTENTS (SECTION NUMBERS)
           <!-- 3.6 Modal footer -->
           <div class="product-modal-footer">
             <button class="btn-cancel" @click="closeProductModal">Cancel</button>
-            <button class="btn-primary sm" @click="saveProduct" :disabled="savingProduct">
+            <button class="btn-primary sm" @click="saveProduct" :disabled="savingProduct || !canEditProduct(productModal)">
               <span v-if="!savingProduct">Save Product</span>
               <span v-else>Saving...</span>
             </button>

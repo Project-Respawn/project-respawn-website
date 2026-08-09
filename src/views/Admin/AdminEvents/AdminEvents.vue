@@ -11,7 +11,15 @@
       </div>
 
       <div class="admin-events-hero-actions">
-        <button class="admin-events-btn admin-events-btn--primary" @click="openCreateWizard">
+        <label class="admin-events-field">
+          <span>Brand context</span>
+          <select v-model="selectedBrandId" class="admin-events-select" :disabled="accessLoading" @change="selectBrandContext">
+            <option v-for="brand in accessibleBrandOptions" :key="brand.brandId" :value="brand.brandId">
+              {{ brand.name }}
+            </option>
+          </select>
+        </label>
+        <button class="admin-events-btn admin-events-btn--primary" :disabled="!eventCapabilities.canManageSelectedBrandEvents" @click="openCreateWizard">
           Create event
         </button>
         <button class="admin-events-btn admin-events-btn--secondary" @click="refreshAll">
@@ -19,6 +27,8 @@
         </button>
       </div>
     </header>
+
+    <p v-if="saveError" class="admin-events-empty">{{ saveError }}</p>
 
     <section class="admin-events-summary-grid">
       <article class="admin-events-summary-card">
@@ -100,10 +110,10 @@
             </div>
 
             <div class="admin-events-list-actions">
-              <button class="admin-events-btn admin-events-btn--ghost" @click="editEvent(event)">
+              <button class="admin-events-btn admin-events-btn--ghost" :disabled="!canManageEvent(event)" @click="editEvent(event)">
                 Edit
               </button>
-              <button class="admin-events-btn admin-events-btn--ghost" @click="toggleFeatured(event)">
+              <button class="admin-events-btn admin-events-btn--ghost" :disabled="!canManageEvent(event)" @click="toggleFeatured(event)">
                 {{ event.featured ? 'Unfeature' : 'Feature' }}
               </button>
             </div>

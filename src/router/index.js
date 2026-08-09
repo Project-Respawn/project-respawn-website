@@ -2,204 +2,59 @@
 
 import { createRouter, createWebHistory } from 'vue-router';
 
-/*
- * PUBLIC VIEWS
- */
-import Home from '../views/Home/Home.vue';
-import About from '../views/About/About.vue';
-import Contact from '../views/Contact/Contact.vue';
+import publicRoutes from './public.routes';
+import botRoutes from './bot.routes';
+import adminRoutes from './admin.routes';
+import forumRoutes from './forum.routes';
+
 import NotFound from '../views/NotFound/NotFound.vue';
-import PrivacyPolicy from '../views/PrivacyPolicy/PrivacyPolicy.vue';
-import TeamTryouts from '../views/TeamTryouts/TeamTryouts.vue';
-import Merch from '../views/Merch/Merch.vue';
-import Events from '../views/Events/Events.vue';
-import Checkout from '../views/Checkout/Checkout.vue';
-import Join from '../views/Join/Join.vue';
-import Account from '../views/Account/Account.vue';
-import Roles from '../views/About/Roles/Roles.vue';
-import UserHomepage from '../views/UserHomepage/UserHomepage.vue';
-
-// NEW: Applications page
-import Applications from '../views/Applications/Applications.vue';
-
-/*
- * BOT VIEWS
- */
-import BotOverview from '../views/Bot/Overview/BotOverview.vue';
-import BotTwitch from '../views/Bot/Twitch/BotTwitch.vue';
-import BotDiscord from '../views/Bot/Discord/BotDiscord.vue';
-import BotAutomation from '../views/Bot/Automation/BotAutomation.vue';
-import BotSettings from '../views/Bot/Settings/BotSettings.vue';
-import TtsOverlay from '../views/Bot/Twitch/TTS/TtsOverlay.vue';
-import Moderation from '../views/Bot/Twitch/Moderation/Moderation.vue';
-import TtsSettings from '../views/Bot/Twitch/TTS/Settings/TtsSettings.vue';
-import TwitchCommands from '../views/Bot/Twitch/TwitchCommands/TwitchCommands.vue';
-import BotAlerts from '../views/Bot/Twitch/Alerts/BotAlerts.vue';
-
-/*
- * ADMIN VIEWS
- */
-import AdminLayout from '../views/Admin/AdminLayout/AdminLayout.vue';
-import AdminHome from '../views/Admin/AdminHome/AdminHome.vue';
-import AdminUsers from '../views/Admin/AdminUsers/AdminUsers.vue';
-import AdminPermissions from '../views/Admin/AdminPermissions/AdminPermissions.vue';
-import AdminBrands from '../views/Admin/AdminBrands/AdminBrands.vue';
-import AdminMerchCategories from '../views/Admin/AdminMerchCategories/AdminMerchCategories.vue';
-import AdminBrandPermissions from '../views/Admin/AdminBrandPermissions/AdminBrandPermissions.vue';
-import AdminForums from '../views/Admin/AdminForums/AdminForums.vue';
-import AdminEvents from '../views/Admin/AdminEvents/AdminEvents.vue';
-import AdminHost from '../views/Admin/AdminHost/AdminHost.vue';
-import ProductControl from '../views/Admin/ProductControl/ProductControl.vue';
-import MediaLibrary from '../views/Admin/MediaLibrary/MediaLibrary.vue';
-
-/*
- * FORUM VIEWS
- */
-import ForumLayout from '../views/Forum/ForumLayout/ForumLayout.vue';
-import ForumIndex from '../views/Forum/ForumIndex/ForumIndex.vue';
-import ForumBoard from '../views/Forum/ForumBoard/ForumBoard.vue';
-import ForumThread from '../views/Forum/ForumThread/ForumThread.vue';
+import BrandPermissions from '../views/BrandPermissions/BrandPermissions.vue';
+import { refreshAccessContext } from '../composables/useAccessContext.js';
 
 const routes = [
-  // Public routes
-  { path: '/', component: Home },
-  { path: '/about', component: About },
-  { path: '/about/roles', component: Roles },
-  { path: '/contact', component: Contact },
-  { path: '/privacy-policy', component: PrivacyPolicy },
-  { path: '/team-tryouts', component: TeamTryouts },
-  { path: '/merch', component: Merch },
-  { path: '/checkout', component: Checkout },
-  { path: '/events', component: Events },
-  { path: '/join', component: Join },
-  { path: '/account', component: Account },
+    ...publicRoutes,
+    ...botRoutes,
+    ...adminRoutes,
+    ...forumRoutes,
 
-  // NEW: public Applications page
-  {
-    path: '/apply',
-    name: 'Applications',
-    component: Applications,
-  },
+    {
+        path: '/brand-permissions',
+        name: 'BrandPermissions',
+        component: BrandPermissions,
+        meta: { requiresBrandAccess: true }
+    },
 
-  // Authenticated user home
-  {
-    path: '/home',
-    name: 'UserHomepage',
-    component: UserHomepage,
-    meta: { requiresAuth: true },
-  },
-
-  // Admin dashboard (with AdminLayout shell + sidebar)
-  {
-    path: '/dashboard',
-    component: AdminLayout,
-    meta: { hideLayout: true },
-    children: [
-      {
-        path: '',
-        name: 'AdminHome',
-        component: AdminHome,
-      },
-      {
-        path: 'users',
-        name: 'AdminUsers',
-        component: AdminUsers,
-      },
-      {
-        path: 'permissions',
-        name: 'AdminPermissions',
-        component: AdminPermissions,
-      },
-      {
-        path: 'events',
-        name: 'AdminEvents',
-        component: AdminEvents,
-      },
-      {
-        path: 'forums',
-        name: 'AdminForums',
-        component: AdminForums,
-      },
-      {
-        path: 'brands',
-        name: 'AdminBrands',
-        component: AdminBrands,
-      },
-      {
-        path: 'merch-categories',
-        name: 'AdminMerchCategories',
-        component: AdminMerchCategories,
-      },
-      {
-        path: 'brand-permissions',
-        name: 'AdminBrandPermissions',
-        component: AdminBrandPermissions,
-      },
-      {
-        path: 'product-control',
-        name: 'ProductControl',
-        component: ProductControl,
-      },
-      {
-        path: 'media-library',
-        name: 'MediaLibrary',
-        component: MediaLibrary,
-      },
-      {
-        path: 'host-permissions',
-        name: 'AdminHost',
-        component: AdminHost,
-      },
-    ],
-  },
-
-  // Forum routes
-  {
-    path: '/forum',
-    component: ForumLayout,
-    children: [
-      {
-        path: '',
-        name: 'ForumIndex',
-        component: ForumIndex,
-      },
-      {
-        path: 'board/:boardSlug',
-        name: 'ForumBoard',
-        component: ForumBoard,
-        props: true,
-      },
-      {
-        path: 'thread/:threadSlug',
-        name: 'ForumThread',
-        component: ForumThread,
-        props: true,
-      },
-    ],
-  },
-
-  // Bot routes
-  { path: '/bot', component: BotOverview },
-  { path: '/bot/twitch', component: BotTwitch },
-  { path: '/bot/twitch/commands', component: TwitchCommands },
-  { path: '/bot/twitch/alerts', component: BotAlerts },
-  { path: '/bot/twitch/tts', component: TtsSettings },
-  { path: '/bot/twitch/moderation', component: Moderation },
-  { path: '/tts-overlay', component: TtsOverlay, meta: { hideLayout: true } },
-  { path: '/bot/discord', component: BotDiscord },
-  { path: '/bot/automation', component: BotAutomation },
-  { path: '/bot/settings', component: BotSettings },
-
-  // 404 catch-all
-  { path: '/:pathMatch(.*)', component: NotFound },
+    {
+        path: '/:pathMatch(.*)',
+        component: NotFound
+    }
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes,
-  scrollBehavior() {
-    return { top: 0 };
-  },
+    history: createWebHistory(),
+    routes,
+
+    scrollBehavior() {
+        return {
+            top: 0
+        };
+    }
+});
+
+router.beforeEach(async (to) => {
+    const requiredPermission = to.matched.map((record) => record.meta?.requiredPermission).find(Boolean);
+    const requiredGroups = to.matched.flatMap((record) => record.meta?.requiredGroups || []);
+    const requiresBrandAccess = to.matched.some((record) => record.meta?.requiresBrandAccess);
+    if (!requiredPermission && !requiredGroups.length && !requiresBrandAccess) return true;
+    try {
+        const context = await refreshAccessContext();
+        const hasPermission = !requiredPermission || context.permissions.includes(requiredPermission);
+        const hasGroup = !requiredGroups.length || requiredGroups.some((group) => context.groups.includes(group));
+        const hasBrandAccess = !requiresBrandAccess || context.brands.length > 0;
+        return hasPermission && hasGroup && hasBrandAccess ? true : { path: '/' };
+    } catch {
+        return { path: '/' };
+    }
 });
 
 export default router;

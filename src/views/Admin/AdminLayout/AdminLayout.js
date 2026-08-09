@@ -1,4 +1,5 @@
 import { getCurrentUser, fetchAuthSession, signOut } from 'aws-amplify/auth';
+import { refreshAccessContext } from '@/composables/useAccessContext.js';
 
 const ADMIN_ALLOWED_GROUPS = ['SuperAdmin', 'Admin', 'Staff'];
 
@@ -18,53 +19,61 @@ export default {
       authError: '',
       adminEmail: '',
       currentUserGroups: [],
+      effectivePermissions: [],
       tabs: [
         { id: 'home', icon: '🏠', label: 'Home', route: '/dashboard' },
-        { id: 'users', icon: '👥', label: 'Users', route: '/dashboard/users' },
+        { id: 'users', icon: '👥', label: 'Users', route: '/dashboard/users', requiredPermission: 'users.view' },
         {
           id: 'permissions',
           icon: '🛡️',
           label: 'Permissions',
           route: '/dashboard/permissions',
+          requiredGroups: ['SuperAdmin', 'Admin'],
         },
-        { id: 'events', icon: '📅', label: 'Events', route: '/dashboard/events' },
-        { id: 'forums', icon: '🧵', label: 'Forums', route: '/dashboard/forums' },
-        { id: 'brands', icon: '🏷️', label: 'Brands', route: '/dashboard/brands' },
+        { id: 'events', icon: '📅', label: 'Events', route: '/dashboard/events', requiredPermission: 'events.manage' },
+        { id: 'forums', icon: '🧵', label: 'Forums', route: '/dashboard/forums', requiredPermission: 'forums.structure.manage' },
+        { id: 'orders', icon: '📦', label: 'Orders', route: '/dashboard/orders', requiredPermission: 'orders.view' },
+        { id: 'brands', icon: '🏷️', label: 'Brands', route: '/dashboard/brands', requiredPermission: 'brands.manage' },
+        {
+          id: 'brand-permissions',
+          icon: '🔐',
+          label: 'Brand Permissions',
+          route: '/brand-permissions',
+          requiredGroups: ['SuperAdmin', 'Admin', 'Staff'],
+        },
         {
           id: 'merch-categories',
           icon: '📦',
           label: 'Merch Categories',
           route: '/dashboard/merch-categories',
-        },
-        {
-          id: 'brand-permissions',
-          icon: '🔐',
-          label: 'Brand Permissions',
-          route: '/dashboard/brand-permissions',
+          requiredPermission: 'merch.categories.manage',
         },
         {
           id: 'product-control',
           icon: '🛍️',
           label: 'Product Control',
           route: '/dashboard/product-control',
+          requiredPermission: 'products.edit',
         },
         {
           id: 'media-library',
           icon: '🗂️',
           label: 'Media Library',
           route: '/dashboard/media-library',
-        },
-        {
-          id: 'host-permissions',
-          icon: '🎤',
-          label: 'Host Permissions',
-          route: '/dashboard/host-permissions',
+          requiredPermission: 'media.library.manage',
         },
       ],
     };
   },
 
   computed: {
+    availableTabs() {
+      return this.tabs.filter((tab) =>
+        (!tab.requiredGroups || tab.requiredGroups.some((group) => this.currentUserGroups.includes(group))) &&
+        (!tab.requiredPermission || this.effectivePermissions.includes(tab.requiredPermission))
+      );
+    },
+
     currentAdminPrimaryRoleLabel() {
       const priority = ['SuperAdmin', 'Admin', 'Staff'];
       const found = priority.find((role) => this.currentUserGroups.includes(role));
@@ -86,11 +95,11 @@ export default {
       if (path === '/dashboard' || path === '/dashboard/') return 'home';
       if (path.includes('/product-control')) return 'product-control';
       if (path.includes('/media-library')) return 'media-library';
-      if (path.includes('/host-permissions')) return 'host-permissions';
-      if (path.includes('/brand-permissions')) return 'brand-permissions';
       if (path.includes('/merch-categories')) return 'merch-categories';
+      if (path.includes('/brand-permissions')) return 'brand-permissions';
       if (path.includes('/brands')) return 'brands';
       if (path.includes('/forums')) return 'forums';
+      if (path.includes('/orders')) return 'orders';
       if (path.includes('/events')) return 'events';
       if (path.includes('/permissions')) return 'permissions';
       if (path.includes('/users')) return 'users';
@@ -129,6 +138,8 @@ export default {
         }
 
         this.currentUserGroups = groups;
+        const context = await refreshAccessContext();
+        this.effectivePermissions = context.permissions || [];
         this.adminEmail = user.signInDetails?.loginId || user.username || '';
         this.isAuthenticated = true;
       } catch (error) {

@@ -145,9 +145,11 @@ export default {
     return {
       toastMessage: '',
       toastTimer: null,
+      callbackRefreshTimer: null,
       twitchConnected: false,
       twitchAccountName: '',
       currentUserId: '',
+      lookupUserIds: [],
       twitchPermissions: [
         {
           badge: 'Twitch',
@@ -172,9 +174,34 @@ export default {
   },
 
   async mounted() {
+    window.addEventListener('focus', this.handleWindowFocus);
+    document.addEventListener('visibilitychange', this.handleVisibilityChange);
+
     await this.loadCurrentUser();
-    await this.refreshStatus();
-    this.checkCallbackResult();
+
+    const callback = this.parseCallbackResult();
+
+    if (callback.error) {
+      this.showToast(`Twitch connection error: ${callback.error}`);
+      this.clearOAuthQueryParams();
+      await this.refreshStatus({ silent: true });
+      return;
+    }
+
+    if (callback.isOAuthReturn) {
+      this.showToast('Finalising Twitch connection...');
+      await this.refreshStatusWithRetry();
+      this.clearOAuthQueryParams();
+      return;
+    }
+
+    await this.refreshStatus({ silent: true });
+  },
+
+  beforeUnmount() {
+    window.removeEventListener('focus', this.handleWindowFocus);
+    document.removeEventListener('visibilitychange', this.handleVisibilityChange);
+    clearTimeout(this.callbackRefreshTimer);
   },
 
   methods: {
@@ -191,55 +218,221 @@ export default {
         const user = await getCurrentUser();
         const session = await fetchAuthSession();
 
+        const tokenSub = session?.tokens?.idToken?.payload?.sub || '';
+        const amplifyUserId = user?.userId || '';
+        const amplifyUsername = user?.username || '';
+
         this.currentUserId =
-          session?.tokens?.idToken?.payload?.sub ||
-          user?.userId ||
+          tokenSub ||
+          amplifyUserId ||
+          amplifyUsername ||
           '';
+
+        this.lookupUserIds = [tokenSub, amplifyUserId, amplifyUsername]
+          .map((value) => String(value || '').trim())
+          .filter((value, index, list) => value && list.indexOf(value) === index);
 
         console.log('Current Cognito user ID:', this.currentUserId);
       } catch (error) {
         console.error('Failed to load current user:', error);
         this.currentUserId = '';
+        this.lookupUserIds = [];
         this.showToast('Could not identify signed-in user');
       }
     },
 
-    checkCallbackResult() {
-      const params = new URLSearchParams(window.location.search);
-      const error = params.get('error');
+    parseCallbackResult() {
+      const searchParams = new URLSearchParams(window.location.search || '');
+      const hashValue = window.location.hash || '';
+      const hashQuery = hashValue.includes('?') ? hashValue.split('?')[1] : '';
+      const hashParams = new URLSearchParams(hashQuery);
 
-      if (error) {
-        this.showToast(`Twitch connection error: ${error}`);
-      }
+      const readParam = (name) => {
+        return searchParams.get(name) || hashParams.get(name) || '';
+      };
+
+      const error = readParam('error');
+      const hasCode = Boolean(readParam('code'));
+      const hasState = Boolean(readParam('state'));
+      const connectedFlag = String(readParam('connected')).toLowerCase();
+      const successFlag = String(readParam('success')).toLowerCase();
+
+      const isOAuthReturn =
+        hasCode ||
+        hasState ||
+        connectedFlag === '1' ||
+        connectedFlag === 'true' ||
+        successFlag === '1' ||
+        successFlag === 'true';
+
+      return {
+        error,
+        isOAuthReturn
+      };
     },
 
-    async refreshStatus() {
-      if (!this.currentUserId) return;
+    clearOAuthQueryParams() {
+      if (!window.location.search && !window.location.hash.includes('?')) {
+        return;
+      }
 
+      const cleanUrl = `${window.location.origin}${window.location.pathname}`;
+      window.history.replaceState({}, '', cleanUrl);
+    },
+
+    async fetchConnectionForUser(userId) {
+      const response = await fetch(
+        `http://localhost:3000/api/twitch/connection-by-user?userId=${encodeURIComponent(userId)}&t=${Date.now()}`,
+        {
+          cache: 'no-store'
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Connection request failed');
+      }
+
+      const data = await response.json();
+      return data?.connection || null;
+    },
+
+    async fetchBotStatus() {
+      const response = await fetch(
+        `http://localhost:3000/api/twitch/status?t=${Date.now()}`,
+        {
+          cache: 'no-store'
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Status request failed');
+      }
+
+      return response.json();
+    },
+
+    async fetchConnectedBroadcaster() {
+      const response = await fetch(
+        `http://localhost:3000/api/twitch/connections?t=${Date.now()}`,
+        {
+          cache: 'no-store'
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Connections request failed');
+      }
+
+      const data = await response.json();
+      const connections = Array.isArray(data?.connections) ? data.connections : [];
+
+      return (
+        connections.find((item) => item?.isConnected && (item?.twitchDisplayName || item?.twitchLogin)) ||
+        null
+      );
+    },
+
+    async refreshStatus({ silent = false } = {}) {
       try {
-        const response = await fetch(
-          `http://localhost:3000/api/twitch/connection-by-user?userId=${encodeURIComponent(
-            this.currentUserId
-          )}`
-        );
+        let connection = null;
 
-        if (!response.ok) {
-          throw new Error('Connection request failed');
+        if (this.lookupUserIds.length) {
+          for (const userId of this.lookupUserIds) {
+            const candidate = await this.fetchConnectionForUser(userId);
+            if (candidate) {
+              connection = candidate;
+              break;
+            }
+          }
         }
 
-        const data = await response.json();
-        const connection = data.connection || null;
+        if (connection) {
+          this.twitchConnected = !!connection?.isConnected;
+          this.twitchAccountName =
+            connection?.twitchDisplayName ||
+            connection?.twitchLogin ||
+            '';
 
-        this.twitchConnected = !!connection?.isConnected;
-        this.twitchAccountName =
-          connection?.twitchDisplayName ||
-          connection?.twitchLogin ||
-          '';
+          console.log('Twitch connection resolved by user lookup:', {
+            localUserIds: this.lookupUserIds,
+            twitchAccountName: this.twitchAccountName,
+            isConnected: this.twitchConnected
+          });
+
+          return this.twitchConnected;
+        }
+
+        // Local fallback for cases where Cognito userId does not match the saved bot-side connection userId.
+        const connectedBroadcaster = await this.fetchConnectedBroadcaster();
+
+        if (connectedBroadcaster) {
+          this.twitchConnected = true;
+          this.twitchAccountName =
+            connectedBroadcaster.twitchDisplayName ||
+            connectedBroadcaster.twitchLogin ||
+            '';
+
+          console.log('Twitch connection resolved by broadcaster fallback:', {
+            localUserIds: this.lookupUserIds,
+            twitchAccountName: this.twitchAccountName,
+            broadcasterUserId: connectedBroadcaster.broadcasterUserId || '',
+            isConnected: true
+          });
+
+          return true;
+        }
+
+        const botStatus = await this.fetchBotStatus();
+        this.twitchConnected = !!botStatus?.connected;
+        this.twitchAccountName = botStatus?.displayName || botStatus?.username || '';
+
+        console.log('Twitch status resolved by bot status fallback:', {
+          localUserIds: this.lookupUserIds,
+          botConnected: this.twitchConnected,
+          botUsername: this.twitchAccountName
+        });
+
+        return this.twitchConnected;
       } catch (error) {
         console.error('Failed to refresh Twitch status:', error);
         this.twitchConnected = false;
         this.twitchAccountName = '';
-        this.showToast('Could not load Twitch connection status');
+        if (!silent) {
+          this.showToast('Could not load Twitch connection status');
+        }
+        return false;
+      }
+    },
+
+    async refreshStatusWithRetry() {
+      const maxAttempts = 6;
+      const delayMs = 1200;
+
+      for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+        const connected = await this.refreshStatus({ silent: true });
+
+        if (connected) {
+          this.showToast('Twitch account connected');
+          return;
+        }
+
+        if (attempt < maxAttempts - 1) {
+          await new Promise((resolve) => {
+            this.callbackRefreshTimer = setTimeout(resolve, delayMs);
+          });
+        }
+      }
+
+      this.showToast('Connection saved. Status will update shortly; use Refresh Status if needed.');
+    },
+
+    async handleWindowFocus() {
+      await this.refreshStatus({ silent: true });
+    },
+
+    async handleVisibilityChange() {
+      if (document.visibilityState === 'visible') {
+        await this.refreshStatus({ silent: true });
       }
     },
 

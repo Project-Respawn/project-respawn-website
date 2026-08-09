@@ -118,6 +118,25 @@ httpApi.addRoutes({
   integration: httpLambdaIntegration,
 });
 
+// Generic provider-aware fulfillment routes.
+httpApi.addRoutes({
+  path: '/orders/fulfill',
+  methods: [HttpMethod.POST],
+  integration: httpLambdaIntegration,
+});
+
+httpApi.addRoutes({
+  path: '/orders/recover-fulfillment',
+  methods: [HttpMethod.POST],
+  integration: httpLambdaIntegration,
+});
+
+httpApi.addRoutes({
+  path: '/orders/import-existing-revolut',
+  methods: [HttpMethod.POST],
+  integration: httpLambdaIntegration,
+});
+
 // =============================================================================
 // Revolut routes
 // =============================================================================
@@ -138,14 +157,12 @@ httpApi.addRoutes({
 // Twitch Bot routes
 // =============================================================================
 
-// Bot/runtime lookup by broadcasterId
 httpApi.addRoutes({
   path: '/twitch/commands',
   methods: [HttpMethod.GET],
   integration: httpLambdaIntegration,
 });
 
-// Dashboard self-service routes for the signed-in Cognito user
 httpApi.addRoutes({
   path: '/twitch/commands/me',
   methods: [HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT, HttpMethod.DELETE],

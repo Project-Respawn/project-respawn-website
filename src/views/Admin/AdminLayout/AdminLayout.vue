@@ -34,7 +34,7 @@
 
         <nav class="sidebar-nav">
           <button
-            v-for="tab in tabs"
+            v-for="tab in availableTabs"
             :key="tab.id"
             class="nav-item"
             :class="{ active: activeTab === tab.id }"

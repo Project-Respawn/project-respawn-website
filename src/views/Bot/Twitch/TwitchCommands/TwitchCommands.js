@@ -1,16 +1,8 @@
-/* <!-- =========================================================
-     2) SCRIPT – Logic, Amplify integration, state, methods
-       2a) Imports and constants
-       2b) Component data state
-       2c) Computed properties
-       2d) Lifecycle
-       2e) Methods
-========================================================= -->*/
-
-
 import { generateClient } from 'aws-amplify/data';
 import { getCurrentUser } from 'aws-amplify/auth';
 import BotSidebar from '@/components/BotSidebar/BotSidebar.vue';
+import { refreshAccessContext } from '@/composables/useAccessContext.js';
+import { filterTwitchCommandsForBrand, getTwitchCommandCapabilities } from './TwitchCommands.access.js';
 
 let generatedClient = null;
 const client = new Proxy({}, {
@@ -21,6 +13,7 @@ const client = new Proxy({}, {
     return generatedClient[prop];
   }
 });
+
 const TWITCH_API_BASE = 'http://localhost:3000';
 
 export default {
@@ -29,23 +22,17 @@ export default {
     BotSidebar
   },
 
-  /* ---------------------------------------------
-   * 2.1 Component state (data)
-   * ------------------------------------------- */
   data() {
     return {
-      // Selection
       selectedCommandId: null,
       expandedCommandId: null,
-
-      // Twitch connection
       streamerId: null,
       connection: null,
-
-      // Commands
+      hasBroadcasterContext: false,
       commands: [],
-
-      // UI state
+      accessContext: { groups: [], brands: [] },
+      selectedBrandId: '',
+      accessLoading: false,
       isLoading: false,
       isSaving: false,
       connectionError: '',
@@ -53,8 +40,6 @@ export default {
       activeTab: 'custom',
       searchQuery: '',
       showHelp: true,
-
-      // Suggested/default command templates (base + editable copy)
       baseSuggestedCommands: [
         {
           key: 'discord',
@@ -101,58 +86,113 @@ export default {
           isEnabled: false
         }
       ],
-
       suggestedCommands: []
     };
   },
 
-  /* ---------------------------------------------
-   * 2.2 Derived state (computed)
-   * ------------------------------------------- */
   computed: {
+    commandCapabilities() {
+      return getTwitchCommandCapabilities(this.accessContext, this.selectedBrandId);
+    },
+
+    isPlatformOperator() {
+      return this.commandCapabilities.isPlatformOperator;
+    },
+
+    accessibleBrandOptions() {
+      return this.accessContext.brands || [];
+    },
+
+    canManageSelectedBrandCommands() {
+      return this.commandCapabilities.canManageSelectedBrandCommands;
+    },
+
     filteredCustomCommands() {
       const q = this.searchQuery.trim().toLowerCase();
       const customCommands = this.commands.filter(command => command.isCustom === true);
       if (!q) return customCommands;
 
-      return customCommands.filter(command => {
-        return (
-          (command.name && command.name.toLowerCase().includes(q)) ||
-          (command.reply && command.reply.toLowerCase().includes(q)) ||
-          (command.category && command.category.toLowerCase().includes(q))
-        );
-      });
+      return customCommands.filter(command =>
+        (command.name && command.name.toLowerCase().includes(q)) ||
+        (command.reply && command.reply.toLowerCase().includes(q)) ||
+        (command.category && command.category.toLowerCase().includes(q))
+      );
     },
 
     filteredSuggestedCommands() {
       const q = this.searchQuery.trim().toLowerCase();
       if (!q) return this.suggestedCommands;
 
-      return this.suggestedCommands.filter(command => {
-        return (
-          (command.name && command.name.toLowerCase().includes(q)) ||
-          (command.description && command.description.toLowerCase().includes(q)) ||
-          (command.category && command.category.toLowerCase().includes(q))
-        );
-      });
+      return this.suggestedCommands.filter(command =>
+        (command.name && command.name.toLowerCase().includes(q)) ||
+        (command.description && command.description.toLowerCase().includes(q)) ||
+        (command.category && command.category.toLowerCase().includes(q))
+      );
     }
   },
 
-  /* ---------------------------------------------
-   * 2.3 Lifecycle
-   * ------------------------------------------- */
   async mounted() {
-    // Initialize suggested commands from base
     this.suggestedCommands = this.baseSuggestedCommands.map(item => ({ ...item }));
-    // Initialize Twitch connection + load commands
+    await this.loadAccessContext();
     await this.initializeBroadcasterContext();
   },
 
-  /* ---------------------------------------------
-   * 2.4 Methods – behavior & data ops
-   * ------------------------------------------- */
   methods: {
-    /* UI helpers */
+    async loadAccessContext() {
+      this.accessLoading = true;
+      try {
+        const context = await refreshAccessContext();
+        this.accessContext = context;
+        this.selectedBrandId = context.brands?.some((brand) => brand.brandId === this.selectedBrandId)
+          ? this.selectedBrandId
+          : context.brands?.[0]?.brandId || '';
+      } catch (error) {
+        this.accessContext = { groups: [], brands: [] };
+        this.selectedBrandId = '';
+        this.showCommandError('Failed to load Brand access', error);
+      } finally {
+        this.accessLoading = false;
+      }
+    },
+
+    async selectBrandContext() {
+      this.commandError = '';
+      await this.loadCommands();
+    },
+
+    assertCanManageCommands() {
+      if (!this.selectedBrandId) throw new Error('Select a Brand before managing Twitch commands.');
+      if (!this.canManageSelectedBrandCommands) throw new Error('You do not have permission to manage Twitch commands for the selected Brand.');
+    },
+
+    canManageCommand(command) {
+      return this.canManageSelectedBrandCommands && !command?.isUnscoped && command?.brandId === this.selectedBrandId;
+    },
+
+    async createManagedCommand(payload) {
+      this.assertCanManageCommands();
+      const response = await client.mutations.createManagedTwitchCommand({ ...payload, brandId: this.selectedBrandId });
+      if (response?.errors?.length) throw new Error(response.errors[0].message || 'Failed to create command.');
+      if (!response?.data) throw new Error('No data returned while creating command.');
+      return { id: response.data.commandId, ...payload, brandId: this.selectedBrandId };
+    },
+
+    async updateManagedCommand(command, payload) {
+      this.assertCanManageCommands();
+      if (!command?.id || command.brandId !== this.selectedBrandId) throw new Error('Command is outside the selected Brand context.');
+      const response = await client.mutations.updateManagedTwitchCommand({ commandId: command.id, brandId: this.selectedBrandId, ...payload });
+      if (response?.errors?.length) throw new Error(response.errors[0].message || 'Failed to update command.');
+      if (!response?.data) throw new Error('No data returned while updating command.');
+      return { ...command, ...payload, brandId: this.selectedBrandId };
+    },
+
+    async deleteManagedCommand(command) {
+      this.assertCanManageCommands();
+      if (!command?.id || command.brandId !== this.selectedBrandId) throw new Error('Command is outside the selected Brand context.');
+      const response = await client.mutations.deleteManagedTwitchCommand({ commandId: command.id, brandId: this.selectedBrandId });
+      if (response?.errors?.length) throw new Error(response.errors[0].message || 'Failed to delete command.');
+      return response.data;
+    },
     switchTab(tab) {
       this.activeTab = tab;
       this.expandedCommandId = null;
@@ -163,10 +203,12 @@ export default {
     },
 
     showCommandError(message, error) {
-      const details = error?.message ||
+      const details =
+        error?.message ||
         (Array.isArray(error)
           ? error.map(err => err?.message || String(err)).join('; ')
           : String(error || ''));
+
       const fullMessage = `${message}${details ? `: ${details}` : ''}`;
       console.error(fullMessage, error);
       this.commandError = fullMessage;
@@ -182,69 +224,112 @@ export default {
 
       this.suggestedCommands.splice(index, 1, {
         ...original,
-        isEnabled: current.isEnabled
+        isEnabled: current.isEnabled,
+        savedCommandId: current.savedCommandId || null
       });
     },
 
-    /* Amplify / Twitch context */
     async initializeBroadcasterContext() {
       this.isLoading = true;
       this.connectionError = '';
+      this.hasBroadcasterContext = false;
+      this.connection = null;
+      this.streamerId = null;
 
       try {
         const user = await getCurrentUser();
-        const userId = user?.userId || user?.username;
+        const amplifyUserId = user?.userId || '';
+        const amplifyUsername = user?.username || '';
 
-        if (!userId) {
-          throw new Error('No authenticated user found');
+        const lookupUserIds = [this.accessContext.userId, amplifyUserId, amplifyUsername]
+          .map(value => String(value || '').trim())
+          .filter((value, index, list) => value && list.indexOf(value) === index);
+
+        if (!lookupUserIds.length) {
+          this.connectionError = 'No authenticated user found';
+          this.loadSuggestedCommandsWithoutBroadcaster();
+          await this.loadCommands();
+          return;
         }
 
-        const response = await fetch(
-          `${TWITCH_API_BASE}/api/twitch/connection-by-user?userId=${encodeURIComponent(userId)}`
-        );
+        let connection = null;
 
-        const data = await response.json();
-        const connection = data?.connection || null;
+        for (const userId of lookupUserIds) {
+          const response = await fetch(
+            `${TWITCH_API_BASE}/api/twitch/connection-by-user?userId=${encodeURIComponent(userId)}&t=${Date.now()}`,
+            { cache: 'no-store' }
+          );
+
+          if (!response.ok) continue;
+
+          const data = await response.json();
+          const candidate = data?.connection || null;
+
+          if (candidate) {
+            connection = candidate;
+            break;
+          }
+        }
 
         if (!connection?.broadcasterUserId) {
-          throw new Error('No connected Twitch broadcaster found for this account');
+          this.connectionError = 'No connected Twitch broadcaster found for this account';
+          this.loadSuggestedCommandsWithoutBroadcaster();
+          await this.loadCommands();
+          return;
         }
 
         this.connection = connection;
         this.streamerId = String(connection.broadcasterUserId);
+        this.hasBroadcasterContext = true;
 
         await this.loadCommands();
       } catch (error) {
         console.error('Failed to initialize broadcaster context:', error);
-        this.connectionError = error.message || 'Failed to load Twitch connection';
+        this.connectionError = error?.message || 'Failed to load Twitch connection';
+        this.loadSuggestedCommandsWithoutBroadcaster();
+        await this.loadCommands();
       } finally {
         this.isLoading = false;
       }
     },
 
+    loadSuggestedCommandsWithoutBroadcaster() {
+      this.commands = [];
+      this.suggestedCommands = this.baseSuggestedCommands.map(item => ({
+        ...item,
+        isEnabled: false,
+        savedCommandId: null
+      }));
+    },
+
     async loadCommands() {
-      if (!this.streamerId) return;
+      if (!this.selectedBrandId) {
+        this.loadSuggestedCommandsWithoutBroadcaster();
+        return;
+      }
 
       this.isLoading = true;
 
       try {
-        const response = await client.models.TwitchCommand.list({
-          filter: {
-            streamerId: {
-              eq: this.streamerId
-            }
-          }
+        const response = await client.queries.listManagedTwitchCommands({
+          brandId: this.selectedBrandId,
+          includeUnscoped: this.isPlatformOperator,
         });
+        if (response?.errors?.length) throw new Error(response.errors[0].message || 'Failed to load Twitch commands.');
 
-        this.commands = (response.data || []).filter(Boolean).map(command => ({
-          ...command,
-          category: command.category || 'Custom',
-          permissionLevel: command.permissionLevel || 'everyone'
-        }));
+        this.commands = filterTwitchCommandsForBrand(
+          (response.data || []).filter(Boolean),
+          this.commandCapabilities,
+          this.selectedBrandId
+        )
+          .map(command => ({
+            ...command,
+            category: command.category || 'Custom',
+            permissionLevel: command.permissionLevel || 'everyone'
+          }));
 
-        // Seed default hello if none exist
-        if (this.commands.length === 0) {
-          const starter = await client.models.TwitchCommand.create({
+        if (this.commands.length === 0 && this.streamerId && this.canManageSelectedBrandCommands) {
+          const starter = await this.createManagedCommand({
             streamerId: this.streamerId,
             name: 'hello',
             reply: 'Hey $(user), welcome in!',
@@ -255,12 +340,12 @@ export default {
             permissionLevel: 'everyone'
           });
 
-          if (starter.data) {
+          if (starter) {
             this.commands = [
               {
-                ...starter.data,
-                category: starter.data.category || 'Info',
-                permissionLevel: starter.data.permissionLevel || 'everyone'
+                ...starter,
+                category: starter.category || 'Info',
+                permissionLevel: starter.permissionLevel || 'everyone'
               }
             ];
           }
@@ -268,27 +353,28 @@ export default {
 
         this.syncSuggestedStates();
       } catch (error) {
-        console.error('Failed to load Twitch commands:', error);
+        this.showCommandError('Failed to load Twitch commands', error);
       } finally {
         this.isLoading = false;
       }
     },
 
-        syncSuggestedStates() {
-        this.suggestedCommands = this.suggestedCommands.map(suggested => {
-          const existing = this.commands.find(command => {
-            return String(command.name || '').trim().toLowerCase() === String(suggested.name || '').trim().toLowerCase();
-          });
+    syncSuggestedStates() {
+      this.suggestedCommands = this.baseSuggestedCommands.map(base => {
+        const existing =
+          this.commands.find(command => command.id === base.savedCommandId) ||
+          this.commands.find(command =>
+            String(command.name || '').trim().toLowerCase() === String(base.name || '').trim().toLowerCase()
+          );
 
-          return {
-            ...suggested,
-            isEnabled: existing ? existing.enabled === true : false,
-            savedCommandId: existing ? existing.id : null
-          };
-        });
-      },
+        return {
+          ...base,
+          isEnabled: existing ? existing.enabled === true : false,
+          savedCommandId: existing ? existing.id : null
+        };
+      });
+    },
 
-    /* Command operations – create / update / delete */
     async addNewCommand() {
       if (!this.streamerId) {
         this.showCommandError('Cannot create command', 'Missing streamerId');
@@ -296,7 +382,7 @@ export default {
       }
 
       try {
-        const response = await client.models.TwitchCommand.create({
+        const created = await this.createManagedCommand({
           streamerId: this.streamerId,
           name: 'new-command',
           reply: 'Edit this response',
@@ -307,21 +393,8 @@ export default {
           permissionLevel: 'everyone'
         });
 
-        if (response?.errors?.length) {
-          this.showCommandError('Failed to create command', response.errors);
-          return;
-        }
-
-        if (!response?.data) {
-          this.showCommandError('Failed to create command', 'No data returned');
-          return;
-        }
-
-        const created = {
-          ...response.data,
-          category: response.data.category || 'Custom',
-          permissionLevel: response.data.permissionLevel || 'everyone'
-        };
+        created.category = created.category || 'Custom';
+        created.permissionLevel = created.permissionLevel || 'everyone';
 
         this.commands.unshift(created);
         this.activeTab = 'custom';
@@ -340,9 +413,8 @@ export default {
       this.isSaving = true;
 
       try {
-        const response = await client.models.TwitchCommand.update({
-          id: command.id,
-          streamerId: this.streamerId,
+        const saved = await this.updateManagedCommand(command, {
+          streamerId: command.streamerId,
           name: command.name,
           reply: command.reply,
           enabled: command.enabled,
@@ -352,23 +424,13 @@ export default {
           permissionLevel: command.permissionLevel || 'everyone'
         });
 
-        if (response?.errors?.length) {
-          this.showCommandError('Failed to save command', response.errors);
-          return;
-        }
-
-        if (!response?.data) {
-          this.showCommandError('Failed to save command', 'No data returned');
-          return;
-        }
-
-        const index = this.commands.findIndex(item => item.id === response.data.id);
+        const index = this.commands.findIndex(item => item.id === saved.id);
 
         if (index !== -1) {
           this.commands.splice(index, 1, {
-            ...response.data,
-            category: response.data.category || 'Custom',
-            permissionLevel: response.data.permissionLevel || 'everyone'
+            ...saved,
+            category: saved.category || 'Custom',
+            permissionLevel: saved.permissionLevel || 'everyone'
           });
         }
 
@@ -380,7 +442,65 @@ export default {
       }
     },
 
+    async saveSuggestedCommand(suggested) {
+      if (!suggested || !this.streamerId) {
+        this.showCommandError('Cannot save suggested command', 'Missing suggested command or streamerId');
+        return;
+      }
+
+      const existing = this.commands.find(command => {
+        return String(command.name || '').trim().toLowerCase() === String(suggested.name || '').trim().toLowerCase();
+      });
+
+      try {
+        if (existing) {
+          const saved = await this.updateManagedCommand(existing, {
+            streamerId: existing.streamerId,
+            name: suggested.name,
+            reply: suggested.reply,
+            enabled: existing.enabled,
+            cooldownSeconds: suggested.cooldownSeconds,
+            isCustom: existing.isCustom ?? false,
+            category: suggested.category || 'Custom',
+            permissionLevel: suggested.permissionLevel || 'everyone'
+          });
+
+          const index = this.commands.findIndex(item => item.id === saved.id);
+
+          if (index !== -1) {
+            this.commands.splice(index, 1, {
+              ...saved,
+              category: saved.category || suggested.category || 'Suggested',
+              permissionLevel: saved.permissionLevel || suggested.permissionLevel || 'everyone'
+            });
+          }
+        } else {
+          const created = await this.createManagedCommand({
+            streamerId: this.streamerId,
+            name: suggested.name,
+            reply: suggested.reply,
+            enabled: false,
+            cooldownSeconds: suggested.cooldownSeconds,
+            isCustom: false,
+            category: suggested.category || 'Custom',
+            permissionLevel: suggested.permissionLevel || 'everyone'
+          });
+
+          this.commands.unshift({
+            ...created,
+            category: created.category || suggested.category || 'Suggested',
+            permissionLevel: created.permissionLevel || suggested.permissionLevel || 'everyone'
+          });
+        }
+
+        this.syncSuggestedStates();
+      } catch (error) {
+        this.showCommandError('Failed to save suggested command', error);
+      }
+    },
+
     async toggleCommandEnabled(command) {
+      if (!command) return;
       command.enabled = !command.enabled;
       await this.saveCommand(command);
     },
@@ -389,10 +509,7 @@ export default {
       if (!command) return;
 
       try {
-        await client.models.TwitchCommand.delete({
-          id: command.id
-        });
-
+        await this.deleteManagedCommand(command);
         this.commands = this.commands.filter(item => item.id !== command.id);
 
         if (this.expandedCommandId === command.id) {
@@ -401,7 +518,7 @@ export default {
 
         this.syncSuggestedStates();
       } catch (error) {
-        console.error('Failed to delete command:', error);
+        this.showCommandError('Failed to delete command', error);
       }
     },
 
@@ -419,9 +536,8 @@ export default {
         if (existing) {
           const nextEnabled = !existing.enabled;
 
-          const response = await client.models.TwitchCommand.update({
-            id: existing.id,
-            streamerId: this.streamerId,
+          const saved = await this.updateManagedCommand(existing, {
+            streamerId: existing.streamerId,
             name: suggested.name,
             reply: suggested.reply,
             enabled: nextEnabled,
@@ -431,28 +547,21 @@ export default {
             permissionLevel: suggested.permissionLevel || 'everyone'
           });
 
-          if (response?.errors?.length) {
-            this.showCommandError('Failed to update suggested command', response.errors);
-            return;
-          }
-
-          if (!response?.data) {
-            this.showCommandError('Failed to update suggested command', 'No data returned');
-            return;
-          }
-
-          const index = this.commands.findIndex(item => item.id === response.data.id);
+          const index = this.commands.findIndex(item => item.id === saved.id);
 
           if (index !== -1) {
             this.commands.splice(index, 1, {
-              ...response.data,
-              category: response.data.category || suggested.category || 'Suggested',
-              permissionLevel:
-                response.data.permissionLevel || suggested.permissionLevel || 'everyone'
+              ...saved,
+              enabled: nextEnabled,
+              category: saved.category || suggested.category || 'Suggested',
+              permissionLevel: saved.permissionLevel || suggested.permissionLevel || 'everyone'
             });
           }
+
+          suggested.isEnabled = nextEnabled;
+          suggested.savedCommandId = saved.id;
         } else {
-          const response = await client.models.TwitchCommand.create({
+          const created = await this.createManagedCommand({
             streamerId: this.streamerId,
             name: suggested.name,
             reply: suggested.reply,
@@ -463,22 +572,15 @@ export default {
             permissionLevel: suggested.permissionLevel || 'everyone'
           });
 
-          if (response?.errors?.length) {
-            this.showCommandError('Failed to create suggested command', response.errors);
-            return;
-          }
-
-          if (!response?.data) {
-            this.showCommandError('Failed to create suggested command', 'No data returned');
-            return;
-          }
-
           this.commands.unshift({
-            ...response.data,
-            category: response.data.category || suggested.category || 'Suggested',
-            permissionLevel:
-              response.data.permissionLevel || suggested.permissionLevel || 'everyone'
+            ...created,
+            enabled: true,
+            category: created.category || suggested.category || 'Suggested',
+            permissionLevel: created.permissionLevel || suggested.permissionLevel || 'everyone'
           });
+
+          suggested.isEnabled = true;
+          suggested.savedCommandId = created.id;
         }
 
         this.syncSuggestedStates();

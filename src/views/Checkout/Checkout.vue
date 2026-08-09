@@ -133,7 +133,7 @@
                     Complete your delivery details first.
                   </p>
                   <p v-else-if="paymentReady" class="step-summary">
-                    Card details ready
+                    Choose your preferred payment method below
                   </p>
                   <p v-else class="step-copy">
                     Your secure payment form will load below.
@@ -170,59 +170,6 @@
                   </p>
                 </div>
 
-                <button
-                  type="button"
-                  class="primary-btn"
-                  :disabled="!paymentReady"
-                  @click="goToReview"
-                >
-                  Continue to review
-                </button>
-              </div>
-            </section>
-
-            <section
-              class="checkout-step"
-              :class="{ 'is-disabled': !paymentReady }"
-            >
-              <div class="step-header">
-                <div class="step-number">3</div>
-                <div class="step-heading">
-                  <h2>Review &amp; place order</h2>
-                  <p class="step-copy">
-                    Review your items and complete payment.
-                  </p>
-                </div>
-              </div>
-
-              <div v-show="activeStep === 'review'" class="step-body">
-                <div class="review-list">
-                  <article
-                    v-for="item in cartItems"
-                    :key="`${item.id}-${item.variant || ''}-${item.color || ''}-${item.quantity}`"
-                    class="review-item"
-                  >
-                    <div>
-                      <h3>{{ item.name }}</h3>
-                      <p v-if="item.variant">{{ item.variant }}</p>
-                      <p v-if="item.color">Colour: {{ item.color }}</p>
-                      <p>Quantity: {{ item.quantity }}</p>
-                    </div>
-
-                    <div class="review-price">
-                      £{{ (item.price * item.quantity).toFixed(2) }}
-                    </div>
-                  </article>
-                </div>
-
-                <button
-                  type="button"
-                  class="primary-btn"
-                  :disabled="submittingPayment || !paymentReady"
-                  @click="handlePayment"
-                >
-                  {{ submittingPayment ? 'Processing...' : 'Place order' }}
-                </button>
               </div>
             </section>
           </div>
@@ -232,16 +179,28 @@
           <div class="checkout-card checkout-summary sticky">
             <h2>Order Summary</h2>
 
-            <div class="summary-items">
-              <div
-                v-for="item in cartItems"
-                :key="`summary-${item.id}-${item.variant || ''}-${item.color || ''}-${item.quantity}`"
-                class="summary-item"
-              >
-                <span>{{ item.name }} × {{ item.quantity }}</span>
-                <span>£{{ (item.price * item.quantity).toFixed(2) }}</span>
-              </div>
-            </div>
+           <div class="summary-items">
+  <div
+    v-for="item in cartItems"
+    :key="`summary-${item.id}-${item.variant || ''}-${item.color || ''}-${item.quantity}`"
+    class="summary-item"
+  >
+    <div class="summary-item-main">
+      <div class="summary-item-info">
+        <span>{{ item.name }} × {{ item.quantity }}</span>
+        <button
+          type="button"
+          class="remove-item-btn summary-remove-btn"
+          @click="removeCartItem(item)"
+        >
+          Remove
+        </button>
+      </div>
+
+      <span>£{{ (item.price * item.quantity).toFixed(2) }}</span>
+    </div>
+  </div>
+</div>
 
             <div class="summary-block">
               <div class="summary-row">
@@ -268,7 +227,10 @@
           <h2>✅ Order Confirmed!</h2>
           <p>Thank you for your purchase.</p>
           <p>Order ID: <strong>{{ orderId }}</strong></p>
-          <p>Your order will be printed and shipped within 3–5 business days.</p>
+          <p v-if="fulfillmentError" class="payment-status payment-status--error">
+            {{ fulfillmentError }}
+          </p>
+          <p v-else>Your order will be printed and shipped within 3–5 business days.</p>
 
           <button type="button" class="primary-btn" @click="resetCheckout">
             Continue Shopping
@@ -290,8 +252,8 @@ const {
   addressError,
   revolutLoading,
   revolutError,
+  fulfillmentError,
   paymentReady,
-  submittingPayment,
   originalShipping,
   cartItems,
   customer,
@@ -299,9 +261,8 @@ const {
   subtotal,
   total,
   saveAddress,
-  goToReview,
-  handlePayment,
   resetCheckout,
+  removeCartItem,
 } = useCheckout()
 </script>
 

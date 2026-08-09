@@ -240,6 +240,15 @@
                   </p>
                 </div>
 
+                <div v-else-if="module.type === 'activity'" class="account-empty-state">
+                  <template v-if="recentForumActivity.length">
+                    <p v-for="item in recentForumActivity" :key="item.id">
+                      {{ item.activityType.replaceAll('_', ' ') }} · {{ item.threadTitle || 'Forum discussion' }} · {{ formatRelativeTime(item.occurredAt) }}
+                    </p>
+                  </template>
+                  <p v-else>No recent forum activity yet.</p>
+                </div>
+
                 <div v-else class="account-empty-state">
                   <p>{{ module.description }}</p>
                 </div>

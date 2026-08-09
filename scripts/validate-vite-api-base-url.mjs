@@ -42,6 +42,8 @@ function formatSourceDetails(fileValues) {
 }
 
 const baseUrl = String(process.env.VITE_API_BASE_URL || '').trim();
+const revolutMode = String(process.env.VITE_REVOLUT_MODE || '').trim().toLowerCase();
+const revolutPublicKey = String(process.env.VITE_REVOLUT_PUBLIC_KEY || '').trim();
 const envFileValues = getEnvFileValues();
 
 if (!baseUrl) {
@@ -83,4 +85,23 @@ if (!/^https?:\/\//i.test(baseUrl)) {
   );
 }
 
+if (!revolutMode) {
+  throw new Error(
+    'Build failed: VITE_REVOLUT_MODE is not set. Set it explicitly to sandbox or prod for each Amplify branch.'
+  );
+}
+
+if (!['sandbox', 'prod'].includes(revolutMode)) {
+  throw new Error(
+    `Build failed: invalid VITE_REVOLUT_MODE "${revolutMode}". Expected sandbox or prod.`
+  );
+}
+
+if (!revolutPublicKey) {
+  throw new Error(
+    'Build failed: VITE_REVOLUT_PUBLIC_KEY is not set. Configure the public Merchant API key matching VITE_REVOLUT_MODE.'
+  );
+}
+
 console.log('VITE_API_BASE_URL is set and valid:', baseUrl.replace(/\/+$/, ''));
+console.log('Revolut frontend environment is set and valid:', revolutMode);
