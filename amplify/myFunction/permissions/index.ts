@@ -8,6 +8,9 @@ import {
 } from '../shared/auth'
 import { writePermissionAudit } from '../shared/audit'
 import { assertPlatformControlAssignments, resolveEffectivePermissionKeys } from '../shared/effectivePermissions'
+import { PLATFORM_CONTROL_PERMISSION_KEYS } from '../shared/permissionConstants'
+
+export { PLATFORM_CONTROL_PERMISSION_KEYS } from '../shared/permissionConstants'
 
 const COGNITO_GROUPS = [
   'SuperAdmin',
@@ -33,11 +36,6 @@ interface CatalogDefinition {
   sortOrder: number
   defaultGroups: CognitoGroup[]
 }
-
-// Effective access comes from the catalog assignments, including for platform
-// groups. Keeping this list empty prevents group membership from silently
-// overriding an explicit permission removal.
-export const PLATFORM_CONTROL_PERMISSION_KEYS = [] as const
 
 const ALL_MEMBERS: CognitoGroup[] = [
   'SuperAdmin', 'Admin', 'Staff', 'Moderator', 'Trainer', 'Therapist',
