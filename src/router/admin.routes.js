@@ -7,10 +7,8 @@ import AdminUsers from '../views/Admin/AdminUsers/AdminUsers.vue';
 import AdminPermissions from '../views/Admin/AdminPermissions/AdminPermissions.vue';
 import AdminBrands from '../views/Admin/AdminBrands/AdminBrands.vue';
 import AdminMerchCategories from '../views/Admin/AdminMerchCategories/AdminMerchCategories.vue';
-import AdminBrandPermissions from '../views/Admin/AdminBrandPermissions/AdminBrandPermissions.vue';
 import AdminForums from '../views/Admin/AdminForums/AdminForums.vue';
 import AdminEvents from '../views/Admin/AdminEvents/AdminEvents.vue';
-import AdminHost from '../views/Admin/AdminHost/AdminHost.vue';
 import ProductControl from '../views/Admin/ProductControl/ProductControl.vue';
 import MediaLibrary from '../views/Admin/MediaLibrary/MediaLibrary.vue';
 import AdminOrders from '../views/Admin/AdminOrders/AdminOrders.vue';
@@ -32,57 +30,56 @@ export default [
             {
                 path: 'users',
                 name: 'AdminUsers',
-                component: AdminUsers
+                component: AdminUsers,
+                meta: { requiredPermission: 'users.view' }
             },
             {
                 path: 'permissions',
                 name: 'AdminPermissions',
-                component: AdminPermissions
+                component: AdminPermissions,
+                meta: { requiredGroups: ['SuperAdmin', 'Admin'] }
             },
             {
                 path: 'events',
                 name: 'AdminEvents',
-                component: AdminEvents
+                component: AdminEvents,
+                meta: { requiredPermission: 'events.manage' }
             },
             {
                 path: 'forums',
                 name: 'AdminForums',
-                component: AdminForums
+                component: AdminForums,
+                meta: { requiredPermission: 'forums.structure.manage' }
             },
             {
                 path: 'brands',
                 name: 'AdminBrands',
-                component: AdminBrands
+                component: AdminBrands,
+                meta: { requiredPermission: 'brands.manage' }
             },
             {
                 path: 'merch-categories',
                 name: 'AdminMerchCategories',
-                component: AdminMerchCategories
-            },
-            {
-                path: 'brand-permissions',
-                name: 'AdminBrandPermissions',
-                component: AdminBrandPermissions
+                component: AdminMerchCategories,
+                meta: { requiredPermission: 'merch.categories.manage' }
             },
             {
                 path: 'product-control',
                 name: 'ProductControl',
-                component: ProductControl
+                component: ProductControl,
+                meta: { requiredPermission: 'products.edit' }
             },
             {
                 path: 'media-library',
                 name: 'MediaLibrary',
-                component: MediaLibrary
+                component: MediaLibrary,
+                meta: { requiredPermission: 'media.library.manage' }
             },
             {
                 path: 'orders',
                 name: 'AdminOrders',
-                component: AdminOrders
-            },
-            {
-                path: 'host-permissions',
-                name: 'AdminHost',
-                component: AdminHost
+                component: AdminOrders,
+                meta: { requiredPermission: 'orders.view' }
             }
         ]
     }

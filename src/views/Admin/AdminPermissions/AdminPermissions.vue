@@ -1,116 +1,114 @@
 <template>
   <div class="admin-permissions-page">
-    <div class="dash-header">
-      <div>
-        <h1 class="dash-title">Permissions Matrix</h1>
-        <p class="dash-subtitle">
-          Control which roles can access each section of the platform
-        </p>
-      </div>
+    <div v-if="accessChecking" class="permissions-state">Checking permissions…</div>
 
-      <div class="header-stats">
-        <div class="stat-pill">
-          <span class="stat-num">{{ roles.length }}</span>
-          <span class="stat-lbl">Roles</span>
+    <div v-else-if="!hasPlatformAccess" class="permissions-state permissions-state-error">
+      Access restricted. Only Admin and Super Admin can manage global permissions.
+    </div>
+
+    <template v-else>
+      <div class="dash-header">
+        <div>
+          <h1 class="dash-title">Permissions Matrix</h1>
+          <p class="dash-subtitle">Control global Cognito-group permissions across the platform.</p>
         </div>
-        <div class="stat-pill">
-          <span class="stat-num">{{ totalPermissionRows }}</span>
-          <span class="stat-lbl">Permissions</span>
+
+        <div class="header-stats">
+          <div class="stat-pill">
+            <span class="stat-num">{{ roles.length }}</span>
+            <span class="stat-lbl">Groups</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-num">{{ totalPermissionRows }}</span>
+            <span class="stat-lbl">Permissions</span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="toolbar">
-      <div class="search-wrap">
-        <span class="search-icon">🔍</span>
-        <input
-          v-model="searchQuery"
-          type="text"
-          class="search-input"
-          placeholder="Search permissions or sections..."
-        />
+      <p class="platform-notice">
+        Permissions are additive and deny-by-default. Platform-enforced rows cannot be removed from Admin or Super Admin because core controls are protected by Cognito group policy.
+      </p>
+
+      <div class="toolbar">
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input
+            v-model="searchQuery"
+            type="text"
+            class="search-input"
+            placeholder="Search modules, actions, or permission keys..."
+          />
+        </div>
+
+        <button class="btn-fetch" :disabled="loadingCatalog || saving" @click="resetPermissions">
+          Reset Changes
+        </button>
+
+        <button class="btn-primary sm" :disabled="loadingCatalog || saving" @click="savePermissions">
+          {{ saving ? 'Saving…' : 'Save Permissions' }}
+        </button>
       </div>
 
-      <button class="btn-fetch" @click="resetPermissions">
-        Reset Changes
-      </button>
+      <div v-if="loadingCatalog" class="permissions-state">Loading permission catalog…</div>
+      <div v-else-if="catalogError" class="permissions-state permissions-state-error">{{ catalogError }}</div>
 
-      <button class="btn-primary sm" @click="savePermissions">
-        Save Permissions
-      </button>
-    </div>
-
-    <div class="table-container permissions-table-container">
-      <div class="table-scroll permissions-scroll">
-        <table class="permissions-table">
-          <thead>
-            <tr>
-              <th class="sticky-col permission-name-col">Permission</th>
-              <th
-                v-for="role in roles"
-                :key="role"
-                class="role-col"
-              >
-                {{ roleLabels[role] || role }}
-              </th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <template
-              v-for="section in filteredSections"
-              :key="section.key"
-            >
-              <tr class="section-row">
-                <td
-                  class="section-cell sticky-col"
-                  :class="section.sectionClass"
-                  :colspan="roles.length + 1"
-                >
-                  {{ section.label }}
-                </td>
+      <div v-else class="table-container permissions-table-container">
+        <div class="table-scroll permissions-scroll">
+          <table class="permissions-table">
+            <thead>
+              <tr>
+                <th class="sticky-col permission-name-col">Module &amp; action</th>
+                <th v-for="role in roles" :key="role" class="role-col">
+                  {{ groupLabel(role) }}
+                </th>
               </tr>
+            </thead>
 
-              <tr
-                v-for="permission in section.items"
-                :key="permission.key"
-                class="permission-row"
-              >
-                <td class="permission-label sticky-col">
-                  <div class="permission-name">{{ permission.label }}</div>
-                  <div class="permission-key">{{ permission.key }}</div>
-                </td>
+            <tbody>
+              <template v-for="section in filteredSections" :key="section.key">
+                <tr class="section-row">
+                  <td class="section-cell sticky-col" :colspan="roles.length + 1">
+                    {{ section.label }}
+                  </td>
+                </tr>
 
-                <td
-                  v-for="role in roles"
-                  :key="`${permission.key}-${role}`"
-                  class="permission-toggle-cell"
-                >
-                  <label class="matrix-checkbox">
-                    <input
-                      type="checkbox"
-                      :checked="permissions[permission.key]?.includes(role)"
-                      @change="togglePermission(permission.key, role)"
-                    />
-                    <span class="matrix-checkmark"></span>
-                  </label>
-                </td>
+                <tr v-for="permission in section.items" :key="permission.key" class="permission-row">
+                  <td class="permission-label sticky-col">
+                    <div class="permission-module">{{ permission.module }}</div>
+                    <div class="permission-name">
+                      {{ permission.displayName }}
+                      <span v-if="isPlatformEnforced(permission)" class="platform-badge">Platform enforced</span>
+                    </div>
+                    <div v-if="permission.description" class="permission-description">{{ permission.description }}</div>
+                    <div class="permission-key">{{ permission.key }}</div>
+                  </td>
+
+                  <td v-for="role in roles" :key="`${permission.key}-${role}`" class="permission-toggle-cell">
+                    <label class="matrix-checkbox">
+                      <input
+                        type="checkbox"
+                        :checked="isPermissionAssigned(permission.key, role, permission)"
+                        :disabled="isToggleDisabled(permission, role)"
+                        @change="togglePermission(permission.key, role, permission)"
+                      />
+                      <span class="matrix-checkmark"></span>
+                    </label>
+                  </td>
+                </tr>
+              </template>
+
+              <tr v-if="filteredSections.length === 0">
+                <td :colspan="roles.length + 1" class="empty-state">No permissions found matching your search.</td>
               </tr>
-            </template>
-
-            <tr v-if="filteredSections.length === 0">
-              <td :colspan="roles.length + 1" class="empty-state">
-                No permissions found matching your search.
-              </td>
-            </tr>
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
 
-    <transition name="toast">
-      <div v-if="toastMessage" class="toast">✓ {{ toastMessage }}</div>
-    </transition>
+      <transition name="toast">
+        <div v-if="toastMessage" class="toast">✓ {{ toastMessage }}</div>
+      </transition>
+    </template>
   </div>
 </template>
 

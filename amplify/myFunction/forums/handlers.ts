@@ -1,5 +1,7 @@
 import { getDataClient } from '../shared/dataClient'
-import { getIdentityGroups, getIdentityUsername, getResolverIdentity, hasForumModerationAccess, hasGroupAccess } from '../shared/auth'
+import { getIdentityGroups, getIdentityUsername, getResolverIdentity, hasGroupAccess } from '../shared/auth'
+import { PLATFORM_CONTROL_PERMISSION_KEYS } from '../permissions'
+import { resolveEffectivePermissionKeys } from '../shared/effectivePermissions'
 import { slugify } from '../shared/strings'
 import { logger } from '../shared/logger'
 
@@ -39,6 +41,16 @@ async function getForumBoardById(client: any, boardId: string) {
   }
 
   return result.data
+}
+
+async function hasForumModerationPermission(client: any, identity: any) {
+  const [definitions, assignments] = await Promise.all([
+    client.models.PermissionDefinition.list({ limit: 1000 }),
+    client.models.GroupPermission.list({ limit: 1000 }),
+  ])
+  if (definitions.errors?.length) throw new Error(definitions.errors[0].message || 'Failed to load permission definitions')
+  if (assignments.errors?.length) throw new Error(assignments.errors[0].message || 'Failed to load group permissions')
+  return resolveEffectivePermissionKeys(identity, definitions.data || [], assignments.data || [], PLATFORM_CONTROL_PERMISSION_KEYS).has('forums.moderate')
 }
 
 async function getForumThreadById(client: any, threadId: string) {
@@ -134,14 +146,15 @@ async function notifyInterestedUsersOfReply(client: any, identity: any, threadId
    Forums: permission checks
 ============================================================================ */
 
-function assertUserMatchesAuthorOrModerator(params: {
+async function assertUserMatchesAuthorOrModerator(params: {
   identity: any
   owner: string
   authorUserId: string
+  client: any
 }) {
-  const { identity, owner, authorUserId } = params
+  const { identity, owner, authorUserId, client } = params
   const username = getIdentityUsername(identity)
-  const isModerator = hasForumModerationAccess(identity)
+  const isModerator = await hasForumModerationPermission(client, identity)
   const ownerMatchesIdentity = String(owner) === String(username)
   const authorMatchesIdentity = String(authorUserId) === String(username)
 
@@ -154,9 +167,9 @@ function assertUserMatchesAuthorOrModerator(params: {
   }
 }
 
-function canCreateThreadInBoard(board: any, identity: any) {
+async function canCreateThreadInBoard(board: any, identity: any, client: any) {
   const userGroups = getIdentityGroups(identity)
-  const isModerator = hasForumModerationAccess(identity)
+  const isModerator = await hasForumModerationPermission(client, identity)
   const allowedGroups = Array.isArray(board?.threadCreateGroups) ? board.threadCreateGroups : []
 
   if (isModerator) {
@@ -244,10 +257,11 @@ export async function handleCreateForumThread(event: any) {
     return forumResult({ success: false, message: 'Missing required thread fields' })
   }
 
-  const actorCheck = assertUserMatchesAuthorOrModerator({
+  const actorCheck = await assertUserMatchesAuthorOrModerator({
     identity,
     owner,
     authorUserId,
+    client,
   })
 
   if (!actorCheck.username) {
@@ -268,7 +282,7 @@ export async function handleCreateForumThread(event: any) {
       return forumResult({ success: false, message: 'This board is not active' })
     }
 
-    if (!canCreateThreadInBoard(board, identity)) {
+    if (!await canCreateThreadInBoard(board, identity, client)) {
       return forumResult({
         success: false,
         message: 'You do not have permission to create a thread in this board',
@@ -365,10 +379,11 @@ export async function handleCreateForumReply(event: any) {
     })
   }
 
-  const actorCheck = assertUserMatchesAuthorOrModerator({
+  const actorCheck = await assertUserMatchesAuthorOrModerator({
     identity,
     owner,
     authorUserId,
+    client,
   })
 
   if (!actorCheck.username) {

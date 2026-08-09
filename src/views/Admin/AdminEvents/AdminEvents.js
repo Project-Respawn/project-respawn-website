@@ -1,5 +1,6 @@
 import { generateClient } from 'aws-amplify/data';
-import { fetchAuthSession } from 'aws-amplify/auth';
+import { refreshAccessContext } from '@/composables/useAccessContext.js';
+import { filterEventsForAdminEvents, getAdminEventsCapabilities } from './AdminEvents.access.js';
 
 let client = null;
 function getClient() {
@@ -22,6 +23,7 @@ function createEmptyTicketTier() {
 function createEmptyForm() {
   return {
     id: null,
+    brandId: '',
     title: '',
     shortDescription: '',
     longDescription: '',
@@ -46,8 +48,10 @@ export default {
     return {
       loading: false,
       saving: false,
-      currentUserGroups: [],
-      currentUserSub: '',
+      accessContext: { groups: [], brands: [] },
+      selectedBrandId: '',
+      accessLoading: false,
+      saveError: '',
 
       events: [],
       suggestions: [],
@@ -90,19 +94,19 @@ export default {
       const now = new Date(this.nowTick);
 
       return {
-        upcoming: this.events.filter((item) => {
+        upcoming: this.scopedEvents.filter((item) => {
           if ((item.status || 'draft') !== 'live') return false;
           const start = item.startAt ? new Date(item.startAt) : null;
           return start && !Number.isNaN(start.getTime()) && start > now;
         }).length,
-        draft: this.events.filter((item) => (item.status || 'draft') === 'draft').length,
-        pendingSuggestions: this.suggestions.filter((item) => item.status === 'pending').length,
-        tags: this.tags.length,
+        draft: this.scopedEvents.filter((item) => (item.status || 'draft') === 'draft').length,
+        pendingSuggestions: this.isPlatformOperator ? this.suggestions.filter((item) => item.status === 'pending').length : 0,
+        tags: this.isPlatformOperator ? this.tags.length : 0,
       };
     },
 
     filteredEvents() {
-      return this.events.filter((event) => {
+      return this.scopedEvents.filter((event) => {
         const searchText = `${event.title || ''} ${event.shortDescription || ''} ${event.description || ''}`.toLowerCase();
         const matchesSearch =
           !this.eventSearch || searchText.includes(this.eventSearch.toLowerCase());
@@ -126,6 +130,22 @@ export default {
 
         return matchesSearch && matchesStatus;
       });
+    },
+
+    eventCapabilities() {
+      return getAdminEventsCapabilities(this.accessContext, this.selectedBrandId);
+    },
+
+    isPlatformOperator() {
+      return this.eventCapabilities.isPlatformOperator;
+    },
+
+    accessibleBrandOptions() {
+      return this.accessContext.brands || [];
+    },
+
+    scopedEvents() {
+      return filterEventsForAdminEvents(this.events, this.eventCapabilities, this.selectedBrandId);
     },
 
     pendingSuggestions() {
@@ -224,25 +244,24 @@ export default {
     },
 
     async loadCurrentUserContext() {
+      this.accessLoading = true;
       try {
-        const session = await fetchAuthSession();
-        this.currentUserGroups = session.tokens?.accessToken?.payload?.['cognito:groups'] || [];
-        this.currentUserSub =
-          session.tokens?.idToken?.payload?.sub ||
-          session.tokens?.accessToken?.payload?.sub ||
-          '';
+        const context = await refreshAccessContext();
+        this.accessContext = context;
+        this.selectedBrandId = context.brands?.some((brand) => brand.brandId === this.selectedBrandId)
+          ? this.selectedBrandId
+          : context.brands?.[0]?.brandId || '';
       } catch (error) {
         console.error('Could not load current user context:', error);
-        this.currentUserGroups = [];
-        this.currentUserSub = '';
+        this.accessContext = { groups: [], brands: [] };
+        this.selectedBrandId = '';
+      } finally {
+        this.accessLoading = false;
       }
     },
 
     isElevatedUser() {
-      return (
-        this.currentUserGroups.includes('SuperAdmin') ||
-        this.currentUserGroups.includes('Admin')
-      );
+      return this.isPlatformOperator;
     },
 
     getEventPhase(event) {
@@ -341,7 +360,8 @@ export default {
           return;
         }
 
-        const { data: profiles, errors: profileErrors } = await getClient().models.UserProfile.list();
+        const { data: profileResult, errors: profileErrors } = await getClient().queries.listManagedProfiles();
+        const profiles = profileResult?.profiles || [];
 
         if (profileErrors?.length) {
           console.error('Host profile list errors:', profileErrors);
@@ -359,35 +379,7 @@ export default {
           }))
           .sort((a, b) => a.displayName.localeCompare(b.displayName));
 
-        if (this.isElevatedUser()) {
-          this.hostOptions = allHosts;
-          return;
-        }
-
-        if (!getClient().models.HostAssignment || !this.currentUserSub) {
-          this.hostOptions = [];
-          return;
-        }
-
-        const { data: assignments, errors: assignmentErrors } = await getClient().models.HostAssignment.list();
-
-        if (assignmentErrors?.length) {
-          console.error('Host assignment list errors:', assignmentErrors);
-          this.hostOptions = [];
-          return;
-        }
-
-        const allowedHostIds = new Set(
-          (assignments || [])
-            .filter(
-              (assignment) =>
-                assignment.managerUserId === this.currentUserSub &&
-                assignment.accessLevel !== 'disabled',
-            )
-            .map((assignment) => assignment.hostUserId),
-        );
-
-        this.hostOptions = allHosts.filter((host) => allowedHostIds.has(host.id));
+        this.hostOptions = this.isElevatedUser() ? allHosts : [];
       } catch (error) {
         console.error('Failed to load host options:', error);
         this.hostOptions = [];
@@ -398,11 +390,22 @@ export default {
       await this.bootstrap();
     },
 
+    async selectBrandContext() {
+      this.saveError = '';
+      await this.loadEvents();
+    },
+
+    canManageEvent(event) {
+      if (this.isPlatformOperator) return true;
+      return this.eventCapabilities.canManageSelectedBrandEvents && event?.brandId === this.selectedBrandId;
+    },
+
     openCreateWizard() {
       this.wizardMode = 'create';
       this.selectedSuggestion = null;
       this.currentStep = 1;
       this.eventForm = createEmptyForm();
+      this.eventForm.brandId = this.selectedBrandId;
       this.hostSearch = '';
       this.wizardOpen = true;
     },
@@ -440,6 +443,7 @@ export default {
       const categories = Array.isArray(event.categories) ? [...event.categories] : [];
       this.eventForm = {
         id: event.id,
+        brandId: event.brandId || '',
         title: event.title || '',
         shortDescription: event.shortDescription || event.description || '',
         longDescription: event.longDescription || event.description || '',
@@ -475,6 +479,7 @@ export default {
 
       this.eventForm = {
         ...createEmptyForm(),
+        brandId: this.selectedBrandId,
         title: suggestion.title || '',
         shortDescription: suggestion.description || '',
         longDescription: suggestion.notes || suggestion.description || '',
@@ -502,10 +507,7 @@ export default {
       try {
         if (!getClient().models.EventSuggestion) return;
 
-        const { errors } = await getClient().models.EventSuggestion.update({
-          id: suggestion.id,
-          status: 'rejected',
-        });
+        const { errors } = await getClient().mutations.reviewEventSuggestion({ action: 'update', resourceId: suggestion.id, input: JSON.stringify({ status: 'rejected' }) });
 
         if (errors?.length) {
           console.error('Reject suggestion errors:', errors);
@@ -544,7 +546,7 @@ export default {
           isActive: true,
         };
 
-        const { errors } = await client.models.EventTag.create(payload);
+        const { errors } = await getClient().mutations.manageEventTag({ action: 'create', input: JSON.stringify(payload) });
 
         if (errors?.length) {
           console.error('Create tag errors:', errors);
@@ -567,10 +569,7 @@ export default {
       try {
         if (!getClient().models.EventTag) return;
 
-        const { errors } = await getClient().models.EventTag.update({
-          id: tag.id,
-          isActive: !tag.isActive,
-        });
+        const { errors } = await getClient().mutations.manageEventTag({ action: 'update', resourceId: tag.id, input: JSON.stringify({ isActive: !tag.isActive }) });
 
         if (errors?.length) {
           console.error('Toggle tag errors:', errors);
@@ -593,27 +592,39 @@ export default {
 
     async toggleFeatured(event) {
       try {
-        const { errors } = await getClient().models.Event.update({
-          id: event.id,
+        if (!this.canManageEvent(event)) throw new Error('You do not have permission to manage this Event in the selected Brand context.');
+        const { errors } = await getClient().mutations.updateManagedEvent({
+          eventId: event.id,
+          ...(event.brandId ? { brandId: event.brandId } : {}),
           featured: !event.featured,
         });
 
         if (errors?.length) {
-          console.error('Toggle featured errors:', errors);
-          return;
+          throw new Error(errors[0].message || 'Failed to update featured status.');
         }
 
         await this.loadEvents();
       } catch (error) {
         console.error('Failed to toggle featured:', error);
+        this.saveError = error?.message || 'Failed to update featured status.';
       }
     },
 
     async submitWizard() {
       this.saving = true;
+      this.saveError = '';
 
       try {
+        const brandId = this.eventForm.brandId || this.selectedBrandId;
+        if (!brandId) throw new Error('Select a Brand before saving an Event.');
+        if (!this.eventForm.id && !this.eventCapabilities.canManageSelectedBrandEvents) {
+          throw new Error('You do not have permission to create Events for the selected Brand.');
+        }
+        if (this.eventForm.id && !this.canManageEvent({ id: this.eventForm.id, brandId: this.eventForm.brandId })) {
+          throw new Error('You do not have permission to edit this Event in the selected Brand context.');
+        }
         const payload = {
+          brandId,
           title: this.eventForm.title,
           shortDescription: this.eventForm.shortDescription,
           description: this.eventForm.longDescription,
@@ -636,21 +647,19 @@ export default {
         };
 
         if (this.eventForm.id) {
-          const { errors } = await getClient().models.Event.update({
-            id: this.eventForm.id,
+          const { errors } = await getClient().mutations.updateManagedEvent({
+            eventId: this.eventForm.id,
             ...payload,
           });
 
           if (errors?.length) {
-            console.error('Update event errors:', errors);
-            return;
+            throw new Error(errors[0].message || 'Failed to update Event.');
           }
         } else {
-          const { errors } = await getClient().models.Event.create(payload);
+          const { errors } = await getClient().mutations.createManagedEvent(payload);
 
           if (errors?.length) {
-            console.error('Create event errors:', errors);
-            return;
+            throw new Error(errors[0].message || 'Failed to create Event.');
           }
         }
 
@@ -659,10 +668,7 @@ export default {
           this.selectedSuggestion &&
           getClient().models.EventSuggestion
         ) {
-          const { errors } = await getClient().models.EventSuggestion.update({
-            id: this.selectedSuggestion.id,
-            status: 'approved',
-          });
+          const { errors } = await getClient().mutations.reviewEventSuggestion({ action: 'update', resourceId: this.selectedSuggestion.id, input: JSON.stringify({ status: 'approved' }) });
 
           if (errors?.length) {
             console.error('Approve suggestion errors:', errors);
@@ -673,6 +679,7 @@ export default {
         this.closeWizard();
       } catch (error) {
         console.error('Failed to submit event wizard:', error);
+        this.saveError = error?.message || 'Failed to save Event.';
       } finally {
         this.saving = false;
       }

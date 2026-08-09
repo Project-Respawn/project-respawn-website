@@ -1,222 +1,195 @@
-import type { AppSyncResolverHandler } from 'aws-lambda';
+import type { AppSyncResolverHandler } from 'aws-lambda'
 import {
+  AdminAddUserToGroupCommand,
+  AdminListGroupsForUserCommand,
+  AdminRemoveUserFromGroupCommand,
   CognitoIdentityProviderClient,
   ListUsersCommand,
-  AdminListGroupsForUserCommand,
-  AdminAddUserToGroupCommand,
-  AdminRemoveUserFromGroupCommand,
-} from '@aws-sdk/client-cognito-identity-provider';
-import type { ListUsersCommandOutput } from '@aws-sdk/client-cognito-identity-provider';
+} from '@aws-sdk/client-cognito-identity-provider'
+import type { ListUsersCommandOutput } from '@aws-sdk/client-cognito-identity-provider'
+import { getDataClient } from './dataClient'
+import { authorizeAdminUserOperation } from './authorization'
+import {
+  assertRoleChangeAllowed,
+  getRoleManager,
+  isManagedGroup,
+  type ManagedGroup,
+} from './rolePolicy'
 
-const client = new CognitoIdentityProviderClient({});
-
-const USER_POOL_ID = process.env.AMPLIFY_AUTH_USERPOOL_ID;
-const ALLOWED_ADMIN_GROUPS = ['SuperAdmin', 'Admin', 'Staff'] as const;
-const MANAGED_GROUPS = [
-  'SuperAdmin',
-  'Admin',
-  'Staff',
-  'Moderator',
-  'Trainer',
-  'Therapist',
-  'StreamingPartner',
-  'AffiliatePartner',
-  'Member',
-  'BetaMember',
-] as const;
-
-type ManagedGroup = (typeof MANAGED_GROUPS)[number];
+const client = new CognitoIdentityProviderClient({})
+const USER_POOL_ID = process.env.AMPLIFY_AUTH_USERPOOL_ID
 
 function isNonEmptyString(value: unknown): value is string {
-  return typeof value === 'string' && value.trim().length > 0;
-}
-
-function isManagedGroup(value: unknown): value is ManagedGroup {
-  return isNonEmptyString(value) && MANAGED_GROUPS.includes(value as ManagedGroup);
+  return typeof value === 'string' && value.trim().length > 0
 }
 
 function getCallerGroups(event: any): string[] {
-  const groups =
-    event?.identity?.claims?.['cognito:groups'] ||
-    event?.identity?.resolverContext?.groups ||
-    [];
-
-  if (Array.isArray(groups)) {
-    return groups.filter(isNonEmptyString);
-  }
-
-  return isNonEmptyString(groups) ? [groups] : [];
+  const groups = event?.identity?.claims?.['cognito:groups'] || []
+  if (Array.isArray(groups)) return groups.filter(isNonEmptyString)
+  return isNonEmptyString(groups) ? [groups] : []
 }
 
-function assertAdminAccess(event: any) {
-  const callerGroups = getCallerGroups(event);
-  const allowed = callerGroups.some((group) =>
-    ALLOWED_ADMIN_GROUPS.includes(group as (typeof ALLOWED_ADMIN_GROUPS)[number])
-  );
+function getCallerUserId(event: any): string {
+  return String(
+    event?.identity?.username ||
+    event?.identity?.claims?.['cognito:username'] ||
+    event?.identity?.claims?.username ||
+    event?.identity?.sub ||
+    '',
+  )
+}
 
-  if (!allowed) {
-    throw new Error('Unauthorized');
-  }
+function assertRoleManagementAccess(event: any) {
+  const manager = getRoleManager(getCallerGroups(event))
+  if (!manager) throw new Error('You are not authorized to manage user roles')
+  return manager
 }
 
 function getAttribute(user: any, name: string): string {
-  return user.Attributes?.find((attr: any) => attr.Name === name)?.Value ?? '';
+  return user.Attributes?.find((attribute: any) => attribute.Name === name)?.Value ?? ''
 }
 
 function formatDate(value?: Date): string {
-  if (!value) return '';
-  return new Date(value).toLocaleDateString('en-GB');
+  return value ? new Date(value).toLocaleDateString('en-GB') : ''
 }
 
 function getFieldName(event: any): string {
-  return event?.info?.fieldName || event?.fieldName || '';
+  return event?.info?.fieldName || event?.fieldName || ''
 }
 
 function getArguments(event: any) {
-  return event?.arguments || event?.args || {};
+  return event?.arguments || event?.args || {}
+}
+
+function normalizeDesiredRoles(roles: unknown): ManagedGroup[] {
+  if (!Array.isArray(roles) || roles.some((role) => !isManagedGroup(role))) {
+    throw new Error('roles must contain only supported Cognito groups')
+  }
+
+  const desiredRoles = [...new Set(roles)]
+  if (!desiredRoles.includes('Member')) desiredRoles.push('Member')
+  return desiredRoles
+}
+
+async function getExistingRoles(username: string): Promise<ManagedGroup[]> {
+  if (!USER_POOL_ID) throw new Error('Missing AMPLIFY_AUTH_USERPOOL_ID')
+
+  const response = await client.send(new AdminListGroupsForUserCommand({
+    UserPoolId: USER_POOL_ID,
+    Username: username,
+  }))
+  return (response.Groups ?? []).map((group) => group.GroupName).filter(isManagedGroup)
 }
 
 async function listAllUsers() {
-  if (!USER_POOL_ID) {
-    throw new Error('Missing AMPLIFY_AUTH_USERPOOL_ID');
-  }
+  if (!USER_POOL_ID) throw new Error('Missing AMPLIFY_AUTH_USERPOOL_ID')
 
-  const allUsers: any[] = [];
-  let paginationToken: string | undefined = undefined;
-
+  const allUsers: any[] = []
+  let paginationToken: string | undefined
   do {
- const listUsersResponse: ListUsersCommandOutput = await client.send(
-  new ListUsersCommand({
-    UserPoolId: USER_POOL_ID,
-    Limit: 60,
-    PaginationToken: paginationToken,
-  })
-);
+    const input: { UserPoolId: string; Limit: number; PaginationToken?: string } = {
+      UserPoolId: USER_POOL_ID,
+      Limit: 60,
+    }
+    if (paginationToken) input.PaginationToken = paginationToken
+    const response: ListUsersCommandOutput = await client.send(new ListUsersCommand(input))
+    allUsers.push(...(response.Users ?? []))
+    paginationToken = response.PaginationToken
+  } while (paginationToken)
 
-    allUsers.push(...(listUsersResponse.Users ?? []));
-    paginationToken = listUsersResponse.PaginationToken;
-  } while (paginationToken);
+  return Promise.all(allUsers.map(async (user) => {
+    const username = user.Username ?? ''
+    const email = getAttribute(user, 'email')
+    const name =
+      getAttribute(user, 'name') ||
+      getAttribute(user, 'preferred_username') ||
+      [getAttribute(user, 'given_name'), getAttribute(user, 'family_name')].filter(isNonEmptyString).join(' ') ||
+      email ||
+      username
+    const roles = await getExistingRoles(username)
 
-  const users = await Promise.all(
-    allUsers.map(async (user) => {
-      const username = user.Username ?? '';
-      const email = getAttribute(user, 'email');
-      const name =
-        getAttribute(user, 'name') ||
-        getAttribute(user, 'preferred_username') ||
-        [getAttribute(user, 'given_name'), getAttribute(user, 'family_name')]
-          .filter(isNonEmptyString)
-          .join(' ') ||
-        email ||
-        username;
-
-      const groupsResponse = await client.send(
-        new AdminListGroupsForUserCommand({
-          UserPoolId: USER_POOL_ID,
-          Username: username,
-        })
-      );
-
-      const roles = (groupsResponse.Groups ?? [])
-        .map((group) => group.GroupName)
-        .filter(isManagedGroup);
-
-      return {
-        id: username,
-        username,
-        email,
-        name,
-        joined: formatDate(user.UserCreateDate),
-        online: false,
-        status: user.UserStatus ?? 'UNKNOWN',
-        enabled: user.Enabled ?? true,
-        roles: roles.length ? roles : ['Member'],
-      };
-    })
-  );
-
-  return users;
+    return {
+      id: username,
+      username,
+      email,
+      name,
+      joined: formatDate(user.UserCreateDate),
+      online: false,
+      status: user.UserStatus ?? 'UNKNOWN',
+      enabled: user.Enabled ?? true,
+      roles: roles.length ? roles : ['Member'],
+    }
+  }))
 }
 
-async function updateUserRoles(username: string, roles: string[]) {
-  if (!USER_POOL_ID) {
-    throw new Error('Missing AMPLIFY_AUTH_USERPOOL_ID');
+async function writeRoleChangeAudit(
+  actorUserId: string,
+  username: string,
+  before: ManagedGroup[],
+  after: ManagedGroup[],
+) {
+  const dataClient = await getDataClient()
+  const result = await dataClient.models.PermissionAuditEvent.create({
+    actorUserId,
+    action: 'user.roles.update',
+    targetType: 'CognitoUser',
+    targetId: username,
+    before: JSON.stringify(before),
+    after: JSON.stringify(after),
+    occurredAt: new Date().toISOString(),
+  })
+
+  if (result.errors?.length) {
+    throw new Error(result.errors[0].message || 'Role changes were applied but the audit record could not be written')
   }
+}
 
-  if (!username) {
-    throw new Error('Username is required');
-  }
+async function updateUserRoles(event: any, username: unknown, roles: unknown) {
+  if (!USER_POOL_ID) throw new Error('Missing AMPLIFY_AUTH_USERPOOL_ID')
+  if (!isNonEmptyString(username)) throw new Error('Username is required')
 
-  const desiredRoles: ManagedGroup[] = [
-    ...new Set((roles || []).filter(isManagedGroup)),
-  ];
+  const manager = assertRoleManagementAccess(event)
+  const actorUserId = getCallerUserId(event)
+  if (!actorUserId) throw new Error('Authenticated user identity is required')
 
-  if (!desiredRoles.includes('Member')) {
-    desiredRoles.push('Member');
-  }
-
-  const existingGroupsResponse = await client.send(
-    new AdminListGroupsForUserCommand({
-      UserPoolId: USER_POOL_ID,
-      Username: username,
-    })
-  );
-
-  const existingRoles: ManagedGroup[] = (existingGroupsResponse.Groups ?? [])
-    .map((group) => group.GroupName)
-    .filter(isManagedGroup);
-
-  const rolesToAdd = desiredRoles.filter((role) => !existingRoles.includes(role));
-  const rolesToRemove = existingRoles.filter((role) => !desiredRoles.includes(role));
+  const desiredRoles = normalizeDesiredRoles(roles)
+  const existingRoles = await getExistingRoles(username)
+  const { rolesToAdd, rolesToRemove } = assertRoleChangeAllowed(manager, existingRoles, desiredRoles)
 
   await Promise.all([
-    ...rolesToAdd.map((role) =>
-      client.send(
-        new AdminAddUserToGroupCommand({
-          UserPoolId: USER_POOL_ID,
-          Username: username,
-          GroupName: role,
-        })
-      )
-    ),
-    ...rolesToRemove.map((role) =>
-      client.send(
-        new AdminRemoveUserFromGroupCommand({
-          UserPoolId: USER_POOL_ID,
-          Username: username,
-          GroupName: role,
-        })
-      )
-    ),
-  ]);
+    ...rolesToAdd.map((role) => client.send(new AdminAddUserToGroupCommand({
+      UserPoolId: USER_POOL_ID,
+      Username: username,
+      GroupName: role,
+    }))),
+    ...rolesToRemove.map((role) => client.send(new AdminRemoveUserFromGroupCommand({
+      UserPoolId: USER_POOL_ID,
+      Username: username,
+      GroupName: role,
+    }))),
+  ])
 
-  return {
-    success: true,
-    username,
-    roles: desiredRoles,
-  };
+  if (rolesToAdd.length || rolesToRemove.length) {
+    await writeRoleChangeAudit(actorUserId, username, existingRoles, desiredRoles)
+  }
+
+  return { success: true, username, roles: desiredRoles }
 }
 
 export const handler: AppSyncResolverHandler<any, any> = async (event) => {
-  const fieldName = getFieldName(event);
-  const args = getArguments(event);
+  const fieldName = getFieldName(event)
+  const args = getArguments(event)
 
-  console.log('Admin user management invoked', {
-    fieldName,
-    callerGroups: getCallerGroups(event),
-    eventKeys: Object.keys(event || {}),
-  });
-
-  assertAdminAccess(event);
+  const dataClient = await getDataClient()
 
   switch (fieldName) {
     case 'listAdminUsers':
-      return await listAllUsers();
-
+      await authorizeAdminUserOperation(event, dataClient, 'users.view')
+      return listAllUsers()
     case 'updateUserRoles':
-      return await updateUserRoles(args.username, args.roles || []);
-
+      await authorizeAdminUserOperation(event, dataClient, 'users.manage')
+      return updateUserRoles(event, args.username, args.roles)
     default:
-      throw new Error(`Unknown field: ${fieldName || 'undefined'}`);
+      throw new Error(`Unknown field: ${fieldName || 'undefined'}`)
   }
-};
+}

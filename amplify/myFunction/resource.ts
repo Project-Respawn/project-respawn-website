@@ -12,6 +12,7 @@ export const myFunction = defineFunction({
   name: 'myFunction-rebuild',
   entry: './handler.ts',
   resourceGroupName: 'data',
+  timeoutSeconds: 30,
 
   environment: {
     // =========================================================================

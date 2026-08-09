@@ -5,7 +5,7 @@ import path from 'path';
 
 const ROOT = process.cwd();
 const SRC_DIR = path.join(ROOT, 'src');
-const PERMISSIONS_FILE = path.join(SRC_DIR, 'permissions', 'permissions.ts');
+const PERMISSIONS_FILE = path.join(ROOT, 'amplify', 'myFunction', 'permissions', 'index.ts');
 const REPORT_DIR = path.join(ROOT, 'output');
 const REPORT_FILE = path.join(REPORT_DIR, 'permission-scan-report.json');
 
@@ -43,17 +43,29 @@ function readFileSafe(filePath) {
 }
 
 function extractRegistryPermissions(fileContent) {
-  const permissionKeyRegex = /['"`]([a-z0-9_-]+\.[a-z0-9_.-]+)['"`]\s*:/gi;
+  const patterns = [
+    /['"`]([a-z0-9_-]+\.[a-z0-9_.-]+)['"`]\s*:/gi,
+    /\bkey\s*:\s*['"`]([a-z0-9_-]+\.[a-z0-9_.-]+)['"`]/gi,
+  ];
   const keys = new Set();
 
-  for (const match of fileContent.matchAll(permissionKeyRegex)) {
-    keys.add(match[1]);
+  for (const pattern of patterns) {
+    for (const match of fileContent.matchAll(pattern)) {
+      keys.add(match[1]);
+    }
   }
 
   return keys;
 }
 
 function extractRoles(fileContent) {
+  const cognitoGroupsMatch = fileContent.match(/COGNITO_GROUPS\s*=\s*\[([\s\S]*?)\]\s*as const/m);
+  if (cognitoGroupsMatch) {
+    return [...cognitoGroupsMatch[1].matchAll(/['"`]([A-Za-z0-9_]+)['"`]/g)]
+      .map((match) => match[1])
+      .sort();
+  }
+
   const roleBlockMatch = fileContent.match(/ROLE_DEFINITIONS\s*=\s*\{([\s\S]*?)\n\};?/m);
   if (!roleBlockMatch) return [];
 
@@ -123,7 +135,6 @@ function extractUsedPermissions(fileContent) {
     /hasPermission\s*\([^)]*['"`]([a-z0-9_-]+\.[a-z0-9_.-]+)['"`]/gi,
     /hasAnyPermission\s*\([^)]*['"`]([a-z0-9_-]+\.[a-z0-9_.-]+)['"`]/gi,
     /permission(?:Key)?\s*[:=]\s*['"`]([a-z0-9_-]+\.[a-z0-9_.-]+)['"`]/gi,
-    /['"`]([a-z0-9_-]+\.[a-z0-9_.-]+)['"`]/gi,
   ];
 
   const found = new Set();
@@ -138,7 +149,7 @@ function extractUsedPermissions(fileContent) {
 }
 
 function isLikelyPermissionKey(key) {
-  return /^[a-z0-9_-]+\.[a-z0-9_.-]+$/i.test(key);
+  return /^[a-z][a-z0-9_-]*\.[a-z0-9_.-]+$/i.test(key);
 }
 
 function titleFromPermissionKey(key) {
@@ -214,22 +225,6 @@ function main() {
     .filter(key => !registryPermissions.includes(key))
     .sort();
 
-  const unusedInCode = registryPermissions
-    .filter(key => !allUsedPermissions.has(key))
-    .sort();
-
-  const missingFromDefaultMatrix = registryPermissions
-    .filter(key => !Object.prototype.hasOwnProperty.call(defaultPermissionRoleMap, key))
-    .sort();
-
-  const matrixKeysNotInRegistry = Object.keys(defaultPermissionRoleMap)
-    .filter(key => !registryPermissions.includes(key))
-    .sort();
-
-  const registryKeysNotInSections = registryPermissions
-    .filter(key => !registrySectionMap.has(key))
-    .sort();
-
   const issues = [];
   for (const key of missingFromRegistry) {
     issues.push({
@@ -238,50 +233,6 @@ function main() {
       role: '',
       location: 'code usage',
       detail: 'Referenced in code but not defined in permission sections/registry',
-      status: 'Open',
-    });
-  }
-
-  for (const key of unusedInCode) {
-    issues.push({
-      issueType: 'Unused in code',
-      permissionKey: key,
-      role: '',
-      location: registrySectionMap.get(key)?.sectionKey || '',
-      detail: 'Defined in registry but not found in scanned code',
-      status: 'Review',
-    });
-  }
-
-  for (const key of missingFromDefaultMatrix) {
-    issues.push({
-      issueType: 'Missing in default matrix',
-      permissionKey: key,
-      role: '',
-      location: registrySectionMap.get(key)?.sectionKey || '',
-      detail: 'Defined in registry but missing from DEFAULT_PERMISSIONS',
-      status: 'Open',
-    });
-  }
-
-  for (const key of matrixKeysNotInRegistry) {
-    issues.push({
-      issueType: 'Matrix key missing in registry',
-      permissionKey: key,
-      role: '',
-      location: 'DEFAULT_PERMISSIONS',
-      detail: 'Permission exists in DEFAULT_PERMISSIONS but not in permission sections/registry',
-      status: 'Open',
-    });
-  }
-
-  for (const key of registryKeysNotInSections) {
-    issues.push({
-      issueType: 'Broken link',
-      permissionKey: key,
-      role: '',
-      location: 'registry',
-      detail: 'Permission key found in registry map but not linked to a section item',
       status: 'Open',
     });
   }

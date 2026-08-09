@@ -18,6 +18,11 @@
         </div>
 
         <div class="top-actions">
+          <select v-model="selectedBrandId" class="search-input" :disabled="accessLoading" @change="selectBrandContext">
+            <option v-for="brand in accessibleBrandOptions" :key="brand.brandId" :value="brand.brandId">
+              {{ brand.name }}
+            </option>
+          </select>
           <input
             v-model="searchQuery"
             type="text"
@@ -27,7 +32,7 @@
           <button class="secondary-btn" @click="showHelp = !showHelp">
             {{ showHelp ? 'Hide Help' : 'Show Help' }}
           </button>
-          <button class="primary-btn" @click="addNewCommand">
+          <button class="primary-btn" :disabled="!canManageSelectedBrandCommands || !streamerId" @click="addNewCommand">
             Add Custom Command
           </button>
         </div>
@@ -133,6 +138,7 @@
                   <input
                     type="checkbox"
                     :checked="command.enabled"
+                    :disabled="!canManageCommand(command)"
                     @change="toggleCommandEnabled(command)"
                   />
                   <span></span>
@@ -149,6 +155,7 @@
 
               <div class="cell">
                 <span class="mini-badge">{{ command.category || 'Custom' }}</span>
+                <span v-if="command.isUnscoped" class="mini-badge muted">Unscoped — platform remediation required</span>
               </div>
 
               <div class="cell">
@@ -201,11 +208,11 @@
               </label>
 
               <div class="dropdown-actions">
-                <button class="danger-btn" @click="removeCommand(command)">
+                <button class="danger-btn" :disabled="!canManageCommand(command)" @click="removeCommand(command)">
                   Delete
                 </button>
 
-                <button class="primary-btn" :disabled="isSaving" @click="saveCommand(command)">
+                <button class="primary-btn" :disabled="isSaving || !canManageCommand(command)" @click="saveCommand(command)">
                   {{ isSaving ? 'Saving...' : 'Save Command' }}
                 </button>
               </div>
@@ -234,7 +241,7 @@
                   <input
                     type="checkbox"
                     :checked="suggested.isEnabled"
-                    :disabled="isLoading || !streamerId"
+                    :disabled="isLoading || !streamerId || !canManageSelectedBrandCommands"
                     @change="toggleSuggestedCommand(suggested)"
                   />
                   <span></span>
@@ -324,7 +331,7 @@
 
                 <button
                   class="primary-btn"
-                  :disabled="isLoading || !streamerId"
+                  :disabled="isLoading || !streamerId || !canManageSelectedBrandCommands"
                   @click.stop="saveSuggestedCommand(suggested)"
                 >
                   Save Template
@@ -332,7 +339,7 @@
 
                 <button
                   class="primary-btn"
-                  :disabled="isLoading || !streamerId"
+                  :disabled="isLoading || !streamerId || !canManageSelectedBrandCommands"
                   @click.stop="toggleSuggestedCommand(suggested)"
                 >
                   {{ suggested.isEnabled ? 'Disable Command' : 'Enable Command' }}

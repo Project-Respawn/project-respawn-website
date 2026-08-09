@@ -1132,14 +1132,7 @@ export async function updateThread(threadId, input = {}) {
     const client =
         await getWriteClient();
 
-    const result =
-        await client.models.ForumThread.update({
-
-            id: threadId,
-
-            ...input,
-
-        });
+    const result = await client.mutations.moderateForumThread({ action: 'update', resourceId: threadId, input: JSON.stringify(input) });
 
     return throwIfErrors(
 
@@ -1162,12 +1155,7 @@ export async function deleteThread(threadId) {
     const client =
         await getWriteClient();
 
-    const result =
-        await client.models.ForumThread.delete({
-
-            id: threadId,
-
-        });
+    const result = await client.mutations.moderateForumThread({ action: 'delete', resourceId: threadId });
 
     return throwIfErrors(
 
@@ -1193,14 +1181,7 @@ export async function updatePost(postId, input = {}) {
     const post =
         await getPost(postId);
 
-    const result =
-        await client.models.ForumPost.update({
-
-            id: postId,
-
-            ...input,
-
-        });
+    const result = await client.mutations.moderateForumPost({ action: 'update', resourceId: postId, input: JSON.stringify(input) });
 
     const updatedPost = throwIfErrors(
 
@@ -1233,12 +1214,7 @@ export async function deletePost(postId) {
     const client =
         await getWriteClient();
 
-    const result =
-        await client.models.ForumPost.delete({
-
-            id: postId,
-
-        });
+    const result = await client.mutations.moderateForumPost({ action: 'delete', resourceId: postId });
 
     return throwIfErrors(
 
@@ -1467,11 +1443,10 @@ export async function seedForumStructure() {
     if (legacyRealWorld && !categoryBySlug.has("real-world")) {
 
         const migration =
-            await client.models.ForumCategory.update({
-                id: legacyRealWorld.id,
-                ...STARTER_CATEGORIES.find(
+            await client.mutations.manageForumCategory({
+                action: 'update', resourceId: legacyRealWorld.id, input: JSON.stringify(STARTER_CATEGORIES.find(
                     category => category.slug === "real-world"
-                ),
+                )),
             });
 
         const migratedCategory =
@@ -1481,7 +1456,7 @@ export async function seedForumStructure() {
             );
 
         categoryBySlug.delete("real-world-progress");
-        categoryBySlug.set("real-world", migratedCategory);
+        categoryBySlug.set("real-world", { ...legacyRealWorld, ...STARTER_CATEGORIES.find(category => category.slug === "real-world"), id: migratedCategory.resourceId });
 
     }
 
@@ -1490,7 +1465,7 @@ export async function seedForumStructure() {
         if (categoryBySlug.has(category.slug)) continue;
 
         const createResult =
-            await client.models.ForumCategory.create(category);
+            await client.mutations.manageForumCategory({ action: 'create', input: JSON.stringify(category) });
 
         const createdCategory =
             throwIfErrors(
@@ -1498,7 +1473,7 @@ export async function seedForumStructure() {
                 `Failed to create category: ${category.name}`
             );
 
-        categoryBySlug.set(category.slug, createdCategory);
+        categoryBySlug.set(category.slug, { ...category, id: createdCategory.resourceId });
 
     }
 
@@ -1532,11 +1507,7 @@ export async function seedForumStructure() {
         if (realWorldCategory?.id) {
 
             const migration =
-                await client.models.ForumBoard.update({
-                    id: legacyAchievements.id,
-                    categoryId: realWorldCategory.id,
-                    ...achievementInput,
-                });
+                await client.mutations.manageForumBoard({ action: 'update', resourceId: legacyAchievements.id, input: JSON.stringify({ categoryId: realWorldCategory.id, ...achievementInput }) });
 
             const migratedBoard =
                 throwIfErrors(
@@ -1567,10 +1538,7 @@ export async function seedForumStructure() {
         const { categorySlug, ...boardInput } = board;
 
         const createResult =
-            await client.models.ForumBoard.create({
-                ...boardInput,
-                categoryId: category.id,
-            });
+            await client.mutations.manageForumBoard({ action: 'create', input: JSON.stringify({ ...boardInput, categoryId: category.id }) });
 
         const createdBoard =
             throwIfErrors(
@@ -1578,7 +1546,7 @@ export async function seedForumStructure() {
                 `Failed to create board: ${board.name}`
             );
 
-        boardBySlug.set(board.slug, createdBoard);
+        boardBySlug.set(board.slug, { ...boardInput, categoryId: category.id, id: createdBoard.resourceId });
 
     }
 

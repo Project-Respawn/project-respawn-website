@@ -1,4 +1,6 @@
 import { generateClient } from 'aws-amplify/data';
+import { refreshAccessContext } from '@/composables/useAccessContext.js';
+import { assertCreatedBrandVisible, listAllBrands, normalizeOwnerUsers, requireSuccessfulBrandMutation } from './AdminBrands.results.js';
 
 function getClient() {
   return generateClient({
@@ -28,22 +30,27 @@ export default {
       formError: '',
       toastMessage: '',
       toastTimeout: null,
+      ownerInputs: {},
+      ownerUsers: [],
+      loadingOwnerUsers: false,
+      ownerUsersError: '',
       newBrand: {
         name: '',
         slug: '',
         description: '',
-        status: 'active',
+        sortOrder: 0,
+        isActive: true,
       },
     };
   },
 
   computed: {
     activeBrandCount() {
-      return this.brands.filter((brand) => brand.status === 'active').length;
+      return this.brands.filter((brand) => brand.isActive).length;
     },
 
     archivedBrandCount() {
-      return this.brands.filter((brand) => brand.status === 'archived').length;
+      return this.brands.filter((brand) => !brand.isActive).length;
     },
   },
 
@@ -56,7 +63,7 @@ export default {
   },
 
   async mounted() {
-    await this.fetchBrands();
+    await Promise.all([this.fetchBrands(), this.fetchOwnerUsers()]);
   },
 
   methods: {
@@ -74,23 +81,19 @@ export default {
       this.toastMessage = '';
     },
 
-    async fetchBrands() {
+    async fetchBrands({ throwOnError = false } = {}) {
       this.loading = true;
       this.loadError = '';
 
       try {
-        const client = getClient();
-        const { data, errors } = await client.models.Brand.list();
-
-        if (errors?.length) {
-          throw new Error(errors[0].message || 'Failed to load brands.');
-        }
-
-        this.brands = [...(data || [])].sort((a, b) =>
-          a.name.localeCompare(b.name)
-        );
+        this.brands = (await listAllBrands(getClient())).sort((a, b) => {
+          const orderDifference = (a.sortOrder ?? 0) - (b.sortOrder ?? 0);
+          return orderDifference || a.name.localeCompare(b.name);
+        });
+        this.ownerInputs = Object.fromEntries(this.brands.map((brand) => [brand.id, brand.ownerUserId || '']));
       } catch (error) {
         this.loadError = error?.message || 'Failed to load brands.';
+        if (throwOnError) throw error;
       } finally {
         this.loading = false;
       }
@@ -126,21 +129,21 @@ export default {
       this.saving = true;
 
       try {
-        const client = getClient();
-        const { errors } = await client.models.Brand.create({
+        const result = await getClient().mutations.createManagedBrand({
           name,
           slug: generatedSlug,
           description: this.newBrand.description.trim(),
-          status: this.newBrand.status,
+          sortOrder: Number(this.newBrand.sortOrder) || 0,
+          isActive: this.newBrand.isActive === true,
         });
 
-        if (errors?.length) {
-          throw new Error(errors[0].message || 'Failed to create brand.');
-        }
+        const created = requireSuccessfulBrandMutation(result, 'Failed to create brand.');
 
         this.resetForm();
-        await this.fetchBrands();
-        this.setToast('Brand created successfully.');
+        await this.fetchBrands({ throwOnError: true });
+        assertCreatedBrandVisible(this.brands, created.brandId);
+        await refreshAccessContext({ force: true });
+        this.setToast(created.message || 'Brand created successfully.');
       } catch (error) {
         this.formError = error?.message || 'Failed to create brand.';
       } finally {
@@ -154,7 +157,8 @@ export default {
         name: '',
         slug: '',
         description: '',
-        status: 'active',
+        sortOrder: 0,
+        isActive: true,
       };
     },
 
@@ -163,26 +167,60 @@ export default {
       this.saving = true;
 
       try {
-        const nextStatus = brand.status === 'active' ? 'archived' : 'active';
+        const nextIsActive = !brand.isActive;
 
-        const client = getClient();
-        const { errors } = await client.models.Brand.update({
-          id: brand.id,
-          status: nextStatus,
+        const result = await getClient().mutations.updateManagedBrand({
+          brandId: brand.id,
+          isActive: nextIsActive,
         });
 
-        if (errors?.length) {
-          throw new Error(errors[0].message || 'Failed to update brand.');
-        }
+        requireSuccessfulBrandMutation(result, 'Failed to update brand.');
 
         await this.fetchBrands();
         this.setToast(
-          nextStatus === 'active'
+          nextIsActive
             ? 'Brand restored successfully.'
             : 'Brand archived successfully.'
         );
       } catch (error) {
         this.loadError = error?.message || 'Failed to update brand.';
+      } finally {
+        this.saving = false;
+      }
+    },
+
+    async fetchOwnerUsers() {
+      this.loadingOwnerUsers = true;
+      this.ownerUsersError = '';
+      try {
+        const result = await getClient().queries.listAdminUsers();
+        if (result.errors?.length) throw new Error(result.errors[0].message || 'Failed to load eligible Brand Owners.');
+        this.ownerUsers = normalizeOwnerUsers(result.data);
+      } catch (error) {
+        this.ownerUsers = [];
+        this.ownerUsersError = error?.message || 'Failed to load eligible Brand Owners.';
+      } finally {
+        this.loadingOwnerUsers = false;
+      }
+    },
+
+    async saveBrandOwner(brand) {
+      const ownerUserId = (this.ownerInputs[brand.id] || '').trim();
+      if (!ownerUserId) {
+        this.loadError = 'A Brand Owner Cognito user ID is required.';
+        return;
+      }
+
+      this.clearMessages();
+      this.saving = true;
+      try {
+        const result = await getClient().mutations.setBrandOwner({ brandId: brand.id, ownerUserId });
+        const updated = requireSuccessfulBrandMutation(result, 'Failed to update Brand Owner.');
+        await this.fetchBrands({ throwOnError: true });
+        await refreshAccessContext({ force: true });
+        this.setToast(updated.message || 'Brand Owner updated.');
+      } catch (error) {
+        this.loadError = error?.message || 'Failed to update Brand Owner.';
       } finally {
         this.saving = false;
       }

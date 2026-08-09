@@ -18,14 +18,14 @@ const defaultPrefix = 'public/media/';
 const bucketName = String(outputs?.storage?.bucket_name || '').trim();
 const region = String(outputs?.storage?.aws_region || outputs?.auth?.aws_region || '').trim();
 const dataUrl = String(outputs?.data?.url || '').trim();
-const apiKey = String(outputs?.data?.api_key || '').trim();
+const mediaLibraryAuthToken = String(process.env.MEDIA_LIBRARY_AUTH_TOKEN || '').trim();
 
 if (!bucketName || !region) {
   throw new Error('Missing storage bucket configuration in amplify_outputs.json.');
 }
 
-if (!dataUrl || !apiKey) {
-  throw new Error('Missing GraphQL API url or api_key in amplify_outputs.json.');
+if (!dataUrl || !mediaLibraryAuthToken) {
+  throw new Error('Missing GraphQL API URL or MEDIA_LIBRARY_AUTH_TOKEN for a permitted media manager.');
 }
 
 const s3 = new S3Client({ region });
@@ -100,7 +100,7 @@ async function graphqlRequest(query, variables = {}) {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
-      'x-api-key': apiKey,
+      authorization: mediaLibraryAuthToken,
     },
     body: JSON.stringify({ query, variables }),
   });
@@ -116,29 +116,16 @@ async function graphqlRequest(query, variables = {}) {
 
 async function fetchAllMediaItems() {
   const query = /* GraphQL */ `
-    query ListMediaItems($nextToken: String) {
-      listMediaItems(limit: 1000, nextToken: $nextToken) {
-        items {
-          id
-          url
-          title
-        }
-        nextToken
+    query ListManagedMediaLibrary {
+      listManagedMediaLibrary {
+        mediaItems
       }
     }
   `;
-
-  const items = [];
-  let nextToken;
-
-  do {
-    const data = await graphqlRequest(query, { nextToken });
-    const page = data?.listMediaItems;
-    items.push(...(page?.items || []));
-    nextToken = page?.nextToken;
-  } while (nextToken);
-
-  return items;
+  const data = await graphqlRequest(query);
+  return Array.isArray(data?.listManagedMediaLibrary?.mediaItems)
+    ? data.listManagedMediaLibrary.mediaItems
+    : [];
 }
 
 async function listAllKeys(prefix) {

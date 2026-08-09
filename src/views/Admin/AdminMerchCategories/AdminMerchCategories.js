@@ -31,6 +31,28 @@ function sortByOrder(items = []) {
   });
 }
 
+async function listAllCategories() {
+  const categories = [];
+  let nextToken;
+
+  do {
+    const { data, errors, nextToken: receivedNextToken } = await getClient().models.MerchCategory.list({
+      authMode: 'userPool',
+      limit: 1000,
+      nextToken,
+    });
+
+    if (errors?.length) {
+      throw new Error(errors[0].message || 'Failed to load categories.');
+    }
+
+    categories.push(...(data || []));
+    nextToken = receivedNextToken;
+  } while (nextToken);
+
+  return categories;
+}
+
 export default {
   name: 'AdminMerchCategories',
 
@@ -48,7 +70,6 @@ export default {
         description: '',
         sortOrder: 0,
         isActive: true,
-        showInMenu: true,
       },
       toastTimeout: null,
     };
@@ -106,16 +127,8 @@ export default {
     },
 
     async fetchCategories() {
-      const { data, errors } = await getClient().models.MerchCategory.list({
-        authMode: 'userPool',
-      });
-
-      if (errors?.length) {
-        throw new Error(errors[0].message || 'Failed to load categories.');
-      }
-
       this.categories = sortByOrder(
-        (data || []).map((category) => ({
+        (await listAllCategories()).map((category) => ({
           id: category.id,
           name: category.name || '',
           slug: category.slug || '',
@@ -123,8 +136,6 @@ export default {
           sortOrder:
             typeof category.sortOrder === 'number' ? category.sortOrder : 0,
           isActive: !!category.isActive,
-          showInMenu: category.showInMenu !== false,
-          status: category.status || (category.isActive ? 'active' : 'archived'),
         }))
       );
     },
@@ -159,20 +170,13 @@ export default {
       this.saving = true;
 
       try {
-        const { errors } = await getClient().models.MerchCategory.create(
-          {
+        const { errors } = await getClient().mutations.manageMerchCategory({ action: 'create', input: JSON.stringify({
             name,
             slug: generatedSlug,
             description: this.newCategory.description.trim(),
             sortOrder: Number(this.newCategory.sortOrder) || 0,
             isActive: !!this.newCategory.isActive,
-            showInMenu: !!this.newCategory.showInMenu,
-            status: this.newCategory.isActive ? 'active' : 'archived',
-          },
-          {
-            authMode: 'userPool',
-          }
-        );
+          }) });
 
         if (errors?.length) {
           throw new Error(errors[0].message || 'Failed to create category.');
@@ -196,7 +200,6 @@ export default {
         description: '',
         sortOrder: 0,
         isActive: true,
-        showInMenu: true,
       };
     },
 
@@ -207,15 +210,10 @@ export default {
       try {
         const nextIsActive = !category.isActive;
 
-        const { errors } = await getClient().models.MerchCategory.update(
-          {
-            id: category.id,
+        const { errors } = await getClient().mutations.manageMerchCategory(
+          { action: 'update', resourceId: category.id, input: JSON.stringify({
             isActive: nextIsActive,
-            status: nextIsActive ? 'active' : 'archived',
-          },
-          {
-            authMode: 'userPool',
-          }
+          }) }
         );
 
         if (errors?.length) {
