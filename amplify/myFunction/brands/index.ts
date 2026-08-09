@@ -41,7 +41,9 @@ async function getActor(event: any, client: any) {
   return { identity, userId, isPlatformOperator: effective.has('brands.manage') }
 }
 
-function assertPlatformBrandOperator(actor: ReturnType<typeof getActor>) {
+type BrandActor = Awaited<ReturnType<typeof getActor>>
+
+function assertPlatformBrandOperator(actor: BrandActor) {
   assertCanChangeBrandOwner(actor.isPlatformOperator)
 }
 
@@ -76,7 +78,7 @@ async function getBrandAccessRows(client: any, brandId?: string) {
   return brandId ? rows.filter((row) => row.brandId === brandId) : rows
 }
 
-async function assertBrandPermissionManager(client: any, actor: Awaited<ReturnType<typeof getActor>>, brandId: string) {
+async function assertBrandPermissionManager(client: any, actor: BrandActor, brandId: string) {
   const brand = await requireBrand(client, brandId)
   if (!canManageBrandPermissions(actor.isPlatformOperator, actor.userId, brand.ownerUserId)) {
     throw new Error('You can manage helpers only for brands you own')
