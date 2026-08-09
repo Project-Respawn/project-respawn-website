@@ -1,6 +1,6 @@
 import { getIdentityUsername, getResolverIdentity } from './auth'
 import { resolveEffectivePermissionKeys } from './effectivePermissions'
-import { PLATFORM_CONTROL_PERMISSION_KEYS } from '../permissions'
+import { PLATFORM_CONTROL_PERMISSION_KEYS } from './permissionConstants'
 
 async function listAll(client: any, modelName: string) {
   const records: any[] = []
