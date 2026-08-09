@@ -14,7 +14,9 @@ frontend:
         - npm install
         - npx ampx generate outputs --branch "$AWS_BRANCH" --app-id d2cux232bpa951 --format json --out-dir .
         - test -n "$VITE_API_BASE_URL" || (echo "Missing Amplify env var VITE_API_BASE_URL" && exit 1)
-        - printf "VITE_API_BASE_URL=%s\n" "$VITE_API_BASE_URL" > .env.production
+        - test -n "$VITE_REVOLUT_MODE" || (echo "Missing Amplify env var VITE_REVOLUT_MODE" && exit 1)
+        - test -n "$VITE_REVOLUT_PUBLIC_KEY" || (echo "Missing Amplify env var VITE_REVOLUT_PUBLIC_KEY" && exit 1)
+        - printf "VITE_API_BASE_URL=%s\nVITE_REVOLUT_MODE=%s\nVITE_REVOLUT_PUBLIC_KEY=%s\n" "$VITE_API_BASE_URL" "$VITE_REVOLUT_MODE" "$VITE_REVOLUT_PUBLIC_KEY" > .env.production
     build:
       commands:
         - npm run build

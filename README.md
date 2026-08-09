@@ -291,6 +291,22 @@ Use the local Amplify sandbox when you need to work on the backend and generate 
 npx ampx sandbox
 ```
 
+Configure the Revolut backend credentials interactively for your personal sandbox. These values are stored externally by Amplify and must not be added to repository files:
+
+```bash
+npx ampx sandbox secret set REVOLUT_API_KEY
+npx ampx sandbox secret set REVOLUT_API_SECRET
+```
+
+For the local frontend, copy `.env.example` to the ignored `.env.local` file and configure the sandbox public Merchant key:
+
+```dotenv
+VITE_REVOLUT_MODE=sandbox
+VITE_REVOLUT_PUBLIC_KEY=<sandbox-public-merchant-api-key>
+```
+
+The public Merchant key is browser-safe, but its value should remain in local or branch environment configuration rather than source control. Local sandbox secrets are separate from hosted Amplify branch secrets.
+
 Use the delete command to tear down a sandbox deployment when you are done.
 
 ```bash
@@ -310,7 +326,8 @@ The frontend expects these values when relevant:
 
 - `VITE_API_BASE_URL` is required for production builds.
 - `VITE_API_PROXY_TARGET` can override the local API proxy target in development.
-- `VITE_REVOLUT_MODE` controls the checkout mode and defaults to `sandbox`.
+- `VITE_REVOLUT_MODE` is required and must be explicitly set to `sandbox` or `prod`. It must match the backend `REVOLUT_MODE` for the deployed branch.
+- `VITE_REVOLUT_PUBLIC_KEY` is required by the unified Revolut Checkout widget. Use the public Merchant API key for the same sandbox or production environment; never expose `REVOLUT_API_SECRET` to the frontend.
 
 The backend and utility scripts also use these secrets or environment values:
 
@@ -347,7 +364,7 @@ Development and backend tooling includes:
 ## Notes
 
 - The dev server proxies `/api` requests to the configured backend target.
-- The production build runs the API base URL validation script before bundling.
+- The production build validates the API base URL and required Revolut frontend environment configuration before bundling.
 - The repository includes both the active Amplify backend and a backup copy for reference.
 - The current `src/views/Profile_old/` folder is legacy and should be treated as old code unless it is intentionally reused.
 - Browser support is targeted at modern desktop and mobile browsers.
