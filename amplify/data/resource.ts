@@ -1057,6 +1057,7 @@ const schema = a
         paymentDate: a.datetime(),
         paymentAmount: a.float(),
         currency: a.string(),
+        environment: a.string(),
         overallFulfillmentStatus: a.string().required(),
         customerName: a.string().required(),
         email: a.string().required(),
