@@ -1,5 +1,6 @@
 import { getRecentForumActivity } from '../Services/forumApi';
 import { formatRelativeTime } from '../Helpers/dateHelpers';
+import FeatureTeaser from '../../../components/FeatureTeaser/FeatureTeaser.vue';
 
 const ACTIVITY_PRESENTATION = {
   thread_viewed: { icon: '👁️', label: 'You viewed' },
@@ -16,6 +17,7 @@ const ACTIVITY_PRESENTATION = {
 
 export default {
   name: 'ForumLayout',
+  components: { FeatureTeaser },
 
   data() {
     return {

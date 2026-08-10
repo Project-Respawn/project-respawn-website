@@ -13,6 +13,7 @@ export default {
       { label: "Quests", to: "/home", comingSoon: true },
       { label: "Friends", to: "/home", comingSoon: true },
       { label: "Events", to: "/events", comingSoon: false },
+      { label: "Creator Tools", to: "/creator-tools", comingSoon: false },
     ];
 
     const forumHighlights = [
@@ -54,6 +55,12 @@ export default {
         title: "Check events",
         description: "See what events are already live and what the platform is building toward.",
         to: "/events",
+      },
+      {
+        icon: "🎥",
+        title: "Open Creator Tools",
+        description: "Manage creator channels, bots, integrations, and upcoming creator features.",
+        to: "/creator-tools",
       },
     ];
 

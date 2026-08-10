@@ -42,7 +42,22 @@ function formatSourceDetails(fileValues) {
 }
 
 const baseUrl = String(process.env.VITE_API_BASE_URL || '').trim();
+const revolutMode = String(process.env.VITE_REVOLUT_MODE || '').trim().toLowerCase();
+const revolutPublicKey = String(process.env.VITE_REVOLUT_PUBLIC_KEY || '').trim();
 const envFileValues = getEnvFileValues();
+const outputsPath = path.resolve(process.cwd(), 'amplify_outputs.json');
+let generatedApiBaseUrl = '';
+
+if (fs.existsSync(outputsPath)) {
+  try {
+    const outputs = JSON.parse(fs.readFileSync(outputsPath, 'utf8'));
+    generatedApiBaseUrl = String(outputs?.custom?.API?.projectRespawnApi?.endpoint || '')
+      .trim()
+      .replace(/\/+$/, '');
+  } catch {
+    throw new Error('Build failed: amplify_outputs.json is not valid JSON.');
+  }
+}
 
 if (!baseUrl) {
   throw new Error(
@@ -83,4 +98,35 @@ if (!/^https?:\/\//i.test(baseUrl)) {
   );
 }
 
-console.log('VITE_API_BASE_URL is set and valid:', baseUrl.replace(/\/+$/, ''));
+const normalizedBaseUrl = baseUrl.replace(/\/+$/, '');
+
+if (generatedApiBaseUrl && normalizedBaseUrl !== generatedApiBaseUrl) {
+  throw new Error(
+    [
+      'Build failed: VITE_API_BASE_URL does not match the API generated for this Amplify branch.',
+      'Configure a branch-specific VITE_API_BASE_URL using the projectRespawnApi endpoint from this branch output.',
+      'This guard prevents staging from calling the production API (and production from calling staging).',
+    ].join('\n')
+  );
+}
+
+if (!revolutMode) {
+  throw new Error(
+    'Build failed: VITE_REVOLUT_MODE is not set. Set it explicitly to sandbox or live for each Amplify branch.'
+  );
+}
+
+if (!['sandbox', 'live'].includes(revolutMode)) {
+  throw new Error(
+    `Build failed: invalid VITE_REVOLUT_MODE "${revolutMode}". Expected sandbox or live.`
+  );
+}
+
+if (!revolutPublicKey) {
+  throw new Error(
+    'Build failed: VITE_REVOLUT_PUBLIC_KEY is not set. Configure the public Merchant API key matching VITE_REVOLUT_MODE.'
+  );
+}
+
+console.log('VITE_API_BASE_URL is set and matches the generated branch API.');
+console.log('Revolut frontend environment is set and valid:', revolutMode);

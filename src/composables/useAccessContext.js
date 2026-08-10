@@ -23,6 +23,16 @@ function getClient() {
   return client ||= generateClient()
 }
 
+function assertAccessContextQuery(dataClient) {
+  const query = dataClient?.queries?.getMyAccessContext
+
+  if (typeof query !== 'function') {
+    throw new Error(
+      'Amplify Data operation getMyAccessContext is unavailable. Regenerate amplify_outputs.json from the deployed branch backend and rebuild the frontend; the frontend schema metadata is stale or targets a different AppSync deployment.'
+    )
+  }
+}
+
 function normalizeAccessContext(value) {
   return {
     userId: typeof value?.userId === 'string' ? value.userId : '',
@@ -56,7 +66,9 @@ export async function refreshAccessContext({ force = false } = {}) {
   accessLoading.value = true
   accessError.value = ''
   refreshPromise = (async () => {
-    const result = await getClient().queries.getMyAccessContext()
+    const dataClient = getClient()
+    assertAccessContextQuery(dataClient)
+    const result = await dataClient.queries.getMyAccessContext()
     const message = result.errors?.[0]?.message
 
     if (message) throw new Error(message)

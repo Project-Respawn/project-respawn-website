@@ -1,4 +1,4 @@
-import { computed, nextTick, reactive, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import RevolutCheckout from '@revolut/checkout'
 import { getApiBaseUrl, joinApiUrl } from '../config/apiBaseUrl'
 
@@ -20,10 +20,10 @@ function resolveRevolutMode() {
     .toLowerCase()
 
   if (!configuredMode) {
-    return import.meta.env.PROD ? 'prod' : 'sandbox'
+    throw new Error('Missing VITE_REVOLUT_MODE. Set it explicitly to live or sandbox.')
   }
 
-  if (configuredMode === 'prod' || configuredMode === 'production' || configuredMode === 'live') {
+  if (configuredMode === 'live') {
     return 'prod'
   }
 
@@ -31,7 +31,17 @@ function resolveRevolutMode() {
     return 'sandbox'
   }
 
-  throw new Error('Invalid VITE_REVOLUT_MODE. Expected prod, production, live, or sandbox.')
+  throw new Error('Invalid VITE_REVOLUT_MODE. Expected live or sandbox.')
+}
+
+function resolveRevolutPublicKey() {
+  const publicKey = String(import.meta.env.VITE_REVOLUT_PUBLIC_KEY || '').trim()
+
+  if (!publicKey) {
+    throw new Error('Missing VITE_REVOLUT_PUBLIC_KEY for Revolut Checkout.')
+  }
+
+  return publicKey
 }
 
 function normaliseCartItem(item, index) {
@@ -93,11 +103,9 @@ export function useCheckout() {
   const revolutLoading = ref(false)
   const revolutError = ref('')
   const paymentReady = ref(false)
-  const submittingPayment = ref(false)
-
-  const revolutCheckoutInstance = ref(null)
-  const revolutCardField = ref(null)
-  const latestOrderToken = ref('')
+  const revolutEmbeddedCheckout = ref(null)
+  const activeRevolutOrder = ref(null)
+  let orderCreationPromise = null
   const autoMountQueued = ref(false)
   const fulfillmentError = ref('')
   const fulfillmentAttempts = new Set()
@@ -105,6 +113,7 @@ export function useCheckout() {
   const apiBase = getApiBaseUrl('checkout API requests')
 
   const revolutMode = resolveRevolutMode()
+  const revolutPublicKey = resolveRevolutPublicKey()
   console.log('Resolved frontend Revolut mode:', revolutMode)
 
   const cartItems = ref([])
@@ -178,25 +187,25 @@ export function useCheckout() {
     if (!cartItems.value.length) throw new Error('Your cart is empty')
   }
 
-  function destroyCardField() {
+  function destroyEmbeddedCheckout() {
     try {
-      if (revolutCardField.value && typeof revolutCardField.value.destroy === 'function') {
-        revolutCardField.value.destroy()
+      if (revolutEmbeddedCheckout.value && typeof revolutEmbeddedCheckout.value.destroy === 'function') {
+        revolutEmbeddedCheckout.value.destroy()
       }
     } catch (error) {
-      console.warn('Failed to destroy card field', error)
+      console.warn('Failed to destroy embedded checkout', error)
     }
 
-    revolutCardField.value = null
-    revolutCheckoutInstance.value = null
+    revolutEmbeddedCheckout.value = null
     paymentReady.value = false
   }
 
   function resetPaymentState() {
-    latestOrderToken.value = ''
+    activeRevolutOrder.value = null
+    orderCreationPromise = null
     revolutError.value = ''
     autoMountQueued.value = false
-    destroyCardField()
+    destroyEmbeddedCheckout()
   }
 
   function saveAddress() {
@@ -214,11 +223,6 @@ export function useCheckout() {
         'Please complete all required fields.'
       )
     }
-  }
-
-  function goToReview() {
-    if (!paymentReady.value) return
-    activeStep.value = 'review'
   }
 
   async function createRevolutOrder() {
@@ -283,9 +287,18 @@ export function useCheckout() {
       throw new Error('Backend did not return a Revolut order token')
     }
 
+    const backendMode = String(data?.mode || '').trim().toLowerCase()
+
+    if (backendMode !== revolutMode) {
+      throw new Error(
+        `Revolut environment mismatch: frontend is ${revolutMode}, backend is ${backendMode || 'unknown'}.`
+      )
+    }
+
     return {
       token,
       id: id || `PR-${Date.now()}`,
+      mode: backendMode,
     }
   }
 
@@ -344,7 +357,6 @@ export function useCheckout() {
     console.log('Revolut payment successful')
     orderId.value = order.id
     orderComplete.value = true
-    submittingPayment.value = false
 
     try {
       const created = await dispatchFulfillment(order.id)
@@ -360,6 +372,20 @@ export function useCheckout() {
     }
   }
 
+  async function createEmbeddedCheckoutOrder() {
+    if (orderCreationPromise) return orderCreationPromise
+
+    orderCreationPromise = createRevolutOrder()
+
+    try {
+      const order = await orderCreationPromise
+      activeRevolutOrder.value = order
+      return { publicId: order.token }
+    } finally {
+      orderCreationPromise = null
+    }
+  }
+
   async function mountPaymentField() {
     if (revolutLoading.value || !addressComplete.value || !cartItems.value.length) return
 
@@ -367,7 +393,7 @@ export function useCheckout() {
     revolutError.value = ''
 
     try {
-      destroyCardField()
+      destroyEmbeddedCheckout()
       await nextTick()
 
       const mountTarget = document.getElementById('revolut-checkout')
@@ -375,34 +401,47 @@ export function useCheckout() {
         throw new Error('Payment container not found')
       }
 
-      const order = await createRevolutOrder()
-      latestOrderToken.value = order.token
-
-      const instance = await RevolutCheckout(order.token, revolutMode)
-      revolutCheckoutInstance.value = instance
-
-      const cardField = instance.createCardField({
+      const embeddedCheckout = await RevolutCheckout.embeddedCheckout({
+        publicToken: revolutPublicKey,
+        mode: revolutMode,
         target: mountTarget,
         locale: 'en',
-        onSuccess() {
-          void completePaidOrder(order)
+        email: customer.email,
+        billingAddress: {
+          countryCode: customer.country,
+          city: customer.city,
+          postcode: customer.postcode,
+          streetLine1: customer.address,
         },
-        onError(error) {
+        createOrder: createEmbeddedCheckoutOrder,
+        onSuccess({ orderId: paidOrderId }) {
+          const order = activeRevolutOrder.value
+          activeRevolutOrder.value = null
+          const resolvedOrderId = paidOrderId || order?.id
+
+          if (!resolvedOrderId) {
+            revolutError.value = 'Payment completed, but the Revolut order ID was not returned. Please contact support.'
+            return
+          }
+
+          void completePaidOrder({
+            id: resolvedOrderId,
+          })
+        },
+        onError({ error }) {
           revolutError.value = getErrorMessage(
             error,
             'Payment failed. Please try again.'
           )
-          submittingPayment.value = false
+          activeRevolutOrder.value = null
         },
-        onValidation(errors) {
-          console.log('Revolut validation:', errors)
-        },
-        onStatusChange(status) {
-          console.log('Revolut status:', status)
+        onCancel() {
+          revolutError.value = 'Payment was cancelled. You can try again.'
+          activeRevolutOrder.value = null
         },
       })
 
-      revolutCardField.value = cardField
+      revolutEmbeddedCheckout.value = embeddedCheckout
       paymentReady.value = true
     } catch (error) {
       revolutError.value = getErrorMessage(error, 'Unable to load payment form.')
@@ -410,39 +449,6 @@ export function useCheckout() {
     } finally {
       revolutLoading.value = false
       autoMountQueued.value = false
-    }
-  }
-
-  async function handlePayment() {
-    revolutError.value = ''
-
-    try {
-      if (!paymentReady.value || !revolutCardField.value) {
-        throw new Error('Payment form is still loading. Please wait a moment.')
-      }
-
-      submittingPayment.value = true
-
-      await revolutCardField.value.submit({
-        name: customer.fullName,
-        email: customer.email,
-        phone: customer.phone,
-        billingAddress: {
-          countryCode: customer.country,
-          city: customer.city,
-          postcode: customer.postcode,
-          streetLine1: customer.address,
-        },
-        shippingAddress: {
-          countryCode: customer.country,
-          city: customer.city,
-          postcode: customer.postcode,
-          streetLine1: customer.address,
-        },
-      })
-    } catch (error) {
-      revolutError.value = getErrorMessage(error, 'Unable to submit payment.')
-      submittingPayment.value = false
     }
   }
 
@@ -491,7 +497,7 @@ export function useCheckout() {
       if (activeStep.value !== 'payment') return
       if (orderComplete.value) return
       if (!cartItems.value.length) return
-      if (revolutLoading.value || submittingPayment.value || autoMountQueued.value) return
+      if (revolutLoading.value || autoMountQueued.value) return
       if (paymentReady.value) return
 
       autoMountQueued.value = true
@@ -500,6 +506,12 @@ export function useCheckout() {
     },
     { deep: true }
   )
+
+  onBeforeUnmount(() => {
+    destroyEmbeddedCheckout()
+    window.removeEventListener('storage', handleLocalCartUpdate)
+    window.removeEventListener('cart-updated', handleLocalCartUpdate)
+  })
 
   return {
     activeStep,
@@ -511,7 +523,6 @@ export function useCheckout() {
     revolutError,
     fulfillmentError,
     paymentReady,
-    submittingPayment,
     originalShipping,
     cartItems,
     customer,
@@ -519,8 +530,6 @@ export function useCheckout() {
     subtotal,
     total,
     saveAddress,
-    goToReview,
-    handlePayment,
     resetCheckout,
     removeCartItem,
   }

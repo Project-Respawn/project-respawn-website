@@ -277,27 +277,80 @@ Current behavior:
 ## Running The Project
 
 1. Install dependencies with `npm install`.
-2. Start the dev server with `npm run dev`.
-3. Build for production with `npm run build`.
-4. Preview the production build with `npm run preview`.
+2. Start the Amplify sandbox with `npm run dev:sandbox` and wait for deployment/output generation.
+3. In a second terminal, start the validated frontend with `npm run dev`.
+4. Build for production with `npm run build`.
+5. Preview the production build with `npm run preview`.
 
 The dev server opens on port `5174`.
 
 ## Amplify Sandbox
 
-Use the local Amplify sandbox when you need to work on the backend and generate fresh outputs for the frontend.
+The canonical local sandbox identifier is `Ntgrestage8`. Localhost must use this sandbox rather than hosted staging, production, or another developer sandbox.
+
+The sandbox is protected infrastructure. Read and follow [docs/local-amplify-development.md](docs/local-amplify-development.md) before changing anything under `amplify/`. Generated AWS IDs are not stable identifiers, and sandbox replacement/deletion requires explicit target-specific authorization.
+
+Use two terminals so sandbox logs and shutdown remain visible and predictable.
+
+Terminal 1:
 
 ```bash
-npx ampx sandbox
+npm run dev:sandbox
 ```
 
-Use the delete command to tear down a sandbox deployment when you are done.
+Wait until the sandbox deployment completes and `amplify_outputs.json` is generated. Then use Terminal 2:
 
 ```bash
-npx ampx sandbox delete
+npm run dev
 ```
 
-The sandbox workflow is separate from the frontend dev server. In practice, you run the sandbox for backend changes and `npm run dev` for the Vue app.
+`npm run dev` alone is insufficient after backend changes or sandbox recreation. Before Vite starts it runs a read-only validation that checks:
+
+- Cognito and AppSync are tagged as Amplify sandbox resources.
+- Both resources belong to the exact `Ntgrestage8` sandbox deployment.
+- Cognito and AppSync belong to the same deployment.
+- `amplify_outputs.json` exposes `getMyAccessContext`.
+- Every custom operation used by the frontend exists in both the current schema and generated output metadata.
+
+The command fails instead of starting Vite if outputs are missing, stale, from staging/production, or from another sandbox. It does not automatically recreate or repoint anything. AWS CLI authentication is therefore required for local startup, just as it is for deploying the sandbox.
+
+Stop the sandbox watcher with `Ctrl+C`. This stops local watching but retains the deployed personal sandbox. Restart it with `npm run dev:sandbox`; do not delete the sandbox merely to refresh outputs.
+
+After changing or recreating a sandbox, stop Vite, regenerate outputs through `npm run dev:sandbox`, restart Vite, then sign out and sign back in. Cognito sessions do not transfer between user pools.
+
+To check group claims safely in browser DevTools after signing in, print only the groups array—never the token or complete payload:
+
+```js
+const { fetchAuthSession } = await import('/node_modules/.vite/deps/aws-amplify_auth.js')
+const session = await fetchAuthSession()
+console.log(session.tokens?.accessToken?.payload?.['cognito:groups'] ?? [])
+```
+
+If `getMyAccessContext` is unavailable or `npm run dev` reports the wrong sandbox, treat `amplify_outputs.json` as stale. Stop both processes and repeat the two-terminal startup sequence.
+
+Configure the Revolut backend credentials interactively for your personal sandbox. These values are stored externally by Amplify and must not be added to repository files:
+
+```bash
+npx ampx sandbox secret set REVOLUT_API_KEY
+npx ampx sandbox secret set REVOLUT_API_SECRET
+```
+
+For the local frontend, copy `.env.example` to the ignored `.env.local` file and configure the sandbox public Merchant key:
+
+```dotenv
+VITE_REVOLUT_MODE=sandbox
+VITE_REVOLUT_PUBLIC_KEY=<sandbox-public-merchant-api-key>
+```
+
+The public Merchant key is browser-safe, but its value should remain in local or branch environment configuration rather than source control. Local sandbox secrets are separate from hosted Amplify branch secrets.
+
+The following destructive command is documented only for an explicitly authorized teardown. Never infer authorization from a general repair or deployment request:
+
+```bash
+npx ampx sandbox delete --identifier Ntgrestage8
+```
+
+Deleting recreates resource IDs and requires a fresh sign-in after the replacement sandbox is deployed.
 
 ## Additional Commands
 
@@ -308,9 +361,10 @@ The sandbox workflow is separate from the frontend dev server. In practice, you 
 
 The frontend expects these values when relevant:
 
-- `VITE_API_BASE_URL` is required for production builds.
+- `VITE_API_BASE_URL` is required for hosted builds and must match the `projectRespawnApi` endpoint generated for that Amplify branch. Configure it as a branch override; do not let staging inherit the production API URL.
 - `VITE_API_PROXY_TARGET` can override the local API proxy target in development.
-- `VITE_REVOLUT_MODE` controls the checkout mode and defaults to `sandbox`.
+- `VITE_REVOLUT_MODE` is required: use `sandbox` for staging/development and `live` for production. The frontend maps `live` to the Revolut SDK's `prod` mode and verifies that the backend returns the same resolved mode.
+- `VITE_REVOLUT_PUBLIC_KEY` is required by the unified Revolut Checkout widget. Use the public Merchant API key for the same sandbox or production environment; never expose `REVOLUT_API_SECRET` to the frontend.
 
 The backend and utility scripts also use these secrets or environment values:
 
@@ -347,7 +401,7 @@ Development and backend tooling includes:
 ## Notes
 
 - The dev server proxies `/api` requests to the configured backend target.
-- The production build runs the API base URL validation script before bundling.
+- The production build validates the API base URL and required Revolut frontend environment configuration before bundling.
 - The repository includes both the active Amplify backend and a backup copy for reference.
 - The current `src/views/Profile_old/` folder is legacy and should be treated as old code unless it is intentionally reused.
 - Browser support is targeted at modern desktop and mobile browsers.

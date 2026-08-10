@@ -1,0 +1,2 @@
+<template><FeatureTeaser eyebrow="Creator Tools" title="Discord" status="preview" description="Discord backend groundwork is present, but account installation and live server management are not implemented yet. This area is a preview and does not represent a connected Discord server." cta-label="Back to Creator Dashboard" :cta-to="{ name: 'CreatorDashboard' }" /></template>
+<script setup>import FeatureTeaser from '../../../../components/FeatureTeaser/FeatureTeaser.vue'</script>
