@@ -20,7 +20,7 @@
           <!-- Top-level items without children -->
           <router-link 
             v-if="!item.children || item.children.length === 0"
-            :to="item.path" 
+            :to="item.to"
             class="nav-item" 
             exact-active-class="active">
             <span class="nav-dot"></span>
@@ -30,7 +30,7 @@
           <!-- Top-level items with children - render link with button inside + submenu -->
           <div v-else class="nav-group">
             <router-link
-              :to="item.path"
+              :to="item.to"
               class="nav-item nav-parent"
               exact-active-class="active"
               @click="expandOnly(item.id)">
@@ -92,39 +92,39 @@ export default {
         {
           id: 'overview',
           label: 'Overview',
-          path: '/bot',
+          to: { name: 'CreatorBots' },
         },
         {
           id: 'twitch',
           label: 'Twitch',
-          path: '/bot/twitch',
+          to: { name: 'CreatorTwitch' },
           children: [
             {
               id: 'twitch-commands',
-              label: 'Commands',
-              path: '/bot/twitch/commands',
+              label: 'Basic Commands',
+              to: { name: 'CreatorTwitchCommands' },
             },
             {
               id: 'twitch-tts',
-              label: 'TTS',
-              path: '/bot/twitch/tts',
+              label: 'Text to Speech',
+              to: { name: 'CreatorTwitchTts' },
             },
           ],
         },
         {
           id: 'discord',
           label: 'Discord',
-          path: '/bot/discord',
+          to: { name: 'CreatorDiscord' },
         },
         {
           id: 'automation',
           label: 'Automation',
-          path: '/bot/automation',
+          to: { name: 'CreatorBotAutomation' },
         },
         {
           id: 'settings',
           label: 'Settings',
-          path: '/bot/settings',
+          to: { name: 'CreatorIntegrations' },
         },
       ],
     };

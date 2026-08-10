@@ -91,14 +91,13 @@
         </div>
       </div>
 
-      <div class="forum-layout-rightbar-card">
-        <div class="forum-layout-card-header">
-          <div>
-            <p class="forum-layout-card-kicker">Community</p>
-            <h3 class="forum-layout-card-title">Friends Online</h3>
-          </div>
-        </div>
-
+      <FeatureTeaser
+        title="Friends Online"
+        eyebrow="Community"
+        variant="card"
+        heading-tag="h3"
+        :show-status-badge="false"
+      >
         <div class="forum-layout-friends-list">
           <article
             v-for="friend in friendsOnline"
@@ -116,7 +115,7 @@
             </div>
           </article>
         </div>
-      </div>
+      </FeatureTeaser>
     </aside>
   </div>
 </template>

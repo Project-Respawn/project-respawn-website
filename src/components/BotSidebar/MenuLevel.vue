@@ -3,7 +3,7 @@
     <!-- Item without children - render as link -->
     <router-link 
       v-if="!item.children || item.children.length === 0"
-      :to="item.path"
+      :to="item.to"
       class="nav-item nav-child"
       :style="{ paddingLeft: `calc(18px + ${depth * 16}px)` }"
       exact-active-class="active">
@@ -15,7 +15,7 @@
     <!-- Item with children - render link with button inside, then submenu -->
     <div v-else class="nav-group">
       <router-link
-        :to="item.path"
+        :to="item.to"
         class="nav-item nav-parent nav-child"
         :style="{ paddingLeft: `calc(18px + ${depth * 16}px)` }"
         exact-active-class="active"

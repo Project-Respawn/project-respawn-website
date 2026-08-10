@@ -3,17 +3,18 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 import publicRoutes from './public.routes';
-import botRoutes from './bot.routes';
+import creatorToolsRoutes from '../features/creator-tools/creator-tools.routes.js';
 import adminRoutes from './admin.routes';
 import forumRoutes from './forum.routes';
 
 import NotFound from '../views/NotFound/NotFound.vue';
 import BrandPermissions from '../views/BrandPermissions/BrandPermissions.vue';
 import { refreshAccessContext } from '../composables/useAccessContext.js';
+import { ensureAuthReady, useAuth } from '../composables/useAuth.js';
 
 const routes = [
     ...publicRoutes,
-    ...botRoutes,
+    ...creatorToolsRoutes,
     ...adminRoutes,
     ...forumRoutes,
 
@@ -42,9 +43,18 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to) => {
+    const requiresAuth = to.matched.some((record) => record.meta?.requiresAuth);
     const requiredPermission = to.matched.map((record) => record.meta?.requiredPermission).find(Boolean);
     const requiredGroups = to.matched.flatMap((record) => record.meta?.requiredGroups || []);
     const requiresBrandAccess = to.matched.some((record) => record.meta?.requiresBrandAccess);
+    if (requiresAuth) {
+        await ensureAuthReady();
+        const { isSignedIn } = useAuth();
+        if (!isSignedIn.value) {
+            return { path: '/join', query: { redirect: to.fullPath } };
+        }
+    }
+
     if (!requiredPermission && !requiredGroups.length && !requiresBrandAccess) return true;
     try {
         const context = await refreshAccessContext();
