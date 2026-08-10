@@ -1,4 +1,4 @@
-import { PRINTFUL_API_KEY } from '../config/env'
+import { isPrintfulFulfillmentEnabled, PRINTFUL_API_KEY } from '../config/env'
 import { makeRequest } from '../shared/http'
 import { jsonResponse } from '../shared/responses'
 import { logger } from '../shared/logger'
@@ -60,12 +60,16 @@ function normalizePrintfulVariant(variant: any, fallbackImage = '') {
    Printful: handlers
 ============================================================================ */
 
-export async function handlePrintfulProducts() {
-  const result = await makeRequest(
+type PrintfulRequest = typeof makeRequest
+
+export async function handlePrintfulProducts(injected?: { request?: PrintfulRequest; authHeader?: () => string }) {
+  const request = injected?.request || makeRequest
+  const authHeader = injected?.authHeader || buildPrintfulAuthHeader
+  const result = await request(
     'https://api.printful.com/store/products',
     'GET',
     null,
-    buildPrintfulAuthHeader()
+    authHeader()
   )
 
   if (result.statusCode !== 200) {
@@ -130,14 +134,24 @@ export async function handlePrintfulProductLookup(path: string) {
   }
 }
 
-export async function createPrintfulOrder(body: any) {
+export async function createPrintfulOrder(
+  body: any,
+  injected?: { request?: PrintfulRequest; fulfillmentEnabled?: () => boolean },
+) {
+  const fulfillmentEnabled = injected?.fulfillmentEnabled || isPrintfulFulfillmentEnabled
+
+  if (!fulfillmentEnabled()) {
+    throw new Error('Printful fulfillment is disabled outside explicit production')
+  }
+
   if (!body?.items || !Array.isArray(body.items) || body.items.length === 0) {
     throw new Error('Missing order items')
   }
 
   const orderData = buildPrintfulOrderPayload(body)
+  const request = injected?.request || makeRequest
 
-  const result = await makeRequest(
+  const result = await request(
     'https://api.printful.com/orders',
     'POST',
     orderData,
@@ -152,7 +166,9 @@ export async function handlePrintfulCreateOrder(body: any) {
     const result = await createPrintfulOrder(body)
     return jsonResponse(result.statusCode, result.body)
   } catch (error) {
-    return jsonResponse(400, { error: error instanceof Error ? error.message : 'Missing order items' })
+    const message = error instanceof Error ? error.message : 'Missing order items'
+    const statusCode = message === 'Printful fulfillment is disabled outside explicit production' ? 403 : 400
+    return jsonResponse(statusCode, { error: message })
   }
 }
 

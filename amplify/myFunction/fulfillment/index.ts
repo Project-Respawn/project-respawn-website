@@ -1,8 +1,8 @@
-import { getDataClient } from '../shared/dataClient'
 import { jsonResponse } from '../shared/responses'
 import { logger } from '../shared/logger'
 import { createPrintfulOrder } from '../printful'
 import { fetchRevolutMerchantOrder } from '../revolut'
+import { isPrintfulFulfillmentEnabled, REVOLUT_MODE } from '../config/env'
 
 type FulfillmentItem = {
   productId: string
@@ -11,8 +11,13 @@ type FulfillmentItem = {
   fulfillmentVariantId?: string
 }
 
-type ProviderStatus = { status: 'pending' | 'fulfilled' | 'failed'; providerOrderId?: string; message?: string; lastAttempt?: string; lastError?: string }
+type ProviderStatus = { status: 'pending' | 'fulfilled' | 'failed' | 'test_skipped'; providerOrderId?: string; message?: string; lastAttempt?: string; lastError?: string }
 type ProviderStatuses = Record<string, ProviderStatus>
+
+async function getDataClient() {
+  const dataClient = await import('../shared/dataClient')
+  return dataClient.getDataClient()
+}
 
 function audit(action: string, result: string, provider?: string) {
   return { timestamp: new Date().toISOString(), action, result, provider: provider || null }
@@ -22,6 +27,7 @@ function overallStatus(providerStatuses: ProviderStatuses) {
   const statuses = Object.values(providerStatuses)
   if (!statuses.length) return 'recovery_required'
   if (statuses.every((status) => status.status === 'fulfilled')) return 'fulfilled'
+  if (statuses.every((status) => status.status === 'test_skipped')) return 'test_skipped'
   if (statuses.some((status) => status.status === 'failed')) return 'failed'
   if (statuses.some((status) => status.status === 'fulfilled')) return 'partially_fulfilled'
   return 'pending'
@@ -39,6 +45,36 @@ function isPaid(state: unknown) {
   return ['paid', 'completed', 'captured'].includes(String(state || '').toLowerCase())
 }
 
+function transactionEnvironment() {
+  return REVOLUT_MODE === 'prod' ? 'production' : 'sandbox'
+}
+
+function isProductionOrder(order: any) {
+  return String(order?.environment || '').trim().toLowerCase() === 'production'
+}
+
+export function buildFulfillmentOrder(body: any, paymentState: unknown, now = new Date().toISOString()) {
+  const revolutOrderId = String(body?.revolutOrderId || '')
+  return {
+    projectOrderId: String(body?.projectOrderId || revolutOrderId),
+    revolutOrderId,
+    paymentStatus: String(paymentState).toLowerCase(),
+    paymentDate: now,
+    paymentAmount: typeof body?.paymentAmount === 'number' ? body.paymentAmount : null,
+    currency: typeof body?.currency === 'string' ? body.currency : null,
+    environment: transactionEnvironment(),
+    overallFulfillmentStatus: 'pending',
+    customerName: String(body?.customerName || ''),
+    email: String(body?.email || ''),
+    shippingAddress: body?.shippingAddress || {},
+    items: body?.items || [],
+    providerStatuses: {},
+    auditHistory: [audit('Order created', 'success'), audit('Payment successful', 'verified')],
+    createdAt: now,
+    updatedAt: now,
+  }
+}
+
 async function saveProviderStatuses(client: any, order: any, providerStatuses: ProviderStatuses, auditEntries: unknown[]) {
   await client.models.FulfillmentOrder.update({
     id: order.id,
@@ -49,14 +85,21 @@ async function saveProviderStatuses(client: any, order: any, providerStatuses: P
   })
 }
 
-export async function dispatchFulfillment(order: any) {
-  const client = await getDataClient() as any
+export async function dispatchFulfillment(order: any, injected?: {
+  getClient?: () => Promise<any>
+  createPrintful?: typeof createPrintfulOrder
+  fulfillmentEnabled?: () => boolean
+}) {
+  const getClient = injected?.getClient || getDataClient
+  const client = await getClient() as any
+  const createPrintful = injected?.createPrintful || createPrintfulOrder
+  const fulfillmentEnabled = injected?.fulfillmentEnabled || isPrintfulFulfillmentEnabled
   const items = Array.isArray(order.items) ? order.items as FulfillmentItem[] : []
   const providerStatuses: ProviderStatuses = { ...(order.providerStatuses || {}) }
   const auditEntries: unknown[] = []
 
   for (const [provider, providerItems] of Object.entries(groupByProvider(items))) {
-    if (providerStatuses[provider]?.status === 'fulfilled') {
+    if (providerStatuses[provider]?.status === 'fulfilled' || providerStatuses[provider]?.status === 'test_skipped') {
       logger.info('Provider already fulfilled', { provider, orderId: order.revolutOrderId })
       auditEntries.push(audit('Provider already fulfilled', 'skipped', provider))
       continue
@@ -67,6 +110,16 @@ export async function dispatchFulfillment(order: any) {
     if (provider !== 'printful') {
       providerStatuses[provider] = { status: 'pending', message: 'Provider is not implemented', lastAttempt: new Date().toISOString() }
       auditEntries.push(audit('Fulfillment dispatch', 'pending', provider))
+      continue
+    }
+
+    if (!fulfillmentEnabled() || !isProductionOrder(order)) {
+      providerStatuses.printful = {
+        status: 'test_skipped',
+        message: 'Printful fulfillment intentionally skipped for non-production transaction',
+      }
+      auditEntries.push(audit('Printful fulfillment', 'test_skipped', 'printful'))
+      logger.info('Printful fulfilment skipped for non-production transaction')
       continue
     }
 
@@ -82,7 +135,7 @@ export async function dispatchFulfillment(order: any) {
 
     try {
       logger.info('Creating Printful order', { orderId: order.revolutOrderId })
-      const result = await createPrintfulOrder({
+      const result = await createPrintful({
         orderId: order.revolutOrderId,
         shippingMethod: 'STANDARD',
         items: printfulItems,
@@ -140,23 +193,7 @@ export async function handleFulfillmentRequest(body: any) {
   let order = await findOrder(client, revolutOrderId)
   const alreadyFulfilled = Boolean(order) && Object.keys(order.providerStatuses || {}).length > 0 && Object.values(order.providerStatuses || {}).every((status: any) => status?.status === 'fulfilled')
   if (!order) {
-    const create = await client.models.FulfillmentOrder.create({
-      projectOrderId,
-      revolutOrderId,
-      paymentStatus: String(paymentState).toLowerCase(),
-      paymentDate: new Date().toISOString(),
-      paymentAmount: typeof body.paymentAmount === 'number' ? body.paymentAmount : null,
-      currency: typeof body.currency === 'string' ? body.currency : null,
-      overallFulfillmentStatus: 'pending',
-      customerName: String(body.customerName || ''),
-      email: String(body.email || ''),
-      shippingAddress: body.shippingAddress || {},
-      items: body.items,
-      providerStatuses: {},
-      auditHistory: [audit('Order created', 'success'), audit('Payment successful', 'verified')],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    })
+    const create = await client.models.FulfillmentOrder.create(buildFulfillmentOrder(body, paymentState))
     order = create.data
   }
   const providers = await dispatchFulfillment(order)
@@ -200,6 +237,7 @@ export async function handleExistingRevolutOrderImport(body: any) {
     paymentDate: new Date().toISOString(),
     paymentAmount: typeof paymentBody.amount === 'number' ? paymentBody.amount : null,
     currency: paymentBody.currency || null,
+    environment: transactionEnvironment(),
     overallFulfillmentStatus: 'recovery_required',
     customerName: '',
     email: paymentBody.email || '',
