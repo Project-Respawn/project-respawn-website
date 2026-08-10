@@ -19,14 +19,13 @@ frontend:
         # API Gateway URL is required on every hosted environment
         - test -n "$VITE_API_BASE_URL" || (echo "Missing Amplify env var VITE_API_BASE_URL" && exit 1)
 
-        # Revolut mode handling
-        # Production branches MUST explicitly use live.
-        # All other branches safely default to sandbox.
+        # Revolut mode handling. Every branch must be explicit so a missing
+        # branch override can never select the wrong payment environment.
         - |
           if [ "$AWS_BRANCH" = "main" ] || [ "$AWS_BRANCH" = "master" ] || [ "$AWS_BRANCH" = "production" ]; then
             test "$VITE_REVOLUT_MODE" = "live" || (echo "Production requires VITE_REVOLUT_MODE=live" && exit 1)
           else
-            export VITE_REVOLUT_MODE="${VITE_REVOLUT_MODE:-sandbox}"
+            test "$VITE_REVOLUT_MODE" = "sandbox" || (echo "Non-production branches require VITE_REVOLUT_MODE=sandbox" && exit 1)
           fi
 
         # Revolut public key is safe for the frontend but must be supplied

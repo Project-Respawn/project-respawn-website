@@ -20,10 +20,10 @@ function resolveRevolutMode() {
     .toLowerCase()
 
   if (!configuredMode) {
-    throw new Error('Missing VITE_REVOLUT_MODE. Set it explicitly to prod or sandbox.')
+    throw new Error('Missing VITE_REVOLUT_MODE. Set it explicitly to live or sandbox.')
   }
 
-  if (configuredMode === 'prod') {
+  if (configuredMode === 'live') {
     return 'prod'
   }
 
@@ -31,7 +31,7 @@ function resolveRevolutMode() {
     return 'sandbox'
   }
 
-  throw new Error('Invalid VITE_REVOLUT_MODE. Expected prod or sandbox.')
+  throw new Error('Invalid VITE_REVOLUT_MODE. Expected live or sandbox.')
 }
 
 function resolveRevolutPublicKey() {

@@ -324,9 +324,9 @@ The sandbox workflow is separate from the frontend dev server. In practice, you 
 
 The frontend expects these values when relevant:
 
-- `VITE_API_BASE_URL` is required for production builds.
+- `VITE_API_BASE_URL` is required for hosted builds and must match the `projectRespawnApi` endpoint generated for that Amplify branch. Configure it as a branch override; do not let staging inherit the production API URL.
 - `VITE_API_PROXY_TARGET` can override the local API proxy target in development.
-- `VITE_REVOLUT_MODE` is required and must be explicitly set to `sandbox` or `prod`. It must match the backend `REVOLUT_MODE` for the deployed branch.
+- `VITE_REVOLUT_MODE` is required: use `sandbox` for staging/development and `live` for production. The frontend maps `live` to the Revolut SDK's `prod` mode and verifies that the backend returns the same resolved mode.
 - `VITE_REVOLUT_PUBLIC_KEY` is required by the unified Revolut Checkout widget. Use the public Merchant API key for the same sandbox or production environment; never expose `REVOLUT_API_SECRET` to the frontend.
 
 The backend and utility scripts also use these secrets or environment values:
