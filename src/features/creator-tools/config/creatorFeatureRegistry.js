@@ -15,7 +15,7 @@ export const creatorFeatureRegistry = Object.freeze({
   rewards: { label: 'Rewards', routeName: 'CreatorRewards', status: CREATOR_FEATURE_STATUS.COMING_SOON },
   achievements: { label: 'Achievements', routeName: 'CreatorAchievements', status: CREATOR_FEATURE_STATUS.COMING_SOON },
   members: { label: 'Members', routeName: 'CreatorMembers', status: CREATOR_FEATURE_STATUS.COMING_SOON },
-  analytics: { label: 'Analytics', routeName: 'CreatorAnalytics', status: CREATOR_FEATURE_STATUS.COMING_SOON },
+  analytics: { label: 'Analytics', routeName: 'CreatorAnalytics', status: CREATOR_FEATURE_STATUS.PREVIEW },
   integrations: { label: 'Integrations', routeName: 'CreatorIntegrations', status: CREATOR_FEATURE_STATUS.PREVIEW },
 })
 
