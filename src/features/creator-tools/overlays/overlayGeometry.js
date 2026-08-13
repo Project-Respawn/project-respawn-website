@@ -7,9 +7,16 @@ export function editorScale(canvasWidth, canvasHeight, availableWidth, available
   return Math.min(availableWidth / canvasWidth, availableHeight / canvasHeight, 1)
 }
 
-export function clientDeltaToCanvas(deltaX, deltaY, scale) {
-  const safeScale = Number(scale) > 0 ? Number(scale) : 1
-  return { x: deltaX / safeScale, y: deltaY / safeScale }
+export function canvasScalesFromBounds(bounds, resolution) {
+  const x = Number(bounds?.width) / Number(resolution?.width)
+  const y = Number(bounds?.height) / Number(resolution?.height)
+  return x > 0 && y > 0 && Number.isFinite(x) && Number.isFinite(y) ? { x, y } : null
+}
+
+export function clientDeltaToCanvas(deltaX, deltaY, scaleX, scaleY = scaleX) {
+  const safeX = Number(scaleX) > 0 ? Number(scaleX) : 1
+  const safeY = Number(scaleY) > 0 ? Number(scaleY) : 1
+  return { x: deltaX / safeX, y: deltaY / safeY }
 }
 
 function snapValue(value, candidates, distance = SNAP_DISTANCE) {
@@ -52,6 +59,13 @@ export function resizeFrame(frame, handle, delta, bounds, minimum = { width: 80,
   x = clamp(x, 0, bounds.width - minimum.width); y = clamp(y, 0, bounds.height - minimum.height)
   width = clamp(width, minimum.width, bounds.width - x); height = clamp(height, minimum.height, bounds.height - y)
   return { ...frame, x: Math.round(x), y: Math.round(y), width: Math.round(width), height: Math.round(height) }
+}
+
+export function chatShowcaseTarget(frame, bounds, margin = 70) {
+  const left = Math.min(margin, Math.max(0, bounds.width - frame.width))
+  const right = Math.max(0, bounds.width - frame.width - margin)
+  const currentCentre = frame.x + frame.width / 2
+  return { ...frame, x: Math.round(currentCentre < bounds.width / 2 ? right : left), y: Math.round(clamp(frame.y, 0, bounds.height - frame.height)) }
 }
 
 export function scaleLayout(widgets, from, to) {
