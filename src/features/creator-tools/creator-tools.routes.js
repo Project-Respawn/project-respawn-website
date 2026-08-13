@@ -16,6 +16,8 @@ import TextToSpeech from './views/twitch/text-to-speech/TextToSpeech.vue'
 import TwitchModeration from './views/twitch/moderation/TwitchModeration.vue'
 import Automation from './views/bots/automation/Automation.vue'
 import Integrations from './views/integrations/Integrations.vue'
+import OverlayManager from './views/overlays/OverlayManager.vue'
+import OverlayEditor from './views/overlays/OverlayEditor.vue'
 import Overlay from '../../views/Bot/OverlayEngine/Overlay.vue'
 
 const protectedCreatorRoute = {
@@ -38,6 +40,8 @@ export default [
       { path: 'bots/twitch/tts', name: 'CreatorTwitchTts', component: TextToSpeech, alias: '/bot/twitch/tts' },
       { path: 'bots/moderation', name: 'CreatorBotModeration', component: TwitchModeration, alias: '/bot/twitch/moderation' },
       { path: 'bots/automation', name: 'CreatorBotAutomation', component: Automation, alias: '/bot/automation' },
+      { path: 'overlays', name: 'CreatorOverlays', component: OverlayManager, meta: { creatorFeature: 'overlays' } },
+      { path: 'overlays/:overlayId', name: 'CreatorOverlayEditor', component: OverlayEditor, meta: { creatorFeature: 'overlays' } },
       { path: 'community', name: 'CreatorCommunity', component: CreatorCommunity },
       { path: 'rewards', name: 'CreatorRewards', component: CreatorRewards },
       { path: 'achievements', name: 'CreatorAchievements', component: CreatorAchievements },

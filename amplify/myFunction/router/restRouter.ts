@@ -1,6 +1,6 @@
 import { handlePrintfulCreateOrder, handlePrintfulOrderLookup, handlePrintfulProductLookup, handlePrintfulProducts } from '../printful'
 import { handleRevolutCheckout, handleRevolutOrderLookup } from '../revolut'
-import { handleTwitchCommandsLookup, handleTwitchCommandsMe } from '../twitch'
+import { handleTwitchCommandsLookup, handleTwitchCommandsMe, handleTwitchOAuthCallback, handleTwitchRuntime } from '../twitch'
 import { handleExistingRevolutOrderImport, handleFulfillmentRequest, handleRecoveryFulfillment } from '../fulfillment'
 
 export async function routeRest(path: string, method: string, body: unknown, event: unknown) {
@@ -15,5 +15,7 @@ export async function routeRest(path: string, method: string, body: unknown, eve
   if (path === '/orders/import-existing-revolut' && method === 'POST') return handleExistingRevolutOrderImport(body)
   if (path === '/twitch/commands/me' || path.startsWith('/twitch/commands/me/')) return handleTwitchCommandsMe(event)
   if (path === '/twitch/commands' && method === 'GET') return handleTwitchCommandsLookup(event)
+  if (path === '/twitch/oauth/callback' && method === 'GET') return handleTwitchOAuthCallback(event)
+  if (path.startsWith('/twitch/runtime/')) return handleTwitchRuntime(path, method, event)
   return null
 }

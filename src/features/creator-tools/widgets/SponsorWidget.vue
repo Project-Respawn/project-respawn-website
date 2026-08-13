@@ -1,0 +1,2 @@
+<template><div class="demo-widget sponsor-widget" :style="widgetStyle(s)"><div class="partner-mark">{{ s.partnerName.slice(0,2).toUpperCase() }}</div><div><span class="widget-kicker">{{ s.disclosure }}</span><b>{{ s.campaignTitle }}</b><p>{{ s.message }} · Use <strong>{{ s.promoCode }}</strong></p></div><div class="qr-placeholder" aria-label="QR code placeholder">QR</div></div></template>
+<script setup>import { widgetStyle } from './widgetHelpers.js'; const props=defineProps({widget:{type:Object,required:true}}); const s=props.widget.settings</script>

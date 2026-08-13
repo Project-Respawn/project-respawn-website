@@ -10,6 +10,19 @@ export const creatorFeatureRegistry = Object.freeze({
   twitch: { label: 'Twitch', routeName: 'CreatorTwitch', status: CREATOR_FEATURE_STATUS.PREVIEW },
   discord: { label: 'Discord', routeName: 'CreatorDiscord', status: CREATOR_FEATURE_STATUS.PREVIEW },
   bots: { label: 'Bots', routeName: 'CreatorBots', status: CREATOR_FEATURE_STATUS.LIVE },
+  overlays: {
+    id: 'overlays',
+    label: 'Overlays',
+    icon: '▧',
+    routeName: 'CreatorOverlays',
+    routePath: '/creator-tools/overlays',
+    activeRouteNames: ['CreatorOverlays', 'CreatorOverlayEditor'],
+    navigationGroup: 'Tools',
+    status: CREATOR_FEATURE_STATUS.PREVIEW,
+    description: 'Build and preview browser-local Universal Widget overlay layouts.',
+    showInSidebar: true,
+    showInMobileNavigation: true,
+  },
   community: { label: 'Community', routeName: 'CreatorCommunity', status: CREATOR_FEATURE_STATUS.COMING_SOON },
   events: { label: 'Events', routeName: 'CreatorEvents', status: CREATOR_FEATURE_STATUS.COMING_SOON },
   rewards: { label: 'Rewards', routeName: 'CreatorRewards', status: CREATOR_FEATURE_STATUS.COMING_SOON },
@@ -22,7 +35,7 @@ export const creatorFeatureRegistry = Object.freeze({
 export const creatorNavigation = Object.freeze([
   { label: 'Overview', items: ['dashboard', 'setup'] },
   { label: 'Channels', items: ['twitch', 'discord'] },
-  { label: 'Tools', items: ['bots', 'community', 'events'] },
+  { label: 'Tools', items: ['overlays', 'bots', 'community', 'events'] },
   { label: 'Growth', items: ['rewards', 'achievements', 'members', 'analytics'] },
   { label: 'Configuration', items: ['integrations'] },
 ])
