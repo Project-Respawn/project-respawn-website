@@ -14,3 +14,9 @@ test('malformed and old storage safely recover', () => {
   assert.equal(loadOverlayState(memoryStorage(JSON.stringify({schemaVersion:0,overlays:[]})),fallback).recovered,true)
   assert.equal(OVERLAY_STORAGE_KEY.includes('v1'),true)
 })
+test('missing storage uses starter state without presenting a migration', () => {
+  const fallback={schemaVersion:1,overlays:[{id:'main',name:'Main Gameplay'}]}
+  const loaded=loadOverlayState(memoryStorage(undefined),fallback)
+  assert.equal(loaded.recovered,false)
+  assert.deepEqual(loaded.state,fallback)
+})

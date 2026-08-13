@@ -2,7 +2,7 @@ export function createDemoEventBus() {
   const topics = new Map()
   return {
     subscribe(topic, handler) { const listeners = topics.get(topic) || new Set(); listeners.add(handler); topics.set(topic, listeners); return () => listeners.delete(handler) },
-    publish(event) { for (const handler of topics.get(event.topic) || []) handler(structuredClone(event)); for (const handler of topics.get('*') || []) handler(structuredClone(event)) },
+    publish(event) { for (const handler of topics.get(event.topic) || []) handler(cloneSerializableData(event)); for (const handler of topics.get('*') || []) handler(cloneSerializableData(event)) },
     clear() { topics.clear() },
   }
 }
@@ -26,7 +26,8 @@ export function createDemoEvent(topic, overlayId = '') {
   const sample = samples[topic]
   if (!sample) throw new Error(`Unknown demo topic: ${topic}`)
   eventSequence += 1
-  return { id: `demo-${topic}-${eventSequence}`, version: 1, topic, overlayId, occurredAt: new Date(1700000000000 + eventSequence * 1000).toISOString(), ...structuredClone(sample) }
+  return { id: `demo-${topic}-${eventSequence}`, version: 1, topic, overlayId, occurredAt: new Date(1700000000000 + eventSequence * 1000).toISOString(), ...cloneSerializableData(sample) }
 }
 
 export const DEMO_EVENT_TOPICS = Object.keys(samples)
+import { cloneSerializableData } from './overlaySnapshots.js'

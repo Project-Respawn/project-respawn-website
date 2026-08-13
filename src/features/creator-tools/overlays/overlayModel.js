@@ -49,7 +49,8 @@ export function createSeedOverlays(createWidget) {
 }
 
 export function runtimeSafeOverlay(overlay) {
-  const { preview: _preview, runtime: _runtime, ...safe } = structuredClone(overlay)
+  const { preview: _preview, runtime: _runtime, ...safe } = cloneSerializableData(overlay)
   safe.widgets = safe.widgets.map(({ editorState: _editorState, ...widget }) => widget)
   return safe
 }
+import { cloneSerializableData } from './overlaySnapshots.js'

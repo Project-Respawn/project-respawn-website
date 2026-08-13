@@ -16,10 +16,11 @@ export function deleteFromState(state, id) {
 export function duplicateInState(state, id, nextId, now = new Date().toISOString()) {
   const source = state.overlays.find((item) => item.id === id)
   if (!source) return null
-  const copy = structuredClone(source)
+  const copy = cloneSerializableData(source)
   copy.id = nextId; copy.name = `${source.name} Copy`
   copy.widgets = copy.widgets.map((widget, index) => ({ ...widget, id: `${widget.id}_copy_${index}` }))
   copy.version = 1; copy.createdAt = copy.updatedAt = now
   state.overlays.push(copy)
   return copy
 }
+import { cloneSerializableData } from './overlaySnapshots.js'
