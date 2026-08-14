@@ -1,0 +1,2 @@
+<template><article class="discord-preview"><header><span class="demo-server-mark">PR</span><div><strong>Project Respawn</strong><small>APP · INTERACTIVE PREVIEW</small></div></header><h3 v-if="title">{{ title }}</h3><p>{{ message }}</p><footer>{{ footer }}</footer></article></template>
+<script setup>defineProps({title:String,message:{type:String,default:''},footer:{type:String,default:'Preview only · Nothing sent to Discord'}})</script>

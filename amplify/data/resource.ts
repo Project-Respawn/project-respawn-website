@@ -451,6 +451,96 @@ const schema = a
       })
       .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read'])]),
 
+    TwitchIntegration: a
+      .model({
+        brandId: a.id().required(),
+        ownerUserId: a.string().required(),
+        provider: a.string().required(),
+        twitchBroadcasterId: a.string(),
+        twitchLogin: a.string(),
+        twitchDisplayName: a.string(),
+        connectionStatus: a.string().required(),
+        grantedScopes: a.string().array().required(),
+        capabilities: a.json(),
+        tokenExpiresAt: a.datetime(),
+        tokenUpdatedAt: a.datetime(),
+        configurationVersion: a.integer().required(),
+        connectedAt: a.datetime(),
+        disconnectedAt: a.datetime(),
+        lastValidatedAt: a.datetime(),
+        lastErrorCode: a.string(),
+      })
+      .authorization((allow) => [allow.groups(['TwitchBackendService'])]),
+
+    TwitchTokenVault: a
+      .model({
+        integrationId: a.id().required(),
+        encryptedTokenBundle: a.string().required(),
+        tokenExpiresAt: a.datetime(),
+        scopes: a.string().array().required(),
+        tokenVersion: a.integer().required(),
+        updatedAt: a.datetime().required(),
+      })
+      .identifier(['integrationId'])
+      .authorization((allow) => [allow.groups(['TwitchBackendService'])]),
+
+    TwitchOAuthTransaction: a
+      .model({
+        ownerUserId: a.string().required(),
+        brandId: a.id().required(),
+        integrationId: a.id().required(),
+        nonceHash: a.string().required(),
+        expiresAt: a.datetime().required(),
+        consumedAt: a.datetime(),
+      })
+      .authorization((allow) => [allow.groups(['TwitchBackendService'])]),
+
+    TwitchRuntimeHealth: a
+      .model({
+        integrationId: a.id().required(),
+        botAuthenticated: a.boolean().required(),
+        botConnected: a.boolean().required(),
+        eventSubConnected: a.boolean().required(),
+        chatReadAvailable: a.boolean().required(),
+        chatWriteAvailable: a.boolean().required(),
+        lastEventReceivedAt: a.datetime(),
+        lastBotHeartbeatAt: a.datetime().required(),
+        lastConfigurationSyncAt: a.datetime(),
+        appliedConfigurationVersion: a.integer().required(),
+        warnings: a.string().array().required(),
+        errors: a.string().array().required(),
+      })
+      .identifier(['integrationId'])
+      .authorization((allow) => [allow.groups(['TwitchBackendService'])]),
+
+    SafeTwitchIntegrationResult: a.customType({
+      integration: a.json(),
+      health: a.json(),
+    }),
+
+    TwitchOAuthStartResult: a.customType({
+      integrationId: a.id().required(),
+      authorizeUrl: a.url().required(),
+    }),
+
+    startTwitchIntegrationOAuth: a.mutation()
+      .arguments({ brandId: a.id().required() })
+      .returns(a.ref('TwitchOAuthStartResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    getMyTwitchIntegration: a.query()
+      .arguments({ brandId: a.id().required() })
+      .returns(a.ref('SafeTwitchIntegrationResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    disconnectTwitchIntegration: a.mutation()
+      .arguments({ brandId: a.id().required(), integrationId: a.id().required() })
+      .returns(a.ref('SafeTwitchIntegrationResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
     ManagedTwitchCommandMutationResult: a.customType({
       success: a.boolean().required(),
       message: a.string(),

@@ -29,6 +29,14 @@ export const myFunction = defineFunction({
     // =========================================================================
     // Twitch / shared app config
     // =========================================================================
+    TWITCH_CLIENT_ID: secret('TWITCH_CLIENT_ID'),
+    TWITCH_CLIENT_SECRET: secret('TWITCH_CLIENT_SECRET'),
+    TWITCH_OAUTH_STATE_SECRET: secret('TWITCH_OAUTH_STATE_SECRET'),
+    TWITCH_RUNTIME_AUTH_SECRET: secret('TWITCH_RUNTIME_AUTH_SECRET'),
+    TWITCH_RUNTIME_CLIENT_ID: 'respawn-twitch-bot',
+    TWITCH_TOKEN_KMS_KEY_ID: process.env.TWITCH_TOKEN_KMS_KEY_ID || '',
+    TWITCH_REDIRECT_URI: 'https://9qp7ehd406.execute-api.eu-north-1.amazonaws.com/twitch/oauth/callback',
+    TWITCH_FRONTEND_URL: 'http://localhost:5174',
     APP_ENV: appEnvironment,
     REVOLUT_MODE: revolutMode,
   },

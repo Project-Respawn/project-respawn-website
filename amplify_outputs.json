@@ -532,6 +532,532 @@
             "sortKeyFieldNames": []
           }
         },
+        "TwitchIntegration": {
+          "name": "TwitchIntegration",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "brandId": {
+              "name": "brandId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "ownerUserId": {
+              "name": "ownerUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "provider": {
+              "name": "provider",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "twitchBroadcasterId": {
+              "name": "twitchBroadcasterId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "twitchLogin": {
+              "name": "twitchLogin",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "twitchDisplayName": {
+              "name": "twitchDisplayName",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "connectionStatus": {
+              "name": "connectionStatus",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "grantedScopes": {
+              "name": "grantedScopes",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": false
+            },
+            "capabilities": {
+              "name": "capabilities",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": false,
+              "attributes": []
+            },
+            "tokenExpiresAt": {
+              "name": "tokenExpiresAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "tokenUpdatedAt": {
+              "name": "tokenUpdatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "configurationVersion": {
+              "name": "configurationVersion",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": true,
+              "attributes": []
+            },
+            "connectedAt": {
+              "name": "connectedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "disconnectedAt": {
+              "name": "disconnectedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "lastValidatedAt": {
+              "name": "lastValidatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "lastErrorCode": {
+              "name": "lastErrorCode",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "TwitchIntegrations",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "groups": [
+                      "TwitchBackendService"
+                    ],
+                    "operations": [
+                      "create",
+                      "update",
+                      "delete",
+                      "read"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "TwitchTokenVault": {
+          "name": "TwitchTokenVault",
+          "fields": {
+            "integrationId": {
+              "name": "integrationId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "encryptedTokenBundle": {
+              "name": "encryptedTokenBundle",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "tokenExpiresAt": {
+              "name": "tokenExpiresAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "scopes": {
+              "name": "scopes",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": false
+            },
+            "tokenVersion": {
+              "name": "tokenVersion",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": true,
+              "attributes": []
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "TwitchTokenVaults",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "fields": [
+                  "integrationId"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "groups": [
+                      "TwitchBackendService"
+                    ],
+                    "operations": [
+                      "create",
+                      "update",
+                      "delete",
+                      "read"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": true,
+            "primaryKeyFieldName": "integrationId",
+            "sortKeyFieldNames": []
+          }
+        },
+        "TwitchOAuthTransaction": {
+          "name": "TwitchOAuthTransaction",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "ownerUserId": {
+              "name": "ownerUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "brandId": {
+              "name": "brandId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "integrationId": {
+              "name": "integrationId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "nonceHash": {
+              "name": "nonceHash",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "expiresAt": {
+              "name": "expiresAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "consumedAt": {
+              "name": "consumedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "TwitchOAuthTransactions",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "groups": [
+                      "TwitchBackendService"
+                    ],
+                    "operations": [
+                      "create",
+                      "update",
+                      "delete",
+                      "read"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "TwitchRuntimeHealth": {
+          "name": "TwitchRuntimeHealth",
+          "fields": {
+            "integrationId": {
+              "name": "integrationId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "botAuthenticated": {
+              "name": "botAuthenticated",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "botConnected": {
+              "name": "botConnected",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "eventSubConnected": {
+              "name": "eventSubConnected",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "chatReadAvailable": {
+              "name": "chatReadAvailable",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "chatWriteAvailable": {
+              "name": "chatWriteAvailable",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "lastEventReceivedAt": {
+              "name": "lastEventReceivedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "lastBotHeartbeatAt": {
+              "name": "lastBotHeartbeatAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "lastConfigurationSyncAt": {
+              "name": "lastConfigurationSyncAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "appliedConfigurationVersion": {
+              "name": "appliedConfigurationVersion",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": true,
+              "attributes": []
+            },
+            "warnings": {
+              "name": "warnings",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": false
+            },
+            "errors": {
+              "name": "errors",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": false
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "TwitchRuntimeHealths",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "fields": [
+                  "integrationId"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "groups": [
+                      "TwitchBackendService"
+                    ],
+                    "operations": [
+                      "create",
+                      "update",
+                      "delete",
+                      "read"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": true,
+            "primaryKeyFieldName": "integrationId",
+            "sortKeyFieldNames": []
+          }
+        },
         "DiscordBotConfiguration": {
           "name": "DiscordBotConfiguration",
           "fields": {
@@ -5099,6 +5625,44 @@
             }
           }
         },
+        "SafeTwitchIntegrationResult": {
+          "name": "SafeTwitchIntegrationResult",
+          "fields": {
+            "integration": {
+              "name": "integration",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": false,
+              "attributes": []
+            },
+            "health": {
+              "name": "health",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": false,
+              "attributes": []
+            }
+          }
+        },
+        "TwitchOAuthStartResult": {
+          "name": "TwitchOAuthStartResult",
+          "fields": {
+            "integrationId": {
+              "name": "integrationId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "authorizeUrl": {
+              "name": "authorizeUrl",
+              "isArray": false,
+              "type": "AWSURL",
+              "isRequired": true,
+              "attributes": []
+            }
+          }
+        },
         "ManagedTwitchCommandMutationResult": {
           "name": "ManagedTwitchCommandMutationResult",
           "fields": {
@@ -5520,6 +6084,22 @@
           "isArray": false,
           "type": {
             "nonModel": "BrandPermissionDetailResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "brandId": {
+              "name": "brandId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            }
+          }
+        },
+        "getMyTwitchIntegration": {
+          "name": "getMyTwitchIntegration",
+          "isArray": false,
+          "type": {
+            "nonModel": "SafeTwitchIntegrationResult"
           },
           "isRequired": true,
           "arguments": {
@@ -6814,6 +7394,44 @@
               "type": "ID",
               "isRequired": false,
               "isArrayNullable": false
+            }
+          }
+        },
+        "startTwitchIntegrationOAuth": {
+          "name": "startTwitchIntegrationOAuth",
+          "isArray": false,
+          "type": {
+            "nonModel": "TwitchOAuthStartResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "brandId": {
+              "name": "brandId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            }
+          }
+        },
+        "disconnectTwitchIntegration": {
+          "name": "disconnectTwitchIntegration",
+          "isArray": false,
+          "type": {
+            "nonModel": "SafeTwitchIntegrationResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "brandId": {
+              "name": "brandId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            },
+            "integrationId": {
+              "name": "integrationId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
             }
           }
         },
