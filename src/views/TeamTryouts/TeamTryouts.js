@@ -3,12 +3,35 @@ import { ref, onMounted, onBeforeUnmount } from 'vue';
 export default {
   name: 'TeamTryouts',
   setup() {
+    const creatorApplicationRoute = {
+      name: 'Applications',
+      query: { type: 'creator' },
+    };
+
+    const prefersReducedMotion = () =>
+      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+
+    const navigateToSection = (targetId, { updateHistory = true } = {}) => {
+      const el = document.getElementById(targetId);
+      if (!el) return;
+
+      if (updateHistory && window.location.hash !== `#${targetId}`) {
+        window.history.pushState(null, '', `#${targetId}`);
+      }
+
+      el.scrollIntoView({
+        behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+        block: 'start',
+      });
+
+      const focusTarget = el.querySelector('h2') || el;
+      focusTarget.setAttribute('tabindex', '-1');
+      focusTarget.focus({ preventScroll: true });
+    };
+
     // Hero CTA: scroll to "How it works"
     const scrollToHowItWorks = () => {
-      const el = document.getElementById('how-it-works');
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      navigateToSection('how-it-works');
     };
 
     // TOC items
@@ -52,10 +75,7 @@ export default {
     ]);
 
     const scrollToSection = (targetId) => {
-      const el = document.getElementById(targetId);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      navigateToSection(targetId);
     };
 
     // Steps data (for "How it works")
@@ -190,6 +210,10 @@ export default {
 
     onMounted(() => {
       observeSteps();
+      const targetId = window.location.hash.slice(1);
+      if (targetId) {
+        requestAnimationFrame(() => navigateToSection(targetId, { updateHistory: false }));
+      }
     });
 
     onBeforeUnmount(() => {
@@ -201,6 +225,8 @@ export default {
     return {
       // hero
       scrollToHowItWorks,
+      creatorApplicationRoute,
+      navigateToSection,
       // TOC
       tocItems,
       scrollToSection,

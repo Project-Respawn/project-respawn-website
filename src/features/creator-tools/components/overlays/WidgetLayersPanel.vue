@@ -1,18 +1,14 @@
 <template>
   <section class="layers-panel" aria-label="Widget layers">
-    <header><p class="overlay-kicker">Layers</p><span>{{ widgets.length }} widgets</span></header>
+    <header><p class="overlay-kicker">☷ &nbsp; Layers</p><button type="button" aria-label="Add layer">＋</button></header>
     <ol>
       <li v-for="widget in ordered" :key="widget.id" :class="{ selected: widget.id === selectedId }">
         <button type="button" class="layer-select" @click="$emit('select', widget.id)">
-          <span>{{ widget.enabled ? '●' : '○' }}</span>{{ widget.name }}<small>{{ widget.locked ? 'Locked' : 'Editable' }}</small>
+          <span class="layer-grip">⠿</span>{{ widget.name }}
         </button>
         <div>
-          <button type="button" :aria-label="`${widget.enabled ? 'Hide' : 'Show'} ${widget.name}`" @click="$emit('action', 'visibility', widget.id)">{{ widget.enabled ? 'Hide' : 'Show' }}</button>
-          <button type="button" :aria-label="`${widget.locked ? 'Unlock' : 'Lock'} ${widget.name}`" @click="$emit('action', 'lock', widget.id)">{{ widget.locked ? 'Unlock' : 'Lock' }}</button>
-          <button type="button" aria-label="Bring forward" @click="$emit('action', 'forward', widget.id)">↑</button>
-          <button type="button" aria-label="Send backward" @click="$emit('action', 'backward', widget.id)">↓</button>
-          <button type="button" aria-label="Bring to front" @click="$emit('action', 'front', widget.id)">Front</button>
-          <button type="button" aria-label="Send to back" @click="$emit('action', 'back', widget.id)">Back</button>
+          <button type="button" :aria-label="`${widget.enabled ? 'Hide' : 'Show'} ${widget.name}`" @click="$emit('action', 'visibility', widget.id)">{{ widget.enabled ? '◉' : '○' }}</button>
+          <button type="button" :aria-label="`${widget.locked ? 'Unlock' : 'Lock'} ${widget.name}`" @click="$emit('action', 'lock', widget.id)">{{ widget.locked ? '▣' : '♙' }}</button>
         </div>
       </li>
     </ol>

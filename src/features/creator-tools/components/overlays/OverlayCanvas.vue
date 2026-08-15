@@ -16,16 +16,17 @@
   </div>
 </template>
 <script setup>
-import{computed,nextTick,onBeforeUnmount,onMounted,ref}from'vue'
+import{computed,nextTick,onBeforeUnmount,onMounted,ref,watch}from'vue'
 import{widgetRegistry as registry}from'../../overlays/widgetRegistry.js'
 import{canvasScalesFromBounds,clientDeltaToCanvas,editorScale,moveFrame,resizeFrame}from'../../overlays/overlayGeometry.js'
 import{createWidgetSnapshot}from'../../overlays/overlaySnapshots.js'
 import{themeVariables}from'../../overlays/overlayThemes.js'
-const props=defineProps({overlay:{type:Object,required:true},selectedId:String,previewMode:Boolean,showPreviewBackground:Boolean,showGuides:Boolean,showGrid:{type:Boolean,default:true},snapping:{type:Boolean,default:true},activeWidgetId:String,animationsPaused:Boolean})
+const props=defineProps({overlay:{type:Object,required:true},selectedId:String,previewMode:Boolean,showPreviewBackground:Boolean,showGuides:Boolean,showGrid:{type:Boolean,default:true},snapping:{type:Boolean,default:true},activeWidgetId:String,animationsPaused:Boolean,zoomMode:{type:String,default:'fit'}})
 const emit=defineEmits(['select','change']),viewport=ref(null),canvas=ref(null),scale=ref(.45),snapGuides=ref([]),draggingId=ref(''),handles=['nw','ne','sw','se'];let observer,interaction=null
 const ordered=computed(()=>[...props.overlay.widgets].sort((a,b)=>a.zIndex-b.zIndex))
-function updateScale(){const b=viewport.value?.getBoundingClientRect();if(b)scale.value=editorScale(props.overlay.resolution.width,props.overlay.resolution.height,Math.max(300,b.width-32),Math.max(220,b.height-32))}
+function updateScale(){const b=viewport.value?.getBoundingClientRect();if(b)scale.value=props.zoomMode==='actual'?1:editorScale(props.overlay.resolution.width,props.overlay.resolution.height,Math.max(300,b.width-32),Math.max(220,b.height-32))}
 onMounted(async()=>{await nextTick();updateScale();observer=new ResizeObserver(updateScale);observer.observe(viewport.value)})
+watch(()=>props.zoomMode,updateScale)
 onBeforeUnmount(()=>{observer?.disconnect();cancelInteraction()})
 const background=computed(()=>{if(['custom','game-draft'].includes(props.overlay.preview.backgroundType)&&props.overlay.preview.customImageUrl)return`url(${props.overlay.preview.customImageUrl}) center/cover`;if(props.overlay.preview.backgroundType==='solid')return props.overlay.preview.color;const id=props.overlay.preview.referenceAssetId;if(id==='blank')return'#111827';if(id==='bright-gameplay')return'linear-gradient(135deg,#a5c9b7,#4d7183 45%,#a77a4c)';if(id==='camera'||id==='studio')return'radial-gradient(circle at 50% 35%,#425372,#161929 58%,#080b14)';if(id==='minimal')return'linear-gradient(135deg,#171923,#07090e)';return'linear-gradient(145deg,#173b39,#101827 44%,#3b214b)'})
 const canvasStyle=computed(()=>({width:`${props.overlay.resolution.width}px`,height:`${props.overlay.resolution.height}px`,transform:`scale(${scale.value})`,transformOrigin:'top left',background:props.previewMode&&!props.showPreviewBackground?'transparent':background.value}))
