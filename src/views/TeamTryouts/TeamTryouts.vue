@@ -12,8 +12,7 @@
         </p>
 
         <div class="hero-actions">
-          <a class="btn btn-primary" href="#apply">Apply as a Streamer</a>
-          <button class="btn btn-outline" type="button" @click="scrollToHowItWorks">
+          <button class="btn btn-primary" type="button" @click="scrollToHowItWorks">
             See how it works
           </button>
         </div>
@@ -397,19 +396,19 @@
     </section>
 
     <!-- APPLY -->
-    <section id="apply" class="content-section application-section">
+    <section id="apply" class="content-section application-section" tabindex="-1" aria-labelledby="apply-heading">
       <div class="container narrow centered">
         <p class="section-label">Apply to join</p>
-        <h2>A separate all-in-one application page is coming next.</h2>
+        <h2 id="apply-heading">Apply to join Project Respawn</h2>
         <p>
-          Applications for streamer partners and esports org opportunities will move into a dedicated application flow.
-          You’ll be asked about your content, your community, which track fits you best, and why you think you’re a good fit for Project Respawn.
-        </p>
-        <p>
-          For now, this section is ready for your new application link once that page is built.
+          Applications are open to streamers and creators who want to build stronger communities and help shape the future
+          of Project Respawn. We welcome casual, community-focused, entertainment and competitive creators. Alignment and
+          community culture matter more than follower count.
         </p>
         <div class="hero-actions center-actions">
-          <a class="btn btn-primary" href="#" aria-disabled="true">Application link coming soon</a>
+          <RouterLink class="btn btn-primary" :to="creatorApplicationRoute">
+            Click here to apply as a streamer
+          </RouterLink>
         </div>
         <p class="support-note">
           Applications are reviewed for fit, alignment, and community potential. Because this is a curated beta,
@@ -459,7 +458,9 @@
           built around confidence and participation, this page is the start of that conversation.
         </p>
         <div class="hero-actions center-actions">
-          <a class="btn btn-outline" href="#apply">Go to application section</a>
+          <a class="btn btn-outline" href="#apply" @click.prevent="navigateToSection('apply')">
+            Go to application section
+          </a>
         </div>
       </div>
     </section>

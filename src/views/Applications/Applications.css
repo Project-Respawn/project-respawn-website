@@ -116,6 +116,26 @@
   margin-bottom: 0.4rem;
 }
 
+.role-card .feature-status {
+  margin-bottom: 0.55rem;
+}
+
+.role-card--coming-soon {
+  padding: 0;
+  overflow: hidden;
+  border-color: transparent;
+  background: transparent;
+}
+
+.role-card--coming-soon :deep(.feature-teaser-shell),
+.role-card--coming-soon :deep(.feature-teaser) {
+  height: 100%;
+}
+
+.role-card--coming-soon :deep(.feature-teaser) {
+  text-align: left;
+}
+
 .role-card p {
   font-size: 0.9rem;
   color: #d6deff;
@@ -287,4 +307,44 @@
   .btn {
     width: 100%;
   }
+}
+
+.genre-fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.selection-counter {
+  margin-left: 0.5rem;
+  color: #b7c3ff;
+}
+
+.field-help {
+  margin: 0;
+  color: #b7c3d9;
+  line-height: 1.5;
+}
+
+.planned-game-field,
+.coming-soon-panel {
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(148, 163, 184, 0.32);
+  border-radius: 0.9rem;
+  background: rgba(148, 163, 184, 0.08);
+}
+
+.coming-soon-panel h2 {
+  margin: 0.8rem 0 0.5rem;
+  font-size: 1.25rem;
+}
+
+.coming-soon-panel h2:focus {
+  outline: 2px solid #c497ff;
+  outline-offset: 0.3rem;
+}
+
+.coming-soon-panel .btn {
+  margin-top: 0.8rem;
 }

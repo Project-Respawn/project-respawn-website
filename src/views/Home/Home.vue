@@ -27,7 +27,7 @@
           </div>
 
           <div class="col-md-12">
-            <a href="/team-tryouts" class="btn btn-secondary col-md-4 offset-md-4">
+            <a href="/join-us" class="btn btn-secondary col-md-4 offset-md-4">
               Learn how it works
             </a>
           </div>

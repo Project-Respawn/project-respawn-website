@@ -26,7 +26,9 @@ export default [
 
     { path: '/privacy-policy', component: PrivacyPolicy },
 
-    { path: '/team-tryouts', component: TeamTryouts },
+    { path: '/join-us', name: 'JoinUs', component: TeamTryouts },
+
+    { path: '/team-tryouts', redirect: (to) => ({ path: '/join-us', query: to.query, hash: to.hash }) },
 
     { path: '/merch', component: Merch },
 
@@ -39,10 +41,14 @@ export default [
     { path: '/account', component: Account },
 
     {
-        path: '/apply',
+        path: '/apply-now',
         name: 'Applications',
         component: Applications
     },
+
+    { path: '/applications', redirect: (to) => ({ path: '/apply-now', query: to.query, hash: to.hash }) },
+
+    { path: '/apply', redirect: (to) => ({ path: '/apply-now', query: to.query, hash: to.hash }) },
 
     {
         path: '/home',
