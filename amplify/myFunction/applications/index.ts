@@ -190,10 +190,17 @@ export async function submitPublicApplication(client: any, rawPayload: unknown, 
   await enforcePublicRateLimit(client, source, normalizedEmail)
   const trustedKey = createHash('sha256').update(`public-application:${requestToken}:${normalizedEmail}`).digest('base64url')
   const result = await storeApplicationSubmission(client, command, trustedKey, 'public-application-boundary')
-  return { reference: result.reference, submittedAt: result.submittedAt, confirmationStatus: result.idempotentReplay ? 'ALREADY_SUBMITTED' : 'SUBMITTED' }
+  return { success: true, reference: result.reference, submittedAt: result.submittedAt, confirmationStatus: result.idempotentReplay ? 'ALREADY_SUBMITTED' : 'SUBMITTED' }
+}
+function publicValidationIssues(message: string) {
+  const mappings: Array<[RegExp, string, string, string]> = [
+    [/EMAIL_CONFIRMATION_MISMATCH/, 'confirmEmail', 'contact', 'The email addresses do not match.'], [/CONTACT_EMAIL/, 'email', 'contact', 'Enter a valid email address.'], [/applicant_name/, 'name', 'basic', 'Enter your full name.'], [/creator_name/, 'creatorName', 'basic', 'Enter your creator or channel name.'], [/time_zone/, 'timezone', 'basic', 'Choose a valid time zone.'], [/profile_url/, 'creatorProfiles[0].url', 'profiles', 'Enter a complete profile URL beginning with https://.'], [/SCHEDULE_END|end_time/, 'schedule[0].endTime', 'schedule', 'The stream end time must be later than the start time.'], [/start_time/, 'schedule[0].startTime', 'schedule', 'Enter the stream start time.'], [/SCHEDULE_DAY/, 'schedule[0].dayOfWeek', 'schedule', 'Choose the usual stream day.'], [/CONSENT/, 'termsAccepted', 'consent', 'Accept this declaration before submitting.'], [/PATHWAY/, 'applicationType', 'pathway', 'This application pathway is not open.'],
+  ]; const found = mappings.find(([pattern]) => pattern.test(message)); return found ? [{ code: 'APPLICATION_VALIDATION_FAILED', field: found[1], section: found[2], message: found[3] }] : [{ code: 'APPLICATION_VALIDATION_FAILED', field: null, section: 'application', message: 'Some submitted information was not accepted. Please review this section and try again.' }]
 }
 export async function handleSubmitPublicApplication(event: any, injectedClient?: any) {
-  const client = injectedClient || await getDataClient(); return submitPublicApplication(client, event.arguments?.payload, event.arguments?.requestToken, event.arguments?.website, requestSource(event))
+  const client = injectedClient || await getDataClient()
+  try { return await submitPublicApplication(client, event.arguments?.payload, event.arguments?.requestToken, event.arguments?.website, requestSource(event)) }
+  catch (error) { const raw = error instanceof Error ? error.message : ''; if (/APPLICATION_(?:VALIDATION|PUBLIC:(?:EMAIL|PAYLOAD|REQUEST_TOKEN))|PATHWAY/.test(raw)) return { success: false, errorCode: 'APPLICATION_VALIDATION_FAILED', issues: publicValidationIssues(raw), message: 'Some information needs attention.' }; if (/RATE_LIMITED/.test(raw)) return { success: false, errorCode: 'RATE_LIMITED', message: 'Too many application attempts have been made. Please wait before trying again. Your answers are still available on this page.' }; return { success: false, errorCode: 'SERVICE_UNAVAILABLE', message: 'We could not save your application because of a temporary system problem. Your answers are still here. Please try again shortly.', supportReference: randomBytes(6).toString('hex').toUpperCase() } }
 }
 export async function handleListAdminApplications(event: any, injectedClient?: any) {
   const client = injectedClient || await getDataClient(); await requireEffectivePermission(event, client, 'applications.read'); return listApplications(client, event.arguments)

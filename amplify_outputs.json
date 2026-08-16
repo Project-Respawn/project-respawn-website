@@ -6757,25 +6757,60 @@
         "PublicApplicationSubmissionResult": {
           "name": "PublicApplicationSubmissionResult",
           "fields": {
+            "success": {
+              "name": "success",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
             "reference": {
               "name": "reference",
               "isArray": false,
               "type": "String",
-              "isRequired": true,
+              "isRequired": false,
               "attributes": []
             },
             "submittedAt": {
               "name": "submittedAt",
               "isArray": false,
               "type": "AWSDateTime",
-              "isRequired": true,
+              "isRequired": false,
               "attributes": []
             },
             "confirmationStatus": {
               "name": "confirmationStatus",
               "isArray": false,
               "type": "String",
-              "isRequired": true,
+              "isRequired": false,
+              "attributes": []
+            },
+            "errorCode": {
+              "name": "errorCode",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "issues": {
+              "name": "issues",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": false,
+              "attributes": []
+            },
+            "message": {
+              "name": "message",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "supportReference": {
+              "name": "supportReference",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
               "attributes": []
             }
           }

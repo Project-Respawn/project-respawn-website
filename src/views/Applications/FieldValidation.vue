@@ -1,0 +1,2 @@
+<template><p v-if="feedback.text" :id="id" class="field-validation" :class="[`is-${feedback.status}`, `is-${feedback.source}`]" :role="feedback.status === 'invalid' ? 'alert' : 'status'"><span aria-hidden="true">{{ feedback.status === 'valid' ? '✓' : feedback.status === 'invalid' ? '!' : '○' }}</span><span><strong v-if="feedback.source === 'server-rejected'">Server validation: </strong>{{ feedback.text }}</span></p></template>
+<script>export default { name:'FieldValidation', props:{ id:{type:String,required:true}, feedback:{type:Object,required:true} } };</script>

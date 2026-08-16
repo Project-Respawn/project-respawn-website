@@ -48,7 +48,8 @@ let client;
 export async function submitCreatorApplication(payload, requestToken, website = '') {
   client ||= generateClient({ authMode: 'apiKey' }); const operation = client?.mutations?.submitPublicApplication;
   if (typeof operation !== 'function') throw new Error('The public application service is unavailable. Please refresh and try again.');
-  const response = await operation({ payload, requestToken, website }, { authMode: 'apiKey' });
+  const response = await operation({ payload, requestToken, website }, { authMode: 'apiKey', selectionSet: ['success','reference','submittedAt','confirmationStatus','errorCode','issues','message','supportReference'] });
   if (response.errors?.length) throw new Error(response.errors[0].message || 'Application submission failed.');
+  if (response.data?.success === false) { const error = new Error(response.data.message || response.data.errorCode || 'Application submission failed.'); error.code = response.data.errorCode; error.issues = response.data.issues; error.supportReference = response.data.supportReference; throw error; }
   return response.data;
 }
