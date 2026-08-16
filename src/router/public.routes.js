@@ -13,8 +13,13 @@ import Account from '../views/Account/Account.vue';
 import Roles from '../views/About/Roles/Roles.vue';
 import UserHomepage from '../views/UserHomepage/UserHomepage.vue';
 import Applications from '../views/Applications/Applications.vue';
+import Bookings from '../views/Bookings/Bookings.vue';
 
 export default [
+    { path: '/bookings', name: 'Bookings', component: Bookings },
+    { path: '/bookings/invite/:invitationToken', name: 'BookingsInvite', component: Bookings, props: true },
+    { path: '/bookings/:bookingTypeSlug', name: 'BookingsType', component: Bookings, props: true },
+    { path: '/induction/book/:invitationToken', redirect: (to) => ({ name: 'BookingsInvite', params: { invitationToken: to.params.invitationToken }, query: to.query, hash: to.hash }) },
 
     { path: '/', component: Home },
 

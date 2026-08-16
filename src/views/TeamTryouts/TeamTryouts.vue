@@ -282,6 +282,7 @@
         <div class="track-panel">
           <article v-if="activeTrack === 'competitive'" class="partner-card">
             <h3>Competitive streamers</h3>
+            <p class="coming-soon-pill">Competitive team applications are currently closed</p>
             <p>
               For creators whose main focus is high-level gameplay, ranked grind, competition, and representing an org.
               You may not think of yourself as community-first, but your audience can still benefit from stronger participation systems,
@@ -294,7 +295,7 @@
               <li>Use Project Respawn tools where they fit your content and community.</li>
             </ul>
             <p class="track-summary">
-              If your content is driven by performance, improvement, and competition, this is likely the right path for you.
+              We are developing our internal scouting and team-building structure before reopening this route. Competitive-focused streamers and content creators may still apply through the Creator Programme.
             </p>
           </article>
 
@@ -319,8 +320,8 @@
 
         <div class="clarification-box">
           <p>
-            You do not need to be a typical “community streamer” to apply. Some partners will fit clearly into one path,
-            while others may overlap both. In the application, we’ll ask which route fits you best and why.
+            You do not need to be a typical “community streamer” to apply to the Creator Programme. Some creators blend
+            competitive content with community-focused work; dedicated competitive team recruitment remains closed for now.
           </p>
         </div>
       </div>

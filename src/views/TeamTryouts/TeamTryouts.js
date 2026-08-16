@@ -194,7 +194,7 @@ export default {
         id: 'tracks',
         question: 'Can I apply for both competitive and social confidence tracks?',
         answer:
-          'Yes. You can explain that in your application and we’ll work out the best fit together.',
+          'Dedicated competitive team applications are currently closed while we develop our scouting and team-building structure. Competitive-focused streamers and content creators can still apply to the Creator Programme.',
       },
       {
         id: 'payments',

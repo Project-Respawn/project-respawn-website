@@ -31,6 +31,14 @@ export default {
           requiredGroups: ['SuperAdmin', 'Admin'],
         },
         { id: 'events', icon: '📅', label: 'Events', route: '/dashboard/events', requiredPermission: 'events.manage' },
+        {
+          id: 'applications',
+          icon: '📋',
+          label: 'Applications',
+          route: '/dashboard/applications',
+          requiredGroups: ['SuperAdmin', 'Admin', 'Staff'],
+        },
+        { id: 'availability', icon: '🗓️', label: 'Availability', route: '/dashboard/availability', requiredGroups: ['SuperAdmin', 'Admin', 'Staff'] },
         { id: 'forums', icon: '🧵', label: 'Forums', route: '/dashboard/forums', requiredPermission: 'forums.structure.manage' },
         { id: 'orders', icon: '📦', label: 'Orders', route: '/dashboard/orders', requiredPermission: 'orders.view' },
         { id: 'brands', icon: '🏷️', label: 'Brands', route: '/dashboard/brands', requiredPermission: 'brands.manage' },
@@ -94,6 +102,8 @@ export default {
 
       if (path === '/dashboard' || path === '/dashboard/') return 'home';
       if (path.includes('/product-control')) return 'product-control';
+      if (path.includes('/availability')) return 'availability';
+      if (path.includes('/applications')) return 'applications';
       if (path.includes('/media-library')) return 'media-library';
       if (path.includes('/merch-categories')) return 'merch-categories';
       if (path.includes('/brand-permissions')) return 'brand-permissions';

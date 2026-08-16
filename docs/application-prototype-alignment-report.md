@@ -29,6 +29,16 @@
 - The prototype persists demo state in `localStorage`. Production application/review state must not use that mechanism.
 - The existing submit handler did not persist anything. Durable submission remains unresolved and must be implemented through an owner-authorized backend mutation before the UI can claim successful submission.
 
+## Public pathway availability
+
+`src/config/applicationPathwayAvailability.js` is the canonical public recruitment switch. Creator Programme is `ACTIVE`; competitive streamer, player/esports roster, coaching, and analysis/support are `CLOSED`; Therapist and Personal Trainer are `COMING_SOON`. The entry controller preserves a requested closed pathway from `/apply-now?type=...`, shows the closed explanation, and prevents Next, validation, and submission. It does not rewrite the request to Creator Programme.
+
+The competitive implementation remains intact in `src/views/Applications/Applications.vue` and `Applications.js`: pathway questions, competitive game definitions, game-specific ranks/positions, League roles, coaching/analysis specialist answers, validation boundaries, responsive layout, and the planned IGDB selection boundary are preserved. Availability is deliberately separate from those definitions.
+
+To reopen one pathway, change only its value in `APPLICATION_PATHWAY_AVAILABILITY` from `PATHWAY_AVAILABILITY.CLOSED` to `PATHWAY_AVAILABILITY.ACTIVE`. The existing form then becomes enterable without reconstructing questions or mappings. No public Admin toggle exists.
+
+Competitive recruitment is paused while Project Respawn develops internal scouting and team-building. Future broad organisational roles might include Coach or Esports member, while team-specific Player, Substitute, Captain, Coach, Analyst, Scout, and Team manager access should derive from team/game/roster/membership/status data—not one Cognito group per combination. None of these roles or models is approved or implemented here.
+
 ## 4. Exact future files and models
 
 Frontend:

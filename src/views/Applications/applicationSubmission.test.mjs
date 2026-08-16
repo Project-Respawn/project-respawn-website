@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict'; import test from 'node:test';
+import { mapCreatorApplication, normalizeEmailForConfirmation } from './applicationSubmission.js';
+
+const state = () => ({ applicationType: 'creator', profile: { name: 'Alex Applicant', creatorName: 'Alex Creates', pronouns: 'they/them', discord: 'alex.user', email: ' Local+tag@Example.COM ', confirmEmail: 'Local+tag@example.com', country: 'UK', timezone: 'Europe/London', ageRange: '25-34' }, streamerRole: 'community-streamer', streamerProfile: { platform: 'Twitch', customPlatformLabel: '', handle: 'alexcreates', channelLink: 'https://twitch.tv/alexcreates', otherProfiles: 'https://youtube.com/@alexcreates', discordInvite: 'https://discord.gg/example', discordRelationship: 'Owner', schedule: 'Weekly', mentalHealth: 'lived-experience', whyApply: 'To build a kind community.', confidenceFit: 'Mission-led content.', genres: ['Cosy', 'RPG'], games: 'Stardew Valley, Celeste' }, schedule: { hasRegularSchedule: true, scheduleVaries: false, dayOfWeek: 'Tuesday', startLocalTime: '19:00', endLocalTime: '21:00', contentType: 'Live stream', nextPlannedPublicStream: '2026-08-18T19:00', notes: 'Weekly' }, alignment: { fitReason: 'Shared values.', questions: 'None', termsAccepted: true, publicContentConsent: true } });
+
+test('maps every approved Creator Programme field without trusted email claims', () => {
+  const payload = mapCreatorApplication(state(), new Date('2026-08-16T12:00:00Z'));
+  assert.equal(payload.contactEmail, 'Local+tag@example.com'); assert.equal(payload.confirmEmail, payload.contactEmail)
+  assert.equal(payload.answers.length, 18); assert.deepEqual(payload.answers.find((x) => x.questionKey === 'genres').value, ['Cosy', 'RPG']); assert.deepEqual(payload.answers.find((x) => x.questionKey === 'favourite_games').value, ['Stardew Valley', 'Celeste'])
+  assert.equal(payload.creatorProfiles.length, 3); assert.equal(payload.creatorProfiles[2].relationshipToServer, 'Owner'); assert.equal(payload.schedules[0].applicantTimeZone, 'Europe/London')
+  assert.equal(payload.consentVersion, 'creator-consent-v1'); assert.equal('emailVerificationState' in payload, false); assert.equal('emailVerificationProvenance' in payload, false)
+})
+test('email confirmation preserves local-part semantics and safely normalises domain', () => { assert.equal(normalizeEmailForConfirmation(' A.B+Tag@EXAMPLE.COM '), 'A.B+Tag@example.com'); assert.notEqual(normalizeEmailForConfirmation('A.B@example.com'), normalizeEmailForConfirmation('a.b@example.com')); })
+test('mismatch and closed pathways are rejected before network submission', () => { const mismatch = state(); mismatch.profile.confirmEmail = 'other@example.com'; assert.throws(() => mapCreatorApplication(mismatch), /do not match/); const closed = state(); closed.applicationType = 'competitive-player'; assert.throws(() => mapCreatorApplication(closed), /Only Creator Programme/); })
