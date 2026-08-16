@@ -152,6 +152,49 @@ const schema = a
       brands: a.ref('AccessibleBrandSummary').array().required(),
     }),
 
+    ApplicationStorageResult: a.customType({
+      applicationId: a.id().required(),
+      reference: a.string().required(),
+      status: a.string().required(),
+      submittedAt: a.datetime().required(),
+      idempotentReplay: a.boolean().required(),
+    }),
+
+    PublicApplicationSubmissionResult: a.customType({
+      reference: a.string().required(), submittedAt: a.datetime().required(), confirmationStatus: a.string().required(),
+    }),
+
+    submitPublicApplication: a.mutation()
+      .arguments({ payload: a.json().required(), requestToken: a.string().required(), website: a.string() })
+      .returns(a.ref('PublicApplicationSubmissionResult').required())
+      .authorization((allow) => [allow.publicApiKey()])
+      .handler(a.handler.function(myFunction)),
+
+    AdminApplicationListResult: a.customType({
+      items: a.json().required(),
+      nextToken: a.string(),
+    }),
+
+    AdminApplicationDetailResult: a.customType({
+      application: a.json().required(),
+    }),
+
+    storeTrustedApplicationSubmission: a.mutation()
+      .arguments({ command: a.json().required(), idempotencyKey: a.string().required() })
+      .returns(a.ref('ApplicationStorageResult').required())
+      .authorization((allow) => [allow.groups(['SuperAdmin'])])
+      .handler(a.handler.function(myFunction)),
+
+    listAdminApplications: a.query().arguments({
+      limit: a.integer(), nextToken: a.string(), search: a.string(), status: a.string(),
+      pathwayId: a.string(), sortDirection: a.string(),
+    }).returns(a.ref('AdminApplicationListResult').required())
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+
+    getAdminApplication: a.query().arguments({ applicationId: a.id().required() })
+      .returns(a.ref('AdminApplicationDetailResult').required())
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+
     listAdminUsers: a
       .query()
       .returns(a.ref('AdminUser').array().required())
@@ -430,6 +473,82 @@ const schema = a
       .returns(a.ref('MerchProductRelationshipMutationResult').required())
       .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin', 'Staff'])])
       .handler(a.handler.function(myFunction)),
+
+    /*
+     * APPLICATION STORAGE PHASE 1
+     * Function-owned models: no browser, guest, owner, or group model CRUD.
+     */
+    ApplicationSubmission: a.model({
+      applicationReference: a.string().required(),
+      pathwayId: a.string().required(),
+      formVersion: a.string().required(),
+      applicantFullName: a.string().required(),
+      creatorDisplayName: a.string().required(),
+      contactEmail: a.string().required(),
+      emailVerificationState: a.string().required(),
+      emailVerificationProvenance: a.string().required(),
+      submissionStatus: a.string().required(),
+      writeState: a.string().required(),
+      submittedAt: a.datetime(),
+      source: a.string().required(),
+      consentVersion: a.string().required(),
+      consentedAt: a.datetime().required(),
+      currentReviewState: a.string().required(),
+      auditMetadata: a.json(),
+      payloadHash: a.string().required(),
+      idempotencyDigest: a.string().required(),
+      testRunId: a.string(),
+      answers: a.hasMany('ApplicationAnswer', 'applicationId'),
+      creatorProfiles: a.hasMany('ApplicationCreatorProfile', 'applicationId'),
+      schedules: a.hasMany('ApplicationSchedule', 'applicationId'),
+      auditEvents: a.hasMany('ApplicationAuditEvent', 'applicationId'),
+    }).secondaryIndexes((index) => [
+      index('applicationReference'), index('writeState').sortKeys(['submittedAt']),
+      index('pathwayId').sortKeys(['submittedAt']),
+    ]).authorization((allow) => [allow.groups(['SuperAdmin']).to([])]),
+
+    ApplicationAnswer: a.model({
+      applicationId: a.id().required(), application: a.belongsTo('ApplicationSubmission', 'applicationId'),
+      answerId: a.string().required(), questionKey: a.string().required(), questionLabelSnapshot: a.string().required(),
+      sectionKey: a.string().required(), sectionLabelSnapshot: a.string().required(), answerType: a.string().required(),
+      structuredValue: a.json(), safeDisplayValue: a.string(), displayOrder: a.integer().required(),
+      formVersion: a.string().required(), submittedCreatedAt: a.datetime().required(), testRunId: a.string(),
+    }).secondaryIndexes((index) => [index('applicationId').sortKeys(['displayOrder'])])
+      .authorization((allow) => [allow.groups(['SuperAdmin']).to([])]),
+
+    ApplicationCreatorProfile: a.model({
+      applicationId: a.id().required(), application: a.belongsTo('ApplicationSubmission', 'applicationId'),
+      platform: a.string().required(), customPlatformLabel: a.string(), displayNameOrHandle: a.string().required(),
+      profileUrl: a.string(), isPrimary: a.boolean().required(), contentTypes: a.string().array(),
+      isActive: a.boolean().required(), relationshipToServer: a.string(), displayOrder: a.integer().required(),
+      submittedCreatedAt: a.datetime().required(), testRunId: a.string(),
+    }).secondaryIndexes((index) => [index('applicationId').sortKeys(['displayOrder'])])
+      .authorization((allow) => [allow.groups(['SuperAdmin']).to([])]),
+
+    ApplicationSchedule: a.model({
+      applicationId: a.id().required(), application: a.belongsTo('ApplicationSubmission', 'applicationId'),
+      applicantTimeZone: a.string().required(), hasRegularSchedule: a.boolean().required(), scheduleVaries: a.boolean().required(),
+      dayOfWeek: a.string(), startLocalTime: a.string(), endLocalTime: a.string(), profileReference: a.string(),
+      contentType: a.string(), nextPlannedPublicStream: a.datetime(), publicViewingUrl: a.string(),
+      additionalNotes: a.string(), displayOrder: a.integer().required(), submittedCreatedAt: a.datetime().required(), testRunId: a.string(),
+    }).secondaryIndexes((index) => [index('applicationId').sortKeys(['displayOrder'])])
+      .authorization((allow) => [allow.groups(['SuperAdmin']).to([])]),
+
+    ApplicationAuditEvent: a.model({
+      applicationId: a.id().required(), application: a.belongsTo('ApplicationSubmission', 'applicationId'),
+      eventType: a.string().required(), actorSource: a.string().required(), occurredAt: a.datetime().required(),
+      safeMetadata: a.json(), formVersion: a.string().required(), testRunId: a.string(),
+    }).secondaryIndexes((index) => [index('applicationId').sortKeys(['occurredAt'])])
+      .authorization((allow) => [allow.groups(['SuperAdmin']).to([])]),
+
+    ApplicationIdempotency: a.model({
+      payloadHash: a.string().required(), state: a.string().required(), applicationId: a.id(),
+      safeResult: a.json(), expiresAt: a.timestamp().required(), testRunId: a.string(), lastErrorCode: a.string(),
+    }).authorization((allow) => [allow.groups(['SuperAdmin']).to([])]),
+
+    ApplicationPublicRateLimit: a.model({
+      windowStartedAt: a.datetime().required(), count: a.integer().required(), blockedUntil: a.datetime(), expiresAt: a.timestamp().required(),
+    }).authorization((allow) => [allow.groups(['SuperAdmin']).to([])]),
 
     /*
      * 3. TWITCH & USER PROFILE MODELS

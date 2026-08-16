@@ -7,6 +7,7 @@ import { handleCreateManagedTwitchCommand, handleDeleteManagedTwitchCommand, han
 import { handleCreateOrUpdateManagedDiscordConfiguration, handleGetManagedDiscordConfiguration } from '../discord'
 import { handleCreateManagedMediaCollection, handleCreateManagedMediaItem, handleDeleteManagedMediaItem, handleListManagedMediaLibrary, handleListPublicMerchProductImages, handleUpdateManagedMediaItem } from '../media'
 import { handleImportManagedRevolutOrder, handleListManagedOrders, handleListManagedProfiles, handleManageSimpleResource, handleRecoverManagedOrder } from '../stage9/handlers'
+import { handleCleanupApplicationStorageTestRun, handleCleanupPublicApplicationTestRun, handleGetAdminApplication, handleListAdminApplications, handleStoreTrustedApplicationSubmission, handleSubmitPublicApplication } from '../applications'
 
 export interface AppSyncEvent { arguments?: unknown; info?: { fieldName?: string }; fieldName?: string; identity?: unknown }
 
@@ -18,6 +19,13 @@ export function getResolverFieldName(event: AppSyncEvent) { return event.info?.f
 
 export async function routeAppSync(event: AppSyncEvent) {
   switch (getResolverFieldName(event)) {
+    case 'storeTrustedApplicationSubmission': return handleStoreTrustedApplicationSubmission(event)
+    case 'submitPublicApplication': return handleSubmitPublicApplication(event)
+    case 'listAdminApplications': return handleListAdminApplications(event)
+    case 'getAdminApplication': return handleGetAdminApplication(event)
+    // Direct Lambda integration-test hook; intentionally not declared in the AppSync schema.
+    case 'cleanupApplicationStorageTestRun': return handleCleanupApplicationStorageTestRun(event)
+    case 'cleanupPublicApplicationTestRun': return handleCleanupPublicApplicationTestRun(event)
     case 'recordForumThreadView': return handleRecordForumThreadView(event)
     case 'submitForumThread': return handleCreateForumThread(event)
     case 'submitForumReply': return handleCreateForumReply(event)

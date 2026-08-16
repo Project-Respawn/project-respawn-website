@@ -1,0 +1,4 @@
+// Frontend-only exact-token fixture. Production tokens must be cryptographically
+// random, stored hashed, expiring, revocable, single-use, and account-bound.
+export const SUPERADMIN_DEMO_INVITATION_TOKEN = 'DEMO-SUPERADMIN-INDUCTION';
+export const SUPERADMIN_DEMO_INVITATION = Object.freeze({ token: SUPERADMIN_DEMO_INVITATION_TOKEN, invitationType: 'Induction', bookingTypeId: 'booking-type-induction', contactEmail: 'superadmin@projectrespawn.com', simulatedVerifiedAccountEmail: 'superadmin@projectrespawn.com', applicantName: 'Super Admin Demo', applicationReference: 'APP-DEMO-0001', applicationId: 'APP-DEMO-0001', state: 'valid', used: false, revoked: false, expiresAt: '2030-12-31T23:59:59.000Z', accountRequired: true, emailMatchRequired: true, accountState: 'required', emailMatch: true, bookingId: null, demo: true });

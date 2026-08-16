@@ -50,31 +50,33 @@
 
             <button
               type="button"
-              class="role-card"
+              class="role-card role-card--closed"
               :class="{ 'is-selected': applicationType === 'competitive-streamer' }"
+              aria-label="Competitive streamer — applications currently closed"
               @click="setApplicationType('competitive-streamer')"
             >
-              <h3>Competitive streamer</h3>
+              <h3>Competitive streamer <span class="pathway-status">Closed</span></h3>
               <p>For creators whose content focuses on ranked play, tournaments, or performance.</p>
             </button>
 
             <button
               type="button"
-              class="role-card"
+              class="role-card role-card--closed"
               :class="{ 'is-selected': applicationType === 'competitive-player' }"
+              aria-label="Competitive player or esports roster — applications currently closed"
               @click="setApplicationType('competitive-player')"
             >
-              <h3>Competitive player or esports roster</h3>
+              <h3>Competitive player or esports roster <span class="pathway-status">Closed</span></h3>
               <p>For players seeking a team trial, roster place, or org representation.</p>
             </button>
 
-            <button type="button" class="role-card" :class="{ 'is-selected': applicationType === 'competitive-coaching' }" @click="setApplicationType('competitive-coaching')">
-              <h3>Competitive coaching</h3>
+            <button type="button" class="role-card role-card--closed" :class="{ 'is-selected': applicationType === 'competitive-coaching' }" aria-label="Competitive coaching — applications currently closed" @click="setApplicationType('competitive-coaching')">
+              <h3>Competitive coaching <span class="pathway-status">Closed</span></h3>
               <p>For coaches who help players or teams improve through structured practice and feedback.</p>
             </button>
 
-            <button type="button" class="role-card" :class="{ 'is-selected': applicationType === 'competitive-analysis' }" @click="setApplicationType('competitive-analysis')">
-              <h3>Competitive analysis or support staff</h3>
+            <button type="button" class="role-card role-card--closed" :class="{ 'is-selected': applicationType === 'competitive-analysis' }" aria-label="Competitive analysis or support staff — applications currently closed" @click="setApplicationType('competitive-analysis')">
+              <h3>Competitive analysis or support staff <span class="pathway-status">Closed</span></h3>
               <p>For analysts, managers, and specialist competitive support roles.</p>
             </button>
 
@@ -119,7 +121,17 @@
             />
           </div>
 
-          <div v-if="!isComingSoon" class="step-nav">
+          <section v-if="isClosed" class="closed-recruitment-panel" role="region" aria-live="polite" :aria-label="`${selectedPathwayLabel} availability`">
+            <p class="applications-eyebrow">{{ selectedPathwayLabel }} · Closed</p>
+            <h2 tabindex="-1">Competitive applications are currently closed</h2>
+            <p>We are not currently recruiting for our competitive teams. If you are a streamer or content creator interested in working with Project Respawn, you can still apply to our Creator Programme for consideration.</p>
+            <div class="closed-recruitment-actions">
+              <button type="button" class="btn btn-primary" @click="startCreatorApplication">Apply to the Creator Programme</button>
+              <button type="button" class="btn btn-outline" @click="returnToChoices">Return to application pathways</button>
+            </div>
+          </section>
+
+          <div v-if="isActivePathway" class="step-nav">
             <button
               type="button"
               class="btn btn-primary"
@@ -165,6 +177,11 @@
             </div>
 
             <div class="field">
+              <label class="field-label" for="creatorName">Creator / channel name</label>
+              <input id="creatorName" v-model="profile.creatorName" type="text" class="field-input" required />
+            </div>
+
+            <div class="field">
               <label class="field-label" for="discord">Discord tag</label>
               <input
                 id="discord"
@@ -184,6 +201,12 @@
                 class="field-input"
                 required
               />
+            </div>
+
+            <div class="field">
+              <label class="field-label" for="confirmEmail">Confirm contact email</label>
+              <input id="confirmEmail" v-model="profile.confirmEmail" type="email" class="field-input" required />
+              <p class="field-help">Please check your email address carefully. We will use it to send the outcome of your application and, if successful, your induction invitation.</p>
             </div>
 
             <div class="field">
@@ -244,6 +267,21 @@
 
             <div class="fields-grid">
               <div class="field">
+                <label class="field-label" for="creatorPlatform">Primary platform</label>
+                <select id="creatorPlatform" v-model="streamerProfile.platform" class="field-input" required>
+                  <option value="Twitch">Twitch</option><option value="YouTube">YouTube</option>
+                  <option value="TikTok">TikTok</option><option value="Kick">Kick</option><option value="Other">Other</option>
+                </select>
+              </div>
+              <div v-if="streamerProfile.platform === 'Other'" class="field">
+                <label class="field-label" for="customPlatformLabel">Platform name</label>
+                <input id="customPlatformLabel" v-model="streamerProfile.customPlatformLabel" class="field-input" required />
+              </div>
+              <div class="field">
+                <label class="field-label" for="creatorHandle">Public handle</label>
+                <input id="creatorHandle" v-model="streamerProfile.handle" class="field-input" required />
+              </div>
+              <div class="field">
                 <label class="field-label" for="channelLink">
                   Main channel link (Twitch or other)
                 </label>
@@ -253,7 +291,22 @@
                   type="url"
                   class="field-input"
                   placeholder="https://twitch.tv/yourname"
+                  required
                 />
+              </div>
+
+              <div class="field">
+                <label class="field-label" for="otherProfiles">Other public profile links (one per line)</label>
+                <textarea id="otherProfiles" v-model="streamerProfile.otherProfiles" class="field-textarea" rows="3"></textarea>
+              </div>
+
+              <div class="field">
+                <label class="field-label" for="discordInvite">Public Discord invite (optional)</label>
+                <input id="discordInvite" v-model="streamerProfile.discordInvite" type="url" class="field-input" />
+              </div>
+              <div class="field">
+                <label class="field-label" for="discordRelationship">Your relationship to that Discord community (optional)</label>
+                <input id="discordRelationship" v-model="streamerProfile.discordRelationship" class="field-input" />
               </div>
 
               <div class="field">
@@ -389,13 +442,27 @@
                 </div>
               </fieldset>
 
-              <div class="field planned-game-field" aria-describedby="favourite-games-note">
-                <span class="field-label">Choose up to three favourite games</span>
-                <p id="favourite-games-note" class="field-help">
-                  Shared IGDB game search will be enabled when the protected backend game-catalog endpoint is delivered.
-                  No demonstration game records are stored or submitted from this form.
-                </p>
+              <div class="field planned-game-field">
+                <label class="field-label" for="favouriteGames">Choose up to three favourite games</label>
+                <input id="favouriteGames" v-model="streamerProfile.games" class="field-input" placeholder="Game one, Game two, Game three" />
               </div>
+
+              <div class="field field-inline">
+                <input id="hasRegularSchedule" v-model="schedule.hasRegularSchedule" type="checkbox" class="field-checkbox" />
+                <label class="field-label-inline" for="hasRegularSchedule">I have a regular public content schedule</label>
+              </div>
+              <div class="field field-inline">
+                <input id="scheduleVaries" v-model="schedule.scheduleVaries" type="checkbox" class="field-checkbox" />
+                <label class="field-label-inline" for="scheduleVaries">My schedule varies</label>
+              </div>
+              <template v-if="!schedule.scheduleVaries">
+                <div class="field"><label class="field-label" for="scheduleDay">Usual day</label><select id="scheduleDay" v-model="schedule.dayOfWeek" class="field-input"><option value="">Select day</option><option v-for="day in ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']" :key="day">{{ day }}</option></select></div>
+                <div class="field"><label class="field-label" for="scheduleStart">Start time</label><input id="scheduleStart" v-model="schedule.startLocalTime" type="time" class="field-input" /></div>
+                <div class="field"><label class="field-label" for="scheduleEnd">End time</label><input id="scheduleEnd" v-model="schedule.endLocalTime" type="time" class="field-input" /></div>
+              </template>
+              <div class="field"><label class="field-label" for="contentType">Content type</label><input id="contentType" v-model="schedule.contentType" class="field-input" /></div>
+              <div class="field"><label class="field-label" for="nextStream">Next planned public stream (optional)</label><input id="nextStream" v-model="schedule.nextPlannedPublicStream" type="datetime-local" class="field-input" /></div>
+              <div class="field"><label class="field-label" for="scheduleNotes">Schedule notes (optional)</label><textarea id="scheduleNotes" v-model="schedule.notes" class="field-textarea" rows="2"></textarea></div>
             </div>
           </template>
 
@@ -695,7 +762,20 @@
                 I agree to follow the Project Respawn code of conduct and understand this is a beta program.
               </label>
             </div>
+            <div class="field field-inline">
+              <input id="publicContentConsent" v-model="alignment.publicContentConsent" type="checkbox" class="field-checkbox" />
+              <label class="field-label-inline" for="publicContentConsent">I give Project Respawn permission to review the public profiles and content links supplied in this application.</label>
+            </div>
+            <div class="honeypot-field" aria-hidden="true">
+              <label for="website">Website</label><input id="website" v-model="website" type="text" tabindex="-1" autocomplete="off" />
+            </div>
           </div>
+
+          <p v-if="submission.state === 'submitting'" class="submission-message" role="status">Saving your application securely…</p>
+          <div v-else-if="submission.state === 'success'" class="submission-message is-success" role="status">
+            Application submitted. Your reference is <strong>{{ submission.reference }}</strong>. Please retain this reference.
+          </div>
+          <p v-else-if="submission.state === 'error'" class="submission-message is-error" role="alert">{{ submission.error }}</p>
 
           <div class="step-nav">
             <button
@@ -708,9 +788,9 @@
             <button
               type="submit"
               class="btn btn-primary"
-              :disabled="!alignment.termsAccepted"
+              :disabled="!alignment.termsAccepted || !alignment.publicContentConsent || submission.state === 'submitting' || submission.state === 'success'"
             >
-              Submit application
+              {{ submission.state === 'submitting' ? 'Submitting…' : 'Submit application' }}
             </button>
           </div>
         </section>
