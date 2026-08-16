@@ -1,0 +1,2 @@
+<template><button type="button" class="platform-status" @click="$emit('activate',platform)"><span class="platform-status__icon" :class="`platform-status__icon--${platform.key}`">{{ platform.icon }}</span><span><strong>{{ platform.name }}</strong><small>{{ connected?'Simulated connected':'Not connected' }}</small></span><span aria-hidden="true">›</span></button></template>
+<script setup>defineProps({platform:Object,connected:Boolean});defineEmits(['activate'])</script>

@@ -422,7 +422,7 @@ async function handleSignIn() {
 
   if (isSignedIn.value) {
     signInForm.value.password = "";
-    await router.push("/account");
+    await router.push("/home");
     return;
   }
 

@@ -4,9 +4,9 @@
     <div class="creator-content">
       <header class="creator-mobile-header">
         <strong>Creator Tools</strong>
-        <select aria-label="Creator Tools page" :value="$route.name" @change="navigate">
+        <select aria-label="Creator Tools page" :value="activeMobileRouteName" @change="navigate">
           <optgroup v-for="group in creatorNavigation" :key="group.label" :label="group.label">
-            <option v-for="key in group.items" :key="key" :value="registry[key].routeName">{{ registry[key].label }}</option>
+            <option v-for="key in mobileItems(group.items)" :key="key" :value="registry[key].routeName">{{ registry[key].label }}</option>
           </optgroup>
         </select>
       </header>
@@ -16,11 +16,15 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
+import { computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import CreatorSidebar from './CreatorSidebar.vue'
 import { creatorFeatureRegistry as registry, creatorNavigation } from '../config/creatorFeatureRegistry.js'
 
 const router = useRouter()
+const route = useRoute()
+const activeMobileRouteName = computed(() => registry[route.meta?.creatorFeature]?.routeName || route.name)
+function mobileItems(items) { return items.filter((key) => registry[key].showInMobileNavigation !== false) }
 function navigate(event) { router.push({ name: event.target.value }) }
 </script>
 
@@ -32,7 +36,8 @@ function navigate(event) { router.push({ name: event.target.value }) }
 .creator-brand small,.creator-brand strong { display:block; }.creator-brand small { color:#94a3b8; font-size:.7rem; text-transform:uppercase; letter-spacing:.08em; }
 .creator-nav-group { margin:0 0 20px; }.creator-nav-group h2 { margin:0 0 7px; color:#64748b; font-size:.68rem; letter-spacing:.13em; text-transform:uppercase; }
 .creator-nav-link { min-height:40px; padding:9px 10px; margin:2px 0; display:flex; gap:8px; justify-content:space-between; align-items:center; color:#cbd5e1; text-decoration:none; border-radius:10px; font-size:.9rem; }
-.creator-nav-link:hover { color:#fff; background:rgba(255,255,255,.06); }.creator-nav-link.router-link-exact-active { color:#fff; background:rgba(124,58,237,.28); }
+.creator-nav-link:hover { color:#fff; background:rgba(255,255,255,.06); }.creator-nav-link.router-link-exact-active,.creator-nav-link.is-active { color:#fff; background:rgba(124,58,237,.28); }
+.creator-nav-icon { display:inline-grid; place-items:center; width:20px; margin-right:6px; color:#c4b5fd; font-weight:800; }
 .creator-back-link { display:block; padding:10px; color:#94a3b8; text-decoration:none; font-size:.85rem; border-top:1px solid rgba(255,255,255,.08); }
 .creator-content { min-width:0; }.creator-mobile-header { display:none; }
 .creator-content > .bot-page,.creator-content > .tts-settings-container { grid-template-columns:minmax(0,1fr) !important; min-height:auto; background:transparent; }.creator-content > .bot-page > .bot-sidebar,.creator-content > .tts-settings-container > .bot-sidebar { display:none !important; }

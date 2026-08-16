@@ -116,6 +116,26 @@
   margin-bottom: 0.4rem;
 }
 
+.role-card .feature-status {
+  margin-bottom: 0.55rem;
+}
+
+.role-card--coming-soon {
+  padding: 0;
+  overflow: hidden;
+  border-color: transparent;
+  background: transparent;
+}
+
+.role-card--coming-soon :deep(.feature-teaser-shell),
+.role-card--coming-soon :deep(.feature-teaser) {
+  height: 100%;
+}
+
+.role-card--coming-soon :deep(.feature-teaser) {
+  text-align: left;
+}
+
 .role-card p {
   font-size: 0.9rem;
   color: #d6deff;
@@ -288,3 +308,61 @@
     width: 100%;
   }
 }
+
+.role-card--closed { border-style: dashed; }
+.pathway-status { display: inline-flex; margin-left: 6px; padding: 2px 7px; border-radius: 999px; background: rgba(251,191,36,.12); color: #fbbf24; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; vertical-align: middle; }
+
+.genre-fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.selection-counter {
+  margin-left: 0.5rem;
+  color: #b7c3ff;
+}
+
+.field-help {
+  margin: 0;
+  color: #b7c3d9;
+  line-height: 1.5;
+}
+
+.honeypot-field { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.submission-message { margin-top: 1rem; padding: 0.9rem 1rem; border-radius: 0.6rem; background: rgba(255,255,255,0.08); }
+.submission-message.is-success { border: 1px solid #4fcf8a; }
+.submission-message.is-error { border: 1px solid #f06b75; }
+.field-validation { display:flex; gap:.45rem; margin:.4rem 0 0; font-size:.88rem; line-height:1.35; }
+.field-validation.is-valid { color:#8ce7b0; }.field-validation.is-invalid { color:#ff9ca5; }.field-validation.is-optional-empty { color:#b7c3d9; }
+.field-input[aria-invalid="true"],.field-textarea[aria-invalid="true"],[data-field][aria-invalid="true"] { border-color:#f06b75; outline:1px solid #f06b75; }
+.validation-summary { margin-bottom:1.25rem; padding:1rem 1.2rem; border:2px solid #f06b75; border-radius:.8rem; background:rgba(240,107,117,.09); }.validation-summary:focus { outline:3px solid #fff; outline-offset:3px; }.validation-summary h2 { margin-top:0; }.validation-summary button { padding:.2rem 0; border:0; background:none; color:#fff; text-decoration:underline; cursor:pointer; text-align:left; }
+.application-review { margin-top:1.4rem; padding:1rem; border:1px solid rgba(169,145,255,.45); border-radius:.8rem; }.application-review h3 { margin-top:0; }.application-review ul { display:grid; gap:.55rem; padding:0; list-style:none; }.application-review button { width:100%; display:flex; justify-content:space-between; gap:1rem; padding:.75rem; border:1px solid rgba(255,255,255,.16); border-radius:.55rem; background:rgba(255,255,255,.05); color:inherit; text-align:left; cursor:pointer; }.application-review .needs-attention { color:#ff9ca5; }
+
+.planned-game-field,
+.coming-soon-panel {
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(148, 163, 184, 0.32);
+  border-radius: 0.9rem;
+  background: rgba(148, 163, 184, 0.08);
+}
+
+.coming-soon-panel h2 {
+  margin: 0.8rem 0 0.5rem;
+  font-size: 1.25rem;
+}
+
+.coming-soon-panel h2:focus {
+  outline: 2px solid #c497ff;
+  outline-offset: 0.3rem;
+}
+
+.coming-soon-panel .btn {
+  margin-top: 0.8rem;
+}
+
+.closed-recruitment-panel { margin-top: 20px; padding: 22px; border: 1px solid rgba(251,191,36,.2); border-radius: 14px; background: rgba(251,191,36,.05); }
+.closed-recruitment-panel h2 { margin: 0 0 9px; font-size: 21px; }.closed-recruitment-panel h2:focus { outline: 2px solid #fbbf24; outline-offset: 4px; }.closed-recruitment-panel > p:not(.applications-eyebrow) { max-width: 720px; color: #cbd5e1; line-height: 1.6; }.closed-recruitment-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }.closed-recruitment-actions .btn { width: auto; }
+
+@media (max-width: 600px) { .closed-recruitment-actions { flex-direction: column; }.closed-recruitment-actions .btn { width: 100%; } }

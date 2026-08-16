@@ -12,8 +12,7 @@
         </p>
 
         <div class="hero-actions">
-          <a class="btn btn-primary" href="#apply">Apply as a Streamer</a>
-          <button class="btn btn-outline" type="button" @click="scrollToHowItWorks">
+          <button class="btn btn-primary" type="button" @click="scrollToHowItWorks">
             See how it works
           </button>
         </div>
@@ -283,6 +282,7 @@
         <div class="track-panel">
           <article v-if="activeTrack === 'competitive'" class="partner-card">
             <h3>Competitive streamers</h3>
+            <p class="coming-soon-pill">Competitive team applications are currently closed</p>
             <p>
               For creators whose main focus is high-level gameplay, ranked grind, competition, and representing an org.
               You may not think of yourself as community-first, but your audience can still benefit from stronger participation systems,
@@ -295,7 +295,7 @@
               <li>Use Project Respawn tools where they fit your content and community.</li>
             </ul>
             <p class="track-summary">
-              If your content is driven by performance, improvement, and competition, this is likely the right path for you.
+              We are developing our internal scouting and team-building structure before reopening this route. Competitive-focused streamers and content creators may still apply through the Creator Programme.
             </p>
           </article>
 
@@ -320,8 +320,8 @@
 
         <div class="clarification-box">
           <p>
-            You do not need to be a typical “community streamer” to apply. Some partners will fit clearly into one path,
-            while others may overlap both. In the application, we’ll ask which route fits you best and why.
+            You do not need to be a typical “community streamer” to apply to the Creator Programme. Some creators blend
+            competitive content with community-focused work; dedicated competitive team recruitment remains closed for now.
           </p>
         </div>
       </div>
@@ -397,19 +397,19 @@
     </section>
 
     <!-- APPLY -->
-    <section id="apply" class="content-section application-section">
+    <section id="apply" class="content-section application-section" tabindex="-1" aria-labelledby="apply-heading">
       <div class="container narrow centered">
         <p class="section-label">Apply to join</p>
-        <h2>A separate all-in-one application page is coming next.</h2>
+        <h2 id="apply-heading">Apply to join Project Respawn</h2>
         <p>
-          Applications for streamer partners and esports org opportunities will move into a dedicated application flow.
-          You’ll be asked about your content, your community, which track fits you best, and why you think you’re a good fit for Project Respawn.
-        </p>
-        <p>
-          For now, this section is ready for your new application link once that page is built.
+          Applications are open to streamers and creators who want to build stronger communities and help shape the future
+          of Project Respawn. We welcome casual, community-focused, entertainment and competitive creators. Alignment and
+          community culture matter more than follower count.
         </p>
         <div class="hero-actions center-actions">
-          <a class="btn btn-primary" href="#" aria-disabled="true">Application link coming soon</a>
+          <RouterLink class="btn btn-primary" :to="creatorApplicationRoute">
+            Click here to apply as a streamer
+          </RouterLink>
         </div>
         <p class="support-note">
           Applications are reviewed for fit, alignment, and community potential. Because this is a curated beta,
@@ -459,7 +459,9 @@
           built around confidence and participation, this page is the start of that conversation.
         </p>
         <div class="hero-actions center-actions">
-          <a class="btn btn-outline" href="#apply">Go to application section</a>
+          <a class="btn btn-outline" href="#apply" @click.prevent="navigateToSection('apply')">
+            Go to application section
+          </a>
         </div>
       </div>
     </section>

@@ -3,10 +3,11 @@ import { handleCreateBrand, handleGetBrandPermissionDetails, handleRemoveBrandHe
 import { handleCreateForumReply, handleCreateForumThread, handleRecordForumActivity, handleRecordForumThreadView } from '../forums'
 import { handleGetMyAccessContext, handleListPermissionCatalog, handleReplaceGroupPermissions, handleSeedPermissionCatalog } from '../permissions'
 import { handleCreateManagedMerchProduct, handleDeleteManagedMerchProductImage, handleListPublicMerchProducts, handleReplaceManagedMerchProductBrands, handleReplaceManagedMerchProductCategories, handleUpdateManagedMerchProduct, handleUpsertManagedMerchProductImage, handleUpsertManagedMerchProductVariant } from '../merch'
-import { handleCreateManagedTwitchCommand, handleDeleteManagedTwitchCommand, handleListManagedTwitchCommands, handleUpdateManagedTwitchCommand } from '../twitch'
+import { handleCreateManagedTwitchCommand, handleDeleteManagedTwitchCommand, handleDisconnectTwitchIntegration, handleGetMyTwitchIntegration, handleListManagedTwitchCommands, handleStartTwitchIntegrationOAuth, handleUpdateManagedTwitchCommand } from '../twitch'
 import { handleCreateOrUpdateManagedDiscordConfiguration, handleGetManagedDiscordConfiguration } from '../discord'
 import { handleCreateManagedMediaCollection, handleCreateManagedMediaItem, handleDeleteManagedMediaItem, handleListManagedMediaLibrary, handleListPublicMerchProductImages, handleUpdateManagedMediaItem } from '../media'
 import { handleImportManagedRevolutOrder, handleListManagedOrders, handleListManagedProfiles, handleManageSimpleResource, handleRecoverManagedOrder } from '../stage9/handlers'
+import { handleCleanupApplicationStorageTestRun, handleCleanupPublicApplicationTestRun, handleGetAdminApplication, handleListAdminApplications, handleStoreTrustedApplicationSubmission, handleSubmitPublicApplication } from '../applications'
 
 export interface AppSyncEvent { arguments?: unknown; info?: { fieldName?: string }; fieldName?: string; identity?: unknown }
 
@@ -18,6 +19,13 @@ export function getResolverFieldName(event: AppSyncEvent) { return event.info?.f
 
 export async function routeAppSync(event: AppSyncEvent) {
   switch (getResolverFieldName(event)) {
+    case 'storeTrustedApplicationSubmission': return handleStoreTrustedApplicationSubmission(event)
+    case 'submitPublicApplication': return handleSubmitPublicApplication(event)
+    case 'listAdminApplications': return handleListAdminApplications(event)
+    case 'getAdminApplication': return handleGetAdminApplication(event)
+    // Direct Lambda integration-test hook; intentionally not declared in the AppSync schema.
+    case 'cleanupApplicationStorageTestRun': return handleCleanupApplicationStorageTestRun(event)
+    case 'cleanupPublicApplicationTestRun': return handleCleanupPublicApplicationTestRun(event)
     case 'recordForumThreadView': return handleRecordForumThreadView(event)
     case 'submitForumThread': return handleCreateForumThread(event)
     case 'submitForumReply': return handleCreateForumReply(event)
@@ -63,6 +71,9 @@ export async function routeAppSync(event: AppSyncEvent) {
     case 'updateManagedTwitchCommand': return handleUpdateManagedTwitchCommand(event)
     case 'deleteManagedTwitchCommand': return handleDeleteManagedTwitchCommand(event)
     case 'listManagedTwitchCommands': return handleListManagedTwitchCommands(event)
+    case 'startTwitchIntegrationOAuth': return handleStartTwitchIntegrationOAuth(event)
+    case 'getMyTwitchIntegration': return handleGetMyTwitchIntegration(event)
+    case 'disconnectTwitchIntegration': return handleDisconnectTwitchIntegration(event)
     case 'getManagedDiscordConfiguration': return handleGetManagedDiscordConfiguration(event)
     case 'createOrUpdateManagedDiscordConfiguration': return handleCreateOrUpdateManagedDiscordConfiguration(event)
     case 'cloneEvent': return handleCloneEvent(event)

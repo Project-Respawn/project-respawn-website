@@ -13,8 +13,13 @@ import Account from '../views/Account/Account.vue';
 import Roles from '../views/About/Roles/Roles.vue';
 import UserHomepage from '../views/UserHomepage/UserHomepage.vue';
 import Applications from '../views/Applications/Applications.vue';
+import Bookings from '../views/Bookings/Bookings.vue';
 
 export default [
+    { path: '/bookings', name: 'Bookings', component: Bookings },
+    { path: '/bookings/invite/:invitationToken', name: 'BookingsInvite', component: Bookings, props: true },
+    { path: '/bookings/:bookingTypeSlug', name: 'BookingsType', component: Bookings, props: true },
+    { path: '/induction/book/:invitationToken', redirect: (to) => ({ name: 'BookingsInvite', params: { invitationToken: to.params.invitationToken }, query: to.query, hash: to.hash }) },
 
     { path: '/', component: Home },
 
@@ -26,7 +31,9 @@ export default [
 
     { path: '/privacy-policy', component: PrivacyPolicy },
 
-    { path: '/team-tryouts', component: TeamTryouts },
+    { path: '/join-us', name: 'JoinUs', component: TeamTryouts },
+
+    { path: '/team-tryouts', redirect: (to) => ({ path: '/join-us', query: to.query, hash: to.hash }) },
 
     { path: '/merch', component: Merch },
 
@@ -39,10 +46,14 @@ export default [
     { path: '/account', component: Account },
 
     {
-        path: '/apply',
+        path: '/apply-now',
         name: 'Applications',
         component: Applications
     },
+
+    { path: '/applications', redirect: (to) => ({ path: '/apply-now', query: to.query, hash: to.hash }) },
+
+    { path: '/apply', redirect: (to) => ({ path: '/apply-now', query: to.query, hash: to.hash }) },
 
     {
         path: '/home',

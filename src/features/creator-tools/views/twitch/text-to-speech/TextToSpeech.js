@@ -1,7 +1,11 @@
 const STORAGE_KEY = 'tts-settings-v1';
 
 import { getCurrentUser, fetchAuthSession } from 'aws-amplify/auth';
+import { generateClient } from 'aws-amplify/data';
 import BotSidebar from '@/components/BotSidebar/BotSidebar.vue';
+import { refreshAccessContext } from '@/composables/useAccessContext.js';
+
+const twitchDataClient = generateClient();
 
 export default {
   name: 'TextToSpeech',
@@ -14,6 +18,9 @@ export default {
       broadcasterId: '',
       broadcasterName: '',
       lookupUserIds: [],
+      selectedBrandId: '',
+      integrationId: '',
+      secureFoundationEnabled: import.meta.env.VITE_TWITCH_SECURE_INTEGRATION === 'true',
       rewardTitle: 'Text To Speech',
       maxLength: 200,
 
@@ -168,39 +175,6 @@ export default {
       return data?.connection || null;
     },
 
-    async fetchConnectedBroadcaster() {
-      const response = await fetch(
-        `http://localhost:3000/api/twitch/connections?t=${Date.now()}`,
-        {
-          cache: 'no-store'
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error('Connections request failed');
-      }
-
-      const data = await response.json();
-      const connections = Array.isArray(data?.connections) ? data.connections : [];
-
-      return connections.find((item) => item?.isConnected && item?.broadcasterUserId) || null;
-    },
-
-    async fetchBotStatus() {
-      const response = await fetch(
-        `http://localhost:3000/api/twitch/status?t=${Date.now()}`,
-        {
-          cache: 'no-store'
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error('Status request failed');
-      }
-
-      return response.json();
-    },
-
     async resolveBroadcasterContext() {
       if (this.broadcasterId) {
         console.log('[TTS Settings] using broadcasterId from route:', this.broadcasterId);
@@ -210,6 +184,21 @@ export default {
       await this.loadCurrentUserIdentifiers();
 
       try {
+        if (this.secureFoundationEnabled) {
+          const access = await refreshAccessContext();
+          this.selectedBrandId = access.brands?.[0]?.brandId || '';
+          if (!this.selectedBrandId) throw new Error('No accessible Brand selected');
+          const response = await twitchDataClient.queries.getMyTwitchIntegration({ brandId: this.selectedBrandId });
+          if (response?.errors?.length) throw new Error(response.errors[0].message || 'Integration lookup failed');
+          const integration = response?.data?.integration || null;
+          if (integration?.twitchBroadcasterId) {
+            this.integrationId = integration.id;
+            this.broadcasterId = String(integration.twitchBroadcasterId);
+            this.broadcasterName = integration.twitchDisplayName || integration.twitchLogin || '';
+            return this.broadcasterId;
+          }
+          throw new Error('No Twitch integration exists for the selected Brand');
+        }
         for (const userId of this.lookupUserIds) {
           const connection = await this.fetchConnectionForUser(userId);
 
@@ -222,35 +211,6 @@ export default {
 
           console.log('[TTS Settings] broadcaster resolved by user connection:', {
             userId,
-            broadcasterId: this.broadcasterId,
-            broadcasterName: this.broadcasterName
-          });
-
-          return this.broadcasterId;
-        }
-
-        const connectedBroadcaster = await this.fetchConnectedBroadcaster();
-
-        if (connectedBroadcaster?.broadcasterUserId) {
-          this.broadcasterId = String(connectedBroadcaster.broadcasterUserId);
-          this.broadcasterName = connectedBroadcaster.twitchDisplayName || connectedBroadcaster.twitchLogin || '';
-
-          console.log('[TTS Settings] broadcaster resolved by connections fallback:', {
-            broadcasterId: this.broadcasterId,
-            broadcasterName: this.broadcasterName
-          });
-
-          return this.broadcasterId;
-        }
-
-        const botStatus = await this.fetchBotStatus();
-        const fallbackBroadcasterId = botStatus?.broadcasterId || botStatus?.broadcasterUserId || '';
-
-        if (fallbackBroadcasterId) {
-          this.broadcasterId = String(fallbackBroadcasterId);
-          this.broadcasterName = botStatus?.displayName || botStatus?.username || '';
-
-          console.log('[TTS Settings] broadcaster resolved by status fallback:', {
             broadcasterId: this.broadcasterId,
             broadcasterName: this.broadcasterName
           });

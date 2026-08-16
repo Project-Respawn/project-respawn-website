@@ -1,6 +1,9 @@
 import { defineBackend } from '@aws-amplify/backend';
-import { Stack } from 'aws-cdk-lib';
+import { Aspects, CfnResource, IAspect, RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { IConstruct } from 'constructs';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { Key } from 'aws-cdk-lib/aws-kms';
+import { Function as LambdaFunction } from 'aws-cdk-lib/aws-lambda';
 import {
   CorsHttpMethod,
   HttpApi,
@@ -13,6 +16,7 @@ import { data } from './data/resource';
 import { storage } from './storage/resource';
 import { myFunction } from './myFunction/resource';
 import { adminUserManagement } from './functions/admin-user-management/resource';
+import { postConfirmation } from './auth/post-confirmation/resource';
 
 // =============================================================================
 // Core backend resources
@@ -24,6 +28,7 @@ const backend = defineBackend({
   storage,
   myFunction,
   adminUserManagement,
+  postConfirmation,
 });
 
 // Explicitly pin Identity Pool role attachments so branch environments
@@ -66,6 +71,42 @@ backend.adminUserManagement.resources.lambda.addToRolePolicy(
 // =============================================================================
 
 const apiStack = backend.createStack('api-stack');
+
+// Additive Phase 1A resource. Token payloads are encrypted by this key before
+// being stored in the backend-only TwitchTokenVault model.
+const resolveTwitchKmsEnvironment = () => {
+  if (process.env.AWS_BRANCH === 'master') return 'production';
+  if (process.env.AWS_BRANCH) {
+    const branch = process.env.AWS_BRANCH.replace(/[^A-Za-z0-9_-]/g, '-');
+    if (!branch) throw new Error('Unable to derive a safe Twitch KMS environment name from AWS_BRANCH.');
+    return branch === 'staging' ? 'staging' : branch;
+  }
+
+  // Amplify embeds the explicit `ampx sandbox --identifier` value in the
+  // deterministic root stack name. Fail closed instead of falling back to the
+  // operating-system username or another sandbox's generated state.
+  const sandboxMatch = backend.stack.stackName.match(/-([A-Za-z0-9-]{1,15})-sandbox-[a-f0-9]{10}$/);
+  if (!sandboxMatch) throw new Error(`Unable to resolve the explicit sandbox identifier from ${backend.stack.stackName}.`);
+  return sandboxMatch[1];
+};
+
+const twitchKmsEnvironment = resolveTwitchKmsEnvironment();
+const twitchTokenKey = new Key(Stack.of(backend.myFunction.resources.lambda), 'TwitchTokenEncryptionKey', {
+  alias: `project-respawn-twitch-token-vault-${twitchKmsEnvironment}`,
+  enableKeyRotation: true,
+  removalPolicy: RemovalPolicy.RETAIN,
+});
+const twitchTokenCfnKey = twitchTokenKey.node.defaultChild as CfnResource;
+// Amplify sandbox stacks install a destroy-policy aspect. This later, narrowly
+// scoped aspect restores retention only for the token-vault encryption key.
+class RetainTwitchTokenKeyAspect implements IAspect {
+  visit(node: IConstruct): void {
+    if (node === twitchTokenCfnKey) twitchTokenCfnKey.applyRemovalPolicy(RemovalPolicy.RETAIN);
+  }
+}
+Aspects.of(Stack.of(twitchTokenKey)).add(new RetainTwitchTokenKeyAspect());
+twitchTokenKey.grantEncryptDecrypt(backend.myFunction.resources.lambda);
+(backend.myFunction.resources.lambda as LambdaFunction).addEnvironment('TWITCH_TOKEN_KMS_KEY_ID', twitchTokenKey.keyArn);
 
 // Main shared Lambda integration
 const httpLambdaIntegration = new HttpLambdaIntegration(
@@ -115,6 +156,18 @@ httpApi.addRoutes({
 httpApi.addRoutes({
   path: '/printful/orders/{proxy+}',
   methods: [HttpMethod.GET],
+  integration: httpLambdaIntegration,
+});
+
+httpApi.addRoutes({
+  path: '/twitch/oauth/callback',
+  methods: [HttpMethod.GET],
+  integration: httpLambdaIntegration,
+});
+
+httpApi.addRoutes({
+  path: '/twitch/runtime/{proxy+}',
+  methods: [HttpMethod.GET, HttpMethod.POST],
   integration: httpLambdaIntegration,
 });
 

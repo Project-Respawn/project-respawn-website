@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { loadEnv } from 'vite';
 
 const STAGE_PLACEHOLDER_PATTERN = /<\s*stage\s*>|%3Cstage%3E/i;
 const ENV_FILES = [
@@ -41,9 +42,13 @@ function formatSourceDetails(fileValues) {
   return `Detected VITE_API_BASE_URL values in local files:\n${lines.join('\n')}`;
 }
 
-const baseUrl = String(process.env.VITE_API_BASE_URL || '').trim();
-const revolutMode = String(process.env.VITE_REVOLUT_MODE || '').trim().toLowerCase();
-const revolutPublicKey = String(process.env.VITE_REVOLUT_PUBLIC_KEY || '').trim();
+// Match `vite build`: load the normal production-mode env files for local
+// builds, while preserving hosted Amplify/process environment precedence.
+const viteEnv = loadEnv('production', process.cwd(), 'VITE_');
+const frontendEnv = { ...viteEnv, ...process.env };
+const baseUrl = String(frontendEnv.VITE_API_BASE_URL || '').trim();
+const revolutMode = String(frontendEnv.VITE_REVOLUT_MODE || '').trim().toLowerCase();
+const revolutPublicKey = String(frontendEnv.VITE_REVOLUT_PUBLIC_KEY || '').trim();
 const envFileValues = getEnvFileValues();
 const outputsPath = path.resolve(process.cwd(), 'amplify_outputs.json');
 let generatedApiBaseUrl = '';

@@ -29,6 +29,8 @@ export default {
       streamerId: null,
       connection: null,
       hasBroadcasterContext: false,
+      integrationId: null,
+      secureFoundationEnabled: import.meta.env.VITE_TWITCH_SECURE_INTEGRATION === 'true',
       commands: [],
       accessContext: { groups: [], brands: [] },
       selectedBrandId: '',
@@ -237,6 +239,19 @@ export default {
       this.streamerId = null;
 
       try {
+        if (this.secureFoundationEnabled) {
+          if (!this.selectedBrandId) throw new Error('No accessible Brand selected');
+          const result = await client.queries.getMyTwitchIntegration({ brandId: this.selectedBrandId });
+          if (result?.errors?.length) throw new Error(result.errors[0].message || 'Integration lookup failed');
+          const integration = result?.data?.integration || null;
+          if (!integration?.twitchBroadcasterId) throw new Error('No connected Twitch integration exists for the selected Brand');
+          this.integrationId = integration.id;
+          this.connection = integration;
+          this.streamerId = String(integration.twitchBroadcasterId);
+          this.hasBroadcasterContext = integration.connectionStatus === 'CONNECTED';
+          await this.loadCommands();
+          return;
+        }
         const user = await getCurrentUser();
         const amplifyUserId = user?.userId || '';
         const amplifyUsername = user?.username || '';

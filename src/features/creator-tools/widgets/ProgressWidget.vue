@@ -1,0 +1,2 @@
+<template><div class="demo-widget progress-widget" :style="widgetStyle(s)"><div><b>{{ s.title }}</b><span>{{ s.current }} / {{ s.target }} {{ s.unit }}</span></div><div class="progress-track"><i :style="{width:`${percent}%`,background:s.barColor}"></i></div></div></template>
+<script setup>import { computed } from 'vue'; import { widgetStyle } from './widgetHelpers.js'; const props=defineProps({widget:{type:Object,required:true}}); const s=props.widget.settings; const percent=computed(()=>Math.min(100,Math.max(0,s.current/s.target*100)))</script>
