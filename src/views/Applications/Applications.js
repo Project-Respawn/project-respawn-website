@@ -2,8 +2,10 @@ import { computed, nextTick, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import FeatureTeaser from '../../components/FeatureTeaser/FeatureTeaser.vue';
 import TimezoneSelector from '../../components/TimezoneSelector/TimezoneSelector.vue';
+import FieldValidation from './FieldValidation.vue';
 import { APPLICATION_PATHWAY_AVAILABILITY, APPLICATION_PATHWAY_LABELS, PATHWAY_AVAILABILITY, canEnterApplicationPathway, getPathwayAvailability } from '../../config/applicationPathwayAvailability.js';
 import { createRequestToken, mapCreatorApplication, submitCreatorApplication } from './applicationSubmission.js';
+import { FIELD_MAP, mapBackendIssues, mapBackendValidation, sectionReview, validateCreatorApplication } from './applicationValidation.js';
 
 const KNOWN_TYPES = new Set(Object.keys(APPLICATION_PATHWAY_AVAILABILITY));
 const GENRES = ['Action', 'Adventure', 'Battle royale', 'Cosy', 'Fighting', 'Horror', 'MMO', 'Party games', 'Platformer', 'Puzzle', 'Racing', 'RPG', 'Shooter', 'Simulation', 'Sports', 'Strategy', 'Survival'];
@@ -18,7 +20,7 @@ const createCompetitiveProfile = () => ({ game: 'lol', platform: '', region: '',
 
 export default {
   name: 'Applications',
-  components: { FeatureTeaser, TimezoneSelector },
+  components: { FeatureTeaser, TimezoneSelector, FieldValidation },
   setup() {
     const route = useRoute();
     const requestedType = Array.isArray(route.query.type) ? route.query.type[0] : route.query.type;
@@ -34,6 +36,7 @@ export default {
     const submission = ref({ state: 'idle', error: '', reference: '', submittedAt: '' });
     const requestToken = ref(createRequestToken());
     const website = ref('');
+    const touched = ref({}); const validationIssues = ref([]); const serverIssues = ref([]); const summaryVisible = ref(false);
 
     const selectedAvailability = computed(() => getPathwayAvailability(applicationType.value));
     const isComingSoon = computed(() => selectedAvailability.value === PATHWAY_AVAILABILITY.COMING_SOON);
@@ -74,27 +77,36 @@ export default {
       document.querySelector('.step-title')?.focus();
     };
     const toggleGenre = (genre) => {
+      touched.value.genres = true;
       const selected = streamerProfile.value.genres;
       const index = selected.indexOf(genre);
       if (index >= 0) selected.splice(index, 1);
       else if (selected.length < 5) selected.push(genre);
+      refreshValidation();
     };
     const resetCompetitiveSelections = () => {
       Object.assign(competitiveProfile.value, { currentRank: '', peakRank: '', primaryPosition: '', secondaryPosition: '' });
     };
-    const setStreamerRole = (roleKey) => { streamerRole.value = roleKey; };
+    const setStreamerRole = (roleKey) => { streamerRole.value = roleKey; touched.value.streamerRole = true; refreshValidation(); };
     const setStreamerMentalHealth = (value) => { streamerProfile.value.mentalHealth = value; };
-    const canProceedFromStep = (step) => {
-      if (step === 1) return canEnterApplicationPathway(applicationType.value);
-      if (step === 2) return !!profile.value.name && !!profile.value.creatorName && !!profile.value.email && !!profile.value.confirmEmail && !!profile.value.discord && !!profile.value.timezone;
-      if (step === 3 && isStreamer.value) return !!streamerRole.value && !!streamerProfile.value.channelLink && !!streamerProfile.value.whyApply && !!streamerProfile.value.confidenceFit;
-      return true;
-    };
-    const goToNextStep = () => { if (canProceedFromStep(currentStep.value) && currentStep.value < 4) currentStep.value += 1; };
+    const formState = () => ({ applicationType: applicationType.value, profile: profile.value, streamerProfile: streamerProfile.value, streamerRole: streamerRole.value, schedule: schedule.value, alignment: alignment.value });
+    const refreshValidation = (step) => { validationIssues.value = validateCreatorApplication(formState(), step ? { step } : {}); return validationIssues.value; };
+    const markIssuesTouched = (issues) => issues.forEach((item) => { if (item.field) touched.value[item.field] = true; });
+    const focusIssue = async (item) => { if (!item) return; currentStep.value = FIELD_MAP[item.field]?.step || currentStep.value; await nextTick(); const selector = FIELD_MAP[item.field]?.selector || `#${item.field}`; const target = document.querySelector(selector); target?.scrollIntoView?.({ behavior: 'smooth', block: 'center' }); target?.focus?.(); };
+    const goToIssue = (item) => focusIssue(item);
+    const handleFieldBlur = (event) => { const id = event.target?.id; if (id && FIELD_MAP[id]) { touched.value[id] = true; refreshValidation(); } };
+    const fieldIssue = (field) => [...serverIssues.value, ...validationIssues.value].find((item) => item.field === field);
+    const fieldStatus = (field, optional = false) => { if (!touched.value[field]) return 'untouched'; const issue = fieldIssue(field); if (issue) return 'invalid'; const elementValue = ({ name:profile.value.name,creatorName:profile.value.creatorName,discord:profile.value.discord,email:profile.value.email,confirmEmail:profile.value.confirmEmail,timezone:profile.value.timezone,channelLink:streamerProfile.value.channelLink,creatorHandle:streamerProfile.value.handle,fitReason:alignment.value.fitReason })[field]; return optional && !String(elementValue ?? '').trim() ? 'optional-empty' : 'valid'; };
+    const feedback = (field, validText = 'Looks good', optional = false) => { const status = fieldStatus(field, optional); return { status, source: serverIssues.value.some((item) => item.field === field) ? 'server-rejected' : status, text: status === 'invalid' ? fieldIssue(field)?.message : status === 'valid' ? validText : status === 'optional-empty' ? 'Optional information not provided' : '' }; };
+    const stepReviews = computed(() => sectionReview(formState()));
+    const stepState = (step) => { const review=stepReviews.value.find(x=>x.step===step); if(review?.issues.length)return 'Needs attention'; if(currentStep.value===step&&!Object.keys(touched.value).some(k=>FIELD_MAP[k]?.step===step))return 'Not started'; if(review?.status.startsWith('Complete'))return 'Complete'; return 'In progress'; };
+    const goToNextStep = async () => { const issues = refreshValidation(currentStep.value); if (issues.length) { markIssuesTouched(issues); await focusIssue(issues[0]); return; } if (currentStep.value < 4) currentStep.value += 1; };
     const goToPreviousStep = () => { if (currentStep.value > 1) currentStep.value -= 1; };
     const submitApplication = async () => {
       if (!canEnterApplicationPathway(applicationType.value)) return;
       if (submission.value.state === 'submitting') return;
+      const clientIssues = refreshValidation();
+      if (clientIssues.length) { markIssuesTouched(clientIssues); summaryVisible.value = true; submission.value = { state: 'validation', error: '', reference: '', submittedAt: '' }; await nextTick(); document.querySelector('#application-error-summary')?.focus(); await focusIssue(clientIssues[0]); return; }
       submission.value = { state: 'submitting', error: '', reference: '', submittedAt: '' };
       try {
         const payload = mapCreatorApplication({ applicationType: applicationType.value, profile: profile.value, streamerProfile: streamerProfile.value, streamerRole: streamerRole.value, schedule: schedule.value, alignment: alignment.value });
@@ -102,18 +114,19 @@ export default {
         submission.value = { state: 'success', error: '', reference: result.reference, submittedAt: result.submittedAt };
       } catch (error) {
         const message = error instanceof Error ? error.message : '';
-        const friendly = /EMAIL_CONFIRMATION_MISMATCH|do not match/i.test(message) ? 'The contact email addresses do not match.' : /RATE_LIMITED/i.test(message) ? 'Too many application attempts were made. Please wait and try again.' : /CONTACT_EMAIL|email/i.test(message) ? 'Enter a valid contact email address in both email fields.' : /PATHWAY/i.test(message) ? 'This application pathway is not open.' : /network|fetch/i.test(message) ? 'The application could not reach the server. Your answers are still here; please try again.' : 'The application could not be submitted. Your answers are still here; please review them and try again.';
+        if (error?.code === 'APPLICATION_VALIDATION_FAILED' || /APPLICATION_VALIDATION|EMAIL_CONFIRMATION|PATHWAY_CLOSED/i.test(message)) { serverIssues.value = error?.issues ? mapBackendIssues(error.issues) : mapBackendValidation(message); markIssuesTouched(serverIssues.value); summaryVisible.value = true; submission.value = { state: 'validation', error: '', reference: '', submittedAt: '' }; await nextTick(); document.querySelector('#application-error-summary')?.focus(); await focusIssue(serverIssues.value[0]); return; }
+        const supportReference = `APP-${Date.now().toString(36).toUpperCase()}`; const friendly = /RATE_LIMITED/i.test(message) ? 'Too many application attempts have been made. Please wait before trying again. Your answers are still available on this page.' : `We could not save your application because of a temporary system problem. Your answers are still here. Please try again shortly. Support reference: ${supportReference}.`;
         submission.value = { state: 'error', error: friendly, reference: '', submittedAt: '' };
       }
     };
 
     return {
-      currentStep, applicationType, profile, streamerProfile, streamerRole, competitiveProfile, alignment, schedule, submission, website,
+      currentStep, applicationType, profile, streamerProfile, streamerRole, competitiveProfile, alignment, schedule, submission, website, validationIssues, serverIssues, summaryVisible, stepReviews,
       genres: GENRES, competitiveGames: COMPETITIVE_GAMES, rankOptions, positionOptions,
       isComingSoon, isClosed, isActivePathway, selectedPathwayLabel, isCreator, isStreamer, isCompetitive, isCompetitiveSupport, comingSoonCopy,
       pathwayAvailability: APPLICATION_PATHWAY_AVAILABILITY, availabilityStates: PATHWAY_AVAILABILITY,
       setApplicationType, returnToChoices, startCreatorApplication, toggleGenre, resetCompetitiveSelections,
-      setStreamerRole, setStreamerMentalHealth, goToNextStep, goToPreviousStep, submitApplication,
+      setStreamerRole, setStreamerMentalHealth, goToNextStep, goToPreviousStep, submitApplication, handleFieldBlur, feedback, fieldIssue, fieldStatus, stepState, goToIssue,
     };
   },
 };

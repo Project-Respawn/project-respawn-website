@@ -13,20 +13,25 @@
         </div>
 
         <div class="applications-step-indicator">
-          <span class="step-label">Step {{ currentStep }} of 4</span>
+          <span class="step-label">Step {{ currentStep }} of 4 · {{ stepState(currentStep) }}</span>
           <div class="step-bar">
             <span
               v-for="step in 4"
               :key="step"
               class="step-bar-segment"
               :class="{ 'is-active': step <= currentStep }"
+              :title="`Step ${step}: ${stepState(step)}`"
             ></span>
           </div>
         </div>
       </header>
 
       <!-- FORM BODY -->
-      <form class="applications-form" @submit.prevent="submitApplication">
+      <form class="applications-form" novalidate @submit.prevent="submitApplication" @focusout="handleFieldBlur">
+        <section v-if="summaryVisible && [...validationIssues, ...serverIssues].length" id="application-error-summary" class="validation-summary" tabindex="-1" role="alert" aria-labelledby="validation-summary-title">
+          <h2 id="validation-summary-title">Some information needs attention</h2><p>We have kept all your answers. Select an item below to go directly to the field that needs to be corrected.</p>
+          <ul><li v-for="(issue,index) in [...serverIssues,...validationIssues]" :key="`${issue.field}-${index}`"><button type="button" @click="goToIssue(issue)">{{ issue.message }}</button></li></ul>
+        </section>
         <!-- STEP 1: APPLICATION TYPE -->
         <section
           v-if="currentStep === 1"
@@ -161,8 +166,10 @@
                 v-model="profile.name"
                 type="text"
                 class="field-input"
+                :aria-invalid="fieldStatus('name') === 'invalid'" aria-describedby="name-feedback"
                 required
               />
+              <FieldValidation id="name-feedback" :feedback="feedback('name')" />
             </div>
 
             <div class="field">
@@ -178,7 +185,7 @@
 
             <div class="field">
               <label class="field-label" for="creatorName">Creator / channel name</label>
-              <input id="creatorName" v-model="profile.creatorName" type="text" class="field-input" required />
+              <input id="creatorName" v-model="profile.creatorName" type="text" class="field-input" required :aria-invalid="fieldStatus('creatorName') === 'invalid'" aria-describedby="creatorName-feedback" /><FieldValidation id="creatorName-feedback" :feedback="feedback('creatorName')" />
             </div>
 
             <div class="field">
@@ -188,8 +195,10 @@
                 v-model="profile.discord"
                 type="text"
                 class="field-input"
+                :aria-invalid="fieldStatus('discord') === 'invalid'" aria-describedby="discord-feedback"
                 required
               />
+              <FieldValidation id="discord-feedback" :feedback="feedback('discord')" />
             </div>
 
             <div class="field">
@@ -199,14 +208,17 @@
                 v-model="profile.email"
                 type="email"
                 class="field-input"
+                :aria-invalid="fieldStatus('email') === 'invalid'" aria-describedby="email-feedback"
                 required
               />
+              <FieldValidation id="email-feedback" :feedback="feedback('email', 'Valid email address')" />
             </div>
 
             <div class="field">
               <label class="field-label" for="confirmEmail">Confirm contact email</label>
-              <input id="confirmEmail" v-model="profile.confirmEmail" type="email" class="field-input" required />
-              <p class="field-help">Please check your email address carefully. We will use it to send the outcome of your application and, if successful, your induction invitation.</p>
+              <input id="confirmEmail" v-model="profile.confirmEmail" type="email" class="field-input" required :aria-invalid="fieldStatus('confirmEmail') === 'invalid'" aria-describedby="confirmEmail-feedback confirmEmail-help" />
+              <FieldValidation id="confirmEmail-feedback" :feedback="feedback('confirmEmail', 'Email addresses match')" />
+              <p id="confirmEmail-help" class="field-help">Please check your email address carefully. We will use it to send the outcome of your application and, if successful, your induction invitation.</p>
             </div>
 
             <div class="field">
@@ -268,18 +280,18 @@
             <div class="fields-grid">
               <div class="field">
                 <label class="field-label" for="creatorPlatform">Primary platform</label>
-                <select id="creatorPlatform" v-model="streamerProfile.platform" class="field-input" required>
+                <select id="creatorPlatform" v-model="streamerProfile.platform" class="field-input" required :aria-invalid="fieldStatus('creatorPlatform') === 'invalid'" aria-describedby="creatorPlatform-feedback">
                   <option value="Twitch">Twitch</option><option value="YouTube">YouTube</option>
                   <option value="TikTok">TikTok</option><option value="Kick">Kick</option><option value="Other">Other</option>
-                </select>
+                </select><FieldValidation id="creatorPlatform-feedback" :feedback="feedback('creatorPlatform')" />
               </div>
               <div v-if="streamerProfile.platform === 'Other'" class="field">
                 <label class="field-label" for="customPlatformLabel">Platform name</label>
-                <input id="customPlatformLabel" v-model="streamerProfile.customPlatformLabel" class="field-input" required />
+                <input id="customPlatformLabel" v-model="streamerProfile.customPlatformLabel" class="field-input" required :aria-invalid="fieldStatus('customPlatformLabel') === 'invalid'" aria-describedby="customPlatformLabel-feedback" /><FieldValidation id="customPlatformLabel-feedback" :feedback="feedback('customPlatformLabel')" />
               </div>
               <div class="field">
                 <label class="field-label" for="creatorHandle">Public handle</label>
-                <input id="creatorHandle" v-model="streamerProfile.handle" class="field-input" required />
+                <input id="creatorHandle" v-model="streamerProfile.handle" class="field-input" required :aria-invalid="fieldStatus('creatorHandle') === 'invalid'" aria-describedby="creatorHandle-feedback" /><FieldValidation id="creatorHandle-feedback" :feedback="feedback('creatorHandle')" />
               </div>
               <div class="field">
                 <label class="field-label" for="channelLink">
@@ -292,17 +304,19 @@
                   class="field-input"
                   placeholder="https://twitch.tv/yourname"
                   required
+                  :aria-invalid="fieldStatus('channelLink') === 'invalid'" aria-describedby="channelLink-feedback"
                 />
+                <FieldValidation id="channelLink-feedback" :feedback="feedback('channelLink', 'Profile link accepted')" />
               </div>
 
               <div class="field">
                 <label class="field-label" for="otherProfiles">Other public profile links (one per line)</label>
-                <textarea id="otherProfiles" v-model="streamerProfile.otherProfiles" class="field-textarea" rows="3"></textarea>
+                <textarea id="otherProfiles" v-model="streamerProfile.otherProfiles" class="field-textarea" rows="3" :aria-invalid="fieldStatus('otherProfiles') === 'invalid'" aria-describedby="otherProfiles-feedback"></textarea><FieldValidation id="otherProfiles-feedback" :feedback="feedback('otherProfiles', 'Profile links accepted', true)" />
               </div>
 
               <div class="field">
                 <label class="field-label" for="discordInvite">Public Discord invite (optional)</label>
-                <input id="discordInvite" v-model="streamerProfile.discordInvite" type="url" class="field-input" />
+                <input id="discordInvite" v-model="streamerProfile.discordInvite" type="url" class="field-input" :aria-invalid="fieldStatus('discordInvite') === 'invalid'" aria-describedby="discordInvite-feedback" /><FieldValidation id="discordInvite-feedback" :feedback="feedback('discordInvite', 'Discord link accepted', true)" />
               </div>
               <div class="field">
                 <label class="field-label" for="discordRelationship">Your relationship to that Discord community (optional)</label>
@@ -359,7 +373,7 @@
                 </div>
               </div>
 
-              <div class="field">
+              <div class="field" data-field="streamerRole" tabindex="-1" :aria-invalid="fieldStatus('streamerRole') === 'invalid'" aria-describedby="streamerRole-feedback">
                 <label class="field-label">What role do you want to fill?</label>
                 <div class="chip-row">
                   <button
@@ -395,6 +409,7 @@
                     Hybrid / not sure yet
                   </button>
                 </div>
+                <FieldValidation id="streamerRole-feedback" :feedback="feedback('streamerRole')" />
               </div>
 
               <div class="field">
@@ -406,7 +421,9 @@
                   v-model="streamerProfile.whyApply"
                   class="field-textarea"
                   rows="3"
+                  :aria-invalid="fieldStatus('whyApplyStreamer') === 'invalid'" aria-describedby="whyApplyStreamer-feedback"
                 ></textarea>
+                <FieldValidation id="whyApplyStreamer-feedback" :feedback="feedback('whyApplyStreamer')" />
               </div>
 
               <div class="field">
@@ -418,10 +435,12 @@
                   v-model="streamerProfile.confidenceFit"
                   class="field-textarea"
                   rows="3"
+                  :aria-invalid="fieldStatus('confidenceFit') === 'invalid'" aria-describedby="confidenceFit-feedback"
                 ></textarea>
+                <FieldValidation id="confidenceFit-feedback" :feedback="feedback('confidenceFit')" />
               </div>
 
-              <fieldset class="field genre-fieldset">
+              <fieldset class="field genre-fieldset" data-field="genres" tabindex="-1" :aria-invalid="fieldStatus('genres') === 'invalid'" aria-describedby="genres-feedback">
                 <legend class="field-label">
                   Choose up to five genres
                   <span class="selection-counter">{{ streamerProfile.genres.length }} / 5</span>
@@ -440,11 +459,12 @@
                     {{ genre }}
                   </button>
                 </div>
+                <FieldValidation id="genres-feedback" :feedback="feedback('genres')" />
               </fieldset>
 
               <div class="field planned-game-field">
                 <label class="field-label" for="favouriteGames">Choose up to three favourite games</label>
-                <input id="favouriteGames" v-model="streamerProfile.games" class="field-input" placeholder="Game one, Game two, Game three" />
+                <input id="favouriteGames" v-model="streamerProfile.games" class="field-input" placeholder="Game one, Game two, Game three" :aria-invalid="fieldStatus('favouriteGames') === 'invalid'" aria-describedby="favouriteGames-feedback" /><FieldValidation id="favouriteGames-feedback" :feedback="feedback('favouriteGames', 'Games accepted', true)" />
               </div>
 
               <div class="field field-inline">
@@ -456,9 +476,9 @@
                 <label class="field-label-inline" for="scheduleVaries">My schedule varies</label>
               </div>
               <template v-if="!schedule.scheduleVaries">
-                <div class="field"><label class="field-label" for="scheduleDay">Usual day</label><select id="scheduleDay" v-model="schedule.dayOfWeek" class="field-input"><option value="">Select day</option><option v-for="day in ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']" :key="day">{{ day }}</option></select></div>
-                <div class="field"><label class="field-label" for="scheduleStart">Start time</label><input id="scheduleStart" v-model="schedule.startLocalTime" type="time" class="field-input" /></div>
-                <div class="field"><label class="field-label" for="scheduleEnd">End time</label><input id="scheduleEnd" v-model="schedule.endLocalTime" type="time" class="field-input" /></div>
+                <div class="field"><label class="field-label" for="scheduleDay">Usual day</label><select id="scheduleDay" v-model="schedule.dayOfWeek" class="field-input" :aria-invalid="fieldStatus('scheduleDay') === 'invalid'" aria-describedby="scheduleDay-feedback"><option value="">Select day</option><option v-for="day in ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']" :key="day">{{ day }}</option></select><FieldValidation id="scheduleDay-feedback" :feedback="feedback('scheduleDay', 'Schedule day accepted')" /></div>
+                <div class="field"><label class="field-label" for="scheduleStart">Start time</label><input id="scheduleStart" v-model="schedule.startLocalTime" type="time" class="field-input" :aria-invalid="fieldStatus('scheduleStart') === 'invalid'" aria-describedby="scheduleStart-feedback" /><FieldValidation id="scheduleStart-feedback" :feedback="feedback('scheduleStart', 'Schedule time accepted')" /></div>
+                <div class="field"><label class="field-label" for="scheduleEnd">End time</label><input id="scheduleEnd" v-model="schedule.endLocalTime" type="time" class="field-input" :aria-invalid="fieldStatus('scheduleEnd') === 'invalid'" aria-describedby="scheduleEnd-feedback" /><FieldValidation id="scheduleEnd-feedback" :feedback="feedback('scheduleEnd', 'Schedule time accepted')" /></div>
               </template>
               <div class="field"><label class="field-label" for="contentType">Content type</label><input id="contentType" v-model="schedule.contentType" class="field-input" /></div>
               <div class="field"><label class="field-label" for="nextStream">Next planned public stream (optional)</label><input id="nextStream" v-model="schedule.nextPlannedPublicStream" type="datetime-local" class="field-input" /></div>
@@ -736,7 +756,9 @@
                 v-model="alignment.fitReason"
                 class="field-textarea"
                 rows="3"
+                :aria-invalid="fieldStatus('fitReason') === 'invalid'" aria-describedby="fitReason-feedback"
               ></textarea>
+              <FieldValidation id="fitReason-feedback" :feedback="feedback('fitReason')" />
             </div>
 
             <div class="field">
@@ -757,19 +779,24 @@
                 v-model="alignment.termsAccepted"
                 type="checkbox"
                 class="field-checkbox"
+                :aria-invalid="fieldStatus('termsAccepted') === 'invalid'" aria-describedby="termsAccepted-feedback"
               />
               <label class="field-label-inline" for="termsAccepted">
                 I agree to follow the Project Respawn code of conduct and understand this is a beta program.
               </label>
+              <FieldValidation id="termsAccepted-feedback" :feedback="feedback('termsAccepted')" />
             </div>
             <div class="field field-inline">
-              <input id="publicContentConsent" v-model="alignment.publicContentConsent" type="checkbox" class="field-checkbox" />
+              <input id="publicContentConsent" v-model="alignment.publicContentConsent" type="checkbox" class="field-checkbox" :aria-invalid="fieldStatus('publicContentConsent') === 'invalid'" aria-describedby="publicContentConsent-feedback" />
               <label class="field-label-inline" for="publicContentConsent">I give Project Respawn permission to review the public profiles and content links supplied in this application.</label>
+              <FieldValidation id="publicContentConsent-feedback" :feedback="feedback('publicContentConsent')" />
             </div>
             <div class="honeypot-field" aria-hidden="true">
               <label for="website">Website</label><input id="website" v-model="website" type="text" tabindex="-1" autocomplete="off" />
             </div>
           </div>
+
+          <section class="application-review" aria-labelledby="application-review-title"><h3 id="application-review-title">Review your application</h3><p>Check each section before submitting. Selecting a section takes you back without clearing any answers.</p><ul><li v-for="item in stepReviews" :key="item.step"><button type="button" @click="currentStep = item.step"><strong>{{ item.label }}</strong><span :class="{ 'needs-attention': item.issues.length }">{{ item.status }}</span></button></li></ul></section>
 
           <p v-if="submission.state === 'submitting'" class="submission-message" role="status">Saving your application securely…</p>
           <div v-else-if="submission.state === 'success'" class="submission-message is-success" role="status">

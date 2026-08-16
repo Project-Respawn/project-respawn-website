@@ -161,7 +161,7 @@ const schema = a
     }),
 
     PublicApplicationSubmissionResult: a.customType({
-      reference: a.string().required(), submittedAt: a.datetime().required(), confirmationStatus: a.string().required(),
+      success: a.boolean().required(), reference: a.string(), submittedAt: a.datetime(), confirmationStatus: a.string(), errorCode: a.string(), issues: a.json(), message: a.string(), supportReference: a.string(),
     }),
 
     submitPublicApplication: a.mutation()
