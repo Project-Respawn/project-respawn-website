@@ -14,6 +14,7 @@ import Roles from '../views/About/Roles/Roles.vue';
 import UserHomepage from '../views/UserHomepage/UserHomepage.vue';
 import Applications from '../views/Applications/Applications.vue';
 import Bookings from '../views/Bookings/Bookings.vue';
+import Investors from '../views/Investors/Investors.vue';
 
 export default [
     { path: '/bookings', name: 'Bookings', component: Bookings },
@@ -24,6 +25,8 @@ export default [
     { path: '/', component: Home },
 
     { path: '/about', component: About },
+
+    { path: '/investors', name: 'Investors', component: Investors },
 
     { path: '/about/roles', component: Roles },
 

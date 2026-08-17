@@ -8,6 +8,11 @@
     />
 
     <main class="bot-main">
+      <header class="platform-page-header twitch-page-header">
+        <span class="platform-page-icon"><CreatorFeatureIcon name="twitch" /></span>
+        <div><h1>Twitch</h1><p>Connect, automate and manage your Twitch community from one place.</p></div>
+        <span class="platform-preview-badge">Work in progress · Preview</span>
+      </header>
       <nav class="twitch-tool-links" aria-label="Twitch tools">
         <router-link v-for="item in toolLinks" :key="item.name" :to="{ name: item.name }">{{ item.label }}</router-link>
       </nav>
@@ -122,6 +127,7 @@
 
 <script setup>
 import BotSidebar from '@/components/BotSidebar/BotSidebar.vue';
+import CreatorFeatureIcon from '@/features/creator-tools/components/CreatorFeatureIcon.vue';
 </script>
 
 <script>

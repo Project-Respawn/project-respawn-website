@@ -1,3 +1,358 @@
-<template><main class="ccd-page events-page"><ConnectedDemoHeader icon="▣" title="Community Events" subtitle="Create once · Coordinate everywhere"/><section class="events-layout"><div class="events-main"><section class="ccd-card event-hero"><div class="event-icon">▣</div><div><small class="ccd-purple">UPCOMING EVENT</small><h2>Friday Game Night</h2><p>🎮 Cooperative Adventure</p><p>▣ Fri, May 16, 2025　|　◷ Friday · 7:30 PM</p><b class="ccd-cyan">Your time · 19:30 BST</b></div><div class="event-counts"><strong><span class="ccd-positive">♙</span> {{going}} <small>GOING</small></strong><strong><span class="ccd-gold">★</span> 18 <small>INTERESTED</small></strong></div><footer><b :class="demo.event.rsvp?'ccd-positive':'ccd-purple'">{{demo.event.rsvp?"You’re going! 🎉":"Nova has not RSVP’d"}}</b><span>Attendance reward: 100 Community Points ✦</span></footer></section><section class="ccd-card calendar"><header><h2>May 12 – May 18, 2025</h2><div><button class="ccd-button">‹</button><button class="ccd-button">Today</button><button class="ccd-button">›</button></div></header><div class="week"><div v-for="day in days" :key="day" :class="{friday:day==='FRI 16'}"><b>{{day}}</b><span v-if="day==='MON 12'" class="calendar-event cyan">Monday Moments<small>19:00 · Twitch</small></span><span v-if="day==='FRI 16'" class="calendar-event purple">Friday Game Night<small>19:30 · All Platforms</small></span><span v-if="day==='FRI 16'" class="calendar-event gold">Community Tournament<small>21:00 · All Platforms</small></span><span v-if="day==='SUN 18'" class="calendar-event blue">Creator Q&amp;A<small>18:00 · Discord</small></span></div></div></section><section class="event-summary"><article class="ccd-card"><h3>RSVP Summary</h3><div class="donut"><strong>{{going}}<small>Going</small></strong></div><p><span class="ccd-positive">● {{going}} Going</span><br><span class="ccd-gold">● 18 Interested</span><br>● 9 Not going</p></article><article class="ccd-card"><h3>Reminder Schedule</h3><ul class="ccd-list"><li>✉ 24h before<small>May 15, 19:30 BST</small></li><li>✉ 1h before<small>May 16, 18:30 BST</small></li><li>✉ 10m before<small>May 16, 19:20 BST</small></li></ul></article><article class="ccd-card"><h3>Attendance Reward</h3><strong class="reward-medal">✦ 100</strong><p>Community Points</p><small>Awarded to verified attendees</small><div class="ccd-progress"><i :style="{width:demo.achievement.progress/5*100+'%'}"></i></div><p>Community Regular {{demo.achievement.progress}} / 5</p></article><article class="ccd-card"><h3>Time-zone conversion</h3><ul class="ccd-list"><li>🇬🇧 London <b>19:30 BST</b></li><li>🇺🇸 New York <b>14:30 EDT</b></li><li>🌴 Los Angeles <b>11:30 PDT</b></li></ul></article></section></div><aside class="event-builder"><section class="ccd-card"><div class="builder-title"><h2>Create Event</h2><span>Draft · Nothing sent</span></div><label>Title<input value="Friday Game Night"></label><label>Game / Category<select><option>Cooperative Adventure</option></select></label><div class="form-row"><label>Date<input value="May 16, 2025"></label><label>Time<input value="19:30"></label><label>Zone<select><option>BST</option></select></label></div><label class="toggle"><span>↻ Recurring event</span><input v-model="demo.event.recurring" class="ccd-check" type="checkbox"></label><fieldset><legend>Platforms</legend><label v-for="p in platforms" :key="p.id"><input class="ccd-check" type="checkbox" :checked="demo.event.platforms.includes(p.id)" @change="setEventPlatform(p.id,$event.target.checked)">{{p.icon}} {{p.label}}</label></fieldset><label>Invite Roles<select><option>Community Member · VIP · Moderator</option></select></label><label class="toggle"><span>♙ Attendance Rewards</span><input class="ccd-check" type="checkbox" checked></label><div class="reward-select">✦ 100 Community Points</div><div class="builder-actions"><button class="ccd-button" @click="previewAnnouncements">◉ Preview announcements</button><button class="ccd-button primary" @click="rsvpNova">{{demo.event.rsvp?'RSVP confirmed':'RSVP Nova'}}</button><button class="ccd-button cyan" @click="attendFridayGameNight">{{demo.event.attended?'Attendance recorded':'Mark attended in demo'}}</button></div></section><section class="ccd-card delivery"><h2>Cross-platform delivery preview</h2><p class="ccd-card-sub">This is how your announcements will look.</p><article v-for="p in platforms" :key="p.id" :class="{enabled:demo.event.platforms.includes(p.id)}"><b>{{p.icon}} {{p.label}} announcement</b><small>Friday Game Night · May 16 at 19:30 BST</small><p>Join us for a fun night in Cooperative Adventure. Demo preview only.</p></article></section></aside></section><div class="event-toast" v-if="demo.event.attended"><span>ⓘ Nova attended Friday Game Night.</span><span>✦ Reward ready: 100 Community Points.</span><span>🏆 Community Regular progressed to 5 / 5.</span></div></main></template>
-<script setup>import{computed}from'vue';import ConnectedDemoHeader from'../../connected-demo/ConnectedDemoHeader.vue';import{connectedDemo as demo,attendFridayGameNight,previewAnnouncements,rsvpNova,setEventPlatform}from'../../connected-demo/connectedDemoState.js';import'../../connected-demo/connectedDemo.css';const going=computed(()=>42+(demo.event.rsvp?1:0));const days=['MON 12','TUE 13','WED 14','THU 15','FRI 16','SAT 17','SUN 18'];const platforms=[{id:'twitch',label:'Twitch',icon:'▣'},{id:'discord',label:'Discord',icon:'☁'},{id:'respawn',label:'Project Respawn',icon:'R'}]</script>
-<style scoped>.events-layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(390px,1fr);gap:14px}.events-main{display:grid;gap:12px}.event-hero{display:grid;grid-template-columns:110px 1fr 190px;padding:20px;border-color:#9d42ca}.event-icon{display:grid;width:88px;height:88px;place-items:center;border-radius:12px;background:#271553;color:#b85cff;font-size:46px}.event-hero h2{margin:4px 0;font-size:22px}.event-hero p{margin:5px 0;color:#bec8d8}.event-counts{display:grid;align-content:center;gap:16px;border-left:1px solid #30415b;padding-left:28px}.event-counts strong{font-size:24px}.event-counts span{font-size:30px}.event-counts small{display:block;margin-left:38px;font-size:11px}.event-hero footer{grid-column:1/-1;display:flex;justify-content:space-between;margin:18px -20px -20px;padding:13px 20px;border-top:1px solid #2e3c54}.calendar header{display:flex;justify-content:space-between}.calendar header div{display:flex;gap:5px}.week{display:grid;grid-template-columns:repeat(7,1fr);min-height:250px;margin-top:12px;border:1px solid #213650}.week>div{position:relative;padding:9px 5px;border-right:1px solid #213650;text-align:center}.week>div:last-child{border:0}.week>div.friday{background:rgba(110,41,157,.12);outline:1px solid #a746d0}.week>div>b{font-size:11px;color:#aab7ca}.calendar-event{display:block;margin-top:70px;padding:7px;border:1px solid;border-radius:5px;text-align:left;font-size:12px}.calendar-event+ .calendar-event{margin-top:4px}.calendar-event small{display:block}.calendar-event.cyan{border-color:#22d3ee;background:#063346}.calendar-event.purple{border-color:#b14be3;background:#391548}.calendar-event.gold{border-color:#e99c15;background:#442c07}.calendar-event.blue{border-color:#4c94ff;background:#102c55}.event-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.donut{display:grid;float:left;width:88px;height:88px;margin:14px 14px 4px 0;place-items:center;border-radius:50%;background:conic-gradient(#4ade80 0 65%,#38bdf8 65% 86%,#5b6d87 86%)}.donut:before{content:"";position:absolute;width:58px;height:58px;border-radius:50%;background:#0b1b31}.donut strong{z-index:1;font-size:22px}.donut small{display:block;font-size:10px}.reward-medal{font-size:24px;color:#d47aff}.event-builder{display:grid;align-content:start;gap:12px}.builder-title{display:flex;justify-content:space-between}.builder-title span{color:#9daac0;font-size:12px}.event-builder label{display:grid;gap:5px;margin:10px 0;color:#c6d0df}.event-builder input,.event-builder select{min-height:38px;padding:8px 10px;border:1px solid #31445f;border-radius:6px;background:#091529;color:#fff;font-size:14px}.form-row{display:grid;grid-template-columns:1.2fr 1fr .65fr;gap:8px}.event-builder .toggle{display:flex;justify-content:space-between}.event-builder fieldset{display:flex;gap:20px;margin:12px 0;padding:12px;border:0}.event-builder fieldset label{display:flex}.reward-select{padding:10px;border:1px solid #304661;border-radius:6px}.builder-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:15px}.builder-actions>:last-child{grid-column:1/-1}.delivery article{margin:8px 0;padding:10px;border:1px solid #33455e;border-radius:7px;background:#121f36;opacity:.35}.delivery article.enabled{opacity:1}.delivery article small{float:right;color:#8796ab}.delivery article p{margin:5px 0;color:#bdc8d8;font-size:12px}.event-toast{position:sticky;bottom:10px;display:flex;justify-content:space-around;gap:10px;margin-top:12px;padding:13px;border:1px solid #27405e;border-radius:8px;background:#0b1b31;box-shadow:0 12px 28px #000}@media(max-width:1400px){.events-layout{grid-template-columns:1fr}.event-builder{grid-template-columns:1fr 1fr}.event-summary{grid-template-columns:1fr 1fr}}@media(max-width:800px){.event-hero{grid-template-columns:80px 1fr}.event-counts{grid-column:1/-1;border:0}.week{overflow:auto;grid-template-columns:repeat(7,130px)}.event-summary,.event-builder{grid-template-columns:1fr}.event-toast{display:grid}.form-row{grid-template-columns:1fr}.event-hero footer{display:grid;gap:5px}}</style>
+<template>
+  <main class="ccd-page events-page">
+    <ConnectedDemoHeader
+      icon="▣"
+      title="Community Events"
+      subtitle="Create once · Coordinate everywhere"
+    />
+
+    <section class="events-layout">
+      <div class="events-main">
+        <section class="ccd-card event-hero">
+          <div class="event-icon">▣</div>
+
+          <div class="event-copy">
+            <small class="ccd-purple">UPCOMING EVENT</small>
+            <h2>Friday Game Night</h2>
+            <p>🎮 Cooperative Adventure</p>
+            <p>▣ Fri, May 16, 2025 &nbsp; | &nbsp; ◷ Friday · 7:30 PM</p>
+            <b class="ccd-cyan">Your time · 19:30 BST</b>
+          </div>
+
+          <div class="event-counts">
+            <strong>
+              <span class="ccd-positive">♙</span>
+              {{ going }}
+              <small>GOING</small>
+            </strong>
+
+            <strong>
+              <span class="ccd-gold">★</span>
+              18
+              <small>INTERESTED</small>
+            </strong>
+          </div>
+
+          <footer>
+            <b :class="demo.event.rsvp ? 'ccd-positive' : 'ccd-purple'">
+              {{ demo.event.rsvp ? 'You’re going! 🎉' : 'Nova has not RSVP’d' }}
+            </b>
+            <span>Attendance reward: 100 Community Points ✦</span>
+          </footer>
+        </section>
+
+        <section class="ccd-card calendar-card">
+          <header class="calendar-toolbar">
+            <div class="calendar-title">
+              <h2>May 12 – May 18, 2025</h2>
+              <div class="calendar-nav">
+                <button class="ccd-button" type="button">‹</button>
+                <button class="ccd-button" type="button">Today</button>
+                <button class="ccd-button" type="button">›</button>
+              </div>
+            </div>
+
+            <select class="calendar-view">
+              <option>Week</option>
+            </select>
+          </header>
+
+          <div class="calendar-grid">
+            <div class="calendar-time-column">
+              <span>All-day</span>
+              <span>12:00</span>
+              <span>16:00</span>
+              <span>20:00</span>
+              <span>00:00</span>
+            </div>
+
+            <div
+              v-for="day in calendarDays"
+              :key="day.key"
+              class="calendar-day"
+              :class="{ selected: day.key === 'fri' }"
+            >
+              <div class="calendar-day-label">{{ day.label }}</div>
+
+              <article
+                v-for="event in day.events"
+                :key="event.title"
+                class="calendar-slot"
+                :class="event.tone"
+                :style="{ top: event.top, height: event.height }"
+              >
+                <strong>{{ event.title }}</strong>
+                <small>{{ event.time }}</small>
+                <small>{{ event.platform }}</small>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="event-summary">
+          <article class="ccd-card summary-card">
+            <h3>RSVP Summary</h3>
+            <div class="rsvp-row">
+              <div class="donut">
+                <strong>{{ going }}<small>Going</small></strong>
+              </div>
+              <p>
+                <span class="ccd-positive">● {{ going }} Going</span><br>
+                <span class="ccd-gold">● 18 Interested</span><br>
+                ● 9 Not going
+              </p>
+            </div>
+          </article>
+
+          <article class="ccd-card summary-card">
+            <h3>Reminder Schedule</h3>
+            <ul class="ccd-list compact-list">
+              <li>✉ <span>24h before<small>May 15, 19:30 BST</small></span></li>
+              <li>✉ <span>1h before<small>May 16, 18:30 BST</small></span></li>
+              <li>✉ <span>10m before<small>May 16, 19:20 BST</small></span></li>
+            </ul>
+          </article>
+
+          <article class="ccd-card summary-card">
+            <h3>Attendance Reward</h3>
+            <div class="reward-heading">
+              <span class="reward-medal">✦</span>
+              <strong>100<small>Community Points</small></strong>
+            </div>
+            <p class="summary-muted">Awarded to verified attendees</p>
+            <div class="ccd-progress">
+              <i :style="{ width: demo.achievement.progress / 5 * 100 + '%' }"></i>
+            </div>
+            <p class="summary-muted">Community Regular {{ demo.achievement.progress }} / 5</p>
+          </article>
+
+          <article class="ccd-card summary-card">
+            <h3>Recurring Event Rule</h3>
+            <div class="recurring-rule">
+              <span class="recurring-icon">↻</span>
+              <div>
+                <strong>Repeats weekly</strong>
+                <p>Every Friday</p>
+              </div>
+            </div>
+            <p class="summary-muted">Ends: Never</p>
+            <p class="summary-muted">Next 3 occurrences</p>
+            <ul class="occurrence-list">
+              <li>May 23, 19:30 BST</li>
+              <li>May 30, 19:30 BST</li>
+              <li>Jun 6, 19:30 BST</li>
+            </ul>
+          </article>
+
+          <article class="ccd-card summary-card timezone-card">
+            <h3>Time-zone conversion</h3>
+            <ul class="timezone-list">
+              <li><span>🇬🇧</span><div><strong>London (Your time)</strong><small>Fri, May 16, 2025</small></div><b>19:30 BST</b></li>
+              <li><span>🇺🇸</span><div><strong>New York</strong><small>Fri, May 16, 2025</small></div><b>14:30 EDT</b></li>
+              <li><span>🌴</span><div><strong>Los Angeles</strong><small>Fri, May 16, 2025</small></div><b>11:30 PDT</b></li>
+            </ul>
+          </article>
+        </section>
+      </div>
+
+      <aside class="event-builder">
+        <section class="ccd-card builder-card">
+          <div class="builder-topline">
+            <div>
+              <h2>Create Event</h2>
+              <p class="builder-subtitle">Plan once and publish everywhere.</p>
+            </div>
+
+            <div class="builder-meta">
+              <span>Event status</span>
+              <b>Draft · Nothing sent</b>
+            </div>
+          </div>
+
+          <div class="builder-wip">WORK IN PROGRESS</div>
+
+          <div class="builder-fields">
+            <label class="field field-full">
+              <span>Title</span>
+              <div class="input-with-count">
+                <input value="Friday Game Night">
+                <small>21/80</small>
+              </div>
+            </label>
+
+            <label class="field field-full">
+              <span>Game / Category</span>
+              <button class="select-field" type="button">
+                <span class="select-field-value">
+                  <span class="field-icon">🎮</span>
+                  Cooperative Adventure
+                </span>
+                <span class="select-chevron">⌄</span>
+              </button>
+            </label>
+
+            <label class="field date-field">
+              <span>Date</span>
+              <div class="input-icon-field">
+                <span>▣</span>
+                <input value="May 16, 2025">
+              </div>
+            </label>
+
+            <label class="field time-field">
+              <span>Time</span>
+              <div class="input-icon-field">
+                <span>◷</span>
+                <input value="19:30">
+              </div>
+            </label>
+
+            <label class="field zone-field">
+              <span>Zone</span>
+              <button class="select-field" type="button">
+                <span>BST</span>
+                <span class="select-chevron">⌄</span>
+              </button>
+            </label>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              <strong>↻ Recurring event</strong>
+              <small>Repeat this event automatically.</small>
+            </div>
+            <label class="switch-control" aria-label="Recurring event">
+              <input v-model="demo.event.recurring" type="checkbox">
+              <span></span>
+            </label>
+          </div>
+
+          <div class="platform-block">
+            <div class="field-heading">
+              <strong>Platforms</strong>
+              <small>Choose where this event should appear.</small>
+            </div>
+
+            <div class="platform-row">
+              <label
+                v-for="platform in platforms"
+                :key="platform.id"
+                class="platform-card"
+                :class="{ selected: demo.event.platforms.includes(platform.id) }"
+              >
+                <input
+                  type="checkbox"
+                  :checked="demo.event.platforms.includes(platform.id)"
+                  @change="setEventPlatform(platform.id, $event.target.checked)"
+                >
+
+                <span class="platform-logo" :class="platform.id">
+                  <svg
+                    v-if="platform.id === 'twitch'"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path fill="currentColor" d="M4 3h16v11l-5 5h-4l-3 3v-3H4V3Zm2 2v12h4v2l2-2h4l2-2V5H6Zm4 3h2v5h-2V8Zm4 0h2v5h-2V8Z"/>
+                  </svg>
+
+                  <svg
+                    v-else-if="platform.id === 'discord'"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path fill="currentColor" d="M8.4 7.2c1-.45 2.06-.68 3.1-.7l.38.76c-1.1.12-1.9.38-2.6.7 1.58-.72 4.15-.72 5.74 0-.7-.32-1.52-.58-2.62-.7l.38-.76c1.05.02 2.1.25 3.1.7 1.2 1.72 1.8 3.58 1.62 5.42-.83 1.02-1.86 1.7-3.02 2.08l-.75-.96c.52-.2 1-.46 1.43-.78-1.82.84-4.3.84-6.12 0 .44.32.92.58 1.44.78l-.75.96c-1.16-.38-2.2-1.06-3.02-2.08-.18-1.84.42-3.7 1.61-5.42Zm1.52 3.44c-.55 0-.98.48-.98 1.08s.44 1.08.98 1.08.98-.48.98-1.08-.44-1.08-.98-1.08Zm4.16 0c-.55 0-.98.48-.98 1.08s.44 1.08.98 1.08.98-.48.98-1.08-.44-1.08-.98-1.08Z"/>
+                  </svg>
+
+                  <img
+                    v-else
+                    :src="respawnLogo"
+                    alt=""
+                  >
+                </span>
+
+                <span class="platform-name">{{ platform.label }}</span>
+                <span class="platform-check">✓</span>
+              </label>
+            </div>
+          </div>
+
+          <label class="field field-full">
+            <span>Invite Roles <small>(optional)</small></span>
+            <button class="role-selector" type="button" aria-label="Selected invite roles">
+              <span class="role-chip">Community Member <b>×</b></span>
+              <span class="role-chip">VIP <b>×</b></span>
+              <span class="role-chip">Moderator <b>×</b></span>
+              <span class="select-chevron">⌄</span>
+            </button>
+          </label>
+
+          <div class="setting-row">
+            <div>
+              <strong>♙ Attendance Rewards</strong>
+              <small>Reward verified attendees automatically.</small>
+            </div>
+            <label class="switch-control" aria-label="Attendance rewards">
+              <input type="checkbox" checked>
+              <span></span>
+            </label>
+          </div>
+
+          <label class="field field-full reward-control">
+            <span>Reward</span>
+            <button class="select-field reward-field" type="button">
+              <span class="select-field-value">
+                <span class="reward-dot">✦</span>
+                100 Community Points
+              </span>
+              <span class="select-chevron">⌄</span>
+            </button>
+          </label>
+
+          <div class="builder-actions">
+            <button class="ccd-button preview-button" type="button" @click="previewAnnouncements">
+              ◉ Preview announcements
+            </button>
+            <button class="ccd-button primary publish-button" type="button" @click="rsvpNova">
+              ✈ Publish in demo
+            </button>
+          </div>
+        </section>
+
+        <section class="ccd-card delivery">
+          <h2>Cross-platform delivery preview</h2>
+          <p class="ccd-card-sub">This is how your announcements will look.</p>
+
+          <article class="enabled delivery-item">
+            <div class="delivery-logo discord">☁</div>
+            <div>
+              <b>Discord announcement</b>
+              <small>Today at 12:00</small>
+              <p>Friday Game Night is happening on May 16 at 19:30 BST. Join us for a fun night in Cooperative Adventure.</p>
+            </div>
+          </article>
+
+          <article class="enabled delivery-item">
+            <div class="delivery-logo twitch">▣</div>
+            <div>
+              <b>Twitch reminder</b>
+              <small>May 16 at 19:00 BST</small>
+              <p>Going live soon! Friday Game Night starts at 19:30 BST.</p>
+            </div>
+          </article>
+
+          <article class="enabled delivery-item">
+            <div class="delivery-logo respawn">R</div>
+            <div>
+              <b>Project Respawn listing</b>
+              <small>May 16</small>
+              <p>Friday Game Night · 19:30 BST · Cooperative Adventure · {{ going }} Going · 18 Interested</p>
+            </div>
+          </article>
+        </section>
+      </aside>
+    </section>
+  </main>
+</template>
+
+<script src="./CreatorEvents.js"></script>
+<style scoped src="./CreatorEvents.css"></style>
