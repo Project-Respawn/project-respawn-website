@@ -18,7 +18,7 @@
   </aside>
 </template>
 <script setup>
-import{computed,ref}from'vue';import{widgetRegistry}from'../../overlays/widgetRegistry.js'
+import{computed,ref}from'vue';import{widgetRegistry}from'../../widgets/registry/index.js'
 const props=defineProps({widget:Object,suggestions:{type:Array,default:()=>[]},themes:{type:Array,default:()=>[]},themeId:String,defaultTab:{type:String,default:'settings'},hideTabs:Boolean});const emit=defineEmits(['change','suggestion','move']);const tab=ref(props.defaultTab);const definition=computed(()=>props.widget?widgetRegistry[props.widget.type]:null)
 function patch(next){if(props.widget)emit('change',{...props.widget,...next,updatedAt:'2026-08-13T15:00:00.000Z'})}function frame(key,value){patch({frame:{...props.widget.frame,[key]:Math.max(0,Number(value))}})}function setting(field,value){patch({settings:{...props.widget.settings,[field.key]:['number','range'].includes(field.type)?Number(value):value}})}
 </script>

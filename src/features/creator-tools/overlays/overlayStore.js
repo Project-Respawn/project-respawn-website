@@ -1,6 +1,6 @@
 import { reactive } from 'vue'
 import { createOverlay, createSeedOverlays, OVERLAY_SCHEMA_VERSION } from './overlayModel.js'
-import { createWidget } from './widgetRegistry.js'
+import { createWidget } from '../widgets/registry/index.js'
 import { loadOverlayState, saveOverlayState } from './overlayPersistence.js'
 import { deleteFromState, duplicateInState, renameInState } from './overlayOperations.js'
 import { chooseEntryOverlayId } from './overlayEntryRouting.js'

@@ -1,2 +1,2 @@
 <template><div class="demo-widget image-widget" :style="widgetStyle(widget.settings)"><img v-if="widget.settings.imageUrl" :src="widget.settings.imageUrl" :alt="widget.settings.alt" :style="{objectFit:widget.settings.fit}"><div v-else><b>Image widget</b><span>Add an image URL in Settings</span></div></div></template>
-<script setup>import { widgetStyle } from './widgetHelpers.js'; defineProps({ widget:{type:Object,required:true} })</script>
+<script setup>import { widgetStyle } from '../../widgetHelpers.js'; defineProps({ widget:{type:Object,required:true} })</script>

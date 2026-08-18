@@ -8,7 +8,7 @@
       <button @click="$emit('save')">▣ Save Demo</button><button @click="$emit('preview')">▶ Preview</button>
       <button class="publish" @click="$emit('publish')">➤ &nbsp; Publish Overlay</button>
     </div>
-    <span class="obs-offline">○ No OBS connection</span>
+    <button class="obs-offline" type="button" @click="$emit('settings')">○ {{ obsStatusLabel }}</button>
   </header>
 </template>
-<script setup>defineProps({name:String,themeId:String,themes:Array,canUndo:Boolean,canRedo:Boolean});defineEmits(['rename','theme','import','export','undo','redo','save','preview','publish','settings'])</script>
+<script setup>defineProps({name:String,themeId:String,themes:Array,canUndo:Boolean,canRedo:Boolean,obsStatusLabel:{type:String,default:'No OBS connection'}});defineEmits(['rename','theme','import','export','undo','redo','save','preview','publish','settings'])</script>

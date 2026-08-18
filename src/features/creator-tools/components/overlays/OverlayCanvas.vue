@@ -17,7 +17,7 @@
 </template>
 <script setup>
 import{computed,nextTick,onBeforeUnmount,onMounted,ref,watch}from'vue'
-import{widgetRegistry as registry}from'../../overlays/widgetRegistry.js'
+import{widgetRegistry as registry}from'../../widgets/registry/index.js'
 import{canvasScalesFromBounds,clientDeltaToCanvas,editorScale,moveFrame,resizeFrame}from'../../overlays/overlayGeometry.js'
 import{createWidgetSnapshot}from'../../overlays/overlaySnapshots.js'
 import{themeVariables}from'../../overlays/overlayThemes.js'

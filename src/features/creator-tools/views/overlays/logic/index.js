@@ -105,3 +105,5 @@ export { useBrowserSources } from './section-10-browser-sources.js'
 // ============================================================
 
 export { useTestControls } from './section-11-test-controls.js'
+
+export { useOverlayEditorCore } from './shared/editor-core.js'
