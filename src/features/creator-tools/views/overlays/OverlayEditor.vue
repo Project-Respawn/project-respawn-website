@@ -132,22 +132,23 @@
         </header>
 
 
-        <!-- Section 04B: Interactive Canvas -->
+<!-- ========================================================
+     SECTION 04B
+     INTERACTIVE CANVAS
+     ======================================================== -->
 
-        <div class="canvas-stage">
-          <OverlayCanvas
-            :overlay="scene"
-            :selected-id="project.selectedWidgetId"
-            :zoom-mode="zoomMode"
-            :show-guides="project.safeZone"
-            :show-grid="project.grid"
-            :snapping="project.snapping"
-            :active-widget-id="activeWidgetId"
-            :animations-paused="project.animationsPaused"
-            @select="selectWidget"
-            @change="changeWidget"
-          />
-        </div>
+<OverlayCanvas
+  :overlay="scene"
+  :selected-id="project.selectedWidgetId"
+  :zoom-mode="zoomMode"
+  :show-guides="project.safeZone"
+  :show-grid="project.grid"
+  :snapping="project.snapping"
+  :active-widget-id="activeWidgetId"
+  :animations-paused="project.animationsPaused"
+  @select="selectWidget"
+  @change="changeWidget"
+/>
 
 
         <!-- Section 04C: Canvas Controls -->

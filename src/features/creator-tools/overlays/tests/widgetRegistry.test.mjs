@@ -18,4 +18,7 @@ test('registry normalizes interaction capabilities and minimum sizes', () => {
   assert.equal(definition.capabilities.draggable, true)
   assert.equal(definition.capabilities.resizable, true)
   assert.deepEqual(definition.minimumSize, { width: 120, height: 50 })
+  const fixed = defineWidget({ type: 'fixed', defaultSize: { width: 200, height: 100 }, defaultSettings: {}, capabilities: { draggable: false, resizable: false } })
+  assert.equal(fixed.capabilities.draggable, false)
+  assert.equal(fixed.capabilities.resizable, false)
 })

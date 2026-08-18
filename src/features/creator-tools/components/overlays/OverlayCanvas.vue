@@ -7,7 +7,7 @@
         <div v-for="guide in snapGuides" :key="`${guide.axis}-${guide.value}`" class="snap-guide" :class="guide.axis" :style="guide.axis==='x'?{left:`${guide.value}px`}:{top:`${guide.value}px`}"></div>
         <div v-for="widget in ordered" v-show="widget.enabled" :key="widget.id" class="widget-frame" :class="{selected:widget.id===selectedId,locked:widget.locked,dragging:widget.id===draggingId,replaying:widget.id===activeWidgetId&&!animationsPaused}" :data-instance-id="widget.id" :data-locked="widget.locked" :style="frameStyle(widget)" :tabindex="previewMode?-1:0" :aria-label="`${widget.name}${widget.locked?', locked':''}`" @pointerdown.stop.prevent="startMove($event,widget)" @click.stop="$emit('select',widget.id)" @keydown="nudge($event,widget)">
           <component :is="registry[widget.type].component" class="widget-renderer" :widget="widget"/>
-          <template v-if="canResize(widget)"><button v-for="handle in handles" :key="handle" class="resize-handle" :class="handle" :aria-label="`Resize ${widget.name} from ${handle}`" @pointerdown.stop.prevent="startResize($event,widget,handle)"></button></template>
+          <template v-if="canResize(widget)"><button v-for="handle in handles" :key="handle" type="button" tabindex="-1" class="resize-handle" :class="handle" :aria-label="`Resize ${widget.name} from ${handle}`" @pointerdown.stop.prevent="startResize($event,widget,handle)"></button></template>
           <span v-if="!previewMode&&widget.locked" class="lock-badge">Locked</span>
         </div>
       </div>
