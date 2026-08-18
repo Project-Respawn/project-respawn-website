@@ -28,15 +28,16 @@ test('Demo Chat Move chooses the opposite safe side at Fit-scale-independent geo
   assert.equal(target.y, chat.frame.y)
 })
 
-test('rendered controls declare a dedicated accessible handle and locked fallbacks', () => {
+test('canvas exposes universal dragging, eight resize handles, and locked fallbacks', () => {
   const root = fileURLToPath(new URL('../../', import.meta.url))
   const canvas = readFileSync(`${root}components/overlays/OverlayCanvas.vue`, 'utf8')
   const inspector = readFileSync(`${root}components/overlays/OverlayBuilderInspector.vue`, 'utf8')
   const controls = readFileSync(`${root}components/overlays/OverlayTestControls.vue`, 'utf8')
-  assert.match(canvas, /class="chat-drag-handle"/)
-  assert.match(canvas, /aria-label="Drag Chat"/)
-  assert.match(canvas, /Drag to reposition/)
-  assert.match(canvas, /:disabled="widget.locked"/)
+  assert.doesNotMatch(canvas, /chat-drag-handle|Drag Chat/)
+  assert.match(canvas, /@pointerdown\.stop\.prevent="startMove\(\$event,widget\)"/)
+  assert.match(canvas, /handles=\['nw','n','ne','e','se','s','sw','w'\]/)
+  assert.match(canvas, /w\.locked\|\|definition\(w\)\.capabilities\.draggable===false/)
+  assert.match(canvas, /!w\.locked&&definition\(w\)\.capabilities\.resizable!==false/)
   for (const label of ['Move Left', 'Move Right', 'Move Up', 'Move Down', 'Move chat to left', 'Move chat to right']) assert.match(inspector, new RegExp(label))
   assert.match(controls, /Demo Chat Move/)
   assert.match(controls, /browser only/)

@@ -14,6 +14,7 @@ const defaultRequirements = Object.freeze({ auth: false, integrations: [], backe
 
 export function defineWidget(definition) {
   const defaultSize = Object.freeze({ ...definition.defaultSize })
+  const minimumSize = Object.freeze({ width: 80, height: 50, ...definition.minimumSize })
   const defaultSettings = Object.freeze({ ...definition.defaultSettings })
   const categories = Object.freeze([...(definition.categories || [])])
   const integrations = Object.freeze([...(definition.integrations || [])])
@@ -21,7 +22,7 @@ export function defineWidget(definition) {
   const capabilities = Object.freeze({ ...defaultCapabilities, ...definition.capabilities })
   const requirements = Object.freeze({ ...defaultRequirements, ...definition.requirements, integrations: Object.freeze([...(definition.requirements?.integrations || [])]) })
   return Object.freeze({
-    ...definition, defaultSize, defaultSettings, categories, integrations, topics, capabilities, requirements,
+    ...definition, defaultSize, minimumSize, defaultSettings, categories, integrations, topics, capabilities, requirements,
     // Compatibility fields consumed by the current editor and persisted demo model.
     category: definition.legacyCategory,
     size: Object.freeze([defaultSize.width, defaultSize.height]),

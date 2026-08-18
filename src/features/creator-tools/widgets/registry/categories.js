@@ -12,6 +12,7 @@ export const widgetCategories = Object.freeze([
   { id: 'game', label: 'Game' },
   { id: 'brand-sponsor', label: 'Brand & Sponsor' },
   { id: 'utility', label: 'Utility' },
+  {  id: 'media',label: 'Media',},
 ])
 
 export const widgetCategoryRegistry = Object.freeze(Object.fromEntries(widgetCategories.map(item => [item.id, item])))
