@@ -444,7 +444,7 @@ async function handleSignIn() {
       await refreshAuth();
       if (isSignedIn.value) {
         signInForm.value.password = "";
-        await router.push("/account");
+        await router.push("/home");
         return;
       }
     }
