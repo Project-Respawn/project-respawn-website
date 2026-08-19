@@ -360,6 +360,317 @@
 }
 
 
+
+
+/* =========================================================
+   CREATOR CATEGORIES
+   ========================================================= */
+
+.category-count {
+  flex: 0 0 auto;
+  padding: 6px 9px;
+  border: 1px solid rgba(139, 92, 246, .18);
+  border-radius: 999px;
+  background: rgba(124, 58, 237, .06);
+  color: #b9a6f5;
+  font-size: .68rem;
+  font-weight: 800;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.category-option {
+  position: relative;
+  min-height: 108px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  padding: 16px 12px;
+
+  border: 1px solid rgba(255, 255, 255, .08);
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(15, 23, 42, .88),
+      rgba(8, 15, 29, .9)
+    );
+
+  color: #8f9db2;
+  text-align: center;
+  cursor: pointer;
+
+  transition:
+    transform .16s ease,
+    border-color .16s ease,
+    background .16s ease,
+    box-shadow .16s ease,
+    color .16s ease;
+}
+
+.category-option:hover:not(:disabled) {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, .16);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(25, 35, 58, .95),
+      rgba(12, 20, 36, .95)
+    );
+}
+
+.category-option.disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+
+.category-icon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .045);
+
+  color: #9aa8bb;
+  font-size: 1.45rem;
+
+  transition:
+    background .16s ease,
+    color .16s ease,
+    box-shadow .16s ease;
+}
+
+.category-label {
+  color: #d7e0ec;
+  font-size: .78rem;
+  font-weight: 800;
+
+  transition: color .16s ease;
+}
+
+.category-check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+
+  display: grid;
+  width: 21px;
+  height: 21px;
+  place-items: center;
+
+  border-radius: 50%;
+  background: currentColor;
+  color: #08101e;
+
+  font-size: .68rem;
+  font-weight: 900;
+}
+
+.category-help {
+  margin-top: 12px;
+}
+
+.games-section {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, .06);
+}
+
+
+/* Selected category colours */
+
+.category-option.accent-purple.selected {
+  color: #a78bfa;
+  border-color: rgba(167, 139, 250, .72);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(124, 58, 237, .22),
+      rgba(34, 20, 70, .52)
+    );
+  box-shadow:
+    0 0 0 1px rgba(167, 139, 250, .2),
+    0 12px 28px rgba(124, 58, 237, .15);
+}
+
+.category-option.accent-violet.selected {
+  color: #c084fc;
+  border-color: rgba(192, 132, 252, .72);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(168, 85, 247, .22),
+      rgba(53, 22, 75, .52)
+    );
+  box-shadow:
+    0 0 0 1px rgba(192, 132, 252, .2),
+    0 12px 28px rgba(168, 85, 247, .14);
+}
+
+.category-option.accent-blue.selected {
+  color: #60a5fa;
+  border-color: rgba(96, 165, 250, .72);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(37, 99, 235, .22),
+      rgba(14, 36, 77, .52)
+    );
+  box-shadow:
+    0 0 0 1px rgba(96, 165, 250, .2),
+    0 12px 28px rgba(37, 99, 235, .14);
+}
+
+.category-option.accent-gold.selected {
+  color: #facc15;
+  border-color: rgba(250, 204, 21, .72);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(202, 138, 4, .22),
+      rgba(65, 47, 8, .52)
+    );
+  box-shadow:
+    0 0 0 1px rgba(250, 204, 21, .18),
+    0 12px 28px rgba(202, 138, 4, .12);
+}
+
+.category-option.accent-orange.selected {
+  color: #fb923c;
+  border-color: rgba(251, 146, 60, .72);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(234, 88, 12, .22),
+      rgba(77, 33, 12, .52)
+    );
+  box-shadow:
+    0 0 0 1px rgba(251, 146, 60, .18),
+    0 12px 28px rgba(234, 88, 12, .12);
+}
+
+.category-option.accent-amber.selected {
+  color: #fbbf24;
+  border-color: rgba(251, 191, 36, .72);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(217, 119, 6, .22),
+      rgba(70, 43, 10, .52)
+    );
+}
+
+.category-option.accent-red.selected {
+  color: #f87171;
+  border-color: rgba(248, 113, 113, .72);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(220, 38, 38, .22),
+      rgba(72, 18, 24, .52)
+    );
+  box-shadow:
+    0 0 0 1px rgba(248, 113, 113, .18),
+    0 12px 28px rgba(220, 38, 38, .12);
+}
+
+.category-option.accent-cyan.selected {
+  color: #22d3ee;
+  border-color: rgba(34, 211, 238, .72);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(8, 145, 178, .22),
+      rgba(8, 50, 66, .52)
+    );
+  box-shadow:
+    0 0 0 1px rgba(34, 211, 238, .18),
+    0 12px 28px rgba(8, 145, 178, .12);
+}
+
+.category-option.accent-green.selected {
+  color: #4ade80;
+  border-color: rgba(74, 222, 128, .72);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(22, 163, 74, .22),
+      rgba(12, 59, 32, .52)
+    );
+  box-shadow:
+    0 0 0 1px rgba(74, 222, 128, .18),
+    0 12px 28px rgba(22, 163, 74, .12);
+}
+
+.category-option.accent-pink.selected {
+  color: #f472b6;
+  border-color: rgba(244, 114, 182, .72);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(219, 39, 119, .22),
+      rgba(76, 18, 50, .52)
+    );
+  box-shadow:
+    0 0 0 1px rgba(244, 114, 182, .18),
+    0 12px 28px rgba(219, 39, 119, .12);
+}
+
+.category-option.accent-magenta.selected {
+  color: #e879f9;
+  border-color: rgba(232, 121, 249, .72);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(192, 38, 211, .22),
+      rgba(67, 20, 75, .52)
+    );
+  box-shadow:
+    0 0 0 1px rgba(232, 121, 249, .18),
+    0 12px 28px rgba(192, 38, 211, .12);
+}
+
+
+/* Selected icon treatment */
+
+.category-option.selected .category-icon {
+  color: currentColor;
+  background: rgba(255, 255, 255, .07);
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+
+.category-option.selected .category-label {
+  color: #fff;
+}
+
+
+/* Creator card category chips */
+
+.creator-card-chips span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.creator-card-category-icon {
+  width: 12px;
+  height: 12px;
+  flex: 0 0 12px;
+}
+
+
 /* =========================================================
    THEME SELECTOR
    ========================================================= */
@@ -1325,6 +1636,10 @@
     grid-template-columns: 1fr;
   }
 
+  .category-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .creator-profile-preview-panel {
     position: static;
   }
@@ -1367,6 +1682,15 @@
   .theme-grid,
   .theme-strip-options {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .category-option {
+    min-height: 96px;
+    padding: 13px 10px;
   }
 
   .how-grid {

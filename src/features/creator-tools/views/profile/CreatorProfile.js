@@ -1,5 +1,12 @@
 import { computed, reactive, ref } from 'vue';
 
+import CreatorCategoryIcon from './CreatorCategoryIcon.vue';
+
+import {
+  creatorCategories,
+  CREATOR_CATEGORY_LIMIT
+} from '../../config/creatorCategories.js';
+
 const STORAGE_KEY = 'project-respawn-creator-profile-demo-v1';
 
 function defaultProfile() {
@@ -8,7 +15,7 @@ function defaultProfile() {
     headline: '',
     bio: '',
     avatarUrl: '',
-    categories: ['Variety', 'Community'],
+    categories: ['variety', 'community'],
     games: [],
     theme: 'respawn',
     publicOptIn: false,
@@ -24,19 +31,44 @@ function defaultProfile() {
   };
 }
 
+function normaliseStoredCategories(categories) {
+  if (!Array.isArray(categories)) return [];
+
+  const legacyMap = {
+    Variety: 'variety',
+    Community: 'community',
+    Gaming: 'gaming',
+    Competitive: 'competitive',
+    Esports: 'esports',
+    Fitness: 'fitness',
+    Wellbeing: 'wellbeing',
+    Creative: 'creative',
+    Music: 'music'
+  };
+
+  return categories
+    .map((category) => legacyMap[category] || category)
+    .filter((key) => creatorCategories.some((category) => category.key === key))
+    .slice(0, CREATOR_CATEGORY_LIMIT);
+}
+
 function loadStoredProfile() {
   try {
     const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-    return parsed && typeof parsed === 'object'
-      ? {
-          ...defaultProfile(),
-          ...parsed,
-          links: {
-            ...defaultProfile().links,
-            ...(parsed.links || {})
-          }
-        }
-      : defaultProfile();
+
+    if (!parsed || typeof parsed !== 'object') {
+      return defaultProfile();
+    }
+
+    return {
+      ...defaultProfile(),
+      ...parsed,
+      categories: normaliseStoredCategories(parsed.categories),
+      links: {
+        ...defaultProfile().links,
+        ...(parsed.links || {})
+      }
+    };
   } catch {
     return defaultProfile();
   }
@@ -45,10 +77,13 @@ function loadStoredProfile() {
 export default {
   name: 'CreatorProfile',
 
+  components: {
+    CreatorCategoryIcon
+  },
+
   setup() {
     const profile = reactive(loadStoredProfile());
     const activeTab = ref('identity');
-    const newCategory = ref('');
     const newGame = ref('');
     const lastSaved = ref('');
 
@@ -60,16 +95,16 @@ export default {
       { key: 'discovery', label: 'Discovery' }
     ];
 
-  const themes = [
-  { key: 'respawn', label: 'Respawn', description: 'Default' },
-  { key: 'midnight', label: 'Midnight', description: 'Cool & Bold' },
-  { key: 'ember', label: 'Ember', description: 'Warm & Intense' },
-  { key: 'aurora', label: 'Aurora', description: 'Fresh & Vibrant' },
-  { key: 'pink', label: 'Neon Pink', description: 'Bright & Playful' },
-  { key: 'rainbow', label: 'Rainbow', description: 'Colourful & Expressive' },
-  { key: 'sunset', label: 'Sunset', description: 'Warm & Colourful' },
-  { key: 'frost', label: 'Frost', description: 'Cool & Clean' }
-];
+    const themes = [
+      { key: 'respawn', label: 'Respawn', description: 'Default' },
+      { key: 'midnight', label: 'Midnight', description: 'Cool & Bold' },
+      { key: 'ember', label: 'Ember', description: 'Warm & Intense' },
+      { key: 'aurora', label: 'Aurora', description: 'Fresh & Vibrant' },
+      { key: 'pink', label: 'Neon Pink', description: 'Bright & Playful' },
+      { key: 'rainbow', label: 'Rainbow', description: 'Colourful & Expressive' },
+      { key: 'sunset', label: 'Sunset', description: 'Warm & Colourful' },
+      { key: 'frost', label: 'Frost', description: 'Cool & Clean' }
+    ];
 
     const howItWorks = [
       { title: 'Set up', copy: 'Create your creator identity and card.' },
@@ -82,9 +117,11 @@ export default {
     const initials = computed(() => {
       const value = (profile.displayName || 'CR').trim();
       const parts = value.split(/\s+/).filter(Boolean);
+
       if (parts.length >= 2) {
         return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
       }
+
       return value.slice(0, 2).toUpperCase();
     });
 
@@ -99,25 +136,34 @@ export default {
       themes.find((theme) => theme.key === profile.theme)?.label || 'Respawn'
     );
 
-    function addCategory() {
-      const value = newCategory.value.trim();
-      if (!value || profile.categories.length >= 5) return;
-      if (!profile.categories.some((item) => item.toLowerCase() === value.toLowerCase())) {
-        profile.categories.push(value);
-      }
-      newCategory.value = '';
-    }
+    const selectedCategoryDetails = computed(() =>
+      profile.categories
+        .map((key) => creatorCategories.find((category) => category.key === key))
+        .filter(Boolean)
+    );
 
-    function removeCategory(category) {
-      profile.categories = profile.categories.filter((item) => item !== category);
+    function toggleCategory(categoryKey) {
+      const index = profile.categories.indexOf(categoryKey);
+
+      if (index !== -1) {
+        profile.categories.splice(index, 1);
+        return;
+      }
+
+      if (profile.categories.length >= CREATOR_CATEGORY_LIMIT) return;
+
+      profile.categories.push(categoryKey);
     }
 
     function addGame() {
       const value = newGame.value.trim();
+
       if (!value || profile.games.length >= 4) return;
+
       if (!profile.games.some((item) => item.toLowerCase() === value.toLowerCase())) {
         profile.games.push(value);
       }
+
       newGame.value = '';
     }
 
@@ -127,6 +173,7 @@ export default {
 
     function saveProfile() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
+
       lastSaved.value = new Date().toLocaleTimeString([], {
         hour: '2-digit',
         minute: '2-digit'
@@ -148,17 +195,18 @@ export default {
     return {
       profile,
       activeTab,
-      newCategory,
       newGame,
       lastSaved,
       tabs,
       themes,
+      creatorCategories,
+      categoryLimit: CREATOR_CATEGORY_LIMIT,
+      selectedCategoryDetails,
       howItWorks,
       initials,
       statusLabel,
       activeThemeLabel,
-      addCategory,
-      removeCategory,
+      toggleCategory,
       addGame,
       removeGame,
       saveProfile,
