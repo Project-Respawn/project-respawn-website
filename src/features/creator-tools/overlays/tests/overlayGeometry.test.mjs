@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { canvasScalesFromBounds, chatShowcaseTarget, clientDeltaToCanvas, editorScale, moveFrame, resizeFrame, resizeFrameWithSnapping, scaleLayout } from '../overlayGeometry.js'
+import { canvasScalesFromBounds, chatShowcaseTarget, clientDeltaToCanvas, detectResizeDirection, editorScale, moveFrame, resizeFrame, resizeFrameWithSnapping, scaleLayout } from '../overlayGeometry.js'
 
 test('canvas uses stable native coordinates at visual scale', () => {
   assert.equal(editorScale(1920, 1080, 960, 700), .5)
@@ -11,6 +11,20 @@ test('rendered canvas bounds produce independent drag scales', () => {
   assert.deepEqual(scales, { x: .5, y: .4 })
   assert.deepEqual(clientDeltaToCanvas(50, 40, scales.x, scales.y), { x: 100, y: 100 })
   assert.equal(canvasScalesFromBounds({ width: 0, height: 400 }, { width: 1920, height: 1080 }), null)
+})
+test('physical pointer-edge detection returns all eight resize directions and leaves the centre clear', () => {
+  const bounds = { left: 100, top: 50, width: 200, height: 100, right: 300, bottom: 150 }
+  const cases = [
+    [200, 100, null], [101, 100, 'w'], [299, 100, 'e'], [200, 51, 'n'], [200, 149, 's'],
+    [101, 51, 'nw'], [299, 51, 'ne'], [101, 149, 'sw'], [299, 149, 'se'],
+  ]
+  for (const [x, y, expected] of cases) assert.equal(detectResizeDirection(x, y, bounds, 9), expected)
+})
+test('edge detection caps its threshold to preserve the centre of a small widget', () => {
+  const bounds = { left: 0, top: 0, width: 40, height: 24 }
+  assert.equal(detectResizeDirection(20, 12, bounds, 9), null)
+  assert.equal(detectResizeDirection(20, 5, bounds, 9), 'n')
+  assert.equal(detectResizeDirection(20, 8, bounds, 9), null)
 })
 test('chat showcase target moves to the opposite safe side without changing size', () => {
   const bounds = { width: 1920, height: 1080 }
@@ -51,6 +65,14 @@ test('all eight resize handles change the expected axes', () => {
     const result = resizeFrame(frame, handle, { x: 10, y: 10 }, bounds)
     assert.deepEqual([result.x, result.y, result.width, result.height], values, handle)
   }
+})
+test('north and south resize preserve their opposite edge in both directions', () => {
+  const frame = { x: 100, y: 100, width: 200, height: 100 }
+  const bounds = { width: 1000, height: 600 }
+  assert.deepEqual(resizeFrame(frame, 'n', { x: 0, y: -20 }, bounds), { x: 100, y: 80, width: 200, height: 120 })
+  assert.deepEqual(resizeFrame(frame, 'n', { x: 0, y: 20 }, bounds), { x: 100, y: 120, width: 200, height: 80 })
+  assert.deepEqual(resizeFrame(frame, 's', { x: 0, y: 20 }, bounds), { x: 100, y: 100, width: 200, height: 120 })
+  assert.deepEqual(resizeFrame(frame, 's', { x: 0, y: -20 }, bounds), { x: 100, y: 100, width: 200, height: 80 })
 })
 test('widget minimum size is respected from anchored sides', () => {
   assert.deepEqual(resizeFrame({ x: 100, y: 100, width: 200, height: 100 }, 'nw', { x: 150, y: 90 }, { width: 500, height: 300 }, { width: 120, height: 80 }), { x: 180, y: 120, width: 120, height: 80 })

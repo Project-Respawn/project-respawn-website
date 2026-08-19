@@ -20,6 +20,16 @@ export function clientDeltaToCanvas(deltaX, deltaY, scaleX, scaleY = scaleX) {
   return { x: deltaX / safeX, y: deltaY / safeY }
 }
 
+export function detectResizeDirection(clientX, clientY, bounds, threshold = 9) {
+  if (![clientX, clientY, bounds?.left, bounds?.top, bounds?.width, bounds?.height].every(Number.isFinite) || bounds.width <= 0 || bounds.height <= 0) return null
+  const edge = Math.max(0, Math.min(Number(threshold) || 0, bounds.width / 4, bounds.height / 4))
+  const right = Number.isFinite(bounds.right) ? bounds.right : bounds.left + bounds.width
+  const bottom = Number.isFinite(bounds.bottom) ? bounds.bottom : bounds.top + bounds.height
+  const horizontal = clientX - bounds.left <= edge ? 'w' : right - clientX <= edge ? 'e' : ''
+  const vertical = clientY - bounds.top <= edge ? 'n' : bottom - clientY <= edge ? 's' : ''
+  return vertical && horizontal ? `${vertical}${horizontal}` : vertical || horizontal || null
+}
+
 function closestSnap(points, targets, distance = SNAP_DISTANCE) {
   let best = null
   for (const point of points) for (const target of targets) {
