@@ -13,7 +13,8 @@ export default {
       { label: "Quests", to: "/home", comingSoon: true },
       { label: "Friends", to: "/home", comingSoon: true },
       { label: "Events", to: "/events", comingSoon: false },
-      // { label: "Creator Tools", to: "/creator-tools", comingSoon: false },
+      { label: "Trainer Hub", to: "/trainer", comingSoon: true },
+      { label: "Creator Tools", to: "/creator-tools", comingSoon: true },
     ];
 
     const forumHighlights = [
