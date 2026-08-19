@@ -57,12 +57,12 @@ export default {
         description: "See what events are already live and what the platform is building toward.",
         to: "/events",
       },
-      // {
-      //   icon: "🎥",
-      //   title: "Open Creator Tools",
-      //   description: "Manage creator channels, bots, integrations, and upcoming creator features.",
-      //   to: "/creator-tools",
-      // },
+      {
+        icon: "🎥",
+        title: "Open Creator Tools",
+        description: "Manage creator channels, bots, integrations, and upcoming creator features.",
+        to: "/creator-tools",
+      },
     ];
 
     const roadmapItems = [
