@@ -2,16 +2,19 @@
 // PROJECT RESPAWN — PARTNER HUB DEMO DATA
 // ============================================================
 
+import ravensGamingLogo from '../../../assets/partners/ravens-gaming-logo.png';
+
 // ------------------------------------------------------------
 // SECTION 1 — PARTNER HEADER
 // ------------------------------------------------------------
 
 export const partner = {
-  name: 'Huel',
-  logoText: 'Huel',
-  type: 'Strategic Partner',
+  name: 'Ravens Community Gaming',
+  shortName: 'Ravens Gaming',
+  logo: ravensGamingLogo,
+  type: 'Featured Partner',
   activeSince: 'August 2026',
-  publicProfileUrl: '/partners/huel',
+  publicProfileUrl: '/partners/ravens-gaming',
 };
 
 // ------------------------------------------------------------
@@ -23,6 +26,7 @@ export const partnershipStatus = {
   plan: 'Featured Partner',
   featuredUntil: '30 November 2026',
   partnerSince: '12 August 2026',
+
   manager: {
     name: 'Sarah Mitchell',
     role: 'Partnerships Manager',
@@ -42,8 +46,23 @@ export const partnerStats = [
     change: '+18%',
     changeText: 'vs last 30 days',
     icon: '◉',
-    trend: [18, 22, 21, 29, 25, 34, 31, 40, 36, 46, 52, 48, 57],
+    trend: [
+      18,
+      22,
+      21,
+      29,
+      25,
+      34,
+      31,
+      40,
+      36,
+      46,
+      52,
+      48,
+      57,
+    ],
   },
+
   {
     id: 'engagements',
     label: 'Engagements',
@@ -51,8 +70,23 @@ export const partnerStats = [
     change: '+12%',
     changeText: 'vs last 30 days',
     icon: '♡',
-    trend: [14, 20, 17, 25, 29, 27, 36, 32, 42, 39, 49, 46, 53],
+    trend: [
+      14,
+      20,
+      17,
+      25,
+      29,
+      27,
+      36,
+      32,
+      42,
+      39,
+      49,
+      46,
+      53,
+    ],
   },
+
   {
     id: 'creators',
     label: 'Creator Activations',
@@ -60,8 +94,23 @@ export const partnerStats = [
     change: '+50%',
     changeText: 'vs last 30 days',
     icon: '♟',
-    trend: [12, 14, 18, 16, 24, 22, 27, 30, 28, 34, 38, 36, 42],
+    trend: [
+      12,
+      14,
+      18,
+      16,
+      24,
+      22,
+      27,
+      30,
+      28,
+      34,
+      38,
+      36,
+      42,
+    ],
   },
+
   {
     id: 'conversions',
     label: 'Conversions',
@@ -69,7 +118,21 @@ export const partnerStats = [
     change: '+22%',
     changeText: 'vs last 30 days',
     icon: '↗',
-    trend: [10, 13, 15, 14, 19, 18, 23, 25, 22, 29, 31, 30, 35],
+    trend: [
+      10,
+      13,
+      15,
+      14,
+      19,
+      18,
+      23,
+      25,
+      22,
+      29,
+      31,
+      30,
+      35,
+    ],
   },
 ];
 
@@ -80,7 +143,7 @@ export const partnerStats = [
 export const campaigns = [
   {
     id: 1,
-    name: 'Respawn September Challenge',
+    name: 'Respawn Community Challenge',
     category: 'Community Challenge',
     status: 'Active',
     creators: 6,
@@ -88,15 +151,16 @@ export const campaigns = [
     engagement: '8.4%',
     imageClass: 'campaign-image-respawn',
   },
+
   {
     id: 2,
-    name: 'Huel Nutrition Month',
-    category: 'Brand Awareness',
+    name: 'Ravens Community Month',
+    category: 'Community Awareness',
     status: 'Active',
     creators: 4,
     reach: '9,620',
     engagement: '7.1%',
-    imageClass: 'campaign-image-huel',
+    imageClass: 'campaign-image-ravens',
   },
 ];
 
@@ -119,6 +183,7 @@ export const recentPerformance = {
   title: 'Community Engagement',
   change: '+18%',
   period: 'this month',
+
   points: [
     [0, 88],
     [10, 74],
@@ -143,17 +208,20 @@ export const quickActions = [
     label: 'Edit brand profile',
     route: '/partner/profile',
   },
+
   {
     label: 'View campaigns',
     route: '/partner/campaigns',
   },
+
   {
     label: 'View analytics',
     route: '/partner/analytics',
   },
+
   {
     label: 'View public page',
-    route: '/partners',
+    route: '/partners/ravens-gaming',
   },
 ];
 
@@ -165,11 +233,12 @@ export const opportunities = [
   {
     id: 1,
     title: 'Autumn Community Challenge',
-    description: 'Looking for fitness & wellbeing partners',
+    description: 'Looking for fitness and wellbeing partners',
     meta: 'Starts 5 October 2026',
     action: 'Learn more',
     icon: '♜',
   },
+
   {
     id: 2,
     title: 'Creator Campaign Opportunity',

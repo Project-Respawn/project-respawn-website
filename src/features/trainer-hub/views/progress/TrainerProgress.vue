@@ -1,1 +1,0 @@
-<!-- Trainer Hub placeholder -->

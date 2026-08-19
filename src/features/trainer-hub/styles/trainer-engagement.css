@@ -1,0 +1,2170 @@
+/* ============================================================
+   PROJECT RESPAWN — TRAINER HUB
+   ENGAGEMENT PAGE
+   ============================================================ */
+
+
+/* ============================================================
+   PAGE
+   ============================================================ */
+
+.trainer-engagement-page {
+  flex: 1;
+  min-width: 0;
+
+  padding:
+    24px
+    28px
+    60px;
+
+  box-sizing: border-box;
+
+  background:
+    radial-gradient(
+      circle at 78% 0%,
+      rgba(94, 43, 177, 0.11),
+      transparent 34%
+    ),
+    #06101c;
+
+  color: #f4f6fb;
+}
+
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.trainer-engagement-header {
+  margin-bottom: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 24px;
+}
+
+.trainer-engagement-eyebrow {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #71ff9b;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 0.14em;
+}
+
+.trainer-engagement-header h1 {
+  margin: 0;
+
+  font-size: 31px;
+  font-weight: 800;
+
+  letter-spacing: -0.02em;
+}
+
+.trainer-engagement-header p {
+  margin: 6px 0 0;
+
+  color: #a2aab7;
+
+  font-size: 12px;
+}
+
+.trainer-engagement-header-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}
+
+.trainer-engagement-header-actions select,
+.trainer-engagement-header-actions button {
+  min-height: 38px;
+
+  padding:
+    0
+    12px;
+
+  border:
+    1px solid
+    rgba(143, 82, 255, 0.34);
+
+  border-radius: 7px;
+
+  background:
+    rgba(8, 15, 26, 0.9);
+
+  color: #edf0f5;
+
+  font-size: 9px;
+}
+
+.trainer-engagement-header-actions button {
+  color: #be7aff;
+
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   MAIN PAGE LAYOUT
+   ============================================================ */
+
+.trainer-engagement-layout {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    185px;
+
+  align-items: start;
+
+  gap: 18px;
+}
+
+.trainer-engagement-content {
+  min-width: 0;
+}
+
+
+/* ============================================================
+   SHARED SECTION SPACING
+   ============================================================ */
+
+.trainer-engagement-section {
+  scroll-margin-top: 24px;
+
+  margin-bottom: 18px;
+}
+
+.trainer-engagement-section-header {
+  margin-bottom: 12px;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 16px;
+}
+
+.trainer-engagement-section-header h2 {
+  margin: 2px 0 0;
+
+  font-size: 17px;
+}
+
+.trainer-engagement-section-header p {
+  margin: 4px 0 0;
+
+  color: #929ba9;
+
+  font-size: 9px;
+}
+
+.trainer-engagement-section-label {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #a96dff;
+
+  font-size: 7px;
+  font-weight: 800;
+
+  letter-spacing: 0.11em;
+}
+
+
+/* ============================================================
+   COLOUR SYSTEM
+   ============================================================ */
+
+.trainer-engagement-tone-purple {
+  --engagement-accent: #a25cff;
+  --engagement-accent-rgb: 162, 92, 255;
+}
+
+.trainer-engagement-tone-green {
+  --engagement-accent: #63dc6f;
+  --engagement-accent-rgb: 99, 220, 111;
+}
+
+.trainer-engagement-tone-orange {
+  --engagement-accent: #ff981c;
+  --engagement-accent-rgb: 255, 152, 28;
+}
+
+.trainer-engagement-tone-blue {
+  --engagement-accent: #4c94ff;
+  --engagement-accent-rgb: 76, 148, 255;
+}
+
+.trainer-engagement-tone-red {
+  --engagement-accent: #ff6558;
+  --engagement-accent-rgb: 255, 101, 88;
+}
+
+.trainer-engagement-tone-grey {
+  --engagement-accent: #8490a1;
+  --engagement-accent-rgb: 132, 144, 161;
+}
+
+
+/* ============================================================
+   SHARED PANEL
+   ============================================================ */
+
+.trainer-engagement-panel {
+  min-width: 0;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  border-radius: 10px;
+
+  background:
+    rgba(9, 18, 31, 0.94);
+
+  overflow: hidden;
+}
+
+.trainer-engagement-panel-header {
+  min-height: 50px;
+
+  padding:
+    0
+    14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 14px;
+
+  border-bottom:
+    1px solid
+    rgba(255, 255, 255, 0.055);
+}
+
+.trainer-engagement-panel-header h2 {
+  margin: 0;
+
+  font-size: 11px;
+
+  text-transform: uppercase;
+}
+
+.trainer-engagement-panel-header select {
+  min-height: 30px;
+
+  padding:
+    0
+    9px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.09);
+
+  border-radius: 5px;
+
+  background: #08111d;
+
+  color: #cfd4dc;
+
+  font-size: 8px;
+}
+
+
+/* ============================================================
+   OVERVIEW KPI STRIP
+   ============================================================ */
+
+.trainer-engagement-kpi-strip {
+  min-height: 118px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(5, 1fr);
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  border-radius: 10px;
+
+  background:
+    rgba(9, 18, 31, 0.94);
+
+  overflow: hidden;
+}
+
+.trainer-engagement-kpi {
+  min-width: 0;
+
+  padding:
+    18px
+    16px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  position: relative;
+}
+
+.trainer-engagement-kpi:not(:last-child)::after {
+  content: "";
+
+  position: absolute;
+
+  top: 18px;
+  bottom: 18px;
+  right: 0;
+
+  width: 1px;
+
+  background:
+    rgba(255, 255, 255, 0.06);
+}
+
+.trainer-engagement-kpi-icon {
+  width: 48px;
+  height: 48px;
+
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background:
+    rgba(var(--engagement-accent-rgb), 0.15);
+
+  color: var(--engagement-accent);
+
+  font-size: 18px;
+}
+
+.trainer-engagement-kpi > div:last-child {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.trainer-engagement-kpi strong {
+  font-size: 22px;
+}
+
+.trainer-engagement-kpi span {
+  margin-top: 2px;
+
+  color: #d2d6dd;
+
+  font-size: 9px;
+}
+
+.trainer-engagement-kpi small {
+  margin-top: 8px;
+
+  color: #69df76;
+
+  font-size: 8px;
+}
+
+.trainer-engagement-kpi small em {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #76808f;
+
+  font-style: normal;
+}
+
+
+/* ============================================================
+   TWO COLUMN ANALYTICS AREA
+   ============================================================ */
+
+.trainer-engagement-two-column {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.15fr)
+    minmax(320px, 0.85fr);
+
+  gap: 12px;
+}
+
+
+/* ============================================================
+   ENGAGEMENT CHART
+   ============================================================ */
+
+.trainer-engagement-chart {
+  min-height: 250px;
+
+  padding:
+    18px
+    16px
+    8px;
+
+  display: grid;
+
+  grid-template-columns:
+    40px
+    1fr;
+
+  gap: 7px;
+}
+
+.trainer-chart-y-axis {
+  height: 190px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  color: #84909f;
+
+  font-size: 7px;
+}
+
+.trainer-chart-plot {
+  min-width: 0;
+
+  position: relative;
+
+  border-left:
+    1px solid
+    rgba(255, 255, 255, 0.05);
+
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.045) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    100%
+    25%;
+}
+
+.trainer-chart-plot svg {
+  width: 100%;
+  height: 190px;
+
+  display: block;
+
+  overflow: visible;
+}
+
+.trainer-chart-x-axis {
+  margin-top: 8px;
+
+  display: flex;
+  justify-content: space-between;
+
+  color: #8993a2;
+
+  font-size: 7px;
+}
+
+.trainer-timeline-events {
+  padding:
+    0
+    16px
+    15px
+    55px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 10px;
+}
+
+.trainer-timeline-events > div {
+  display: grid;
+
+  grid-template-columns:
+    7px
+    1fr;
+
+  gap: 6px;
+}
+
+.trainer-timeline-events > div > span {
+  width: 6px;
+  height: 6px;
+
+  margin-top: 3px;
+
+  border-radius: 50%;
+}
+
+.trainer-event-purple {
+  background: #a25cff;
+}
+
+.trainer-event-green {
+  background: #74d960;
+}
+
+.trainer-event-blue {
+  background: #4c94ff;
+}
+
+.trainer-event-orange {
+  background: #ff981c;
+}
+
+.trainer-timeline-events div div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.trainer-timeline-events strong {
+  font-size: 7px;
+}
+
+.trainer-timeline-events small {
+  color: #8f98a6;
+
+  font-size: 7px;
+  line-height: 1.35;
+}
+
+
+/* ============================================================
+   GROUP MOTIVATORS
+   ============================================================ */
+
+.trainer-group-motivator-list {
+  padding:
+    14px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 13px;
+}
+
+.trainer-group-motivator {
+  display: grid;
+
+  grid-template-columns:
+    31px
+    140px
+    minmax(100px, 1fr)
+    40px;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+.trainer-group-motivator-icon {
+  width: 28px;
+  height: 28px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    rgba(var(--engagement-accent-rgb), 0.16);
+
+  color: var(--engagement-accent);
+
+  font-size: 11px;
+}
+
+.trainer-group-motivator > strong {
+  font-size: 8px;
+}
+
+.trainer-group-motivator-bar {
+  height: 10px;
+
+  border-radius: 3px;
+
+  background:
+    #1c2736;
+
+  overflow: hidden;
+}
+
+.trainer-group-motivator-bar span {
+  height: 100%;
+
+  display: block;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(var(--engagement-accent-rgb), 0.7),
+      var(--engagement-accent)
+    );
+}
+
+.trainer-group-motivator > b {
+  font-size: 9px;
+}
+
+.trainer-engagement-data-note {
+  margin:
+    3px
+    14px
+    14px;
+
+  color: #727c8b;
+
+  font-size: 7px;
+}
+
+
+/* ============================================================
+   MOTIVATION PROFILES SECTION
+   ============================================================ */
+
+.trainer-motivation-section {
+  padding:
+    14px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  border-radius: 10px;
+
+  background:
+    rgba(9, 18, 31, 0.94);
+}
+
+.trainer-motivation-client-selector {
+  margin-bottom: 12px;
+
+  display: flex;
+
+  gap: 8px;
+
+  overflow-x: auto;
+
+  padding-bottom: 6px;
+
+  scrollbar-width: thin;
+}
+
+.trainer-motivation-client-selector button {
+  min-width: 150px;
+
+  min-height: 54px;
+
+  padding:
+    7px
+    9px;
+
+  display: grid;
+
+  grid-template-columns:
+    34px
+    1fr;
+
+  align-items: center;
+
+  gap: 8px;
+
+  flex-shrink: 0;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+
+  border-radius: 7px;
+
+  background:
+    rgba(255, 255, 255, 0.015);
+
+  color: #fff;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.trainer-motivation-client-selector button.active {
+  border-color:
+    rgba(163, 91, 255, 0.62);
+
+  background:
+    rgba(126, 53, 221, 0.08);
+}
+
+.trainer-motivation-client-selector button > span {
+  width: 31px;
+  height: 31px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #834ed1,
+      #345d81
+    );
+
+  font-size: 7px;
+  font-weight: 800;
+}
+
+.trainer-motivation-client-selector button strong {
+  font-size: 9px;
+}
+
+
+/* ============================================================
+   MOTIVATION PROFILE GRID
+   ============================================================ */
+
+.trainer-motivation-profile-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 0.9fr)
+    minmax(0, 1.15fr);
+
+  gap: 10px;
+}
+
+.trainer-client-motivation-card,
+.trainer-client-profile-card {
+  padding: 15px;
+}
+
+
+/* ============================================================
+   CLIENT MOTIVATION SCORE
+   ============================================================ */
+
+.trainer-client-motivation-heading {
+  margin-bottom: 17px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.trainer-client-motivation-heading h3,
+.trainer-client-profile-card > h3 {
+  margin: 0;
+
+  font-size: 12px;
+
+  text-transform: uppercase;
+}
+
+.trainer-client-motivation-heading span {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #929aa9;
+
+  font-size: 8px;
+}
+
+.trainer-engagement-score-ring {
+  width: 61px;
+  height: 61px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    conic-gradient(
+      #62db70 0 92%,
+      #263241 92% 100%
+    );
+
+  position: relative;
+}
+
+.trainer-engagement-score-ring::after {
+  content: "";
+
+  position: absolute;
+
+  width: 46px;
+  height: 46px;
+
+  border-radius: 50%;
+
+  background: #0c1624;
+}
+
+.trainer-engagement-score-ring strong {
+  position: relative;
+  z-index: 1;
+
+  font-size: 14px;
+}
+
+.trainer-motivation-positive-label,
+.trainer-motivation-negative-label,
+.trainer-pattern-purple-label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 7px;
+  font-weight: 800;
+
+  letter-spacing: 0.05em;
+}
+
+.trainer-motivation-positive-label {
+  color: #66e277;
+}
+
+.trainer-motivation-negative-label {
+  margin-top: 17px;
+
+  color: #ff6c60;
+}
+
+.trainer-pattern-purple-label {
+  color: #b96fff;
+}
+
+
+/* ============================================================
+   MOTIVATOR BARS
+   ============================================================ */
+
+.trainer-client-motivator-bars,
+.trainer-client-less-effective {
+  display: flex;
+  flex-direction: column;
+
+  gap: 9px;
+}
+
+.trainer-client-motivator-bars > div,
+.trainer-client-less-effective > div {
+  display: grid;
+
+  grid-template-columns:
+    125px
+    minmax(100px, 1fr)
+    38px;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+.trainer-client-motivator-bars span,
+.trainer-client-less-effective span {
+  color: #d0d4db;
+
+  font-size: 8px;
+}
+
+.trainer-client-motivator-bars > div > div,
+.trainer-client-less-effective > div > div {
+  height: 7px;
+
+  border-radius: 3px;
+
+  background: #202b3a;
+
+  overflow: hidden;
+}
+
+.trainer-client-motivator-bars i {
+  height: 100%;
+
+  display: block;
+
+  border-radius: inherit;
+
+  background:
+    var(--engagement-accent);
+}
+
+.trainer-client-less-effective i {
+  height: 100%;
+
+  display: block;
+
+  border-radius: inherit;
+
+  background: #6c7684;
+}
+
+.trainer-client-motivator-bars strong,
+.trainer-client-less-effective strong {
+  font-size: 8px;
+}
+
+
+/* ============================================================
+   BEST APPROACH
+   ============================================================ */
+
+.trainer-best-approach {
+  margin:
+    14px
+    0;
+
+  padding:
+    11px;
+
+  display: grid;
+
+  grid-template-columns:
+    35px
+    1fr;
+
+  align-items: center;
+
+  gap: 10px;
+
+  border:
+    1px solid
+    rgba(162, 92, 255, 0.3);
+
+  border-radius: 7px;
+
+  background:
+    rgba(126, 54, 220, 0.08);
+}
+
+.trainer-best-approach > span {
+  width: 32px;
+  height: 32px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    rgba(163, 91, 255, 0.16);
+
+  color: #c28aff;
+}
+
+.trainer-best-approach div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.trainer-best-approach small {
+  color: #b67bff;
+
+  font-size: 7px;
+}
+
+.trainer-best-approach strong {
+  font-size: 9px;
+}
+
+
+/* ============================================================
+   RESPONSE GRID
+   ============================================================ */
+
+.trainer-profile-response-grid {
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
+  gap: 20px;
+}
+
+.trainer-profile-response-grid > div + div {
+  padding-left: 18px;
+
+  border-left:
+    1px solid
+    rgba(255, 255, 255, 0.06);
+}
+
+.trainer-profile-response-grid ul {
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.trainer-profile-response-grid li {
+  margin: 6px 0;
+
+  color: #b9bfca;
+
+  font-size: 8px;
+}
+
+.trainer-profile-response-grid ul.positive li::before {
+  content: "✓";
+
+  margin-right: 7px;
+
+  color: #68df76;
+}
+
+.trainer-profile-response-grid ul.negative li::before {
+  content: "×";
+
+  margin-right: 7px;
+
+  color: #ff6559;
+}
+
+
+/* ============================================================
+   NEXT ACTION
+   ============================================================ */
+
+.trainer-next-action {
+  margin-top: 15px;
+
+  padding: 10px;
+
+  display: grid;
+
+  grid-template-columns:
+    34px
+    1fr
+    auto;
+
+  align-items: center;
+
+  gap: 9px;
+
+  border:
+    1px solid
+    rgba(159, 90, 255, 0.18);
+
+  border-radius: 7px;
+
+  background:
+    rgba(119, 54, 211, 0.05);
+}
+
+.trainer-next-action > span {
+  width: 31px;
+  height: 31px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    rgba(160, 84, 240, 0.15);
+}
+
+.trainer-next-action div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.trainer-next-action small {
+  color: #b77bff;
+
+  font-size: 7px;
+}
+
+.trainer-next-action strong {
+  font-size: 8px;
+}
+
+.trainer-next-action button {
+  min-height: 31px;
+
+  padding:
+    0
+    11px;
+
+  border:
+    1px solid
+    #8242da;
+
+  border-radius: 5px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #6330b8,
+      #7739ca
+    );
+
+  color: #fff;
+
+  font-size: 8px;
+
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   CLIENT ENGAGEMENT TABLE
+   ============================================================ */
+
+.trainer-engagement-client-table-wrapper {
+  overflow-x: auto;
+}
+
+.trainer-engagement-client-table {
+  min-width: 1050px;
+}
+
+.trainer-engagement-client-head,
+.trainer-engagement-client-row {
+  display: grid;
+
+  grid-template-columns:
+    1.35fr
+    0.9fr
+    1.3fr
+    0.55fr
+    0.65fr
+    0.65fr
+    0.65fr
+    1.15fr
+    0.7fr;
+
+  align-items: center;
+
+  gap: 9px;
+
+  padding:
+    0
+    14px;
+}
+
+.trainer-engagement-client-head {
+  min-height: 41px;
+
+  color: #838d9c;
+
+  font-size: 7px;
+
+  text-transform: uppercase;
+}
+
+.trainer-engagement-client-row {
+  min-height: 52px;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.045);
+
+  color: #cad0d8;
+
+  font-size: 8px;
+}
+
+.trainer-engagement-client-person {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+}
+
+.trainer-engagement-client-person > span {
+  width: 25px;
+  height: 25px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #7f4dcc,
+      #315b80
+    );
+
+  font-size: 6px;
+  font-weight: 800;
+}
+
+.trainer-engagement-client-person strong {
+  font-size: 8px;
+}
+
+.trainer-engagement-table-score {
+  display: grid;
+
+  grid-template-columns:
+    32px
+    1fr;
+
+  align-items: center;
+
+  gap: 6px;
+}
+
+.trainer-engagement-table-score strong {
+  font-size: 8px;
+}
+
+.trainer-engagement-table-score div {
+  height: 5px;
+
+  border-radius: 3px;
+
+  background: #202b3a;
+
+  overflow: hidden;
+}
+
+.trainer-engagement-table-score div span {
+  height: 100%;
+
+  display: block;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #65dc70,
+      #87da59
+    );
+}
+
+.trainer-engagement-best-motivator,
+.trainer-engagement-companion-cell {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+}
+
+.trainer-mini-purple,
+.trainer-mini-blue,
+.trainer-mini-green,
+.trainer-mini-orange,
+.trainer-mini-red {
+  width: 8px;
+  height: 8px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+}
+
+.trainer-mini-purple {
+  background: #a25cff;
+}
+
+.trainer-mini-blue {
+  background: #4c94ff;
+}
+
+.trainer-mini-green {
+  background: #63dc6f;
+}
+
+.trainer-mini-orange {
+  background: #ff981c;
+}
+
+.trainer-mini-red {
+  background: #ff6558;
+}
+
+.trainer-engagement-trend {
+  font-size: 8px;
+}
+
+.trend-up {
+  color: #67df74;
+}
+
+.trend-down {
+  color: #ff6357;
+}
+
+.trend-flat {
+  color: #9aa3b1;
+}
+
+.trainer-engagement-status-badge {
+  width: fit-content;
+
+  padding:
+    4px
+    7px;
+
+  border-radius: 4px;
+
+  font-size: 7px;
+}
+
+.status-great {
+  background:
+    rgba(91, 210, 90, 0.16);
+
+  color: #70e177;
+}
+
+.status-good {
+  background:
+    rgba(62, 139, 231, 0.16);
+
+  color: #6ba9ff;
+}
+
+.status-stable {
+  background:
+    rgba(124, 139, 157, 0.16);
+
+  color: #aeb7c3;
+}
+
+.status-attention {
+  background:
+    rgba(255, 91, 75, 0.16);
+
+  color: #ff766a;
+}
+
+.trainer-engagement-view-all {
+  min-height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.05);
+
+  color: #b76fff;
+
+  font-size: 8px;
+
+  text-decoration: none;
+}
+
+
+/* ============================================================
+   BOTTOM GRID
+   ============================================================ */
+
+.trainer-engagement-bottom-grid {
+  display: grid;
+
+  grid-template-columns:
+    0.72fr
+    1.3fr
+    1.2fr;
+
+  gap: 12px;
+
+  align-items: stretch;
+}
+
+
+/* ============================================================
+   COMPANION IMPACT
+   ============================================================ */
+
+.trainer-companion-impact-card {
+  padding-bottom: 14px;
+}
+
+.trainer-companion-impact-main {
+  padding:
+    14px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+}
+
+.trainer-companion-large-icon {
+  width: 48px;
+  height: 48px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    rgba(160, 81, 238, 0.16);
+
+  font-size: 19px;
+}
+
+.trainer-companion-impact-main div:last-child {
+  display: flex;
+  flex-direction: column;
+}
+
+.trainer-companion-impact-main strong {
+  font-size: 22px;
+}
+
+.trainer-companion-impact-main span,
+.trainer-companion-impact-stat span,
+.trainer-companion-reengagement span {
+  color: #929ba9;
+
+  font-size: 8px;
+}
+
+.trainer-companion-impact-stat {
+  padding:
+    8px
+    14px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.trainer-companion-impact-stat strong {
+  font-size: 17px;
+}
+
+.trainer-companion-reengagement {
+  margin:
+    10px
+    14px
+    0;
+
+  padding-top: 12px;
+
+  display: flex;
+  flex-direction: column;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.06);
+}
+
+.trainer-companion-reengagement strong {
+  font-size: 20px;
+}
+
+.trainer-companion-most-effective {
+  margin:
+    12px
+    14px
+    0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.trainer-companion-most-effective span {
+  color: #b26fff;
+
+  font-size: 7px;
+}
+
+.trainer-companion-most-effective strong {
+  color: #bac1cb;
+
+  font-size: 8px;
+}
+
+
+/* ============================================================
+   ENGAGEMENT PATTERNS
+   ============================================================ */
+
+.trainer-patterns-card {
+  padding-bottom: 15px;
+}
+
+.trainer-patterns-grid {
+  padding:
+    14px;
+
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    0.85fr;
+
+  gap: 20px;
+}
+
+.trainer-best-day-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 9px;
+}
+
+.trainer-best-day-list > div {
+  display: grid;
+
+  grid-template-columns:
+    65px
+    1fr
+    33px;
+
+  align-items: center;
+
+  gap: 7px;
+}
+
+.trainer-best-day-list span,
+.trainer-best-day-list strong {
+  font-size: 7px;
+}
+
+.trainer-best-day-list div div {
+  height: 6px;
+
+  border-radius: 3px;
+
+  background: #1e2938;
+
+  overflow: hidden;
+}
+
+.trainer-best-day-list div div i {
+  height: 100%;
+
+  display: block;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #8545da,
+      #a45fee
+    );
+}
+
+.trainer-reward-pattern-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 9px;
+}
+
+.trainer-reward-pattern-list > div {
+  display: grid;
+
+  grid-template-columns:
+    28px
+    1fr;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+.trainer-reward-pattern-list > div > span {
+  width: 27px;
+  height: 27px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    rgba(var(--engagement-accent-rgb), 0.16);
+
+  color: var(--engagement-accent);
+
+  font-size: 11px;
+}
+
+.trainer-reward-pattern-list strong {
+  font-size: 8px;
+}
+
+
+/* ============================================================
+   RESPAWN INSIGHTS
+   ============================================================ */
+
+.trainer-respawn-insight-list {
+  padding:
+    11px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 9px;
+}
+
+.trainer-respawn-insight-list > article {
+  padding:
+    9px;
+
+  display: grid;
+
+  grid-template-columns:
+    35px
+    1fr;
+
+  gap: 8px;
+
+  border-radius: 7px;
+
+  background:
+    rgba(255, 255, 255, 0.02);
+}
+
+.trainer-respawn-insight-icon {
+  width: 33px;
+  height: 33px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    rgba(var(--engagement-accent-rgb), 0.15);
+
+  color: var(--engagement-accent);
+
+  font-size: 13px;
+}
+
+.trainer-respawn-insight-list article > div {
+  min-width: 0;
+}
+
+.trainer-respawn-insight-list article strong {
+  font-size: 8px;
+}
+
+.trainer-respawn-insight-list article p {
+  margin:
+    4px
+    0
+    7px;
+
+  color: #a3abb7;
+
+  font-size: 7px;
+  line-height: 1.45;
+}
+
+.trainer-respawn-insight-list article div div {
+  display: flex;
+
+  gap: 5px;
+
+  flex-wrap: wrap;
+}
+
+.trainer-respawn-insight-list button {
+  min-height: 27px;
+
+  padding:
+    0
+    8px;
+
+  border:
+    1px solid
+    rgba(var(--engagement-accent-rgb), 0.46);
+
+  border-radius: 4px;
+
+  background:
+    rgba(var(--engagement-accent-rgb), 0.055);
+
+  color: var(--engagement-accent);
+
+  font-size: 7px;
+
+  cursor: pointer;
+}
+
+.trainer-respawn-insight-list button.secondary {
+  border-color:
+    rgba(255, 255, 255, 0.09);
+
+  background: transparent;
+
+  color: #aeb5c0;
+}
+
+
+/* ============================================================
+   PAGE FOOTER
+   ============================================================ */
+
+.trainer-engagement-footer {
+  min-height: 54px;
+
+  padding:
+    0
+    15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+
+  border-radius: 8px;
+
+  background:
+    rgba(8, 17, 29, 0.86);
+}
+
+.trainer-engagement-footer p {
+  margin: 0;
+
+  color: #828c9a;
+
+  font-size: 7px;
+}
+
+.trainer-engagement-footer button {
+  border: 0;
+
+  background: transparent;
+
+  color: #b96fff;
+
+  font-size: 8px;
+
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   STICKY PAGE INDEX
+   ============================================================ */
+
+.trainer-engagement-index {
+  position: sticky;
+
+  top: 20px;
+
+  align-self: start;
+
+  padding:
+    14px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  border-radius: 9px;
+
+  background:
+    rgba(8, 17, 29, 0.95);
+
+  box-shadow:
+    0 12px 35px
+    rgba(0, 0, 0, 0.12);
+}
+
+.trainer-engagement-index-title {
+  display: block;
+
+  margin:
+    0
+    7px
+    10px;
+
+  color: #868f9e;
+
+  font-size: 7px;
+  font-weight: 800;
+
+  letter-spacing: 0.12em;
+}
+
+.trainer-engagement-index nav {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.trainer-engagement-index nav button {
+  min-height: 34px;
+
+  padding:
+    0
+    8px;
+
+  display: grid;
+
+  grid-template-columns:
+    8px
+    1fr;
+
+  align-items: center;
+
+  gap: 6px;
+
+  border: 0;
+  border-left:
+    2px solid
+    transparent;
+
+  border-radius:
+    0
+    5px
+    5px
+    0;
+
+  background: transparent;
+
+  color: #929ba9;
+
+  font-size: 8px;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.trainer-engagement-index nav button > span {
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: #475264;
+}
+
+.trainer-engagement-index nav button:hover {
+  color: #fff;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+}
+
+.trainer-engagement-index nav button.active {
+  border-left-color: #9e5cff;
+
+  background:
+    rgba(158, 92, 255, 0.07);
+
+  color: #c486ff;
+}
+
+.trainer-engagement-index nav button.active > span {
+  background: #a861ff;
+
+  box-shadow:
+    0 0 8px
+    rgba(168, 97, 255, 0.45);
+}
+
+.trainer-engagement-index-help {
+  margin-top: 13px;
+
+  padding:
+    10px;
+
+  display: flex;
+  align-items: flex-start;
+
+  gap: 7px;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.06);
+
+  color: #9099a7;
+}
+
+.trainer-engagement-index-help > span {
+  font-size: 13px;
+}
+
+.trainer-engagement-index-help p {
+  margin: 0;
+
+  font-size: 7px;
+  line-height: 1.45;
+}
+
+
+/* ============================================================
+   RESPONSIVE — LARGE TABLET / SMALL DESKTOP
+   ============================================================ */
+
+@media (max-width: 1350px) {
+
+  .trainer-engagement-layout {
+    grid-template-columns:
+      minmax(0, 1fr)
+      165px;
+  }
+
+  .trainer-engagement-kpi-strip {
+    grid-template-columns:
+      repeat(3, 1fr);
+  }
+
+  .trainer-engagement-kpi:nth-child(3)::after {
+    display: none;
+  }
+
+  .trainer-engagement-kpi:nth-child(-n + 3) {
+    border-bottom:
+      1px solid
+      rgba(255, 255, 255, 0.05);
+  }
+
+  .trainer-engagement-bottom-grid {
+    grid-template-columns:
+      0.85fr
+      1.15fr;
+  }
+
+  .trainer-respawn-insights {
+    grid-column:
+      1 / -1;
+  }
+}
+
+
+/* ============================================================
+   RESPONSIVE — TABLET
+   ============================================================ */
+
+@media (max-width: 1100px) {
+
+  .trainer-engagement-layout {
+    grid-template-columns:
+      1fr;
+  }
+
+  .trainer-engagement-index {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 20;
+
+    order: -1;
+
+    display: none;
+  }
+
+  .trainer-engagement-two-column,
+  .trainer-motivation-profile-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .trainer-engagement-bottom-grid {
+    grid-template-columns:
+      1fr
+      1fr;
+  }
+
+  .trainer-respawn-insights {
+    grid-column:
+      1 / -1;
+  }
+}
+
+
+/* ============================================================
+   RESPONSIVE — SMALL TABLET
+   ============================================================ */
+
+@media (max-width: 850px) {
+
+  .trainer-engagement-page {
+    padding:
+      18px;
+  }
+
+  .trainer-engagement-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .trainer-engagement-header-actions {
+    width: 100%;
+
+    flex-wrap: wrap;
+  }
+
+  .trainer-engagement-kpi-strip {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+  .trainer-engagement-kpi:nth-child(3)::after {
+    display: block;
+  }
+
+  .trainer-engagement-kpi:nth-child(even)::after {
+    display: none;
+  }
+
+  .trainer-profile-response-grid,
+  .trainer-patterns-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .trainer-profile-response-grid > div + div {
+    padding:
+      12px
+      0
+      0;
+
+    border-left: 0;
+
+    border-top:
+      1px solid
+      rgba(255, 255, 255, 0.06);
+  }
+
+  .trainer-engagement-bottom-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .trainer-respawn-insights {
+    grid-column: auto;
+  }
+}
+
+
+/* ============================================================
+   RESPONSIVE — MOBILE
+   ============================================================ */
+
+@media (max-width: 600px) {
+
+  .trainer-engagement-kpi-strip {
+    grid-template-columns:
+      1fr;
+  }
+
+  .trainer-engagement-kpi {
+    border-bottom:
+      1px solid
+      rgba(255, 255, 255, 0.05);
+  }
+
+  .trainer-engagement-kpi::after {
+    display: none !important;
+  }
+
+  .trainer-engagement-header-actions {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .trainer-engagement-header-actions select,
+  .trainer-engagement-header-actions button {
+    width: 100%;
+  }
+
+  .trainer-timeline-events {
+    padding-left: 16px;
+
+    grid-template-columns:
+      1fr
+      1fr;
+  }
+
+  .trainer-group-motivator {
+    grid-template-columns:
+      31px
+      1fr
+      38px;
+  }
+
+  .trainer-group-motivator-bar {
+    grid-column:
+      2;
+  }
+
+  .trainer-client-motivator-bars > div,
+  .trainer-client-less-effective > div {
+    grid-template-columns:
+      1fr
+      38px;
+  }
+
+  .trainer-client-motivator-bars > div > div,
+  .trainer-client-less-effective > div > div {
+    grid-column:
+      1;
+  }
+
+  .trainer-next-action {
+    grid-template-columns:
+      34px
+      1fr;
+  }
+
+  .trainer-next-action button {
+    grid-column:
+      1 / -1;
+  }
+
+  .trainer-engagement-footer {
+    padding:
+      14px;
+
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,1455 @@
+/* ============================================================
+   PROJECT RESPAWN — PARTNER HUB
+   CAMPAIGNS PAGE
+   ============================================================ */
+
+
+/* ============================================================
+   PAGE
+   ============================================================ */
+
+.partner-campaigns-page {
+  flex: 1;
+  min-width: 0;
+
+  padding: 24px 28px 40px;
+
+  background:
+    radial-gradient(
+      circle at 75% 0%,
+      rgba(90, 42, 190, 0.12),
+      transparent 34%
+    ),
+    #070b13;
+
+  color: #f5f7fb;
+}
+
+
+/* ============================================================
+   PAGE HEADER
+   ============================================================ */
+
+.partner-campaigns-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  margin-bottom: 18px;
+}
+
+.partner-campaigns-eyebrow {
+  display: block;
+
+  color: #71ff9b;
+
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.partner-campaigns-header h1 {
+  margin: 3px 0 7px;
+
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.partner-campaigns-header p {
+  margin: 0;
+
+  color: #a5acba;
+
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.partner-campaign-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.partner-artwork-library-button {
+  padding: 10px 14px;
+
+  border: 1px solid rgba(113, 255, 155, 0.28);
+  border-radius: 7px;
+
+  background: rgba(113, 255, 155, 0.045);
+
+  color: #71ff9b;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.partner-artwork-library-button:hover {
+  background: rgba(113, 255, 155, 0.09);
+
+  border-color: rgba(113, 255, 155, 0.48);
+}
+
+
+/* ============================================================
+   CATEGORY COLOUR SYSTEM
+   ============================================================ */
+
+.category-community {
+  --campaign-accent: #9d4edd;
+  --campaign-accent-rgb: 157, 78, 221;
+}
+
+.category-creator {
+  --campaign-accent: #3882f6;
+  --campaign-accent-rgb: 56, 130, 246;
+}
+
+.category-wellbeing {
+  --campaign-accent: #22c55e;
+  --campaign-accent-rgb: 34, 197, 94;
+}
+
+.category-gaming {
+  --campaign-accent: #6366f1;
+  --campaign-accent-rgb: 99, 102, 241;
+}
+
+.category-racing {
+  --campaign-accent: #f97316;
+  --campaign-accent-rgb: 249, 115, 22;
+}
+
+.category-seasonal {
+  --campaign-accent: #f59e0b;
+  --campaign-accent-rgb: 245, 158, 11;
+}
+
+
+/* ============================================================
+   SHARED CAMPAIGN SECTION
+   ============================================================ */
+
+.partner-campaigns-section {
+  margin-bottom: 16px;
+
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 13px;
+
+  background: rgba(14, 19, 30, 0.92);
+
+  overflow: hidden;
+}
+
+.partner-campaigns-section-header {
+  min-height: 68px;
+
+  padding: 13px 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.partner-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.partner-section-icon {
+  width: 36px;
+  height: 36px;
+
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  border-radius: 9px;
+
+  background: rgba(113, 57, 225, 0.15);
+
+  color: #ae75ff;
+
+  font-size: 16px;
+}
+
+.partner-section-heading h2 {
+  margin: 0;
+
+  font-size: 17px;
+}
+
+.partner-section-heading p {
+  margin: 4px 0 0;
+
+  color: #969dac;
+
+  font-size: 10px;
+}
+
+.partner-campaigns-link {
+  border: 0;
+
+  background: none;
+
+  color: #b276ff;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   SECTION 1 — UPCOMING EVENTS & OPPORTUNITIES
+   ============================================================ */
+
+.partner-opportunities-grid {
+  padding: 0 18px 18px;
+
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+
+/* ============================================================
+   OPPORTUNITY CARD
+   ============================================================ */
+
+.partner-opportunity-campaign-card {
+  min-width: 0;
+
+  border:
+    1px solid
+    rgba(var(--campaign-accent-rgb), 0.22);
+
+  border-radius: 11px;
+
+  background: #0c111b;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 0 22px
+    rgba(var(--campaign-accent-rgb), 0.035);
+
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.partner-opportunity-campaign-card:hover {
+  transform: translateY(-2px);
+
+  border-color:
+    rgba(var(--campaign-accent-rgb), 0.42);
+
+  box-shadow:
+    0 12px 30px
+    rgba(0, 0, 0, 0.18);
+}
+
+
+/* ============================================================
+   OPPORTUNITY IMAGE
+   ============================================================ */
+
+.partner-opportunity-visual {
+  min-height: 215px;
+
+  padding: 14px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+
+  position: relative;
+
+  background-size: cover;
+  background-position: center;
+
+  overflow: hidden;
+}
+
+.partner-opportunity-visual::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(5, 8, 15, 0.98) 0%,
+      rgba(5, 8, 15, 0.62) 45%,
+      rgba(5, 8, 15, 0.08) 78%
+    );
+
+  pointer-events: none;
+}
+
+
+/* ============================================================
+   OPPORTUNITY DATE
+   ============================================================ */
+
+.partner-opportunity-date {
+  width: 50px;
+  height: 62px;
+
+  padding: 5px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+  z-index: 2;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 7px;
+
+  background: rgba(5, 8, 15, 0.88);
+
+  backdrop-filter: blur(6px);
+}
+
+.partner-opportunity-date strong {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.partner-opportunity-date span {
+  margin-top: 3px;
+
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.partner-opportunity-date small {
+  margin-top: 2px;
+
+  color: #b5bbc6;
+
+  font-size: 7px;
+}
+
+
+/* ============================================================
+   OPPORTUNITY CATEGORY BADGE
+   ============================================================ */
+
+.partner-opportunity-type {
+  position: absolute;
+
+  top: 14px;
+  right: 14px;
+
+  z-index: 2;
+
+  padding: 5px 8px;
+
+  border-radius: 6px;
+
+  background:
+    rgba(var(--campaign-accent-rgb), 0.9);
+
+  color: #fff;
+
+  font-size: 8px;
+  font-weight: 800;
+
+  text-transform: uppercase;
+}
+
+
+/* ============================================================
+   OPPORTUNITY COPY
+   ============================================================ */
+
+.partner-opportunity-visual-content {
+  margin-top: auto;
+
+  position: relative;
+  z-index: 2;
+}
+
+.partner-opportunity-visual-content h3 {
+  margin: 0 0 8px;
+
+  max-width: 240px;
+
+  font-size: 17px;
+  line-height: 1.2;
+}
+
+.partner-opportunity-visual-content p {
+  margin: 0;
+
+  color: #d0d4dc;
+
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+
+/* ============================================================
+   OPPORTUNITY DETAILS
+   ============================================================ */
+
+.partner-opportunity-details {
+  padding: 13px 14px 14px;
+
+  border-top:
+    1px solid
+    rgba(var(--campaign-accent-rgb), 0.12);
+}
+
+.partner-opportunity-looking {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #a6adba;
+
+  font-size: 10px;
+}
+
+.partner-opportunity-details ul {
+  margin: 0 0 12px;
+  padding: 0;
+
+  list-style: none;
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.partner-opportunity-details li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  color: #cbd0d8;
+
+  font-size: 10px;
+}
+
+.partner-opportunity-details li span {
+  color: var(--campaign-accent);
+}
+
+.partner-opportunity-button {
+  width: 100%;
+  min-height: 36px;
+
+  border:
+    1px solid
+    rgba(var(--campaign-accent-rgb), 0.65);
+
+  border-radius: 7px;
+
+  background:
+    rgba(var(--campaign-accent-rgb), 0.08);
+
+  color: #fff;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: background 0.18s ease;
+}
+
+.partner-opportunity-button:hover {
+  background:
+    rgba(var(--campaign-accent-rgb), 0.17);
+}
+
+
+/* ============================================================
+   SECTION 2 — YOUR CAMPAIGNS
+   ============================================================ */
+
+.partner-campaign-tabs {
+  margin: 0 18px;
+
+  display: flex;
+  gap: 26px;
+
+  border-bottom:
+    1px solid
+    rgba(255, 255, 255, 0.06);
+}
+
+.partner-campaign-tab {
+  padding: 10px 2px;
+
+  position: relative;
+
+  border: 0;
+
+  background: none;
+
+  color: #9299a8;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.partner-campaign-tab:hover {
+  color: #d9dce4;
+}
+
+.partner-campaign-tab-active {
+  color: #fff;
+}
+
+.partner-campaign-tab-active::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: -1px;
+
+  height: 2px;
+
+  background: #9d5fff;
+}
+
+
+/* ============================================================
+   CAMPAIGN CARD GRID
+   ============================================================ */
+
+.partner-campaign-cards {
+  padding: 12px 18px 18px;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+
+/* ============================================================
+   CAMPAIGN CARD
+   ============================================================ */
+
+.partner-owned-campaign-card {
+  min-width: 0;
+
+  display: grid;
+
+  grid-template-columns:
+    145px
+    minmax(0, 1fr)
+    105px;
+
+  position: relative;
+
+  border:
+    1px solid
+    rgba(var(--campaign-accent-rgb), 0.16);
+
+  border-radius: 10px;
+
+  background:
+    rgba(8, 13, 22, 0.76);
+
+  overflow: hidden;
+
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.partner-owned-campaign-card:hover {
+  transform: translateY(-2px);
+
+  border-color:
+    rgba(var(--campaign-accent-rgb), 0.34);
+}
+
+
+/* ============================================================
+   CAMPAIGN ARTWORK
+   ============================================================ */
+
+.partner-owned-campaign-art {
+  min-height: 190px;
+
+  background-size: cover;
+  background-position: center;
+
+  border-right:
+    1px solid
+    rgba(var(--campaign-accent-rgb), 0.12);
+}
+
+
+/* ============================================================
+   CAMPAIGN INFORMATION
+   ============================================================ */
+
+.partner-owned-campaign-info {
+  padding: 14px 12px;
+}
+
+.partner-owned-campaign-status {
+  display: inline-flex;
+
+  padding: 4px 7px;
+
+  border-radius: 5px;
+
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.partner-status-active {
+  background:
+    rgba(69, 209, 96, 0.16);
+
+  color: #71eb80;
+}
+
+.partner-status-upcoming {
+  background:
+    rgba(62, 118, 255, 0.17);
+
+  color: #75a5ff;
+}
+
+.partner-status-completed {
+  background:
+    rgba(153, 160, 176, 0.13);
+
+  color: #b8bdc8;
+}
+
+.partner-owned-campaign-info h3 {
+  margin: 9px 0 7px;
+
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+.partner-owned-campaign-date {
+  display: block;
+
+  color: #a1a8b5;
+
+  font-size: 9px;
+}
+
+.partner-owned-campaign-info p {
+  margin: 12px 0 0;
+
+  color: #969dac;
+
+  font-size: 9px;
+  line-height: 1.6;
+}
+
+
+/* ============================================================
+   CAMPAIGN METRICS
+   ============================================================ */
+
+.partner-owned-campaign-metrics {
+  padding: 14px 12px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+
+  border-left:
+    1px solid
+    rgba(255, 255, 255, 0.06);
+}
+
+.partner-owned-campaign-metrics > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.partner-owned-campaign-metrics span {
+  color: #969dac;
+
+  font-size: 8px;
+}
+
+.partner-owned-campaign-metrics strong {
+  font-size: 13px;
+}
+
+
+/* ============================================================
+   CAMPAIGN FOOTER
+   ============================================================ */
+
+.partner-owned-campaign-footer {
+  grid-column: 1 / -1;
+
+  min-height: 48px;
+
+  padding: 8px 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  border-top:
+    1px solid
+    rgba(var(--campaign-accent-rgb), 0.1);
+}
+
+.partner-owned-campaign-footer > span {
+  color: #a8afbb;
+
+  font-size: 9px;
+}
+
+.partner-owned-campaign-footer strong {
+  color: var(--campaign-accent);
+}
+
+.partner-owned-campaign-button {
+  padding: 7px 10px;
+
+  border:
+    1px solid
+    rgba(var(--campaign-accent-rgb), 0.55);
+
+  border-radius: 6px;
+
+  background:
+    rgba(var(--campaign-accent-rgb), 0.07);
+
+  color: #eee6ff;
+
+  font-size: 9px;
+
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   EMPTY CAMPAIGN STATE
+   ============================================================ */
+
+.partner-campaign-empty-state {
+  grid-column: 1 / -1;
+
+  min-height: 130px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 5px;
+
+  border:
+    1px dashed
+    rgba(255, 255, 255, 0.08);
+
+  border-radius: 10px;
+
+  color: #8e96a5;
+}
+
+.partner-campaign-empty-state strong {
+  color: #d9dce4;
+
+  font-size: 13px;
+}
+
+.partner-campaign-empty-state span {
+  font-size: 10px;
+}
+
+
+/* ============================================================
+   SECTION 3 — CAMPAIGN IDEA
+   ============================================================ */
+
+.partner-campaign-idea {
+  min-height: 110px;
+
+  padding: 16px 20px;
+
+  display: grid;
+
+  grid-template-columns:
+    76px
+    minmax(220px, 0.95fr)
+    minmax(520px, 1.7fr)
+    auto;
+
+  align-items: center;
+  gap: 20px;
+
+  border:
+    1px solid
+    rgba(119, 66, 231, 0.2);
+
+  border-radius: 13px;
+
+  background:
+    radial-gradient(
+      circle at 8% 50%,
+      rgba(134, 65, 242, 0.18),
+      transparent 14%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(28, 20, 48, 0.88),
+      rgba(12, 16, 27, 0.95)
+    );
+}
+
+.partner-campaign-idea-icon {
+  width: 64px;
+  height: 64px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    rgba(120, 61, 230, 0.22);
+
+  color: #bc84ff;
+
+  font-size: 28px;
+
+  box-shadow:
+    0 0 24px
+    rgba(121, 62, 231, 0.18);
+}
+
+.partner-campaign-idea-copy h2 {
+  margin: 0 0 6px;
+
+  font-size: 18px;
+}
+
+.partner-campaign-idea-copy p {
+  margin: 0;
+
+  color: #a0a7b4;
+
+  font-size: 9px;
+  line-height: 1.6;
+}
+
+
+/* ============================================================
+   CAMPAIGN PROCESS
+   ============================================================ */
+
+.partner-campaign-process {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.partner-campaign-process > div {
+  display: flex;
+  gap: 9px;
+}
+
+.partner-campaign-process-icon {
+  width: 28px;
+  height: 28px;
+
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  border:
+    1px solid
+    rgba(151, 91, 255, 0.28);
+
+  border-radius: 50%;
+
+  color: #b478ff;
+
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.partner-campaign-process strong {
+  display: block;
+
+  font-size: 10px;
+}
+
+.partner-campaign-process p {
+  margin: 4px 0 0;
+
+  color: #8e96a5;
+
+  font-size: 8px;
+  line-height: 1.5;
+}
+
+
+/* ============================================================
+   SUBMIT CAMPAIGN
+   ============================================================ */
+
+.partner-campaign-submit {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 7px;
+}
+
+.partner-campaign-submit-button {
+  min-width: 170px;
+
+  padding: 10px 14px;
+
+  border:
+    1px solid
+    rgba(150, 86, 255, 0.65);
+
+  border-radius: 7px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #6425c4,
+      #782fdd
+    );
+
+  color: #fff;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.partner-campaign-submit span {
+  color: #8d95a4;
+
+  font-size: 8px;
+}
+
+
+/* ============================================================
+   ARTWORK DRAWER BACKDROP
+   ============================================================ */
+
+.partner-artwork-backdrop {
+  position: fixed;
+  inset: 0;
+
+  z-index: 9990;
+
+  border: 0;
+
+  background:
+    rgba(2, 5, 10, 0.7);
+
+  backdrop-filter: blur(3px);
+
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   ARTWORK DRAWER
+   ============================================================ */
+
+.partner-artwork-drawer {
+  width: min(440px, 92vw);
+
+  position: fixed;
+
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  z-index: 9991;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #090e17;
+
+  border-left:
+    1px solid
+    rgba(153, 92, 255, 0.3);
+
+  box-shadow:
+    -20px 0 60px
+    rgba(0, 0, 0, 0.45);
+
+  overflow-y: auto;
+}
+
+
+/* ============================================================
+   ARTWORK DRAWER HEADER
+   ============================================================ */
+
+.partner-artwork-drawer-header {
+  padding: 22px;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+
+  border-bottom:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+}
+
+.partner-artwork-drawer-header > div > span {
+  color: #71ff9b;
+
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.partner-artwork-drawer-header h2 {
+  margin: 5px 0;
+
+  font-size: 22px;
+}
+
+.partner-artwork-drawer-header p {
+  margin: 0;
+
+  color: #9ba2b0;
+
+  font-size: 10px;
+  line-height: 1.55;
+}
+
+.partner-artwork-close {
+  width: 34px;
+  height: 34px;
+
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  border-radius: 8px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color: #fff;
+
+  font-size: 20px;
+
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   DRAWER SECTIONS
+   ============================================================ */
+
+.partner-artwork-upload,
+.partner-artwork-suggestions,
+.partner-artwork-category-guide {
+  padding: 20px 22px;
+}
+
+.partner-artwork-upload,
+.partner-artwork-suggestions {
+  border-bottom:
+    1px solid
+    rgba(255, 255, 255, 0.06);
+}
+
+.partner-artwork-section-label {
+  display: block;
+
+  margin-bottom: 10px;
+
+  color: #a76cff;
+
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+}
+
+
+/* ============================================================
+   UPLOAD YOUR OWN IMAGE
+   ============================================================ */
+
+.partner-artwork-upload-box {
+  padding: 20px;
+
+  border:
+    1px dashed
+    rgba(151, 91, 255, 0.35);
+
+  border-radius: 10px;
+
+  background:
+    rgba(111, 54, 220, 0.04);
+
+  text-align: center;
+}
+
+.partner-artwork-upload-box strong {
+  display: block;
+
+  font-size: 13px;
+}
+
+.partner-artwork-upload-box p {
+  margin: 6px 0 13px;
+
+  color: #949cab;
+
+  font-size: 9px;
+}
+
+.partner-artwork-upload-box button {
+  padding: 8px 13px;
+
+  border:
+    1px solid
+    rgba(148, 85, 255, 0.58);
+
+  border-radius: 7px;
+
+  background:
+    rgba(110, 53, 220, 0.1);
+
+  color: #eee6ff;
+
+  font-size: 9px;
+
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   SUGGESTED ARTWORK
+   ============================================================ */
+
+.partner-artwork-description {
+  margin: -2px 0 12px;
+
+  color: #949cab;
+
+  font-size: 9px;
+}
+
+.partner-artwork-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.partner-artwork-card {
+  padding: 0;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  border-radius: 9px;
+
+  background: #0d131e;
+
+  color: #fff;
+
+  text-align: left;
+
+  overflow: hidden;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.partner-artwork-card:hover {
+  transform: translateY(-2px);
+
+  border-color:
+    rgba(151, 91, 255, 0.52);
+}
+
+.partner-artwork-card img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+.partner-artwork-card > div {
+  padding: 9px 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.partner-artwork-card strong {
+  font-size: 10px;
+}
+
+.partner-artwork-card span {
+  color: #969dac;
+
+  font-size: 8px;
+}
+
+
+/* ============================================================
+   CATEGORY GUIDE
+   ============================================================ */
+
+.partner-artwork-category-guide > p {
+  color: #949cab;
+
+  font-size: 9px;
+  line-height: 1.55;
+}
+
+.partner-category-guide-grid {
+  margin-top: 12px;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.partner-category-guide-grid > span {
+  padding: 10px;
+
+  border-radius: 7px;
+
+  border:
+    1px solid
+    rgba(var(--campaign-accent-rgb), 0.35);
+
+  background:
+    rgba(var(--campaign-accent-rgb), 0.09);
+
+  color: var(--campaign-accent);
+
+  font-size: 9px;
+  font-weight: 800;
+}
+
+
+/* ============================================================
+   DRAWER TRANSITIONS
+   ============================================================ */
+
+.partner-drawer-fade-enter-active,
+.partner-drawer-fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.partner-drawer-fade-enter-from,
+.partner-drawer-fade-leave-to {
+  opacity: 0;
+}
+
+.partner-drawer-slide-enter-active,
+.partner-drawer-slide-leave-active {
+  transition: transform 0.24s ease;
+}
+
+.partner-drawer-slide-enter-from,
+.partner-drawer-slide-leave-to {
+  transform: translateX(100%);
+}
+
+
+/* ============================================================
+   RESPONSIVE — MEDIUM DESKTOP
+   ============================================================ */
+
+@media (max-width: 1450px) {
+  .partner-opportunities-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+  .partner-campaign-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .partner-campaign-idea {
+    grid-template-columns:
+      70px
+      1fr;
+  }
+
+  .partner-campaign-process {
+    grid-column: 1 / -1;
+  }
+
+  .partner-campaign-submit {
+    grid-column: 1 / -1;
+
+    align-items: flex-start;
+  }
+}
+
+
+/* ============================================================
+   RESPONSIVE — TABLET
+   ============================================================ */
+
+@media (max-width: 900px) {
+  .partner-campaigns-page {
+    padding: 18px;
+  }
+
+  .partner-campaigns-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .partner-campaign-header-actions {
+    width: 100%;
+
+    flex-wrap: wrap;
+  }
+
+  .partner-opportunities-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ============================================================
+   RESPONSIVE — SMALL TABLET
+   ============================================================ */
+
+@media (max-width: 620px) {
+  .partner-campaigns-section-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .partner-owned-campaign-card {
+    grid-template-columns:
+      110px
+      1fr;
+  }
+
+  .partner-owned-campaign-metrics {
+    grid-column: 1 / -1;
+
+    flex-direction: row;
+    justify-content: space-between;
+
+    border-left: 0;
+
+    border-top:
+      1px solid
+      rgba(255, 255, 255, 0.06);
+  }
+
+  .partner-owned-campaign-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .partner-campaign-idea {
+    grid-template-columns: 1fr;
+  }
+
+  .partner-campaign-process {
+    grid-template-columns: 1fr;
+  }
+
+  .partner-artwork-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ============================================================
+   RESPONSIVE — MOBILE
+   ============================================================ */
+
+@media (max-width: 460px) {
+  .partner-campaign-header-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .partner-artwork-library-button {
+    width: 100%;
+  }
+
+  .partner-owned-campaign-card {
+    grid-template-columns: 1fr;
+  }
+
+  .partner-owned-campaign-art {
+    min-height: 190px;
+
+    border-right: 0;
+
+    border-bottom:
+      1px solid
+      rgba(var(--campaign-accent-rgb), 0.12);
+  }
+
+  .partner-owned-campaign-metrics {
+    flex-direction: column;
+  }
+
+  .partner-category-guide-grid {
+    grid-template-columns: 1fr;
+  }
+}

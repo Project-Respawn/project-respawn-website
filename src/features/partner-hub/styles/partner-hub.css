@@ -18,6 +18,7 @@
     sans-serif;
 }
 
+
 /* ============================================================
    SIDEBAR
    ============================================================ */
@@ -36,41 +37,29 @@
   border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+
+/* ============================================================
+   SIDEBAR — PROJECT RESPAWN BRANDING
+   ============================================================ */
+
 .partner-sidebar-brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: flex-start;
 }
 
-.respawn-mark {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-
-  display: grid;
-  place-items: center;
-
-  font-weight: 900;
-  font-size: 21px;
-
-  background: linear-gradient(135deg, #7b43ff, #4e22c9);
+.partner-sidebar-logo {
+  display: block;
+  width: auto;
+  height: 42px;
+  max-width: 120px;
+  object-fit: contain;
 }
 
-.partner-sidebar-brand div:last-child {
-  display: flex;
-  flex-direction: column;
-}
 
-.partner-sidebar-brand strong {
-  font-size: 19px;
-  letter-spacing: 0.04em;
-}
-
-.brand-small {
-  color: #a9afbe;
-  font-size: 10px;
-  letter-spacing: 0.18em;
-}
+/* ============================================================
+   SIDEBAR — NAVIGATION
+   ============================================================ */
 
 .partner-sidebar-divider {
   height: 1px;
@@ -127,6 +116,11 @@
   text-align: center;
 }
 
+
+/* ============================================================
+   SIDEBAR — CREATOR DISCOVERY
+   ============================================================ */
+
 .partner-nav-coming-soon {
   padding: 0 10px;
 
@@ -154,6 +148,11 @@
 .partner-sidebar-spacer {
   flex: 1;
 }
+
+
+/* ============================================================
+   SIDEBAR — SUPPORT
+   ============================================================ */
 
 .partner-support-card {
   padding: 16px;
@@ -213,6 +212,7 @@
   cursor: pointer;
 }
 
+
 /* ============================================================
    MAIN DASHBOARD
    ============================================================ */
@@ -222,6 +222,7 @@
   padding: 24px 28px 40px;
   overflow: hidden;
 }
+
 
 /* ============================================================
    SECTION 1 — HEADER
@@ -273,16 +274,34 @@
   width: 94px;
   height: 94px;
 
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  padding: 8px;
+  box-sizing: border-box;
 
   border-radius: 13px;
 
-  background: #fff;
-  color: #050505;
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(126, 75, 255, 0.13),
+      rgba(10, 14, 24, 0.65)
+    );
 
-  font-size: 25px;
-  font-weight: 900;
+  border: 1px solid rgba(164, 104, 255, 0.25);
+}
+
+.partner-brand-logo-image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
 }
 
 .partner-header-copy h1 {
@@ -302,6 +321,7 @@
   color: #a868ff;
   font-weight: 700;
 }
+
 
 /* ============================================================
    COMMON PANELS
@@ -387,6 +407,7 @@
 .partner-status-item strong {
   font-size: 14px;
 }
+
 
 /* ============================================================
    SECTION 3 — STAT CARDS
@@ -481,6 +502,7 @@
   stroke-width: 2;
 }
 
+
 /* ============================================================
    SECTION 4 — CAMPAIGNS
    ============================================================ */
@@ -534,6 +556,8 @@
   font-size: 14px;
 }
 
+/* Temporary alternate campaign artwork.
+   Replace with real partner campaign assets later. */
 .campaign-image-huel {
   background:
     linear-gradient(
@@ -575,6 +599,7 @@
   color: #c0c5cf;
   font-size: 10px;
 }
+
 
 /* ============================================================
    SECTION 5 — FEATURED
@@ -647,6 +672,7 @@
   font-size: 10px;
 }
 
+
 /* ============================================================
    SECTION 6 — PERFORMANCE
    ============================================================ */
@@ -716,6 +742,7 @@
   font-size: 8px;
 }
 
+
 /* ============================================================
    SECTION 7 — QUICK ACTIONS
    ============================================================ */
@@ -758,6 +785,7 @@
 
   background: linear-gradient(90deg, #6b35db, #5a27be);
 }
+
 
 /* ============================================================
    SECTION 8 — OPPORTUNITIES
@@ -821,6 +849,7 @@
   font-size: 10px;
 }
 
+
 /* ============================================================
    BUTTONS / LINKS
    ============================================================ */
@@ -879,8 +908,9 @@
   cursor: pointer;
 }
 
+
 /* ============================================================
-   RESPONSIVE
+   RESPONSIVE — TABLET
    ============================================================ */
 
 @media (max-width: 1250px) {
@@ -896,6 +926,11 @@
     grid-column: 1 / -1;
   }
 }
+
+
+/* ============================================================
+   RESPONSIVE — SMALL TABLET
+   ============================================================ */
 
 @media (max-width: 900px) {
   .partner-sidebar {
@@ -923,6 +958,11 @@
   }
 }
 
+
+/* ============================================================
+   RESPONSIVE — MOBILE
+   ============================================================ */
+
 @media (max-width: 640px) {
   .partner-stat-grid,
   .partner-campaign-list,
@@ -948,4 +988,4 @@
     align-items: flex-start;
     flex-direction: column;
   }
-}/* Partner Hub placeholder. */
+}
