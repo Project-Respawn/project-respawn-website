@@ -10,11 +10,13 @@ import Events from '../views/Events/Events.vue';
 import Checkout from '../views/Checkout/Checkout.vue';
 import Join from '../views/Join/Join.vue';
 import Account from '../views/Account/Account.vue';
-import Roles from '../views/About/Roles/Roles.vue';
 import UserHomepage from '../views/UserHomepage/UserHomepage.vue';
 import Applications from '../views/Applications/Applications.vue';
 import Bookings from '../views/Bookings/Bookings.vue';
 import Investors from '../views/Investors/Investors.vue';
+import Careers from '../views/Careers/Careers.vue';
+import Creators from '../views/Creators/Creators.vue';
+import Partners from '../views/Partners/Partners.vue';
 
 export default [
     {
@@ -66,8 +68,21 @@ export default [
     },
 
     {
-        path: '/about/roles',
-        component: Roles
+        path: '/careers',
+        name: 'Careers',
+        component: Careers
+    },
+
+    {
+        path: '/creators',
+        name: 'Creators',
+        component: Creators
+    },
+
+    {
+        path: '/partners',
+        name: 'Partners',
+        component: Partners
     },
 
     {

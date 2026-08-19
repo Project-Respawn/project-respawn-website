@@ -1,11 +1,21 @@
 .site-header {
-  background: linear-gradient(180deg, rgba(201, 180, 224, 0.04), transparent);
+  background: linear-gradient(
+    180deg,
+    rgba(201, 180, 224, 0.04),
+    transparent
+  );
   backdrop-filter: blur(6px);
   border-bottom: 1px solid rgba(201, 180, 224, 0.08);
+
   position: sticky;
   top: 0;
   z-index: 100;
 }
+
+
+/* =========================
+   BRAND
+========================= */
 
 .navbar-brand img {
   display: block;
@@ -15,6 +25,11 @@
   white-space: nowrap;
 }
 
+
+/* =========================
+   MOBILE TOGGLER
+========================= */
+
 .navbar-toggler {
   border: none !important;
   position: relative;
@@ -22,8 +37,122 @@
 }
 
 .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28148, 163, 184, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+  background-image:
+    url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28148, 163, 184, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e")
+    !important;
 }
+
+
+/* =========================
+   COMMUNITY DROPDOWN
+========================= */
+
+.community-nav-item {
+  position: relative;
+}
+
+.community-nav-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  min-width: 122px;
+
+  border: 0;
+  background: transparent;
+
+  font: inherit;
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.community-nav-arrow {
+  flex-shrink: 0;
+
+  margin-left: auto;
+
+  font-size: 0.72rem;
+
+  transition: transform 0.18s ease;
+}
+
+.community-nav-trigger[aria-expanded="true"]
+.community-nav-arrow {
+  transform: rotate(180deg);
+}
+
+.community-dropdown {
+  position: absolute;
+
+  top: calc(100% + 10px);
+  left: 50%;
+
+  width: 300px;
+
+  padding: 8px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--bg2),
+      var(--surface)
+    );
+
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.4);
+
+  transform: translateX(-50%);
+
+  z-index: 1050;
+}
+
+.community-dropdown .dropdown-item {
+  display: flex !important;
+  flex-direction: column;
+
+  gap: 3px;
+
+  padding: 11px 12px !important;
+
+  border-radius: 8px;
+
+  white-space: normal;
+
+  background: transparent;
+}
+
+.community-dropdown .dropdown-item:hover,
+.community-dropdown .dropdown-item:focus {
+  background:
+    rgba(212, 165, 255, 0.06) !important;
+
+  color: var(--accent-2);
+}
+
+.community-dropdown-title {
+  color: var(--text);
+
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.community-dropdown-copy {
+  color: #8fa0b7;
+
+  font-size: 0.71rem;
+  line-height: 1.4;
+}
+
+
+/* =========================
+   ACCOUNT BUTTON
+========================= */
 
 .header-account-btn {
   max-width: 11rem;
@@ -33,33 +162,55 @@
   font-size: 14px;
 }
 
-
 .profile-avatar {
   width: 2.25rem;
   height: 2.25rem;
-  border-radius: 50%;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(111, 66, 193, 0.35),
+      rgba(13, 110, 253, 0.25)
+    );
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  color: inherit;
+
   font-size: 14px;
   font-weight: 500;
+
   letter-spacing: 0.02em;
-  flex-shrink: 0;
-  background: linear-gradient(
-    145deg,
-    rgba(111, 66, 193, 0.35),
-    rgba(13, 110, 253, 0.25)
-  );
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: inherit;
 }
 
-/* Dropdown themed using global variables */
+
+/* =========================
+   GENERAL DROPDOWNS
+========================= */
+
 .dropdown-menu {
-  background: linear-gradient(180deg, var(--bg2), var(--surface));
-  border: 1px solid rgba(255,255,255,0.04);
+  background:
+    linear-gradient(
+      180deg,
+      var(--bg2),
+      var(--surface)
+    );
+
+  border:
+    1px solid rgba(255, 255, 255, 0.04);
+
   color: var(--text);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.45);
 }
 
 .dropdown-menu .dropdown-item {
@@ -69,126 +220,228 @@
 
 .dropdown-menu .dropdown-item:hover,
 .dropdown-menu .dropdown-item:focus {
-  background: rgba(212,165,255,0.04); /* soft purple hover */
+  background:
+    rgba(212, 165, 255, 0.04);
+
   color: var(--accent-2);
 }
 
 .dropdown-menu .dropdown-divider {
-  border-top: 1px solid rgba(255,255,255,0.03);
+  border-top:
+    1px solid rgba(255, 255, 255, 0.03);
+
   opacity: 0.6;
 }
 
-/* Ensure .show uses same background (Bootstrap may toggle visibility only) */
 .dropdown-menu.show {
   display: block;
 }
 
 
+/* =========================
+   CART
+========================= */
+
 .cart-nav-item {
   position: relative;
+
   display: flex;
   align-items: center;
 }
 
 .cart-icon-link {
-  font-size: 0.9rem;
   position: relative;
-  padding: 4px 8px;
+
   display: flex;
   align-items: center;
+
+  padding: 4px 8px;
+
+  font-size: 0.9rem;
 }
 
 .cart-label {
+  margin-left: 4px;
+
   font-size: 0.85rem;
   font-weight: 600;
-  margin-left: 4px;
 }
 
 .cart-badge {
   position: absolute;
-  top: 0px;
-  right: 0px;
-  background: var(--accent);
-  color: #000;
-  font-size: 9px;
-  font-weight: 700;
+
+  top: 0;
+  right: 0;
+
   min-width: 15px;
   height: 15px;
-  border-radius: 9999px;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  border-radius: 9999px;
+
+  background: var(--accent);
+
+  color: #000;
+
+  font-size: 9px;
+  font-weight: 700;
+
   line-height: 1;
 }
+
 .cart-icon-link i {
   font-size: 1rem;
 }
 
+
+/* =========================
+   MOBILE
+========================= */
+
 @media (max-width: 991px) {
+
   .navbar-nav .nav-link {
-    font-size: 1.1rem;
     padding: 0.75rem 0 !important;
+
+    font-size: 1.1rem;
   }
+
+
+  .community-nav-trigger {
+    width: 100%;
+
+    padding: 0.5rem 0 !important;
+  }
+
+
+  .community-dropdown {
+    position: static !important;
+
+    width: 100%;
+
+    margin: 4px 0 10px;
+
+    transform: none !important;
+
+    box-shadow: none;
+
+    border-radius: 10px;
+  }
+
+
+  .community-dropdown .dropdown-item {
+    padding: 10px 11px !important;
+  }
+
 
   body.navbar-open {
     overflow: hidden;
   }
 
+
   .navbar-collapse {
     position: fixed;
+
     top: 0;
-    right: -240px;
-    width: 240px;
+    right: -270px;
+
+    width: 270px;
+
     height: auto;
     max-height: 100vh;
-    background: linear-gradient(180deg, var(--bg2), var(--surface));
+
+    background:
+      linear-gradient(
+        180deg,
+        var(--bg2),
+        var(--surface)
+      );
+
     backdrop-filter: blur(1px);
-    border-left: 1px solid rgba(201, 180, 224, 0.08);
-    border-bottom: 1px solid rgba(201, 180, 224, 0.08);
-    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.5);
-    border-radius: 4px 4px 4px 12px;
-    padding: 4.5rem 1.5rem 1rem 1.5rem;
+
+    border-left:
+      1px solid rgba(201, 180, 224, 0.08);
+
+    border-bottom:
+      1px solid rgba(201, 180, 224, 0.08);
+
+    box-shadow:
+      0 18px 60px rgba(0, 0, 0, 0.5);
+
+    border-radius:
+      4px 4px 4px 12px;
+
+    padding:
+      4.5rem 1.5rem 1rem;
+
     z-index: 999;
-    transition: right 0.3s ease-in-out;
+
+    transition:
+      right 0.3s ease-in-out;
+
     overflow-y: auto;
   }
 
+
   .navbar-collapse::before {
     content: '';
+
     position: fixed;
+
     top: 0;
     left: 0;
-    right: 320px;
+    right: 270px;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.3);
+
+    background:
+      rgba(0, 0, 0, 0.3);
+
     opacity: 0;
+
     pointer-events: none;
-    transition: opacity 0.3s ease-in-out;
+
+    transition:
+      opacity 0.3s ease-in-out;
+
     z-index: 998;
   }
 
+
   .navbar-collapse.show::before {
     opacity: 1;
+
     pointer-events: auto;
   }
+
 
   .navbar-collapse.show {
     right: 0;
   }
 
+
   .navbar-nav {
     flex-direction: column;
+
     gap: 0.25rem;
   }
 
+
   .navbar-nav .nav-link {
-    padding: 0.5rem 0 !important;
+    padding:
+      0.5rem 0 !important;
   }
+
 
   .navbar-nav .btn {
     width: 100%;
+
     margin-left: 0 !important;
     margin-top: 0.75rem;
-    padding: 0.5rem 0.75rem !important;
+
+    padding:
+      0.5rem 0.75rem !important;
   }
 }

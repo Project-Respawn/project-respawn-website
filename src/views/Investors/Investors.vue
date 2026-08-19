@@ -630,15 +630,48 @@ export default {
       else this.investorInfoSelections.push(key);
     },
     requestInvestorInfo() {
-      const topics = this.investorInfoOptions
-        .filter((item) => this.investorInfoSelections.includes(item.key))
-        .map((item) => item.title)
-        .join(', ');
-      const subject = encodeURIComponent('Project Respawn investor information request');
+      const selected = this.investorInfoOptions
+        .filter((item) => this.investorInfoSelections.includes(item.key));
+
+      const requestedTopics = selected.length
+        ? selected.map((item) => `• ${item.title}`).join('\n')
+        : '• General investor information';
+
+      const subject = encodeURIComponent('Project Respawn | Investor Information Request');
       const body = encodeURIComponent(
-        `Hello Project Respawn,\n\nI would like to request additional investor information${topics ? ` on: ${topics}` : ''}.\n\nName:\nCompany / fund:\nRole:\n\nMessage:\n`
+`Hello Nicholas,
+
+I have reviewed the Project Respawn investor overview and would like to request further information.
+
+INFORMATION REQUESTED
+
+${requestedTopics}
+
+INITIAL INFORMATION LEVEL
+
+Non-NDA Investor Briefs
+
+I understand that the initial information provided will be the relevant Non-NDA Investor Briefs.
+
+More detailed due-diligence material may be available separately under appropriate confidentiality arrangements.
+
+INVESTOR DETAILS
+
+Name:
+Company / Fund:
+Role:
+Work Email:
+
+ADDITIONAL MESSAGE
+
+Please add any specific questions or areas you would like Project Respawn to address here.
+
+Kind regards,
+
+`
       );
-      window.location.href = `mailto:contact@projectrespawn.com?subject=${subject}&body=${body}`;
+
+      window.location.href = `mailto:n.grefsheim@projectrespawn.com?subject=${subject}&body=${body}`;
     },
     revenueStreamDescription(streamKey) {
       const descriptions = {
