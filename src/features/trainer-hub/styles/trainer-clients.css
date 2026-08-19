@@ -1,0 +1,1503 @@
+/* ============================================================
+   PROJECT RESPAWN — TRAINER HUB
+   CLIENTS PAGE
+   ============================================================ */
+
+
+/* ============================================================
+   PAGE
+   ============================================================ */
+
+.trainer-clients-page {
+  flex: 1;
+  min-width: 0;
+
+  padding: 24px 28px 100px;
+
+  background:
+    radial-gradient(
+      circle at 75% 0%,
+      rgba(91, 46, 188, 0.1),
+      transparent 32%
+    ),
+    #06101c;
+
+  color: #f4f6fb;
+}
+
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.trainer-clients-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 24px;
+
+  margin-bottom: 18px;
+}
+
+.trainer-clients-eyebrow {
+  display: block;
+
+  color: #71ff9b;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 0.14em;
+}
+
+.trainer-clients-header h1 {
+  margin: 3px 0 7px;
+
+  font-size: 31px;
+  font-weight: 800;
+}
+
+.trainer-clients-header p {
+  margin: 0;
+
+  color: #a5acba;
+
+  font-size: 13px;
+}
+
+.trainer-companion-demo-button {
+  min-height: 42px;
+
+  padding: 0 15px;
+
+  border:
+    1px solid
+    rgba(168, 92, 255, 0.48);
+
+  border-radius: 8px;
+
+  background:
+    rgba(106, 51, 214, 0.08);
+
+  color: #d8b8ff;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   SUMMARY
+   ============================================================ */
+
+.trainer-clients-summary {
+  min-height: 90px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(5, 1fr);
+
+  margin-bottom: 14px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  border-radius: 11px;
+
+  background:
+    rgba(10, 18, 31, 0.92);
+
+  overflow: hidden;
+}
+
+.trainer-clients-summary > div {
+  padding: 15px 20px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  position: relative;
+}
+
+.trainer-clients-summary > div:not(:last-child)::after {
+  content: "";
+
+  position: absolute;
+
+  top: 17px;
+  bottom: 17px;
+  right: 0;
+
+  width: 1px;
+
+  background:
+    rgba(255, 255, 255, 0.07);
+}
+
+.trainer-clients-summary strong {
+  font-size: 24px;
+}
+
+.trainer-clients-summary span {
+  margin-top: 4px;
+
+  color: #9da4b2;
+
+  font-size: 10px;
+}
+
+.trainer-summary-attention strong {
+  color: #ff9b24;
+}
+
+
+/* ============================================================
+   FILTERS
+   ============================================================ */
+
+.trainer-client-controls {
+  min-height: 62px;
+
+  padding: 10px 13px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  margin-bottom: 10px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+
+  border-radius: 10px;
+
+  background:
+    rgba(9, 17, 29, 0.86);
+}
+
+.trainer-client-search {
+  width: min(320px, 100%);
+
+  height: 38px;
+
+  padding: 0 11px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  border-radius: 7px;
+
+  background: #080e18;
+}
+
+.trainer-client-search > span {
+  color: #87909f;
+
+  font-size: 17px;
+}
+
+.trainer-client-search input {
+  width: 100%;
+
+  border: 0;
+  outline: 0;
+
+  background: transparent;
+
+  color: #f5f6f8;
+
+  font-size: 11px;
+}
+
+.trainer-client-filter-tabs {
+  display: flex;
+
+  gap: 5px;
+
+  flex-wrap: wrap;
+}
+
+.trainer-client-filter-tabs button {
+  min-height: 34px;
+
+  padding: 0 11px;
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius: 6px;
+
+  background: transparent;
+
+  color: #9199a8;
+
+  font-size: 9px;
+
+  cursor: pointer;
+}
+
+.trainer-client-filter-tabs button:hover {
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color: #fff;
+}
+
+.trainer-client-filter-tabs button.active {
+  border-color:
+    rgba(147, 84, 255, 0.38);
+
+  background:
+    rgba(112, 52, 220, 0.12);
+
+  color: #c38aff;
+}
+
+
+/* ============================================================
+   CLIENT TABLE
+   ============================================================ */
+
+.trainer-clients-table-panel {
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  border-radius: 11px;
+
+  background:
+    rgba(9, 18, 31, 0.92);
+
+  overflow-x: auto;
+}
+
+.trainer-clients-table-head,
+.trainer-client-row {
+  min-width: 1180px;
+
+  display: grid;
+
+  grid-template-columns:
+    34px
+    1.5fr
+    1.1fr
+    0.8fr
+    0.7fr
+    0.7fr
+    1.25fr
+    0.95fr
+    1fr;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding:
+    0 15px;
+}
+
+.trainer-clients-table-head {
+  min-height: 48px;
+
+  color: #858e9d;
+
+  font-size: 9px;
+
+  text-transform: uppercase;
+}
+
+.trainer-client-row {
+  min-height: 83px;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.05);
+
+  transition:
+    background 0.18s ease;
+}
+
+.trainer-client-row:hover {
+  background:
+    rgba(255, 255, 255, 0.018);
+}
+
+.trainer-client-row-selected {
+  background:
+    rgba(111, 54, 220, 0.055);
+}
+
+
+/* ============================================================
+   CHECKBOX
+   ============================================================ */
+
+.trainer-client-checkbox {
+  width: 20px;
+  height: 20px;
+
+  padding: 0;
+
+  display: grid;
+  place-items: center;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.16);
+
+  border-radius: 5px;
+
+  background: transparent;
+
+  color: #71ff9b;
+
+  font-size: 10px;
+
+  cursor: pointer;
+}
+
+.trainer-client-checkbox.active {
+  border-color:
+    rgba(113, 255, 155, 0.58);
+
+  background:
+    rgba(113, 255, 155, 0.12);
+}
+
+
+/* ============================================================
+   CLIENT
+   ============================================================ */
+
+.trainer-client-person {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+}
+
+.trainer-client-person > div:last-child {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.trainer-client-person strong {
+  font-size: 12px;
+}
+
+.trainer-client-person span {
+  color: #8c94a3;
+
+  font-size: 8px;
+}
+
+.trainer-client-person small {
+  color: #6f7887;
+
+  font-size: 7px;
+}
+
+
+/* ============================================================
+   ENGAGEMENT
+   ============================================================ */
+
+.trainer-client-engagement-cell {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}
+
+.trainer-client-engagement-cell > div {
+  display: flex;
+
+  gap: 3px;
+}
+
+.trainer-client-engagement-cell > div span {
+  width: 12px;
+  height: 14px;
+
+  border-radius: 2px;
+
+  background: #202b3b;
+}
+
+.trainer-client-engagement-cell > div span.active {
+  background: #53dc68;
+}
+
+.trainer-client-engagement-cell > div span.attention {
+  background: #ffa321;
+}
+
+.trainer-client-engagement-cell strong {
+  color: #68e47a;
+
+  font-size: 13px;
+}
+
+.trainer-client-engagement-cell strong.warning {
+  color: #ffa321;
+}
+
+
+/* ============================================================
+   NUMBER CELLS
+   ============================================================ */
+
+.trainer-client-number-cell,
+.trainer-client-streak {
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.trainer-client-number-cell strong,
+.trainer-client-streak strong {
+  font-size: 13px;
+}
+
+.trainer-client-number-cell span,
+.trainer-client-streak span {
+  color: #9098a7;
+
+  font-size: 8px;
+}
+
+.trainer-client-number-cell small {
+  color: #6f7887;
+
+  font-size: 7px;
+}
+
+
+/* ============================================================
+   COMPANION STATUS
+   ============================================================ */
+
+.trainer-companion-status {
+  width: 100%;
+
+  min-height: 47px;
+
+  padding: 7px 8px;
+
+  display: grid;
+
+  grid-template-columns:
+    28px
+    1fr;
+
+  align-items: center;
+
+  gap: 7px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+
+  border-radius: 7px;
+
+  background:
+    rgba(255, 255, 255, 0.015);
+
+  color: #fff;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.trainer-companion-status > span {
+  width: 27px;
+  height: 27px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    rgba(146, 80, 230, 0.14);
+}
+
+.trainer-companion-status > div {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.trainer-companion-status strong {
+  font-size: 8px;
+}
+
+.trainer-companion-status small {
+  color: #7f8796;
+
+  font-size: 7px;
+}
+
+.trainer-companion-good {
+  border-color:
+    rgba(72, 204, 96, 0.17);
+}
+
+.trainer-companion-checkin {
+  border-color:
+    rgba(169, 96, 255, 0.34);
+}
+
+.trainer-companion-checkin strong {
+  color: #bd83ff;
+}
+
+.trainer-companion-waiting {
+  border-color:
+    rgba(62, 131, 245, 0.24);
+}
+
+.trainer-companion-attention {
+  border-color:
+    rgba(255, 154, 29, 0.28);
+}
+
+.trainer-companion-attention strong {
+  color: #ffad27;
+}
+
+
+/* ============================================================
+   CLIENT STATUS
+   ============================================================ */
+
+.trainer-client-status {
+  width: fit-content;
+
+  padding: 6px 8px;
+
+  border-radius: 6px;
+
+  font-size: 8px;
+
+  white-space: nowrap;
+}
+
+.trainer-client-status-high,
+.trainer-client-status-engaged {
+  border:
+    1px solid
+    rgba(74, 207, 92, 0.42);
+
+  background:
+    rgba(74, 207, 92, 0.055);
+
+  color: #71e77e;
+}
+
+.trainer-client-status-attention {
+  border:
+    1px solid
+    rgba(255, 81, 60, 0.46);
+
+  background:
+    rgba(255, 81, 60, 0.05);
+
+  color: #ff6358;
+}
+
+
+/* ============================================================
+   ACTIONS
+   ============================================================ */
+
+.trainer-client-actions {
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  gap: 5px;
+}
+
+.trainer-client-actions a,
+.trainer-client-actions button {
+  padding: 0;
+
+  border: 0;
+
+  background: none;
+
+  color: #bc7cff;
+
+  font-size: 8px;
+
+  text-decoration: none;
+
+  cursor: pointer;
+}
+
+.trainer-client-actions button {
+  color: #71e77e;
+}
+
+
+/* ============================================================
+   EMPTY
+   ============================================================ */
+
+.trainer-client-empty {
+  min-height: 150px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 4px;
+}
+
+.trainer-client-empty strong {
+  font-size: 13px;
+}
+
+.trainer-client-empty span {
+  color: #8c94a3;
+
+  font-size: 9px;
+}
+
+
+/* ============================================================
+   MULTI SELECT BAR
+   ============================================================ */
+
+.trainer-client-selection-bar {
+  min-height: 64px;
+
+  padding: 10px 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 18px;
+
+  position: fixed;
+
+  left: 250px;
+  right: 25px;
+  bottom: 18px;
+
+  z-index: 100;
+
+  border:
+    1px solid
+    rgba(145, 83, 255, 0.45);
+
+  border-radius: 10px;
+
+  background:
+    rgba(10, 16, 27, 0.96);
+
+  box-shadow:
+    0 14px 45px
+    rgba(0, 0, 0, 0.4);
+
+  backdrop-filter: blur(10px);
+}
+
+.trainer-client-selection-bar > div:first-child {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+}
+
+.trainer-client-selection-bar strong {
+  font-size: 11px;
+}
+
+.trainer-selection-avatars {
+  display: flex;
+}
+
+.trainer-selection-avatars span {
+  width: 28px;
+  height: 28px;
+
+  margin-left: -5px;
+
+  display: grid;
+  place-items: center;
+
+  border:
+    2px solid
+    #0c1421;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #8750df,
+      #3768ba
+    );
+
+  font-size: 7px;
+  font-weight: 800;
+}
+
+.trainer-selection-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+}
+
+.trainer-selection-actions a,
+.trainer-selection-actions button {
+  min-height: 34px;
+
+  padding: 0 11px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border:
+    1px solid
+    rgba(144, 82, 255, 0.35);
+
+  border-radius: 6px;
+
+  background:
+    rgba(108, 52, 220, 0.07);
+
+  color: #eee7ff;
+
+  font-size: 8px;
+
+  text-decoration: none;
+
+  cursor: pointer;
+}
+
+.trainer-selection-actions .trainer-selection-clear {
+  border-color:
+    rgba(255, 255, 255, 0.08);
+
+  background:
+    transparent;
+
+  color: #8e96a5;
+}
+
+
+/* ============================================================
+   COMPANION DEMO BACKDROP
+   ============================================================ */
+
+.trainer-companion-demo-backdrop {
+  position: fixed;
+  inset: 0;
+
+  z-index: 9990;
+
+  border: 0;
+
+  background:
+    rgba(2, 5, 10, 0.74);
+
+  backdrop-filter: blur(4px);
+
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   COMPANION DEMO DRAWER
+   ============================================================ */
+
+.trainer-companion-demo-drawer {
+  width: min(
+    480px,
+    94vw
+  );
+
+  position: fixed;
+
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  z-index: 9991;
+
+  background:
+    #08111d;
+
+  border-left:
+    1px solid
+    rgba(166, 91, 255, 0.4);
+
+  box-shadow:
+    -24px 0 70px
+    rgba(0, 0, 0, 0.5);
+
+  overflow-y: auto;
+}
+
+
+/* ============================================================
+   DEMO HEADER
+   ============================================================ */
+
+.trainer-companion-demo-header {
+  padding: 20px;
+
+  display: flex;
+  justify-content: space-between;
+
+  gap: 18px;
+
+  border-bottom:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+}
+
+.trainer-companion-demo-header > div > span {
+  color: #71ff9b;
+
+  font-size: 8px;
+  font-weight: 800;
+
+  letter-spacing: 0.12em;
+}
+
+.trainer-companion-demo-header h2 {
+  margin: 5px 0;
+
+  font-size: 21px;
+}
+
+.trainer-companion-demo-header p {
+  margin: 0;
+
+  color: #98a0ae;
+
+  font-size: 9px;
+  line-height: 1.55;
+}
+
+.trainer-companion-demo-header > button {
+  width: 33px;
+  height: 33px;
+
+  flex-shrink: 0;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.09);
+
+  border-radius: 7px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color: #fff;
+
+  font-size: 19px;
+
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   SCENARIOS
+   ============================================================ */
+
+.trainer-demo-scenarios {
+  padding: 12px 16px;
+
+  display: flex;
+  gap: 5px;
+
+  overflow-x: auto;
+
+  border-bottom:
+    1px solid
+    rgba(255, 255, 255, 0.06);
+}
+
+.trainer-demo-scenarios button {
+  min-height: 31px;
+
+  padding: 0 9px;
+
+  flex-shrink: 0;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+
+  border-radius: 6px;
+
+  background: transparent;
+
+  color: #9199a7;
+
+  font-size: 8px;
+
+  cursor: pointer;
+}
+
+.trainer-demo-scenarios button.active {
+  border-color:
+    rgba(159, 87, 255, 0.45);
+
+  background:
+    rgba(115, 52, 221, 0.12);
+
+  color: #c48bff;
+}
+
+
+/* ============================================================
+   PET
+   ============================================================ */
+
+.trainer-demo-companion {
+  padding: 16px 20px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  background:
+    radial-gradient(
+      circle at 10% 50%,
+      rgba(139, 70, 225, 0.15),
+      transparent 22%
+    );
+}
+
+.trainer-demo-pet {
+  width: 72px;
+  height: 74px;
+
+  position: relative;
+
+  flex-shrink: 0;
+}
+
+.trainer-demo-pet-ear {
+  width: 25px;
+  height: 31px;
+
+  position: absolute;
+
+  top: 0;
+
+  border:
+    1px solid
+    rgba(191, 121, 255, 0.65);
+
+  border-radius:
+    6px 15px 5px 14px;
+
+  background:
+    #49306e;
+}
+
+.trainer-demo-pet-ear.left {
+  left: 7px;
+
+  transform:
+    rotate(-18deg);
+}
+
+.trainer-demo-pet-ear.right {
+  right: 7px;
+
+  transform:
+    rotate(18deg);
+}
+
+.trainer-demo-pet-face {
+  width: 58px;
+  height: 49px;
+
+  position: absolute;
+
+  left: 7px;
+  top: 12px;
+
+  border:
+    1px solid
+    rgba(191, 121, 255, 0.65);
+
+  border-radius: 45%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #6945a0,
+      #2c1e43
+    );
+}
+
+.trainer-demo-pet-face .eye {
+  width: 12px;
+  height: 16px;
+
+  position: absolute;
+
+  top: 14px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 40% 35%,
+      #fff 0 10%,
+      #a465ff 12% 42%,
+      #261939 44%
+    );
+}
+
+.trainer-demo-pet-face .eye.left {
+  left: 12px;
+}
+
+.trainer-demo-pet-face .eye.right {
+  right: 12px;
+}
+
+.trainer-demo-pet-face .mouth {
+  position: absolute;
+
+  left: 50%;
+  bottom: 5px;
+
+  transform:
+    translateX(-50%);
+
+  color: #dac8ec;
+
+  font-size: 12px;
+}
+
+.trainer-demo-pet-body {
+  width: 44px;
+  height: 34px;
+
+  position: absolute;
+
+  left: 14px;
+  bottom: 0;
+
+  display: grid;
+  place-items: center;
+
+  border:
+    1px solid
+    rgba(184, 111, 250, 0.55);
+
+  border-radius:
+    45% 45% 35% 35%;
+
+  background:
+    #3b2859;
+
+  font-size: 12px;
+}
+
+.trainer-demo-companion > div:last-child {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.trainer-demo-companion span {
+  color: #bd7fff;
+
+  font-size: 9px;
+}
+
+.trainer-demo-companion strong {
+  font-size: 12px;
+}
+
+
+/* ============================================================
+   CHAT
+   ============================================================ */
+
+.trainer-demo-chat {
+  padding: 18px 20px;
+}
+
+.trainer-demo-chat-label {
+  display: flex;
+  justify-content: space-between;
+
+  margin-bottom: 13px;
+}
+
+.trainer-demo-chat-label span {
+  color: #c087ff;
+
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.trainer-demo-chat-label small {
+  color: #737c8b;
+
+  font-size: 8px;
+}
+
+.trainer-demo-message-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.trainer-demo-message {
+  display: flex;
+  align-items: flex-end;
+
+  gap: 7px;
+}
+
+.trainer-demo-message.client {
+  justify-content: flex-end;
+}
+
+.trainer-demo-message-avatar {
+  width: 28px;
+  height: 28px;
+
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background:
+    #65409b;
+
+  font-size: 12px;
+}
+
+.trainer-demo-message p {
+  max-width: 78%;
+
+  margin: 0;
+
+  padding: 9px 11px;
+
+  border-radius:
+    7px 11px 11px 11px;
+
+  background:
+    rgba(255, 255, 255, 0.055);
+
+  color: #d7dae1;
+
+  font-size: 9px;
+  line-height: 1.55;
+}
+
+.trainer-demo-message.client p {
+  border-radius:
+    11px 7px 11px 11px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #632dbb,
+      #7940ca
+    );
+
+  color: #fff;
+}
+
+
+/* ============================================================
+   DEMO OPTIONS
+   ============================================================ */
+
+.trainer-demo-options {
+  margin-top: 14px;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  gap: 6px;
+}
+
+.trainer-demo-options button {
+  min-height: 40px;
+
+  padding: 7px 9px;
+
+  border:
+    1px solid
+    rgba(148, 83, 255, 0.28);
+
+  border-radius: 7px;
+
+  background:
+    rgba(109, 52, 220, 0.05);
+
+  color: #d5d0df;
+
+  font-size: 8px;
+
+  cursor: default;
+}
+
+
+/* ============================================================
+   TRAINER RESULT
+   ============================================================ */
+
+.trainer-demo-trainer-result {
+  margin: 0 20px 16px;
+
+  padding: 12px;
+
+  border:
+    1px solid
+    rgba(113, 255, 155, 0.19);
+
+  border-radius: 8px;
+
+  background:
+    rgba(113, 255, 155, 0.04);
+}
+
+.trainer-demo-trainer-result span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #71ff9b;
+
+  font-size: 7px;
+  font-weight: 800;
+
+  letter-spacing: 0.1em;
+}
+
+.trainer-demo-trainer-result strong {
+  color: #cdd7d0;
+
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+
+/* ============================================================
+   PRIVACY
+   ============================================================ */
+
+.trainer-demo-privacy-note {
+  margin: 0 20px 20px;
+
+  padding: 12px;
+
+  display: flex;
+  align-items: flex-start;
+
+  gap: 9px;
+
+  border:
+    1px solid
+    rgba(161, 91, 255, 0.16);
+
+  border-radius: 8px;
+
+  background:
+    rgba(111, 52, 220, 0.04);
+}
+
+.trainer-demo-privacy-note > span {
+  color: #af72ff;
+}
+
+.trainer-demo-privacy-note strong {
+  display: block;
+
+  font-size: 9px;
+}
+
+.trainer-demo-privacy-note p {
+  margin: 4px 0 0;
+
+  color: #929aa9;
+
+  font-size: 8px;
+  line-height: 1.55;
+}
+
+
+/* ============================================================
+   TRANSITIONS
+   ============================================================ */
+
+.trainer-demo-fade-enter-active,
+.trainer-demo-fade-leave-active {
+  transition:
+    opacity 0.2s ease;
+}
+
+.trainer-demo-fade-enter-from,
+.trainer-demo-fade-leave-to {
+  opacity: 0;
+}
+
+.trainer-demo-slide-enter-active,
+.trainer-demo-slide-leave-active {
+  transition:
+    transform 0.24s ease;
+}
+
+.trainer-demo-slide-enter-from,
+.trainer-demo-slide-leave-to {
+  transform:
+    translateX(100%);
+}
+
+.trainer-selection-slide-enter-active,
+.trainer-selection-slide-leave-active {
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.trainer-selection-slide-enter-from,
+.trainer-selection-slide-leave-to {
+  transform:
+    translateY(20px);
+
+  opacity: 0;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1200px) {
+  .trainer-clients-summary {
+    grid-template-columns:
+      repeat(3, 1fr);
+  }
+
+  .trainer-clients-summary > div:nth-child(3)::after {
+    display: none;
+  }
+
+  .trainer-client-controls {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .trainer-client-search {
+    width: 100%;
+  }
+}
+
+@media (max-width: 900px) {
+  .trainer-clients-page {
+    padding: 18px 18px 100px;
+  }
+
+  .trainer-clients-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .trainer-clients-summary {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+  .trainer-client-selection-bar {
+    left: 90px;
+    right: 14px;
+  }
+
+  .trainer-selection-actions {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 640px) {
+  .trainer-clients-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .trainer-clients-summary > div::after {
+    display: none !important;
+  }
+
+  .trainer-clients-summary > div {
+    border-bottom:
+      1px solid
+      rgba(255, 255, 255, 0.05);
+  }
+
+  .trainer-client-selection-bar {
+    left: 12px;
+    right: 12px;
+
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .trainer-selection-actions {
+    width: 100%;
+  }
+
+  .trainer-selection-actions a,
+  .trainer-selection-actions button {
+    flex: 1;
+  }
+
+  .trainer-demo-options {
+    grid-template-columns: 1fr;
+  }
+}

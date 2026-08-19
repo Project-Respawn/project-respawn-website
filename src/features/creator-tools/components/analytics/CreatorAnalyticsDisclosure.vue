@@ -1,0 +1,2 @@
+<template><details class="analytics-disclosure" :class="tone"><summary><span>{{ item.title }}</span><strong>{{ item.score }} / 100</strong></summary><p>{{ item.detail }}</p><div v-if="item.actions"><h4>Suggested actions</h4><ul><li v-for="action in item.actions" :key="action">{{ action }}</li></ul></div></details></template>
+<script setup>defineProps({item:{type:Object,required:true},tone:{type:String,default:'positive'}})</script>

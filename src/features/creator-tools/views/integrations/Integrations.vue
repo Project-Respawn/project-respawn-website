@@ -138,6 +138,10 @@
 
 <script>
 import { getCurrentUser, fetchAuthSession } from 'aws-amplify/auth';
+import { generateClient } from 'aws-amplify/data';
+import { refreshAccessContext } from '@/composables/useAccessContext.js';
+
+const twitchDataClient = generateClient();
 
 export default {
   name: 'CreatorIntegrations',
@@ -150,6 +154,10 @@ export default {
       twitchAccountName: '',
       currentUserId: '',
       lookupUserIds: [],
+      selectedBrandId: '',
+      twitchIntegration: null,
+      twitchHealth: null,
+      secureFoundationEnabled: import.meta.env.VITE_TWITCH_SECURE_INTEGRATION === 'true',
       twitchPermissions: [
         {
           badge: 'Twitch',
@@ -178,6 +186,8 @@ export default {
     document.addEventListener('visibilitychange', this.handleVisibilityChange);
 
     await this.loadCurrentUser();
+    const access = await refreshAccessContext();
+    this.selectedBrandId = access.brands?.[0]?.brandId || '';
 
     const callback = this.parseCallbackResult();
 
@@ -205,6 +215,15 @@ export default {
   },
 
   methods: {
+    async fetchLegacyConnectionForAuthenticatedUser() {
+      for (const userId of this.lookupUserIds) {
+        const response = await fetch(`http://localhost:3000/api/twitch/connection-by-user?userId=${encodeURIComponent(userId)}&t=${Date.now()}`, { cache: 'no-store' });
+        if (!response.ok) continue;
+        const connection = (await response.json())?.connection || null;
+        if (connection) return connection;
+      }
+      return null;
+    },
     showToast(message) {
       this.toastMessage = message;
       clearTimeout(this.toastTimer);
@@ -280,118 +299,21 @@ export default {
       window.history.replaceState({}, '', cleanUrl);
     },
 
-    async fetchConnectionForUser(userId) {
-      const response = await fetch(
-        `http://localhost:3000/api/twitch/connection-by-user?userId=${encodeURIComponent(userId)}&t=${Date.now()}`,
-        {
-          cache: 'no-store'
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error('Connection request failed');
-      }
-
-      const data = await response.json();
-      return data?.connection || null;
-    },
-
-    async fetchBotStatus() {
-      const response = await fetch(
-        `http://localhost:3000/api/twitch/status?t=${Date.now()}`,
-        {
-          cache: 'no-store'
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error('Status request failed');
-      }
-
-      return response.json();
-    },
-
-    async fetchConnectedBroadcaster() {
-      const response = await fetch(
-        `http://localhost:3000/api/twitch/connections?t=${Date.now()}`,
-        {
-          cache: 'no-store'
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error('Connections request failed');
-      }
-
-      const data = await response.json();
-      const connections = Array.isArray(data?.connections) ? data.connections : [];
-
-      return (
-        connections.find((item) => item?.isConnected && (item?.twitchDisplayName || item?.twitchLogin)) ||
-        null
-      );
-    },
-
     async refreshStatus({ silent = false } = {}) {
       try {
-        let connection = null;
-
-        if (this.lookupUserIds.length) {
-          for (const userId of this.lookupUserIds) {
-            const candidate = await this.fetchConnectionForUser(userId);
-            if (candidate) {
-              connection = candidate;
-              break;
-            }
-          }
-        }
-
-        if (connection) {
-          this.twitchConnected = !!connection?.isConnected;
-          this.twitchAccountName =
-            connection?.twitchDisplayName ||
-            connection?.twitchLogin ||
-            '';
-
-          console.log('Twitch connection resolved by user lookup:', {
-            localUserIds: this.lookupUserIds,
-            twitchAccountName: this.twitchAccountName,
-            isConnected: this.twitchConnected
-          });
-
+        if (!this.secureFoundationEnabled) {
+          const connection = await this.fetchLegacyConnectionForAuthenticatedUser();
+          this.twitchConnected = connection?.isConnected === true;
+          this.twitchAccountName = connection?.twitchDisplayName || connection?.twitchLogin || '';
           return this.twitchConnected;
         }
-
-        // Local fallback for cases where Cognito userId does not match the saved bot-side connection userId.
-        const connectedBroadcaster = await this.fetchConnectedBroadcaster();
-
-        if (connectedBroadcaster) {
-          this.twitchConnected = true;
-          this.twitchAccountName =
-            connectedBroadcaster.twitchDisplayName ||
-            connectedBroadcaster.twitchLogin ||
-            '';
-
-          console.log('Twitch connection resolved by broadcaster fallback:', {
-            localUserIds: this.lookupUserIds,
-            twitchAccountName: this.twitchAccountName,
-            broadcasterUserId: connectedBroadcaster.broadcasterUserId || '',
-            isConnected: true
-          });
-
-          return true;
-        }
-
-        const botStatus = await this.fetchBotStatus();
-        this.twitchConnected = !!botStatus?.connected;
-        this.twitchAccountName = botStatus?.displayName || botStatus?.username || '';
-
-        console.log('Twitch status resolved by bot status fallback:', {
-          localUserIds: this.lookupUserIds,
-          botConnected: this.twitchConnected,
-          botUsername: this.twitchAccountName
-        });
-
+        if (!this.selectedBrandId) throw new Error('No accessible Brand selected');
+        const response = await twitchDataClient.queries.getMyTwitchIntegration({ brandId: this.selectedBrandId });
+        if (response?.errors?.length) throw new Error(response.errors[0].message || 'Integration lookup failed');
+        this.twitchIntegration = response?.data?.integration || null;
+        this.twitchHealth = response?.data?.health || null;
+        this.twitchConnected = this.twitchIntegration?.connectionStatus === 'CONNECTED';
+        this.twitchAccountName = this.twitchIntegration?.twitchDisplayName || this.twitchIntegration?.twitchLogin || '';
         return this.twitchConnected;
       } catch (error) {
         console.error('Failed to refresh Twitch status:', error);
@@ -437,15 +359,21 @@ export default {
     },
 
     handleTwitchConnect() {
-      if (!this.currentUserId) {
-        this.showToast('No signed-in user found');
+      if (!this.secureFoundationEnabled) {
+        if (!this.currentUserId) return this.showToast('No signed-in user found');
+        window.location.assign(`http://localhost:3000/api/twitch/connect?userId=${encodeURIComponent(this.currentUserId)}`);
         return;
       }
-
-      window.location.href =
-        `http://localhost:3000/api/twitch/connect?userId=${encodeURIComponent(
-          this.currentUserId
-        )}`;
+      if (!this.selectedBrandId) {
+        this.showToast('No accessible Brand selected');
+        return;
+      }
+      twitchDataClient.mutations.startTwitchIntegrationOAuth({ brandId: this.selectedBrandId })
+        .then((response) => {
+          if (response?.errors?.length || !response?.data?.authorizeUrl) throw new Error(response?.errors?.[0]?.message || 'OAuth could not be started');
+          window.location.assign(response.data.authorizeUrl);
+        })
+        .catch((error) => this.showToast(error.message || 'Could not start Twitch connection'));
     }
   }
 };

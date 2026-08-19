@@ -1,0 +1,1 @@
+<template><article class="ccd-metric" :class="{highlight}"><span class="ccd-metric-icon">{{ icon }}</span><div><small>{{ label }}</small><strong>{{ value }}</strong><p>{{ detail }}</p></div></article></template><script setup>defineProps({icon:String,label:String,value:[String,Number],detail:String,highlight:Boolean})</script>

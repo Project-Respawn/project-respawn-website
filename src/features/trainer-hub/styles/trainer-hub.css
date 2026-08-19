@@ -1,0 +1,754 @@
+/* ============================================================
+   PROJECT RESPAWN — TRAINER HUB
+   SHARED FEATURE STYLES
+   ============================================================ */
+
+
+/* ============================================================
+   TRAINER HUB ROOT
+   ============================================================ */
+
+.trainer-hub {
+  min-height: 100vh;
+
+  display: flex;
+
+  background:
+    #06101c;
+
+  color:
+    #f4f6fb;
+
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+
+.trainer-sidebar {
+  width: 225px;
+  min-width: 225px;
+
+  min-height: 100vh;
+
+  padding:
+    20px 14px 14px;
+
+  box-sizing:
+    border-box;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(5, 12, 23, 0.99),
+      rgba(4, 10, 19, 0.98)
+    );
+
+  border-right:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+
+  position:
+    sticky;
+
+  top:
+    0;
+
+  align-self:
+    flex-start;
+}
+
+
+/* ============================================================
+   PROJECT RESPAWN BRAND
+   ============================================================ */
+
+.trainer-sidebar-brand {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    10px;
+
+  padding:
+    0 7px;
+}
+
+.trainer-sidebar-logo {
+  width:
+    40px;
+
+  height:
+    40px;
+
+  display:
+    block;
+
+  flex-shrink:
+    0;
+
+  object-fit:
+    contain;
+}
+
+.trainer-sidebar-brand-text {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  line-height:
+    1;
+}
+
+.trainer-brand-project {
+  margin-bottom:
+    4px;
+
+  color:
+    #71ff9b;
+
+  font-size:
+    9px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.16em;
+
+  text-shadow:
+    0 0 8px
+    rgba(113, 255, 155, 0.35);
+}
+
+.trainer-brand-respawn {
+  color:
+    #a867ff;
+
+  font-size:
+    17px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    0.04em;
+
+  text-shadow:
+    0 0 10px
+    rgba(168, 103, 255, 0.4);
+}
+
+
+/* ============================================================
+   TRAINER HUB LABEL
+   ============================================================ */
+
+.trainer-sidebar-hub-label {
+  margin:
+    19px 7px 13px;
+
+  color:
+    #a867ff;
+
+  font-size:
+    11px;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    0.08em;
+}
+
+
+/* ============================================================
+   MAIN NAVIGATION
+   ============================================================ */
+
+.trainer-navigation {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    7px;
+}
+
+.trainer-nav-item {
+  min-height:
+    47px;
+
+  padding:
+    0 12px;
+
+  box-sizing:
+    border-box;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    12px;
+
+  border-radius:
+    7px;
+
+  color:
+    #d1d5dd;
+
+  text-decoration:
+    none;
+
+  font-size:
+    12px;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.trainer-nav-item:hover {
+  background:
+    rgba(255, 255, 255, 0.035);
+
+  color:
+    #fff;
+}
+
+.trainer-nav-item-active {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(101, 46, 194, 0.82),
+      rgba(79, 34, 153, 0.62)
+    );
+
+  color:
+    #fff;
+
+  box-shadow:
+    inset 0 0 0 1px
+    rgba(169, 100, 255, 0.08);
+}
+
+.trainer-nav-icon {
+  width:
+    20px;
+
+  flex-shrink:
+    0;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  color:
+    inherit;
+
+  font-size:
+    16px;
+}
+
+
+/* ============================================================
+   COMING SOON NAV ITEM
+   ============================================================ */
+
+.trainer-nav-coming-soon {
+  cursor:
+    default;
+
+  opacity:
+    0.78;
+}
+
+.trainer-nav-coming-soon:hover {
+  background:
+    transparent;
+}
+
+.trainer-coming-soon-badge {
+  margin-left:
+    auto;
+
+  padding:
+    3px 5px;
+
+  border:
+    1px solid
+    rgba(166, 92, 255, 0.35);
+
+  border-radius:
+    5px;
+
+  background:
+    rgba(166, 92, 255, 0.08);
+
+  color:
+    #bd86ff;
+
+  font-size:
+    7px;
+
+  font-weight:
+    800;
+
+  white-space:
+    nowrap;
+}
+
+
+/* ============================================================
+   SIDEBAR SPACER
+   ============================================================ */
+
+.trainer-sidebar-spacer {
+  flex:
+    1;
+}
+
+
+/* ============================================================
+   TRAINER PROFILE
+   ============================================================ */
+
+.trainer-sidebar-profile {
+  min-height:
+    74px;
+
+  padding:
+    12px 10px;
+
+  box-sizing:
+    border-box;
+
+  display:
+    grid;
+
+  grid-template-columns:
+    42px
+    1fr
+    auto;
+
+  align-items:
+    center;
+
+  gap:
+    9px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+
+  border-bottom:
+    0;
+
+  border-radius:
+    9px 9px 0 0;
+
+  background:
+    rgba(255, 255, 255, 0.015);
+}
+
+.trainer-sidebar-avatar {
+  width:
+    40px;
+
+  height:
+    40px;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  border-radius:
+    50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #9654ec,
+      #435dbf
+    );
+
+  color:
+    #fff;
+
+  font-size:
+    10px;
+
+  font-weight:
+    800;
+}
+
+.trainer-sidebar-profile-copy {
+  min-width:
+    0;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    3px;
+}
+
+.trainer-sidebar-profile-copy strong {
+  color:
+    #fff;
+
+  font-size:
+    11px;
+
+  white-space:
+    nowrap;
+
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
+}
+
+.trainer-sidebar-profile-copy span {
+  color:
+    #9ba2af;
+
+  font-size:
+    8px;
+}
+
+.trainer-profile-chevron {
+  color:
+    #89919f;
+
+  font-size:
+    12px;
+}
+
+
+/* ============================================================
+   SIDEBAR BOTTOM ACTIONS
+   ============================================================ */
+
+.trainer-sidebar-bottom {
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+
+  border-radius:
+    0 0 9px 9px;
+
+  overflow:
+    hidden;
+}
+
+.trainer-sidebar-bottom-action {
+  width:
+    100%;
+
+  min-height:
+    54px;
+
+  padding:
+    0 13px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    12px;
+
+  border:
+    0;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.06);
+
+  background:
+    rgba(255, 255, 255, 0.01);
+
+  color:
+    #d1d5dc;
+
+  font-size:
+    11px;
+
+  text-align:
+    left;
+
+  cursor:
+    pointer;
+
+  transition:
+    background 0.18s ease;
+}
+
+.trainer-sidebar-bottom-action:first-child {
+  border-top:
+    0;
+}
+
+.trainer-sidebar-bottom-action:hover {
+  background:
+    rgba(255, 255, 255, 0.035);
+}
+
+.trainer-sidebar-bottom-action > span:first-child {
+  width:
+    20px;
+
+  display:
+    inline-flex;
+
+  justify-content:
+    center;
+
+  color:
+    #b9c0cc;
+
+  font-size:
+    16px;
+}
+
+
+/* ============================================================
+   SHARED BUTTONS
+   ============================================================ */
+
+.trainer-outline-button {
+  min-height:
+    36px;
+
+  padding:
+    0 12px;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  border:
+    1px solid
+    rgba(150, 87, 255, 0.5);
+
+  border-radius:
+    7px;
+
+  background:
+    rgba(111, 53, 220, 0.06);
+
+  color:
+    #eee6ff;
+
+  font-size:
+    10px;
+
+  text-decoration:
+    none;
+
+  cursor:
+    pointer;
+}
+
+.trainer-outline-button:hover {
+  background:
+    rgba(111, 53, 220, 0.14);
+}
+
+
+/* ============================================================
+   SHARED PLACEHOLDER PAGE
+   ============================================================ */
+
+.trainer-placeholder {
+  flex:
+    1;
+
+  min-height:
+    100vh;
+
+  padding:
+    40px;
+
+  box-sizing:
+    border-box;
+
+  background:
+    #06101c;
+
+  color:
+    #fff;
+}
+
+.trainer-placeholder h1 {
+  margin:
+    0 0 8px;
+
+  font-size:
+    28px;
+}
+
+.trainer-placeholder p {
+  margin:
+    0;
+
+  color:
+    #9ca3b1;
+
+  font-size:
+    13px;
+}
+
+
+/* ============================================================
+   RESPONSIVE — TABLET
+   ============================================================ */
+
+@media (max-width: 900px) {
+
+  .trainer-sidebar {
+    width:
+      76px;
+
+    min-width:
+      76px;
+
+    padding:
+      18px 9px;
+  }
+
+  .trainer-sidebar-brand {
+    justify-content:
+      center;
+
+    padding:
+      0;
+  }
+
+  .trainer-sidebar-logo {
+    width:
+      38px;
+
+    height:
+      38px;
+  }
+
+  .trainer-sidebar-brand-text,
+  .trainer-sidebar-hub-label,
+  .trainer-nav-item > span:not(.trainer-nav-icon):not(.trainer-coming-soon-badge),
+  .trainer-coming-soon-badge,
+  .trainer-sidebar-profile-copy,
+  .trainer-profile-chevron,
+  .trainer-sidebar-bottom-action > span:last-child {
+    display:
+      none;
+  }
+
+  .trainer-nav-item {
+    padding:
+      0;
+
+    justify-content:
+      center;
+  }
+
+  .trainer-nav-icon {
+    width:
+      auto;
+
+    font-size:
+      18px;
+  }
+
+  .trainer-sidebar-profile {
+    min-height:
+      60px;
+
+    padding:
+      9px;
+
+    display:
+      flex;
+
+    justify-content:
+      center;
+  }
+
+  .trainer-sidebar-avatar {
+    width:
+      38px;
+
+    height:
+      38px;
+  }
+
+  .trainer-sidebar-bottom-action {
+    padding:
+      0;
+
+    justify-content:
+      center;
+  }
+
+  .trainer-sidebar-bottom-action > span:first-child {
+    width:
+      auto;
+  }
+}
+
+
+/* ============================================================
+   RESPONSIVE — MOBILE
+   ============================================================ */
+
+@media (max-width: 640px) {
+
+  .trainer-sidebar {
+    display:
+      none;
+  }
+}

@@ -12,6 +12,15 @@ import AdminEvents from '../views/Admin/AdminEvents/AdminEvents.vue';
 import ProductControl from '../views/Admin/ProductControl/ProductControl.vue';
 import MediaLibrary from '../views/Admin/MediaLibrary/MediaLibrary.vue';
 import AdminOrders from '../views/Admin/AdminOrders/AdminOrders.vue';
+import AdminApplications from '../views/Admin/AdminApplications/AdminApplications.vue';
+import AdminApplicationReviews from '../views/Admin/AdminApplications/AdminApplicationReviews.vue';
+import AdminReviewerPerformance from '../views/Admin/AdminApplications/AdminReviewerPerformance.vue';
+import AdminReviewerDetail from '../views/Admin/AdminApplications/AdminReviewerDetail.vue';
+import AdminApplicationDetail from '../views/Admin/AdminApplications/AdminApplicationDetail.vue';
+import AdminApplicationReview from '../views/Admin/AdminApplications/AdminApplicationReview.vue';
+import AdminInductions from '../views/Admin/AdminApplications/AdminInductions.vue';
+import AdminInductionDetail from '../views/Admin/AdminApplications/AdminInductionDetail.vue';
+import AdminAvailability from '../views/Admin/Bookings/AdminAvailability.vue';
 
 export default [
 
@@ -44,6 +53,68 @@ export default [
                 name: 'AdminEvents',
                 component: AdminEvents,
                 meta: { requiredPermission: 'events.manage' }
+            },
+            {
+                path: 'applications',
+                name: 'AdminApplications',
+                component: AdminApplications,
+                meta: { requiredPermission: 'applications.read' }
+            },
+            {
+                path: 'applications/reviews',
+                name: 'AdminApplicationReviews',
+                component: AdminApplicationReviews,
+                meta: { requiredGroups: ['SuperAdmin', 'Admin'] }
+            },
+            {
+                path: 'applications/reviewers',
+                name: 'AdminReviewerPerformance',
+                component: AdminReviewerPerformance,
+                meta: { requiredGroups: ['SuperAdmin', 'Admin'] }
+            },
+            {
+                path: 'applications/reviewers/:reviewerId',
+                name: 'AdminReviewerDetail',
+                component: AdminReviewerDetail,
+                props: true,
+                meta: { requiredGroups: ['SuperAdmin', 'Admin'] }
+            },
+            {
+                path: 'availability',
+                name: 'AdminAvailability',
+                component: AdminAvailability,
+                meta: { requiredGroups: ['SuperAdmin', 'Admin', 'Staff'] }
+            },
+            {
+                path: 'applications/availability',
+                redirect: { name: 'AdminAvailability' }
+            },
+            {
+                path: 'applications/inductions',
+                name: 'AdminInductions',
+                component: AdminInductions,
+                meta: { requiredGroups: ['SuperAdmin', 'Admin', 'Staff'] }
+            },
+            {
+                path: 'applications/inductions/:inductionId',
+                name: 'AdminInductionDetail',
+                component: AdminInductionDetail,
+                props: true,
+                meta: { requiredGroups: ['SuperAdmin', 'Admin', 'Staff'] }
+            },
+            {
+                path: 'applications/:applicationId/review',
+                name: 'AdminApplicationReview',
+                component: AdminApplicationReview,
+                props: true,
+                meta: { requiredGroups: ['SuperAdmin', 'Admin', 'Staff'] }
+            },
+            {
+                path: 'applications/:applicationId',
+                name: 'AdminApplicationDetail',
+                component: AdminApplicationDetail,
+                props: true,
+                meta: { requiredPermission: 'applications.read' }
             },
             {
                 path: 'forums',

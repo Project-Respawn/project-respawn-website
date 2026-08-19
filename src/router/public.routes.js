@@ -3,45 +3,161 @@
 import Home from '../views/Home/Home.vue';
 import About from '../views/About/About.vue';
 import Contact from '../views/Contact/Contact.vue';
-import PrivacyPolicy from '../views/PrivacyPolicy/PrivacyPolicy.vue';
+import PrivacyPolicy from '../views/PrivacyPolicy/MainPrivacyPolicy.vue';
 import TeamTryouts from '../views/TeamTryouts/TeamTryouts.vue';
 import Merch from '../views/Merch/Merch.vue';
 import Events from '../views/Events/Events.vue';
 import Checkout from '../views/Checkout/Checkout.vue';
 import Join from '../views/Join/Join.vue';
 import Account from '../views/Account/Account.vue';
-import Roles from '../views/About/Roles/Roles.vue';
 import UserHomepage from '../views/UserHomepage/UserHomepage.vue';
 import Applications from '../views/Applications/Applications.vue';
+import Bookings from '../views/Bookings/Bookings.vue';
+import Investors from '../views/Investors/Investors.vue';
+import Careers from '../views/Careers/Careers.vue';
+import Creators from '../views/Creators/Creators.vue';
+import Partners from '../views/Partners/Partners.vue';
 
 export default [
+    {
+        path: '/bookings',
+        name: 'Bookings',
+        component: Bookings
+    },
 
-    { path: '/', component: Home },
+    {
+        path: '/bookings/invite/:invitationToken',
+        name: 'BookingsInvite',
+        component: Bookings,
+        props: true
+    },
 
-    { path: '/about', component: About },
+    {
+        path: '/bookings/:bookingTypeSlug',
+        name: 'BookingsType',
+        component: Bookings,
+        props: true
+    },
 
-    { path: '/about/roles', component: Roles },
+    {
+        path: '/induction/book/:invitationToken',
+        redirect: (to) => ({
+            name: 'BookingsInvite',
+            params: {
+                invitationToken: to.params.invitationToken
+            },
+            query: to.query,
+            hash: to.hash
+        })
+    },
 
-    { path: '/contact', component: Contact },
+    {
+        path: '/',
+        component: Home
+    },
 
-    { path: '/privacy-policy', component: PrivacyPolicy },
+    {
+        path: '/about',
+        component: About
+    },
 
-    { path: '/team-tryouts', component: TeamTryouts },
+    {
+        path: '/investors',
+        name: 'Investors',
+        component: Investors
+    },
 
-    { path: '/merch', component: Merch },
+    {
+        path: '/careers',
+        name: 'Careers',
+        component: Careers
+    },
 
-    { path: '/checkout', component: Checkout },
+    {
+        path: '/creators',
+        name: 'Creators',
+        component: Creators
+    },
 
-    { path: '/events', component: Events },
+    {
+        path: '/partners',
+        name: 'Partners',
+        component: Partners
+    },
 
-    { path: '/join', component: Join },
+    {
+        path: '/contact',
+        component: Contact
+    },
 
-    { path: '/account', component: Account },
+    {
+        path: '/privacy-policy',
+        name: 'LegalCentre',
+        component: PrivacyPolicy
+    },
+
+    {
+        path: '/join-us',
+        name: 'JoinUs',
+        component: TeamTryouts
+    },
+
+    {
+        path: '/team-tryouts',
+        redirect: (to) => ({
+            path: '/join-us',
+            query: to.query,
+            hash: to.hash
+        })
+    },
+
+    {
+        path: '/merch',
+        component: Merch
+    },
+
+    {
+        path: '/checkout',
+        component: Checkout
+    },
+
+    {
+        path: '/events',
+        component: Events
+    },
+
+    {
+        path: '/join',
+        component: Join
+    },
+
+    {
+        path: '/account',
+        component: Account
+    },
+
+    {
+        path: '/apply-now',
+        name: 'Applications',
+        component: Applications
+    },
+
+    {
+        path: '/applications',
+        redirect: (to) => ({
+            path: '/apply-now',
+            query: to.query,
+            hash: to.hash
+        })
+    },
 
     {
         path: '/apply',
-        name: 'Applications',
-        component: Applications
+        redirect: (to) => ({
+            path: '/apply-now',
+            query: to.query,
+            hash: to.hash
+        })
     },
 
     {
@@ -52,5 +168,4 @@ export default [
             requiresAuth: true
         }
     }
-
 ];

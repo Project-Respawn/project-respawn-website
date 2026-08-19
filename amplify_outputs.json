@@ -1,9 +1,9 @@
 {
   "auth": {
-    "user_pool_id": "eu-north-1_QBLhcAt9s",
+    "user_pool_id": "eu-north-1_X5BIIkPZR",
     "aws_region": "eu-north-1",
-    "user_pool_client_id": "5tt1hltuijus9sqf08a6tm3kh6",
-    "identity_pool_id": "eu-north-1:fe39d6c8-f774-4709-9e93-c02963710611",
+    "user_pool_client_id": "rnlrgrnnpb71fjjapkcnagk0v",
+    "identity_pool_id": "eu-north-1:e6b5be79-b7f5-4abb-8902-f4bf7d122cbc",
     "mfa_methods": [],
     "standard_required_attributes": [
       "email"
@@ -77,9 +77,9 @@
     "unauthenticated_identities_enabled": true
   },
   "data": {
-    "url": "https://do3mryivjzblhkmoucyujorp5m.appsync-api.eu-north-1.amazonaws.com/graphql",
+    "url": "https://kqkymuc23rax3mcsk77vlbb52e.appsync-api.eu-north-1.amazonaws.com/graphql",
     "aws_region": "eu-north-1",
-    "api_key": "da2-rxjwqyc5lfg7rhkn7oj25bv6zi",
+    "api_key": "da2-hfkva3igpnhrvctctarpw7dol4",
     "default_authorization_type": "AMAZON_COGNITO_USER_POOLS",
     "authorization_types": [
       "API_KEY",
@@ -408,6 +408,1145 @@
             "sortKeyFieldNames": []
           }
         },
+        "ApplicationSubmission": {
+          "name": "ApplicationSubmission",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "applicationReference": {
+              "name": "applicationReference",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "pathwayId": {
+              "name": "pathwayId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "formVersion": {
+              "name": "formVersion",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "applicantFullName": {
+              "name": "applicantFullName",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "creatorDisplayName": {
+              "name": "creatorDisplayName",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "contactEmail": {
+              "name": "contactEmail",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "emailVerificationState": {
+              "name": "emailVerificationState",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "emailVerificationProvenance": {
+              "name": "emailVerificationProvenance",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "submissionStatus": {
+              "name": "submissionStatus",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "writeState": {
+              "name": "writeState",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "submittedAt": {
+              "name": "submittedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "source": {
+              "name": "source",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "consentVersion": {
+              "name": "consentVersion",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "consentedAt": {
+              "name": "consentedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "currentReviewState": {
+              "name": "currentReviewState",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "auditMetadata": {
+              "name": "auditMetadata",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": false,
+              "attributes": []
+            },
+            "payloadHash": {
+              "name": "payloadHash",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "idempotencyDigest": {
+              "name": "idempotencyDigest",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "testRunId": {
+              "name": "testRunId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "answers": {
+              "name": "answers",
+              "isArray": true,
+              "type": {
+                "model": "ApplicationAnswer"
+              },
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": true,
+              "association": {
+                "connectionType": "HAS_MANY",
+                "associatedWith": [
+                  "applicationId"
+                ]
+              }
+            },
+            "creatorProfiles": {
+              "name": "creatorProfiles",
+              "isArray": true,
+              "type": {
+                "model": "ApplicationCreatorProfile"
+              },
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": true,
+              "association": {
+                "connectionType": "HAS_MANY",
+                "associatedWith": [
+                  "applicationId"
+                ]
+              }
+            },
+            "schedules": {
+              "name": "schedules",
+              "isArray": true,
+              "type": {
+                "model": "ApplicationSchedule"
+              },
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": true,
+              "association": {
+                "connectionType": "HAS_MANY",
+                "associatedWith": [
+                  "applicationId"
+                ]
+              }
+            },
+            "auditEvents": {
+              "name": "auditEvents",
+              "isArray": true,
+              "type": {
+                "model": "ApplicationAuditEvent"
+              },
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": true,
+              "association": {
+                "connectionType": "HAS_MANY",
+                "associatedWith": [
+                  "applicationId"
+                ]
+              }
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "ApplicationSubmissions",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "applicationSubmissionsByApplicationReference",
+                "queryField": "listApplicationSubmissionByApplicationReference",
+                "fields": [
+                  "applicationReference"
+                ]
+              }
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "applicationSubmissionsByPathwayIdAndSubmittedAt",
+                "queryField": "listApplicationSubmissionByPathwayIdAndSubmittedAt",
+                "fields": [
+                  "pathwayId",
+                  "submittedAt"
+                ]
+              }
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "applicationSubmissionsByWriteStateAndSubmittedAt",
+                "queryField": "listApplicationSubmissionByWriteStateAndSubmittedAt",
+                "fields": [
+                  "writeState",
+                  "submittedAt"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [],
+                    "groups": [
+                      "SuperAdmin"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "ApplicationAnswer": {
+          "name": "ApplicationAnswer",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "applicationId": {
+              "name": "applicationId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "application": {
+              "name": "application",
+              "isArray": false,
+              "type": {
+                "model": "ApplicationSubmission"
+              },
+              "isRequired": false,
+              "attributes": [],
+              "association": {
+                "connectionType": "BELONGS_TO",
+                "targetNames": [
+                  "applicationId"
+                ]
+              }
+            },
+            "answerId": {
+              "name": "answerId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "questionKey": {
+              "name": "questionKey",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "questionLabelSnapshot": {
+              "name": "questionLabelSnapshot",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "sectionKey": {
+              "name": "sectionKey",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "sectionLabelSnapshot": {
+              "name": "sectionLabelSnapshot",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "answerType": {
+              "name": "answerType",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "structuredValue": {
+              "name": "structuredValue",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": false,
+              "attributes": []
+            },
+            "safeDisplayValue": {
+              "name": "safeDisplayValue",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "displayOrder": {
+              "name": "displayOrder",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": true,
+              "attributes": []
+            },
+            "formVersion": {
+              "name": "formVersion",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "submittedCreatedAt": {
+              "name": "submittedCreatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "testRunId": {
+              "name": "testRunId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "ApplicationAnswers",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "applicationAnswersByApplicationIdAndDisplayOrder",
+                "queryField": "listApplicationAnswerByApplicationIdAndDisplayOrder",
+                "fields": [
+                  "applicationId",
+                  "displayOrder"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [],
+                    "groups": [
+                      "SuperAdmin"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "ApplicationCreatorProfile": {
+          "name": "ApplicationCreatorProfile",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "applicationId": {
+              "name": "applicationId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "application": {
+              "name": "application",
+              "isArray": false,
+              "type": {
+                "model": "ApplicationSubmission"
+              },
+              "isRequired": false,
+              "attributes": [],
+              "association": {
+                "connectionType": "BELONGS_TO",
+                "targetNames": [
+                  "applicationId"
+                ]
+              }
+            },
+            "platform": {
+              "name": "platform",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "customPlatformLabel": {
+              "name": "customPlatformLabel",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "displayNameOrHandle": {
+              "name": "displayNameOrHandle",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "profileUrl": {
+              "name": "profileUrl",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "isPrimary": {
+              "name": "isPrimary",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "contentTypes": {
+              "name": "contentTypes",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": true
+            },
+            "isActive": {
+              "name": "isActive",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "relationshipToServer": {
+              "name": "relationshipToServer",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "displayOrder": {
+              "name": "displayOrder",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": true,
+              "attributes": []
+            },
+            "submittedCreatedAt": {
+              "name": "submittedCreatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "testRunId": {
+              "name": "testRunId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "ApplicationCreatorProfiles",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "applicationCreatorProfilesByApplicationIdAndDisplayOrder",
+                "queryField": "listApplicationCreatorProfileByApplicationIdAndDisplayOrder",
+                "fields": [
+                  "applicationId",
+                  "displayOrder"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [],
+                    "groups": [
+                      "SuperAdmin"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "ApplicationSchedule": {
+          "name": "ApplicationSchedule",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "applicationId": {
+              "name": "applicationId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "application": {
+              "name": "application",
+              "isArray": false,
+              "type": {
+                "model": "ApplicationSubmission"
+              },
+              "isRequired": false,
+              "attributes": [],
+              "association": {
+                "connectionType": "BELONGS_TO",
+                "targetNames": [
+                  "applicationId"
+                ]
+              }
+            },
+            "applicantTimeZone": {
+              "name": "applicantTimeZone",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "hasRegularSchedule": {
+              "name": "hasRegularSchedule",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "scheduleVaries": {
+              "name": "scheduleVaries",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "dayOfWeek": {
+              "name": "dayOfWeek",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "startLocalTime": {
+              "name": "startLocalTime",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "endLocalTime": {
+              "name": "endLocalTime",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "profileReference": {
+              "name": "profileReference",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "contentType": {
+              "name": "contentType",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "nextPlannedPublicStream": {
+              "name": "nextPlannedPublicStream",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "publicViewingUrl": {
+              "name": "publicViewingUrl",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "additionalNotes": {
+              "name": "additionalNotes",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "displayOrder": {
+              "name": "displayOrder",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": true,
+              "attributes": []
+            },
+            "submittedCreatedAt": {
+              "name": "submittedCreatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "testRunId": {
+              "name": "testRunId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "ApplicationSchedules",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "applicationSchedulesByApplicationIdAndDisplayOrder",
+                "queryField": "listApplicationScheduleByApplicationIdAndDisplayOrder",
+                "fields": [
+                  "applicationId",
+                  "displayOrder"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [],
+                    "groups": [
+                      "SuperAdmin"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "ApplicationAuditEvent": {
+          "name": "ApplicationAuditEvent",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "applicationId": {
+              "name": "applicationId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "application": {
+              "name": "application",
+              "isArray": false,
+              "type": {
+                "model": "ApplicationSubmission"
+              },
+              "isRequired": false,
+              "attributes": [],
+              "association": {
+                "connectionType": "BELONGS_TO",
+                "targetNames": [
+                  "applicationId"
+                ]
+              }
+            },
+            "eventType": {
+              "name": "eventType",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "actorSource": {
+              "name": "actorSource",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "occurredAt": {
+              "name": "occurredAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "safeMetadata": {
+              "name": "safeMetadata",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": false,
+              "attributes": []
+            },
+            "formVersion": {
+              "name": "formVersion",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "testRunId": {
+              "name": "testRunId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "ApplicationAuditEvents",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "applicationAuditEventsByApplicationIdAndOccurredAt",
+                "queryField": "listApplicationAuditEventByApplicationIdAndOccurredAt",
+                "fields": [
+                  "applicationId",
+                  "occurredAt"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [],
+                    "groups": [
+                      "SuperAdmin"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "ApplicationIdempotency": {
+          "name": "ApplicationIdempotency",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "payloadHash": {
+              "name": "payloadHash",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "state": {
+              "name": "state",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "applicationId": {
+              "name": "applicationId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false,
+              "attributes": []
+            },
+            "safeResult": {
+              "name": "safeResult",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": false,
+              "attributes": []
+            },
+            "expiresAt": {
+              "name": "expiresAt",
+              "isArray": false,
+              "type": "AWSTimestamp",
+              "isRequired": true,
+              "attributes": []
+            },
+            "testRunId": {
+              "name": "testRunId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "lastErrorCode": {
+              "name": "lastErrorCode",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "ApplicationIdempotencies",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [],
+                    "groups": [
+                      "SuperAdmin"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "ApplicationPublicRateLimit": {
+          "name": "ApplicationPublicRateLimit",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "windowStartedAt": {
+              "name": "windowStartedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "count": {
+              "name": "count",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": true,
+              "attributes": []
+            },
+            "blockedUntil": {
+              "name": "blockedUntil",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "expiresAt": {
+              "name": "expiresAt",
+              "isArray": false,
+              "type": "AWSTimestamp",
+              "isRequired": true,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "ApplicationPublicRateLimits",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [],
+                    "groups": [
+                      "SuperAdmin"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
         "TwitchCommand": {
           "name": "TwitchCommand",
           "fields": {
@@ -529,6 +1668,532 @@
           "primaryKeyInfo": {
             "isCustomPrimaryKey": false,
             "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "TwitchIntegration": {
+          "name": "TwitchIntegration",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "brandId": {
+              "name": "brandId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "ownerUserId": {
+              "name": "ownerUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "provider": {
+              "name": "provider",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "twitchBroadcasterId": {
+              "name": "twitchBroadcasterId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "twitchLogin": {
+              "name": "twitchLogin",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "twitchDisplayName": {
+              "name": "twitchDisplayName",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "connectionStatus": {
+              "name": "connectionStatus",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "grantedScopes": {
+              "name": "grantedScopes",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": false
+            },
+            "capabilities": {
+              "name": "capabilities",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": false,
+              "attributes": []
+            },
+            "tokenExpiresAt": {
+              "name": "tokenExpiresAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "tokenUpdatedAt": {
+              "name": "tokenUpdatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "configurationVersion": {
+              "name": "configurationVersion",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": true,
+              "attributes": []
+            },
+            "connectedAt": {
+              "name": "connectedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "disconnectedAt": {
+              "name": "disconnectedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "lastValidatedAt": {
+              "name": "lastValidatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "lastErrorCode": {
+              "name": "lastErrorCode",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "TwitchIntegrations",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "groups": [
+                      "TwitchBackendService"
+                    ],
+                    "operations": [
+                      "create",
+                      "update",
+                      "delete",
+                      "read"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "TwitchTokenVault": {
+          "name": "TwitchTokenVault",
+          "fields": {
+            "integrationId": {
+              "name": "integrationId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "encryptedTokenBundle": {
+              "name": "encryptedTokenBundle",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "tokenExpiresAt": {
+              "name": "tokenExpiresAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "scopes": {
+              "name": "scopes",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": false
+            },
+            "tokenVersion": {
+              "name": "tokenVersion",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": true,
+              "attributes": []
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "TwitchTokenVaults",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "fields": [
+                  "integrationId"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "groups": [
+                      "TwitchBackendService"
+                    ],
+                    "operations": [
+                      "create",
+                      "update",
+                      "delete",
+                      "read"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": true,
+            "primaryKeyFieldName": "integrationId",
+            "sortKeyFieldNames": []
+          }
+        },
+        "TwitchOAuthTransaction": {
+          "name": "TwitchOAuthTransaction",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "ownerUserId": {
+              "name": "ownerUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "brandId": {
+              "name": "brandId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "integrationId": {
+              "name": "integrationId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "nonceHash": {
+              "name": "nonceHash",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "expiresAt": {
+              "name": "expiresAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "consumedAt": {
+              "name": "consumedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "TwitchOAuthTransactions",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "groups": [
+                      "TwitchBackendService"
+                    ],
+                    "operations": [
+                      "create",
+                      "update",
+                      "delete",
+                      "read"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "TwitchRuntimeHealth": {
+          "name": "TwitchRuntimeHealth",
+          "fields": {
+            "integrationId": {
+              "name": "integrationId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "botAuthenticated": {
+              "name": "botAuthenticated",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "botConnected": {
+              "name": "botConnected",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "eventSubConnected": {
+              "name": "eventSubConnected",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "chatReadAvailable": {
+              "name": "chatReadAvailable",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "chatWriteAvailable": {
+              "name": "chatWriteAvailable",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "lastEventReceivedAt": {
+              "name": "lastEventReceivedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "lastBotHeartbeatAt": {
+              "name": "lastBotHeartbeatAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "lastConfigurationSyncAt": {
+              "name": "lastConfigurationSyncAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "appliedConfigurationVersion": {
+              "name": "appliedConfigurationVersion",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": true,
+              "attributes": []
+            },
+            "warnings": {
+              "name": "warnings",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": false
+            },
+            "errors": {
+              "name": "errors",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": false
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "TwitchRuntimeHealths",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "fields": [
+                  "integrationId"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "groups": [
+                      "TwitchBackendService"
+                    ],
+                    "operations": [
+                      "create",
+                      "update",
+                      "delete",
+                      "read"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": true,
+            "primaryKeyFieldName": "integrationId",
             "sortKeyFieldNames": []
           }
         },
@@ -5049,6 +6714,138 @@
             }
           }
         },
+        "ApplicationStorageResult": {
+          "name": "ApplicationStorageResult",
+          "fields": {
+            "applicationId": {
+              "name": "applicationId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "reference": {
+              "name": "reference",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "status": {
+              "name": "status",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "submittedAt": {
+              "name": "submittedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "idempotentReplay": {
+              "name": "idempotentReplay",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            }
+          }
+        },
+        "PublicApplicationSubmissionResult": {
+          "name": "PublicApplicationSubmissionResult",
+          "fields": {
+            "success": {
+              "name": "success",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "reference": {
+              "name": "reference",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "submittedAt": {
+              "name": "submittedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "confirmationStatus": {
+              "name": "confirmationStatus",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "errorCode": {
+              "name": "errorCode",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "issues": {
+              "name": "issues",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": false,
+              "attributes": []
+            },
+            "message": {
+              "name": "message",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "supportReference": {
+              "name": "supportReference",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            }
+          }
+        },
+        "AdminApplicationListResult": {
+          "name": "AdminApplicationListResult",
+          "fields": {
+            "items": {
+              "name": "items",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": true,
+              "attributes": []
+            },
+            "nextToken": {
+              "name": "nextToken",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            }
+          }
+        },
+        "AdminApplicationDetailResult": {
+          "name": "AdminApplicationDetailResult",
+          "fields": {
+            "application": {
+              "name": "application",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": true,
+              "attributes": []
+            }
+          }
+        },
         "Stage9MutationResult": {
           "name": "Stage9MutationResult",
           "fields": {
@@ -5094,6 +6891,44 @@
               "name": "profiles",
               "isArray": false,
               "type": "AWSJSON",
+              "isRequired": true,
+              "attributes": []
+            }
+          }
+        },
+        "SafeTwitchIntegrationResult": {
+          "name": "SafeTwitchIntegrationResult",
+          "fields": {
+            "integration": {
+              "name": "integration",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": false,
+              "attributes": []
+            },
+            "health": {
+              "name": "health",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": false,
+              "attributes": []
+            }
+          }
+        },
+        "TwitchOAuthStartResult": {
+          "name": "TwitchOAuthStartResult",
+          "fields": {
+            "integrationId": {
+              "name": "integrationId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "authorizeUrl": {
+              "name": "authorizeUrl",
+              "isArray": false,
+              "type": "AWSURL",
               "isRequired": true,
               "attributes": []
             }
@@ -5440,6 +7275,68 @@
         }
       },
       "queries": {
+        "listAdminApplications": {
+          "name": "listAdminApplications",
+          "isArray": false,
+          "type": {
+            "nonModel": "AdminApplicationListResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "limit": {
+              "name": "limit",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": false
+            },
+            "nextToken": {
+              "name": "nextToken",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "search": {
+              "name": "search",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "status": {
+              "name": "status",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "pathwayId": {
+              "name": "pathwayId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "sortDirection": {
+              "name": "sortDirection",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            }
+          }
+        },
+        "getAdminApplication": {
+          "name": "getAdminApplication",
+          "isArray": false,
+          "type": {
+            "nonModel": "AdminApplicationDetailResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "applicationId": {
+              "name": "applicationId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            }
+          }
+        },
         "listAdminUsers": {
           "name": "listAdminUsers",
           "isArray": true,
@@ -5531,6 +7428,22 @@
             }
           }
         },
+        "getMyTwitchIntegration": {
+          "name": "getMyTwitchIntegration",
+          "isArray": false,
+          "type": {
+            "nonModel": "SafeTwitchIntegrationResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "brandId": {
+              "name": "brandId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            }
+          }
+        },
         "listManagedTwitchCommands": {
           "name": "listManagedTwitchCommands",
           "isArray": true,
@@ -5572,6 +7485,56 @@
         }
       },
       "mutations": {
+        "submitPublicApplication": {
+          "name": "submitPublicApplication",
+          "isArray": false,
+          "type": {
+            "nonModel": "PublicApplicationSubmissionResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "payload": {
+              "name": "payload",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": true
+            },
+            "requestToken": {
+              "name": "requestToken",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "website": {
+              "name": "website",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            }
+          }
+        },
+        "storeTrustedApplicationSubmission": {
+          "name": "storeTrustedApplicationSubmission",
+          "isArray": false,
+          "type": {
+            "nonModel": "ApplicationStorageResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "command": {
+              "name": "command",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": true
+            },
+            "idempotencyKey": {
+              "name": "idempotencyKey",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            }
+          }
+        },
         "updateUserRoles": {
           "name": "updateUserRoles",
           "isArray": false,
@@ -6817,6 +8780,44 @@
             }
           }
         },
+        "startTwitchIntegrationOAuth": {
+          "name": "startTwitchIntegrationOAuth",
+          "isArray": false,
+          "type": {
+            "nonModel": "TwitchOAuthStartResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "brandId": {
+              "name": "brandId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            }
+          }
+        },
+        "disconnectTwitchIntegration": {
+          "name": "disconnectTwitchIntegration",
+          "isArray": false,
+          "type": {
+            "nonModel": "SafeTwitchIntegrationResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "brandId": {
+              "name": "brandId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            },
+            "integrationId": {
+              "name": "integrationId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            }
+          }
+        },
         "createManagedTwitchCommand": {
           "name": "createManagedTwitchCommand",
           "isArray": false,
@@ -7752,11 +9753,11 @@
   },
   "storage": {
     "aws_region": "eu-north-1",
-    "bucket_name": "amplify-projectrespawnweb-projectrespawnstoragebuc-rtuzdjofeln9",
+    "bucket_name": "amplify-projectrespawnweb-projectrespawnstoragebuc-a0fnt1vnewlx",
     "buckets": [
       {
         "name": "projectRespawnStorage",
-        "bucket_name": "amplify-projectrespawnweb-projectrespawnstoragebuc-rtuzdjofeln9",
+        "bucket_name": "amplify-projectrespawnweb-projectrespawnstoragebuc-a0fnt1vnewlx",
         "aws_region": "eu-north-1",
         "paths": {
           "public/*": {
@@ -7766,9 +9767,7 @@
             ],
             "authenticated": [
               "get",
-              "list",
-              "write",
-              "delete"
+              "list"
             ],
             "groupsSuperAdmin": [
               "get",
@@ -7805,7 +9804,7 @@
   "custom": {
     "API": {
       "projectRespawnApi": {
-        "endpoint": "https://b13o0x6ypi.execute-api.eu-north-1.amazonaws.com/",
+        "endpoint": "https://9qp7ehd406.execute-api.eu-north-1.amazonaws.com/",
         "region": "eu-north-1",
         "apiName": "projectRespawnApi"
       }

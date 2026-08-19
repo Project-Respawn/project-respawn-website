@@ -9,7 +9,10 @@ let clientPromise: Promise<ReturnType<typeof generateClient<Schema>>> | null = n
 export async function getDataClient() {
   if (!clientPromise) {
     clientPromise = (async () => {
-      const { resourceConfig, libraryOptions } = await getAmplifyDataClientConfig(env)
+      // Amplify's generated declaration can temporarily omit this function's
+      // data-client environment during an additive schema synthesis. Runtime
+      // access is granted at schema scope in data/resource.ts.
+      const { resourceConfig, libraryOptions } = await getAmplifyDataClientConfig(env as unknown as Parameters<typeof getAmplifyDataClientConfig>[0])
       Amplify.configure(resourceConfig, libraryOptions)
       return generateClient<Schema>()
     })()

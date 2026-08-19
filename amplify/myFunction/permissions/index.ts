@@ -47,6 +47,16 @@ const PLATFORM_ADMINS: CognitoGroup[] = ['SuperAdmin', 'Admin']
 
 export const INITIAL_PERMISSION_CATALOG: CatalogDefinition[] = [
   {
+    key: 'applications.read', displayName: 'Read applications',
+    description: 'List and read complete application submissions, including protected detail.', domain: 'Applications', module: 'applications', sortOrder: 10,
+    defaultGroups: PLATFORM_ADMINS,
+  },
+  {
+    key: 'applications.storage.trusted', displayName: 'Store verified applications',
+    description: 'Invoke the trusted phase-one application storage boundary.', domain: 'Applications', module: 'applications', sortOrder: 20,
+    defaultGroups: ['SuperAdmin'],
+  },
+  {
     key: 'users.view', displayName: 'View users',
     description: 'View the administrative user directory.', domain: 'Users', module: 'users', sortOrder: 10,
     defaultGroups: PLATFORM_ADMINS,
