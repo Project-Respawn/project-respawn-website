@@ -2,39 +2,93 @@
 
 import { createRouter, createWebHistory } from 'vue-router';
 
-import publicRoutes from './public.routes';
-import creatorToolsRoutes from '../features/creator-tools/creator-tools.routes.js';
-import adminRoutes from './admin.routes';
-import forumRoutes from './forum.routes';
+// ============================================================
+// ROUTE GROUPS
+// ============================================================
+
+import publicRoutes from './public.routes.js';
+import featureRoutes from './features.routes.js';
+import adminRoutes from './admin.routes.js';
+import forumRoutes from './forum.routes.js';
+
+// ============================================================
+// SHARED / SPECIAL ROUTES
+// ============================================================
 
 import NotFound from '../views/NotFound/NotFound.vue';
 import BrandPermissions from '../views/BrandPermissions/BrandPermissions.vue';
+
+// ============================================================
+// ACCESS CONTROL
+// ============================================================
+
 import { refreshAccessContext } from '../composables/useAccessContext.js';
 import { ensureAuthReady, useAuth } from '../composables/useAuth.js';
 
+// ============================================================
+// ROUTES
+// ============================================================
+
 const routes = [
+    // --------------------------------------------------------
+    // PUBLIC WEBSITE
+    // --------------------------------------------------------
+
     ...publicRoutes,
-    ...creatorToolsRoutes,
+
+    // --------------------------------------------------------
+    // PROJECT RESPAWN FEATURES
+    // Creator Tools
+    // Partner Hub
+    // Trainer Hub
+    // --------------------------------------------------------
+
+    ...featureRoutes,
+
+    // --------------------------------------------------------
+    // ADMIN
+    // --------------------------------------------------------
+
     ...adminRoutes,
+
+    // --------------------------------------------------------
+    // COMMUNITY / FORUMS
+    // --------------------------------------------------------
+
     ...forumRoutes,
+
+    // --------------------------------------------------------
+    // SPECIAL ACCESS ROUTES
+    // --------------------------------------------------------
 
     {
         path: '/brand-permissions',
         name: 'BrandPermissions',
         component: BrandPermissions,
         meta: {
-            requiresBrandAccess: true
-        }
+            requiresBrandAccess: true,
+        },
     },
+
+    // --------------------------------------------------------
+    // 404
+    // IMPORTANT: Keep this route last
+    // --------------------------------------------------------
 
     {
         path: '/:pathMatch(.*)',
-        component: NotFound
-    }
+        name: 'NotFound',
+        component: NotFound,
+    },
 ];
+
+// ============================================================
+// ROUTER
+// ============================================================
 
 const router = createRouter({
     history: createWebHistory(),
+
     routes,
 
     scrollBehavior(to, from, savedPosition) {
@@ -45,33 +99,28 @@ const router = createRouter({
         if (to.hash) {
             return {
                 el: to.hash,
-                behavior: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+                behavior: window.matchMedia?.(
+                    '(prefers-reduced-motion: reduce)'
+                ).matches
                     ? 'auto'
-                    : 'smooth'
+                    : 'smooth',
             };
         }
 
         return {
-            top: 0
+            top: 0,
         };
-    }
+    },
 });
 
+// ============================================================
+// GLOBAL ROUTE ACCESS CONTROL
+// ============================================================
+
 router.beforeEach(async (to) => {
-    // If someone is signed in and visits the root URL,
-    // send them to their Project Respawn dashboard instead
-    // of showing the public landing page.
-    if (to.path === '/') {
-        await ensureAuthReady();
-
-        const { isSignedIn } = useAuth();
-
-        if (isSignedIn.value) {
-            return {
-                name: 'UserHomepage'
-            };
-        }
-    }
+    // --------------------------------------------------------
+    // DETERMINE ROUTE REQUIREMENTS
+    // --------------------------------------------------------
 
     const requiresAuth = to.matched.some(
         (record) => record.meta?.requiresAuth
@@ -89,6 +138,10 @@ router.beforeEach(async (to) => {
         (record) => record.meta?.requiresBrandAccess
     );
 
+    // --------------------------------------------------------
+    // AUTHENTICATION
+    // --------------------------------------------------------
+
     if (requiresAuth) {
         await ensureAuthReady();
 
@@ -98,11 +151,15 @@ router.beforeEach(async (to) => {
             return {
                 path: '/join',
                 query: {
-                    redirect: to.fullPath
-                }
+                    redirect: to.fullPath,
+                },
             };
         }
     }
+
+    // --------------------------------------------------------
+    // NO ADDITIONAL ACCESS REQUIREMENTS
+    // --------------------------------------------------------
 
     if (
         !requiredPermission &&
@@ -111,6 +168,10 @@ router.beforeEach(async (to) => {
     ) {
         return true;
     }
+
+    // --------------------------------------------------------
+    // PERMISSION / GROUP / BRAND ACCESS
+    // --------------------------------------------------------
 
     try {
         const context = await refreshAccessContext();
@@ -129,17 +190,26 @@ router.beforeEach(async (to) => {
             !requiresBrandAccess ||
             context.brands.length > 0;
 
-        return hasPermission &&
+        if (
+            hasPermission &&
             hasGroup &&
             hasBrandAccess
-            ? true
-            : { path: '/' };
+        ) {
+            return true;
+        }
 
+        return {
+            path: '/',
+        };
     } catch {
         return {
-            path: '/'
+            path: '/',
         };
     }
 });
+
+// ============================================================
+// EXPORT
+// ============================================================
 
 export default router;
