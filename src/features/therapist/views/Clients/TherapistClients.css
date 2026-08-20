@@ -1,0 +1,656 @@
+.therapist-clients {
+  min-height: 100%;
+  padding: 28px;
+  color: #f6f8fc;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(120, 72, 255, 0.06),
+      transparent 28%
+    ),
+    #080d15;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.therapist-clients__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.therapist-clients__header h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.therapist-clients__header p {
+  margin: 7px 0 0;
+  color: #9ca6b6;
+  font-size: 15px;
+}
+
+.primary-button,
+.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.primary-button {
+  border: 1px solid #8458e8;
+  background:
+    linear-gradient(
+      135deg,
+      #8354e8,
+      #6d40cc
+    );
+  color: #fff;
+}
+
+.primary-button:hover {
+  filter: brightness(1.08);
+}
+
+.primary-button--small {
+  min-height: 38px;
+}
+
+.secondary-button {
+  border: 1px solid #343e4d;
+  background: #111721;
+  color: #e4e8ef;
+}
+
+.secondary-button:hover {
+  border-color: #724bd0;
+}
+
+/* =========================================================
+   SUMMARY CARDS
+========================================================= */
+
+.client-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.client-summary-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 110px;
+  padding: 20px;
+  border: 1px solid #27303c;
+  border-radius: 12px;
+  background:
+    linear-gradient(
+      145deg,
+      #111822,
+      #0d131c
+    );
+}
+
+.client-summary-card__icon {
+  display: grid;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: 10px;
+  font-size: 21px;
+}
+
+.client-summary-card--purple
+.client-summary-card__icon {
+  color: #b18bff;
+  background: rgba(127, 73, 230, 0.18);
+}
+
+.client-summary-card--blue
+.client-summary-card__icon {
+  color: #6594ff;
+  background: rgba(68, 112, 222, 0.17);
+}
+
+.client-summary-card--orange
+.client-summary-card__icon {
+  color: #ffac42;
+  background: rgba(226, 145, 42, 0.16);
+}
+
+.client-summary-card__content {
+  display: flex;
+  flex-direction: column;
+}
+
+.client-summary-card__content strong {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.client-summary-card__content span {
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+.client-summary-card__content small {
+  margin-top: 7px;
+}
+
+.premium-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding: 4px 7px;
+  border-radius: 999px;
+  background: rgba(125, 73, 225, 0.19);
+  color: #bb98ff;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   TOOLBAR
+========================================================= */
+
+.client-toolbar {
+  display: grid;
+  grid-template-columns:
+    minmax(220px, 260px)
+    minmax(0, 1fr)
+    200px;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.client-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 0 14px;
+  border: 1px solid #2b3441;
+  border-radius: 9px;
+  background: #0f151f;
+}
+
+.client-search__icon {
+  color: #818c9d;
+  font-size: 20px;
+}
+
+.client-search input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #f0f3f8;
+  font: inherit;
+}
+
+.client-search input::placeholder {
+  color: #717c8e;
+}
+
+.client-filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 5px;
+  overflow-x: auto;
+  border: 1px solid #27303c;
+  border-radius: 9px;
+  background: #0d131c;
+}
+
+.filter-button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid #303948;
+  border-radius: 7px;
+  background: #111721;
+  color: #c7ced9;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.filter-button:hover {
+  border-color: #6246a9;
+}
+
+.filter-button--active {
+  border-color: #8053dc;
+  background: #6c45c4;
+  color: #fff;
+}
+
+.filter-button__premium {
+  color: #9f75f5;
+  font-size: 8px;
+}
+
+.client-sort {
+  display: flex;
+  align-items: center;
+  min-height: 46px;
+  padding: 0 10px;
+  border: 1px solid #2b3441;
+  border-radius: 9px;
+  background: #0f151f;
+}
+
+.client-sort span {
+  flex: 0 0 auto;
+  margin-right: 5px;
+  color: #828d9d;
+  font-size: 11px;
+}
+
+.client-sort select {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #e6eaf0;
+  font: inherit;
+  font-size: 12px;
+}
+
+/* =========================================================
+   CLIENT CARDS
+========================================================= */
+
+.client-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.client-card {
+  padding: 18px 20px 0;
+  border: 1px solid #29323f;
+  border-radius: 11px;
+  background:
+    linear-gradient(
+      145deg,
+      #111821,
+      #0e141d
+    );
+}
+
+.client-card:hover {
+  border-color: #3a4555;
+}
+
+.client-card__main {
+  display: grid;
+  grid-template-columns:
+    minmax(220px, 1.2fr)
+    minmax(130px, 0.75fr)
+    minmax(95px, 0.55fr)
+    minmax(155px, 0.85fr)
+    minmax(125px, 0.7fr)
+    auto;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 15px;
+}
+
+.client-card__identity {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.client-avatar {
+  position: relative;
+  display: grid;
+  flex: 0 0 58px;
+  width: 58px;
+  height: 58px;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.client-avatar--purple {
+  background:
+    linear-gradient(145deg, #945fff, #6241bd);
+}
+
+.client-avatar--blue {
+  background:
+    linear-gradient(145deg, #4479e9, #3156ae);
+}
+
+.client-avatar--green {
+  background:
+    linear-gradient(145deg, #45b568, #357f4c);
+}
+
+.client-avatar--red {
+  background:
+    linear-gradient(145deg, #d45a65, #9b3d47);
+}
+
+.client-avatar__status {
+  position: absolute;
+  right: -2px;
+  bottom: 4px;
+  width: 13px;
+  height: 13px;
+  border: 2px solid #111821;
+  border-radius: 50%;
+}
+
+.client-avatar__status--purple,
+.client-avatar__status--neutral {
+  background: #8a64df;
+}
+
+.client-avatar__status--green {
+  background: #45ce79;
+}
+
+.client-avatar__status--orange {
+  background: #f6a335;
+}
+
+.client-avatar__status--red {
+  background: #ef5d62;
+}
+
+.client-card__identity-content {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.client-card__identity-content > strong {
+  font-size: 16px;
+}
+
+.client-card__identity-content > span {
+  margin-top: 5px;
+  color: #929cac;
+  font-size: 11px;
+}
+
+.sharing-status {
+  margin-top: 6px;
+  color: #56cf7e;
+  font-size: 10px;
+}
+
+.sharing-status--updated {
+  color: #f1ad44;
+}
+
+.client-card__stat {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  padding-left: 18px;
+  border-left: 1px solid #28313c;
+}
+
+.client-card__label {
+  color: #8a95a5;
+  font-size: 11px;
+}
+
+.client-card__stat strong {
+  margin-top: 6px;
+  font-size: 15px;
+}
+
+.client-card__stat small {
+  margin-top: 6px;
+  color: #909aaa;
+  font-size: 11px;
+}
+
+.client-card__stat--insights strong {
+  color: #f0f3f8;
+}
+
+.confidence-trend span {
+  margin-left: 5px;
+  font-weight: 700;
+}
+
+.client-card__status-area {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.client-status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 7px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.client-status-pill--purple {
+  color: #bd99ff;
+  background: rgba(125, 72, 220, 0.17);
+}
+
+.client-status-pill--neutral {
+  color: #c7cdd8;
+  background: #1a222d;
+}
+
+.client-status-pill--orange {
+  color: #ffb247;
+  background: rgba(219, 137, 32, 0.16);
+}
+
+.client-status-pill--red {
+  color: #ff7774;
+  background: rgba(213, 66, 67, 0.16);
+}
+
+.client-card__actions {
+  display: flex;
+  gap: 10px;
+}
+
+.client-card__activity {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 42px;
+  padding-left: 270px;
+  border-top: 1px solid #242d38;
+  color: #8a95a5;
+  font-size: 11px;
+}
+
+.client-card__activity strong {
+  color: #cbd2dd;
+  font-weight: 500;
+}
+
+.client-card__activity small {
+  color: #778294;
+}
+
+/* =========================================================
+   EMPTY / FOOTER
+========================================================= */
+
+.client-empty-state {
+  padding: 50px 20px;
+  border: 1px solid #29323f;
+  border-radius: 11px;
+  background: #0f151e;
+  text-align: center;
+}
+
+.client-empty-state strong {
+  font-size: 16px;
+}
+
+.client-empty-state p {
+  margin: 8px 0 0;
+  color: #8994a5;
+}
+
+.clients-sharing-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 15px;
+  color: #737f90;
+  font-size: 11px;
+}
+
+/* =========================================================
+   TEXT
+========================================================= */
+
+.text-purple {
+  color: #ae82ff;
+}
+
+.text-blue {
+  color: #5d91ff;
+}
+
+.text-green {
+  color: #45cf7d;
+}
+
+.text-orange {
+  color: #ffac42;
+}
+
+.text-red {
+  color: #ff6864;
+}
+
+.text-neutral {
+  color: #c8ced8;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1350px) {
+  .client-card__main {
+    grid-template-columns:
+      minmax(220px, 1fr)
+      repeat(3, minmax(110px, 0.65fr));
+  }
+
+  .client-card__status-area,
+  .client-card__actions {
+    grid-column: 2 / -1;
+    justify-content: flex-end;
+  }
+
+  .client-card__activity {
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 1100px) {
+  .client-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .client-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .client-card__main {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .client-card__identity {
+    grid-column: 1 / -1;
+  }
+
+  .client-card__stat {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .client-card__status-area,
+  .client-card__actions {
+    grid-column: auto;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 700px) {
+  .therapist-clients {
+    padding: 18px;
+  }
+
+  .therapist-clients__header {
+    flex-direction: column;
+  }
+
+  .client-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .client-card__main {
+    grid-template-columns: 1fr;
+  }
+
+  .client-card__identity,
+  .client-card__status-area,
+  .client-card__actions {
+    grid-column: auto;
+  }
+
+  .client-card__actions {
+    flex-direction: column;
+  }
+
+  .client-card__actions a {
+    width: 100%;
+  }
+
+  .client-card__activity {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
+    padding: 12px 0;
+  }
+}

@@ -263,4 +263,4 @@ export default {
       ],
     };
   },
-};export default { name: 'TherapistDashboard' };
+};
