@@ -25,6 +25,7 @@
 import creatorToolsRoutes from '../features/creator-tools/creator-tools.routes.js';
 import partnerHubRoutes from '../features/partner-hub/partner-hub.routes.js';
 import trainerHubRoutes from '../features/trainer-hub/trainer-hub.routes.js';
+import therapistRoutes from '../features/therapist/therapist.routes.js';
 
 
 // ============================================================
@@ -52,6 +53,12 @@ const featureRoutes = [
     // --------------------------------------------------------
 
     ...trainerHubRoutes,
+
+    // --------------------------------------------------------
+    // 4. THERAPIST
+    // --------------------------------------------------------
+
+    ...therapistRoutes,
 
 ];
 

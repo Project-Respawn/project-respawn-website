@@ -139,6 +139,28 @@ router.beforeEach(async (to) => {
     );
 
     // --------------------------------------------------------
+    // AUTH-AWARE HOMEPAGE
+    //
+    // Logged-out users:
+    // "/" -> public landing page
+    //
+    // Logged-in users:
+    // "/" -> user home dashboard at "/home"
+    // --------------------------------------------------------
+
+    if (to.path === '/') {
+        await ensureAuthReady();
+
+        const { isSignedIn } = useAuth();
+
+        if (isSignedIn.value) {
+            return {
+                path: '/home',
+            };
+        }
+    }
+
+    // --------------------------------------------------------
     // AUTHENTICATION
     // --------------------------------------------------------
 
