@@ -9,6 +9,7 @@ import { handleCreateManagedMediaCollection, handleCreateManagedMediaItem, handl
 import { handleImportManagedRevolutOrder, handleListManagedOrders, handleListManagedProfiles, handleManageSimpleResource, handleRecoverManagedOrder } from '../stage9/handlers'
 import { handleCleanupApplicationStorageTestRun, handleCleanupPublicApplicationTestRun, handleGetAdminApplication, handleListAdminApplications, handleStoreTrustedApplicationSubmission, handleSubmitPublicApplication } from '../applications'
 import { handleAddWorkspaceMember, handleCreateCreatorWorkspace, handleGetCreatorWorkspace, handleGetMyWorkspacePermissions, handleListMyCreatorWorkspaces, handleListWorkspaceMembers, handleRevokeWorkspaceMember, handleSetWorkspaceMemberPermissions } from '../workspaces'
+import { handleGetInvestorDocumentUrl, handleGetMyInvestorAccess } from '../investors'
 
 export interface AppSyncEvent { arguments?: unknown; info?: { fieldName?: string }; fieldName?: string; identity?: unknown }
 
@@ -20,6 +21,8 @@ export function getResolverFieldName(event: AppSyncEvent) { return event.info?.f
 
 export async function routeAppSync(event: AppSyncEvent) {
   switch (getResolverFieldName(event)) {
+    case 'getMyInvestorAccess': return handleGetMyInvestorAccess(event)
+    case 'getInvestorDocumentUrl': return handleGetInvestorDocumentUrl(event)
     case 'storeTrustedApplicationSubmission': return handleStoreTrustedApplicationSubmission(event)
     case 'submitPublicApplication': return handleSubmitPublicApplication(event)
     case 'listAdminApplications': return handleListAdminApplications(event)

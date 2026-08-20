@@ -24,6 +24,7 @@ import BrandPermissions from '../views/BrandPermissions/BrandPermissions.vue';
 
 import { refreshAccessContext } from '../composables/useAccessContext.js';
 import { ensureAuthReady, useAuth } from '../composables/useAuth.js';
+import { refreshInvestorAccess } from '../composables/useInvestorAccess.js';
 
 // ============================================================
 // ROUTES
@@ -137,6 +138,7 @@ router.beforeEach(async (to) => {
     const requiresBrandAccess = to.matched.some(
         (record) => record.meta?.requiresBrandAccess
     );
+    const requiresInvestorAccess = to.matched.some((record) => record.meta?.requiresInvestorAccess);
 
     // --------------------------------------------------------
     // AUTH-AWARE HOMEPAGE
@@ -186,7 +188,8 @@ router.beforeEach(async (to) => {
     if (
         !requiredPermission &&
         !requiredGroups.length &&
-        !requiresBrandAccess
+        !requiresBrandAccess &&
+        !requiresInvestorAccess
     ) {
         return true;
     }
@@ -196,32 +199,35 @@ router.beforeEach(async (to) => {
     // --------------------------------------------------------
 
     try {
-        const context = await refreshAccessContext();
+        const context = (requiredPermission || requiredGroups.length || requiresBrandAccess) ? await refreshAccessContext() : null;
+        const investor = requiresInvestorAccess ? await refreshInvestorAccess() : null;
 
         const hasPermission =
             !requiredPermission ||
-            context.permissions.includes(requiredPermission);
+            context?.permissions.includes(requiredPermission);
 
         const hasGroup =
             !requiredGroups.length ||
             requiredGroups.some((group) =>
-                context.groups.includes(group)
+                context?.groups.includes(group)
             );
 
         const hasBrandAccess =
             !requiresBrandAccess ||
-            context.brands.length > 0;
+            context?.brands.length > 0;
+        const hasInvestorAccess = !requiresInvestorAccess || investor?.hasAccess === true;
 
         if (
             hasPermission &&
             hasGroup &&
-            hasBrandAccess
+            hasBrandAccess &&
+            hasInvestorAccess
         ) {
             return true;
         }
 
         return {
-            path: '/',
+            path: requiresInvestorAccess ? '/investors' : '/',
         };
     } catch {
         return {

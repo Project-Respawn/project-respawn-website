@@ -114,6 +114,8 @@
 
 <script>
 import { accessTiers, reviewPath, roomSections } from './investorDataRoom.js';
+import { generateClient } from 'aws-amplify/data';
+import { refreshInvestorAccess } from '../../../composables/useInvestorAccess.js';
 
 const ACCESS_RANK = { PRE_NDA: 1, NDA: 2, DILIGENCE: 3 };
 
@@ -124,8 +126,7 @@ export default {
       accessTiers,
       reviewPath,
       roomSections,
-      // Demo only. Backend must replace this with InvestorAccess.accessLevel.
-      currentAccessLevel: 'PRE_NDA',
+      currentAccessLevel: null,
       activeSection: 'financials',
       lastUpdated: '20 August 2026',
       sectionObserver: null
@@ -133,12 +134,19 @@ export default {
   },
   computed: {
     accessLevelLabel() { return this.accessLabel(this.currentAccessLevel); },
-    accessLevelClass() { return `access-dot-${this.currentAccessLevel.toLowerCase().replace('_', '-')}`; },
+    accessLevelClass() { return this.currentAccessLevel ? `access-dot-${this.currentAccessLevel.toLowerCase().replace('_', '-')}` : 'access-dot-loading'; },
     accessibleDocumentCount() { return this.roomSections.reduce((t, s) => t + this.accessibleDocs(s).length, 0); },
     lockedDocumentCount() { return this.roomSections.reduce((t, s) => t + this.lockedDocs(s).length, 0); },
     nextAccessLabel() { return this.currentAccessLevel === 'PRE_NDA' ? 'NDA' : this.currentAccessLevel === 'NDA' ? 'Diligence' : 'Investor'; }
   },
-  mounted() { this.setupSectionObserver(); },
+  async mounted() {
+    try {
+      const access = await refreshInvestorAccess();
+      if (!access.hasAccess || !access.accessLevel) return this.$router.replace('/investors');
+      this.currentAccessLevel = access.accessLevel;
+      this.$nextTick(this.setupSectionObserver);
+    } catch { this.$router.replace('/investors'); }
+  },
   beforeUnmount() { if (this.sectionObserver) this.sectionObserver.disconnect(); },
   methods: {
     accessLabel(access) { return { PRE_NDA: 'Pre-NDA', NDA: 'NDA', DILIGENCE: 'Diligence' }[access] || access; },
@@ -146,9 +154,12 @@ export default {
     accessibleDocs(section) { return section.documents.filter(d => this.canAccess(d.access)); },
     lockedDocs(section) { return section.documents.filter(d => !this.canAccess(d.access)); },
     requiredSectionAccess(section) { return this.lockedDocs(section).some(d => d.access === 'NDA') ? 'NDA' : 'Diligence'; },
-    openDocument(document) {
-      if (document.href) { window.location.href = document.href; return; }
-      window.alert(`${document.title}\n\nFrontend demo only. Production will request a short-lived secure document URL from the backend.`);
+    async openDocument(document) {
+      try {
+        const result = await generateClient().queries.getInvestorDocumentUrl({ documentKey: document.key });
+        if (result.errors?.length || !result.data?.url) throw new Error(result.errors?.[0]?.message || 'This document is not available yet.');
+        window.location.assign(result.data.url);
+      } catch (error) { window.alert(error.message || 'This document could not be opened.'); }
     },
     requestSectionAccess(section) { this.openAccessEmail(section.label, this.requiredSectionAccess(section)); },
     requestHigherAccess() { this.openAccessEmail('Investor Data Room', this.nextAccessLabel); },

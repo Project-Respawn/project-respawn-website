@@ -87,7 +87,8 @@ export default [
         name: 'InvestorDataRoom',
         component: InvestorDataRoom,
         meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            requiresInvestorAccess: true
         }
     },
 

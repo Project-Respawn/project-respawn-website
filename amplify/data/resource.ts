@@ -26,6 +26,7 @@ const schema = a
   .schema({
     AdminUser: a.customType({
       id: a.string().required(),
+      cognitoSub: a.string().required(),
       username: a.string().required(),
       email: a.string(),
       name: a.string(),
@@ -41,6 +42,56 @@ const schema = a
       username: a.string().required(),
       roles: a.string().array().required(),
     }),
+
+    InvestorAccountLookup: a.customType({
+      cognitoSub: a.string().required(), email: a.string().required(), name: a.string().required(),
+    }),
+    InvestorAccessSummary: a.customType({
+      id: a.id().required(), userId: a.string().required(), cognitoSub: a.string().required(),
+      email: a.string().required(), name: a.string().required(), organisation: a.string(),
+      accessLevel: a.string().required(), ndaStatus: a.string().required(), isActive: a.boolean().required(),
+      grantedAt: a.datetime().required(), expiresAt: a.datetime(), grantedBy: a.string().required(), updatedAt: a.datetime().required(),
+    }),
+    InvestorAccessContext: a.customType({
+      hasAccess: a.boolean().required(), accessLevel: a.string(), ndaStatus: a.string(),
+      isPlatformAdmin: a.boolean().required(), expiresAt: a.datetime(),
+    }),
+    InvestorDocumentAccessResult: a.customType({
+      documentKey: a.string().required(), url: a.string().required(), expiresAt: a.datetime().required(),
+    }),
+
+    InvestorAccess: a.model({
+      // Immutable Cognito subject. Email is display/search metadata only.
+      userId: a.string().required(), cognitoSub: a.string().required(), email: a.string().required(),
+      name: a.string().required(), organisation: a.string(), accessLevel: a.string().required(),
+      ndaStatus: a.string().required(), isActive: a.boolean().required(), grantedAt: a.datetime().required(),
+      expiresAt: a.datetime(), grantedBy: a.string().required(),
+    }).secondaryIndexes((index) => [index('userId').queryField('listInvestorAccessByUserId')])
+      .authorization((allow) => [allow.groups(['SuperAdmin']).to([])]),
+
+    InvestorAccessAuditEvent: a.model({
+      targetUserId: a.string().required(), action: a.string().required(), previousValue: a.json(),
+      newValue: a.json(), adminUserId: a.string().required(), occurredAt: a.datetime().required(),
+    }).authorization((allow) => [allow.groups(['SuperAdmin', 'Admin']).to(['read'])]),
+
+    listInvestorAccess: a.query().returns(a.ref('InvestorAccessSummary').array().required())
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function(adminUserManagement)),
+    findInvestorAccountByEmail: a.query().arguments({ email: a.string().required() }).returns(a.ref('InvestorAccountLookup'))
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function(adminUserManagement)),
+    grantInvestorAccess: a.mutation().arguments({
+      cognitoSub: a.string().required(), email: a.string().required(), name: a.string().required(), organisation: a.string(),
+      accessLevel: a.string().required(), ndaStatus: a.string().required(), expiresAt: a.datetime(),
+    }).returns(a.ref('InvestorAccessSummary').required())
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function(adminUserManagement)),
+    updateInvestorAccess: a.mutation().arguments({
+      investorAccessId: a.id().required(), accessLevel: a.string(), ndaStatus: a.string(), isActive: a.boolean(), expiresAt: a.datetime(), clearExpiry: a.boolean(),
+    }).returns(a.ref('InvestorAccessSummary').required())
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function(adminUserManagement)),
+    getMyInvestorAccess: a.query().returns(a.ref('InvestorAccessContext').required())
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    getInvestorDocumentUrl: a.query().arguments({ documentKey: a.string().required() })
+      .returns(a.ref('InvestorDocumentAccessResult').required())
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
 
     PermissionDefinitionSummary: a.customType({
       id: a.id().required(),
