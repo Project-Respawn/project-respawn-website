@@ -150,7 +150,188 @@ const schema = a
       permissions: a.string().array().required(),
       isPlatformAdmin: a.boolean().required(),
       brands: a.ref('AccessibleBrandSummary').array().required(),
+      workspaces: a.ref('AccessibleWorkspaceSummary').array().required(),
     }),
+
+    AccessibleWorkspaceSummary: a.customType({
+      id: a.id().required(),
+      name: a.string().required(),
+      isOwner: a.boolean().required(),
+      membershipStatus: a.string(),
+      permissionKeys: a.string().array().required(),
+    }),
+
+    CreatorWorkspaceSummary: a.customType({
+      id: a.id().required(),
+      // Immutable Cognito sub. Never a username, email, or client-supplied ID.
+      ownerUserId: a.string().required(),
+      name: a.string().required(),
+      createdAt: a.datetime().required(),
+      updatedAt: a.datetime().required(),
+    }),
+
+    // "Record" avoids colliding with the owner-enforcing custom
+    // getCreatorWorkspace operation generated on the Query root.
+    CreatorWorkspaceRecord: a
+      .model({
+        // Immutable Cognito sub. Set only by the backend Workspace boundary.
+        ownerUserId: a.string().required(),
+        name: a.string().required(),
+      })
+      // Required by getMyAccessContext to list owned Workspaces without a scan.
+      .secondaryIndexes((index) => [
+        index('ownerUserId').queryField('listCreatorWorkspaceByOwnerUserId'),
+      ])
+      .authorization((allow) => [
+        // No direct client model access. Authenticated callers use the
+        // owner-checking Lambda operations declared below.
+        allow.groups(['SuperAdmin']).to([]),
+      ]),
+
+    WorkspaceMembershipSummary: a.customType({
+      id: a.id().required(),
+      workspaceId: a.id().required(),
+      // Immutable Cognito sub. Never a username or email address.
+      userId: a.string().required(),
+      status: a.string().required(),
+      addedByUserId: a.string().required(),
+      revokedAt: a.datetime(),
+      revokedByUserId: a.string(),
+      permissionGeneration: a.integer().required(),
+      createdAt: a.datetime().required(),
+      updatedAt: a.datetime().required(),
+    }),
+
+    WorkspaceMembershipListResult: a.customType({
+      workspaceId: a.id().required(),
+      // The authoritative owner remains on CreatorWorkspace, not in a
+      // duplicate membership row.
+      ownerUserId: a.string().required(),
+      memberships: a.ref('WorkspaceMembershipSummary').array().required(),
+    }),
+
+    WorkspaceMembership: a
+      .model({
+        workspaceId: a.id().required(),
+        // Immutable Cognito sub. Set only by the backend membership boundary.
+        userId: a.string().required(),
+        status: a.string().required(),
+        addedByUserId: a.string().required(),
+        revokedAt: a.datetime(),
+        revokedByUserId: a.string(),
+        // Incremented across revoke/reactivate boundaries so stale permission
+        // edits from an earlier membership lifetime can never become valid.
+        permissionGeneration: a.integer().required(),
+      })
+      // Required by getMyAccessContext to find this canonical sub's
+      // memberships without scanning every Workspace membership.
+      .secondaryIndexes((index) => [
+        index('userId').queryField('listWorkspaceMembershipByUserId'),
+      ])
+      .authorization((allow) => [
+        // No direct client model access. Authenticated callers use the
+        // owner/member-checking Lambda operations declared below.
+        allow.groups(['SuperAdmin']).to([]),
+      ]),
+
+    WorkspaceMembershipPermission: a
+      .model({
+        membershipId: a.id().required(),
+        permissionKey: a.string().required(),
+        // Immutable Cognito sub of the Workspace owner who assigned it.
+        assignedByUserId: a.string().required(),
+        assignedAt: a.datetime().required(),
+      })
+      // Required to resolve an active membership's explicit capabilities.
+      .secondaryIndexes((index) => [
+        index('membershipId').queryField('listWorkspaceMembershipPermissionByMembershipId'),
+      ])
+      .authorization((allow) => [
+        allow.groups(['SuperAdmin']).to([]),
+      ]),
+
+    WorkspaceMembershipPermissionSet: a
+      .model({
+        membershipId: a.id().required(),
+        permissionGeneration: a.integer().required(),
+        revision: a.integer().required(),
+        permissionKeys: a.string().array().required(),
+        updatedByUserId: a.string().required(),
+        updatedAt: a.datetime().required(),
+      })
+      .authorization((allow) => [
+        allow.groups(['SuperAdmin']).to([]),
+      ]),
+
+    WorkspacePermissionResult: a.customType({
+      workspaceId: a.id().required(),
+      userId: a.string().required(),
+      isOwner: a.boolean().required(),
+      permissionKeys: a.string().array().required(),
+      permissionGeneration: a.integer().required(),
+      revision: a.integer().required(),
+    }),
+
+    createCreatorWorkspace: a
+      .mutation()
+      .arguments({ name: a.string().required() })
+      .returns(a.ref('CreatorWorkspaceSummary').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    getCreatorWorkspace: a
+      .query()
+      .arguments({ workspaceId: a.id().required() })
+      .returns(a.ref('CreatorWorkspaceSummary').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    listMyCreatorWorkspaces: a
+      .query()
+      .returns(a.ref('CreatorWorkspaceSummary').array().required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    addWorkspaceMember: a
+      .mutation()
+      .arguments({ workspaceId: a.id().required(), targetUserId: a.string().required() })
+      .returns(a.ref('WorkspaceMembershipSummary').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    listWorkspaceMembers: a
+      .query()
+      .arguments({ workspaceId: a.id().required() })
+      .returns(a.ref('WorkspaceMembershipListResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    revokeWorkspaceMember: a
+      .mutation()
+      .arguments({ workspaceId: a.id().required(), targetUserId: a.string().required() })
+      .returns(a.ref('WorkspaceMembershipSummary').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    getMyWorkspacePermissions: a
+      .query()
+      .arguments({ workspaceId: a.id().required() })
+      .returns(a.ref('WorkspacePermissionResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    setWorkspaceMemberPermissions: a
+      .mutation()
+      .arguments({
+        workspaceId: a.id().required(),
+        targetUserId: a.string().required(),
+        permissionKeys: a.string().array().required(),
+        expectedPermissionGeneration: a.integer().required(),
+        expectedRevision: a.integer().required(),
+      })
+      .returns(a.ref('WorkspacePermissionResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
 
     ApplicationStorageResult: a.customType({
       applicationId: a.id().required(),

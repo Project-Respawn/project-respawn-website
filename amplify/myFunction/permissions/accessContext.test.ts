@@ -19,7 +19,7 @@ const accessPermissions = [
 ]
 
 function event(username: string, groups: string[]) {
-  return { identity: { username, claims: { 'cognito:groups': groups } } }
+  return { identity: { username, sub: '123e4567-e89b-42d3-a456-426614174000', claims: { sub: '123e4567-e89b-42d3-a456-426614174000', 'cognito:groups': groups } } }
 }
 
 function makeClient() {
@@ -30,6 +30,9 @@ function makeClient() {
       BrandAccessPermission: { list: async () => ({ data: accessPermissions }) },
       PermissionDefinition: { list: async () => ({ data: [] }) },
       GroupPermission: { list: async () => ({ data: [] }) },
+      CreatorWorkspaceRecord: { listCreatorWorkspaceByOwnerUserId: async () => ({ data: [], nextToken: null }) },
+      WorkspaceMembership: { listWorkspaceMembershipByUserId: async () => ({ data: [], nextToken: null }) },
+      WorkspaceMembershipPermission: { listWorkspaceMembershipPermissionByMembershipId: async () => ({ data: [], nextToken: null }) },
     },
   }
 }

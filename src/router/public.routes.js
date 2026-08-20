@@ -14,11 +14,16 @@ import UserHomepage from '../views/UserHomepage/UserHomepage.vue';
 import Applications from '../views/Applications/Applications.vue';
 import Bookings from '../views/Bookings/Bookings.vue';
 import Investors from '../views/Investors/Investors.vue';
+import InvestorDataRoom from '../views/Investors/DataRoom/InvestorDataRoom.vue';
 import Careers from '../views/Careers/Careers.vue';
 import Creators from '../views/Creators/Creators.vue';
 import Partners from '../views/Partners/Partners.vue';
 
 export default [
+    // =========================================================
+    // BOOKINGS
+    // =========================================================
+
     {
         path: '/bookings',
         name: 'Bookings',
@@ -51,21 +56,44 @@ export default [
         })
     },
 
+    // =========================================================
+    // PUBLIC PAGES
+    // =========================================================
+
     {
         path: '/',
+        name: 'Home',
         component: Home
     },
 
     {
         path: '/about',
+        name: 'About',
         component: About
     },
+
+    // =========================================================
+    // INVESTORS
+    // =========================================================
 
     {
         path: '/investors',
         name: 'Investors',
         component: Investors
     },
+
+    {
+        path: '/investors/data-room',
+        name: 'InvestorDataRoom',
+        component: InvestorDataRoom,
+        meta: {
+            requiresAuth: true
+        }
+    },
+
+    // =========================================================
+    // CAREERS / CREATORS / PARTNERS
+    // =========================================================
 
     {
         path: '/careers',
@@ -85,8 +113,13 @@ export default [
         component: Partners
     },
 
+    // =========================================================
+    // CONTACT / LEGAL
+    // =========================================================
+
     {
         path: '/contact',
+        name: 'Contact',
         component: Contact
     },
 
@@ -95,6 +128,10 @@ export default [
         name: 'LegalCentre',
         component: PrivacyPolicy
     },
+
+    // =========================================================
+    // JOIN / TEAM TRYOUTS
+    // =========================================================
 
     {
         path: '/join-us',
@@ -111,30 +148,51 @@ export default [
         })
     },
 
+    // =========================================================
+    // MERCH / CHECKOUT
+    // =========================================================
+
     {
         path: '/merch',
+        name: 'Merch',
         component: Merch
     },
 
     {
         path: '/checkout',
+        name: 'Checkout',
         component: Checkout
     },
 
+    // =========================================================
+    // EVENTS
+    // =========================================================
+
     {
         path: '/events',
+        name: 'Events',
         component: Events
     },
 
+    // =========================================================
+    // ACCOUNT / MEMBERSHIP
+    // =========================================================
+
     {
         path: '/join',
+        name: 'Join',
         component: Join
     },
 
     {
         path: '/account',
+        name: 'Account',
         component: Account
     },
+
+    // =========================================================
+    // APPLICATIONS
+    // =========================================================
 
     {
         path: '/apply-now',
@@ -159,6 +217,10 @@ export default [
             hash: to.hash
         })
     },
+
+    // =========================================================
+    // AUTHENTICATED USER HOME
+    // =========================================================
 
     {
         path: '/home',

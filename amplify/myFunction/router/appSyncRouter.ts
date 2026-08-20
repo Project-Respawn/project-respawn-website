@@ -8,6 +8,7 @@ import { handleCreateOrUpdateManagedDiscordConfiguration, handleGetManagedDiscor
 import { handleCreateManagedMediaCollection, handleCreateManagedMediaItem, handleDeleteManagedMediaItem, handleListManagedMediaLibrary, handleListPublicMerchProductImages, handleUpdateManagedMediaItem } from '../media'
 import { handleImportManagedRevolutOrder, handleListManagedOrders, handleListManagedProfiles, handleManageSimpleResource, handleRecoverManagedOrder } from '../stage9/handlers'
 import { handleCleanupApplicationStorageTestRun, handleCleanupPublicApplicationTestRun, handleGetAdminApplication, handleListAdminApplications, handleStoreTrustedApplicationSubmission, handleSubmitPublicApplication } from '../applications'
+import { handleAddWorkspaceMember, handleCreateCreatorWorkspace, handleGetCreatorWorkspace, handleGetMyWorkspacePermissions, handleListMyCreatorWorkspaces, handleListWorkspaceMembers, handleRevokeWorkspaceMember, handleSetWorkspaceMemberPermissions } from '../workspaces'
 
 export interface AppSyncEvent { arguments?: unknown; info?: { fieldName?: string }; fieldName?: string; identity?: unknown }
 
@@ -34,6 +35,14 @@ export async function routeAppSync(event: AppSyncEvent) {
     case 'seedPermissionCatalog': return handleSeedPermissionCatalog(event)
     case 'replaceGroupPermissions': return handleReplaceGroupPermissions(event)
     case 'getMyAccessContext': return handleGetMyAccessContext(event)
+    case 'createCreatorWorkspace': return handleCreateCreatorWorkspace(event)
+    case 'getCreatorWorkspace': return handleGetCreatorWorkspace(event)
+    case 'listMyCreatorWorkspaces': return handleListMyCreatorWorkspaces(event)
+    case 'addWorkspaceMember': return handleAddWorkspaceMember(event)
+    case 'listWorkspaceMembers': return handleListWorkspaceMembers(event)
+    case 'revokeWorkspaceMember': return handleRevokeWorkspaceMember(event)
+    case 'getMyWorkspacePermissions': return handleGetMyWorkspacePermissions(event)
+    case 'setWorkspaceMemberPermissions': return handleSetWorkspaceMemberPermissions(event)
     case 'listManagedMediaLibrary': return handleListManagedMediaLibrary(event)
     case 'createManagedMediaItem': return handleCreateManagedMediaItem(event)
     case 'createManagedMediaCollection': return handleCreateManagedMediaCollection(event)
