@@ -147,4 +147,4 @@ export const therapistDemoClients = [
     lastActivityTime: "7 days ago",
     recentActivityOrder: 4,
   },
-];export const therapistDemoClients = [];
+];

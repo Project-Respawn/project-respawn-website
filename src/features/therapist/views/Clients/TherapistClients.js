@@ -105,36 +105,48 @@ export default {
       }
 
       if (this.activeFilter === "session-soon") {
-        result = result.filter((client) => client.sessionSoon);
+        result = result.filter(
+          (client) => client.sessionSoon
+        );
       }
 
       if (this.activeFilter === "needs-attention") {
-        result = result.filter((client) => client.needsAttention);
+        result = result.filter(
+          (client) => client.needsAttention
+        );
       }
 
       if (this.activeFilter === "report-ready") {
-        result = result.filter((client) => client.reportReady);
+        result = result.filter(
+          (client) => client.reportReady
+        );
       }
 
       if (this.activeFilter === "no-recent-activity") {
-        result = result.filter((client) => client.noRecentActivity);
+        result = result.filter(
+          (client) => client.noRecentActivity
+        );
       }
 
       if (this.sortBy === "name") {
-        result.sort((a, b) => a.name.localeCompare(b.name));
+        result.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        );
       }
 
       if (this.sortBy === "recent-activity") {
         result.sort(
           (a, b) =>
-            a.recentActivityOrder - b.recentActivityOrder
+            a.recentActivityOrder -
+            b.recentActivityOrder
         );
       }
 
       if (this.sortBy === "next-session") {
         result.sort(
           (a, b) =>
-            a.nextSessionOrder - b.nextSessionOrder
+            a.nextSessionOrder -
+            b.nextSessionOrder
         );
       }
 
@@ -151,4 +163,4 @@ export default {
       );
     },
   },
-};export default { name: 'TherapistClients' };
+};

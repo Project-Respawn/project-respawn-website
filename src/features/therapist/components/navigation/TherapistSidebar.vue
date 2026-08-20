@@ -6,11 +6,26 @@
          THERAPIST IDENTITY
     ====================================================== -->
     <div class="therapist-sidebar-header">
-      <span class="therapist-sidebar-header__icon">✦</span>
+      <RouterLink
+        to="/"
+        class="therapist-sidebar-header__logo-link"
+        aria-label="Project Respawn home"
+      >
+        <img
+          src="@/assets/logo.png"
+          alt="Project Respawn"
+          class="therapist-sidebar-header__logo"
+        />
+      </RouterLink>
 
-      <div>
-        <strong class="therapist-sidebar-title">THERAPIST</strong>
-        <span class="therapist-sidebar-subtitle">Professional Hub</span>
+      <div class="therapist-sidebar-header__content">
+        <strong class="therapist-sidebar-title">
+          THERAPIST
+        </strong>
+
+        <span class="therapist-sidebar-subtitle">
+          Professional Hub
+        </span>
       </div>
     </div>
 
@@ -24,7 +39,9 @@
         class="therapist-plan-card therapist-plan-card--trial"
       >
         <div class="therapist-plan-card__heading">
-          <span class="therapist-plan-card__icon">✦</span>
+          <span class="therapist-plan-card__icon">
+            ✦
+          </span>
 
           <strong>PREMIUM TRIAL</strong>
         </div>
@@ -51,7 +68,9 @@
         class="therapist-plan-card therapist-plan-card--free"
       >
         <div class="therapist-plan-card__heading">
-          <span class="therapist-plan-card__icon">✦</span>
+          <span class="therapist-plan-card__icon">
+            ✦
+          </span>
 
           <strong>THERAPIST PREMIUM</strong>
         </div>
@@ -79,7 +98,9 @@
         class="therapist-plan-card therapist-plan-card--premium"
       >
         <div class="therapist-plan-card__heading">
-          <span class="therapist-plan-card__icon">◆</span>
+          <span class="therapist-plan-card__icon">
+            ◆
+          </span>
 
           <strong>PREMIUM</strong>
         </div>
@@ -109,7 +130,10 @@
         exact-active-class="therapist-nav-link-active"
         class="therapist-nav-link"
       >
-        <span class="therapist-nav-icon">⌂</span>
+        <span class="therapist-nav-icon">
+          ⌂
+        </span>
+
         <span>Overview</span>
       </RouterLink>
 
@@ -118,7 +142,10 @@
         exact-active-class="therapist-nav-link-active"
         class="therapist-nav-link"
       >
-        <span class="therapist-nav-icon">♙</span>
+        <span class="therapist-nav-icon">
+          ♙
+        </span>
+
         <span>Clients</span>
       </RouterLink>
 
@@ -134,7 +161,10 @@
         exact-active-class="therapist-nav-link-active"
         class="therapist-nav-link"
       >
-        <span class="therapist-nav-icon">✓</span>
+        <span class="therapist-nav-icon">
+          ✓
+        </span>
+
         <span>Quests</span>
 
         <span
@@ -150,7 +180,10 @@
         exact-active-class="therapist-nav-link-active"
         class="therapist-nav-link"
       >
-        <span class="therapist-nav-icon">＋</span>
+        <span class="therapist-nav-icon">
+          ＋
+        </span>
+
         <span>Create Quest</span>
       </RouterLink>
 
@@ -166,7 +199,10 @@
         exact-active-class="therapist-nav-link-active"
         class="therapist-nav-link"
       >
-        <span class="therapist-nav-icon">⌁</span>
+        <span class="therapist-nav-icon">
+          ⌁
+        </span>
+
         <span>Between Session Insights</span>
 
         <span
@@ -183,7 +219,10 @@
         exact-active-class="therapist-nav-link-active"
         class="therapist-nav-link"
       >
-        <span class="therapist-nav-icon">▤</span>
+        <span class="therapist-nav-icon">
+          ▤
+        </span>
+
         <span>Reports</span>
 
         <span
@@ -206,7 +245,10 @@
         exact-active-class="therapist-nav-link-active"
         class="therapist-nav-link"
       >
-        <span class="therapist-nav-icon">⚙</span>
+        <span class="therapist-nav-icon">
+          ⚙
+        </span>
+
         <span>Settings</span>
       </RouterLink>
     </nav>
@@ -221,8 +263,13 @@
         </div>
 
         <div class="therapist-sidebar-profile__details">
-          <strong>{{ therapist.displayName }}</strong>
-          <span>{{ therapist.role }}</span>
+          <strong>
+            {{ therapist.displayName }}
+          </strong>
+
+          <span>
+            {{ therapist.role }}
+          </span>
         </div>
 
         <RouterLink
