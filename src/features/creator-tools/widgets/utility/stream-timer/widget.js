@@ -1,0 +1,2 @@
+import { defineUniversalDemoWidget } from '../universal-demo/definition.js'
+export default defineUniversalDemoWidget({type:'stream-timer',displayName:'Stream Timer',description:'Show a demonstration stream timer.',categories:['utility'],icon:'◷',defaultSize:{width:280,height:100},defaultSettings:{kicker:'Live duration',title:'01:42:18',subtitle:'Demo timer',background:'#111827',color:'#fff',opacity:1,cornerRadius:14},legacyCategory:'Other',settings:[{key:'title',label:'Demo time',type:'text'}]})

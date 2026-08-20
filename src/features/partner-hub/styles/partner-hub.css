@@ -1,0 +1,991 @@
+/* ============================================================
+   PROJECT RESPAWN — PARTNER HUB
+   ============================================================ */
+
+.partner-hub {
+  min-height: 100vh;
+  display: flex;
+  background:
+    radial-gradient(circle at 70% 0%, rgba(93, 46, 190, 0.16), transparent 30%),
+    #070b13;
+  color: #f5f7fb;
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+
+.partner-sidebar {
+  width: 250px;
+  min-width: 250px;
+  min-height: 100vh;
+  padding: 28px 18px 18px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+
+  background: rgba(5, 9, 17, 0.96);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+
+/* ============================================================
+   SIDEBAR — PROJECT RESPAWN BRANDING
+   ============================================================ */
+
+.partner-sidebar-brand {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.partner-sidebar-logo {
+  display: block;
+  width: auto;
+  height: 42px;
+  max-width: 120px;
+  object-fit: contain;
+}
+
+
+/* ============================================================
+   SIDEBAR — NAVIGATION
+   ============================================================ */
+
+.partner-sidebar-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 26px 0;
+}
+
+.partner-sidebar-section-title {
+  margin: 0 10px 12px;
+  color: #9e68ff;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.partner-navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.partner-nav-item {
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 9px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  color: #ccd1dd;
+  text-decoration: none;
+
+  transition: 0.2s ease;
+}
+
+.partner-nav-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+.partner-nav-item-active {
+  background: linear-gradient(
+    90deg,
+    rgba(109, 55, 224, 0.55),
+    rgba(78, 41, 171, 0.45)
+  );
+
+  color: #fff;
+}
+
+.partner-nav-icon {
+  width: 18px;
+  text-align: center;
+}
+
+
+/* ============================================================
+   SIDEBAR — CREATOR DISCOVERY
+   ============================================================ */
+
+.partner-nav-coming-soon {
+  padding: 0 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+
+  color: #c7cad3;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.partner-coming-soon-badge {
+  padding: 4px 7px;
+  border: 1px solid rgba(147, 91, 255, 0.5);
+  border-radius: 6px;
+
+  color: #a86cff;
+  font-size: 10px;
+
+  background: rgba(117, 55, 227, 0.12);
+}
+
+.partner-sidebar-spacer {
+  flex: 1;
+}
+
+
+/* ============================================================
+   SIDEBAR — SUPPORT
+   ============================================================ */
+
+.partner-support-card {
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.partner-support-card > p {
+  color: #9ea4b2;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.partner-manager-mini,
+.partner-manager-inline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.partner-manager-mini div:last-child,
+.partner-manager-inline div:last-child {
+  display: flex;
+  flex-direction: column;
+}
+
+.partner-manager-mini span,
+.partner-manager-inline small {
+  color: #9399a8;
+  font-size: 11px;
+}
+
+.partner-manager-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+
+  display: grid;
+  place-items: center;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  background: linear-gradient(135deg, #8655ff, #3f238f);
+}
+
+.partner-text-button {
+  margin-top: 14px;
+  padding: 0;
+
+  background: none;
+  border: 0;
+
+  color: #b98aff;
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   MAIN DASHBOARD
+   ============================================================ */
+
+.partner-dashboard {
+  flex: 1;
+  padding: 24px 28px 40px;
+  overflow: hidden;
+}
+
+
+/* ============================================================
+   SECTION 1 — HEADER
+   ============================================================ */
+
+.partner-header-card {
+  min-height: 126px;
+  padding: 26px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border: 1px solid rgba(128, 74, 255, 0.38);
+  border-radius: 14px;
+
+  background:
+    radial-gradient(circle at 80% -30%, rgba(119, 68, 255, 0.19), transparent 35%),
+    linear-gradient(90deg, #111d40, #17102c);
+
+  position: relative;
+  overflow: hidden;
+}
+
+.partner-header-card::after {
+  content: "R";
+  position: absolute;
+  right: 12%;
+  top: -95px;
+
+  font-size: 270px;
+  font-weight: 900;
+
+  color: rgba(116, 70, 255, 0.07);
+
+  pointer-events: none;
+}
+
+.partner-header-content {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+
+  position: relative;
+  z-index: 1;
+}
+
+.partner-brand-logo {
+  width: 94px;
+  height: 94px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  padding: 8px;
+  box-sizing: border-box;
+
+  border-radius: 13px;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(126, 75, 255, 0.13),
+      rgba(10, 14, 24, 0.65)
+    );
+
+  border: 1px solid rgba(164, 104, 255, 0.25);
+}
+
+.partner-brand-logo-image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
+
+.partner-header-copy h1 {
+  margin: 0 0 10px;
+  font-size: 28px;
+}
+
+.partner-header-meta {
+  display: flex;
+  gap: 10px;
+
+  color: #aeb4c3;
+  font-size: 14px;
+}
+
+.partner-type {
+  color: #a868ff;
+  font-weight: 700;
+}
+
+
+/* ============================================================
+   COMMON PANELS
+   ============================================================ */
+
+.partner-panel {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 13px;
+
+  background: rgba(15, 20, 31, 0.88);
+
+  overflow: hidden;
+}
+
+.partner-panel-header {
+  min-height: 50px;
+  padding: 0 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.partner-panel-header h2 {
+  margin: 0;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.partner-dashboard-two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.partner-active-badge {
+  padding: 5px 9px;
+  border-radius: 6px;
+
+  background: rgba(59, 207, 91, 0.13);
+  color: #67e477;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.partner-highlight {
+  color: #b26eff;
+}
+
+.partner-status-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.partner-status-item {
+  min-height: 75px;
+  padding: 15px 20px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 7px;
+}
+
+.partner-status-item:nth-child(odd) {
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.partner-status-item:nth-child(-n + 2) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.partner-status-item > span {
+  color: #989fae;
+  font-size: 11px;
+}
+
+.partner-status-item strong {
+  font-size: 14px;
+}
+
+
+/* ============================================================
+   SECTION 3 — STAT CARDS
+   ============================================================ */
+
+.partner-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+
+  margin-top: 14px;
+}
+
+.partner-stat-card {
+  padding: 18px;
+
+  position: relative;
+  overflow: hidden;
+
+  min-height: 125px;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 13px;
+
+  background: rgba(15, 20, 31, 0.9);
+}
+
+.partner-stat-top {
+  display: flex;
+  gap: 13px;
+  align-items: center;
+}
+
+.partner-stat-icon {
+  width: 42px;
+  height: 42px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background: rgba(116, 67, 255, 0.25);
+  border: 5px solid rgba(111, 61, 255, 0.15);
+
+  color: #fff;
+}
+
+.partner-stat-top > div:last-child {
+  display: flex;
+  flex-direction: column;
+}
+
+.partner-stat-label {
+  color: #b0b5c1;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.partner-stat-value {
+  margin-top: 4px;
+  font-size: 25px;
+}
+
+.partner-stat-change {
+  margin-top: 8px;
+
+  color: #78ed63;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.partner-stat-change span {
+  margin-left: 4px;
+
+  color: #959baa;
+  font-weight: 400;
+}
+
+.partner-sparkline {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 8px;
+
+  width: calc(100% - 36px);
+  height: 32px;
+}
+
+.partner-sparkline polyline {
+  stroke: #8a4cff;
+  stroke-width: 2;
+}
+
+
+/* ============================================================
+   SECTION 4 — CAMPAIGNS
+   ============================================================ */
+
+.partner-dashboard-main-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 14px;
+
+  margin-top: 14px;
+}
+
+.partner-campaign-list {
+  padding: 14px;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.partner-campaign-card {
+  min-width: 0;
+
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 12px;
+}
+
+.partner-campaign-image {
+  min-height: 150px;
+  border-radius: 8px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  padding: 10px;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(7, 10, 16, 0.95),
+      rgba(7, 10, 16, 0.15)
+    ),
+    linear-gradient(140deg, #301864, #182349);
+
+  font-size: 9px;
+}
+
+.partner-campaign-image strong {
+  font-size: 14px;
+}
+
+/* Temporary alternate campaign artwork.
+   Replace with real partner campaign assets later. */
+.campaign-image-huel {
+  background:
+    linear-gradient(
+      to top,
+      rgba(7, 10, 16, 0.95),
+      rgba(7, 10, 16, 0.1)
+    ),
+    linear-gradient(140deg, #696969, #171717);
+}
+
+.partner-campaign-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.partner-campaign-title-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.partner-campaign-title-row h3 {
+  margin: 0 0 4px;
+  font-size: 12px;
+}
+
+.partner-campaign-title-row > div > span {
+  color: #999fac;
+  font-size: 10px;
+}
+
+.partner-campaign-metrics {
+  margin-top: 12px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  color: #c0c5cf;
+  font-size: 10px;
+}
+
+
+/* ============================================================
+   SECTION 5 — FEATURED
+   ============================================================ */
+
+.partner-featured-content {
+  min-height: 106px;
+
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+}
+
+.partner-featured-message {
+  padding: 20px;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  border-right: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.partner-featured-message p {
+  margin: 0;
+
+  color: #c2c7d1;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.partner-featured-icon {
+  width: 44px;
+  height: 44px;
+
+  display: grid;
+  place-items: center;
+
+  flex: none;
+
+  border-radius: 50%;
+
+  background: rgba(108, 59, 222, 0.28);
+  border: 5px solid rgba(109, 62, 214, 0.15);
+
+  color: #b277ff;
+}
+
+.partner-featured-metrics {
+  padding: 20px;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  align-items: center;
+}
+
+.partner-featured-metrics > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.partner-featured-metrics strong {
+  color: #b76cff;
+  font-size: 20px;
+}
+
+.partner-featured-metrics span {
+  color: #9ba1af;
+  font-size: 10px;
+}
+
+
+/* ============================================================
+   SECTION 6 — PERFORMANCE
+   ============================================================ */
+
+.partner-performance-panel {
+  padding-bottom: 15px;
+}
+
+.partner-performance-title,
+.partner-positive {
+  display: block;
+  margin: 14px 16px 0;
+}
+
+.partner-performance-title {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.partner-positive {
+  margin-top: 6px;
+
+  color: #70e763;
+  font-size: 11px;
+}
+
+.partner-period-select {
+  padding: 6px 8px;
+
+  color: #afb5c1;
+  background: #101622;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 7px;
+}
+
+.partner-chart-wrapper {
+  height: 130px;
+  margin: 10px 16px 0;
+
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 31px,
+      rgba(255, 255, 255, 0.04) 32px
+    );
+}
+
+.partner-performance-chart {
+  width: 100%;
+  height: 100%;
+}
+
+.partner-performance-chart polyline {
+  stroke: #8b4cff;
+  stroke-width: 2.2;
+}
+
+.partner-chart-labels {
+  margin: 5px 16px 0;
+
+  display: flex;
+  justify-content: space-between;
+
+  color: #777f90;
+  font-size: 8px;
+}
+
+
+/* ============================================================
+   SECTION 7 — QUICK ACTIONS
+   ============================================================ */
+
+.partner-quick-actions {
+  padding: 12px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.partner-quick-action,
+.partner-primary-action {
+  min-height: 37px;
+  padding: 0 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-radius: 6px;
+
+  text-decoration: none;
+  color: #e6e8ef;
+
+  font-size: 11px;
+}
+
+.partner-quick-action {
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.partner-quick-action:hover {
+  background: rgba(255, 255, 255, 0.085);
+}
+
+.partner-primary-action {
+  margin-top: 2px;
+
+  background: linear-gradient(90deg, #6b35db, #5a27be);
+}
+
+
+/* ============================================================
+   SECTION 8 — OPPORTUNITIES
+   ============================================================ */
+
+.partner-opportunities-panel {
+  margin-top: 14px;
+}
+
+.partner-opportunity-grid {
+  padding: 14px;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.partner-opportunity-card {
+  padding: 14px;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 9px;
+
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.partner-opportunity-icon {
+  width: 46px;
+  height: 46px;
+
+  display: grid;
+  place-items: center;
+
+  flex: none;
+
+  border-radius: 50%;
+
+  background: rgba(102, 58, 226, 0.25);
+  border: 5px solid rgba(102, 58, 226, 0.12);
+}
+
+.partner-opportunity-content {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.partner-opportunity-content strong {
+  font-size: 12px;
+}
+
+.partner-opportunity-content span,
+.partner-opportunity-content small {
+  color: #969caa;
+  font-size: 10px;
+}
+
+
+/* ============================================================
+   BUTTONS / LINKS
+   ============================================================ */
+
+.partner-outline-button,
+.partner-small-outline-button {
+  border: 1px solid rgba(135, 76, 255, 0.65);
+  border-radius: 7px;
+
+  color: #f2eaff;
+  background: rgba(99, 52, 209, 0.05);
+
+  text-decoration: none;
+
+  transition: 0.2s ease;
+}
+
+.partner-outline-button:hover,
+.partner-small-outline-button:hover {
+  background: rgba(111, 54, 224, 0.18);
+}
+
+.partner-outline-button {
+  padding: 10px 14px;
+
+  position: relative;
+  z-index: 2;
+
+  font-size: 12px;
+}
+
+.partner-small-outline-button {
+  width: fit-content;
+  margin-top: auto;
+  padding: 8px 12px;
+
+  font-size: 10px;
+}
+
+.partner-panel > .partner-small-outline-button {
+  margin: 0 20px 16px;
+}
+
+.partner-link {
+  color: #b77cff;
+  font-size: 10px;
+  text-decoration: none;
+}
+
+.partner-link-button {
+  padding: 0;
+
+  background: none;
+  border: none;
+
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   RESPONSIVE — TABLET
+   ============================================================ */
+
+@media (max-width: 1250px) {
+  .partner-stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .partner-dashboard-main-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .partner-dashboard-main-grid > :first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+
+/* ============================================================
+   RESPONSIVE — SMALL TABLET
+   ============================================================ */
+
+@media (max-width: 900px) {
+  .partner-sidebar {
+    display: none;
+  }
+
+  .partner-dashboard {
+    padding: 18px;
+  }
+
+  .partner-dashboard-two-column,
+  .partner-opportunity-grid,
+  .partner-dashboard-main-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .partner-dashboard-main-grid > :first-child {
+    grid-column: auto;
+  }
+
+  .partner-header-card {
+    align-items: flex-start;
+    gap: 20px;
+    flex-direction: column;
+  }
+}
+
+
+/* ============================================================
+   RESPONSIVE — MOBILE
+   ============================================================ */
+
+@media (max-width: 640px) {
+  .partner-stat-grid,
+  .partner-campaign-list,
+  .partner-status-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .partner-status-item {
+    border-right: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .partner-featured-content {
+    grid-template-columns: 1fr;
+  }
+
+  .partner-featured-message {
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .partner-header-content {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

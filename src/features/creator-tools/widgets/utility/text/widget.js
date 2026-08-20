@@ -1,0 +1,3 @@
+import TextWidget from './TextWidget.vue'
+import { commonStyleSettings, defineWidget, textStyleSettings } from '../../registry/definition.js'
+export default defineWidget({type:'text',displayName:'Text',description:'Display custom text on an overlay.',categories:['utility'],integrations:[],icon:'T',component:TextWidget,defaultSize:{width:620,height:150},defaultSettings:{text:'Your stream. Your community.',fontSize:52,textAlign:'center',color:'#ffffff',background:'#111827',opacity:1,cornerRadius:18},topics:[],capabilities:{},requirements:{},legacyCategory:'General',settings:[{key:'text',label:'Text',type:'textarea'},{key:'color',label:'Text color',type:'color'},...textStyleSettings,...commonStyleSettings]})

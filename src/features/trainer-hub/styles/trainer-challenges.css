@@ -1,0 +1,1446 @@
+/* ============================================================
+   PROJECT RESPAWN — TRAINER CHALLENGES
+   ============================================================ */
+
+
+/* ============================================================
+   PAGE
+   ============================================================ */
+
+.trainer-challenges-page {
+  flex: 1;
+  min-width: 0;
+
+  padding: 22px 28px 40px;
+
+  box-sizing: border-box;
+
+  background:
+    radial-gradient(
+      circle at 80% 0%,
+      rgba(78, 36, 150, 0.1),
+      transparent 34%
+    ),
+    #06101c;
+
+  color: #f5f7fb;
+}
+
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.trainer-challenges-header {
+  margin-bottom: 20px;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 24px;
+}
+
+.trainer-page-eyebrow {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #64eaa2;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 0.08em;
+}
+
+.trainer-challenges-header h1 {
+  margin: 0;
+
+  font-size: 30px;
+  line-height: 1.1;
+}
+
+.trainer-challenges-header p {
+  margin: 7px 0 0;
+
+  color: #9ca5b4;
+
+  font-size: 12px;
+}
+
+.trainer-create-challenge-button {
+  min-height: 42px;
+
+  padding: 0 22px;
+
+  border: 1px solid #8646e5;
+  border-radius: 6px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #6430ba,
+      #7838d0
+    );
+
+  color: #fff;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   SHARED PANELS
+   ============================================================ */
+
+.trainer-challenges-panel,
+.trainer-challenge-insights {
+  min-width: 0;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  border-radius: 8px;
+
+  background:
+    rgba(7, 18, 31, 0.94);
+}
+
+.trainer-challenges-panel-heading {
+  min-height: 44px;
+
+  padding: 0 16px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  border-bottom:
+    1px solid
+    rgba(255, 255, 255, 0.055);
+}
+
+.trainer-challenges-panel-heading h2 {
+  margin: 0;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  text-transform: uppercase;
+}
+
+.trainer-challenges-panel-heading > span {
+  color: #8e97a6;
+
+  font-size: 9px;
+}
+
+
+/* ============================================================
+   TOP DASHBOARD GRID
+   ============================================================ */
+
+.trainer-challenge-dashboard-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    245px;
+
+  gap: 14px;
+
+  margin-bottom: 14px;
+}
+
+
+/* ============================================================
+   ACTIVE CHALLENGES
+   ============================================================ */
+
+.trainer-active-challenge-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.trainer-active-challenge {
+  min-height: 150px;
+
+  padding: 18px;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(300px, 1.55fr)
+    minmax(150px, 0.65fr)
+    minmax(145px, 0.62fr)
+    105px;
+
+  align-items: center;
+
+  gap: 18px;
+
+  border-bottom:
+    1px solid
+    rgba(255, 255, 255, 0.06);
+}
+
+.trainer-challenge-identity {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+}
+
+.trainer-challenge-large-icon {
+  width: 66px;
+  height: 66px;
+
+  flex: 0 0 66px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  font-size: 26px;
+}
+
+.trainer-challenge-purple {
+  background:
+    linear-gradient(
+      145deg,
+      #7f3ec7,
+      #4a217e
+    );
+
+  color: #fff;
+}
+
+.trainer-challenge-green {
+  background:
+    linear-gradient(
+      145deg,
+      #428e43,
+      #1c552b
+    );
+
+  color: #fff;
+}
+
+.trainer-challenge-blue {
+  background:
+    linear-gradient(
+      145deg,
+      #327fd1,
+      #17467f
+    );
+
+  color: #fff;
+}
+
+.trainer-challenge-orange {
+  background:
+    linear-gradient(
+      145deg,
+      #bf721e,
+      #743f16
+    );
+
+  color: #fff;
+}
+
+.trainer-challenge-red {
+  background:
+    linear-gradient(
+      145deg,
+      #c83f59,
+      #702033
+    );
+
+  color: #fff;
+}
+
+.trainer-challenge-grey {
+  background:
+    linear-gradient(
+      145deg,
+      #657080,
+      #303846
+    );
+
+  color: #fff;
+}
+
+.trainer-challenge-copy {
+  min-width: 0;
+}
+
+.trainer-challenge-title-row {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  flex-wrap: wrap;
+}
+
+.trainer-challenge-title-row h3 {
+  margin: 0;
+
+  font-size: 16px;
+}
+
+.trainer-challenge-type {
+  padding: 4px 7px;
+
+  border-radius: 4px;
+
+  font-size: 8px;
+}
+
+.trainer-challenge-type-purple {
+  background: rgba(161, 83, 255, 0.15);
+  color: #c47cff;
+}
+
+.trainer-challenge-type-green {
+  background: rgba(79, 210, 94, 0.15);
+  color: #6fe07b;
+}
+
+.trainer-challenge-type-blue {
+  background: rgba(61, 142, 244, 0.15);
+  color: #65aaff;
+}
+
+.trainer-challenge-copy p {
+  margin: 7px 0 15px;
+
+  color: #c0c6d0;
+
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.trainer-challenge-meta {
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  flex-wrap: wrap;
+
+  color: #9aa3b1;
+
+  font-size: 8px;
+}
+
+
+/* ============================================================
+   STANDARD CHALLENGE PROGRESS
+   ============================================================ */
+
+.trainer-challenge-progress-section {
+  min-width: 0;
+}
+
+.trainer-challenge-progress-value {
+  display: flex;
+  align-items: baseline;
+
+  gap: 5px;
+}
+
+.trainer-challenge-progress-value strong {
+  font-size: 23px;
+}
+
+.trainer-challenge-progress-value span {
+  font-size: 11px;
+}
+
+.trainer-challenge-progress-section small,
+.trainer-progress-label {
+  display: block;
+
+  color: #a0a8b5;
+
+  font-size: 8px;
+}
+
+.trainer-challenge-progress-bar {
+  width: 100%;
+  height: 7px;
+
+  margin-top: 10px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.2);
+
+  border-radius: 10px;
+
+  background: #182333;
+
+  overflow: hidden;
+}
+
+.trainer-challenge-progress-bar span {
+  height: 100%;
+
+  display: block;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #7837d4,
+      #a34bf0
+    );
+}
+
+
+/* ============================================================
+   COMMUNITY WEEK PROGRESS
+   ============================================================ */
+
+.trainer-community-week-list {
+  margin-top: 9px;
+
+  display: flex;
+
+  gap: 8px;
+}
+
+.trainer-community-week {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 5px;
+}
+
+.trainer-community-week-circle {
+  width: 31px;
+  height: 31px;
+
+  display: grid;
+  place-items: center;
+
+  border:
+    1px solid
+    #556174;
+
+  border-radius: 50%;
+
+  color: #9ca5b4;
+
+  font-size: 10px;
+}
+
+.trainer-community-week-circle.complete {
+  border-color: #4dce65;
+
+  background:
+    rgba(65, 198, 87, 0.08);
+
+  color: #65e078;
+}
+
+.trainer-community-week-circle.current {
+  border-color: #ffb52d;
+
+  color: #ffc34d;
+}
+
+.trainer-community-week small {
+  color: #858e9d;
+
+  font-size: 7px;
+}
+
+.trainer-community-complete-copy {
+  display: block;
+
+  margin-top: 9px;
+
+  color: #64dc74;
+
+  font-size: 8px;
+}
+
+
+/* ============================================================
+   LEADERS
+   ============================================================ */
+
+.trainer-challenge-leaders {
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+}
+
+.trainer-challenge-leader {
+  display: grid;
+
+  grid-template-columns:
+    25px
+    1fr
+    auto;
+
+  align-items: center;
+
+  gap: 6px;
+
+  font-size: 8px;
+}
+
+.trainer-leader-avatar {
+  width: 23px;
+  height: 23px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #7441ad,
+      #315b7c
+    );
+
+  color: #fff;
+
+  font-size: 6px;
+  font-weight: 800;
+}
+
+
+/* ============================================================
+   CHALLENGE ACTIONS
+   ============================================================ */
+
+.trainer-challenge-actions {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.trainer-at-risk-box {
+  min-height: 55px;
+
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+
+  gap: 3px;
+
+  flex-wrap: wrap;
+
+  border:
+    1px solid
+    rgba(255, 92, 71, 0.27);
+
+  border-radius: 6px;
+
+  background:
+    rgba(255, 73, 55, 0.035);
+}
+
+.trainer-at-risk-box strong {
+  color: #ff5c4c;
+
+  font-size: 18px;
+}
+
+.trainer-at-risk-box span {
+  color: #ff6657;
+
+  font-size: 8px;
+}
+
+.trainer-at-risk-box small {
+  width: 100%;
+
+  margin-top: -10px;
+
+  color: #bdc3cd;
+
+  font-size: 7px;
+
+  text-align: center;
+}
+
+.trainer-challenge-actions button {
+  min-height: 31px;
+
+  border:
+    1px solid
+    #7651ba;
+
+  border-radius: 5px;
+
+  background: transparent;
+
+  color: #fff;
+
+  font-size: 8px;
+
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   VIEW ALL
+   ============================================================ */
+
+.trainer-view-all-challenges {
+  width: 100%;
+  min-height: 35px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #b96dff;
+
+  font-size: 9px;
+
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   INSIGHTS
+   ============================================================ */
+
+.trainer-challenge-insights {
+  padding: 16px;
+}
+
+.trainer-challenge-insights > h2 {
+  margin: 0 0 17px;
+
+  font-size: 11px;
+
+  text-transform: uppercase;
+}
+
+.trainer-challenge-insight-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 19px;
+}
+
+.trainer-challenge-insight {
+  display: grid;
+
+  grid-template-columns:
+    35px
+    1fr;
+
+  align-items: flex-start;
+
+  gap: 9px;
+}
+
+.trainer-challenge-insight-icon {
+  width: 31px;
+  height: 31px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  font-size: 12px;
+}
+
+.trainer-insight-green {
+  background:
+    rgba(61, 205, 84, 0.12);
+
+  color: #61df75;
+}
+
+.trainer-insight-red {
+  background:
+    rgba(255, 81, 65, 0.12);
+
+  color: #ff6658;
+}
+
+.trainer-challenge-insight div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.trainer-challenge-insight strong {
+  font-size: 13px;
+}
+
+.trainer-challenge-insight span {
+  color: #a6adba;
+
+  font-size: 8px;
+  line-height: 1.4;
+}
+
+
+/* ============================================================
+   COMPANION IMPACT
+   ============================================================ */
+
+.trainer-companion-impact {
+  margin-top: 22px;
+
+  padding-top: 16px;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+}
+
+.trainer-companion-impact-heading {
+  margin-bottom: 10px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}
+
+.trainer-companion-impact-heading > span {
+  width: 30px;
+  height: 30px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    rgba(154, 76, 239, 0.15);
+}
+
+.trainer-companion-impact-heading strong {
+  font-size: 9px;
+}
+
+.trainer-companion-impact p {
+  margin: 6px 0 0;
+
+  color: #adb4bf;
+
+  font-size: 8px;
+  line-height: 1.45;
+}
+
+.trainer-companion-impact p strong {
+  color: #fff;
+}
+
+.trainer-insights-button {
+  width: 100%;
+  min-height: 34px;
+
+  margin-top: 20px;
+
+  border:
+    1px solid
+    #8549d5;
+
+  border-radius: 5px;
+
+  background: transparent;
+
+  color: #bf74ff;
+
+  font-size: 8px;
+
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   LOWER GRID
+   ============================================================ */
+
+.trainer-challenge-lower-grid {
+  display: grid;
+
+  grid-template-columns:
+    0.82fr
+    1.18fr;
+
+  gap: 14px;
+
+  margin-bottom: 14px;
+}
+
+
+/* ============================================================
+   ATTENTION CLIENTS
+   ============================================================ */
+
+.trainer-attention-count {
+  width: 20px;
+  height: 20px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background: #d9463d;
+
+  color: #fff !important;
+
+  font-size: 8px !important;
+  font-weight: 800;
+}
+
+.trainer-attention-client {
+  min-height: 62px;
+
+  padding: 0 15px;
+
+  display: grid;
+
+  grid-template-columns:
+    35px
+    minmax(100px, 1fr)
+    minmax(110px, 0.8fr)
+    145px
+    18px;
+
+  align-items: center;
+
+  gap: 9px;
+
+  border-bottom:
+    1px solid
+    rgba(255, 255, 255, 0.055);
+}
+
+.trainer-attention-avatar {
+  width: 30px;
+  height: 30px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #7746b2,
+      #32547b
+    );
+
+  font-size: 7px;
+  font-weight: 800;
+}
+
+.trainer-attention-client-name,
+.trainer-attention-status {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.trainer-attention-client-name strong {
+  font-size: 9px;
+}
+
+.trainer-attention-client-name span,
+.trainer-attention-status span {
+  color: #929ba9;
+
+  font-size: 7px;
+}
+
+.trainer-attention-status strong {
+  font-size: 8px;
+}
+
+.trainer-attention-status strong.high {
+  color: #ff6153;
+}
+
+.trainer-attention-status strong.medium {
+  color: #ffb02e;
+}
+
+.trainer-send-encouragement {
+  min-height: 31px;
+
+  border:
+    1px solid
+    #7650b8;
+
+  border-radius: 5px;
+
+  background: transparent;
+
+  color: #fff;
+
+  font-size: 8px;
+
+  cursor: pointer;
+}
+
+.trainer-attention-menu {
+  border: 0;
+
+  background: transparent;
+
+  color: #a9b0bc;
+
+  font-size: 16px;
+
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   TEMPLATES
+   ============================================================ */
+
+.trainer-challenge-template-grid {
+  padding: 10px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 8px;
+}
+
+.trainer-challenge-template {
+  min-height: 91px;
+
+  padding: 12px;
+
+  display: grid;
+
+  grid-template-columns:
+    48px
+    1fr;
+
+  align-items: center;
+
+  gap: 11px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.04);
+
+  border-radius: 7px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color: #fff;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.trainer-challenge-template:hover {
+  transform:
+    translateY(-2px);
+
+  border-color:
+    rgba(166, 87, 255, 0.35);
+
+  background:
+    rgba(149, 70, 240, 0.06);
+}
+
+.trainer-template-icon {
+  width: 45px;
+  height: 45px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  font-size: 18px;
+}
+
+.trainer-template-copy {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.trainer-template-copy strong {
+  font-size: 9px;
+}
+
+.trainer-template-copy small {
+  color: #a3aab6;
+
+  font-size: 7px;
+  line-height: 1.45;
+}
+
+
+/* ============================================================
+   POSITIONING NOTICE
+   ============================================================ */
+
+.trainer-challenge-positioning {
+  min-height: 55px;
+
+  padding: 0 17px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+
+  border-radius: 7px;
+
+  background:
+    rgba(7, 18, 31, 0.88);
+}
+
+.trainer-challenge-positioning > div {
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+}
+
+.trainer-challenge-positioning > div > span {
+  font-size: 14px;
+}
+
+.trainer-challenge-positioning p {
+  margin: 0;
+
+  color: #a8afbb;
+
+  font-size: 8px;
+  line-height: 1.5;
+}
+
+.trainer-challenge-positioning button {
+  border: 0;
+
+  background: transparent;
+
+  color: #b96dff;
+
+  font-size: 8px;
+
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   CREATE CHALLENGE MODAL
+   ============================================================ */
+
+.trainer-challenge-modal-backdrop {
+  position: fixed;
+  inset: 0;
+
+  z-index: 1000;
+
+  display: grid;
+  place-items: center;
+
+  padding: 20px;
+
+  background:
+    rgba(0, 5, 12, 0.78);
+
+  backdrop-filter:
+    blur(5px);
+}
+
+.trainer-challenge-modal {
+  width: min(560px, 100%);
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(150, 75, 240, 0.4);
+
+  border-radius: 10px;
+
+  background: #0b1422;
+
+  box-shadow:
+    0 30px 90px
+    rgba(0, 0, 0, 0.5);
+}
+
+.trainer-challenge-modal > header {
+  padding: 17px 20px;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  border-bottom:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+}
+
+.trainer-challenge-modal header span {
+  color: #67e8a1;
+
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.trainer-challenge-modal header h2 {
+  margin: 4px 0 0;
+
+  font-size: 20px;
+}
+
+.trainer-challenge-modal header button {
+  border: 0;
+
+  background: transparent;
+
+  color: #aab1bd;
+
+  font-size: 23px;
+
+  cursor: pointer;
+}
+
+.trainer-challenge-modal-demo {
+  padding: 20px;
+}
+
+.trainer-challenge-modal-demo > p {
+  margin: 0 0 18px;
+
+  color: #a9b1be;
+
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.trainer-modal-demo-fields {
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
+  gap: 13px;
+}
+
+.trainer-modal-demo-fields label {
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+
+  color: #b4bbc5;
+
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.trainer-modal-demo-fields input,
+.trainer-modal-demo-fields select,
+.trainer-demo-participants {
+  min-height: 39px;
+
+  padding: 0 10px;
+
+  box-sizing: border-box;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.1);
+
+  border-radius: 5px;
+
+  background: #07111e;
+
+  color: #fff;
+
+  font-size: 9px;
+}
+
+.trainer-demo-participants {
+  display: flex;
+  align-items: center;
+
+  color: #aeb5c0;
+}
+
+.trainer-challenge-modal > footer {
+  padding: 14px 20px;
+
+  display: flex;
+  justify-content: flex-end;
+
+  gap: 9px;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+}
+
+.trainer-modal-cancel,
+.trainer-modal-launch {
+  min-height: 36px;
+
+  padding: 0 16px;
+
+  border-radius: 5px;
+
+  font-size: 9px;
+
+  cursor: pointer;
+}
+
+.trainer-modal-cancel {
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.15);
+
+  background: transparent;
+
+  color: #fff;
+}
+
+.trainer-modal-launch {
+  border:
+    1px solid
+    #8745dd;
+
+  background:
+    linear-gradient(
+      90deg,
+      #6530b8,
+      #7939ce
+    );
+
+  color: #fff;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1350px) {
+
+  .trainer-active-challenge {
+    grid-template-columns:
+      minmax(270px, 1.5fr)
+      minmax(140px, 0.7fr)
+      minmax(140px, 0.7fr);
+
+  }
+
+  .trainer-challenge-actions {
+    grid-column:
+      1 / -1;
+
+    flex-direction:
+      row;
+
+    justify-content:
+      flex-end;
+  }
+
+  .trainer-at-risk-box {
+    width: 100px;
+  }
+
+  .trainer-challenge-actions button {
+    width: 120px;
+  }
+}
+
+
+@media (max-width: 1100px) {
+
+  .trainer-challenge-dashboard-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .trainer-challenge-insights {
+    display: grid;
+
+    grid-template-columns:
+      1fr
+      2fr;
+
+    gap: 20px;
+  }
+
+  .trainer-challenge-insights > h2 {
+    grid-column:
+      1 / -1;
+  }
+
+  .trainer-insights-button {
+    grid-column:
+      1 / -1;
+  }
+
+  .trainer-challenge-lower-grid {
+    grid-template-columns:
+      1fr;
+  }
+}
+
+
+@media (max-width: 850px) {
+
+  .trainer-active-challenge {
+    grid-template-columns:
+      1fr;
+  }
+
+  .trainer-challenge-actions {
+    grid-column:
+      auto;
+
+    justify-content:
+      flex-start;
+  }
+
+  .trainer-challenge-template-grid {
+    grid-template-columns:
+      1fr
+      1fr;
+  }
+
+  .trainer-attention-client {
+    grid-template-columns:
+      35px
+      1fr
+      auto;
+  }
+
+  .trainer-attention-status {
+    grid-column:
+      2;
+  }
+
+  .trainer-send-encouragement {
+    grid-column:
+      2 / -1;
+  }
+
+  .trainer-attention-menu {
+    grid-column:
+      3;
+
+    grid-row:
+      1;
+  }
+}
+
+
+@media (max-width: 620px) {
+
+  .trainer-challenges-page {
+    padding:
+      16px;
+  }
+
+  .trainer-challenges-header {
+    flex-direction:
+      column;
+  }
+
+  .trainer-create-challenge-button {
+    width: 100%;
+  }
+
+  .trainer-challenge-identity {
+    align-items:
+      flex-start;
+  }
+
+  .trainer-challenge-large-icon {
+    width: 50px;
+    height: 50px;
+
+    flex-basis: 50px;
+
+    font-size: 19px;
+  }
+
+  .trainer-challenge-meta {
+    flex-direction:
+      column;
+
+    align-items:
+      flex-start;
+
+    gap: 5px;
+  }
+
+  .trainer-challenge-template-grid,
+  .trainer-modal-demo-fields {
+    grid-template-columns:
+      1fr;
+  }
+
+  .trainer-challenge-insights {
+    display:
+      block;
+  }
+
+  .trainer-challenge-positioning {
+    padding:
+      14px;
+
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+  }
+}

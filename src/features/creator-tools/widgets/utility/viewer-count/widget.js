@@ -1,0 +1,2 @@
+import { defineUniversalDemoWidget } from '../universal-demo/definition.js'
+export default defineUniversalDemoWidget({type:'viewer-count',displayName:'Viewer Count',description:'Show a demonstration viewer count.',categories:['utility'],icon:'◉',defaultSize:{width:260,height:100},defaultSettings:{kicker:'Watching now',title:'284',subtitle:'Demo viewers',background:'#111827',color:'#fff',opacity:1,cornerRadius:14},legacyCategory:'Other',settings:[{key:'title',label:'Demo value',type:'text'}]})

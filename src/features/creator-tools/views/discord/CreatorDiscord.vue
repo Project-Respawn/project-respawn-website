@@ -1,7 +1,7 @@
 <template>
   <main class="creator-discord">
     <header class="discord-hero">
-      <div><div class="discord-badges"><span>Work in progress</span><span>Interactive demo</span></div><p>Creator Tools · Discord Bot</p><h1>Build your connected community</h1><span>Explore how creators will configure Project Respawn's future Discord experience.</span></div>
+      <div class="discord-page-identity"><span class="discord-page-icon"><CreatorFeatureIcon name="discord" /></span><div><div class="discord-badges"><span>Work in progress</span><span>Interactive demo</span></div><h1>Discord</h1><p class="discord-page-description">Connect your server and bring your Discord community into Project Respawn.</p></div></div>
       <div class="discord-connection"><i></i><strong>Not connected — interactive demo</strong><small>No Discord bot is currently connected</small></div>
     </header>
     <aside class="discord-demo-warning"><strong>Demonstration only</strong><span>Settings are saved only inside this demonstration. Nothing is being sent to Discord.</span></aside>
@@ -54,6 +54,7 @@ import { computed, reactive, ref } from 'vue'
 import DiscordDemoNav from './components/DiscordDemoNav.vue'
 import DiscordOverview from './components/DiscordOverview.vue'
 import DiscordPreview from './components/DiscordPreview.vue'
+import CreatorFeatureIcon from '../../components/CreatorFeatureIcon.vue'
 import { analyticsMetrics, createDiscordDemoState, demoChannels, demoRoles, discordSections, renderGreeting, roleRestriction, validateCustomCommand } from './discordDemoState.js'
 
 const state=reactive(createDiscordDemoState());const commandError=ref('');const chartBars=[28,36,31,48,52,46,61,58,72,68,81,76]

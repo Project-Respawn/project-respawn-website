@@ -1,0 +1,2 @@
+<template><div class="demo-widget event-widget" :style="widgetStyle(s)"><span class="widget-kicker">PROJECT RESPAWN · UPCOMING</span><b>{{ event.payload.title||s.title }}</b><p>{{ event.payload.startsAt||s.dateTime }} · {{ event.payload.attendees??s.attendees }} attending</p><strong>{{ s.countdown }}</strong></div></template>
+<script setup>import { widgetStyle,useWidgetEvents } from '../../widgetHelpers.js'; const props=defineProps({widget:{type:Object,required:true}}); const s=props.widget.settings; const event=useWidgetEvents(props.widget,{payload:{}})</script>
