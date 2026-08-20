@@ -1,30 +1,57 @@
 import TherapistClientPanel from "../../components/clients/TherapistClientPanel.vue";
 import TherapistClientWorkspaceNav from "../../components/clients/TherapistClientWorkspaceNav.vue";
+import TherapistClientOverview from "../../components/clients/TherapistClientOverview.vue";
+import TherapistInsights from "../Insights/TherapistInsights.vue";
+
+/* =========================================================
+   QUEST COMPONENTS
+========================================================= */
 
 import TherapistClientQuestList from "../../components/quests/TherapistClientQuestList.vue";
 import TherapistClientQuestDetail from "../../components/quests/TherapistClientQuestDetail.vue";
+
+/* =========================================================
+   ACTIVITY COMPONENTS
+========================================================= */
 
 import TherapistClientActivitySummary from "../../components/activity/TherapistClientActivitySummary.vue";
 import TherapistClientActivityFilters from "../../components/activity/TherapistClientActivityFilters.vue";
 import TherapistClientActivityTimeline from "../../components/activity/TherapistClientActivityTimeline.vue";
 
+/* =========================================================
+   INSIGHTS COMPONENTS
+========================================================= */
+
+/* =========================================================
+   DEMO DATA
+========================================================= */
+
 import { therapistDemoClients } from "../../data/therapistDemoClients.js";
 import { therapistDemoQuests } from "../../data/therapistDemoQuests.js";
 import { therapistDemoActivity } from "../../data/therapistDemoActivity.js";
+import { therapistDemoInsights } from "../../data/therapistDemoInsights.js";
+
+const DEFAULT_CLIENT_ID = "alex-morgan";
 
 export default {
   name: "TherapistQuests",
 
   components: {
+    /* Client workspace */
     TherapistClientPanel,
     TherapistClientWorkspaceNav,
+    TherapistClientOverview,
+    TherapistInsights,
 
+    /* Quests */
     TherapistClientQuestList,
     TherapistClientQuestDetail,
 
+    /* Activity */
     TherapistClientActivitySummary,
     TherapistClientActivityFilters,
     TherapistClientActivityTimeline,
+
   },
 
   data() {
@@ -34,10 +61,21 @@ export default {
       ====================================================== */
 
       clients: therapistDemoClients,
-      selectedClientId: "alex-morgan",
+
+      quests: therapistDemoQuests.map((quest) => ({
+        ...quest,
+
+        history: (quest.history ?? []).map((entry) =>
+          Array.isArray(entry)
+            ? [...entry]
+            : entry
+        ),
+      })),
+
+      selectedClientId: DEFAULT_CLIENT_ID,
 
       /* =====================================================
-         CLIENT WORKSPACE STATE
+         WORKSPACE STATE
       ====================================================== */
 
       activeWorkspace: "quests",
@@ -46,7 +84,7 @@ export default {
          QUEST STATE
       ====================================================== */
 
-      selectedQuestId: "alex-group-activity",
+      selectedQuestId: "",
 
       /* =====================================================
          ACTIVITY STATE
@@ -57,7 +95,15 @@ export default {
       activityDateRange: "since-session",
 
       /* =====================================================
-         DEMO UI STATE
+         INSIGHTS STATE
+      ====================================================== */
+
+      insightConfidencePeriod: "4-weeks",
+      insightQuestView: "completed",
+      insightQuestPeriod: "30-days",
+
+      /* =====================================================
+         DEMO NOTICE
       ====================================================== */
 
       notice: "",
@@ -73,7 +119,8 @@ export default {
     selectedClient() {
       return (
         this.clients.find(
-          (client) => client.id === this.selectedClientId
+          (client) =>
+            client.id === this.selectedClientId
         ) ??
         this.clients[0] ??
         null
@@ -81,7 +128,23 @@ export default {
     },
 
     selectedClientFirstName() {
-      return this.selectedClient?.name?.split(" ")[0] ?? "Client";
+      return (
+        this.selectedClient?.name?.split(" ")[0] ??
+        "Client"
+      );
+    },
+
+    /* =====================================================
+       SELECTED CLIENT INSIGHTS
+    ====================================================== */
+
+    selectedClientInsights() {
+      return (
+        therapistDemoInsights.find(
+          (insight) =>
+            insight.clientId === this.selectedClientId
+        ) ?? null
+      );
     },
 
     /* =====================================================
@@ -89,15 +152,17 @@ export default {
     ====================================================== */
 
     clientQuests() {
-      return therapistDemoQuests.filter(
-        (quest) => quest.clientId === this.selectedClientId
+      return this.quests.filter(
+        (quest) =>
+          quest.clientId === this.selectedClientId
       );
     },
 
     selectedQuest() {
       return (
         this.clientQuests.find(
-          (quest) => quest.id === this.selectedQuestId
+          (quest) =>
+            quest.id === this.selectedQuestId
         ) ??
         this.clientQuests[0] ??
         null
@@ -109,73 +174,41 @@ export default {
     ====================================================== */
 
     questStats() {
-      const quests = this.clientQuests;
+      const completedQuests =
+        this.clientQuests.filter(
+          (quest) =>
+            quest.status === "completed"
+        );
 
-      const active = quests.filter((quest) =>
-        ["active", "upcoming"].includes(quest.status)
-      ).length;
-
-      const completed = quests.filter(
-        (quest) => quest.status === "completed"
-      ).length;
-
-      const overdue = quests.filter(
-        (quest) => quest.status === "overdue"
-      ).length;
-
-      const points = quests
-        .filter((quest) => quest.status === "completed")
-        .reduce(
-          (total, quest) => total + Number(quest.points || 0),
+      const completedPoints =
+        completedQuests.reduce(
+          (total, quest) =>
+            total + Number(quest.points || 0),
           0
         );
 
       return {
-        active,
-        completed,
-        overdue,
-        points,
-      };
-    },
+        active: this.clientQuests.filter(
+          (quest) =>
+            ["active", "upcoming"].includes(
+              quest.status
+            )
+        ).length,
 
-    summaryCards() {
-      return [
-        {
-          id: "active",
-          icon: "✓",
-          value: this.questStats.active,
-          label: "Active Quests",
-          detail: "Currently assigned",
-          tone: "purple",
-        },
-        {
-          id: "completed",
-          icon: "✓",
-          value: this.questStats.completed,
-          label: "Completed This Week",
-          detail: "Recent completions",
-          tone: "green",
-        },
-        {
-          id: "overdue",
-          icon: "!",
-          value: this.questStats.overdue,
-          label: "Overdue",
-          detail:
-            this.questStats.overdue === 1
-              ? "Needs attention"
-              : "Need attention",
-          tone: "orange",
-        },
-        {
-          id: "points",
-          icon: "◆",
-          value: this.questStats.points,
-          label: "Respawn Points Earned",
-          detail: "From completed quests",
-          tone: "blue",
-        },
-      ];
+        completed: completedQuests.length,
+
+        overdue: this.clientQuests.filter(
+          (quest) =>
+            quest.status === "overdue"
+        ).length,
+
+        completedPoints,
+
+        totalPoints:
+          this.selectedClientId === DEFAULT_CLIENT_ID
+            ? 1450
+            : completedPoints,
+      };
     },
 
     /* =====================================================
@@ -191,24 +224,74 @@ export default {
     },
 
     /* =====================================================
-       CLIENT ACTIVITY
+       QUEST SUMMARY CARDS
+    ====================================================== */
+
+    summaryCards() {
+      return [
+        {
+          id: "active",
+          icon: "✓",
+          value: this.questStats.active,
+          label: "Active Quests",
+          detail: "Currently assigned",
+          tone: "purple",
+        },
+
+        {
+          id: "completed",
+          icon: "✓",
+          value: this.questStats.completed,
+          label: "Completed This Week",
+          detail:
+            `+${this.questStats.completedPoints} RP earned`,
+          tone: "green",
+        },
+
+        {
+          id: "overdue",
+          icon: "!",
+          value: this.questStats.overdue,
+          label: "Overdue",
+          detail:
+            this.questStats.overdue === 1
+              ? "Needs attention"
+              : "Need attention",
+          tone: "orange",
+        },
+
+        {
+          id: "points",
+          icon: "◆",
+          value: this.questStats.totalPoints,
+          label: "Respawn Points Earned",
+          detail: "All time",
+          tone: "blue",
+        },
+      ];
+    },
+
+    /* =====================================================
+       ACTIVITY DATA
     ====================================================== */
 
     clientActivity() {
       return therapistDemoActivity.filter(
         (activity) =>
-          activity.clientId === this.selectedClientId
+          activity.clientId ===
+          this.selectedClientId
       );
     },
 
     /* =====================================================
-       ACTIVITY FILTER DEFINITIONS
+       ACTIVITY FILTERS
     ====================================================== */
 
     activityFilters() {
-      const countType = (type) =>
+      const count = (type) =>
         this.clientActivity.filter(
-          (activity) => activity.type === type
+          (activity) =>
+            activity.type === type
         ).length;
 
       return [
@@ -218,35 +301,41 @@ export default {
           icon: "⌁",
           count: this.clientActivity.length,
         },
+
         {
           id: "quest",
           label: "Quests",
           icon: "✓",
-          count: countType("quest"),
+          count: count("quest"),
         },
+
         {
           id: "reflection",
           label: "Reflections",
           icon: "“",
-          count: countType("reflection"),
+          count: count("reflection"),
         },
+
         {
           id: "confidence",
           label: "Confidence",
           icon: "◇",
-          count: countType("confidence"),
+          count: count("confidence"),
         },
+
         {
           id: "discussion",
           label: "Discussion",
           icon: "💬",
-          count: countType("discussion"),
+          count: count("discussion"),
         },
+
         {
           id: "community",
           label: "Community",
           icon: "⌁",
-          count: countType("community"),
+          count: count("community"),
+
           locked: this.clientActivity.some(
             (activity) =>
               activity.type === "community" &&
@@ -261,60 +350,50 @@ export default {
     ====================================================== */
 
     activitySummaryCards() {
-      const activities = this.clientActivity;
-
-      const questEvents = activities.filter(
-        (activity) => activity.type === "quest"
-      ).length;
-
-      const reflections = activities.filter(
-        (activity) => activity.type === "reflection"
-      ).length;
-
-      const confidence = activities.filter(
-        (activity) => activity.type === "confidence"
-      ).length;
-
-      const discussion = activities.filter(
-        (activity) => activity.type === "discussion"
-      ).length;
+      const count = (type) =>
+        this.clientActivity.filter(
+          (activity) =>
+            activity.type === type
+        ).length;
 
       return [
         {
           id: "activity",
           icon: "⌁",
-          value: activities.filter(
-            (activity) => !activity.locked
+          value: this.clientActivity.filter(
+            (activity) =>
+              !activity.locked
           ).length,
           label: "Shared Activity",
           detail: "Since last session",
           tone: "purple",
         },
+
         {
           id: "quests",
           icon: "✓",
-          value: questEvents,
+          value: count("quest"),
           label: "Quest Updates",
           detail: "Progress and completions",
           tone: "green",
         },
+
         {
           id: "reflections",
           icon: "“",
-          value: reflections,
+          value: count("reflection"),
           label: "Reflections",
           detail: "Shared by client",
           tone: "blue",
         },
+
         {
           id: "discussion",
           icon: "💬",
-          value: discussion,
+          value: count("discussion"),
           label: "Discussion Points",
           detail:
-            confidence > 0
-              ? `${confidence} confidence check-ins`
-              : "For next session",
+            `${count("confidence")} confidence check-ins`,
           tone: "orange",
         },
       ];
@@ -325,28 +404,38 @@ export default {
     ====================================================== */
 
     filteredActivity() {
-      let activity = [...this.clientActivity];
-
-      /* -------------------------
-         TYPE FILTER
-      ------------------------- */
-
-      if (this.activityFilter !== "all") {
-        activity = activity.filter(
-          (item) => item.type === this.activityFilter
-        );
-      }
-
-      /* -------------------------
-         SEARCH
-      ------------------------- */
-
-      const search = this.activitySearch
+      const query = this.activitySearch
         .trim()
         .toLowerCase();
 
-      if (search) {
-        activity = activity.filter((item) => {
+      const cutoffDays = {
+        "since-session": 10,
+        "7-days": 7,
+        "30-days": 30,
+      }[this.activityDateRange];
+
+      const cutoff = cutoffDays
+        ? new Date("2026-08-20T12:00:00")
+        : null;
+
+      if (cutoff) {
+        cutoff.setDate(
+          cutoff.getDate() - cutoffDays
+        );
+      }
+
+      return this.clientActivity
+        .filter(
+          (item) =>
+            this.activityFilter === "all" ||
+            item.type === this.activityFilter
+        )
+
+        .filter((item) => {
+          if (!query) {
+            return true;
+          }
+
           const searchable = [
             item.title,
             item.detail,
@@ -361,58 +450,32 @@ export default {
             .join(" ")
             .toLowerCase();
 
-          return searchable.includes(search);
-        });
-      }
+          return searchable.includes(query);
+        })
 
-      /* -------------------------
-         DATE RANGE
-      ------------------------- */
+        .filter((item) => {
+          if (!cutoff) {
+            return true;
+          }
 
-      const today = new Date("2026-08-20T12:00:00");
-
-      let cutoff = null;
-
-      if (this.activityDateRange === "since-session") {
-        cutoff = new Date(today);
-        cutoff.setDate(cutoff.getDate() - 10);
-      }
-
-      if (this.activityDateRange === "7-days") {
-        cutoff = new Date(today);
-        cutoff.setDate(cutoff.getDate() - 7);
-      }
-
-      if (this.activityDateRange === "30-days") {
-        cutoff = new Date(today);
-        cutoff.setDate(cutoff.getDate() - 30);
-      }
-
-      if (cutoff) {
-        activity = activity.filter((item) => {
-          const date = new Date(
+          const itemDate = new Date(
             `${item.date}T12:00:00`
           );
 
-          return date >= cutoff;
+          return itemDate >= cutoff;
+        })
+
+        .sort((a, b) => {
+          const second = new Date(
+            `${b.date}T${b.time || "00:00"}`
+          );
+
+          const first = new Date(
+            `${a.date}T${a.time || "00:00"}`
+          );
+
+          return second - first;
         });
-      }
-
-      /* -------------------------
-         NEWEST FIRST
-      ------------------------- */
-
-      return activity.sort((a, b) => {
-        const first = new Date(
-          `${a.date}T${a.time || "00:00"}`
-        );
-
-        const second = new Date(
-          `${b.date}T${b.time || "00:00"}`
-        );
-
-        return second - first;
-      });
     },
 
     /* =====================================================
@@ -422,18 +485,22 @@ export default {
     groupedActivity() {
       const groups = new Map();
 
-      this.filteredActivity.forEach((activity) => {
-        if (!groups.has(activity.date)) {
-          groups.set(activity.date, {
-            date: activity.date,
-            dayLabel: activity.dayLabel,
-            dateLabel: activity.dateLabel,
-            items: [],
-          });
-        }
+      this.filteredActivity.forEach(
+        (activity) => {
+          if (!groups.has(activity.date)) {
+            groups.set(activity.date, {
+              date: activity.date,
+              dayLabel: activity.dayLabel,
+              dateLabel: activity.dateLabel,
+              items: [],
+            });
+          }
 
-        groups.get(activity.date).items.push(activity);
-      });
+          groups
+            .get(activity.date)
+            .items.push(activity);
+        }
+      );
 
       return Array.from(groups.values());
     },
@@ -441,26 +508,35 @@ export default {
 
   watch: {
     /* =====================================================
-       RESET CLIENT-SPECIFIC STATE
+       ROUTE → CLIENT SYNC
     ====================================================== */
 
-    selectedClientId() {
-      this.selectDefaultQuestForClient();
+    "$route.params.clientId": {
+      immediate: true,
 
-      this.activitySearch = "";
-      this.activityFilter = "all";
-      this.activityDateRange = "since-session";
+      handler(clientId) {
+        const validId =
+          this.clients.some(
+            (client) =>
+              client.id === clientId
+          )
+            ? clientId
+            : DEFAULT_CLIENT_ID;
+
+        this.setSelectedClient(validId);
+      },
     },
   },
 
   methods: {
     /* =====================================================
-       CLIENT SWITCHING
+       CLIENT SELECTION
     ====================================================== */
 
-    handleClientSwitch(clientId) {
+    setSelectedClient(clientId) {
       const exists = this.clients.some(
-        (client) => client.id === clientId
+        (client) =>
+          client.id === clientId
       );
 
       if (!exists) {
@@ -469,40 +545,129 @@ export default {
 
       this.selectedClientId = clientId;
 
-      const selectedClient = this.clients.find(
-        (client) => client.id === clientId
+      /* -----------------------------------------------------
+         SELECT DEFAULT QUEST
+      ----------------------------------------------------- */
+
+      const quests = this.quests.filter(
+        (quest) =>
+          quest.clientId === clientId
       );
 
-      /*
-       IMPORTANT:
-       Do not change activeWorkspace here.
+      const preferredQuest =
+        quests.find(
+          (quest) =>
+            quest.status === "active"
+        ) ??
+        quests.find(
+          (quest) =>
+            quest.status === "overdue"
+        ) ??
+        quests.find(
+          (quest) =>
+            quest.status === "upcoming"
+        ) ??
+        quests[0] ??
+        null;
 
-       If the therapist is viewing Activity and switches
-       client, they stay in Activity.
+      this.selectedQuestId =
+        preferredQuest?.id ?? "";
+
+      /* -----------------------------------------------------
+         RESET ACTIVITY
+      ----------------------------------------------------- */
+
+      this.activitySearch = "";
+      this.activityFilter = "all";
+      this.activityDateRange =
+        "since-session";
+
+      /* -----------------------------------------------------
+         RESET INSIGHTS FOR SELECTED CLIENT
+
+         This matters because different demo clients currently
+         expose different Insight periods and chart views.
+      ----------------------------------------------------- */
+
+      const insights =
+        therapistDemoInsights.find(
+          (insight) =>
+            insight.clientId === clientId
+        );
+
+      this.insightConfidencePeriod =
+        insights?.confidenceTrend?.defaultPeriod ??
+        "4-weeks";
+
+      this.insightQuestView =
+        insights?.questTypeInsights?.defaultView ??
+        "completed";
+
+      this.insightQuestPeriod =
+        insights?.questTypeInsights?.defaultPeriod ??
+        "30-days";
+    },
+
+    /* =====================================================
+       CLIENT SWITCHING
+    ====================================================== */
+
+    handleClientSwitch(clientId) {
+      const exists = this.clients.some(
+        (client) =>
+          client.id === clientId
+      );
+
+      if (!exists) {
+        return;
+      }
+
+      this.setSelectedClient(clientId);
+
+      /*
+       Keep the current workspace selected.
+       Only update the client route.
       */
 
+      if (
+        this.$route.params.clientId !== clientId
+      ) {
+        this.$router.push(
+          `/therapist/clients/${clientId}`
+        );
+      }
+
+      const client = this.clients.find(
+        (item) =>
+          item.id === clientId
+      );
+
       this.showNotice(
-        `Switched to ${selectedClient?.name ?? "client"}.`
+        `Switched to ${client?.name ?? "client"}.`
       );
     },
 
     /* =====================================================
-       DEFAULT QUEST
+       WORKSPACE NAVIGATION
     ====================================================== */
 
-    selectDefaultQuestForClient() {
-      const quests = therapistDemoQuests.filter(
-        (quest) => quest.clientId === this.selectedClientId
-      );
+    handleWorkspaceChange(section) {
+      const allowedSections = [
+        "overview",
+        "quests",
+        "activity",
+        "insights",
+        "reports",
+        "sharing",
+      ];
 
-      const preferredQuest =
-        quests.find((quest) => quest.status === "active") ??
-        quests.find((quest) => quest.status === "overdue") ??
-        quests.find((quest) => quest.status === "upcoming") ??
-        quests[0] ??
-        null;
+      if (
+        !allowedSections.includes(section)
+      ) {
+        return;
+      }
 
-      this.selectedQuestId = preferredQuest?.id ?? "";
+      this.activeWorkspace = section;
     },
 
     /* =====================================================
@@ -510,9 +675,11 @@ export default {
     ====================================================== */
 
     handleQuestSelect(questId) {
-      const exists = this.clientQuests.some(
-        (quest) => quest.id === questId
-      );
+      const exists =
+        this.clientQuests.some(
+          (quest) =>
+            quest.id === questId
+        );
 
       if (!exists) {
         return;
@@ -522,38 +689,13 @@ export default {
     },
 
     /* =====================================================
-       WORKSPACE NAVIGATION
-    ====================================================== */
-
-    handleWorkspaceChange(section) {
-      if (section === "overview") {
-        this.$router.push(
-          `/therapist/clients/${this.selectedClientId}`
-        );
-
-        return;
-      }
-
-      const allowedSections = [
-        "quests",
-        "activity",
-        "insights",
-        "reports",
-        "sharing",
-      ];
-
-      if (allowedSections.includes(section)) {
-        this.activeWorkspace = section;
-      }
-    },
-
-    /* =====================================================
        ASSIGN QUEST
     ====================================================== */
 
     handleAssignQuest() {
       this.$router.push({
         path: "/therapist/quests/new",
+
         query: {
           client: this.selectedClientId,
         },
@@ -566,38 +708,30 @@ export default {
 
     handleBrowseTemplates() {
       this.showNotice(
-        "Quest templates will be connected to the quest builder."
+        "Quest templates are demo-only for now."
       );
     },
 
     /* =====================================================
-       CLIENT OVERVIEW
-    ====================================================== */
-
-    handleClientOverview() {
-      this.$router.push(
-        `/therapist/clients/${this.selectedClientId}`
-      );
-    },
-
-    /* =====================================================
-       SHARING / PERMISSIONS
+       ACCESS / SHARING
     ====================================================== */
 
     handleRequestAccess() {
       this.showNotice(
-        `Permission request flow opened for ${this.selectedClientFirstName}.`
+        `Access request prepared for ${this.selectedClientFirstName}. No permissions were changed.`
       );
     },
 
-    handleActivityPermissionRequest(permission) {
-      const permissionName =
+    handleActivityPermissionRequest(
+      permission
+    ) {
+      const label =
         permission === "community-activity"
           ? "community and gaming activity"
           : "additional activity";
 
       this.showNotice(
-        `Request to view ${permissionName} prepared for ${this.selectedClientFirstName}.`
+        `Request to view ${label} prepared for ${this.selectedClientFirstName}.`
       );
     },
 
@@ -606,65 +740,89 @@ export default {
     ====================================================== */
 
     handleQuestAction(action) {
-      if (!this.selectedQuest) {
+      const quest = this.quests.find(
+        (item) =>
+          item.id ===
+          this.selectedQuest?.id
+      );
+
+      if (!quest) {
         return;
       }
 
-      const questName = this.selectedQuest.title;
+      if (action === "complete") {
+        quest.status = "completed";
+        quest.statusLabel = "Completed";
+        quest.progress = "Completed";
 
-      switch (action) {
-        case "complete":
-          this.showNotice(
-            `"${questName}" marked complete for demo purposes.`
-          );
-          break;
+        this.showNotice(
+          `"${quest.title}" marked complete for demo purposes.`
+        );
 
-        case "pause":
-          this.showNotice(
-            `"${questName}" paused for demo purposes.`
-          );
-          break;
-
-        case "edit":
-          this.showNotice(
-            `Editing "${questName}" will connect to the quest builder.`
-          );
-          break;
-
-        case "end":
-          this.showNotice(
-            `"${questName}" ended for demo purposes.`
-          );
-          break;
-
-        case "reflection":
-          this.showNotice(
-            `Reflection tools opened for "${questName}".`
-          );
-          break;
-
-        default:
-          this.showNotice(
-            `Demo action selected for "${questName}".`
-          );
+        return;
       }
+
+      if (action === "pause") {
+        quest.statusLabel = "Paused";
+        quest.progress = "Paused";
+
+        this.showNotice(
+          `"${quest.title}" paused for demo purposes.`
+        );
+
+        return;
+      }
+
+      if (action === "end") {
+        quest.statusLabel = "Ended";
+        quest.progress = "Ended";
+
+        this.showNotice(
+          `"${quest.title}" ended for demo purposes.`
+        );
+
+        return;
+      }
+
+      if (action === "reflection") {
+        this.showNotice(
+          "Client reflections are demo-only."
+        );
+
+        return;
+      }
+
+      if (action === "edit") {
+        this.showNotice(
+          "Quest editing is demo-only."
+        );
+
+        return;
+      }
+
+      this.showNotice(
+        "This action is demo-only."
+      );
     },
 
     /* =====================================================
-       DEMO NOTICE
+       NOTICE
     ====================================================== */
 
     showNotice(message) {
       this.notice = message;
 
       if (this.noticeTimer) {
-        window.clearTimeout(this.noticeTimer);
+        window.clearTimeout(
+          this.noticeTimer
+        );
       }
 
-      this.noticeTimer = window.setTimeout(() => {
-        this.notice = "";
-        this.noticeTimer = null;
-      }, 3200);
+      this.noticeTimer =
+        window.setTimeout(() => {
+          this.notice = "";
+          this.noticeTimer = null;
+        }, 3000);
     },
   },
 
@@ -674,7 +832,9 @@ export default {
 
   beforeUnmount() {
     if (this.noticeTimer) {
-      window.clearTimeout(this.noticeTimer);
+      window.clearTimeout(
+        this.noticeTimer
+      );
     }
   },
 };
