@@ -1,7 +1,7 @@
 <template>
   <aside class="creator-sidebar">
     <router-link :to="{ name: 'CreatorDashboard' }" class="creator-brand">
-      <span class="creator-brand-mark">R</span>
+      <span class="creator-brand-mark"><img :src="projectRespawnLogo" alt="" /></span>
       <span><small>Project Respawn</small><strong>Creator Tools</strong></span>
     </router-link>
 
@@ -9,7 +9,7 @@
       <section v-for="group in creatorNavigation" :key="group.label" class="creator-nav-group">
         <h2>{{ group.label }}</h2>
         <router-link v-for="key in visibleItems(group.items)" :key="key" :to="{ name: registry[key].routeName }" class="creator-nav-link" :class="{ 'is-active': isFeatureActive(key) }">
-          <span><span v-if="registry[key].icon" class="creator-nav-icon" aria-hidden="true">{{ registry[key].icon }}</span>{{ registry[key].label }}</span>
+          <span><span class="creator-nav-icon"><CreatorFeatureIcon :name="registry[key].icon" /></span>{{ registry[key].label }}</span>
           <FeatureStatusBadge v-if="registry[key].status !== 'live'" :status="registry[key].status" />
         </router-link>
       </section>
@@ -21,6 +21,8 @@
 
 <script setup>
 import FeatureStatusBadge from '../../../components/FeatureStatusBadge/FeatureStatusBadge.vue'
+import CreatorFeatureIcon from './CreatorFeatureIcon.vue'
+import projectRespawnLogo from '../views/events/project-respawn-mark.png'
 import { creatorFeatureRegistry as registry, creatorNavigation } from '../config/creatorFeatureRegistry.js'
 import { useRoute } from 'vue-router'
 

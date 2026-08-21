@@ -1,0 +1,3 @@
+import ImageWidget from './ImageWidget.vue'
+import { commonStyleSettings, defineWidget } from '../../registry/definition.js'
+export default defineWidget({type:'image',displayName:'Image',description:'Display an image from a configured URL.',categories:['utility'],integrations:[],icon:'▧',component:ImageWidget,defaultSize:{width:400,height:240},defaultSettings:{imageUrl:'',alt:'Overlay image',fit:'contain',background:'#111827',opacity:1,cornerRadius:16},topics:[],capabilities:{},requirements:{},legacyCategory:'General',settings:[{key:'imageUrl',label:'Image URL',type:'text'},{key:'alt',label:'Accessible description',type:'text'},{key:'fit',label:'Image fit',type:'select',options:['contain','cover']},...commonStyleSettings]})

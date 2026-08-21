@@ -432,7 +432,7 @@ async function handleSignIn() {
     await signIn({ username: addr, password: signInForm.value.password });
     await refreshAuth();
     signInForm.value.password = "";
-    await router.push("/account");
+    await router.push("/home");
   } catch (err) {
     const alreadySignedIn =
       err?.name === "UserAlreadyAuthenticatedException" ||
@@ -444,7 +444,7 @@ async function handleSignIn() {
       await refreshAuth();
       if (isSignedIn.value) {
         signInForm.value.password = "";
-        await router.push("/account");
+        await router.push("/home");
         return;
       }
     }

@@ -25,6 +25,7 @@ export const myFunction = defineFunction({
     // =========================================================================
     REVOLUT_API_KEY: secret('REVOLUT_API_KEY'),
     REVOLUT_API_SECRET: secret('REVOLUT_API_SECRET'),
+    REVOLUT_WEBHOOK_SIGNING_SECRET: secret('REVOLUT_WEBHOOK_SIGNING_SECRET'),
 
     // =========================================================================
     // Twitch / shared app config

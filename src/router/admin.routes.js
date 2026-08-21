@@ -21,6 +21,7 @@ import AdminApplicationReview from '../views/Admin/AdminApplications/AdminApplic
 import AdminInductions from '../views/Admin/AdminApplications/AdminInductions.vue';
 import AdminInductionDetail from '../views/Admin/AdminApplications/AdminInductionDetail.vue';
 import AdminAvailability from '../views/Admin/Bookings/AdminAvailability.vue';
+import AdminInvestors from '../views/Admin/AdminInvestors/AdminInvestors.vue';
 
 export default [
 
@@ -46,6 +47,12 @@ export default [
                 path: 'permissions',
                 name: 'AdminPermissions',
                 component: AdminPermissions,
+                meta: { requiredGroups: ['SuperAdmin', 'Admin'] }
+            },
+            {
+                path: 'investors',
+                name: 'AdminInvestors',
+                component: AdminInvestors,
                 meta: { requiredGroups: ['SuperAdmin', 'Admin'] }
             },
             {

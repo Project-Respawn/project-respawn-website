@@ -3,6 +3,12 @@ import { createHmac, timingSafeEqual } from 'node:crypto'
 export interface RuntimeRequest { method: string; path: string; timestamp: string; nonce: string; body?: unknown }
 export interface RuntimeLease { integrationId: string; brandId: string; broadcasterId: string; operations: string[]; issuedAt: number; expiresAt: number }
 
+export function runtimeLeaseMetadata(token: string) {
+  const [encoded] = String(token || '').split('.')
+  const claims = JSON.parse(Buffer.from(encoded, 'base64url').toString('utf8')) as RuntimeLease
+  return { issuedAt: claims.issuedAt, expiresAt: claims.expiresAt }
+}
+
 function stableBody(body: unknown) { return body === undefined || body === null ? '' : JSON.stringify(body) }
 export function runtimeCanonicalRequest(input: RuntimeRequest) {
   return [input.method.toUpperCase(), input.path, input.timestamp, input.nonce, stableBody(input.body)].join('\n')

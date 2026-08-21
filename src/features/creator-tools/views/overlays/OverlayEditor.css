@@ -1,0 +1,2645 @@
+/* ============================================================
+   PROJECT RESPAWN
+   CREATOR OVERLAY EDITOR
+   ============================================================
+
+   TABLE OF CONTENTS
+
+   00 - Global Editor Shell
+   01 - Header / Toolbar
+   02 - Demo Information Bar
+   03 - Workspace Layout
+   04 - Main Overlay Canvas
+   05 + 06 - Shared Layers / Widget Settings Inspector
+   07 - Recent Activity
+   08 - Overlay Scenes
+   09 - Game Preview
+   10 - Browser Source Outputs
+   11 - Test & Controls
+   12 - Shared Builder Panels
+   13 - Notices
+   14 - Full Screen Preview
+   15 - Header / OBS Modal
+   16 - Canvas Interaction States
+   17 - Responsive Layout
+   18 - Reduced Motion
+
+   IMPORTANT
+
+   Section-specific component styles should live inside their
+   own Vue components where possible.
+
+   This stylesheet primarily owns:
+   - overall editor shell
+   - relationships between sections
+   - shared panels
+   - canvas sizing
+   - cross-component states
+   ============================================================ */
+
+
+/* ============================================================
+   00 - GLOBAL EDITOR SHELL
+   ============================================================ */
+
+.universal-builder {
+  --overlay-gap: clamp(5px, 0.42vw, 8px);
+  --overlay-padding: clamp(5px, 0.5vw, 10px);
+
+  width: 100%;
+  max-width: none;
+  min-width: 1052px;
+  min-height: 100vh;
+
+  box-sizing: border-box;
+
+  background:
+    linear-gradient(
+      160deg,
+      #06111e,
+      #091625 58%,
+      #07111d
+    );
+
+  color: #dce5f2;
+
+  font-family:
+    Inter,
+    system-ui,
+    sans-serif;
+
+  font-size: 11px;
+
+  overflow: visible;
+}
+
+.creator-content:has(.universal-builder) {
+  width: 100%;
+  max-width: none;
+
+  overflow: visible;
+}
+
+
+/* ============================================================
+   01 - HEADER / TOOLBAR
+
+   SECTION 01
+   ============================================================ */
+
+.builder-toolbar {
+  position: relative;
+  z-index: 80;
+
+  display: flex;
+
+  width: 100%;
+  min-height: 56px;
+  height: 56px;
+
+  box-sizing: border-box;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 0 10px;
+
+  border-bottom:
+    1px solid #172b40;
+
+  background:
+    rgba(3, 16, 29, 0.99);
+}
+
+
+/* ============================================================
+   01A - BRAND
+   ============================================================ */
+
+.builder-brand {
+  display: flex;
+
+  min-width: 170px;
+  height: 48px;
+
+  align-items: center;
+
+  gap: 7px;
+
+  padding-right: 18px;
+
+  border-right:
+    1px solid #213247;
+
+  color: #ffffff;
+
+  text-decoration: none;
+
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+
+.builder-brand img {
+  width: 48px;
+  height: 44px;
+
+  object-fit: contain;
+}
+
+.builder-brand b {
+  line-height: 1.12;
+}
+
+.builder-brand strong {
+  font-size: 14px;
+}
+
+
+/* ============================================================
+   01B - OVERLAY TITLE
+   ============================================================ */
+
+.builder-toolbar > input {
+  width: 136px;
+
+  padding: 0 2px;
+
+  border: 0;
+
+  outline: none;
+
+  background: transparent;
+
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 650;
+}
+
+.builder-toolbar > .title-chevron,
+.builder-toolbar > .title-edit {
+  min-width: 24px;
+
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  font-size: 16px;
+}
+
+
+/* ============================================================
+   01C - HEADER BADGES
+   ============================================================ */
+
+.builder-badge {
+  padding: 5px 9px;
+
+  border:
+    1px solid rgba(168, 85, 247, 0.35);
+
+  border-radius: 4px;
+
+  background:
+    rgba(139, 92, 246, 0.16);
+
+  color: #d8b4fe;
+
+  font-size: 9px;
+  font-weight: 900;
+
+  text-transform: uppercase;
+}
+
+.builder-badge.cyan {
+  border-color:
+    rgba(34, 211, 238, 0.35);
+
+  background:
+    rgba(34, 211, 238, 0.1);
+
+  color: #67e8f9;
+}
+
+
+/* ============================================================
+   01D - HEADER SELECTS
+   ============================================================ */
+
+.builder-toolbar label {
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  color: #8e9bae;
+
+  font-size: 10px;
+}
+
+.builder-toolbar select,
+.builder-panel select {
+  min-height: 32px;
+
+  padding: 5px 7px;
+
+  border:
+    1px solid #31445a;
+
+  border-radius: 5px;
+
+  background: #0c1a2a;
+
+  color: #dce5f2;
+}
+
+
+/* ============================================================
+   01E - HEADER ACTIONS
+   ============================================================ */
+
+.toolbar-actions {
+  display: flex;
+
+  margin-left: auto;
+
+  align-items: center;
+
+  gap: 7px;
+}
+
+.builder-toolbar button,
+.builder-panel button,
+.builder-notice button {
+  min-height: 32px;
+
+  border:
+    1px solid #2d4057;
+
+  border-radius: 5px;
+
+  background: #0d1b2b;
+
+  color: #cbd5e1;
+
+  cursor: pointer;
+}
+
+.builder-toolbar button {
+  min-height: 34px;
+
+  padding: 6px 11px;
+}
+
+.builder-toolbar button:disabled {
+  opacity: 0.4;
+
+  cursor: not-allowed;
+}
+
+.builder-toolbar .publish {
+  padding-inline: 16px;
+
+  border-color: #8b5cf6;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #8b5cf6
+    );
+
+  color: #ffffff;
+}
+
+
+/* ============================================================
+   01F - OBS STATUS
+   ============================================================ */
+
+.obs-offline,
+.builder-toolbar .obs-offline {
+  margin-left: 9px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #9aa5b5;
+
+  font-size: 10px;
+
+  white-space: nowrap;
+}
+
+.obs-offline::first-letter {
+  color: #ef4444;
+}
+
+
+/* ============================================================
+   02 - DEMO INFORMATION BAR
+
+   SECTION 02
+   ============================================================ */
+
+.builder-demo-strip {
+  display: flex;
+
+  width: 100%;
+  height: 26px;
+
+  box-sizing: border-box;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 5px 10px;
+
+  border:
+    1px solid #291d55;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(57, 30, 105, 0.52),
+      rgba(31, 25, 78, 0.62)
+    );
+
+  color: #b9afd1;
+
+  font-size: 10px;
+
+  text-align: center;
+}
+
+
+/* ============================================================
+   03 - MAIN WORKSPACE
+
+   TOP ROW
+
+   03 Widget Library
+   04 Main Canvas
+   05 + 06 Shared Inspector
+   07 Recent Activity
+
+   LOWER ROW
+
+   08 Overlay Scenes
+   09 Game Preview
+   10 Browser Sources
+   11 Test & Controls
+
+   ============================================================ */
+
+.overlay-workspace {
+  display: grid;
+
+  width: 100%;
+  max-width: none;
+  min-width: 1052px;
+
+  height:
+    calc(100vh - 82px);
+
+  min-height: 700px;
+
+  box-sizing: border-box;
+
+  grid-template-columns:
+    minmax(185px, 17fr)
+    minmax(580px, 49fr)
+    minmax(260px, 19fr)
+    minmax(190px, 15fr);
+
+  grid-template-rows:
+    minmax(480px, 2.15fr)
+    minmax(235px, 1fr);
+
+  grid-template-areas:
+    "library canvas inspector recent"
+    "scenes game outputs controls";
+
+  gap:
+    var(--overlay-gap);
+
+  padding:
+    var(--overlay-padding);
+
+  align-items: stretch;
+
+  background:
+    #06111e;
+}
+
+
+/* ============================================================
+   03A - WORKSPACE SECTION PLACEMENT
+   ============================================================ */
+
+.workspace-zone--library,
+.overlay-workspace
+  > [data-overlay-section="03"] {
+  grid-area: library;
+}
+
+.workspace-zone--canvas,
+.overlay-workspace
+  > [data-overlay-section="04"] {
+  grid-area: canvas;
+}
+
+.workspace-zone--inspector,
+.overlay-inspector-panel {
+  grid-area: inspector;
+}
+
+.workspace-zone--activity,
+.overlay-workspace
+  > [data-overlay-section="07"] {
+  grid-area: recent;
+}
+
+.workspace-lower--scenes,
+.overlay-workspace
+  > [data-overlay-section="08"] {
+  grid-area: scenes;
+}
+
+.workspace-lower--preview,
+.overlay-workspace
+  > [data-overlay-section="09"] {
+  grid-area: game;
+}
+
+.workspace-lower--outputs,
+.overlay-workspace
+  > [data-overlay-section="10"] {
+  grid-area: outputs;
+}
+
+.workspace-lower--controls,
+.overlay-workspace
+  > [data-overlay-section="11"] {
+  grid-area: controls;
+}
+
+
+/* ============================================================
+   03B - WORKSPACE WRAPPERS
+   ============================================================ */
+
+.workspace-zone,
+.workspace-lower {
+  min-width: 0;
+  min-height: 0;
+}
+/* ============================================================
+   03C - WIDGET LIBRARY WORKSPACE BOUNDARY
+
+   SECTION 03
+
+   WidgetLibrary.vue owns the internal appearance of the
+   Widget Library.
+
+   OverlayEditor.css only controls how Section 03 fits inside
+   the overall editor workspace.
+
+   The library must never grow beyond its assigned grid cell.
+   ============================================================ */
+
+.widget-library {
+  display: flex;
+
+  width: 100%;
+  height: 100%;
+
+  min-width: 0;
+  min-height: 0;
+
+  flex-direction: column;
+
+  overflow: hidden;
+}
+
+.workspace-zone--library > .widget-library {
+  width: 100%;
+  height: 100%;
+
+  min-width: 0;
+  min-height: 0;
+
+  overflow: hidden;
+}
+
+
+/* ============================================================
+   04 - MAIN OVERLAY CANVAS
+
+   SECTION 04
+
+   IMPORTANT:
+   OverlayCanvas should remain DIRECTLY inside .canvas-panel.
+   ============================================================ */
+
+.canvas-panel {
+  display: grid;
+
+  min-width: 0;
+  min-height: 0;
+
+  grid-template-rows:
+    39px
+    minmax(0, 1fr)
+    40px;
+
+  overflow: hidden;
+}
+
+
+/* ============================================================
+   04A - CANVAS VIEWPORT
+
+   Fit / Actual Size behaviour depends on this remaining
+   flexible and bounded by the panel.
+   ============================================================ */
+
+.canvas-panel > .canvas-viewport {
+  width: 100%;
+  height: 100%;
+
+  min-width: 0;
+  min-height: 0;
+
+  overflow: auto;
+
+  background:
+    #07121e;
+}
+
+.canvas-panel .canvas-scaler {
+  margin: auto;
+}
+
+.canvas-panel .overlay-canvas {
+  background-image:
+    url('/images/overlay-previews/fantasy-moba-draft.png')
+    !important;
+
+  background-position:
+    center !important;
+
+  background-size:
+    cover !important;
+
+  box-shadow:
+    inset 0 0 0 2px
+    rgba(255, 255, 255, 0.12);
+}
+
+
+/* ============================================================
+   04B - CANVAS FOOTER
+   ============================================================ */
+
+.canvas-footer {
+  display: flex;
+
+  min-height: 40px;
+
+  align-items: center;
+
+  gap: 5px;
+
+  padding: 4px 10px;
+
+  border-top:
+    1px solid #263c53;
+
+  background:
+    #081727;
+}
+
+.canvas-footer button {
+  min-height: 29px;
+
+  padding: 3px 8px;
+}
+
+.canvas-footer label {
+  display: flex;
+
+  margin-left: auto;
+
+  align-items: center;
+
+  gap: 5px;
+
+  color: #9aa7b8;
+}
+
+.canvas-footer select {
+  min-height: 28px;
+
+  padding: 3px 6px;
+}
+
+
+/* ============================================================
+   05 + 06 - SHARED INSPECTOR
+
+   SECTION 05 = Layers
+   SECTION 06 = Widget Settings
+
+   These sections share a VISUAL container only.
+   Their JS modules remain independent.
+   ============================================================ */
+
+.overlay-inspector-panel {
+  display: flex;
+
+  min-width: 0;
+  min-height: 0;
+
+  flex-direction: column;
+
+  overflow: hidden;
+
+  border:
+    1px solid #284056;
+
+  border-radius: 6px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #091b2d,
+      #071625
+    );
+}
+
+
+/* ============================================================
+   05 + 06A - SHARED TAB BAR
+   ============================================================ */
+
+.overlay-inspector-tabs {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  flex: 0 0 39px;
+
+  min-height: 39px;
+
+  border-bottom:
+    1px solid #263c53;
+
+  background:
+    #081727;
+}
+
+.overlay-inspector-tabs button {
+  display: flex;
+
+  min-width: 0;
+  min-height: 39px;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 5px;
+
+  padding: 5px 6px;
+
+  border: 0;
+  border-radius: 0;
+
+  border-bottom:
+    2px solid transparent;
+
+  background:
+    transparent;
+
+  color:
+    #8491a2;
+
+  font-size:
+    9px;
+
+  font-weight:
+    700;
+
+  cursor:
+    pointer;
+}
+
+.overlay-inspector-tabs button:hover {
+  color:
+    #c4b5fd;
+}
+
+.overlay-inspector-tabs button.active {
+  border-bottom-color:
+    #8b5cf6;
+
+  background:
+    rgba(124, 58, 237, 0.12);
+
+  color:
+    #ffffff;
+}
+
+.overlay-inspector-tabs button span {
+  color:
+    #a78bfa;
+}
+
+
+/* ============================================================
+   05 + 06B - TAB CONTENT
+   ============================================================ */
+
+.overlay-inspector-content {
+  min-width: 0;
+  min-height: 0;
+
+  flex:
+    1 1 auto;
+
+  overflow: auto;
+}
+
+.overlay-inspector-content
+  > .builder-panel,
+
+.overlay-inspector-content
+  > .layers-panel,
+
+.overlay-inspector-content
+  > .inspector-panel {
+  width: 100%;
+  min-height: 100%;
+
+  border: 0 !important;
+
+  border-radius: 0 !important;
+
+  background:
+    transparent !important;
+
+  box-shadow:
+    none !important;
+}
+
+
+/* ============================================================
+   05 - LAYERS
+
+   SECTION 05
+   ============================================================ */
+
+.layers-panel {
+  display: flex;
+
+  min-width: 0;
+  min-height: 0;
+
+  flex-direction: column;
+
+  background:
+    #081727;
+}
+
+.layers-panel > header {
+  display: flex;
+
+  min-height: 39px;
+  height: 39px;
+
+  align-items: center;
+
+  padding: 0 8px;
+
+  border-bottom:
+    1px solid #263c53;
+}
+
+.layers-panel > header button {
+  min-width: 26px;
+
+  border: 0;
+
+  background:
+    transparent;
+
+  color:
+    #dce5f2;
+}
+
+.layers-panel ol {
+  height: auto;
+  max-height: none;
+
+  flex:
+    1 1 auto;
+
+  margin: 0;
+
+  padding: 8px;
+
+  overflow: auto;
+}
+
+.layers-panel li {
+  display: flex;
+
+  min-height: 39px;
+
+  align-items: center;
+
+  margin-bottom: 4px;
+
+  padding: 3px 4px;
+
+  border:
+    1px solid transparent;
+
+  border-radius: 5px;
+
+  background:
+    transparent;
+}
+
+.layers-panel li.selected {
+  border-color:
+    #8956e8 !important;
+
+  background:
+    rgba(91, 42, 151, 0.25)
+    !important;
+}
+
+.layer-select {
+  display: flex !important;
+
+  min-width: 0 !important;
+  min-height: 30px !important;
+
+  flex:
+    1 1 auto;
+
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 3px !important;
+
+  border: 0 !important;
+
+  background:
+    transparent !important;
+
+  font-size:
+    10px !important;
+}
+
+.layer-select .layer-grip {
+  color:
+    #8491a2;
+}
+
+.layers-panel li > div {
+  display:
+    flex !important;
+
+  gap:
+    1px !important;
+
+  margin:
+    0 !important;
+}
+
+.layers-panel li > div button {
+  min-width:
+    22px !important;
+
+  min-height:
+    25px !important;
+
+  padding:
+    1px !important;
+
+  border:
+    0 !important;
+
+  background:
+    transparent !important;
+
+  color:
+    #b9a5e9 !important;
+
+  font-size:
+    11px !important;
+}
+
+
+/* ============================================================
+   06 - WIDGET SETTINGS
+
+   SECTION 06
+   ============================================================ */
+
+.inspector-panel {
+  display: flex;
+
+  min-width: 0;
+  min-height: 0;
+
+  flex-direction: column;
+
+  overflow: auto;
+}
+
+
+/* ============================================================
+   06A - INTERNAL SETTINGS TABS
+   ============================================================ */
+
+.inspector-tabs {
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  min-height: 34px;
+
+  padding: 0 8px;
+
+  border-bottom:
+    1px solid #263c53;
+}
+
+.inspector-tabs button {
+  min-height:
+    34px;
+
+  border:
+    0;
+
+  border-radius:
+    0;
+
+  background:
+    transparent;
+}
+
+.inspector-tabs button.active {
+  border-bottom:
+    2px solid #8b5cf6;
+
+  color:
+    #c4b5fd;
+}
+
+.inspector-tabs span {
+  padding:
+    2px 5px;
+
+  border-radius:
+    99px;
+
+  background:
+    #7c3aed;
+}
+
+
+/* ============================================================
+   06B - SETTINGS FIELDS
+   ============================================================ */
+
+.inspector-fields {
+  padding:
+    8px;
+
+  overflow:
+    auto;
+}
+
+.inspector-fields
+  > label:first-child {
+  display:
+    none;
+}
+
+.inspector-fields label {
+  display:
+    grid;
+
+  gap:
+    4px;
+
+  margin-bottom:
+    7px;
+
+  color:
+    #94a3b8;
+
+  font-size:
+    10px;
+}
+
+.inspector-fields input,
+.inspector-fields select,
+.inspector-fields textarea {
+  min-width:
+    0;
+
+  min-height:
+    29px;
+
+  padding:
+    5px;
+
+  border:
+    1px solid #30445b;
+
+  border-radius:
+    4px;
+
+  background:
+    #091725;
+
+  color:
+    #ffffff;
+
+  font-size:
+    10px;
+}
+
+.inspector-fields fieldset {
+  margin:
+    6px 0;
+
+  padding:
+    7px;
+
+  border:
+    1px solid #2c4158;
+
+  border-radius:
+    7px;
+}
+
+.inspector-fields
+  fieldset:nth-of-type(1) {
+  display:
+    none;
+}
+
+.theme-swatches {
+  display:
+    none;
+}
+
+.chat-move-controls {
+  display:
+    none;
+}
+
+.frame-fields {
+  display:
+    grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:
+    5px;
+
+  margin:
+    8px 0;
+}
+
+.empty-inspector {
+  padding:
+    25px 12px;
+
+  color:
+    #8794a6;
+
+  text-align:
+    center;
+}
+
+
+/* ============================================================
+   06C - SUGGESTIONS
+   ============================================================ */
+
+.suggestion-list {
+  padding:
+    8px;
+}
+
+.suggestion-list article {
+  margin-bottom:
+    7px;
+
+  padding:
+    9px;
+
+  border:
+    1px solid #344a62;
+
+  border-radius:
+    6px;
+
+  background:
+    rgba(59, 130, 246, 0.05);
+}
+
+.suggestion-list article.warning {
+  border-color:
+    #795d2c;
+}
+
+.suggestion-list b {
+  font-size:
+    11px;
+}
+
+.suggestion-list p {
+  color:
+    #97a4b6;
+
+  font-size:
+    10px;
+
+  line-height:
+    1.45;
+}
+
+
+/* ============================================================
+   07 - RECENT ACTIVITY
+
+   SECTION 07
+   ============================================================ */
+
+.recent-panel {
+  display: flex;
+
+  min-width: 0;
+  min-height: 0;
+
+  flex-direction: column;
+}
+
+.recent-panel
+  .activity-items {
+  height: auto;
+  max-height: none;
+
+  flex:
+    1 1 auto;
+
+  padding:
+    6px;
+
+  overflow:
+    auto;
+}
+
+.activity-items article {
+  position:
+    relative;
+
+  display:
+    grid;
+
+  min-height:
+    96px;
+
+  grid-template-columns:
+    28px 1fr;
+
+  gap:
+    7px;
+
+  padding:
+    11px 8px;
+
+  border-bottom:
+    1px solid #26384c;
+}
+
+.activity-items article > span {
+  display:
+    grid;
+
+  width:
+    25px;
+
+  height:
+    25px;
+
+  place-items:
+    center;
+
+  border-radius:
+    6px;
+
+  background:
+    rgba(139, 92, 246, 0.2);
+
+  color:
+    #d8b4fe;
+}
+
+.activity-items b,
+.activity-items strong,
+.activity-items small {
+  display:
+    block;
+}
+
+.activity-items b {
+  font-size:
+    10px;
+}
+
+.activity-items strong {
+  margin-top:
+    5px;
+
+  color:
+    #aab5c5;
+
+  font-size:
+    9px;
+}
+
+.activity-items small {
+  margin-top:
+    9px;
+
+  color:
+    #718096;
+
+  font-size:
+    8px;
+}
+
+.activity-items button {
+  position:
+    absolute;
+
+  right:
+    8px;
+
+  bottom:
+    9px;
+
+  min-height:
+    27px;
+
+  padding:
+    3px 8px;
+
+  font-size:
+    8px;
+}
+
+
+/* ============================================================
+   08 - OVERLAY SCENES
+
+   SECTION 08
+   ============================================================ */
+
+.scenes-panel {
+  display:
+    grid;
+
+  min-width:
+    0;
+  min-height:
+    0;
+
+  grid-template-rows:
+    39px
+    minmax(0, 1fr)
+    38px;
+}
+
+.scene-list {
+  min-height:
+    0;
+
+  padding:
+    5px 8px;
+
+  overflow:
+    auto;
+}
+
+.scene-list > button {
+  display:
+    grid;
+
+  width:
+    100%;
+
+  min-height:
+    34px;
+
+  grid-template-columns:
+    82px 1fr 20px;
+
+  align-items:
+    center;
+
+  gap:
+    6px;
+
+  margin:
+    0 0 3px;
+
+  padding:
+    2px 5px;
+
+  text-align:
+    left;
+}
+
+.scene-list > button.active {
+  border-color:
+    #a855f7;
+
+  background:
+    rgba(124, 58, 237, 0.2);
+}
+
+.scene-list .scene-thumb {
+  width:
+    78px;
+
+  height:
+    27px;
+
+  border-radius:
+    3px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #173b39,
+      #392149
+    );
+}
+
+.scene-thumb.studio,
+.scene-thumb.camera {
+  background:
+    radial-gradient(
+      circle,
+      #455677,
+      #101827
+    );
+}
+
+.scene-thumb.bright-gameplay {
+  background:
+    linear-gradient(
+      135deg,
+      #9bbda7,
+      #607b8a
+    );
+}
+
+.scene-list small {
+  display:
+    none;
+}
+
+.scene-list i {
+  color:
+    #d8b4fe;
+}
+
+.scenes-panel footer {
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(0, 1fr)
+    );
+
+  padding:
+    0;
+
+  border-top:
+    1px solid #263c53;
+}
+
+.scenes-panel footer button {
+  min-height:
+    38px;
+
+  border-radius:
+    0;
+
+  font-size:
+    9px;
+}
+
+
+/* ============================================================
+   09 - GAME PREVIEW
+
+   SECTION 09
+   ============================================================ */
+
+.game-panel {
+  display:
+    grid !important;
+
+  min-width:
+    0;
+  min-height:
+    0;
+
+  grid-template-columns:
+    1fr !important;
+
+  grid-template-rows:
+    39px
+    42px
+    minmax(0, 1fr)
+    47px
+    28px;
+}
+
+.game-picker {
+  min-height:
+    0;
+
+  padding:
+    5px 10px;
+
+  border:
+    0;
+}
+
+.game-picker label {
+  display:
+    block;
+}
+
+.game-picker label select {
+  width:
+    100%;
+
+  min-height:
+    31px;
+}
+
+.game-picker > strong,
+.game-picker > span,
+.game-picker > small {
+  display:
+    none;
+}
+
+.game-panel .preview-choices {
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap:
+    9px;
+
+  padding:
+    7px 10px;
+}
+
+.preview-choices button {
+  min-height:
+    75px;
+
+  padding:
+    4px;
+}
+
+.preview-choices button.active {
+  border-color:
+    var(
+      --overlay-primary,
+      #8b5cf6
+    );
+
+  box-shadow:
+    0 0 0 2px
+    color-mix(
+      in srgb,
+      var(
+        --overlay-primary,
+        #8b5cf6
+      )
+      35%,
+      transparent
+    );
+}
+
+.preview-choices span {
+  display:
+    block;
+
+  height:
+    52px;
+
+  border-radius:
+    3px;
+
+  background-position:
+    center;
+
+  background-size:
+    cover;
+}
+
+.preview-choices
+  button:nth-child(n + 4) {
+  display:
+    none;
+}
+
+.preview-choices small {
+  display:
+    none;
+}
+
+.game-panel .custom-background {
+  min-height:
+    42px;
+
+  margin:
+    3px 10px;
+
+  padding:
+    8px;
+
+  border:
+    1px dashed #415770;
+
+  text-align:
+    center;
+
+  color:
+    #aeb8c8;
+
+  font-size:
+    9px;
+}
+
+.custom-background input {
+  display:
+    none;
+}
+
+.game-panel > p {
+  margin:
+    0 !important;
+
+  padding:
+    6px !important;
+
+  border-top:
+    1px solid #263c53;
+
+  color:
+    #758398;
+
+  text-align:
+    center !important;
+
+  font-size:
+    10px !important;
+}
+
+
+/* ============================================================
+   10 - BROWSER SOURCE OUTPUTS
+
+   SECTION 10
+   ============================================================ */
+
+.outputs-panel {
+  display:
+    grid !important;
+
+  min-width:
+    0;
+  min-height:
+    0;
+
+  grid-template-columns:
+    1fr !important;
+
+  grid-template-rows:
+    39px
+    minmax(0, 1fr)
+    minmax(0, 1fr)
+    27px;
+
+  padding:
+    0 !important;
+}
+
+.outputs-panel article {
+  display:
+    grid;
+
+  min-height:
+    0;
+
+  grid-template-columns:
+    1fr 80px;
+
+  align-items:
+    center;
+
+  gap:
+    5px;
+
+  margin:
+    7px 9px 0;
+
+  padding:
+    9px;
+
+  border:
+    1px solid #2b435b;
+
+  border-radius:
+    6px;
+}
+
+.outputs-panel article div {
+  display:
+    grid;
+
+  gap:
+    4px;
+}
+
+.outputs-panel b,
+.outputs-panel span,
+.outputs-panel small {
+  display:
+    block;
+}
+
+.outputs-panel span,
+.outputs-panel small {
+  color:
+    #8190a4;
+
+  font-size:
+    8px;
+}
+
+.outputs-panel article small {
+  color:
+    #b28cff;
+}
+
+.outputs-panel article button {
+  min-height:
+    32px;
+
+  padding:
+    4px;
+
+  font-size:
+    8px;
+}
+
+.outputs-panel > p {
+  margin:
+    0 !important;
+
+  padding:
+    5px 9px !important;
+
+  background:
+    transparent !important;
+
+  color:
+    #758398;
+
+  font-size:
+    9px !important;
+}
+
+
+/* ============================================================
+   11 - TEST & CONTROLS
+
+   SECTION 11
+   ============================================================ */
+
+.controls-panel {
+  display:
+    grid;
+
+  min-width:
+    0;
+  min-height:
+    0;
+
+  grid-template-rows:
+    39px
+    minmax(0, 1fr)
+    42px;
+}
+
+.controls-panel .test-grid {
+  display:
+    grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:
+    6px;
+
+  padding:
+    10px;
+}
+
+.test-grid button,
+.test-grid label {
+  display:
+    flex;
+
+  min-height:
+    36px;
+
+  align-items:
+    center;
+
+  padding:
+    7px 10px;
+
+  border:
+    1px solid #253d55;
+
+  border-radius:
+    5px;
+
+  background:
+    #0c2033;
+
+  color:
+    #dce5f2;
+}
+
+.test-grid button:nth-child(3),
+.test-grid label {
+  grid-column:
+    1;
+}
+
+.test-grid button:nth-child(4) {
+  grid-column:
+    2;
+
+  grid-row:
+    1;
+}
+
+.test-grid button:nth-child(5) {
+  grid-column:
+    2;
+
+  grid-row:
+    2;
+}
+
+.test-grid button:nth-child(6) {
+  grid-column:
+    2;
+
+  grid-row:
+    3;
+}
+
+.controls-panel .control-row {
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  margin:
+    0;
+
+  padding:
+    0;
+
+  border-top:
+    1px solid #263c53;
+}
+
+.controls-panel
+  .control-row label {
+  display:
+    flex;
+
+  min-height:
+    42px;
+
+  align-items:
+    center;
+  justify-content:
+    center;
+
+  gap:
+    5px;
+
+  margin:
+    0;
+
+  border-right:
+    1px solid #263c53;
+
+  color:
+    #aab6c7;
+
+  font-size:
+    9px;
+}
+
+.controls-panel
+  input[type="checkbox"] {
+  accent-color:
+    #8b5cf6;
+}
+
+
+/* ============================================================
+   12 - SHARED BUILDER PANELS
+   ============================================================ */
+
+.builder-panel {
+  min-width:
+    0;
+
+  min-height:
+    0;
+
+  border:
+    1px solid #284056;
+
+  border-radius:
+    6px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #091b2d,
+      #071625
+    );
+
+  box-shadow:
+    none;
+
+  overflow:
+    hidden;
+}
+
+.builder-panel__heading,
+.layers-panel > header {
+  display:
+    flex;
+
+  min-height:
+    39px;
+
+  height:
+    39px;
+
+  align-items:
+    center;
+  justify-content:
+    space-between;
+
+  padding:
+    0 11px;
+
+  border-bottom:
+    1px solid #263c53;
+}
+
+.builder-panel__heading > div {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    6px;
+}
+
+.builder-panel__heading strong,
+.layers-panel .overlay-kicker {
+  color:
+    #eef2f8;
+
+  font-size:
+    12px;
+}
+
+.builder-panel__heading span {
+  color:
+    #8593a7;
+}
+
+.builder-panel__heading small {
+  display:
+    none;
+}
+
+
+/* ============================================================
+   13 - NOTICES
+   ============================================================ */
+
+.builder-notice {
+  position:
+    fixed;
+
+  z-index:
+    100;
+
+  right:
+    16px;
+
+  bottom:
+    16px;
+
+  max-width:
+    420px;
+
+  margin:
+    0;
+
+  padding:
+    11px 13px;
+
+  border:
+    1px solid #4f6280;
+
+  border-radius:
+    7px;
+
+  background:
+    #0d1d2f;
+
+  color:
+    #d4dbea;
+
+  box-shadow:
+    0 15px 40px
+    rgba(0, 0, 0, 0.65);
+}
+
+.builder-notice button {
+  margin-left:
+    8px;
+
+  padding:
+    4px 8px;
+}
+
+
+/* ============================================================
+   14 - FULL SCREEN PREVIEW
+   ============================================================ */
+
+.builder-preview {
+  position:
+    fixed;
+
+  z-index:
+    150;
+
+  inset:
+    0;
+
+  display:
+    grid;
+
+  background:
+    #030712;
+}
+
+.builder-preview
+  > .canvas-viewport {
+  width:
+    100%;
+
+  height:
+    100%;
+}
+
+.builder-preview > div {
+  position:
+    fixed;
+
+  right:
+    16px;
+
+  bottom:
+    16px;
+
+  display:
+    flex;
+
+  gap:
+    6px;
+}
+
+.builder-preview button {
+  padding:
+    9px;
+
+  border:
+    1px solid #465971;
+
+  border-radius:
+    6px;
+
+  background:
+    #0b1726;
+
+  color:
+    #ffffff;
+}
+
+.builder-preview .exit {
+  border-color:
+    #a855f7;
+
+  background:
+    #7c3aed;
+}
+
+
+/* ============================================================
+   15 - HEADER / OBS MODAL
+   ============================================================ */
+
+.builder-modal {
+  position:
+    fixed;
+
+  z-index:
+    200;
+
+  inset:
+    0;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  padding:
+    16px;
+
+  background:
+    rgba(2, 8, 18, 0.84);
+}
+
+.builder-modal > section {
+  width:
+    min(
+      560px,
+      94vw
+    );
+
+  max-height:
+    88vh;
+
+  overflow:
+    auto;
+
+  padding:
+    20px;
+
+  border:
+    1px solid #7953a8;
+
+  border-radius:
+    12px;
+
+  background:
+    #0b1727;
+
+  box-shadow:
+    0 25px 70px
+    #000000;
+}
+
+.builder-modal header {
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+}
+
+.builder-modal header span {
+  color:
+    #a78bfa;
+
+  font-size:
+    9px;
+
+  text-transform:
+    uppercase;
+}
+
+.builder-modal h2 {
+  margin:
+    5px 0;
+}
+
+.builder-modal header button {
+  border:
+    0;
+
+  background:
+    transparent;
+
+  color:
+    #ffffff;
+
+  font-size:
+    24px;
+}
+
+.builder-modal p,
+.builder-modal li {
+  color:
+    #a9b4c5;
+
+  line-height:
+    1.55;
+}
+
+.builder-modal label {
+  display:
+    flex;
+
+  align-items:
+    center;
+  justify-content:
+    space-between;
+
+  gap:
+    10px;
+
+  margin:
+    8px;
+
+  padding:
+    8px;
+
+  border-radius:
+    6px;
+
+  background:
+    rgba(255, 255, 255, 0.03);
+}
+
+.modal-primary {
+  width:
+    100%;
+
+  margin-top:
+    14px;
+
+  padding:
+    10px;
+
+  border:
+    1px solid #9f7aea;
+
+  border-radius:
+    6px;
+
+  background:
+    #7c3aed;
+
+  color:
+    #ffffff;
+}
+
+
+/* ============================================================
+   16 - CANVAS INTERACTION STATES
+
+   SECTION 04 SUPPORT
+
+   KEEP THESE.
+
+   These become important when we implement proper dragging,
+   resizing and snapping.
+   ============================================================ */
+
+.widget-frame {
+  cursor:
+    grab;
+
+  user-select:
+    none;
+
+  touch-action:
+    none;
+
+  -webkit-user-drag:
+    none;
+}
+
+.widget-frame
+  > .widget-renderer {
+  display:
+    flex;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  box-sizing:
+    border-box;
+
+  pointer-events:
+    none;
+
+  user-select:
+    none;
+
+  -webkit-user-drag:
+    none;
+}
+
+.widget-frame.selected {
+  outline:
+    2px solid
+    var(
+      --overlay-primary,
+      #a78bfa
+    );
+
+  outline-offset:
+    1px;
+}
+
+.widget-frame.dragging {
+  cursor:
+    grabbing;
+
+  outline-color:
+    #ffffff;
+
+  box-shadow:
+    0 0 0 2px
+    color-mix(in srgb, var(--overlay-primary, #a78bfa) 25%, transparent);
+}
+
+.widget-frame.locked {
+  cursor:
+    not-allowed;
+}
+
+
+/* ============================================================
+   16B - GRID / GUIDES
+   ============================================================ */
+
+.canvas-grid,
+.safe-guide,
+.snap-guide {
+  pointer-events:
+    none;
+}
+
+
+/* ============================================================
+   16D - REPLAY ANIMATION
+   ============================================================ */
+
+.widget-frame.replaying {
+  animation:
+    builder-replay
+    0.75s
+    ease
+    both;
+}
+
+@keyframes builder-replay {
+  0% {
+    opacity:
+      0.2;
+
+    transform:
+      translateY(-25px)
+      scale(0.95);
+  }
+
+  55% {
+    opacity:
+      1;
+
+    transform:
+      translateY(0)
+      scale(1.04);
+  }
+
+  100% {
+    transform:
+      scale(1);
+  }
+}
+
+
+/* ============================================================
+   17 - RESPONSIVE LAYOUT
+   ============================================================ */
+
+
+/* ============================================================
+   17A - MEDIUM DESKTOP
+   ============================================================ */
+
+@media (max-width: 1500px) {
+
+  .builder-toolbar {
+    gap:
+      4px;
+
+    padding-inline:
+      6px;
+  }
+
+  .builder-brand {
+    min-width:
+      132px;
+
+    padding-right:
+      8px;
+  }
+
+  .builder-brand img {
+    width:
+      38px;
+
+    height:
+      38px;
+  }
+
+  .builder-toolbar > input {
+    width:
+      98px;
+
+    font-size:
+      13px;
+  }
+
+  .builder-toolbar
+    > .title-chevron,
+
+  .builder-toolbar
+    > .title-edit {
+    min-width:
+      19px;
+
+    padding:
+      0;
+  }
+
+  .builder-badge {
+    padding:
+      4px 5px;
+
+    font-size:
+      8px;
+  }
+
+  .toolbar-actions {
+    gap:
+      3px;
+  }
+
+  .builder-toolbar button {
+    padding:
+      4px 6px;
+
+    font-size:
+      9px;
+  }
+
+  .builder-toolbar .publish {
+    padding-inline:
+      8px;
+  }
+
+  .obs-offline {
+    margin-left:
+      3px;
+
+    font-size:
+      9px;
+  }
+
+
+  /* Workspace */
+
+  .overlay-workspace {
+    grid-template-columns:
+      minmax(180px, 19fr)
+      minmax(540px, 52fr)
+      minmax(240px, 29fr);
+
+    grid-template-rows:
+      minmax(470px, 1fr)
+      minmax(230px, auto)
+      minmax(230px, auto);
+
+    grid-template-areas:
+      "library canvas inspector"
+      "recent recent recent"
+      "scenes game outputs"
+      "controls controls controls";
+
+    height:
+      auto;
+  }
+}
+
+
+/* ============================================================
+   17B - SMALL DESKTOP / TABLET
+   ============================================================ */
+
+@media (max-width: 1100px) {
+
+  .universal-builder,
+  .overlay-workspace {
+    min-width:
+      760px;
+  }
+
+  .overlay-workspace {
+    grid-template-columns:
+      230px
+      minmax(500px, 1fr);
+
+    grid-template-rows:
+      auto;
+
+    grid-template-areas:
+      "library canvas"
+      "inspector canvas"
+      "recent recent"
+      "scenes game"
+      "outputs controls";
+  }
+
+  .canvas-panel {
+    min-height:
+      620px;
+  }
+}
+
+
+/* ============================================================
+   17C - MOBILE / VERY NARROW
+   ============================================================ */
+
+@media (max-width: 800px) {
+
+  .universal-builder,
+  .overlay-workspace {
+    min-width:
+      0;
+  }
+
+  .builder-toolbar {
+    height:
+      auto;
+
+    min-height:
+      56px;
+
+    flex-wrap:
+      wrap;
+  }
+
+  .toolbar-actions {
+    width:
+      100%;
+
+    margin-left:
+      0;
+
+    overflow-x:
+      auto;
+  }
+
+  .overlay-workspace {
+    display:
+      flex;
+
+    height:
+      auto;
+
+    flex-direction:
+      column;
+  }
+
+  .workspace-zone,
+  .workspace-lower {
+    width:
+      100%;
+  }
+
+  .canvas-panel {
+    min-height:
+      520px;
+  }
+
+  .recent-panel {
+    min-height:
+      350px;
+  }
+
+  .overlay-inspector-panel {
+    min-height:
+      400px;
+  }
+}
+
+
+/* ============================================================
+   18 - REDUCED MOTION
+   ============================================================ */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+
+  .universal-builder * {
+    animation:
+      none !important;
+
+    transition:
+      none !important;
+
+    scroll-behavior:
+      auto !important;
+  }
+}
+
+
+/* ============================================================
+   END OF OVERLAY EDITOR CSS
+   ============================================================ */

@@ -23,6 +23,7 @@ export default {
       tabs: [
         { id: 'home', icon: '🏠', label: 'Home', route: '/dashboard' },
         { id: 'users', icon: '👥', label: 'Users', route: '/dashboard/users', requiredPermission: 'users.view' },
+        { id: 'investors', icon: '📈', label: 'Investors', route: '/dashboard/investors', requiredGroups: ['SuperAdmin', 'Admin'] },
         {
           id: 'permissions',
           icon: '🛡️',

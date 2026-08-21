@@ -1,48 +1,1091 @@
-<template><main class="universal-builder" :style="themeVars" @keydown.esc="closeTopLayer">
-  <!-- OVERLAY SECTION 01: Top Application Header -->
-  <OverlayBuilderToolbar data-overlay-section="01" data-overlay-section-name="header" :name="project.name" :theme-id="project.themeId" :themes="themes" :can-undo="history.canUndo" :can-redo="history.canRedo" @rename="renameProject" @theme="changeTheme" @import="modal='import'" @export="modal='export'" @undo="undo" @redo="redo" @save="saveDemo" @preview="previewMode=true" @publish="modal='publish'" @settings="focusSettings"/>
-  <!-- OVERLAY SECTION 02: Demo Information Bar -->
-  <div class="builder-demo-strip" data-overlay-section="02" data-overlay-section-name="demo-information-bar">ⓘ &nbsp; Demo only &nbsp;·&nbsp; Changes stay in this browser &nbsp;·&nbsp; Nothing is sent to Twitch, Discord or OBS</div>
-  <p v-if="notice" class="builder-notice" role="status">{{ notice }} <button v-if="offerWidget" @click="toggleWidget(offerWidget,true)">Enable widget</button></p>
-  <section class="overlay-workspace">
-    <!-- OVERLAY SECTION 03: Widget Library -->
-    <WidgetLibrary data-overlay-section="03" data-overlay-section-name="widget-library" :widgets="scene.widgets" :selected-id="project.selectedWidgetId" @toggle="toggleWidget" @select="selectWidget"/>
-    <!-- OVERLAY SECTION 04: Main Overlay Canvas -->
-    <section class="builder-panel canvas-panel" data-overlay-section="04" data-overlay-section-name="main-overlay-canvas"><header class="builder-panel__heading"><div><strong>{{ scene.name }}</strong><span> · {{ scene.resolution.width }} × {{ scene.resolution.height }}</span></div><label><span>▣</span><select aria-label="Aspect ratio"><option>16:9</option><option>4:3</option></select></label></header><OverlayCanvas :overlay="scene" :selected-id="project.selectedWidgetId" :zoom-mode="zoomMode" :show-guides="project.safeZone" :show-grid="project.grid" :snapping="project.snapping" :active-widget-id="activeWidgetId" :animations-paused="project.animationsPaused" @select="selectWidget" @change="changeWidget"/><footer class="canvas-footer"><button @click="zoomMode='fit'">−</button><span>{{ zoomMode==='fit'?'Fit':'100%' }}</span><button @click="zoomMode='actual'">＋</button><button @click="zoomMode='fit'">Fit to screen</button><button @click="zoomMode='actual'">Actual size</button><label><span>◉</span> Safe zone <select v-model="project.safeZone"><option :value="true">All</option><option :value="false">Off</option></select></label></footer></section>
-    <!-- OVERLAY SECTION 05: Layers -->
-    <WidgetLayersPanel data-overlay-section="05" data-overlay-section-name="layers" :widgets="scene.widgets" :selected-id="project.selectedWidgetId" @select="selectWidget" @action="layerAction"/>
-    <!-- OVERLAY SECTION 06: Widget Settings -->
-    <OverlayBuilderInspector data-overlay-section="06" data-overlay-section-name="widget-settings" :widget="selectedWidget" :suggestions="suggestions" :themes="themes" :theme-id="project.themeId" @change="changeWidget($event,true)" @move="moveSelectedChat" @suggestion="applyLocalSuggestion"/>
-    <!-- OVERLAY SECTION 07: Recent Activity -->
-    <RecentActivity data-overlay-section="07" data-overlay-section-name="recent-activity" :activities="activities" @replay="replay"/>
-    <!-- OVERLAY SECTION 08: Overlay Scenes -->
-    <OverlaySceneSelector data-overlay-section="08" data-overlay-section-name="overlay-scenes" :scenes="project.scenes" :selected-id="project.selectedSceneId" @select="selectScene" @action="sceneAction"/>
-    <!-- OVERLAY SECTION 09: Game Preview -->
-    <GamePreviewSelector data-overlay-section="09" data-overlay-section-name="game-preview" :preview="scene.preview" @change="changePreview" @upload="uploadPreview"/>
-    <!-- OVERLAY SECTION 10: Browser Source Outputs -->
-    <BrowserSourceOutputs data-overlay-section="10" data-overlay-section-name="browser-source-outputs" :resolution="scene.resolution" @copy="copyPlaceholder" @preview="previewMode=true"/>
-    <!-- OVERLAY SECTION 11: Test & Controls -->
-    <OverlayTestControls data-overlay-section="11" data-overlay-section-name="test-controls" :paused="project.animationsPaused" :grid="project.grid" :snapping="project.snapping" :safe-zone="project.safeZone" :chat-selected="selectedWidget?.type==='twitch-chat'" :chat-locked="selectedWidget?.locked" @test="replay" @demo-chat-move="demoChatMove" @pause="setProject('animationsPaused',$event)" @grid="setProject('grid',$event)" @snapping="setProject('snapping',$event)" @safe-zone="setProject('safeZone',$event)" @undo="undo" @redo="redo" @reset-scene="resetScene" @reset-all="resetAll"/>
-  </section>
-  <div v-if="previewMode" class="builder-preview" role="dialog" aria-modal="true" aria-label="Overlay preview"><OverlayCanvas :overlay="scene" preview-mode show-preview-background :active-widget-id="activeWidgetId" :animations-paused="project.animationsPaused"/><div><button v-for="event in quickTests" :key="event.id" @click="replay(event)">{{ event.label }}</button><button class="exit" @click="previewMode=false">Exit Preview</button></div></div>
-  <OverlayDemoModal v-if="modal" :mode="modal" :title="modalTitle" :findings="importFindings" @close="modal=''" @complete="completeModal"/>
-</main></template>
+<template>
+  <main
+    class="universal-builder"
+    :style="themeVars"
+    @keydown.esc="closeTopLayer"
+  >
+
+    <!-- ======================================================
+         OVERLAY SECTION 01
+         TOP APPLICATION HEADER
+         ====================================================== -->
+
+    <OverlayBuilderToolbar
+      data-overlay-section="01"
+      data-overlay-section-name="header"
+      :name="project.name"
+      :theme-id="project.themeId"
+      :themes="themes"
+      :can-undo="history.canUndo"
+      :can-redo="history.canRedo"
+      :obs-status-label="obsStatusLabel"
+      @rename="renameProject"
+      @theme="changeTheme"
+      @import="openHeaderPanel('import')"
+      @export="openHeaderPanel('export')"
+      @undo="undo"
+      @redo="redo"
+      @save="saveDemo"
+      @preview="previewMode = true"
+      @publish="openHeaderPanel('publish')"
+      @settings="openObsConnection"
+    />
+
+
+    <!-- ======================================================
+         OVERLAY SECTION 02
+         DEMO INFORMATION BAR
+         ====================================================== -->
+
+    <div
+      class="builder-demo-strip"
+      data-overlay-section="02"
+      data-overlay-section-name="demo-information-bar"
+    >
+      {{ demoInformation }}
+    </div>
+
+    <p
+      v-if="notice"
+      class="builder-notice"
+      role="status"
+    >
+      {{ notice }}
+
+      <button
+        v-if="offerWidget"
+        type="button"
+        @click="toggleWidget(offerWidget, true)"
+      >
+        Enable widget
+      </button>
+    </p>
+
+
+    <!-- ======================================================
+         OVERLAY MAIN WORKSPACE
+
+         COLUMN 01 = Widget Library
+         COLUMN 02 = Main Canvas
+         COLUMN 03 = Layers / Widget Settings
+         COLUMN 04 = Recent Activity
+         ====================================================== -->
+
+    <section class="overlay-workspace">
+
+
+      <!-- ====================================================
+           OVERLAY SECTION 03
+           WIDGET LIBRARY
+           ==================================================== -->
+
+      <div class="workspace-zone workspace-zone--library">
+        <WidgetLibrary
+          data-overlay-section="03"
+          data-overlay-section-name="widget-library"
+          :widgets="scene.widgets"
+          :selected-id="project.selectedWidgetId"
+          @toggle="toggleWidget"
+          @select="selectWidget"
+        />
+      </div>
+
+
+      <!-- ====================================================
+           OVERLAY SECTION 04
+           MAIN OVERLAY CANVAS
+           ==================================================== -->
+
+      <section
+        class="
+          builder-panel
+          canvas-panel
+          workspace-zone
+          workspace-zone--canvas
+        "
+        data-overlay-section="04"
+        data-overlay-section-name="main-overlay-canvas"
+      >
+
+        <!-- Section 04A: Canvas Header -->
+
+        <header class="builder-panel__heading">
+          <div>
+            <strong>{{ scene.name }}</strong>
+
+            <span>
+              ·
+              {{ scene.resolution.width }}
+              ×
+              {{ scene.resolution.height }}
+            </span>
+          </div>
+
+          <label>
+            <span>▣</span>
+
+            <select aria-label="Aspect ratio">
+              <option>16:9</option>
+              <option>4:3</option>
+            </select>
+          </label>
+        </header>
+
+
+<!-- ========================================================
+     SECTION 04B
+     INTERACTIVE CANVAS
+     ======================================================== -->
+
+<OverlayCanvas
+  :overlay="scene"
+  :selected-id="project.selectedWidgetId"
+  :zoom-mode="zoomMode"
+  :show-guides="project.safeZone"
+  :show-grid="project.grid"
+  :snapping="project.snapping"
+  :active-widget-id="activeWidgetId"
+  :animations-paused="project.animationsPaused"
+  @select="selectWidget"
+  @change="changeWidget"
+/>
+
+
+        <!-- Section 04C: Canvas Controls -->
+
+        <footer class="canvas-footer">
+          <div class="canvas-footer__zoom">
+            <button
+              type="button"
+              aria-label="Fit canvas"
+              @click="setZoomMode('fit')"
+            >
+              −
+            </button>
+
+            <span>
+              {{ zoomMode === 'fit' ? 'Fit' : '100%' }}
+            </span>
+
+            <button
+              type="button"
+              aria-label="Actual canvas size"
+              @click="setZoomMode('actual')"
+            >
+              ＋
+            </button>
+          </div>
+
+          <div class="canvas-footer__actions">
+            <button
+              type="button"
+              @click="setZoomMode('fit')"
+            >
+              Fit to screen
+            </button>
+
+            <button
+              type="button"
+              @click="setZoomMode('actual')"
+            >
+              Actual size
+            </button>
+          </div>
+
+          <label class="canvas-footer__safe-zone">
+            <span>◉</span>
+
+            Safe zone
+
+            <select v-model="project.safeZone">
+              <option :value="true">
+                All
+              </option>
+
+              <option :value="false">
+                Off
+              </option>
+            </select>
+          </label>
+        </footer>
+      </section>
+
+
+      <!-- ====================================================
+           SHARED INSPECTOR AREA
+
+           This is a VISUAL container only.
+
+           Section 05 and Section 06 remain independent
+           logic modules.
+           ==================================================== -->
+
+      <aside
+        class="
+          overlay-inspector-panel
+          workspace-zone
+          workspace-zone--inspector
+        "
+      >
+
+        <!-- ==================================================
+             INSPECTOR TAB HEADER
+             ================================================== -->
+
+        <div
+          class="overlay-inspector-tabs"
+          role="tablist"
+          aria-label="Overlay editor inspector"
+        >
+          <button
+            type="button"
+            role="tab"
+            :aria-selected="inspectorTab === 'layers'"
+            :class="{
+              active: inspectorTab === 'layers'
+            }"
+            @click="inspectorTab = 'layers'"
+          >
+            <span aria-hidden="true">
+              ▤
+            </span>
+
+            Layers
+          </button>
+
+          <button
+            type="button"
+            role="tab"
+            :aria-selected="inspectorTab === 'settings'"
+            :class="{
+              active: inspectorTab === 'settings'
+            }"
+            @click="inspectorTab = 'settings'"
+          >
+            <span aria-hidden="true">
+              ⚙
+            </span>
+
+            Widget Settings
+          </button>
+        </div>
+
+
+        <!-- ==================================================
+             OVERLAY SECTION 05
+             LAYERS
+             ================================================== -->
+
+        <div
+          v-show="inspectorTab === 'layers'"
+          class="overlay-inspector-content"
+          role="tabpanel"
+          aria-label="Layers"
+        >
+          <WidgetLayersPanel
+            data-overlay-section="05"
+            data-overlay-section-name="layers"
+            :widgets="scene.widgets"
+            :selected-id="project.selectedWidgetId"
+            @select="selectWidget"
+            @action="layerAction"
+          />
+        </div>
+
+
+        <!-- ==================================================
+             OVERLAY SECTION 06
+             WIDGET SETTINGS
+             ================================================== -->
+
+        <div
+          v-show="inspectorTab === 'settings'"
+          class="overlay-inspector-content"
+          role="tabpanel"
+          aria-label="Widget settings"
+        >
+          <OverlayBuilderInspector
+            data-overlay-section="06"
+            data-overlay-section-name="widget-settings"
+            :widget="selectedWidget"
+            :suggestions="suggestions"
+            :themes="themes"
+            :theme-id="project.themeId"
+            @change="changeWidget($event, true)"
+            @move="moveSelectedChat"
+            @suggestion="applyLocalSuggestion"
+          />
+        </div>
+      </aside>
+
+
+      <!-- ====================================================
+           OVERLAY SECTION 07
+           RECENT ACTIVITY
+           ==================================================== -->
+
+      <div class="workspace-zone workspace-zone--activity">
+        <RecentActivity
+          data-overlay-section="07"
+          data-overlay-section-name="recent-activity"
+          :activities="activities"
+          @replay="replay"
+        />
+      </div>
+
+
+      <!-- ====================================================
+           OVERLAY SECTION 08
+           OVERLAY SCENES
+           ==================================================== -->
+
+      <div class="workspace-lower workspace-lower--scenes">
+        <OverlaySceneSelector
+          data-overlay-section="08"
+          data-overlay-section-name="overlay-scenes"
+          :scenes="project.scenes"
+          :selected-id="project.selectedSceneId"
+          @select="selectScene"
+          @action="sceneAction"
+        />
+      </div>
+
+
+      <!-- ====================================================
+           OVERLAY SECTION 09
+           GAME PREVIEW
+           ==================================================== -->
+
+      <div class="workspace-lower workspace-lower--preview">
+        <GamePreviewSelector
+          data-overlay-section="09"
+          data-overlay-section-name="game-preview"
+          :preview="scene.preview"
+          @change="changePreview"
+          @upload="uploadPreview"
+        />
+      </div>
+
+
+      <!-- ====================================================
+           OVERLAY SECTION 10
+           BROWSER SOURCE OUTPUTS
+           ==================================================== -->
+
+      <div class="workspace-lower workspace-lower--outputs">
+        <BrowserSourceOutputs
+          data-overlay-section="10"
+          data-overlay-section-name="browser-source-outputs"
+          :resolution="scene.resolution"
+          @copy="copyPlaceholder"
+          @preview="openBrowserSourcePreview"
+        />
+      </div>
+
+
+      <!-- ====================================================
+           OVERLAY SECTION 11
+           TEST & CONTROLS
+           ==================================================== -->
+
+      <div class="workspace-lower workspace-lower--controls">
+        <OverlayTestControls
+          data-overlay-section="11"
+          data-overlay-section-name="test-controls"
+          :paused="project.animationsPaused"
+          :grid="project.grid"
+          :snapping="project.snapping"
+          :safe-zone="project.safeZone"
+          :chat-selected="
+            selectedWidget?.type === 'twitch-chat'
+          "
+          :chat-locked="selectedWidget?.locked"
+          @test="replay"
+          @demo-chat-move="demoChatMove"
+          @pause="
+            setProject(
+              'animationsPaused',
+              $event
+            )
+          "
+          @grid="
+            setProject(
+              'grid',
+              $event
+            )
+          "
+          @snapping="
+            setProject(
+              'snapping',
+              $event
+            )
+          "
+          @safe-zone="
+            setProject(
+              'safeZone',
+              $event
+            )
+          "
+          @undo="undo"
+          @redo="redo"
+          @reset-scene="resetScene"
+          @reset-all="resetAll"
+        />
+      </div>
+    </section>
+
+
+    <!-- ======================================================
+         FULL SCREEN OVERLAY PREVIEW
+         ====================================================== -->
+
+    <div
+      v-if="previewMode"
+      class="builder-preview"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Overlay preview"
+    >
+      <OverlayCanvas
+        :overlay="scene"
+        preview-mode
+        show-preview-background
+        :active-widget-id="activeWidgetId"
+        :animations-paused="project.animationsPaused"
+      />
+
+      <div class="builder-preview__controls">
+        <button
+          v-for="event in quickTests"
+          :key="event.id"
+          type="button"
+          @click="replay(event)"
+        >
+          {{ event.label }}
+        </button>
+
+        <button
+          type="button"
+          class="exit"
+          @click="previewMode = false"
+        >
+          Exit Preview
+        </button>
+      </div>
+    </div>
+
+
+    <!-- ======================================================
+         SECTION 01 SUPPORT UI
+         HEADER / OBS MODAL
+         ====================================================== -->
+
+    <div
+      v-if="activeHeaderPanel"
+      class="builder-modal"
+      role="dialog"
+      aria-modal="true"
+      :aria-label="
+        `${activeHeaderPanel} overlay panel`
+      "
+      @click.self="closeHeaderPanel"
+    >
+      <section tabindex="-1">
+        <header>
+          <div>
+            <span>
+              Frontend demonstration
+            </span>
+
+            <h2>
+              {{ headerPanelTitle }}
+            </h2>
+          </div>
+
+          <button
+            type="button"
+            aria-label="Close"
+            @click="closeHeaderPanel"
+          >
+            ×
+          </button>
+        </header>
+
+
+        <!-- Import OBS -->
+
+        <template
+          v-if="
+            activeHeaderPanel === 'import'
+          "
+        >
+          <p>
+            No OBS communication occurs.
+            This safely previews a future setup scan.
+          </p>
+
+          <button
+            v-if="importStep === 'intro'"
+            type="button"
+            class="modal-primary"
+            @click="startObsScan"
+          >
+            Scan example OBS setup
+          </button>
+
+          <p
+            v-else-if="
+              importStep === 'scanning'
+            "
+          >
+            Scanning the built-in demonstration…
+          </p>
+
+          <template
+            v-else-if="
+              importStep === 'review'
+            "
+          >
+            <label
+              v-for="
+                item in detectedObsSetup.scenes
+              "
+              :key="item.id"
+            >
+              <input
+                type="checkbox"
+                :checked="item.selected"
+                @change="
+                  toggleImportedScene(
+                    item.id
+                  )
+                "
+              >
+
+              {{ item.name }}
+            </label>
+
+            <button
+              type="button"
+              class="modal-primary"
+              @click="confirmObsImport"
+            >
+              Load selected example scenes
+            </button>
+          </template>
+
+          <p v-else>
+            Demo import complete.
+            No OBS files or settings were changed.
+          </p>
+        </template>
+
+
+        <!-- Export OBS -->
+
+        <template
+          v-else-if="
+            activeHeaderPanel === 'export'
+          "
+        >
+          <p>
+            Prepare a frontend-only summary for
+            {{ publishSummary.overlayName }}.
+            No live browser source will be created.
+          </p>
+
+          <ul>
+            <li>
+              {{ publishSummary.scenes }}
+              scenes
+            </li>
+
+            <li>
+              {{ publishSummary.widgets }}
+              widgets in the current scene
+            </li>
+
+            <li>
+              {{ publishSummary.resolution }}
+            </li>
+          </ul>
+
+          <button
+            v-if="exportStep === 'intro'"
+            type="button"
+            class="modal-primary"
+            @click="beginObsExport"
+          >
+            Review demo export
+          </button>
+
+          <button
+            v-else-if="
+              exportStep === 'review'
+            "
+            type="button"
+            class="modal-primary"
+            @click="confirmObsExport"
+          >
+            Prepare demo export
+          </button>
+
+          <p v-else>
+            Demo export prepared.
+            No OBS changes were made.
+          </p>
+        </template>
+
+
+        <!-- Publish -->
+
+        <template
+          v-else-if="
+            activeHeaderPanel === 'publish'
+          "
+        >
+          <p>
+            Publishing remains a frontend preview.
+            No overlay URL or backend record will be created.
+          </p>
+
+          <button
+            v-if="
+              publishStep === 'intro'
+            "
+            type="button"
+            class="modal-primary"
+            @click="beginPublish"
+          >
+            Review publish summary
+          </button>
+
+          <template
+            v-else-if="
+              publishStep === 'review'
+            "
+          >
+            <ul>
+              <li>
+                {{ publishSummary.scenes }}
+                overlay scenes
+              </li>
+
+              <li>
+                Current output
+                {{ publishSummary.resolution }}
+              </li>
+            </ul>
+
+            <button
+              type="button"
+              class="modal-primary"
+              @click="confirmPublish"
+            >
+              Mark ready for future publishing
+            </button>
+          </template>
+
+          <p v-else>
+            Ready for future publishing.
+            Nothing is currently published.
+          </p>
+        </template>
+
+
+        <!-- OBS Connection -->
+
+        <template v-else>
+          <p>
+            {{ obsStatusLabel }}.
+            The OBS plugin is not implemented in this demo.
+          </p>
+
+          <button
+            v-if="!obsConnection.connected"
+            type="button"
+            class="modal-primary"
+            @click="simulateObsConnection"
+          >
+            Simulate connection
+          </button>
+
+          <button
+            v-else
+            type="button"
+            class="modal-primary"
+            @click="simulateObsDisconnect"
+          >
+            Disconnect simulation
+          </button>
+        </template>
+      </section>
+    </div>
+  </main>
+</template>
+
+
 <script setup>
-import { useRoute } from 'vue-router'
-import { overlayState, rememberOverlay } from '../../overlays/overlayStore.js'
-import { createSceneSnapshot } from '../../overlays/overlaySnapshots.js'
-import{computed,onBeforeUnmount,onMounted,reactive,ref}from'vue';import OverlayBuilderToolbar from'../../components/overlays/OverlayBuilderToolbar.vue';import WidgetLibrary from'../../components/overlays/WidgetLibrary.vue';import OverlayCanvas from'../../components/overlays/OverlayCanvas.vue';import WidgetLayersPanel from'../../components/overlays/WidgetLayersPanel.vue';import OverlayBuilderInspector from'../../components/overlays/OverlayBuilderInspector.vue';import RecentActivity from'../../components/overlays/RecentActivity.vue';import OverlaySceneSelector from'../../components/overlays/OverlaySceneSelector.vue';import GamePreviewSelector from'../../components/overlays/GamePreviewSelector.vue';import BrowserSourceOutputs from'../../components/overlays/BrowserSourceOutputs.vue';import OverlayTestControls from'../../components/overlays/OverlayTestControls.vue';import OverlayDemoModal from'../../components/overlays/OverlayDemoModal.vue';import{createBuilderProject,restoreBuilderProject,demoImportFindings,DEMO_SOURCE_PLACEHOLDER}from'../../overlays/overlayBuilderDemoState.js';import{createHistory}from'../../overlays/overlayHistory.js';import{createWidget}from'../../overlays/widgetRegistry.js';import{chatShowcaseTarget,moveFrame}from'../../overlays/overlayGeometry.js';import{applySuggestion,generateSuggestions}from'../../overlays/overlayBuilderSuggestions.js';import{createReplayController,recentDemoActivities,routeDemoEvent}from'../../overlays/overlayBuilderEvents.js';import{overlayThemes,themeVariables}from'../../overlays/overlayThemes.js'
-const route=useRoute();const STORAGE='project-respawn.overlay-builder-demo.v1';const restored=typeof sessionStorage==='undefined'?createBuilderProject():restoreBuilderProject(sessionStorage.getItem(STORAGE));const project=reactive(restored);const history=reactive(createHistory(project,50));const notice=ref(''),offerWidget=ref(''),activeWidgetId=ref(''),previewMode=ref(false),modal=ref(''),zoomMode=ref('fit'),activities=ref(recentDemoActivities.map(x=>({...x})));let customUrl='',noticeTimer,chatMoveAnimation=0;const reduced=typeof matchMedia!=='undefined'&&matchMedia('(prefers-reduced-motion: reduce)').matches;const replayController=createReplayController({onClear:()=>{activeWidgetId.value=''}})
-const scene=computed(()=>project.scenes.find(s=>s.id===project.selectedSceneId)||project.scenes[0]);const selectedWidget=computed(()=>scene.value.widgets.find(w=>w.id===project.selectedWidgetId)||null);const suggestions=computed(()=>generateSuggestions(scene.value,scene.value.preview));const themes=Object.values(overlayThemes);const themeVars=computed(()=>themeVariables(project.themeId));const importFindings=demoImportFindings();const modalTitle=computed(()=>({import:'Import OBS Setup',export:'Export to OBS',publish:'Publish Overlay'}[modal.value]||''));const quickTests=[['stream.follow','alerts','Test Follow'],['achievement.unlocked','achievement','Test Achievement'],['tts.requested','tts','Test TTS']].map(([type,targetWidgetType,label])=>({id:`quick-${type}`,type,targetWidgetType,platform:'demo',actor:'Demo Creator',summary:label,createdAtLabel:'just now',label,payload:{demo:true}}))
-function commit(message='Unsaved demo changes'){history.commit(project);notice.value=message}function selectWidget(id){project.selectedWidgetId=id}function toggleWidget(type,enabled){const existing=scene.value.widgets.find(w=>w.type===type);if(enabled&&!existing){const w=createWidget(type,scene.value,{x:100+scene.value.widgets.length*24,y:80+scene.value.widgets.length*22});w.themeId=project.themeId;scene.value.widgets.push(w);selectWidget(w.id);commit(`${w.name} added to ${scene.value.name}`)}else if(!enabled&&existing&&confirm(`Remove ${existing.name} from this demo scene?`)){scene.value.widgets=scene.value.widgets.filter(w=>w.id!==existing.id);if(project.selectedWidgetId===existing.id)project.selectedWidgetId='';commit(`${existing.name} removed from this scene`)}}
-function changeWidget(next,record=true){const i=scene.value.widgets.findIndex(w=>w.id===next.id);if(i<0)return;scene.value.widgets[i]=next;if(record)commit(`${next.name} updated`)}function normalize(){[...scene.value.widgets].sort((a,b)=>a.zIndex-b.zIndex).forEach((w,i)=>w.zIndex=i+1)}function layerAction(action,id){const w=scene.value.widgets.find(x=>x.id===id);if(!w)return;const max=Math.max(1,...scene.value.widgets.map(x=>x.zIndex));if(action==='visibility')w.enabled=!w.enabled;if(action==='lock')w.locked=!w.locked;if(action==='forward')w.zIndex=Math.min(max,w.zIndex+1);if(action==='backward')w.zIndex=Math.max(1,w.zIndex-1);if(action==='front')w.zIndex=max+1;if(action==='back')w.zIndex=0;normalize();selectWidget(id);commit('Layer updated')}
-function moveSelectedChat(action){const w=selectedWidget.value;if(w?.type!=='twitch-chat'||w.locked)return;let frame=w.frame;if(action==='left-edge'||action==='right-edge'){const edge=action==='left-edge'?70:Math.max(0,scene.value.resolution.width-w.frame.width-70);frame={...w.frame,x:edge}}else{const delta={x:action==='left'?-40:action==='right'?40:0,y:action==='up'?-40:action==='down'?40:0};frame=moveFrame(w.frame,delta,scene.value.resolution,[],false).frame}changeWidget({...w,frame},true)}
-function demoChatMove(){const w=selectedWidget.value;if(w?.type!=='twitch-chat'||w.locked)return;cancelAnimationFrame(chatMoveAnimation);const start={...w.frame},target=chatShowcaseTarget(start,scene.value.resolution);if(reduced){changeWidget({...w,frame:target},true);return}const started=performance.now(),duration=520;function step(now){const current=scene.value.widgets.find(item=>item.id===w.id);if(!current)return;const t=Math.min(1,(now-started)/duration),eased=1-Math.pow(1-t,3),frame={...start,x:Math.round(start.x+(target.x-start.x)*eased),y:Math.round(start.y+(target.y-start.y)*eased)};changeWidget({...current,frame},t===1);if(t<1)chatMoveAnimation=requestAnimationFrame(step);else notice.value='Demo Chat Move applied · Browser only · Undo is available'}chatMoveAnimation=requestAnimationFrame(step)}
-function selectScene(id){project.selectedSceneId=id;project.selectedWidgetId='';notice.value=''}function changePreview(next){scene.value.preview=next;commit('Game preview changed · Overlay output remains transparent')}function setProject(key,value){project[key]=value;commit(`${key} updated`)}function changeTheme(id){project.themeId=id;for(const s of project.scenes)for(const w of s.widgets)w.themeId=id;commit(`${overlayThemes[id].name} theme applied`)}function renameProject(name){if(String(name).trim()){project.name=String(name).trim();commit('Project name updated')}}function applyLocalSuggestion(item){const i=project.scenes.findIndex(s=>s.id===scene.value.id);project.scenes[i]=applySuggestion(scene.value,item);selectWidget(item.widgetId||'');commit(`${item.actionLabel} applied · Undo is available`)}
-function replay(event){const result=routeDemoEvent(scene.value,event);notice.value=result.message;offerWidget.value=result.ok?'':event.targetWidgetType;if(!result.ok)return;selectWidget(result.widgetId);activeWidgetId.value=result.widgetId;if(!project.animationsPaused)replayController.trigger(result.widgetId,reduced);activities.value=[{...event,id:`${event.id}-${activities.value.length}`,createdAtLabel:'just now'},...activities.value.filter(x=>x.id!==event.id)].slice(0,10)}
-function undo(){cancelAnimationFrame(chatMoveAnimation);Object.assign(project,history.undo());notice.value='Undo applied'}function redo(){cancelAnimationFrame(chatMoveAnimation);Object.assign(project,history.redo());notice.value='Redo applied'}function saveDemo(){sessionStorage.setItem(STORAGE,JSON.stringify(project));history.replace(project);notice.value='Saved in this browser · Nothing was published'}function copyPlaceholder(){navigator.clipboard?.writeText(DEMO_SOURCE_PLACEHOLDER).catch(()=>{});notice.value='Copied demo placeholder · No live source exists yet'}function resetScene(){if(!confirm(`Reset ${scene.value.name} to the deterministic demo layout?`))return;const original=createBuilderProject().scenes.find(s=>s.id===scene.value.id);if(original){project.scenes.splice(project.scenes.findIndex(s=>s.id===scene.value.id),1,original);project.selectedWidgetId='';commit('Scene reset · Undo is available')}}function resetAll(){if(!confirm('Reset the complete Universal Overlay Builder demo?'))return;Object.assign(project,createBuilderProject());history.commit(project);sessionStorage.removeItem(STORAGE);notice.value='Complete demo reset'}
-function sceneAction(action){if(action==='add'){const base=createSceneSnapshot(scene.value);base.id=`scene-custom-${project.scenes.length+1}`;base.name=`Custom Scene ${project.scenes.length-4}`;base.required=false;base.isDefault=false;base.widgets=[];project.scenes.push(base);selectScene(base.id);commit('New demo scene added')}if(action==='duplicate'){const copy=createSceneSnapshot(scene.value);copy.id=`${scene.value.id}-copy-${project.scenes.length}`;copy.name=`${scene.value.name} Copy`;copy.required=false;copy.isDefault=false;copy.widgets=copy.widgets.map((w,i)=>({...w,id:`${w.id}-copy-${i}`}));project.scenes.push(copy);selectScene(copy.id);commit('Scene duplicated')}if(action==='rename'){const name=prompt('Rename demo scene',scene.value.name);if(name?.trim()){scene.value.name=name.trim();commit('Scene renamed')}}if(action==='default'){project.scenes.forEach(s=>s.isDefault=s.id===scene.value.id);commit('Default scene updated')}if(action==='delete'){if(scene.value.required){notice.value='Starter scenes are protected. Duplicate one to create a removable scene.'}else if(confirm(`Delete ${scene.value.name}? Undo remains available.`)){const i=project.scenes.findIndex(s=>s.id===scene.value.id);project.scenes.splice(i,1);selectScene(project.scenes[Math.max(0,i-1)].id);commit('Custom scene deleted')}}}
-function uploadPreview(e){const file=e.target.files?.[0];if(!file)return;if(file.size>5_000_000){notice.value='Choose an image smaller than 5 MB.';return}if(customUrl)URL.revokeObjectURL(customUrl);customUrl=URL.createObjectURL(file);scene.value.preview={...scene.value.preview,backgroundType:'custom',customImageUrl:customUrl,brightness:'mixed',motion:'low'};commit('Session-only preview loaded · Not included in output')}function completeModal(message){if(modal.value==='import')project.obsMappings=importFindings.sceneNames.map(name=>({obsScene:name,respawnScene:name}));if(modal.value==='publish')project.publishReady=true;modal.value='';notice.value=message;commit(message)}function focusSettings(){project.selectedWidgetId=scene.value.widgets[0]?.id||'';notice.value=project.selectedWidgetId?'Widget settings ready':'Add a widget to configure settings'}function closeTopLayer(){if(modal.value)modal.value='';else if(previewMode.value)previewMode.value=false;else project.selectedWidgetId=''}
-function keyboard(e){if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)||document.activeElement?.isContentEditable)return;if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?redo():undo()}if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='y'){e.preventDefault();redo()}if((e.key==='Delete'||e.key==='Backspace')&&selectedWidget.value){e.preventDefault();toggleWidget(selectedWidget.value.type,false)}}onMounted(()=>{window.addEventListener('keydown',keyboard);rememberOverlay(String(route.params.overlayId||''));if(overlayState.recoveredStorage){notice.value='Older demo storage was refreshed with starter layouts.';overlayState.recoveredStorage=false;noticeTimer=setTimeout(()=>{if(notice.value.includes('storage'))notice.value=''},4200)}});onBeforeUnmount(()=>{window.removeEventListener('keydown',keyboard);cancelAnimationFrame(chatMoveAnimation);clearTimeout(noticeTimer);replayController.clear();if(customUrl)URL.revokeObjectURL(customUrl)})
+// ============================================================
+// PROJECT RESPAWN
+// OVERLAY EDITOR
+//
+// SECTION MAP
+//
+// 01 Header
+// 02 Demo Information Bar
+// 03 Widget Library
+// 04 Main Overlay Canvas
+// 05 Layers
+// 06 Widget Settings
+// 07 Recent Activity
+// 08 Overlay Scenes
+// 09 Game Preview
+// 10 Browser Source Outputs
+// 11 Test & Controls
+//
+// IMPORTANT:
+// Section logic remains inside /logic/.
+// This file controls page layout and wiring only.
+// ============================================================
+
+
+// ============================================================
+// VUE
+// ============================================================
+
+import {
+  ref,
+} from 'vue'
+
+import {
+  useRoute,
+} from 'vue-router'
+
+
+// ============================================================
+// VISUAL COMPONENTS
+// ============================================================
+
+import OverlayBuilderToolbar
+  from '../../components/overlays/OverlayBuilderToolbar.vue'
+
+import WidgetLibrary
+  from '../../components/overlays/WidgetLibrary.vue'
+
+import OverlayCanvas
+  from '../../components/overlays/OverlayCanvas.vue'
+
+import WidgetLayersPanel
+  from '../../components/overlays/WidgetLayersPanel.vue'
+
+import OverlayBuilderInspector
+  from '../../components/overlays/OverlayBuilderInspector.vue'
+
+import RecentActivity
+  from '../../components/overlays/RecentActivity.vue'
+
+import OverlaySceneSelector
+  from '../../components/overlays/OverlaySceneSelector.vue'
+
+import GamePreviewSelector
+  from '../../components/overlays/GamePreviewSelector.vue'
+
+import BrowserSourceOutputs
+  from '../../components/overlays/BrowserSourceOutputs.vue'
+
+import OverlayTestControls
+  from '../../components/overlays/OverlayTestControls.vue'
+
+
+// ============================================================
+// SECTION LOGIC
+// ============================================================
+
+import {
+  useOverlayEditorCore,
+  useOverlayHeader,
+  useDemoInformationBar,
+  useWidgetLibrary,
+  useMainCanvas,
+  useLayers,
+  useWidgetSettings,
+  useRecentActivity,
+  useOverlayScenes,
+  useGamePreview,
+  useBrowserSources,
+  useTestControls,
+} from './logic/index.js'
+
+
+// ============================================================
+// PAGE LAYOUT STATE
+//
+// This state belongs to the editor shell because it controls
+// which visual inspector tab is visible.
+//
+// Section 05 and Section 06 logic remains separate.
+// ============================================================
+
+const inspectorTab =
+  ref('layers')
+
+
+// ============================================================
+// CORE EDITOR STATE
+// ============================================================
+
+const route =
+  useRoute()
+
+const core =
+  useOverlayEditorCore(route)
+
+const {
+  project,
+  history,
+  notice,
+  offerWidget,
+  activeWidgetId,
+  previewMode,
+  scene,
+  selectedWidget,
+  commit,
+  selectWidget,
+  changeWidget,
+  saveDemo,
+} = core
+
+
+// ============================================================
+// SECTION 02
+// DEMO INFORMATION BAR
+// ============================================================
+
+const {
+  demoInformation,
+} =
+  useDemoInformationBar()
+
+
+// ============================================================
+// SECTION 03
+// WIDGET LIBRARY
+// ============================================================
+
+const {
+  toggleWidget,
+} =
+  useWidgetLibrary({
+    project,
+    scene,
+    commit,
+    selectWidget,
+  })
+
+
+// ============================================================
+// SECTION 04
+// MAIN OVERLAY CANVAS
+// ============================================================
+
+const {
+  zoomMode,
+  setZoomMode,
+} =
+  useMainCanvas({
+    selectWidget,
+    changeWidget,
+  })
+
+
+// ============================================================
+// SECTION 05
+// LAYERS
+// ============================================================
+
+const {
+  layerAction,
+} =
+  useLayers({
+    scene,
+    commit,
+    selectWidget,
+  })
+
+
+// ============================================================
+// SECTION 06
+// WIDGET SETTINGS
+// ============================================================
+
+const settings =
+  useWidgetSettings({
+    project,
+    scene,
+    selectedWidget,
+    commit,
+    selectWidget,
+    changeWidget,
+  })
+
+const {
+  suggestions,
+  moveSelectedChat,
+  applyLocalSuggestion,
+} = settings
+
+
+// ============================================================
+// SECTION 07
+// RECENT ACTIVITY
+// ============================================================
+
+const {
+  activities,
+  replay,
+} =
+  useRecentActivity({
+    ...core,
+    project,
+    scene,
+    notice,
+    offerWidget,
+    activeWidgetId,
+    selectWidget,
+  })
+
+
+// ============================================================
+// SECTION 08
+// OVERLAY SCENES
+// ============================================================
+
+const {
+  selectScene,
+  sceneAction,
+} =
+  useOverlayScenes({
+    project,
+    scene,
+    notice,
+    commit,
+  })
+
+
+// ============================================================
+// SECTION 09
+// GAME PREVIEW
+// ============================================================
+
+const {
+  changePreview,
+  uploadPreview,
+} =
+  useGamePreview({
+    scene,
+    notice,
+    commit,
+    registerCleanup:
+      core.registerCleanup,
+  })
+
+
+// ============================================================
+// SECTION 10
+// BROWSER SOURCE OUTPUTS
+// ============================================================
+
+const {
+  copyPlaceholder,
+  openBrowserSourcePreview,
+} =
+  useBrowserSources({
+    notice,
+    previewMode,
+  })
+
+
+// ============================================================
+// SECTION 01
+// HEADER
+// ============================================================
+
+const header =
+  useOverlayHeader({
+    project,
+    scene,
+    commit,
+    notice,
+    saveDemo,
+    focusSettings:
+      settings.focusSettings,
+  })
+
+const {
+  activeHeaderPanel,
+  headerPanelTitle,
+  importStep,
+  exportStep,
+  publishStep,
+  obsConnection,
+  obsStatusLabel,
+  detectedObsSetup,
+  publishSummary,
+  themes,
+  themeVars,
+  renameProject,
+  changeTheme,
+  openHeaderPanel,
+  closeHeaderPanel,
+  startObsScan,
+  toggleImportedScene,
+  confirmObsImport,
+  beginObsExport,
+  confirmObsExport,
+  beginPublish,
+  confirmPublish,
+  openObsConnection,
+  simulateObsConnection,
+  simulateObsDisconnect,
+} = header
+
+
+// ============================================================
+// SECTION 11
+// TEST & CONTROLS
+// ============================================================
+
+const controls =
+  useTestControls({
+    ...core,
+    project,
+    history,
+    scene,
+    selectedWidget,
+    notice,
+    previewMode,
+    changeWidget,
+    toggleWidget,
+    replay,
+    commit,
+    closeHeaderPanel,
+    activeHeaderPanel,
+  })
+
+const {
+  quickTests,
+  setProject,
+  demoChatMove,
+  undo,
+  redo,
+  resetScene,
+  resetAll,
+  closeTopLayer,
+} = controls
 </script>
-<style src="./overlayBuilder.css"></style><style src="../../widgets/widgets.css"></style>
+
+
+<style src="./OverlayEditor.css"></style>
+
+<style src="../../widgets/widgets.css"></style>

@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto'
 import { getDataClient } from '../shared/dataClient'
 import { getRequestBody } from '../shared/http'
 import { jsonResponse } from '../shared/responses'
-import { createRuntimeLease, verifyRuntimeLease, verifyRuntimeRequest } from './runtimeAuth'
+import { createRuntimeLease, runtimeLeaseMetadata, verifyRuntimeLease, verifyRuntimeRequest } from './runtimeAuth'
 import { decryptTokenBundle } from './tokenStore'
 
 const seenNonces = new Map<string, number>()
@@ -24,11 +24,12 @@ export async function handleTwitchRuntime(path: string, method: string, event: a
   if (path === '/twitch/runtime/lease' && method === 'POST') {
     authenticateRuntime(event, path, method, body); const record = await integration(client, String(body.integrationId || ''))
     if (!record.twitchBroadcasterId || record.connectionStatus === 'DISCONNECTED') return jsonResponse(409, { error: 'Integration is not runtime-ready' })
-    return jsonResponse(200, { lease: createRuntimeLease({ integrationId: record.id, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, operations: ['manifest', 'snapshot', 'token', 'heartbeat'] }, runtimeSecret()), requestId: randomUUID() })
+    const lease = createRuntimeLease({ integrationId: record.id, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, operations: ['manifest', 'snapshot', 'token', 'heartbeat'] }, runtimeSecret())
+    return jsonResponse(200, { lease, ...runtimeLeaseMetadata(lease), integrationId: record.id, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, requestId: randomUUID() })
   }
   const operation = path.split('/').pop() || ''; const claims = verifyRuntimeLease(bearer(event), runtimeSecret(), operation); const record = await integration(client, claims.integrationId)
   if (record.brandId !== claims.brandId || record.twitchBroadcasterId !== claims.broadcasterId) throw new Error('Runtime lease integration binding mismatch')
-  if (operation === 'manifest' && method === 'GET') return jsonResponse(200, { integrationId: record.id, configurationVersion: record.configurationVersion, connectionStatus: record.connectionStatus })
+  if (operation === 'manifest' && method === 'GET') return jsonResponse(200, { integrationId: record.id, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, configurationVersion: record.configurationVersion, connectionStatus: record.connectionStatus, capabilities: record.capabilities || {}, grantedScopes: record.grantedScopes || [] })
   if (operation === 'snapshot' && method === 'GET') {
     const commands = await client.models.TwitchCommand.list({ filter: { streamerId: { eq: record.twitchBroadcasterId } }, limit: 1000 })
     return jsonResponse(200, { integrationId: record.id, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, configurationVersion: record.configurationVersion, commands: commands.data || [] })
@@ -49,7 +50,7 @@ export async function handleTwitchRuntime(path: string, method: string, event: a
       await putTokenBundle(client, record.id, token)
       await client.models.TwitchIntegration.update({ id: record.id, tokenExpiresAt: token.expiresAt, tokenUpdatedAt: new Date().toISOString(), grantedScopes: token.scopes, lastValidatedAt: new Date().toISOString(), lastErrorCode: null })
     }
-    return jsonResponse(200, { integrationId: record.id, accessToken: token.accessToken, tokenExpiresAt: token.expiresAt, grantedScopes: token.scopes })
+    return jsonResponse(200, { integrationId: record.id, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, accessToken: token.accessToken, tokenExpiresAt: token.expiresAt, grantedScopes: token.scopes })
   }
   if (operation === 'heartbeat' && method === 'POST') {
     const now = new Date().toISOString(); const input = { integrationId: record.id, botAuthenticated: true, botConnected: Boolean(body.botConnected), eventSubConnected: Boolean(body.eventSubConnected), chatReadAvailable: Boolean(body.chatReadAvailable), chatWriteAvailable: Boolean(body.chatWriteAvailable), lastEventReceivedAt: body.lastEventReceivedAt || null, lastBotHeartbeatAt: now, lastConfigurationSyncAt: body.lastConfigurationSyncAt || null, appliedConfigurationVersion: Number(body.appliedConfigurationVersion || 0), warnings: Array.isArray(body.warnings) ? body.warnings.map(String) : [], errors: Array.isArray(body.errors) ? body.errors.map(String) : [] }

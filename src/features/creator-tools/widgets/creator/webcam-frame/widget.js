@@ -1,0 +1,2 @@
+import { defineUniversalDemoWidget } from '../../utility/universal-demo/definition.js'
+export default defineUniversalDemoWidget({type:'webcam-frame',displayName:'Webcam Frame',description:'Preview creator camera framing.',categories:['creator'],icon:'▣',defaultSize:{width:520,height:320},defaultSettings:{kicker:'Creator camera',title:'LIVE',subtitle:'Webcam frame preview',background:'#101827',color:'#fff',opacity:.72,cornerRadius:12},legacyCategory:'Creator',settings:[{key:'title',label:'Frame label',type:'text'}]})

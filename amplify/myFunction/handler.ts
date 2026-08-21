@@ -20,10 +20,9 @@ export const handler: Handler = async (event) => {
     const response = await routeRest(path, method, getRequestBody(event), event)
     return response ?? jsonResponse(404, { error: 'Route not found', path, method })
   } catch (error: unknown) {
-    logger.error('API request failed', error)
     const message = error instanceof Error ? error.message : 'Unknown error'
-    return isAppSyncResolverEvent(event)
-      ? { success: false, message }
-      : jsonResponse(500, { error: 'Request failed', message })
+    logger.error('API request failed', { message })
+    if (isAppSyncResolverEvent(event)) throw new Error(message)
+    return jsonResponse(500, { error: 'Request failed', message })
   }
 }

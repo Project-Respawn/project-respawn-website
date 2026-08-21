@@ -1,0 +1,1341 @@
+/* ============================================================
+   PROJECT RESPAWN — TRAINER HUB
+   DASHBOARD
+   ============================================================ */
+
+
+/* ============================================================
+   PAGE
+   ============================================================ */
+
+.trainer-dashboard-page {
+  flex: 1;
+  min-width: 0;
+
+  padding: 24px 28px 34px;
+
+  background:
+    radial-gradient(
+      circle at 72% 0%,
+      rgba(88, 45, 186, 0.11),
+      transparent 30%
+    ),
+    #06101c;
+
+  color: #f4f6fb;
+}
+
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.trainer-dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 24px;
+
+  margin-bottom: 18px;
+}
+
+.trainer-dashboard-header h1 {
+  margin: 0;
+
+  font-size: 30px;
+  font-weight: 800;
+
+  letter-spacing: -0.025em;
+}
+
+.trainer-dashboard-header p {
+  margin: 6px 0 0;
+
+  color: #a6adba;
+
+  font-size: 14px;
+}
+
+.trainer-period-button {
+  min-height: 42px;
+
+  padding: 0 15px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  border:
+    1px solid
+    rgba(141, 83, 255, 0.34);
+
+  border-radius: 8px;
+
+  background:
+    rgba(9, 15, 26, 0.85);
+
+  color: #f0f2f7;
+
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+.trainer-period-button span {
+  color: #a6adba;
+}
+
+
+/* ============================================================
+   COLOUR SYSTEM
+   ============================================================ */
+
+.trainer-tone-purple {
+  --trainer-accent: #a65cff;
+  --trainer-accent-rgb: 166, 92, 255;
+}
+
+.trainer-tone-green {
+  --trainer-accent: #53db69;
+  --trainer-accent-rgb: 83, 219, 105;
+}
+
+.trainer-tone-orange {
+  --trainer-accent: #ff9300;
+  --trainer-accent-rgb: 255, 147, 0;
+}
+
+.trainer-tone-blue {
+  --trainer-accent: #2f91ff;
+  --trainer-accent-rgb: 47, 145, 255;
+}
+
+.trainer-tone-teal {
+  --trainer-accent: #1fc8c0;
+  --trainer-accent-rgb: 31, 200, 192;
+}
+
+
+/* ============================================================
+   KPI STRIP
+   ============================================================ */
+
+.trainer-stat-strip {
+  min-height: 120px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  border-radius: 11px;
+
+  background:
+    rgba(10, 18, 31, 0.92);
+
+  overflow: hidden;
+
+  margin-bottom: 14px;
+}
+
+.trainer-stat-item {
+  min-width: 0;
+
+  padding: 20px 26px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 18px;
+
+  position: relative;
+}
+
+.trainer-stat-item:not(:last-child)::after {
+  content: "";
+
+  position: absolute;
+
+  top: 20px;
+  bottom: 20px;
+  right: 0;
+
+  width: 1px;
+
+  background:
+    rgba(255, 255, 255, 0.07);
+}
+
+.trainer-stat-icon {
+  width: 62px;
+  height: 62px;
+
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background:
+    rgba(var(--trainer-accent-rgb), 0.12);
+
+  border:
+    1px solid
+    rgba(var(--trainer-accent-rgb), 0.16);
+
+  color: var(--trainer-accent);
+
+  font-size: 25px;
+}
+
+.trainer-stat-copy {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.trainer-stat-copy > strong {
+  font-size: 30px;
+  line-height: 1;
+}
+
+.trainer-stat-copy > span {
+  margin-top: 5px;
+
+  font-size: 13px;
+}
+
+.trainer-stat-copy small {
+  margin-top: 6px;
+
+  color: #67e477;
+
+  font-size: 10px;
+}
+
+.trainer-completion-ring {
+  width: 66px;
+  height: 66px;
+
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background:
+    conic-gradient(
+      #53db69 0 84%,
+      #263041 84% 100%
+    );
+
+  position: relative;
+}
+
+.trainer-completion-ring::after {
+  content: "";
+
+  position: absolute;
+
+  width: 52px;
+  height: 52px;
+
+  border-radius: 50%;
+
+  background:
+    #0b1422;
+}
+
+.trainer-completion-ring span {
+  position: relative;
+  z-index: 1;
+
+  font-size: 20px;
+  font-weight: 800;
+}
+
+
+/* ============================================================
+   MAIN DASHBOARD GRIDS
+   ============================================================ */
+
+.trainer-dashboard-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.45fr)
+    minmax(360px, 0.8fr);
+
+  gap: 14px;
+}
+
+.trainer-dashboard-grid-top {
+  margin-bottom: 14px;
+}
+
+.trainer-dashboard-grid-bottom {
+  margin-bottom: 14px;
+}
+
+
+/* ============================================================
+   PANELS
+   ============================================================ */
+
+.trainer-dashboard-panel {
+  min-width: 0;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.08);
+
+  border-radius: 11px;
+
+  background:
+    rgba(9, 18, 31, 0.92);
+
+  overflow: hidden;
+}
+
+.trainer-panel-header {
+  min-height: 62px;
+
+  padding: 0 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  border-bottom:
+    1px solid
+    rgba(255, 255, 255, 0.06);
+}
+
+.trainer-panel-heading {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+}
+
+.trainer-panel-heading h2 {
+  margin: 0;
+
+  font-size: 18px;
+}
+
+.trainer-panel-icon {
+  color: #a65cff;
+
+  font-size: 20px;
+}
+
+.trainer-warning-icon {
+  color: #ff9a00;
+}
+
+.trainer-panel-link {
+  color: #b577ff;
+
+  font-size: 11px;
+
+  text-decoration: none;
+}
+
+.trainer-panel-link-button {
+  padding: 0;
+
+  border: 0;
+
+  background: none;
+
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   CLIENT ENGAGEMENT TABLE
+   ============================================================ */
+
+.trainer-engagement-table {
+  padding: 0 18px 10px;
+}
+
+.trainer-engagement-head,
+.trainer-engagement-row {
+  display: grid;
+
+  grid-template-columns:
+    1.45fr
+    1fr
+    0.82fr
+    0.72fr
+    0.9fr
+    0.75fr;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+.trainer-engagement-head {
+  min-height: 45px;
+
+  color: #8e96a5;
+
+  font-size: 10px;
+
+  text-transform: uppercase;
+}
+
+.trainer-engagement-row {
+  min-height: 58px;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.05);
+}
+
+.trainer-client-cell {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+}
+
+.trainer-client-avatar {
+  width: 38px;
+  height: 38px;
+
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #8d55e9,
+      #2f6bbd
+    );
+
+  color: #fff;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.trainer-client-cell strong {
+  font-size: 13px;
+}
+
+.trainer-engagement-blocks {
+  display: flex;
+
+  gap: 4px;
+}
+
+.trainer-engagement-blocks span {
+  width: 14px;
+  height: 14px;
+
+  border-radius: 2px;
+
+  background:
+    #202b3c;
+}
+
+.trainer-engagement-blocks span.active {
+  background:
+    #53db69;
+}
+
+.trainer-engagement-blocks span.warning {
+  background:
+    #ffa31a;
+}
+
+.trainer-completion-value {
+  color: #65e476;
+
+  font-size: 17px;
+}
+
+.trainer-completion-warning {
+  color: #ffa31a;
+}
+
+.trainer-streak-value {
+  font-size: 12px;
+}
+
+.trainer-engagement-status {
+  width: fit-content;
+
+  padding: 6px 9px;
+
+  border-radius: 6px;
+
+  font-size: 9px;
+}
+
+.trainer-status-high,
+.trainer-status-engaged {
+  border:
+    1px solid
+    rgba(69, 206, 90, 0.46);
+
+  background:
+    rgba(69, 206, 90, 0.06);
+
+  color: #6fe57c;
+}
+
+.trainer-status-attention {
+  border:
+    1px solid
+    rgba(255, 78, 61, 0.5);
+
+  background:
+    rgba(255, 78, 61, 0.05);
+
+  color: #ff5a4f;
+}
+
+.trainer-row-action {
+  color: #bd7cff;
+
+  font-size: 10px;
+
+  text-decoration: none;
+}
+
+
+/* ============================================================
+   NEEDS ATTENTION
+   ============================================================ */
+
+.trainer-attention-list {
+  padding: 0 18px;
+}
+
+.trainer-attention-row {
+  min-height: 79px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.05);
+}
+
+.trainer-attention-row:first-child {
+  border-top: 0;
+}
+
+.trainer-attention-person {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+}
+
+.trainer-attention-person > div:last-child {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.trainer-attention-person strong {
+  font-size: 13px;
+}
+
+.trainer-attention-person span {
+  font-size: 10px;
+}
+
+.trainer-attention-danger {
+  color: #ff564c;
+}
+
+.trainer-attention-warning {
+  color: #ffae22;
+}
+
+.trainer-attention-action {
+  min-width: 124px;
+  min-height: 38px;
+
+  padding: 0 12px;
+
+  border:
+    1px solid
+    rgba(145, 83, 255, 0.4);
+
+  border-radius: 7px;
+
+  background:
+    rgba(94, 46, 182, 0.06);
+
+  color: #c084ff;
+
+  font-size: 10px;
+
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   RECENT ACTIVITY
+   ============================================================ */
+
+.trainer-activity-list {
+  padding: 0 18px;
+}
+
+.trainer-activity-row {
+  min-height: 53px;
+
+  display: grid;
+
+  grid-template-columns:
+    36px
+    1fr
+    auto;
+
+  align-items: center;
+
+  gap: 10px;
+
+  border-top:
+    1px dashed
+    rgba(255, 255, 255, 0.07);
+}
+
+.trainer-activity-row:first-child {
+  border-top: 0;
+}
+
+.trainer-activity-icon {
+  width: 30px;
+  height: 30px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    rgba(var(--trainer-accent-rgb), 0.12);
+
+  color: var(--trainer-accent);
+
+  font-size: 14px;
+}
+
+.trainer-activity-row > span {
+  font-size: 11px;
+}
+
+.trainer-activity-row small {
+  color: #8b93a1;
+
+  font-size: 10px;
+}
+
+
+/* ============================================================
+   QUICK ACTIONS
+   ============================================================ */
+
+.trainer-quick-actions {
+  padding: 10px 14px 14px;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  gap: 7px;
+}
+
+.trainer-quick-action {
+  min-height: 61px;
+
+  padding: 9px 11px;
+
+  display: grid;
+
+  grid-template-columns:
+    38px
+    1fr
+    auto;
+
+  align-items: center;
+
+  gap: 10px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+
+  border-radius: 8px;
+
+  background:
+    rgba(255, 255, 255, 0.015);
+
+  color: #f3f5f8;
+
+  text-decoration: none;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.trainer-quick-action:hover {
+  background:
+    rgba(255, 255, 255, 0.035);
+
+  border-color:
+    rgba(149, 88, 255, 0.22);
+}
+
+.trainer-quick-action-icon {
+  width: 36px;
+  height: 36px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    rgba(var(--trainer-accent-rgb), 0.12);
+
+  color: var(--trainer-accent);
+
+  font-size: 16px;
+}
+
+.trainer-quick-action > div:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.trainer-quick-action strong {
+  font-size: 11px;
+}
+
+.trainer-quick-action span {
+  color: #9199a7;
+
+  font-size: 9px;
+}
+
+.trainer-quick-action-arrow {
+  color: #d2d6de !important;
+
+  font-size: 18px !important;
+}
+
+
+/* ============================================================
+   AI COMPANION BANNER
+   ============================================================ */
+
+.trainer-companion-banner {
+  min-height: 185px;
+
+  padding: 18px 20px;
+
+  display: grid;
+
+  grid-template-columns:
+    170px
+    minmax(300px, 1.15fr)
+    minmax(270px, 0.75fr)
+    minmax(300px, 0.85fr);
+
+  align-items: center;
+
+  gap: 22px;
+
+  position: relative;
+
+  border:
+    1px solid
+    rgba(174, 84, 255, 0.65);
+
+  border-radius: 12px;
+
+  background:
+    radial-gradient(
+      circle at 13% 50%,
+      rgba(132, 62, 225, 0.2),
+      transparent 17%
+    ),
+    radial-gradient(
+      circle at 70% 10%,
+      rgba(95, 52, 207, 0.1),
+      transparent 25%
+    ),
+    linear-gradient(
+      90deg,
+      #17112a,
+      #0a1120 55%,
+      #101127
+    );
+
+  overflow: hidden;
+}
+
+.trainer-companion-banner::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background-image:
+    radial-gradient(
+      circle,
+      rgba(172, 106, 255, 0.18) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    35px 35px;
+
+  opacity: 0.2;
+
+  pointer-events: none;
+}
+
+
+/* ============================================================
+   PET ILLUSTRATION
+   ============================================================ */
+
+.trainer-companion-pet {
+  width: 145px;
+  height: 150px;
+
+  margin: 0 auto;
+
+  position: relative;
+  z-index: 1;
+}
+
+.trainer-companion-pet-head {
+  width: 100px;
+  height: 85px;
+
+  position: absolute;
+
+  left: 23px;
+  top: 22px;
+
+  border-radius:
+    48% 48% 44% 44%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #6e45a9,
+      #30224c
+    );
+
+  border:
+    2px solid
+    rgba(189, 121, 255, 0.7);
+
+  box-shadow:
+    0 0 28px
+    rgba(153, 81, 235, 0.25);
+}
+
+.trainer-companion-pet-ears span {
+  width: 42px;
+  height: 53px;
+
+  position: absolute;
+
+  top: 3px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #744caf,
+      #33224d
+    );
+
+  border:
+    2px solid
+    rgba(189, 121, 255, 0.65);
+
+  transform:
+    rotate(45deg);
+
+  border-radius:
+    8px 24px 8px 24px;
+}
+
+.trainer-companion-pet-ears span:first-child {
+  left: 13px;
+}
+
+.trainer-companion-pet-ears span:last-child {
+  right: 13px;
+
+  transform:
+    rotate(135deg);
+}
+
+.trainer-companion-eye {
+  width: 21px;
+  height: 27px;
+
+  position: absolute;
+
+  top: 27px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 40% 35%,
+      white 0 10%,
+      #a86cff 12% 40%,
+      #35204f 42% 100%
+    );
+
+  box-shadow:
+    0 0 12px
+    rgba(167, 102, 255, 0.45);
+}
+
+.trainer-eye-left {
+  left: 22px;
+}
+
+.trainer-eye-right {
+  right: 22px;
+}
+
+.trainer-companion-mouth {
+  position: absolute;
+
+  left: 50%;
+  bottom: 13px;
+
+  transform:
+    translateX(-50%);
+
+  color: #d6c5ea;
+
+  font-size: 18px;
+}
+
+.trainer-companion-pet-body {
+  width: 78px;
+  height: 62px;
+
+  position: absolute;
+
+  left: 34px;
+  bottom: 0;
+
+  display: grid;
+  place-items: center;
+
+  border-radius:
+    48% 48% 34% 34%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #614096,
+      #271b3d
+    );
+
+  border:
+    2px solid
+    rgba(180, 107, 248, 0.55);
+}
+
+.trainer-companion-pet-body span {
+  width: 29px;
+  height: 29px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    #8a53df;
+
+  font-size: 15px;
+}
+
+
+/* ============================================================
+   COMPANION COPY
+   ============================================================ */
+
+.trainer-companion-copy {
+  position: relative;
+  z-index: 1;
+}
+
+.trainer-companion-copy h2 {
+  margin: 0 0 8px;
+
+  color: #c27cff;
+
+  font-size: 18px;
+}
+
+.trainer-companion-copy > p {
+  margin: 0;
+
+  color: #c2c7d1;
+
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.trainer-companion-copy ul {
+  margin: 10px 0 0;
+  padding: 0;
+
+  list-style: none;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.trainer-companion-copy li {
+  color: #b6bdc9;
+
+  font-size: 9px;
+}
+
+
+/* ============================================================
+   COMPANION MESSAGE PREVIEW
+   ============================================================ */
+
+.trainer-companion-message-card {
+  position: relative;
+  z-index: 1;
+
+  border:
+    1px solid
+    rgba(180, 94, 255, 0.65);
+
+  border-radius: 14px;
+
+  background:
+    rgba(28, 18, 47, 0.92);
+
+  overflow: hidden;
+
+  box-shadow:
+    0 0 28px
+    rgba(137, 70, 221, 0.11);
+}
+
+.trainer-companion-message-card header {
+  min-height: 38px;
+
+  padding: 0 11px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background:
+    rgba(149, 73, 231, 0.14);
+
+  color: #d5b9f6;
+
+  font-size: 8px;
+}
+
+.trainer-companion-chat {
+  padding: 11px;
+
+  display: flex;
+  align-items: flex-start;
+
+  gap: 8px;
+}
+
+.trainer-companion-chat-avatar {
+  width: 27px;
+  height: 27px;
+
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background:
+    #6842a6;
+
+  font-size: 12px;
+}
+
+.trainer-companion-chat p {
+  margin: 0;
+
+  padding: 9px 10px;
+
+  border-radius:
+    5px 10px 10px 10px;
+
+  background:
+    rgba(255, 255, 255, 0.055);
+
+  color: #d3d6dd;
+
+  font-size: 8px;
+  line-height: 1.45;
+}
+
+.trainer-companion-encouragement {
+  margin: 0 11px 11px 48px;
+
+  padding: 8px 10px;
+
+  border-radius: 7px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #6d32c4,
+      #7f3cd4
+    );
+
+  color: #fff;
+
+  font-size: 8px;
+}
+
+
+/* ============================================================
+   COMPANION BENEFITS
+   ============================================================ */
+
+.trainer-companion-benefits {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.trainer-companion-benefits article {
+  display: grid;
+
+  grid-template-columns:
+    42px
+    1fr;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+.trainer-companion-benefit-icon {
+  width: 40px;
+  height: 40px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    rgba(160, 81, 239, 0.16);
+
+  color: #d098ff;
+
+  font-size: 17px;
+}
+
+.trainer-companion-benefits strong {
+  color: #bd77ff;
+
+  font-size: 11px;
+}
+
+.trainer-companion-benefits p {
+  margin: 3px 0 0;
+
+  color: #989fac;
+
+  font-size: 8px;
+  line-height: 1.45;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1400px) {
+  .trainer-companion-banner {
+    grid-template-columns:
+      140px
+      1fr
+      300px;
+
+    row-gap: 18px;
+  }
+
+  .trainer-companion-benefits {
+    grid-column: 1 / -1;
+
+    display: grid;
+    grid-template-columns:
+      repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1180px) {
+  .trainer-stat-strip {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+  .trainer-stat-item:nth-child(2)::after {
+    display: none;
+  }
+
+  .trainer-stat-item:nth-child(-n + 2) {
+    border-bottom:
+      1px solid
+      rgba(255, 255, 255, 0.06);
+  }
+
+  .trainer-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .trainer-companion-banner {
+    grid-template-columns:
+      140px
+      1fr;
+  }
+
+  .trainer-companion-message-card {
+    grid-column:
+      1 / -1;
+  }
+}
+
+@media (max-width: 900px) {
+  .trainer-dashboard-page {
+    padding: 18px;
+  }
+
+  .trainer-dashboard-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .trainer-engagement-table {
+    overflow-x: auto;
+  }
+
+  .trainer-engagement-head,
+  .trainer-engagement-row {
+    min-width: 780px;
+  }
+
+  .trainer-companion-banner {
+    grid-template-columns: 1fr;
+
+    text-align: left;
+  }
+
+  .trainer-companion-pet {
+    margin-left: 0;
+  }
+
+  .trainer-companion-benefits {
+    grid-column: auto;
+
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .trainer-stat-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .trainer-stat-item {
+    border-bottom:
+      1px solid
+      rgba(255, 255, 255, 0.06);
+  }
+
+  .trainer-stat-item::after {
+    display: none;
+  }
+
+  .trainer-quick-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .trainer-attention-row {
+    align-items: flex-start;
+    flex-direction: column;
+
+    padding: 12px 0;
+  }
+
+  .trainer-attention-action {
+    width: 100%;
+  }
+
+  .trainer-activity-row {
+    grid-template-columns:
+      36px
+      1fr;
+  }
+
+  .trainer-activity-row small {
+    grid-column: 2;
+  }
+}
