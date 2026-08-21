@@ -14,6 +14,8 @@
 // 1. Creator Tools
 // 2. Partner Hub
 // 3. Trainer Hub
+// 4. Therapist
+// 5. Esports
 //
 // ============================================================
 
@@ -26,6 +28,7 @@ import creatorToolsRoutes from '../features/creator-tools/creator-tools.routes.j
 import partnerHubRoutes from '../features/partner-hub/partner-hub.routes.js';
 import trainerHubRoutes from '../features/trainer-hub/trainer-hub.routes.js';
 import therapistRoutes from '../features/therapist/therapist.routes.js';
+import esportsRoutes from '../features/esports/esports.routes.js';
 
 
 // ============================================================
@@ -54,11 +57,19 @@ const featureRoutes = [
 
     ...trainerHubRoutes,
 
+
     // --------------------------------------------------------
     // 4. THERAPIST
     // --------------------------------------------------------
 
     ...therapistRoutes,
+
+
+    // --------------------------------------------------------
+    // 5. ESPORTS
+    // --------------------------------------------------------
+
+    ...esportsRoutes,
 
 ];
 
