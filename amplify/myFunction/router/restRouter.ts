@@ -1,9 +1,11 @@
 import { handlePrintfulCreateOrder, handlePrintfulOrderLookup, handlePrintfulProductLookup, handlePrintfulProducts } from '../printful'
 import { handleRevolutCheckout, handleRevolutOrderLookup } from '../revolut'
+import { handleRevolutWebhook } from '../revolut/webhook'
 import { handleTwitchCommandsLookup, handleTwitchCommandsMe, handleTwitchOAuthCallback, handleTwitchRuntime } from '../twitch'
 import { handleExistingRevolutOrderImport, handleFulfillmentRequest, handleRecoveryFulfillment } from '../fulfillment'
 
 export async function routeRest(path: string, method: string, body: unknown, event: unknown) {
+  if (path === '/webhooks/revolut' && method === 'POST') return handleRevolutWebhook(event)
   if (path === '/revolut/checkout' && method === 'POST') return handleRevolutCheckout(body)
   if (path.startsWith('/revolut/orders/') && method === 'GET') return handleRevolutOrderLookup(path)
   if (path.startsWith('/printful/products/') && method === 'GET') return handlePrintfulProductLookup(path)

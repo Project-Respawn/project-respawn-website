@@ -6,7 +6,7 @@ import { handleCreateManagedMerchProduct, handleDeleteManagedMerchProductImage, 
 import { handleCreateManagedTwitchCommand, handleDeleteManagedTwitchCommand, handleDisconnectTwitchIntegration, handleGetMyTwitchIntegration, handleListManagedTwitchCommands, handleStartTwitchIntegrationOAuth, handleUpdateManagedTwitchCommand } from '../twitch'
 import { handleCreateOrUpdateManagedDiscordConfiguration, handleGetManagedDiscordConfiguration } from '../discord'
 import { handleCreateManagedMediaCollection, handleCreateManagedMediaItem, handleDeleteManagedMediaItem, handleListManagedMediaLibrary, handleListPublicMerchProductImages, handleUpdateManagedMediaItem } from '../media'
-import { handleImportManagedRevolutOrder, handleListManagedOrders, handleListManagedProfiles, handleManageSimpleResource, handleRecoverManagedOrder } from '../stage9/handlers'
+import { handleImportManagedRevolutOrder, handleListManagedOrders, handleListManagedProfiles, handleManageSimpleResource, handleReconcileManagedOrder, handleRecoverManagedOrder } from '../stage9/handlers'
 import { handleCleanupApplicationStorageTestRun, handleCleanupPublicApplicationTestRun, handleGetAdminApplication, handleListAdminApplications, handleStoreTrustedApplicationSubmission, handleSubmitPublicApplication } from '../applications'
 import { handleAddWorkspaceMember, handleCreateCreatorWorkspace, handleGetCreatorWorkspace, handleGetMyWorkspacePermissions, handleListMyCreatorWorkspaces, handleListWorkspaceMembers, handleRevokeWorkspaceMember, handleSetWorkspaceMemberPermissions } from '../workspaces'
 import { handleGetInvestorDocumentUrl, handleGetMyInvestorAccess } from '../investors'
@@ -56,6 +56,7 @@ export async function routeAppSync(event: AppSyncEvent) {
     case 'listManagedOrders': return handleListManagedOrders(event)
     case 'listManagedProfiles': return handleListManagedProfiles(event)
     case 'recoverManagedOrder': return handleRecoverManagedOrder(event)
+    case 'reconcileManagedOrder': return handleReconcileManagedOrder(event)
     case 'importManagedRevolutOrder': return handleImportManagedRevolutOrder(event)
     case 'manageMerchCategory':
     case 'manageEventTag':

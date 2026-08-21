@@ -25,9 +25,48 @@ export async function handleRecoverManagedOrder(event: any, injected?: any) {
   const id = String(event.arguments?.orderId || ''); const order = ok(await client.models.FulfillmentOrder.get({ id }), 'Order lookup'); if (!order) throw new Error('Order not found')
   const { fetchRevolutMerchantOrder } = await import('../revolut'); const payment = await fetchRevolutMerchantOrder(order.revolutOrderId); const state = String((payment.body as any)?.state || '').toLowerCase()
   if (!['paid', 'completed', 'captured'].includes(state)) throw new Error('Revolut payment is not paid')
-  const { dispatchFulfillment } = await import('../fulfillment'); const providers = await dispatchFulfillment(order)
+  const recoveryEntry = { timestamp: new Date().toISOString(), action: 'Admin recovery started', result: 'verified', provider: null }
+  await client.models.FulfillmentOrder.update({ id, auditHistory: [...(order.auditHistory || []), recoveryEntry], updatedAt: recoveryEntry.timestamp })
+  const { dispatchFulfillment } = await import('../fulfillment'); const providers = await dispatchFulfillment({ ...order, auditHistory: [...(order.auditHistory || []), recoveryEntry] })
   await writePermissionAudit(client, actor.actorUserId, 'order.fulfillment.recover', 'FulfillmentOrder', id, { overallFulfillmentStatus: order.overallFulfillmentStatus }, { providerStatuses: providers })
   return mutationResult(id)
+}
+export async function handleReconcileManagedOrder(event: any, injected?: any, fetchPaymentInjected?: any) {
+  const client = injected || await loadDataClient()
+  const actor = await requireEffectivePermission(event, client, 'orders.fulfillment.manage')
+  const id = String(event.arguments?.orderId || '')
+  const order = ok(await client.models.FulfillmentOrder.get({ id }), 'Order lookup')
+  if (!order) throw new Error('Order not found')
+
+  const fetchPayment = fetchPaymentInjected || (await import('../revolut')).fetchRevolutMerchantOrder
+  const payment = await fetchPayment(order.revolutOrderId)
+  if (payment.statusCode < 200 || payment.statusCode >= 300) throw new Error('Revolut order lookup failed')
+  const body = payment.body as any
+  const state = String(body?.state || '').trim().toLowerCase()
+  if (!state) throw new Error('Revolut payment state is missing')
+
+  const expectedCurrency = String(order.currency || '').toUpperCase()
+  const actualCurrency = String(body?.currency || '').toUpperCase()
+  if (expectedCurrency && actualCurrency && expectedCurrency !== actualCurrency) throw new Error('Revolut payment currency does not match the stored order')
+  if (typeof order.paymentAmount === 'number' && typeof body?.amount === 'number' && Math.round(order.paymentAmount * 100) !== body.amount) {
+    throw new Error('Revolut payment amount does not match the stored order')
+  }
+
+  const paid = ['paid', 'completed', 'captured'].includes(state)
+  const changed = String(order.paymentStatus || '').toLowerCase() !== state || (paid && !order.paymentDate) || Boolean(order.reconciliationError)
+  if (changed) {
+    const now = new Date().toISOString()
+    await client.models.FulfillmentOrder.update({
+      id,
+      paymentStatus: state,
+      paymentDate: paid ? order.paymentDate || now : order.paymentDate || null,
+      reconciliationError: null,
+      auditHistory: [...(order.auditHistory || []), { timestamp: now, action: 'Payment reconciled', result: state, provider: 'revolut' }],
+      updatedAt: now,
+    })
+  }
+  await writePermissionAudit(client, actor.actorUserId, 'order.payment.reconcile', 'FulfillmentOrder', id, { paymentStatus: order.paymentStatus }, { paymentStatus: state, changed })
+  return mutationResult(id, changed ? `Payment updated to ${state}` : `Payment already ${state}`)
 }
 export async function handleImportManagedRevolutOrder(event: any, injected?: any) {
   const client = injected || await loadDataClient(); const actor = await requireEffectivePermission(event, client, 'orders.fulfillment.manage')

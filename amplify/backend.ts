@@ -211,6 +211,12 @@ httpApi.addRoutes({
   integration: httpLambdaIntegration,
 });
 
+httpApi.addRoutes({
+  path: '/webhooks/revolut',
+  methods: [HttpMethod.POST],
+  integration: httpLambdaIntegration,
+});
+
 // =============================================================================
 // Twitch Bot routes
 // =============================================================================

@@ -61,21 +61,24 @@ function isProductionOrder(order: any) {
 
 export function buildFulfillmentOrder(body: any, paymentState: unknown, now = new Date().toISOString()) {
   const revolutOrderId = String(body?.revolutOrderId || '')
+  const normalizedPaymentState = String(paymentState).toLowerCase()
+  const paid = isPaid(normalizedPaymentState)
   return {
     projectOrderId: String(body?.projectOrderId || revolutOrderId),
     revolutOrderId,
-    paymentStatus: String(paymentState).toLowerCase(),
-    paymentDate: now,
+    paymentStatus: normalizedPaymentState,
+    paymentDate: paid ? now : null,
     paymentAmount: typeof body?.paymentAmount === 'number' ? body.paymentAmount : null,
     currency: typeof body?.currency === 'string' ? body.currency : null,
     environment: transactionEnvironment(),
     overallFulfillmentStatus: 'pending',
     customerName: String(body?.customerName || ''),
     email: String(body?.email || ''),
+    phone: String(body?.phone || ''),
     shippingAddress: body?.shippingAddress || {},
     items: body?.items || [],
     providerStatuses: {},
-    auditHistory: [audit('Order created', 'success'), audit('Payment successful', 'verified')],
+    auditHistory: [audit('Order created', 'success'), audit(paid ? 'Payment successful' : 'Payment pending', paid ? 'verified' : 'pending')],
     createdAt: now,
     updatedAt: now,
   }

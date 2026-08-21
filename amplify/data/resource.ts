@@ -521,6 +521,8 @@ const schema = a
       .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
     recoverManagedOrder: a.mutation().arguments({ orderId: a.id().required() }).returns(a.ref('Stage9MutationResult').required())
       .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    reconcileManagedOrder: a.mutation().arguments({ orderId: a.id().required() }).returns(a.ref('Stage9MutationResult').required())
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
     importManagedRevolutOrder: a.mutation().arguments({ revolutOrderId: a.string().required() }).returns(a.ref('Stage9MutationResult').required())
       .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
     manageMerchCategory: a.mutation().arguments({ action: a.string().required(), resourceId: a.id(), input: a.string() }).returns(a.ref('Stage9MutationResult').required())
@@ -1502,9 +1504,11 @@ const schema = a
         overallFulfillmentStatus: a.string().required(),
         customerName: a.string().required(),
         email: a.string().required(),
+        phone: a.string(),
         shippingAddress: a.json().required(),
         items: a.json().required(),
         providerStatuses: a.json().required(),
+        reconciliationError: a.string(),
         auditHistory: a.json().required(),
         createdAt: a.datetime(),
         updatedAt: a.datetime(),
