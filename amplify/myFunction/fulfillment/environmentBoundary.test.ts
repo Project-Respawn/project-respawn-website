@@ -9,7 +9,7 @@ function testOrder(environment = 'sandbox') {
     id: 'internal-order-id',
     revolutOrderId: 'revolut-order-id',
     environment,
-    items: [{ productId: 'product', quantity: 1, fulfillmentProvider: 'printful', fulfillmentVariantId: 'variant' }],
+    items: [{ productId: 'product', variantId: 'internal-amplify-variant', quantity: 1, fulfillmentProvider: 'printful', fulfillmentVariantId: 'printful-sync-variant' }],
     providerStatuses: {},
     auditHistory: [],
     shippingAddress: {},
@@ -30,6 +30,18 @@ function fakeClient(updates: any[]) {
 }
 
 test('sandbox checkout data builds a normal persistent internal order record', () => {
+  const item = {
+    productId: 'product-1',
+    variantId: 'internal-amplify-variant',
+    externalVariantId: 'printful-sync-variant',
+    fulfillmentProvider: 'printful',
+    fulfillmentVariantId: 'printful-sync-variant',
+    productName: 'Project Respawn Shirt',
+    color: 'Black',
+    size: 'XL',
+    quantity: 1,
+    unitPrice: 24.99,
+  }
   const stored = buildFulfillmentOrder({
     revolutOrderId: 'sandbox-revolut-id',
     projectOrderId: 'project-id',
@@ -38,14 +50,20 @@ test('sandbox checkout data builds a normal persistent internal order record', (
     customerName: 'Test Customer',
     email: 'test@example.invalid',
     shippingAddress: { city: 'Test City' },
-    items: testOrder().items,
+    items: [item],
   }, 'paid', '2026-08-10T12:00:00.000Z')
 
   assert.equal(stored.environment, 'sandbox')
   assert.equal(stored.paymentStatus, 'paid')
   assert.equal(stored.overallFulfillmentStatus, 'pending')
   assert.equal(stored.items.length, 1)
+  assert.deepEqual(stored.items[0], item)
   assert.equal(stored.shippingAddress.city, 'Test City')
+})
+
+test('live aliases are accepted only when the app environment is also production', () => {
+  assert.equal(isPrintfulFulfillmentEnabled('production', 'live'), true)
+  assert.equal(isPrintfulFulfillmentEnabled('sandbox', 'live'), false)
 })
 
 for (const environment of [
@@ -77,21 +95,59 @@ for (const environment of [
 
 test('explicit production keeps the existing Printful fulfillment path reachable', async () => {
   let createCalls = 0
+  let printfulPayload: any
   const updates: any[] = []
   const enabled = () => isPrintfulFulfillmentEnabled('prod', 'prod')
 
   const statuses = await dispatchFulfillment(testOrder('production'), {
     getClient: fakeClient(updates),
     fulfillmentEnabled: enabled,
-    createPrintful: async () => {
+    createPrintful: async (payload) => {
       createCalls += 1
+      printfulPayload = payload
       return { statusCode: 200, body: { result: { id: 'printful-order-id' } } } as any
     },
   })
 
   assert.equal(enabled(), true)
   assert.equal(createCalls, 1)
+  assert.deepEqual(printfulPayload.items, [{ sync_variant_id: 'printful-sync-variant', quantity: 1 }])
+  assert.notEqual(printfulPayload.items[0].sync_variant_id, testOrder('production').items[0].variantId)
   assert.equal(statuses.printful.status, 'fulfilled')
+})
+
+test('missing Printful variant ID is persisted as a visible failure', async () => {
+  const updates: any[] = []
+  const order: any = testOrder('production')
+  order.items[0].fulfillmentVariantId = undefined
+  const statuses = await dispatchFulfillment(order, {
+    getClient: fakeClient(updates), fulfillmentEnabled: () => true,
+    createPrintful: async () => { throw new Error('must not be called') },
+  })
+  assert.equal(statuses.printful.status, 'failed')
+  assert.match(statuses.printful.lastError || '', /Missing Printful fulfillment variant ID/)
+  assert.equal(updates[0].overallFulfillmentStatus, 'failed')
+})
+
+test('duplicate fulfilled provider dispatch does not create a second Printful order', async () => {
+  let calls = 0
+  const order = { ...testOrder('production'), providerStatuses: { printful: { status: 'fulfilled', providerOrderId: 'existing' } } }
+  await dispatchFulfillment(order, {
+    getClient: fakeClient([]), fulfillmentEnabled: () => true,
+    createPrintful: async () => { calls += 1; return { statusCode: 200, body: {} } as any },
+  })
+  assert.equal(calls, 0)
+})
+
+test('Printful API failure leaves the order recoverable with its error', async () => {
+  const updates: any[] = []
+  const statuses = await dispatchFulfillment(testOrder('production'), {
+    getClient: fakeClient(updates), fulfillmentEnabled: () => true,
+    createPrintful: async () => ({ statusCode: 503, body: { error: 'unavailable' } }) as any,
+  })
+  assert.equal(statuses.printful.status, 'failed')
+  assert.equal(updates[0].overallFulfillmentStatus, 'failed')
+  assert.match(statuses.printful.lastError || '', /Printful order creation failed/)
 })
 
 test('a stored sandbox order cannot later pass the production Printful guard', async () => {

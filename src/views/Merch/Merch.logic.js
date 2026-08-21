@@ -2,6 +2,7 @@ import { nextTick } from 'vue';
 import { generateClient } from 'aws-amplify/data';
 import { getUrl } from 'aws-amplify/storage';
 import outputs from '../../../amplify_outputs.json';
+import { buildMerchCartItem, isSameCartVariant } from '../../commerce/cartItem.js';
 
 let client = null;
 
@@ -783,40 +784,20 @@ export default {
         inferPriceNumber(this.selectedVariantPrice, this.selectedProduct.displayPrice) ??
         0;
 
-      const cartItem = {
-        id: this.selectedProduct.id,
-        productId: this.selectedProduct.id,
-        name: this.selectedProduct.title,
-        title: this.selectedProduct.title,
-        image: this.selectedVariantImage || this.selectedProduct.image || this.fallbackImage,
-        price: Number(numericPrice),
-        productUrl: this.selectedProduct.productUrl || '',
+      const cartItem = buildMerchCartItem({
+        product: this.selectedProduct,
+        variant: this.selectedVariant,
         quantity: safeQuantity,
-        variantId: this.selectedVariant?.id || '',
-        fulfillmentProvider:
-          String(this.selectedProduct.sourceType || '').trim().toLowerCase() === 'printful'
-            ? 'printful'
-            : 'manual',
-        fulfillmentVariantId:
-          String(this.selectedProduct.sourceType || '').trim().toLowerCase() === 'printful'
-            ? this.selectedVariant?.id || ''
-            : '',
-        variant: this.selectedVariant?.name || this.selectedSize || '',
-        variantName: this.selectedVariant?.name || '',
-        color: this.selectedVariant?.color || this.selectedColor || '',
-        size: this.selectedVariant?.size || this.selectedSize || '',
-        availabilityStatus: this.selectedVariant?.availabilityStatus || '',
-      };
+        price: numericPrice,
+        image: this.selectedVariantImage,
+        selectedColor: this.selectedColor,
+        selectedSize: this.selectedSize,
+        fallbackImage: this.fallbackImage,
+      });
 
       const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
 
-      const existingIndex = existingCart.findIndex((item) => {
-        return (
-          String(item.productId || item.id) === String(cartItem.productId) &&
-          String(item.variantId || '') === String(cartItem.variantId || '') &&
-          String(item.color || '') === String(cartItem.color || '')
-        );
-      });
+      const existingIndex = existingCart.findIndex((item) => isSameCartVariant(item, cartItem));
 
       if (existingIndex >= 0) {
         existingCart[existingIndex].quantity =
