@@ -187,7 +187,12 @@
   >
     <div class="summary-item-main">
       <div class="summary-item-info">
-        <span>{{ item.name }} × {{ item.quantity }}</span>
+        <div class="summary-item-details">
+          <span>{{ item.name }}</span>
+          <small v-if="item.color">Colour: {{ item.color }}</small>
+          <small v-if="item.size">Size: {{ item.size }}</small>
+          <small>Quantity: {{ item.quantity }}</small>
+        </div>
         <button
           type="button"
           class="remove-item-btn summary-remove-btn"

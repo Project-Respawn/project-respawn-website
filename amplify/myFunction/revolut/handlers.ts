@@ -172,6 +172,13 @@ export async function handleRevolutCheckout(body: any) {
       })
     }
 
+    if (!order.id) {
+      return jsonResponse(502, { error: 'Revolut order created but order ID missing', mode: getRevolutMode() })
+    }
+
+    const { persistPendingFulfillmentOrder } = await import('../fulfillment')
+    await persistPendingFulfillmentOrder(body, String(order.id))
+
     return jsonResponse(200, order)
   } catch (error: any) {
     logger.error('Revolut checkout error:', error)

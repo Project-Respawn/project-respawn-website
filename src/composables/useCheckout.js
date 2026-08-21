@@ -1,6 +1,7 @@
 import { computed, nextTick, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import RevolutCheckout from '@revolut/checkout'
 import { getApiBaseUrl, joinApiUrl } from '../config/apiBaseUrl'
+import { isSameCartVariant, normaliseCartItem } from '../commerce/cartItem.js'
 
 function getErrorMessage(error, fallback) {
   if (error instanceof Error && error.message) {
@@ -42,28 +43,6 @@ function resolveRevolutPublicKey() {
   }
 
   return publicKey
-}
-
-function normaliseCartItem(item, index) {
-  const title =
-    item?.name ??
-    item?.title ??
-    item?.productTitle ??
-    item?.product_name
-
-  return {
-    id: item?.id ?? item?.productId ?? `item-${index}`,
-    name: title || 'Product',
-    variant: item?.variant ?? item?.variantName ?? item?.size ?? '',
-    color: item?.color ?? '',
-    price: Number(item?.price ?? item?.unitPrice ?? 0),
-    quantity: Number(item?.quantity ?? item?.qty ?? 1),
-    image: item?.image ?? item?.thumbnailUrl ?? '',
-    variantId: item?.variantId ?? '',
-    fulfillmentProvider: item?.fulfillmentProvider ?? '',
-    fulfillmentVariantId: item?.fulfillmentVariantId ?? '',
-    productId: item?.productId ?? item?.id ?? `item-${index}`,
-  }
 }
 
 const ALLOWED_COUNTRIES = new Set([
@@ -146,11 +125,7 @@ export function useCheckout() {
 
   function removeCartItem(itemToRemove) {
     const updated = cartItems.value.filter((item) => {
-      return !(
-        String(item.productId || item.id) === String(itemToRemove.productId || itemToRemove.id) &&
-        String(item.variantId || '') === String(itemToRemove.variantId || '') &&
-        String(item.color || '') === String(itemToRemove.color || '')
-      )
+      return !isSameCartVariant(item, itemToRemove)
     })
 
     persistCart(updated)
@@ -230,11 +205,25 @@ export function useCheckout() {
       throw new Error('Missing API base URL for checkout')
     }
 
+    const projectOrderId = `PR-${Date.now()}`
+    const orderItems = cartItems.value.map((item) => ({
+      productId: item.productId,
+      variantId: item.variantId,
+      externalVariantId: item.externalVariantId,
+      fulfillmentProvider: item.fulfillmentProvider || 'manual',
+      fulfillmentVariantId: item.fulfillmentVariantId || null,
+      productName: item.name,
+      color: item.color || null,
+      size: item.size || null,
+      quantity: item.quantity,
+      unitPrice: item.price,
+    }))
+
     const payload = {
       amount: Number(total.value.toFixed(2)),
       currency: 'GBP',
       description: 'Project Respawn Merch Order',
-      orderId: `PR-${Date.now()}`,
+      orderId: projectOrderId,
       email: customer.email,
       customerName: customer.fullName,
       phone: customer.phone,
@@ -242,12 +231,8 @@ export function useCheckout() {
       city: customer.city,
       postcode: customer.postcode,
       country: customer.country,
-      items: cartItems.value.map((item) => ({
-        id: item.id,
-        name: item.name,
-        quantity: item.quantity,
-        unitAmount: item.price,
-      })),
+      shippingAddress: { address: customer.address, city: customer.city, postcode: customer.postcode, country: customer.country },
+      items: orderItems,
     }
 
     const response = await fetch(joinApiUrl(apiBase, '/revolut/checkout'), {
@@ -297,12 +282,14 @@ export function useCheckout() {
 
     return {
       token,
-      id: id || `PR-${Date.now()}`,
+      id,
+      projectOrderId,
       mode: backendMode,
     }
   }
 
-  async function dispatchFulfillment(revolutOrderId) {
+  async function dispatchFulfillment(order) {
+    const revolutOrderId = order.id
     if (!apiBase) {
       throw new Error('Missing API base URL for fulfillment')
     }
@@ -314,15 +301,21 @@ export function useCheckout() {
     fulfillmentAttempts.add(revolutOrderId)
 
     const payload = {
-      projectOrderId: revolutOrderId,
+      projectOrderId: order.projectOrderId,
       revolutOrderId,
       paymentAmount: Number(total.value.toFixed(2)),
       currency: 'GBP',
       items: cartItems.value.map((item) => ({
         productId: item.productId,
+        variantId: item.variantId,
+        externalVariantId: item.externalVariantId,
         quantity: item.quantity,
         fulfillmentProvider: item.fulfillmentProvider || 'manual',
         fulfillmentVariantId: item.fulfillmentVariantId || null,
+        productName: item.name,
+        color: item.color || null,
+        size: item.size || null,
+        unitPrice: item.price,
       })),
       customerName: customer.fullName,
       email: customer.email,
@@ -341,11 +334,10 @@ export function useCheckout() {
 
     console.log('Fulfillment response status:', response.status)
 
-    if (!response.ok) {
-      throw new Error('Fulfillment dispatch failed')
-    }
-
     const result = await response.json().catch(() => null)
+    if (!response.ok) {
+      throw new Error(result?.error || 'Fulfillment dispatch failed')
+    }
     return Boolean(result?.success)
   }
 
@@ -359,7 +351,7 @@ export function useCheckout() {
     orderComplete.value = true
 
     try {
-      const created = await dispatchFulfillment(order.id)
+      const created = await dispatchFulfillment(order)
 
       if (created) {
         localStorage.removeItem('cart')
@@ -417,7 +409,7 @@ export function useCheckout() {
         onSuccess({ orderId: paidOrderId }) {
           const order = activeRevolutOrder.value
           activeRevolutOrder.value = null
-          const resolvedOrderId = paidOrderId || order?.id
+          const resolvedOrderId = order?.id || paidOrderId
 
           if (!resolvedOrderId) {
             revolutError.value = 'Payment completed, but the Revolut order ID was not returned. Please contact support.'
@@ -426,6 +418,7 @@ export function useCheckout() {
 
           void completePaidOrder({
             id: resolvedOrderId,
+            projectOrderId: order?.projectOrderId || resolvedOrderId,
           })
         },
         onError({ error }) {
@@ -490,7 +483,7 @@ export function useCheckout() {
       postcode: customer.postcode,
       country: customer.country,
       total: total.value,
-      cart: cartItems.value.map((item) => `${item.id}:${item.quantity}`).join('|'),
+      cart: cartItems.value.map((item) => `${item.id}:${item.variantId}:${item.color}:${item.size}:${item.quantity}`).join('|'),
     }),
     async () => {
       if (!addressComplete.value) return

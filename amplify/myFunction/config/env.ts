@@ -9,7 +9,7 @@ const appEnvironment = APP_ENV.trim().toLowerCase()
 
 /** Explicit Revolut mode wins; production app environments otherwise use production. */
 export const REVOLUT_MODE: 'sandbox' | 'prod' =
-  configuredMode === 'prod' || configuredMode === 'production'
+  configuredMode === 'prod' || configuredMode === 'production' || configuredMode === 'live'
     ? 'prod'
     : configuredMode === 'sandbox'
       ? 'sandbox'

@@ -6,9 +6,15 @@ import { isPrintfulFulfillmentEnabled, REVOLUT_MODE } from '../config/env'
 
 type FulfillmentItem = {
   productId: string
+  variantId?: string
+  externalVariantId?: string
   quantity: number
   fulfillmentProvider?: string
   fulfillmentVariantId?: string
+  productName?: string
+  color?: string
+  size?: string
+  unitPrice?: number
 }
 
 type ProviderStatus = { status: 'pending' | 'fulfilled' | 'failed' | 'test_skipped'; providerOrderId?: string; message?: string; lastAttempt?: string; lastError?: string }
@@ -177,6 +183,20 @@ async function findOrder(client: any, identifier: string) {
   return byProject.data?.[0] || null
 }
 
+export async function persistPendingFulfillmentOrder(body: any, revolutOrderId: string) {
+  const client = await getDataClient() as any
+  const existing = await findOrder(client, revolutOrderId)
+  if (existing) return existing
+  const create = await client.models.FulfillmentOrder.create(buildFulfillmentOrder({
+    ...body,
+    projectOrderId: body?.orderId || body?.projectOrderId,
+    revolutOrderId,
+    paymentAmount: body?.amount,
+  }, 'pending'))
+  if (!create.data) throw new Error('Pending fulfillment order could not be persisted')
+  return create.data
+}
+
 export async function handleFulfillmentRequest(body: any) {
   const client = await getDataClient() as any
   const revolutOrderId = String(body?.revolutOrderId || '')
@@ -195,8 +215,29 @@ export async function handleFulfillmentRequest(body: any) {
   if (!order) {
     const create = await client.models.FulfillmentOrder.create(buildFulfillmentOrder(body, paymentState))
     order = create.data
+  } else {
+    const paidUpdate = {
+      id: order.id,
+      paymentStatus: String(paymentState).toLowerCase(),
+      paymentDate: new Date().toISOString(),
+      paymentAmount: typeof body?.paymentAmount === 'number' ? body.paymentAmount : order.paymentAmount,
+      currency: typeof body?.currency === 'string' ? body.currency : order.currency,
+      updatedAt: new Date().toISOString(),
+    }
+    await client.models.FulfillmentOrder.update(paidUpdate)
+    order = { ...order, ...paidUpdate }
   }
   const providers = await dispatchFulfillment(order)
+  const failedProvider = Object.entries(providers).find(([, status]) => status.status === 'failed')
+  if (failedProvider) {
+    return jsonResponse(502, {
+      success: false,
+      error: failedProvider[1].lastError || failedProvider[1].message || `${failedProvider[0]} fulfillment failed`,
+      recoverable: true,
+      revolutOrderId,
+      providers,
+    })
+  }
   return jsonResponse(200, { success: true, alreadyFulfilled, revolutOrderId, providers })
 }
 
