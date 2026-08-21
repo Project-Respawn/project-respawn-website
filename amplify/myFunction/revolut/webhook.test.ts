@@ -36,11 +36,21 @@ test('valid signed webhook updates the same pending order and preserves merchand
   assert.equal(h.updates.length, 1)
   assert.equal(h.updates[0].id, 'stored-1')
   assert.equal(h.updates[0].paymentStatus, 'completed')
-  assert.deepEqual(h.updates[0].auditHistory[0].action, 'Revolut webhook payment update')
+  assert.deepEqual(JSON.parse(h.updates[0].auditHistory)[0].action, 'Revolut webhook payment update')
   assert.equal(h.updates[0].items, undefined)
   assert.equal(h.updates[0].providerStatuses, undefined)
   assert.equal(h.creates, 0)
   assert.equal(h.printfulCalls, 0)
+})
+
+test('valid webhook preserves JSON-serialized audit history returned by the Amplify client', async () => {
+  const original = { timestamp: '2026-01-01T00:00:00.000Z', action: 'Order created', result: 'success', provider: null }
+  const h = harness(order({ auditHistory: JSON.stringify([original]) }))
+  await h.invoke()
+  const auditHistory = JSON.parse(h.updates[0].auditHistory)
+  assert.equal(auditHistory.length, 2)
+  assert.deepEqual(auditHistory[0], original)
+  assert.equal(auditHistory[1].action, 'Revolut webhook payment update')
 })
 
 test('invalid signature is rejected before data access', async () => {

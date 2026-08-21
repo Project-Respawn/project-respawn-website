@@ -1,6 +1,7 @@
 import { writePermissionAudit } from '../shared/audit'
 import { requireEffectivePermission } from '../shared/requirePermission'
 import { getIdentityUsername, getResolverIdentity } from '../shared/auth'
+import { decodeFulfillmentOrder } from '../fulfillment/orderJson'
 
 async function loadDataClient() { return (await import('../shared/dataClient')).getDataClient() as any }
 
@@ -14,7 +15,7 @@ function mutationResult(id: string, message?: string) { return { success: true, 
 
 export async function handleListManagedOrders(event: any, injected?: any) {
   const client = injected || await loadDataClient(); await requireEffectivePermission(event, client, 'orders.view')
-  return { orders: await listAll(client, 'FulfillmentOrder') }
+  return { orders: (await listAll(client, 'FulfillmentOrder')).map(decodeFulfillmentOrder) }
 }
 export async function handleListManagedProfiles(event: any, injected?: any) {
   const client = injected || await loadDataClient(); await requireEffectivePermission(event, client, 'profiles.staff.view')
@@ -22,11 +23,11 @@ export async function handleListManagedProfiles(event: any, injected?: any) {
 }
 export async function handleRecoverManagedOrder(event: any, injected?: any) {
   const client = injected || await loadDataClient(); const actor = await requireEffectivePermission(event, client, 'orders.fulfillment.manage')
-  const id = String(event.arguments?.orderId || ''); const order = ok(await client.models.FulfillmentOrder.get({ id }), 'Order lookup'); if (!order) throw new Error('Order not found')
+  const id = String(event.arguments?.orderId || ''); const order = decodeFulfillmentOrder(ok(await client.models.FulfillmentOrder.get({ id }), 'Order lookup')); if (!order) throw new Error('Order not found')
   const { fetchRevolutMerchantOrder } = await import('../revolut'); const payment = await fetchRevolutMerchantOrder(order.revolutOrderId); const state = String((payment.body as any)?.state || '').toLowerCase()
   if (!['paid', 'completed', 'captured'].includes(state)) throw new Error('Revolut payment is not paid')
   const recoveryEntry = { timestamp: new Date().toISOString(), action: 'Admin recovery started', result: 'verified', provider: null }
-  await client.models.FulfillmentOrder.update({ id, auditHistory: [...(order.auditHistory || []), recoveryEntry], updatedAt: recoveryEntry.timestamp })
+  await client.models.FulfillmentOrder.update({ id, auditHistory: JSON.stringify([...(order.auditHistory || []), recoveryEntry]), updatedAt: recoveryEntry.timestamp })
   const { dispatchFulfillment } = await import('../fulfillment'); const providers = await dispatchFulfillment({ ...order, auditHistory: [...(order.auditHistory || []), recoveryEntry] })
   await writePermissionAudit(client, actor.actorUserId, 'order.fulfillment.recover', 'FulfillmentOrder', id, { overallFulfillmentStatus: order.overallFulfillmentStatus }, { providerStatuses: providers })
   return mutationResult(id)
@@ -35,7 +36,7 @@ export async function handleReconcileManagedOrder(event: any, injected?: any, fe
   const client = injected || await loadDataClient()
   const actor = await requireEffectivePermission(event, client, 'orders.fulfillment.manage')
   const id = String(event.arguments?.orderId || '')
-  const order = ok(await client.models.FulfillmentOrder.get({ id }), 'Order lookup')
+  const order = decodeFulfillmentOrder(ok(await client.models.FulfillmentOrder.get({ id }), 'Order lookup'))
   if (!order) throw new Error('Order not found')
 
   const fetchPayment = fetchPaymentInjected || (await import('../revolut')).fetchRevolutMerchantOrder
@@ -61,7 +62,7 @@ export async function handleReconcileManagedOrder(event: any, injected?: any, fe
       paymentStatus: state,
       paymentDate: paid ? order.paymentDate || now : order.paymentDate || null,
       reconciliationError: null,
-      auditHistory: [...(order.auditHistory || []), { timestamp: now, action: 'Payment reconciled', result: state, provider: 'revolut' }],
+      auditHistory: JSON.stringify([...(order.auditHistory || []), { timestamp: now, action: 'Payment reconciled', result: state, provider: 'revolut' }]),
       updatedAt: now,
     })
   }
@@ -75,7 +76,7 @@ export async function handleImportManagedRevolutOrder(event: any, injected?: any
   if (existing) return mutationResult(existing.id, 'Order already imported')
   const { fetchRevolutMerchantOrder } = await import('../revolut'); const payment = await fetchRevolutMerchantOrder(revolutOrderId); const body = payment.body as any; const state = String(body?.state || '').toLowerCase()
   if (payment.statusCode < 200 || payment.statusCode >= 300 || !['paid', 'completed', 'captured'].includes(state)) throw new Error('Revolut payment is not paid')
-  const created = ok(await client.models.FulfillmentOrder.create({ projectOrderId: body.merchant_order_ext_ref || revolutOrderId, revolutOrderId, paymentStatus: state, paymentDate: new Date().toISOString(), paymentAmount: typeof body.amount === 'number' ? body.amount : null, currency: body.currency || null, overallFulfillmentStatus: 'recovery_required', customerName: '', email: body.email || '', shippingAddress: {}, items: [], providerStatuses: {}, auditHistory: [], createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }), 'Order import')
+  const created = ok(await client.models.FulfillmentOrder.create({ projectOrderId: body.merchant_order_ext_ref || revolutOrderId, revolutOrderId, paymentStatus: state, paymentDate: new Date().toISOString(), paymentAmount: typeof body.amount === 'number' ? body.amount : null, currency: body.currency || null, overallFulfillmentStatus: 'recovery_required', customerName: '', email: body.email || '', shippingAddress: JSON.stringify({}), items: JSON.stringify([]), providerStatuses: JSON.stringify({}), auditHistory: JSON.stringify([]), createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }), 'Order import')
   await writePermissionAudit(client, actor.actorUserId, 'order.revolut.import', 'FulfillmentOrder', created.id, null, { revolutOrderId, overallFulfillmentStatus: 'recovery_required' })
   return mutationResult(created.id)
 }

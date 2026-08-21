@@ -88,6 +88,256 @@
     "model_introspection": {
       "version": 1,
       "models": {
+        "InvestorAccess": {
+          "name": "InvestorAccess",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "userId": {
+              "name": "userId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "cognitoSub": {
+              "name": "cognitoSub",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "email": {
+              "name": "email",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "name": {
+              "name": "name",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "organisation": {
+              "name": "organisation",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "accessLevel": {
+              "name": "accessLevel",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "ndaStatus": {
+              "name": "ndaStatus",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "isActive": {
+              "name": "isActive",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "grantedAt": {
+              "name": "grantedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "expiresAt": {
+              "name": "expiresAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "grantedBy": {
+              "name": "grantedBy",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "InvestorAccesses",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {
+                "mutations": {
+                  "update": null
+                }
+              }
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "investorAccessesByUserId",
+                "queryField": "listInvestorAccessByUserId",
+                "fields": [
+                  "userId"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [],
+                    "groups": [
+                      "SuperAdmin"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "InvestorAccessAuditEvent": {
+          "name": "InvestorAccessAuditEvent",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "targetUserId": {
+              "name": "targetUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "action": {
+              "name": "action",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "previousValue": {
+              "name": "previousValue",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": false,
+              "attributes": []
+            },
+            "newValue": {
+              "name": "newValue",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": false,
+              "attributes": []
+            },
+            "adminUserId": {
+              "name": "adminUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "occurredAt": {
+              "name": "occurredAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "InvestorAccessAuditEvents",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [
+                      "read"
+                    ],
+                    "groups": [
+                      "SuperAdmin",
+                      "Admin"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
         "CreatorWorkspaceRecord": {
           "name": "CreatorWorkspaceRecord",
           "fields": {
@@ -5133,6 +5383,13 @@
               "isRequired": true,
               "attributes": []
             },
+            "phone": {
+              "name": "phone",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
             "shippingAddress": {
               "name": "shippingAddress",
               "isArray": false,
@@ -5152,6 +5409,13 @@
               "isArray": false,
               "type": "AWSJSON",
               "isRequired": true,
+              "attributes": []
+            },
+            "reconciliationError": {
+              "name": "reconciliationError",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
               "attributes": []
             },
             "auditHistory": {
@@ -6180,6 +6444,13 @@
               "isRequired": true,
               "attributes": []
             },
+            "cognitoSub": {
+              "name": "cognitoSub",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
             "username": {
               "name": "username",
               "isArray": false,
@@ -6263,6 +6534,194 @@
               "isRequired": false,
               "attributes": [],
               "isArrayNullable": false
+            }
+          }
+        },
+        "InvestorAccountLookup": {
+          "name": "InvestorAccountLookup",
+          "fields": {
+            "cognitoSub": {
+              "name": "cognitoSub",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "email": {
+              "name": "email",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "name": {
+              "name": "name",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            }
+          }
+        },
+        "InvestorAccessSummary": {
+          "name": "InvestorAccessSummary",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "userId": {
+              "name": "userId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "cognitoSub": {
+              "name": "cognitoSub",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "email": {
+              "name": "email",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "name": {
+              "name": "name",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "organisation": {
+              "name": "organisation",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "accessLevel": {
+              "name": "accessLevel",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "ndaStatus": {
+              "name": "ndaStatus",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "isActive": {
+              "name": "isActive",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "grantedAt": {
+              "name": "grantedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "expiresAt": {
+              "name": "expiresAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "grantedBy": {
+              "name": "grantedBy",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            }
+          }
+        },
+        "InvestorAccessContext": {
+          "name": "InvestorAccessContext",
+          "fields": {
+            "hasAccess": {
+              "name": "hasAccess",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "accessLevel": {
+              "name": "accessLevel",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "ndaStatus": {
+              "name": "ndaStatus",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "isPlatformAdmin": {
+              "name": "isPlatformAdmin",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "expiresAt": {
+              "name": "expiresAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            }
+          }
+        },
+        "InvestorDocumentAccessResult": {
+          "name": "InvestorDocumentAccessResult",
+          "fields": {
+            "documentKey": {
+              "name": "documentKey",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "url": {
+              "name": "url",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "expiresAt": {
+              "name": "expiresAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
             }
           }
         },
@@ -7902,6 +8361,55 @@
         }
       },
       "queries": {
+        "listInvestorAccess": {
+          "name": "listInvestorAccess",
+          "isArray": true,
+          "type": {
+            "nonModel": "InvestorAccessSummary"
+          },
+          "isRequired": false,
+          "isArrayNullable": false
+        },
+        "findInvestorAccountByEmail": {
+          "name": "findInvestorAccountByEmail",
+          "isArray": false,
+          "type": {
+            "nonModel": "InvestorAccountLookup"
+          },
+          "isRequired": false,
+          "arguments": {
+            "email": {
+              "name": "email",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            }
+          }
+        },
+        "getMyInvestorAccess": {
+          "name": "getMyInvestorAccess",
+          "isArray": false,
+          "type": {
+            "nonModel": "InvestorAccessContext"
+          },
+          "isRequired": true
+        },
+        "getInvestorDocumentUrl": {
+          "name": "getInvestorDocumentUrl",
+          "isArray": false,
+          "type": {
+            "nonModel": "InvestorDocumentAccessResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "documentKey": {
+              "name": "documentKey",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            }
+          }
+        },
         "getCreatorWorkspace": {
           "name": "getCreatorWorkspace",
           "isArray": false,
@@ -8169,6 +8677,104 @@
         }
       },
       "mutations": {
+        "grantInvestorAccess": {
+          "name": "grantInvestorAccess",
+          "isArray": false,
+          "type": {
+            "nonModel": "InvestorAccessSummary"
+          },
+          "isRequired": true,
+          "arguments": {
+            "cognitoSub": {
+              "name": "cognitoSub",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "email": {
+              "name": "email",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "name": {
+              "name": "name",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "organisation": {
+              "name": "organisation",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "accessLevel": {
+              "name": "accessLevel",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "ndaStatus": {
+              "name": "ndaStatus",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "expiresAt": {
+              "name": "expiresAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false
+            }
+          }
+        },
+        "updateInvestorAccess": {
+          "name": "updateInvestorAccess",
+          "isArray": false,
+          "type": {
+            "nonModel": "InvestorAccessSummary"
+          },
+          "isRequired": true,
+          "arguments": {
+            "investorAccessId": {
+              "name": "investorAccessId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            },
+            "accessLevel": {
+              "name": "accessLevel",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "ndaStatus": {
+              "name": "ndaStatus",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "isActive": {
+              "name": "isActive",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false
+            },
+            "expiresAt": {
+              "name": "expiresAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false
+            },
+            "clearExpiry": {
+              "name": "clearExpiry",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false
+            }
+          }
+        },
         "createCreatorWorkspace": {
           "name": "createCreatorWorkspace",
           "isArray": false,
@@ -8376,6 +8982,22 @@
         },
         "recoverManagedOrder": {
           "name": "recoverManagedOrder",
+          "isArray": false,
+          "type": {
+            "nonModel": "Stage9MutationResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "orderId": {
+              "name": "orderId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            }
+          }
+        },
+        "reconcileManagedOrder": {
+          "name": "reconcileManagedOrder",
           "isArray": false,
           "type": {
             "nonModel": "Stage9MutationResult"

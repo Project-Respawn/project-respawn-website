@@ -2,6 +2,7 @@ import { createHmac, timingSafeEqual } from 'node:crypto'
 import { REVOLUT_MODE, REVOLUT_WEBHOOK_SIGNING_SECRET } from '../config/env'
 import { logger } from '../shared/logger'
 import { fetchRevolutMerchantOrder } from './handlers'
+import { decodeFulfillmentOrder } from '../fulfillment/orderJson'
 
 type ApiEvent = {
   body?: string | null
@@ -82,7 +83,7 @@ export async function handleRevolutWebhook(event: unknown, injected: Dependencie
 
   const client = await (injected.getClient || defaultClient)() as any
   const existingResult = await client.models.FulfillmentOrder.list({ filter: { revolutOrderId: { eq: orderId } } })
-  const order = existingResult.data?.[0]
+  const order = decodeFulfillmentOrder(existingResult.data?.[0])
   if (!order) {
     logger.warn('Valid Revolut webhook received for unknown order', { orderId, event: payload.event })
     return response(204)
@@ -111,7 +112,7 @@ export async function handleRevolutWebhook(event: unknown, injected: Dependencie
     logger.error('Revolut webhook payment verification failed', { orderId, reason })
     if (order.reconciliationError !== reason) {
       const entry = audit('Revolut webhook payment update', `security_error: ${reason}`)
-      await client.models.FulfillmentOrder.update({ id: order.id, reconciliationError: reason, auditHistory: [...(order.auditHistory || []), entry], updatedAt: entry.timestamp })
+      await client.models.FulfillmentOrder.update({ id: order.id, reconciliationError: reason, auditHistory: JSON.stringify([...(order.auditHistory || []), entry]), updatedAt: entry.timestamp })
     }
     return response(204)
   }
@@ -123,7 +124,7 @@ export async function handleRevolutWebhook(event: unknown, injected: Dependencie
     paymentStatus: state,
     paymentDate: PAID_STATES.has(state) ? order.paymentDate || entry.timestamp : order.paymentDate,
     reconciliationError: null,
-    auditHistory: [...(order.auditHistory || []), entry],
+    auditHistory: JSON.stringify([...(order.auditHistory || []), entry]),
     updatedAt: entry.timestamp,
   })
   return response(204)

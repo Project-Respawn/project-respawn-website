@@ -67,6 +67,7 @@ const schema = a
       ndaStatus: a.string().required(), isActive: a.boolean().required(), grantedAt: a.datetime().required(),
       expiresAt: a.datetime(), grantedBy: a.string().required(),
     }).secondaryIndexes((index) => [index('userId').queryField('listInvestorAccessByUserId')])
+      .disableOperations(['update'])
       .authorization((allow) => [allow.groups(['SuperAdmin']).to([])]),
 
     InvestorAccessAuditEvent: a.model({
