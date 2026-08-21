@@ -581,6 +581,18 @@
               <div><strong>{{ investorInfoSelections.length || 'No' }} area{{ investorInfoSelections.length === 1 ? '' : 's' }} selected</strong><p>Detailed diligence information can be shared at the appropriate stage and, where necessary, under NDA.</p></div>
               <button type="button" class="investor-primary-button" @click="requestInvestorInfo">Request investor information</button>
             </div>
+            <form v-if="requestFormOpen" class="investor-request-form" @submit.prevent="submitInvestorRequest">
+              <h3>Request investor access</h3><p>Requests are reviewed before any account-linked Data Room access is granted.</p>
+              <label>Name<input v-model.trim="requestForm.name" required maxlength="120"></label>
+              <label>Work email<input v-model.trim="requestForm.email" type="email" required maxlength="254"></label>
+              <label>Organisation / fund<input v-model.trim="requestForm.organisation" maxlength="160"></label>
+              <label>Role / title<input v-model.trim="requestForm.role" maxlength="120"></label>
+              <label>Investment interest or context<textarea v-model.trim="requestForm.investmentContext" required maxlength="1000"></textarea></label>
+              <label>Additional message<textarea v-model.trim="requestForm.message" maxlength="3000"></textarea></label>
+              <label class="request-website" aria-hidden="true">Website<input v-model="requestForm.website" tabindex="-1" autocomplete="off"></label>
+              <p v-if="requestStatus" role="status">{{ requestStatus }}</p>
+              <button class="investor-primary-button" type="submit" :disabled="requestSubmitting">{{ requestSubmitting ? 'Submitting…' : 'Submit access request' }}</button>
+            </form>
           </div>
         </section>
       </div>
@@ -589,6 +601,7 @@
 </template>
 
 <script>
+import { generateClient } from 'aws-amplify/data';
 import {
   investorNavigation,
   headlineStats,
@@ -647,6 +660,8 @@ export default {
       investorInfoSelections: [],
       mobileIndexOpen: false,
       sectionObserver: null
+      ,requestFormOpen: false, requestSubmitting: false, requestStatus: '',
+      requestForm: { name: '', email: '', organisation: '', role: '', investmentContext: '', message: '', website: '' }
     };
   },
   computed: {
@@ -712,36 +727,20 @@ export default {
     },
     requestInvestorInfo() {
       const selected = this.investorInfoOptions.filter((item) => this.investorInfoSelections.includes(item.key));
-      const requestedTopics = selected.length
-        ? selected.map((item) => `• ${item.title}`).join('\n')
-        : '• General investor information';
-
-      const subject = encodeURIComponent('Project Respawn | Investor Information Request');
-      const body = encodeURIComponent(
-`Hello Nicholas,
-
-I have reviewed the Project Respawn investor overview and would like to request further information.
-
-INFORMATION REQUESTED
-
-${requestedTopics}
-
-INVESTOR DETAILS
-
-Name:
-Company / Fund:
-Role:
-Work Email:
-
-ADDITIONAL MESSAGE
-
-Please add any specific questions or areas you would like Project Respawn to address here.
-
-Kind regards,
-`
-      );
-
-      window.location.href = `mailto:n.grefsheim@projectrespawn.com?subject=${subject}&body=${body}`;
+      this.requestForm.investmentContext = selected.length ? selected.map((item) => item.title).join(', ') : 'General investor information';
+      this.requestFormOpen = true; this.requestStatus = '';
+      this.$nextTick(() => document.querySelector('.investor-request-form input')?.focus());
+    },
+    async submitInvestorRequest() {
+      this.requestSubmitting = true; this.requestStatus = '';
+      try {
+        const token = globalThis.crypto?.randomUUID?.().replaceAll('-', '') || `${Date.now()}${Math.random()}`.replace(/\D/g, '').padEnd(20, '0');
+        const { website, ...payload } = this.requestForm;
+        const result = await generateClient().mutations.submitInvestorAccessRequest({ payload, requestToken: token, website });
+        if (result.errors?.length || !result.data?.success) throw new Error(result.errors?.[0]?.message || result.data?.message || 'Request failed');
+        this.requestStatus = result.data.alreadySubmitted ? 'This request was already received.' : 'Your investor access request has been received for review.';
+      } catch (error) { this.requestStatus = error.message || 'The request could not be submitted.'; }
+      finally { this.requestSubmitting = false; }
     }
   }
 };

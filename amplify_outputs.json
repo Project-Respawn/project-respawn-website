@@ -88,6 +88,190 @@
     "model_introspection": {
       "version": 1,
       "models": {
+        "InvestorAccessRequest": {
+          "name": "InvestorAccessRequest",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "name": {
+              "name": "name",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "email": {
+              "name": "email",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "organisation": {
+              "name": "organisation",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "role": {
+              "name": "role",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "investmentContext": {
+              "name": "investmentContext",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "message": {
+              "name": "message",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "requestedAccessLevel": {
+              "name": "requestedAccessLevel",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "status": {
+              "name": "status",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "submittedAt": {
+              "name": "submittedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "reviewedAt": {
+              "name": "reviewedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "reviewedBy": {
+              "name": "reviewedBy",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "decisionNotes": {
+              "name": "decisionNotes",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "linkedUserId": {
+              "name": "linkedUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "linkedInvestorAccessId": {
+              "name": "linkedInvestorAccessId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false,
+              "attributes": []
+            },
+            "auditHistory": {
+              "name": "auditHistory",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": true,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "InvestorAccessRequests",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "investorAccessRequestsByEmailAndSubmittedAt",
+                "queryField": "listInvestorAccessRequestByEmailAndSubmittedAt",
+                "fields": [
+                  "email",
+                  "submittedAt"
+                ]
+              }
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "investorAccessRequestsByStatusAndSubmittedAt",
+                "queryField": "listInvestorAccessRequestByStatusAndSubmittedAt",
+                "fields": [
+                  "status",
+                  "submittedAt"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [],
+                    "groups": [
+                      "SuperAdmin"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
         "InvestorAccess": {
           "name": "InvestorAccess",
           "fields": {
@@ -197,11 +381,7 @@
           "attributes": [
             {
               "type": "model",
-              "properties": {
-                "mutations": {
-                  "update": null
-                }
-              }
+              "properties": {}
             },
             {
               "type": "key",
@@ -6725,6 +6905,53 @@
             }
           }
         },
+        "InvestorRequestSubmissionResult": {
+          "name": "InvestorRequestSubmissionResult",
+          "fields": {
+            "success": {
+              "name": "success",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "requestId": {
+              "name": "requestId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false,
+              "attributes": []
+            },
+            "status": {
+              "name": "status",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "submittedAt": {
+              "name": "submittedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "alreadySubmitted": {
+              "name": "alreadySubmitted",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false,
+              "attributes": []
+            },
+            "message": {
+              "name": "message",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            }
+          }
+        },
         "PermissionDefinitionSummary": {
           "name": "PermissionDefinitionSummary",
           "fields": {
@@ -8361,6 +8588,12 @@
         }
       },
       "queries": {
+        "listManagedInvestorAccessRequests": {
+          "name": "listManagedInvestorAccessRequests",
+          "isArray": false,
+          "type": "AWSJSON",
+          "isRequired": true
+        },
         "listInvestorAccess": {
           "name": "listInvestorAccess",
           "isArray": true,
@@ -8677,6 +8910,84 @@
         }
       },
       "mutations": {
+        "submitInvestorAccessRequest": {
+          "name": "submitInvestorAccessRequest",
+          "isArray": false,
+          "type": {
+            "nonModel": "InvestorRequestSubmissionResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "payload": {
+              "name": "payload",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": true
+            },
+            "requestToken": {
+              "name": "requestToken",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "website": {
+              "name": "website",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            }
+          }
+        },
+        "reviewInvestorAccessRequest": {
+          "name": "reviewInvestorAccessRequest",
+          "isArray": false,
+          "type": "AWSJSON",
+          "isRequired": true,
+          "arguments": {
+            "requestId": {
+              "name": "requestId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            },
+            "decision": {
+              "name": "decision",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "decisionNotes": {
+              "name": "decisionNotes",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "accountEmail": {
+              "name": "accountEmail",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "accessLevel": {
+              "name": "accessLevel",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "ndaStatus": {
+              "name": "ndaStatus",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "expiresAt": {
+              "name": "expiresAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false
+            }
+          }
+        },
         "grantInvestorAccess": {
           "name": "grantInvestorAccess",
           "isArray": false,
@@ -8729,8 +9040,8 @@
             }
           }
         },
-        "updateInvestorAccess": {
-          "name": "updateInvestorAccess",
+        "manageInvestorAccess": {
+          "name": "manageInvestorAccess",
           "isArray": false,
           "type": {
             "nonModel": "InvestorAccessSummary"

@@ -59,6 +59,27 @@ const schema = a
     InvestorDocumentAccessResult: a.customType({
       documentKey: a.string().required(), url: a.string().required(), expiresAt: a.datetime().required(),
     }),
+    InvestorRequestSubmissionResult: a.customType({
+      success: a.boolean().required(), requestId: a.id(), status: a.string().required(),
+      submittedAt: a.datetime(), alreadySubmitted: a.boolean(), message: a.string(),
+    }),
+
+    InvestorAccessRequest: a.model({
+      name: a.string().required(), email: a.string().required(), organisation: a.string(), role: a.string(),
+      investmentContext: a.string().required(), message: a.string(), requestedAccessLevel: a.string().required(),
+      status: a.string().required(), submittedAt: a.datetime().required(), reviewedAt: a.datetime(),
+      reviewedBy: a.string(), decisionNotes: a.string(), linkedUserId: a.string(), linkedInvestorAccessId: a.id(),
+      auditHistory: a.json().required(),
+    }).secondaryIndexes((index) => [index('status').sortKeys(['submittedAt']), index('email').sortKeys(['submittedAt'])])
+      .authorization((allow) => [allow.groups(['SuperAdmin']).to([])]),
+
+    submitInvestorAccessRequest: a.mutation().arguments({ payload: a.json().required(), requestToken: a.string().required(), website: a.string() })
+      .returns(a.ref('InvestorRequestSubmissionResult').required()).authorization((allow) => [allow.publicApiKey()])
+      .handler(a.handler.function(myFunction)),
+    listManagedInvestorAccessRequests: a.query().returns(a.json().required())
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function(adminUserManagement)),
+    reviewInvestorAccessRequest: a.mutation().arguments({ requestId: a.id().required(), decision: a.string().required(), decisionNotes: a.string(), accountEmail: a.string(), accessLevel: a.string(), ndaStatus: a.string(), expiresAt: a.datetime() })
+      .returns(a.json().required()).authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function(adminUserManagement)),
 
     InvestorAccess: a.model({
       // Immutable Cognito subject. Email is display/search metadata only.
@@ -67,7 +88,6 @@ const schema = a
       ndaStatus: a.string().required(), isActive: a.boolean().required(), grantedAt: a.datetime().required(),
       expiresAt: a.datetime(), grantedBy: a.string().required(),
     }).secondaryIndexes((index) => [index('userId').queryField('listInvestorAccessByUserId')])
-      .disableOperations(['update'])
       .authorization((allow) => [allow.groups(['SuperAdmin']).to([])]),
 
     InvestorAccessAuditEvent: a.model({
@@ -84,7 +104,7 @@ const schema = a
       accessLevel: a.string().required(), ndaStatus: a.string().required(), expiresAt: a.datetime(),
     }).returns(a.ref('InvestorAccessSummary').required())
       .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function(adminUserManagement)),
-    updateInvestorAccess: a.mutation().arguments({
+    manageInvestorAccess: a.mutation().arguments({
       investorAccessId: a.id().required(), accessLevel: a.string(), ndaStatus: a.string(), isActive: a.boolean(), expiresAt: a.datetime(), clearExpiry: a.boolean(),
     }).returns(a.ref('InvestorAccessSummary').required())
       .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function(adminUserManagement)),

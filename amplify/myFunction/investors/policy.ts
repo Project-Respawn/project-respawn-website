@@ -37,8 +37,9 @@ export function effectiveInvestorAccess(groups: string[], record?: any, now = ne
   }
 }
 
-export function canAccessInvestorDocument(effectiveLevel: unknown, requiredLevel: unknown) {
-  return isInvestorLevel(effectiveLevel) && isInvestorLevel(requiredLevel) && LEVEL_RANK[effectiveLevel] >= LEVEL_RANK[requiredLevel]
+export function canAccessInvestorDocument(effectiveLevel: unknown, requiredLevel: unknown, ndaStatus?: unknown, requiredNdaStatus?: NdaStatus) {
+  const tierPermitsAccess = isInvestorLevel(effectiveLevel) && isInvestorLevel(requiredLevel) && LEVEL_RANK[effectiveLevel] >= LEVEL_RANK[requiredLevel]
+  return tierPermitsAccess && (!requiredNdaStatus || ndaStatus === requiredNdaStatus)
 }
 
 export function classifyAccessChange(previousLevel: InvestorLevel, nextLevel: InvestorLevel) {

@@ -73,7 +73,8 @@
                 <div class="document-copy"><h3>{{ document.title }}</h3><p>{{ document.description }}</p></div>
                 <div class="document-footer">
                   <div><small>Version {{ document.version }}</small><span>{{ document.updated }}</span></div>
-                  <button type="button" class="open-document-button" @click="openDocument(document)">Open <span aria-hidden="true">↗</span></button>
+                  <button v-if="isDownloadAvailable(document)" type="button" class="open-document-button" @click="openDocument(document)">Open <span aria-hidden="true">↗</span></button>
+                  <span v-else class="open-document-button" aria-disabled="true">Planned · not uploaded</span>
                 </div>
               </article>
             </div>
@@ -113,11 +114,18 @@
 </template>
 
 <script>
-import { accessTiers, reviewPath, roomSections } from './investorDataRoom.js';
+import { accessTiers, reviewPath, roomSections, sandboxTestDocument } from './investorDataRoom.js';
 import { generateClient } from 'aws-amplify/data';
 import { refreshInvestorAccess } from '../../../composables/useInvestorAccess.js';
 
 const ACCESS_RANK = { PRE_NDA: 1, NDA: 2, DILIGENCE: 3 };
+// Ntgrestage8 currently has no objects under the protected investor-data-room prefix.
+// Add a key only after the matching server allow-listed object is uploaded and verified.
+const IS_SANDBOX = import.meta.env.VITE_REVOLUT_ENV === 'sandbox';
+const DISPLAYED_ROOM_SECTIONS = IS_SANDBOX
+  ? roomSections.map((section, index) => index === 1 ? { ...section, documents: [...section.documents, sandboxTestDocument] } : section)
+  : roomSections;
+const AVAILABLE_DOCUMENT_KEYS = new Set(IS_SANDBOX ? [sandboxTestDocument.key] : []);
 
 export default {
   name: 'InvestorDataRoom',
@@ -125,7 +133,7 @@ export default {
     return {
       accessTiers,
       reviewPath,
-      roomSections,
+      roomSections: DISPLAYED_ROOM_SECTIONS,
       currentAccessLevel: null,
       activeSection: 'financials',
       lastUpdated: '20 August 2026',
@@ -153,6 +161,7 @@ export default {
     canAccess(required) { return ACCESS_RANK[this.currentAccessLevel] >= ACCESS_RANK[required]; },
     accessibleDocs(section) { return section.documents.filter(d => this.canAccess(d.access)); },
     lockedDocs(section) { return section.documents.filter(d => !this.canAccess(d.access)); },
+    isDownloadAvailable(document) { return AVAILABLE_DOCUMENT_KEYS.has(document.key); },
     requiredSectionAccess(section) { return this.lockedDocs(section).some(d => d.access === 'NDA') ? 'NDA' : 'Diligence'; },
     async openDocument(document) {
       try {

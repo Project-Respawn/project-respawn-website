@@ -25,6 +25,13 @@ test('PRE_NDA, NDA, and DILIGENCE document restrictions are ordered', () => {
   assert.equal(canAccessInvestorDocument('DILIGENCE', 'DILIGENCE'), true)
 })
 
+test('documents can require both an access tier and a signed NDA', () => {
+  assert.equal(canAccessInvestorDocument('PRE_NDA', 'NDA', 'SIGNED', 'SIGNED'), false)
+  assert.equal(canAccessInvestorDocument('NDA', 'NDA', 'NOT_SIGNED', 'SIGNED'), false)
+  assert.equal(canAccessInvestorDocument('NDA', 'NDA', 'SIGNED', 'SIGNED'), true)
+  assert.equal(canAccessInvestorDocument('DILIGENCE', 'NDA', 'SIGNED', 'SIGNED'), true)
+})
+
 test('active investor access resolves at every tier and preserves NDA state', () => {
   for (const level of ['PRE_NDA', 'NDA', 'DILIGENCE']) {
     const access = effectiveInvestorAccess(['Member'], active(level, { ndaStatus: 'SIGNED' }))

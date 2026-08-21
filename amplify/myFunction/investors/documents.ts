@@ -1,8 +1,9 @@
-import type { InvestorLevel } from './policy'
+import type { InvestorLevel, NdaStatus } from './policy'
 
 // Server-owned allow-list. Files belong under the backend-only investor-data-room prefix;
 // clients never receive or construct storage keys themselves.
-export const INVESTOR_DOCUMENTS: Record<string, { access: InvestorLevel; storageKey: string }> = {
+export const INVESTOR_DOCUMENTS: Record<string, { access: InvestorLevel; ndaStatus?: NdaStatus; storageKey: string }> = {
+  'sandbox-test-document': { access: 'NDA', ndaStatus: 'SIGNED', storageKey: 'investor-data-room/nda/sandbox-test-document.txt' },
   'pitch-deck': { access: 'PRE_NDA', storageKey: 'investor-data-room/pre-nda/pitch-deck.pptx' },
   'financial-model': { access: 'PRE_NDA', storageKey: 'investor-data-room/pre-nda/financial-model.xlsx' },
   'nda-template': { access: 'PRE_NDA', storageKey: 'investor-data-room/pre-nda/investor-nda.pdf' },

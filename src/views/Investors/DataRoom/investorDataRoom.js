@@ -72,3 +72,13 @@ export const roomSections = [
     ]
   }
 ];
+
+export const sandboxTestDocument = {
+  key: 'sandbox-test-document',
+  title: 'Project Respawn Data Room Sandbox Test Document',
+  type: 'TXT',
+  access: 'NDA',
+  version: 'Sandbox',
+  updated: 'Test only',
+  description: 'Non-sensitive synthetic document used to verify the protected sandbox download boundary.'
+};

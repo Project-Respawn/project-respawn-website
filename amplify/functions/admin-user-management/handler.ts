@@ -8,6 +8,7 @@ import {
 } from '@aws-sdk/client-cognito-identity-provider'
 import type { ListUsersCommandOutput } from '@aws-sdk/client-cognito-identity-provider'
 import { canManageInvestorAccess } from '../../myFunction/investors/policy'
+import { applyInvestorRequestDecision } from './investorRequestWorkflow'
 import { getDataClient } from './dataClient'
 import { authorizeAdminUserOperation } from './authorization'
 import {
@@ -150,6 +151,35 @@ async function updateInvestorAccess(event: any, dataClient: any, args: any) {
   return investorSummary(updated.data)
 }
 
+function decodeJson(value: any, fallback: any) {
+  if (typeof value !== 'string') return value ?? fallback
+  try { return JSON.parse(value) } catch { return fallback }
+}
+
+export async function listInvestorAccessRequests(dataClient: any) {
+  const result = await dataClient.models.InvestorAccessRequest.list({ limit: 1000 })
+  if (result.errors?.length) throw new Error(result.errors[0].message || 'Investor requests could not be loaded')
+  return (result.data || []).map((item: any) => ({ ...item, auditHistory: decodeJson(item.auditHistory, []) }))
+    .sort((a: any, b: any) => String(b.submittedAt).localeCompare(String(a.submittedAt)))
+}
+
+export async function reviewInvestorAccessRequest(event: any, dataClient: any, args: any, injected: any = {}) {
+  const actor = String(event?.identity?.sub || event?.identity?.claims?.sub || getCallerUserId(event))
+  const found = await dataClient.models.InvestorAccessRequest.get({ id: String(args.requestId || '') })
+  if (!found.data) throw new Error('Investor request was not found')
+  const request: any = found.data
+  return applyInvestorRequestDecision(request, args, actor, {
+    findAccount: injected.findAccount || findCognitoUserByEmail,
+    grantOrUpdate: async (account: any, accessArgs: any) => {
+      const existing = await dataClient.models.InvestorAccess.listInvestorAccessByUserId({ userId: account.cognitoSub }, { limit: 1 })
+      return existing.data?.[0]
+        ? (injected.updateAccess || updateInvestorAccess)(event, dataClient, { investorAccessId: existing.data[0].id, ...accessArgs, isActive: true })
+        : (injected.grantAccess || grantInvestorAccess)(event, dataClient, { ...accessArgs, cognitoSub: account.cognitoSub, email: account.email, name: request.name, organisation: request.organisation })
+    },
+    save: async (value: any) => { const updated = await dataClient.models.InvestorAccessRequest.update(value); if (updated.errors?.length || !updated.data) throw new Error(updated.errors?.[0]?.message || 'Investor request decision could not be saved'); return updated.data },
+  })
+}
+
 function normalizeDesiredRoles(roles: unknown): ManagedGroup[] {
   if (!Array.isArray(roles) || roles.some((role) => !isManagedGroup(role))) {
     throw new Error('roles must contain only supported Cognito groups')
@@ -282,9 +312,15 @@ export const handler: AppSyncResolverHandler<any, any> = async (event) => {
     case 'grantInvestorAccess':
       assertInvestorAdmin(event)
       return grantInvestorAccess(event, dataClient, args)
-    case 'updateInvestorAccess':
+    case 'manageInvestorAccess':
       assertInvestorAdmin(event)
       return updateInvestorAccess(event, dataClient, args)
+    case 'listManagedInvestorAccessRequests':
+      assertInvestorAdmin(event)
+      return listInvestorAccessRequests(dataClient)
+    case 'reviewInvestorAccessRequest':
+      assertInvestorAdmin(event)
+      return reviewInvestorAccessRequest(event, dataClient, args)
     case 'listAdminUsers':
       await authorizeAdminUserOperation(event, dataClient, 'users.view')
       return listAllUsers()
