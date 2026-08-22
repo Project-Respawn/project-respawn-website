@@ -4,6 +4,7 @@ import { getRequestBody } from '../shared/http'
 import { jsonResponse } from '../shared/responses'
 import { createRuntimeLease, runtimeLeaseMetadata, verifyRuntimeLease, verifyRuntimeRequest } from './runtimeAuth'
 import { decryptTokenBundle } from './tokenStore'
+import { claimRewardEvent, resolveRewardEvent } from './rewardEventHandlers'
 
 const seenNonces = new Map<string, number>()
 function headers(event: any) { const input = event.headers || {}; return Object.fromEntries(Object.entries(input).map(([key, value]) => [key.toLowerCase(), String(value)])) }
@@ -24,7 +25,7 @@ export async function handleTwitchRuntime(path: string, method: string, event: a
   if (path === '/twitch/runtime/lease' && method === 'POST') {
     authenticateRuntime(event, path, method, body); const record = await integration(client, String(body.integrationId || ''))
     if (!record.twitchBroadcasterId || record.connectionStatus === 'DISCONNECTED') return jsonResponse(409, { error: 'Integration is not runtime-ready' })
-    const lease = createRuntimeLease({ integrationId: record.id, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, operations: ['manifest', 'snapshot', 'token', 'heartbeat'] }, runtimeSecret())
+    const lease = createRuntimeLease({ integrationId: record.id, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, operations: ['manifest', 'snapshot', 'token', 'heartbeat', 'reward-events-claim', 'reward-events-resolve'] }, runtimeSecret())
     return jsonResponse(200, { lease, ...runtimeLeaseMetadata(lease), integrationId: record.id, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, requestId: randomUUID() })
   }
   const operation = path.split('/').pop() || ''; const claims = verifyRuntimeLease(bearer(event), runtimeSecret(), operation); const record = await integration(client, claims.integrationId)
@@ -58,5 +59,7 @@ export async function handleTwitchRuntime(path: string, method: string, event: a
     if (result.errors?.length) throw new Error('Failed to record Twitch runtime health')
     return jsonResponse(200, { ok: true, observedAt: now })
   }
+  if (operation === 'reward-events-claim' && method === 'POST') return jsonResponse(200, { event: await claimRewardEvent(client, record.id) })
+  if (operation === 'reward-events-resolve' && method === 'POST') return jsonResponse(200, await resolveRewardEvent(client, record.id, body))
   return jsonResponse(404, { error: 'Runtime route not found' })
 }

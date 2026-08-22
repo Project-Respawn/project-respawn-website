@@ -887,6 +887,41 @@ const schema = a
       .identifier(['integrationId'])
       .authorization((allow) => [allow.groups(['TwitchBackendService'])]),
 
+    // Narrow durable bridge for Alpha streamer-marketplace redemptions.
+    // This is intentionally not a general event bus and carries no member-
+    // supplied reward text. Runtime claims are terminal: an unacknowledged
+    // claim is never re-issued, preferring a missed live alert to a duplicate.
+    RewardRedemptionEvent: a
+      .model({
+        eventId: a.string().required(),
+        eventVersion: a.integer().required(),
+        eventType: a.string().required(),
+        source: a.string().required(),
+        redemptionId: a.string().required(),
+        twitchBroadcasterId: a.string().required(),
+        safeMemberDisplayName: a.string().required(),
+        occurredAt: a.datetime().required(),
+        expiresAt: a.datetime().required(),
+        workspaceId: a.id().required(),
+        integrationId: a.id().required(),
+        status: a.string().required(),
+        claimToken: a.string(),
+        claimedAt: a.datetime(),
+        resolvedAt: a.datetime(),
+        resolution: a.string(),
+      })
+      .identifier(['eventId'])
+      .authorization((allow) => [allow.groups(['TwitchBackendService'])]),
+
+    // Persistent replay guard for Alpha service-authenticated ingestion.
+    AlphaServiceNonce: a
+      .model({
+        nonceHash: a.string().required(),
+        expiresAt: a.datetime().required(),
+      })
+      .identifier(['nonceHash'])
+      .authorization((allow) => [allow.groups(['TwitchBackendService'])]),
+
     SafeTwitchIntegrationResult: a.customType({
       integration: a.json(),
       health: a.json(),

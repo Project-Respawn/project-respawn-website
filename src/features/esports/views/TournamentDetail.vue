@@ -48,7 +48,7 @@ const tournamentName = computed(() => {
 
             <div class="logo-wrapper">
                 <img
-                    src="@/assets/respawn-logo.png"
+                    src="@/assets/logo.png"
                     alt="Project Respawn"
                 />
             </div>

@@ -115,7 +115,7 @@ defineProps({
           <div class="future-glow"></div>
 
           <img
-            src="@/assets/respawn-logo.png"
+            src="@/assets/logo.png"
             alt=""
           />
 
