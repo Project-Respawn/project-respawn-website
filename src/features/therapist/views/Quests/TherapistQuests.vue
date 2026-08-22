@@ -1,4 +1,8 @@
-<script src="./TherapistQuests.js"></script>
+<script>
+import TherapistQuests from "./TherapistQuests.js";
+
+export default TherapistQuests;
+</script>
 
 <template>
   <section class="therapist-quests-page">
@@ -62,7 +66,7 @@
       class="therapist-quests-layout"
     >
       <!-- ===================================================
-           LEFT CLIENT CONTEXT
+           LEFT CLIENT PANEL
       ==================================================== -->
       <div class="therapist-quests-layout__client">
         <TherapistClientPanel
@@ -71,7 +75,7 @@
           :stats="clientPanelStats"
           @switch-client="handleClientSwitch"
           @assign="handleAssignQuest"
-          @overview="handleClientOverview"
+          @overview="handleWorkspaceChange('overview')"
           @request-access="handleRequestAccess"
         />
       </div>
@@ -89,11 +93,26 @@
         />
 
         <!-- =================================================
-             QUESTS WORKSPACE
+             OVERVIEW
         ================================================== -->
-        <template v-if="activeWorkspace === 'quests'">
+        <TherapistClientOverview
+          v-if="activeWorkspace === 'overview'"
+          :client="selectedClient"
+          :quests="clientQuests"
+          @open-quests="handleWorkspaceChange('quests')"
+          @open-sharing="handleWorkspaceChange('sharing')"
+        />
+
+        <!-- =================================================
+             QUESTS
+        ================================================== -->
+        <template
+          v-else-if="activeWorkspace === 'quests'"
+        >
           <section class="therapist-quest-workspace">
-            <!-- HEADER -->
+            <!-- =============================================
+                 QUEST HEADER
+            ============================================== -->
             <header class="therapist-quest-workspace-header">
               <div>
                 <span
@@ -102,7 +121,9 @@
                   {{ selectedClient.name }}
                 </span>
 
-                <h2>Quests</h2>
+                <h2>
+                  Quests
+                </h2>
 
                 <p>
                   Review current goals, progress, reflections and
@@ -131,7 +152,9 @@
               </div>
             </header>
 
-            <!-- SUMMARY -->
+            <!-- =============================================
+                 QUEST SUMMARY
+            ============================================== -->
             <section class="therapist-quest-summary-grid">
               <article
                 v-for="card in summaryCards"
@@ -150,9 +173,7 @@
                   {{ card.icon }}
                 </div>
 
-                <div
-                  class="therapist-quest-summary-card__content"
-                >
+                <div class="therapist-quest-summary-card__content">
                   <span>
                     {{ card.label }}
                   </span>
@@ -168,15 +189,17 @@
               </article>
             </section>
 
-            <!-- MASTER / DETAIL -->
+            <!-- =============================================
+                 QUEST MASTER / DETAIL
+            ============================================== -->
             <section class="therapist-quest-master-detail">
               <!-- QUEST LIST -->
-              <div
-                class="therapist-quest-master-detail__list"
-              >
+              <div class="therapist-quest-master-detail__list">
                 <div class="therapist-quest-panel-heading">
                   <div>
-                    <span>QUESTS</span>
+                    <span>
+                      QUESTS
+                    </span>
 
                     <h3>
                       {{ selectedClientFirstName }}'s quest list
@@ -196,9 +219,7 @@
               </div>
 
               <!-- QUEST DETAIL -->
-              <div
-                class="therapist-quest-master-detail__detail"
-              >
+              <div class="therapist-quest-master-detail__detail">
                 <div class="therapist-quest-panel-heading">
                   <div>
                     <span>
@@ -228,7 +249,9 @@
               </div>
             </section>
 
-            <!-- SHARING NOTE -->
+            <!-- =============================================
+                 SHARING NOTE
+            ============================================== -->
             <section class="therapist-quest-footer-note">
               <div>
                 <span
@@ -262,13 +285,15 @@
         </template>
 
         <!-- =================================================
-             ACTIVITY WORKSPACE
+             ACTIVITY
         ================================================== -->
         <template
           v-else-if="activeWorkspace === 'activity'"
         >
           <section class="therapist-activity-workspace">
-            <!-- HEADER -->
+            <!-- =============================================
+                 ACTIVITY HEADER
+            ============================================== -->
             <header class="therapist-activity-workspace__header">
               <div>
                 <span
@@ -277,7 +302,9 @@
                   {{ selectedClient.name }}
                 </span>
 
-                <h2>Activity</h2>
+                <h2>
+                  Activity
+                </h2>
 
                 <p>
                   Review shared activity, reflections, confidence
@@ -301,18 +328,24 @@
               </div>
             </header>
 
-            <!-- ACTIVITY SUMMARY -->
+            <!-- =============================================
+                 ACTIVITY SUMMARY
+            ============================================== -->
             <TherapistClientActivitySummary
               :items="activitySummaryCards"
             />
 
-            <!-- ACTIVITY FILTERS -->
+            <!-- =============================================
+                 ACTIVITY FILTERS
+            ============================================== -->
             <TherapistClientActivityFilters
               :search="activitySearch"
               :active-filter="activityFilter"
               :date-range="activityDateRange"
               :filters="activityFilters"
-              @update:search="activitySearch = $event"
+              @update:search="
+                activitySearch = $event
+              "
               @update:active-filter="
                 activityFilter = $event
               "
@@ -321,7 +354,9 @@
               "
             />
 
-            <!-- ACTIVITY TIMELINE -->
+            <!-- =============================================
+                 ACTIVITY TIMELINE
+            ============================================== -->
             <section class="therapist-activity-main-panel">
               <div class="therapist-quest-panel-heading">
                 <div>
@@ -350,51 +385,42 @@
         </template>
 
         <!-- =================================================
-             INSIGHTS PLACEHOLDER
+             INSIGHTS
         ================================================== -->
-        <template
+        <TherapistInsights
           v-else-if="activeWorkspace === 'insights'"
-        >
-          <section class="therapist-workspace-placeholder">
-            <div
-              class="therapist-workspace-placeholder__icon"
-            >
-              ✧
-            </div>
-
-            <span class="therapist-workspace-placeholder__premium">
-              THERAPIST PREMIUM
-            </span>
-
-            <h2>
-              Between Session Insights
-            </h2>
-
-            <p>
-              Patterns and trends for
-              {{ selectedClient.name }} will appear here.
-            </p>
-
-            <small>
-              We will build this workspace next.
-            </small>
-          </section>
-        </template>
+          :client="selectedClient"
+          :client-first-name="selectedClientFirstName"
+          :insights="selectedClientInsights"
+          :confidence-period="insightConfidencePeriod"
+          :quest-view="insightQuestView"
+          :quest-period="insightQuestPeriod"
+          @update:confidence-period="insightConfidencePeriod = $event"
+          @update:quest-view="insightQuestView = $event"
+          @update:quest-period="insightQuestPeriod = $event"
+          @navigate="handleWorkspaceChange"
+          @request-access="handleRequestAccess"
+        />
 
         <!-- =================================================
-             REPORTS PLACEHOLDER
+             REPORTS
+             PLACEHOLDER READY FOR BUILD
         ================================================== -->
         <template
           v-else-if="activeWorkspace === 'reports'"
         >
-          <section class="therapist-workspace-placeholder">
+          <section
+            class="therapist-workspace-placeholder"
+          >
             <div
               class="therapist-workspace-placeholder__icon"
             >
               ▤
             </div>
 
-            <span class="therapist-workspace-placeholder__premium">
+            <span
+              class="therapist-workspace-placeholder__premium"
+            >
               THERAPIST PREMIUM
             </span>
 
@@ -403,36 +429,47 @@
             </h2>
 
             <p>
-              Session preparation reports and previous reports for
-              {{ selectedClient.name }} will appear here.
+              Session preparation reports, generated summaries
+              and previous reports for {{ selectedClient.name }}
+              will appear here.
             </p>
 
             <small>
-              We will build this workspace today.
+              This workspace is ready for the Reports section.
             </small>
           </section>
         </template>
 
         <!-- =================================================
-             SHARING PLACEHOLDER
+             SHARING
+             PLACEHOLDER READY FOR BUILD
         ================================================== -->
         <template
           v-else-if="activeWorkspace === 'sharing'"
         >
-          <section class="therapist-workspace-placeholder">
+          <section
+            class="therapist-workspace-placeholder"
+          >
             <div
               class="therapist-workspace-placeholder__icon"
             >
               ♙
             </div>
 
+            <span
+              class="therapist-workspace-placeholder__premium"
+            >
+              CLIENT CONTROLLED
+            </span>
+
             <h2>
               Sharing & Permissions
             </h2>
 
             <p>
-              Review what {{ selectedClient.name }} has chosen to
-              share and request additional access where appropriate.
+              Review exactly what {{ selectedClient.name }} has
+              chosen to share and request additional permissions
+              where appropriate.
             </p>
 
             <button
@@ -442,24 +479,51 @@
             >
               Request Additional Access
             </button>
+
+            <small>
+              Requests never change permissions automatically.
+            </small>
+          </section>
+        </template>
+
+        <!-- =================================================
+             FALLBACK
+        ================================================== -->
+        <template v-else>
+          <section
+            class="therapist-workspace-placeholder"
+          >
+            <div
+              class="therapist-workspace-placeholder__icon"
+            >
+              ◇
+            </div>
+
+            <h2>
+              Client Workspace
+            </h2>
+
+            <p>
+              This workspace section is ready to be built.
+            </p>
           </section>
         </template>
       </main>
     </div>
 
     <!-- =====================================================
-         NO CLIENTS
+         NO CLIENT AVAILABLE
     ====================================================== -->
     <div
       v-else
       class="therapist-quests-empty"
     >
       <h2>
-        No clients available
+        No client available
       </h2>
 
       <p>
-        Connect a client before reviewing their workspace.
+        Return to the client list and select a client to continue.
       </p>
 
       <RouterLink
@@ -472,4 +536,6 @@
   </section>
 </template>
 
-<style src="./TherapistQuests.css"></style>
+<style>
+@import "./TherapistQuests.css";
+</style>

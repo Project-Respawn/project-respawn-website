@@ -26,6 +26,7 @@ const schema = a
   .schema({
     AdminUser: a.customType({
       id: a.string().required(),
+      cognitoSub: a.string().required(),
       username: a.string().required(),
       email: a.string(),
       name: a.string(),
@@ -41,6 +42,77 @@ const schema = a
       username: a.string().required(),
       roles: a.string().array().required(),
     }),
+
+    InvestorAccountLookup: a.customType({
+      cognitoSub: a.string().required(), email: a.string().required(), name: a.string().required(),
+    }),
+    InvestorAccessSummary: a.customType({
+      id: a.id().required(), userId: a.string().required(), cognitoSub: a.string().required(),
+      email: a.string().required(), name: a.string().required(), organisation: a.string(),
+      accessLevel: a.string().required(), ndaStatus: a.string().required(), isActive: a.boolean().required(),
+      grantedAt: a.datetime().required(), expiresAt: a.datetime(), grantedBy: a.string().required(), updatedAt: a.datetime().required(),
+    }),
+    InvestorAccessContext: a.customType({
+      hasAccess: a.boolean().required(), accessLevel: a.string(), ndaStatus: a.string(),
+      isPlatformAdmin: a.boolean().required(), expiresAt: a.datetime(),
+    }),
+    InvestorDocumentAccessResult: a.customType({
+      documentKey: a.string().required(), url: a.string().required(), expiresAt: a.datetime().required(),
+    }),
+    InvestorRequestSubmissionResult: a.customType({
+      success: a.boolean().required(), requestId: a.id(), status: a.string().required(),
+      submittedAt: a.datetime(), alreadySubmitted: a.boolean(), message: a.string(),
+    }),
+
+    InvestorAccessRequest: a.model({
+      name: a.string().required(), email: a.string().required(), organisation: a.string(), role: a.string(),
+      investmentContext: a.string().required(), message: a.string(), requestedAccessLevel: a.string().required(),
+      status: a.string().required(), submittedAt: a.datetime().required(), reviewedAt: a.datetime(),
+      reviewedBy: a.string(), decisionNotes: a.string(), linkedUserId: a.string(), linkedInvestorAccessId: a.id(),
+      auditHistory: a.json().required(),
+    }).secondaryIndexes((index) => [index('status').sortKeys(['submittedAt']), index('email').sortKeys(['submittedAt'])])
+      .authorization((allow) => [allow.groups(['SuperAdmin']).to([])]),
+
+    submitInvestorAccessRequest: a.mutation().arguments({ payload: a.json().required(), requestToken: a.string().required(), website: a.string() })
+      .returns(a.ref('InvestorRequestSubmissionResult').required()).authorization((allow) => [allow.publicApiKey()])
+      .handler(a.handler.function(myFunction)),
+    listManagedInvestorAccessRequests: a.query().returns(a.json().required())
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function(adminUserManagement)),
+    reviewInvestorAccessRequest: a.mutation().arguments({ requestId: a.id().required(), decision: a.string().required(), decisionNotes: a.string(), accountEmail: a.string(), accessLevel: a.string(), ndaStatus: a.string(), expiresAt: a.datetime() })
+      .returns(a.json().required()).authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function(adminUserManagement)),
+
+    InvestorAccess: a.model({
+      // Immutable Cognito subject. Email is display/search metadata only.
+      userId: a.string().required(), cognitoSub: a.string().required(), email: a.string().required(),
+      name: a.string().required(), organisation: a.string(), accessLevel: a.string().required(),
+      ndaStatus: a.string().required(), isActive: a.boolean().required(), grantedAt: a.datetime().required(),
+      expiresAt: a.datetime(), grantedBy: a.string().required(),
+    }).secondaryIndexes((index) => [index('userId').queryField('listInvestorAccessByUserId')])
+      .authorization((allow) => [allow.groups(['SuperAdmin']).to([])]),
+
+    InvestorAccessAuditEvent: a.model({
+      targetUserId: a.string().required(), action: a.string().required(), previousValue: a.json(),
+      newValue: a.json(), adminUserId: a.string().required(), occurredAt: a.datetime().required(),
+    }).authorization((allow) => [allow.groups(['SuperAdmin', 'Admin']).to(['read'])]),
+
+    listInvestorAccess: a.query().returns(a.ref('InvestorAccessSummary').array().required())
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function(adminUserManagement)),
+    findInvestorAccountByEmail: a.query().arguments({ email: a.string().required() }).returns(a.ref('InvestorAccountLookup'))
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function(adminUserManagement)),
+    grantInvestorAccess: a.mutation().arguments({
+      cognitoSub: a.string().required(), email: a.string().required(), name: a.string().required(), organisation: a.string(),
+      accessLevel: a.string().required(), ndaStatus: a.string().required(), expiresAt: a.datetime(),
+    }).returns(a.ref('InvestorAccessSummary').required())
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function(adminUserManagement)),
+    manageInvestorAccess: a.mutation().arguments({
+      investorAccessId: a.id().required(), accessLevel: a.string(), ndaStatus: a.string(), isActive: a.boolean(), expiresAt: a.datetime(), clearExpiry: a.boolean(),
+    }).returns(a.ref('InvestorAccessSummary').required())
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function(adminUserManagement)),
+    getMyInvestorAccess: a.query().returns(a.ref('InvestorAccessContext').required())
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    getInvestorDocumentUrl: a.query().arguments({ documentKey: a.string().required() })
+      .returns(a.ref('InvestorDocumentAccessResult').required())
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
 
     PermissionDefinitionSummary: a.customType({
       id: a.id().required(),
@@ -150,7 +222,188 @@ const schema = a
       permissions: a.string().array().required(),
       isPlatformAdmin: a.boolean().required(),
       brands: a.ref('AccessibleBrandSummary').array().required(),
+      workspaces: a.ref('AccessibleWorkspaceSummary').array().required(),
     }),
+
+    AccessibleWorkspaceSummary: a.customType({
+      id: a.id().required(),
+      name: a.string().required(),
+      isOwner: a.boolean().required(),
+      membershipStatus: a.string(),
+      permissionKeys: a.string().array().required(),
+    }),
+
+    CreatorWorkspaceSummary: a.customType({
+      id: a.id().required(),
+      // Immutable Cognito sub. Never a username, email, or client-supplied ID.
+      ownerUserId: a.string().required(),
+      name: a.string().required(),
+      createdAt: a.datetime().required(),
+      updatedAt: a.datetime().required(),
+    }),
+
+    // "Record" avoids colliding with the owner-enforcing custom
+    // getCreatorWorkspace operation generated on the Query root.
+    CreatorWorkspaceRecord: a
+      .model({
+        // Immutable Cognito sub. Set only by the backend Workspace boundary.
+        ownerUserId: a.string().required(),
+        name: a.string().required(),
+      })
+      // Required by getMyAccessContext to list owned Workspaces without a scan.
+      .secondaryIndexes((index) => [
+        index('ownerUserId').queryField('listCreatorWorkspaceByOwnerUserId'),
+      ])
+      .authorization((allow) => [
+        // No direct client model access. Authenticated callers use the
+        // owner-checking Lambda operations declared below.
+        allow.groups(['SuperAdmin']).to([]),
+      ]),
+
+    WorkspaceMembershipSummary: a.customType({
+      id: a.id().required(),
+      workspaceId: a.id().required(),
+      // Immutable Cognito sub. Never a username or email address.
+      userId: a.string().required(),
+      status: a.string().required(),
+      addedByUserId: a.string().required(),
+      revokedAt: a.datetime(),
+      revokedByUserId: a.string(),
+      permissionGeneration: a.integer().required(),
+      createdAt: a.datetime().required(),
+      updatedAt: a.datetime().required(),
+    }),
+
+    WorkspaceMembershipListResult: a.customType({
+      workspaceId: a.id().required(),
+      // The authoritative owner remains on CreatorWorkspace, not in a
+      // duplicate membership row.
+      ownerUserId: a.string().required(),
+      memberships: a.ref('WorkspaceMembershipSummary').array().required(),
+    }),
+
+    WorkspaceMembership: a
+      .model({
+        workspaceId: a.id().required(),
+        // Immutable Cognito sub. Set only by the backend membership boundary.
+        userId: a.string().required(),
+        status: a.string().required(),
+        addedByUserId: a.string().required(),
+        revokedAt: a.datetime(),
+        revokedByUserId: a.string(),
+        // Incremented across revoke/reactivate boundaries so stale permission
+        // edits from an earlier membership lifetime can never become valid.
+        permissionGeneration: a.integer().required(),
+      })
+      // Required by getMyAccessContext to find this canonical sub's
+      // memberships without scanning every Workspace membership.
+      .secondaryIndexes((index) => [
+        index('userId').queryField('listWorkspaceMembershipByUserId'),
+      ])
+      .authorization((allow) => [
+        // No direct client model access. Authenticated callers use the
+        // owner/member-checking Lambda operations declared below.
+        allow.groups(['SuperAdmin']).to([]),
+      ]),
+
+    WorkspaceMembershipPermission: a
+      .model({
+        membershipId: a.id().required(),
+        permissionKey: a.string().required(),
+        // Immutable Cognito sub of the Workspace owner who assigned it.
+        assignedByUserId: a.string().required(),
+        assignedAt: a.datetime().required(),
+      })
+      // Required to resolve an active membership's explicit capabilities.
+      .secondaryIndexes((index) => [
+        index('membershipId').queryField('listWorkspaceMembershipPermissionByMembershipId'),
+      ])
+      .authorization((allow) => [
+        allow.groups(['SuperAdmin']).to([]),
+      ]),
+
+    WorkspaceMembershipPermissionSet: a
+      .model({
+        membershipId: a.id().required(),
+        permissionGeneration: a.integer().required(),
+        revision: a.integer().required(),
+        permissionKeys: a.string().array().required(),
+        updatedByUserId: a.string().required(),
+        updatedAt: a.datetime().required(),
+      })
+      .authorization((allow) => [
+        allow.groups(['SuperAdmin']).to([]),
+      ]),
+
+    WorkspacePermissionResult: a.customType({
+      workspaceId: a.id().required(),
+      userId: a.string().required(),
+      isOwner: a.boolean().required(),
+      permissionKeys: a.string().array().required(),
+      permissionGeneration: a.integer().required(),
+      revision: a.integer().required(),
+    }),
+
+    createCreatorWorkspace: a
+      .mutation()
+      .arguments({ name: a.string().required() })
+      .returns(a.ref('CreatorWorkspaceSummary').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    getCreatorWorkspace: a
+      .query()
+      .arguments({ workspaceId: a.id().required() })
+      .returns(a.ref('CreatorWorkspaceSummary').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    listMyCreatorWorkspaces: a
+      .query()
+      .returns(a.ref('CreatorWorkspaceSummary').array().required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    addWorkspaceMember: a
+      .mutation()
+      .arguments({ workspaceId: a.id().required(), targetUserId: a.string().required() })
+      .returns(a.ref('WorkspaceMembershipSummary').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    listWorkspaceMembers: a
+      .query()
+      .arguments({ workspaceId: a.id().required() })
+      .returns(a.ref('WorkspaceMembershipListResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    revokeWorkspaceMember: a
+      .mutation()
+      .arguments({ workspaceId: a.id().required(), targetUserId: a.string().required() })
+      .returns(a.ref('WorkspaceMembershipSummary').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    getMyWorkspacePermissions: a
+      .query()
+      .arguments({ workspaceId: a.id().required() })
+      .returns(a.ref('WorkspacePermissionResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
+
+    setWorkspaceMemberPermissions: a
+      .mutation()
+      .arguments({
+        workspaceId: a.id().required(),
+        targetUserId: a.string().required(),
+        permissionKeys: a.string().array().required(),
+        expectedPermissionGeneration: a.integer().required(),
+        expectedRevision: a.integer().required(),
+      })
+      .returns(a.ref('WorkspacePermissionResult').required())
+      .authorization((allow) => [allow.authenticated()])
+      .handler(a.handler.function(myFunction)),
 
     ApplicationStorageResult: a.customType({
       applicationId: a.id().required(),
@@ -288,6 +541,8 @@ const schema = a
     listManagedProfiles: a.query().returns(a.ref('ManagedProfileListResult').required())
       .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
     recoverManagedOrder: a.mutation().arguments({ orderId: a.id().required() }).returns(a.ref('Stage9MutationResult').required())
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    reconcileManagedOrder: a.mutation().arguments({ orderId: a.id().required() }).returns(a.ref('Stage9MutationResult').required())
       .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
     importManagedRevolutOrder: a.mutation().arguments({ revolutOrderId: a.string().required() }).returns(a.ref('Stage9MutationResult').required())
       .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
@@ -630,6 +885,41 @@ const schema = a
         errors: a.string().array().required(),
       })
       .identifier(['integrationId'])
+      .authorization((allow) => [allow.groups(['TwitchBackendService'])]),
+
+    // Narrow durable bridge for Alpha streamer-marketplace redemptions.
+    // This is intentionally not a general event bus and carries no member-
+    // supplied reward text. Runtime claims are terminal: an unacknowledged
+    // claim is never re-issued, preferring a missed live alert to a duplicate.
+    RewardRedemptionEvent: a
+      .model({
+        eventId: a.string().required(),
+        eventVersion: a.integer().required(),
+        eventType: a.string().required(),
+        source: a.string().required(),
+        redemptionId: a.string().required(),
+        twitchBroadcasterId: a.string().required(),
+        safeMemberDisplayName: a.string().required(),
+        occurredAt: a.datetime().required(),
+        expiresAt: a.datetime().required(),
+        workspaceId: a.id().required(),
+        integrationId: a.id().required(),
+        status: a.string().required(),
+        claimToken: a.string(),
+        claimedAt: a.datetime(),
+        resolvedAt: a.datetime(),
+        resolution: a.string(),
+      })
+      .identifier(['eventId'])
+      .authorization((allow) => [allow.groups(['TwitchBackendService'])]),
+
+    // Persistent replay guard for Alpha service-authenticated ingestion.
+    AlphaServiceNonce: a
+      .model({
+        nonceHash: a.string().required(),
+        expiresAt: a.datetime().required(),
+      })
+      .identifier(['nonceHash'])
       .authorization((allow) => [allow.groups(['TwitchBackendService'])]),
 
     SafeTwitchIntegrationResult: a.customType({
@@ -1270,9 +1560,11 @@ const schema = a
         overallFulfillmentStatus: a.string().required(),
         customerName: a.string().required(),
         email: a.string().required(),
+        phone: a.string(),
         shippingAddress: a.json().required(),
         items: a.json().required(),
         providerStatuses: a.json().required(),
+        reconciliationError: a.string(),
         auditHistory: a.json().required(),
         createdAt: a.datetime(),
         updatedAt: a.datetime(),

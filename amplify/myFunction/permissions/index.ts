@@ -1,11 +1,13 @@
 import { getAccessibleBrandSummaries } from '../brands'
 import {
   assertPlatformAdmin,
+  requireCanonicalUserId,
   getIdentityGroups,
   getIdentityUsername,
   getResolverIdentity,
   isPlatformAdmin,
 } from '../shared/auth'
+import { getAccessibleWorkspaceSummaries } from '../workspaces/accessContext'
 import { writePermissionAudit } from '../shared/audit'
 import { assertPlatformControlAssignments, resolveEffectivePermissionKeys } from '../shared/effectivePermissions'
 import { PLATFORM_CONTROL_PERMISSION_KEYS } from '../shared/permissionConstants'
@@ -442,15 +444,17 @@ export async function handleGetMyAccessContext(event: any) {
 export async function handleGetMyAccessContextWithClient(event: any, client: any) {
   const identity = getResolverIdentity(event)
   const userId = getIdentityUsername(identity)
+  const canonicalUserId = requireCanonicalUserId(identity)
 
   if (!userId) {
     throw new Error('Authenticated user identity is required')
   }
 
   const groups = [...new Set(getIdentityGroups(identity))]
-  const [permissions, brands] = await Promise.all([
+  const [permissions, brands, workspaces] = await Promise.all([
     getEffectivePermissionKeys(client, identity),
     getAccessibleBrandSummaries(client, userId, groups.some((group) => ['SuperAdmin', 'Admin', 'Staff'].includes(group))),
+    getAccessibleWorkspaceSummaries(client, canonicalUserId),
   ])
   const platformAdmin = isPlatformAdmin(identity)
 
@@ -460,5 +464,6 @@ export async function handleGetMyAccessContextWithClient(event: any, client: any
     permissions: [...permissions].sort(),
     isPlatformAdmin: platformAdmin,
     brands,
+    workspaces,
   }
 }

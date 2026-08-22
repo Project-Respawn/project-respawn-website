@@ -1,0 +1,804 @@
+/* =========================================================
+   THERAPIST INSIGHTS
+   Project Respawn Therapist Workspace
+
+   TABLE OF CONTENTS
+   01. Workspace
+   02. Header
+   03. Sharing Controls
+   04. Insight Grid
+   05. Insight Panels
+   06. Since Last Session
+   07. Confidence Trend
+   08. Goal Progress
+   09. Interaction Breakdown
+   10. Pattern Summary
+   11. Discussion Topics
+   12. Insight Footer
+   13. Empty State
+   14. Responsive
+========================================================= */
+
+
+/* =========================================================
+   01. WORKSPACE
+========================================================= */
+
+.therapist-insights-workspace {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  min-width: 0;
+  padding-bottom: 32px;
+}
+
+
+/* =========================================================
+   02. HEADER
+========================================================= */
+
+.therapist-insights-workspace__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+
+  padding: 28px 30px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(129, 92, 246, 0.12),
+      transparent 38%
+    ),
+    rgba(17, 20, 30, 0.78);
+
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+.therapist-insights-workspace__header > div:first-child {
+  min-width: 0;
+  max-width: 760px;
+}
+
+.therapist-insights-workspace__header h2 {
+  margin: 8px 0 8px;
+
+  font-size: clamp(1.55rem, 2vw, 2rem);
+  font-weight: 700;
+  line-height: 1.15;
+
+  color: #f5f7fb;
+}
+
+.therapist-insights-workspace__header p {
+  max-width: 720px;
+  margin: 0;
+
+  color: rgba(223, 228, 240, 0.72);
+
+  font-size: 0.96rem;
+  line-height: 1.65;
+}
+
+
+/* =========================================================
+   03. SHARING CONTROLS
+========================================================= */
+
+.therapist-insights-workspace__sharing {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+
+  flex-shrink: 0;
+
+  padding: 11px 14px;
+
+  border: 1px solid rgba(130, 145, 190, 0.14);
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.therapist-insights-workspace__sharing span {
+  color: rgba(211, 217, 232, 0.72);
+
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+
+.therapist-insights-workspace__sharing button {
+  appearance: none;
+  border: 0;
+  padding: 0;
+
+  background: transparent;
+
+  color: #a99cff;
+
+  font: inherit;
+  font-size: 0.77rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    color 160ms ease,
+    opacity 160ms ease;
+}
+
+.therapist-insights-workspace__sharing button:hover {
+  color: #c7c0ff;
+}
+
+.therapist-insights-workspace__sharing button:focus-visible {
+  outline: 2px solid rgba(169, 156, 255, 0.7);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+
+/* =========================================================
+   04. INSIGHT GRID
+========================================================= */
+
+.therapist-insights-grid {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  gap: 20px;
+}
+
+.therapist-insights-grid--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.therapist-insights-grid > * {
+  min-width: 0;
+}
+
+
+/* =========================================================
+   05. INSIGHT PANELS
+========================================================= */
+
+/*
+  These selectors deliberately support the component naming
+  pattern used throughout the Therapist workspace.
+
+  This gives every Insights component a consistent shell
+  without forcing the components to become visually identical.
+*/
+
+.therapist-since-last-session,
+.therapist-confidence-trend,
+.therapist-goal-progress,
+.therapist-interaction-breakdown,
+.therapist-pattern-summary,
+.therapist-discussion-topics {
+  position: relative;
+
+  min-width: 0;
+
+  padding: 22px;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 18px;
+
+  background: rgba(17, 20, 30, 0.72);
+
+  box-shadow:
+    0 14px 36px rgba(0, 0, 0, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+.therapist-since-last-session::before,
+.therapist-confidence-trend::before,
+.therapist-goal-progress::before,
+.therapist-interaction-breakdown::before,
+.therapist-pattern-summary::before,
+.therapist-discussion-topics::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: 22px;
+  right: 22px;
+
+  height: 1px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(162, 142, 255, 0.34),
+    transparent
+  );
+
+  pointer-events: none;
+}
+
+
+/* Generic headings inside insight components */
+
+.therapist-since-last-session h3,
+.therapist-confidence-trend h3,
+.therapist-goal-progress h3,
+.therapist-interaction-breakdown h3,
+.therapist-pattern-summary h3,
+.therapist-discussion-topics h3 {
+  margin: 0;
+
+  color: #f4f6fb;
+
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.therapist-since-last-session p,
+.therapist-confidence-trend p,
+.therapist-goal-progress p,
+.therapist-interaction-breakdown p,
+.therapist-pattern-summary p,
+.therapist-discussion-topics p {
+  color: rgba(217, 223, 236, 0.68);
+
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   06. SINCE LAST SESSION
+========================================================= */
+
+.therapist-since-last-session {
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(80, 174, 255, 0.07),
+      transparent 34%
+    ),
+    rgba(17, 20, 30, 0.72);
+}
+
+.therapist-since-last-session__grid,
+.therapist-insight-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+
+  margin-top: 18px;
+}
+
+.therapist-since-last-session__item,
+.therapist-insight-summary-card {
+  min-width: 0;
+
+  padding: 15px;
+
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  border-radius: 13px;
+
+  background: rgba(255, 255, 255, 0.027);
+}
+
+.therapist-since-last-session__item span,
+.therapist-insight-summary-card span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: rgba(204, 211, 228, 0.59);
+
+  font-size: 0.73rem;
+  font-weight: 600;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.therapist-since-last-session__item strong,
+.therapist-insight-summary-card strong {
+  display: block;
+
+  color: #ffffff;
+
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   07. CONFIDENCE TREND
+========================================================= */
+
+.therapist-confidence-trend {
+  min-height: 320px;
+}
+
+.therapist-confidence-trend__header,
+.therapist-insight-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin-bottom: 20px;
+}
+
+.therapist-confidence-trend select,
+.therapist-interaction-breakdown select,
+.therapist-insights-workspace select {
+  appearance: none;
+
+  min-height: 36px;
+
+  padding: 7px 30px 7px 11px;
+
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 9px;
+
+  background: rgba(8, 11, 18, 0.58);
+
+  color: rgba(236, 239, 247, 0.85);
+
+  font: inherit;
+  font-size: 0.76rem;
+
+  cursor: pointer;
+}
+
+.therapist-confidence-trend select:focus-visible,
+.therapist-interaction-breakdown select:focus-visible,
+.therapist-insights-workspace select:focus-visible {
+  outline: 2px solid rgba(159, 139, 255, 0.62);
+  outline-offset: 2px;
+}
+
+
+/* =========================================================
+   08. GOAL PROGRESS
+========================================================= */
+
+.therapist-goal-progress {
+  min-height: 320px;
+}
+
+.therapist-goal-progress__list,
+.therapist-insight-goal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  margin-top: 18px;
+}
+
+.therapist-goal-progress__item,
+.therapist-insight-goal {
+  padding: 14px 0;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+.therapist-goal-progress__item:last-child,
+.therapist-insight-goal:last-child {
+  border-bottom: 0;
+}
+
+.therapist-goal-progress__bar,
+.therapist-insight-progress {
+  position: relative;
+
+  width: 100%;
+  height: 7px;
+
+  margin-top: 9px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.065);
+}
+
+.therapist-goal-progress__bar > span,
+.therapist-insight-progress > span {
+  display: block;
+
+  height: 100%;
+
+  border-radius: inherit;
+
+  background: linear-gradient(
+    90deg,
+    rgba(121, 103, 255, 0.95),
+    rgba(167, 143, 255, 0.95)
+  );
+}
+
+
+/* =========================================================
+   09. INTERACTION BREAKDOWN
+========================================================= */
+
+.therapist-interaction-breakdown {
+  min-height: 340px;
+}
+
+.therapist-interaction-breakdown__controls,
+.therapist-insight-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.therapist-interaction-breakdown__chart {
+  min-height: 220px;
+  margin-top: 18px;
+}
+
+
+/* =========================================================
+   10. PATTERN SUMMARY
+========================================================= */
+
+.therapist-pattern-summary {
+  min-height: 340px;
+}
+
+.therapist-pattern-summary__list,
+.therapist-insight-pattern-list {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+
+  margin-top: 18px;
+}
+
+.therapist-pattern-summary__item,
+.therapist-insight-pattern {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+
+  padding: 13px 14px;
+
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.022);
+}
+
+.therapist-pattern-summary__icon,
+.therapist-insight-pattern__icon {
+  display: grid;
+  place-items: center;
+
+  flex: 0 0 32px;
+
+  width: 32px;
+  height: 32px;
+
+  border-radius: 9px;
+
+  background: rgba(139, 119, 255, 0.11);
+
+  color: #b5a8ff;
+}
+
+.therapist-pattern-summary__content,
+.therapist-insight-pattern__content {
+  min-width: 0;
+}
+
+.therapist-pattern-summary__content strong,
+.therapist-insight-pattern__content strong {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #eceff7;
+
+  font-size: 0.84rem;
+}
+
+.therapist-pattern-summary__content p,
+.therapist-insight-pattern__content p {
+  margin: 0;
+
+  font-size: 0.79rem;
+}
+
+
+/* =========================================================
+   11. DISCUSSION TOPICS
+========================================================= */
+
+.therapist-discussion-topics {
+  background:
+    radial-gradient(
+      circle at 80% 0%,
+      rgba(144, 115, 255, 0.08),
+      transparent 38%
+    ),
+    rgba(17, 20, 30, 0.72);
+}
+
+.therapist-discussion-topics__list,
+.therapist-insight-topic-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+
+  margin-top: 18px;
+}
+
+.therapist-discussion-topics__item,
+.therapist-insight-topic {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  min-width: 0;
+  min-height: 120px;
+
+  padding: 16px;
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 13px;
+
+  background: rgba(255, 255, 255, 0.023);
+
+  transition:
+    border-color 160ms ease,
+    transform 160ms ease,
+    background 160ms ease;
+}
+
+.therapist-discussion-topics__item:hover,
+.therapist-insight-topic:hover {
+  transform: translateY(-1px);
+
+  border-color: rgba(161, 143, 255, 0.22);
+
+  background: rgba(255, 255, 255, 0.032);
+}
+
+.therapist-discussion-topics__item strong,
+.therapist-insight-topic strong {
+  color: #f0f2f8;
+
+  font-size: 0.86rem;
+  line-height: 1.4;
+}
+
+.therapist-discussion-topics__item p,
+.therapist-insight-topic p {
+  margin: 0;
+
+  font-size: 0.78rem;
+}
+
+
+/* =========================================================
+   12. INSIGHT FOOTER
+========================================================= */
+
+.therapist-insights-workspace__footer {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+
+  padding: 15px 17px;
+
+  border: 1px solid rgba(107, 138, 202, 0.12);
+  border-radius: 13px;
+
+  background: rgba(74, 102, 165, 0.055);
+}
+
+.therapist-insights-workspace__footer > span {
+  display: grid;
+  place-items: center;
+
+  flex: 0 0 24px;
+
+  width: 24px;
+  height: 24px;
+
+  border: 1px solid rgba(152, 173, 223, 0.18);
+  border-radius: 50%;
+
+  color: rgba(179, 196, 236, 0.82);
+
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.therapist-insights-workspace__footer p {
+  margin: 1px 0 0;
+
+  color: rgba(202, 211, 231, 0.65);
+
+  font-size: 0.76rem;
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   13. EMPTY STATE
+========================================================= */
+
+.therapist-insights-workspace +
+.therapist-workspace-placeholder {
+  min-height: 380px;
+}
+
+.therapist-workspace-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 380px;
+
+  padding: 44px 24px;
+
+  text-align: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 18px;
+
+  background: rgba(17, 20, 30, 0.62);
+}
+
+.therapist-workspace-placeholder__icon {
+  display: grid;
+  place-items: center;
+
+  width: 54px;
+  height: 54px;
+
+  margin-bottom: 16px;
+
+  border: 1px solid rgba(160, 140, 255, 0.18);
+  border-radius: 16px;
+
+  background: rgba(137, 116, 255, 0.08);
+
+  color: #b4a7ff;
+
+  font-size: 1.4rem;
+}
+
+.therapist-workspace-placeholder__premium {
+  margin-bottom: 7px;
+
+  color: #9f91ff;
+
+  font-size: 0.69rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+}
+
+.therapist-workspace-placeholder h2 {
+  margin: 0 0 8px;
+
+  color: #f3f5fa;
+
+  font-size: 1.3rem;
+}
+
+.therapist-workspace-placeholder p {
+  max-width: 500px;
+  margin: 0 0 18px;
+
+  color: rgba(213, 219, 233, 0.65);
+
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   SHARED INSIGHTS BUTTONS
+========================================================= */
+
+.therapist-insights-workspace button:not(
+  .therapist-insights-workspace__sharing button
+) {
+  font-family: inherit;
+}
+
+.therapist-insights-workspace a,
+.therapist-insights-workspace button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+/* =========================================================
+   14. RESPONSIVE
+========================================================= */
+
+@media (max-width: 1180px) {
+  .therapist-insight-summary-grid,
+  .therapist-since-last-session__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .therapist-discussion-topics__list,
+  .therapist-insight-topic-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+@media (max-width: 920px) {
+  .therapist-insights-grid--two {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .therapist-insights-workspace__header {
+    flex-direction: column;
+  }
+
+  .therapist-insights-workspace__sharing {
+    align-items: flex-start;
+
+    width: 100%;
+  }
+}
+
+
+@media (max-width: 640px) {
+  .therapist-insights-workspace {
+    gap: 16px;
+  }
+
+  .therapist-insights-workspace__header {
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  .therapist-since-last-session,
+  .therapist-confidence-trend,
+  .therapist-goal-progress,
+  .therapist-interaction-breakdown,
+  .therapist-pattern-summary,
+  .therapist-discussion-topics {
+    padding: 17px;
+    border-radius: 15px;
+  }
+
+  .therapist-insight-summary-grid,
+  .therapist-since-last-session__grid,
+  .therapist-discussion-topics__list,
+  .therapist-insight-topic-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .therapist-confidence-trend__header,
+  .therapist-insight-card-header {
+    flex-direction: column;
+  }
+
+  .therapist-interaction-breakdown__controls,
+  .therapist-insight-controls {
+    justify-content: flex-start;
+  }
+
+  .therapist-insights-workspace__footer {
+    padding: 14px;
+  }
+}

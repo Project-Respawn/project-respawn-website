@@ -88,6 +88,820 @@
     "model_introspection": {
       "version": 1,
       "models": {
+        "InvestorAccessRequest": {
+          "name": "InvestorAccessRequest",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "name": {
+              "name": "name",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "email": {
+              "name": "email",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "organisation": {
+              "name": "organisation",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "role": {
+              "name": "role",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "investmentContext": {
+              "name": "investmentContext",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "message": {
+              "name": "message",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "requestedAccessLevel": {
+              "name": "requestedAccessLevel",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "status": {
+              "name": "status",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "submittedAt": {
+              "name": "submittedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "reviewedAt": {
+              "name": "reviewedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "reviewedBy": {
+              "name": "reviewedBy",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "decisionNotes": {
+              "name": "decisionNotes",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "linkedUserId": {
+              "name": "linkedUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "linkedInvestorAccessId": {
+              "name": "linkedInvestorAccessId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false,
+              "attributes": []
+            },
+            "auditHistory": {
+              "name": "auditHistory",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": true,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "InvestorAccessRequests",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "investorAccessRequestsByEmailAndSubmittedAt",
+                "queryField": "listInvestorAccessRequestByEmailAndSubmittedAt",
+                "fields": [
+                  "email",
+                  "submittedAt"
+                ]
+              }
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "investorAccessRequestsByStatusAndSubmittedAt",
+                "queryField": "listInvestorAccessRequestByStatusAndSubmittedAt",
+                "fields": [
+                  "status",
+                  "submittedAt"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [],
+                    "groups": [
+                      "SuperAdmin"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "InvestorAccess": {
+          "name": "InvestorAccess",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "userId": {
+              "name": "userId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "cognitoSub": {
+              "name": "cognitoSub",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "email": {
+              "name": "email",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "name": {
+              "name": "name",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "organisation": {
+              "name": "organisation",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "accessLevel": {
+              "name": "accessLevel",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "ndaStatus": {
+              "name": "ndaStatus",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "isActive": {
+              "name": "isActive",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "grantedAt": {
+              "name": "grantedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "expiresAt": {
+              "name": "expiresAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "grantedBy": {
+              "name": "grantedBy",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "InvestorAccesses",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "investorAccessesByUserId",
+                "queryField": "listInvestorAccessByUserId",
+                "fields": [
+                  "userId"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [],
+                    "groups": [
+                      "SuperAdmin"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "InvestorAccessAuditEvent": {
+          "name": "InvestorAccessAuditEvent",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "targetUserId": {
+              "name": "targetUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "action": {
+              "name": "action",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "previousValue": {
+              "name": "previousValue",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": false,
+              "attributes": []
+            },
+            "newValue": {
+              "name": "newValue",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": false,
+              "attributes": []
+            },
+            "adminUserId": {
+              "name": "adminUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "occurredAt": {
+              "name": "occurredAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "InvestorAccessAuditEvents",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [
+                      "read"
+                    ],
+                    "groups": [
+                      "SuperAdmin",
+                      "Admin"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "CreatorWorkspaceRecord": {
+          "name": "CreatorWorkspaceRecord",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "ownerUserId": {
+              "name": "ownerUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "name": {
+              "name": "name",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "CreatorWorkspaceRecords",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "creatorWorkspaceRecordsByOwnerUserId",
+                "queryField": "listCreatorWorkspaceByOwnerUserId",
+                "fields": [
+                  "ownerUserId"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [],
+                    "groups": [
+                      "SuperAdmin"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "WorkspaceMembership": {
+          "name": "WorkspaceMembership",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "workspaceId": {
+              "name": "workspaceId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "userId": {
+              "name": "userId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "status": {
+              "name": "status",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "addedByUserId": {
+              "name": "addedByUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "revokedAt": {
+              "name": "revokedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "revokedByUserId": {
+              "name": "revokedByUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "permissionGeneration": {
+              "name": "permissionGeneration",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": true,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "WorkspaceMemberships",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "workspaceMembershipsByUserId",
+                "queryField": "listWorkspaceMembershipByUserId",
+                "fields": [
+                  "userId"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [],
+                    "groups": [
+                      "SuperAdmin"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "WorkspaceMembershipPermission": {
+          "name": "WorkspaceMembershipPermission",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "membershipId": {
+              "name": "membershipId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "permissionKey": {
+              "name": "permissionKey",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "assignedByUserId": {
+              "name": "assignedByUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "assignedAt": {
+              "name": "assignedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "WorkspaceMembershipPermissions",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "workspaceMembershipPermissionsByMembershipId",
+                "queryField": "listWorkspaceMembershipPermissionByMembershipId",
+                "fields": [
+                  "membershipId"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [],
+                    "groups": [
+                      "SuperAdmin"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "WorkspaceMembershipPermissionSet": {
+          "name": "WorkspaceMembershipPermissionSet",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "membershipId": {
+              "name": "membershipId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "permissionGeneration": {
+              "name": "permissionGeneration",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": true,
+              "attributes": []
+            },
+            "revision": {
+              "name": "revision",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": true,
+              "attributes": []
+            },
+            "permissionKeys": {
+              "name": "permissionKeys",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": false
+            },
+            "updatedByUserId": {
+              "name": "updatedByUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "WorkspaceMembershipPermissionSets",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [],
+                    "groups": [
+                      "SuperAdmin"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
         "PermissionDefinition": {
           "name": "PermissionDefinition",
           "fields": {
@@ -4749,6 +5563,13 @@
               "isRequired": true,
               "attributes": []
             },
+            "phone": {
+              "name": "phone",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
             "shippingAddress": {
               "name": "shippingAddress",
               "isArray": false,
@@ -4768,6 +5589,13 @@
               "isArray": false,
               "type": "AWSJSON",
               "isRequired": true,
+              "attributes": []
+            },
+            "reconciliationError": {
+              "name": "reconciliationError",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
               "attributes": []
             },
             "auditHistory": {
@@ -5796,6 +6624,13 @@
               "isRequired": true,
               "attributes": []
             },
+            "cognitoSub": {
+              "name": "cognitoSub",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
             "username": {
               "name": "username",
               "isArray": false,
@@ -5879,6 +6714,241 @@
               "isRequired": false,
               "attributes": [],
               "isArrayNullable": false
+            }
+          }
+        },
+        "InvestorAccountLookup": {
+          "name": "InvestorAccountLookup",
+          "fields": {
+            "cognitoSub": {
+              "name": "cognitoSub",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "email": {
+              "name": "email",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "name": {
+              "name": "name",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            }
+          }
+        },
+        "InvestorAccessSummary": {
+          "name": "InvestorAccessSummary",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "userId": {
+              "name": "userId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "cognitoSub": {
+              "name": "cognitoSub",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "email": {
+              "name": "email",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "name": {
+              "name": "name",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "organisation": {
+              "name": "organisation",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "accessLevel": {
+              "name": "accessLevel",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "ndaStatus": {
+              "name": "ndaStatus",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "isActive": {
+              "name": "isActive",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "grantedAt": {
+              "name": "grantedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "expiresAt": {
+              "name": "expiresAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "grantedBy": {
+              "name": "grantedBy",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            }
+          }
+        },
+        "InvestorAccessContext": {
+          "name": "InvestorAccessContext",
+          "fields": {
+            "hasAccess": {
+              "name": "hasAccess",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "accessLevel": {
+              "name": "accessLevel",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "ndaStatus": {
+              "name": "ndaStatus",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "isPlatformAdmin": {
+              "name": "isPlatformAdmin",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "expiresAt": {
+              "name": "expiresAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            }
+          }
+        },
+        "InvestorDocumentAccessResult": {
+          "name": "InvestorDocumentAccessResult",
+          "fields": {
+            "documentKey": {
+              "name": "documentKey",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "url": {
+              "name": "url",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "expiresAt": {
+              "name": "expiresAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            }
+          }
+        },
+        "InvestorRequestSubmissionResult": {
+          "name": "InvestorRequestSubmissionResult",
+          "fields": {
+            "success": {
+              "name": "success",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "requestId": {
+              "name": "requestId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false,
+              "attributes": []
+            },
+            "status": {
+              "name": "status",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "submittedAt": {
+              "name": "submittedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "alreadySubmitted": {
+              "name": "alreadySubmitted",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false,
+              "attributes": []
+            },
+            "message": {
+              "name": "message",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
             }
           }
         },
@@ -6711,6 +7781,249 @@
               "isRequired": false,
               "attributes": [],
               "isArrayNullable": false
+            },
+            "workspaces": {
+              "name": "workspaces",
+              "isArray": true,
+              "type": {
+                "nonModel": "AccessibleWorkspaceSummary"
+              },
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": false
+            }
+          }
+        },
+        "AccessibleWorkspaceSummary": {
+          "name": "AccessibleWorkspaceSummary",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "name": {
+              "name": "name",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "isOwner": {
+              "name": "isOwner",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "membershipStatus": {
+              "name": "membershipStatus",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "permissionKeys": {
+              "name": "permissionKeys",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": false
+            }
+          }
+        },
+        "CreatorWorkspaceSummary": {
+          "name": "CreatorWorkspaceSummary",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "ownerUserId": {
+              "name": "ownerUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "name": {
+              "name": "name",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            }
+          }
+        },
+        "WorkspaceMembershipSummary": {
+          "name": "WorkspaceMembershipSummary",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "workspaceId": {
+              "name": "workspaceId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "userId": {
+              "name": "userId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "status": {
+              "name": "status",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "addedByUserId": {
+              "name": "addedByUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "revokedAt": {
+              "name": "revokedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "revokedByUserId": {
+              "name": "revokedByUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "permissionGeneration": {
+              "name": "permissionGeneration",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": true,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": true,
+              "attributes": []
+            }
+          }
+        },
+        "WorkspaceMembershipListResult": {
+          "name": "WorkspaceMembershipListResult",
+          "fields": {
+            "workspaceId": {
+              "name": "workspaceId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "ownerUserId": {
+              "name": "ownerUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "memberships": {
+              "name": "memberships",
+              "isArray": true,
+              "type": {
+                "nonModel": "WorkspaceMembershipSummary"
+              },
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": false
+            }
+          }
+        },
+        "WorkspacePermissionResult": {
+          "name": "WorkspacePermissionResult",
+          "fields": {
+            "workspaceId": {
+              "name": "workspaceId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "userId": {
+              "name": "userId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "isOwner": {
+              "name": "isOwner",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "permissionKeys": {
+              "name": "permissionKeys",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "attributes": [],
+              "isArrayNullable": false
+            },
+            "permissionGeneration": {
+              "name": "permissionGeneration",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": true,
+              "attributes": []
+            },
+            "revision": {
+              "name": "revision",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": true,
+              "attributes": []
             }
           }
         },
@@ -7275,6 +8588,118 @@
         }
       },
       "queries": {
+        "listManagedInvestorAccessRequests": {
+          "name": "listManagedInvestorAccessRequests",
+          "isArray": false,
+          "type": "AWSJSON",
+          "isRequired": true
+        },
+        "listInvestorAccess": {
+          "name": "listInvestorAccess",
+          "isArray": true,
+          "type": {
+            "nonModel": "InvestorAccessSummary"
+          },
+          "isRequired": false,
+          "isArrayNullable": false
+        },
+        "findInvestorAccountByEmail": {
+          "name": "findInvestorAccountByEmail",
+          "isArray": false,
+          "type": {
+            "nonModel": "InvestorAccountLookup"
+          },
+          "isRequired": false,
+          "arguments": {
+            "email": {
+              "name": "email",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            }
+          }
+        },
+        "getMyInvestorAccess": {
+          "name": "getMyInvestorAccess",
+          "isArray": false,
+          "type": {
+            "nonModel": "InvestorAccessContext"
+          },
+          "isRequired": true
+        },
+        "getInvestorDocumentUrl": {
+          "name": "getInvestorDocumentUrl",
+          "isArray": false,
+          "type": {
+            "nonModel": "InvestorDocumentAccessResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "documentKey": {
+              "name": "documentKey",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            }
+          }
+        },
+        "getCreatorWorkspace": {
+          "name": "getCreatorWorkspace",
+          "isArray": false,
+          "type": {
+            "nonModel": "CreatorWorkspaceSummary"
+          },
+          "isRequired": true,
+          "arguments": {
+            "workspaceId": {
+              "name": "workspaceId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            }
+          }
+        },
+        "listMyCreatorWorkspaces": {
+          "name": "listMyCreatorWorkspaces",
+          "isArray": true,
+          "type": {
+            "nonModel": "CreatorWorkspaceSummary"
+          },
+          "isRequired": false,
+          "isArrayNullable": false
+        },
+        "listWorkspaceMembers": {
+          "name": "listWorkspaceMembers",
+          "isArray": false,
+          "type": {
+            "nonModel": "WorkspaceMembershipListResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "workspaceId": {
+              "name": "workspaceId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            }
+          }
+        },
+        "getMyWorkspacePermissions": {
+          "name": "getMyWorkspacePermissions",
+          "isArray": false,
+          "type": {
+            "nonModel": "WorkspacePermissionResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "workspaceId": {
+              "name": "workspaceId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            }
+          }
+        },
         "listAdminApplications": {
           "name": "listAdminApplications",
           "isArray": false,
@@ -7485,6 +8910,283 @@
         }
       },
       "mutations": {
+        "submitInvestorAccessRequest": {
+          "name": "submitInvestorAccessRequest",
+          "isArray": false,
+          "type": {
+            "nonModel": "InvestorRequestSubmissionResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "payload": {
+              "name": "payload",
+              "isArray": false,
+              "type": "AWSJSON",
+              "isRequired": true
+            },
+            "requestToken": {
+              "name": "requestToken",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "website": {
+              "name": "website",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            }
+          }
+        },
+        "reviewInvestorAccessRequest": {
+          "name": "reviewInvestorAccessRequest",
+          "isArray": false,
+          "type": "AWSJSON",
+          "isRequired": true,
+          "arguments": {
+            "requestId": {
+              "name": "requestId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            },
+            "decision": {
+              "name": "decision",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "decisionNotes": {
+              "name": "decisionNotes",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "accountEmail": {
+              "name": "accountEmail",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "accessLevel": {
+              "name": "accessLevel",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "ndaStatus": {
+              "name": "ndaStatus",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "expiresAt": {
+              "name": "expiresAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false
+            }
+          }
+        },
+        "grantInvestorAccess": {
+          "name": "grantInvestorAccess",
+          "isArray": false,
+          "type": {
+            "nonModel": "InvestorAccessSummary"
+          },
+          "isRequired": true,
+          "arguments": {
+            "cognitoSub": {
+              "name": "cognitoSub",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "email": {
+              "name": "email",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "name": {
+              "name": "name",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "organisation": {
+              "name": "organisation",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "accessLevel": {
+              "name": "accessLevel",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "ndaStatus": {
+              "name": "ndaStatus",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "expiresAt": {
+              "name": "expiresAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false
+            }
+          }
+        },
+        "manageInvestorAccess": {
+          "name": "manageInvestorAccess",
+          "isArray": false,
+          "type": {
+            "nonModel": "InvestorAccessSummary"
+          },
+          "isRequired": true,
+          "arguments": {
+            "investorAccessId": {
+              "name": "investorAccessId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            },
+            "accessLevel": {
+              "name": "accessLevel",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "ndaStatus": {
+              "name": "ndaStatus",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "isActive": {
+              "name": "isActive",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false
+            },
+            "expiresAt": {
+              "name": "expiresAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false
+            },
+            "clearExpiry": {
+              "name": "clearExpiry",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false
+            }
+          }
+        },
+        "createCreatorWorkspace": {
+          "name": "createCreatorWorkspace",
+          "isArray": false,
+          "type": {
+            "nonModel": "CreatorWorkspaceSummary"
+          },
+          "isRequired": true,
+          "arguments": {
+            "name": {
+              "name": "name",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            }
+          }
+        },
+        "addWorkspaceMember": {
+          "name": "addWorkspaceMember",
+          "isArray": false,
+          "type": {
+            "nonModel": "WorkspaceMembershipSummary"
+          },
+          "isRequired": true,
+          "arguments": {
+            "workspaceId": {
+              "name": "workspaceId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            },
+            "targetUserId": {
+              "name": "targetUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            }
+          }
+        },
+        "revokeWorkspaceMember": {
+          "name": "revokeWorkspaceMember",
+          "isArray": false,
+          "type": {
+            "nonModel": "WorkspaceMembershipSummary"
+          },
+          "isRequired": true,
+          "arguments": {
+            "workspaceId": {
+              "name": "workspaceId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            },
+            "targetUserId": {
+              "name": "targetUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            }
+          }
+        },
+        "setWorkspaceMemberPermissions": {
+          "name": "setWorkspaceMemberPermissions",
+          "isArray": false,
+          "type": {
+            "nonModel": "WorkspacePermissionResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "workspaceId": {
+              "name": "workspaceId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            },
+            "targetUserId": {
+              "name": "targetUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "permissionKeys": {
+              "name": "permissionKeys",
+              "isArray": true,
+              "type": "String",
+              "isRequired": false,
+              "isArrayNullable": false
+            },
+            "expectedPermissionGeneration": {
+              "name": "expectedPermissionGeneration",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": true
+            },
+            "expectedRevision": {
+              "name": "expectedRevision",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": true
+            }
+          }
+        },
         "submitPublicApplication": {
           "name": "submitPublicApplication",
           "isArray": false,
@@ -7591,6 +9293,22 @@
         },
         "recoverManagedOrder": {
           "name": "recoverManagedOrder",
+          "isArray": false,
+          "type": {
+            "nonModel": "Stage9MutationResult"
+          },
+          "isRequired": true,
+          "arguments": {
+            "orderId": {
+              "name": "orderId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true
+            }
+          }
+        },
+        "reconcileManagedOrder": {
+          "name": "reconcileManagedOrder",
           "isArray": false,
           "type": {
             "nonModel": "Stage9MutationResult"

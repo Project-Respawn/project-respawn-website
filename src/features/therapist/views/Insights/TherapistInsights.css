@@ -1,0 +1,145 @@
+@import "../Quests/Styles/TherapistInsightsWorkspace.css";
+
+/* Align the retained Insights design with current child-component classes. */
+
+.therapist-insights-card,
+.therapist-insights-since {
+  position: relative;
+  min-width: 0;
+  padding: 22px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 18px;
+  background: rgba(17, 20, 30, 0.72);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+.therapist-insights-card__header,
+.therapist-insights-section-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.therapist-insights-card__header > div > span,
+.therapist-insights-section-heading > div > span {
+  color: rgba(181, 168, 255, 0.78);
+  font-size: 0.69rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.therapist-insights-card__header h3,
+.therapist-insights-section-heading h3 {
+  margin: 5px 0 0;
+  color: #f4f6fb;
+  font-size: 1rem;
+}
+
+.therapist-insights-card__header button {
+  border: 0;
+  padding: 0;
+  color: #a99cff;
+  background: transparent;
+  font: inherit;
+  font-size: 0.77rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.therapist-insights-since__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.therapist-insights-since__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.027);
+}
+
+.therapist-insights-since__icon {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  place-items: center;
+  border-radius: 10px;
+  color: #b5a8ff;
+  background: rgba(139, 119, 255, 0.11);
+}
+
+.therapist-insights-since__content { display: flex; min-width: 0; flex-direction: column; gap: 3px; }
+.therapist-insights-since__content strong { color: #fff; font-size: 1.15rem; }
+.therapist-insights-since__content span { color: rgba(220, 225, 237, 0.78); font-size: 0.78rem; }
+.therapist-insights-since__content small { color: rgba(204, 211, 228, 0.55); font-size: 0.7rem; }
+
+.therapist-confidence-chart { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; min-height: 210px; }
+.therapist-confidence-chart__axis { display: flex; flex-direction: column; justify-content: space-between; color: rgba(204, 211, 228, 0.5); font-size: 0.65rem; }
+.therapist-confidence-chart__plot { position: relative; min-width: 0; }
+.therapist-confidence-chart__grid { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; }
+.therapist-confidence-chart__grid span { display: block; border-top: 1px solid rgba(255, 255, 255, 0.055); }
+.therapist-confidence-chart__points { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(4, 1fr); }
+.therapist-confidence-chart__point { position: relative; min-width: 0; }
+.therapist-confidence-chart__point > span { position: absolute; bottom: -20px; width: 100%; color: rgba(204, 211, 228, 0.55); font-size: 0.65rem; text-align: center; }
+.therapist-confidence-chart__marker { position: absolute; left: 50%; display: grid; place-items: center; transform: translate(-50%, 50%); }
+.therapist-confidence-chart__marker strong { margin-bottom: 5px; color: #c4b8ff; font-size: 0.72rem; }
+.therapist-confidence-chart__marker i { width: 11px; height: 11px; border: 3px solid #171c28; border-radius: 50%; background: #9f8bff; }
+.therapist-confidence-trend__summary { display: flex; justify-content: space-between; gap: 16px; margin-top: 34px; padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.055); color: rgba(217, 223, 236, 0.68); font-size: 0.75rem; }
+.therapist-insight-change { margin-left: 6px; color: #b5a8ff; }
+.therapist-insight-change--up { color: #55d879; }
+.therapist-insight-change--down { color: #ef716d; }
+
+.therapist-goal-progress__item { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 12px; align-items: center; }
+.therapist-goal-progress__icon { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 9px; color: #b5a8ff; background: rgba(139, 119, 255, 0.11); }
+.therapist-goal-progress__content > div:first-child { display: flex; justify-content: space-between; gap: 12px; color: #eef1f7; font-size: 0.78rem; }
+.therapist-goal-progress__fill { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, rgba(121, 103, 255, 0.95), rgba(167, 143, 255, 0.95)); }
+.therapist-goal-progress__change { color: #55d879; font-size: 0.74rem; font-weight: 700; }
+.therapist-goal-progress__change--negative { color: #ef716d; }
+
+.therapist-quest-type-insights__selectors { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+.therapist-quest-type-insights__body { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 24px; align-items: center; }
+.therapist-quest-type-insights__visual { display: grid; place-items: center; }
+.therapist-quest-donut { display: grid; width: 132px; height: 132px; place-items: center; border-radius: 50%; }
+.therapist-quest-donut__center { display: grid; width: 86px; height: 86px; place-items: center; align-content: center; border-radius: 50%; background: #11141e; text-align: center; }
+.therapist-quest-donut__center strong { color: #fff; font-size: 1.45rem; }
+.therapist-quest-donut__center span { color: rgba(204, 211, 228, 0.58); font-size: 0.65rem; }
+.therapist-quest-type-insights__legend { display: flex; flex-direction: column; gap: 8px; }
+.therapist-quest-type-insights__legend article { display: grid; grid-template-columns: 10px minmax(0, 1fr) auto auto; gap: 8px; align-items: center; color: rgba(220, 225, 237, 0.72); font-size: 0.74rem; }
+.therapist-quest-type-insights__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--purple); }
+.therapist-quest-type-insights__highlights { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 18px; }
+.therapist-quest-type-insights__highlights article { padding: 12px; border: 1px solid rgba(255,255,255,.055); border-radius: 10px; background: rgba(255,255,255,.022); }
+
+.therapist-discussion-topics__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
+.therapist-discussion-topic { display: flex; gap: 11px; min-width: 0; padding: 15px; border: 1px solid rgba(255,255,255,.06); border-radius: 13px; background: rgba(255,255,255,.023); }
+.therapist-discussion-topic__icon { display: grid; width: 32px; height: 32px; flex: 0 0 32px; place-items: center; border-radius: 9px; color: #b5a8ff; background: rgba(139,119,255,.11); }
+.therapist-discussion-topic__content { display: flex; min-width: 0; flex-direction: column; gap: 4px; }
+.therapist-discussion-topic__content > span { color: #a99cff; font-size: .66rem; font-weight: 700; }
+.therapist-discussion-topic__content strong { color: #f0f2f8; font-size: .83rem; }
+.therapist-discussion-topic__content p,
+.therapist-discussion-topic__content small { margin: 0; color: rgba(217,223,236,.65); font-size: .73rem; }
+
+@media (max-width: 1180px) {
+  .therapist-insights-since__grid,
+  .therapist-discussion-topics__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  .therapist-insights-card,
+  .therapist-insights-since { padding: 17px; border-radius: 15px; }
+  .therapist-insights-since__grid,
+  .therapist-discussion-topics__grid,
+  .therapist-quest-type-insights__highlights { grid-template-columns: minmax(0, 1fr); }
+  .therapist-insights-card__header,
+  .therapist-insights-section-heading,
+  .therapist-confidence-trend__summary { flex-direction: column; }
+  .therapist-quest-type-insights__body { grid-template-columns: 1fr; }
+}

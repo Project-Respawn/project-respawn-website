@@ -6,8 +6,11 @@ import { handleCreateManagedMerchProduct, handleDeleteManagedMerchProductImage, 
 import { handleCreateManagedTwitchCommand, handleDeleteManagedTwitchCommand, handleDisconnectTwitchIntegration, handleGetMyTwitchIntegration, handleListManagedTwitchCommands, handleStartTwitchIntegrationOAuth, handleUpdateManagedTwitchCommand } from '../twitch'
 import { handleCreateOrUpdateManagedDiscordConfiguration, handleGetManagedDiscordConfiguration } from '../discord'
 import { handleCreateManagedMediaCollection, handleCreateManagedMediaItem, handleDeleteManagedMediaItem, handleListManagedMediaLibrary, handleListPublicMerchProductImages, handleUpdateManagedMediaItem } from '../media'
-import { handleImportManagedRevolutOrder, handleListManagedOrders, handleListManagedProfiles, handleManageSimpleResource, handleRecoverManagedOrder } from '../stage9/handlers'
+import { handleImportManagedRevolutOrder, handleListManagedOrders, handleListManagedProfiles, handleManageSimpleResource, handleReconcileManagedOrder, handleRecoverManagedOrder } from '../stage9/handlers'
 import { handleCleanupApplicationStorageTestRun, handleCleanupPublicApplicationTestRun, handleGetAdminApplication, handleListAdminApplications, handleStoreTrustedApplicationSubmission, handleSubmitPublicApplication } from '../applications'
+import { handleAddWorkspaceMember, handleCreateCreatorWorkspace, handleGetCreatorWorkspace, handleGetMyWorkspacePermissions, handleListMyCreatorWorkspaces, handleListWorkspaceMembers, handleRevokeWorkspaceMember, handleSetWorkspaceMemberPermissions } from '../workspaces'
+import { handleGetInvestorDocumentUrl, handleGetMyInvestorAccess } from '../investors'
+import { handleSubmitInvestorAccessRequest } from '../investors/requests'
 
 export interface AppSyncEvent { arguments?: unknown; info?: { fieldName?: string }; fieldName?: string; identity?: unknown }
 
@@ -19,6 +22,9 @@ export function getResolverFieldName(event: AppSyncEvent) { return event.info?.f
 
 export async function routeAppSync(event: AppSyncEvent) {
   switch (getResolverFieldName(event)) {
+    case 'submitInvestorAccessRequest': return handleSubmitInvestorAccessRequest(event)
+    case 'getMyInvestorAccess': return handleGetMyInvestorAccess(event)
+    case 'getInvestorDocumentUrl': return handleGetInvestorDocumentUrl(event)
     case 'storeTrustedApplicationSubmission': return handleStoreTrustedApplicationSubmission(event)
     case 'submitPublicApplication': return handleSubmitPublicApplication(event)
     case 'listAdminApplications': return handleListAdminApplications(event)
@@ -34,6 +40,14 @@ export async function routeAppSync(event: AppSyncEvent) {
     case 'seedPermissionCatalog': return handleSeedPermissionCatalog(event)
     case 'replaceGroupPermissions': return handleReplaceGroupPermissions(event)
     case 'getMyAccessContext': return handleGetMyAccessContext(event)
+    case 'createCreatorWorkspace': return handleCreateCreatorWorkspace(event)
+    case 'getCreatorWorkspace': return handleGetCreatorWorkspace(event)
+    case 'listMyCreatorWorkspaces': return handleListMyCreatorWorkspaces(event)
+    case 'addWorkspaceMember': return handleAddWorkspaceMember(event)
+    case 'listWorkspaceMembers': return handleListWorkspaceMembers(event)
+    case 'revokeWorkspaceMember': return handleRevokeWorkspaceMember(event)
+    case 'getMyWorkspacePermissions': return handleGetMyWorkspacePermissions(event)
+    case 'setWorkspaceMemberPermissions': return handleSetWorkspaceMemberPermissions(event)
     case 'listManagedMediaLibrary': return handleListManagedMediaLibrary(event)
     case 'createManagedMediaItem': return handleCreateManagedMediaItem(event)
     case 'createManagedMediaCollection': return handleCreateManagedMediaCollection(event)
@@ -44,6 +58,7 @@ export async function routeAppSync(event: AppSyncEvent) {
     case 'listManagedOrders': return handleListManagedOrders(event)
     case 'listManagedProfiles': return handleListManagedProfiles(event)
     case 'recoverManagedOrder': return handleRecoverManagedOrder(event)
+    case 'reconcileManagedOrder': return handleReconcileManagedOrder(event)
     case 'importManagedRevolutOrder': return handleImportManagedRevolutOrder(event)
     case 'manageMerchCategory':
     case 'manageEventTag':

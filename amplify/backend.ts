@@ -56,6 +56,11 @@ backend.adminUserManagement.resources.lambda.addToRolePolicy(
   })
 );
 
+// Investor documents are never public. Only the authorising Lambda can read
+// this prefix and issue five-minute signed URLs after checking InvestorAccess.
+backend.storage.resources.bucket.grantRead(backend.myFunction.resources.lambda, 'investor-data-room/*');
+(backend.myFunction.resources.lambda as LambdaFunction).addEnvironment('INVESTOR_DOCUMENT_BUCKET', backend.storage.resources.bucket.bucketName);
+
 // Add more permissions for myFunction here later if needed.
 // Example:
 // backend.myFunction.resources.lambda.addToRolePolicy(
@@ -203,6 +208,12 @@ httpApi.addRoutes({
 httpApi.addRoutes({
   path: '/revolut/orders/{proxy+}',
   methods: [HttpMethod.GET],
+  integration: httpLambdaIntegration,
+});
+
+httpApi.addRoutes({
+  path: '/webhooks/revolut',
+  methods: [HttpMethod.POST],
   integration: httpLambdaIntegration,
 });
 

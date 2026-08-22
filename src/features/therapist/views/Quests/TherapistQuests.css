@@ -1,218 +1,274 @@
+@import "./Styles/TherapistOverviewWorkspace.css";
+@import "./Styles/TherapistQuestWorkspace.css";
+@import "./Styles/TherapistActivityWorkspace.css";
+@import "./Styles/TherapistReportsWorkspace.css";
+@import "./Styles/TherapistSharingWorkspace.css";
+
+
 /* =========================================================
-   ACTIVITY WORKSPACE
+   THERAPIST CLIENT WORKSPACE
+   TherapistQuests.css
 ========================================================= */
 
-.therapist-activity-workspace {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+.therapist-quests-page {
+  --bg-page: #080d14;
+  --bg-panel: #0f1721;
+  --bg-panel-soft: #111b26;
+  --bg-input: #0b121a;
+
+  --border: #283441;
+  --border-soft: #202b37;
+
+  --text: #f3f6fa;
+  --text-soft: #c7ced8;
+  --muted: #8793a3;
+  --muted-dark: #697687;
+
+  --purple: #a96cff;
+  --purple-soft: #8150dc;
+  --green: #55d879;
+  --blue: #66a0ff;
+  --orange: #f0a13b;
+  --red: #ef716d;
+
+  width: 100%;
+  min-height: 100vh;
+
+  box-sizing: border-box;
+
+  padding: 26px 28px 42px;
+
+  color: var(--text);
+
+  background:
+    radial-gradient(
+      circle at 8% 0%,
+      rgba(121, 72, 217, 0.08),
+      transparent 24%
+    ),
+    radial-gradient(
+      circle at 95% 8%,
+      rgba(60, 99, 187, 0.05),
+      transparent 22%
+    ),
+    var(--bg-page);
 }
 
-.therapist-activity-workspace__header {
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.therapist-quests-page__header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
 
-  gap: 20px;
+  gap: 24px;
+
+  margin-bottom: 20px;
 }
 
-.therapist-activity-workspace__header h2 {
+.therapist-quests-page__header > div:first-child {
+  min-width: 0;
+}
+
+.therapist-quests-page__eyebrow {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #9f7adf;
+
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.therapist-quests-page__header h1 {
   margin: 0;
 
-  color: #f3f6fa;
+  color: var(--text);
 
-  font-size: 22px;
-  letter-spacing: -0.025em;
+  font-size: 29px;
+  font-weight: 700;
+  letter-spacing: -0.035em;
 }
 
-.therapist-activity-workspace__header p {
-  max-width: 620px;
+.therapist-quests-page__header p {
+  max-width: 680px;
 
-  margin: 6px 0 0;
+  margin: 7px 0 0;
 
-  color: #8792a2;
+  color: var(--muted);
 
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.55;
 }
 
-.therapist-activity-workspace__sharing {
+.therapist-quests-page__header-actions {
   display: flex;
   align-items: center;
 
-  gap: 10px;
-
-  padding: 9px 11px;
-
-  border: 1px solid rgba(126, 78, 221, 0.25);
-  border-radius: 8px;
-
-  background: rgba(117, 69, 214, 0.08);
-}
-
-.therapist-activity-workspace__sharing span {
-  color: #9c86ce;
-
-  font-size: 8px;
-}
-
-.therapist-activity-workspace__sharing button {
-  padding: 0;
-
-  border: 0;
-
-  background: transparent;
-
-  color: #b188ff;
-
-  font-size: 8px;
-  font-weight: 600;
-
-  cursor: pointer;
+  gap: 9px;
 }
 
 /* =========================================================
-   ACTIVITY SUMMARY
+   BUTTONS
 ========================================================= */
 
-.therapist-activity-summary-grid {
-  display: grid;
+.therapist-quest-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-  grid-template-columns:
-    repeat(4, minmax(0, 1fr));
+  min-height: 38px;
+  padding: 0 14px;
 
-  gap: 10px;
+  border-radius: 7px;
+
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 600;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    background 0.15s ease;
 }
 
-.therapist-activity-summary-card {
-  display: flex;
-  align-items: center;
+.therapist-quest-button:hover {
+  transform: translateY(-1px);
+}
 
-  gap: 11px;
-
-  min-height: 82px;
-  padding: 14px;
-
-  border: 1px solid #29323e;
-  border-radius: 10px;
+.therapist-quest-button--primary {
+  border: 1px solid #8b58e8;
 
   background:
     linear-gradient(
-      145deg,
-      #111821,
-      #0e151e
+      135deg,
+      #8754e6,
+      #6538bc
     );
-}
-
-.therapist-activity-summary-card__icon {
-  display: grid;
-
-  width: 37px;
-  height: 37px;
-  flex: 0 0 37px;
-
-  place-items: center;
-
-  border-radius: 8px;
-
-  font-size: 13px;
-}
-
-.therapist-activity-summary-card__icon--purple {
-  background: rgba(124, 75, 220, 0.18);
-  color: #b18aff;
-}
-
-.therapist-activity-summary-card__icon--green {
-  background: rgba(55, 177, 89, 0.16);
-  color: #53d079;
-}
-
-.therapist-activity-summary-card__icon--blue {
-  background: rgba(55, 101, 202, 0.17);
-  color: #669aff;
-}
-
-.therapist-activity-summary-card__icon--orange {
-  background: rgba(218, 137, 28, 0.15);
-  color: #f0a230;
-}
-
-.therapist-activity-summary-card__content {
-  display: flex;
-  min-width: 0;
-
-  flex-direction: column;
-}
-
-.therapist-activity-summary-card__content span {
-  color: #8f9aaa;
-
-  font-size: 8px;
-}
-
-.therapist-activity-summary-card__content strong {
-  margin-top: 4px;
 
   color: #ffffff;
-
-  font-size: 20px;
 }
 
-.therapist-activity-summary-card__content small {
-  margin-top: 3px;
+.therapist-quest-button--secondary {
+  border: 1px solid #34404e;
 
-  color: #6f7b8c;
+  background: #101923;
 
-  font-size: 7px;
+  color: #d5dbe4;
+}
+
+.therapist-quest-button--secondary:hover {
+  border-color: #674f8e;
 }
 
 /* =========================================================
-   ACTIVITY CONTROLS
+   MAIN WORKSPACE
 ========================================================= */
 
-.therapist-activity-controls {
+.therapist-quests-layout {
   display: grid;
 
   grid-template-columns:
-    minmax(180px, 1fr)
-    auto
-    auto;
+    minmax(250px, 285px)
+    minmax(0, 1fr);
 
-  align-items: center;
+  align-items: start;
 
-  gap: 10px;
-
-  padding: 11px;
-
-  border: 1px solid #29323e;
-  border-radius: 10px;
-
-  background: #0e151e;
+  gap: 14px;
 }
 
-.therapist-activity-search {
+.therapist-quests-layout__client {
+  position: sticky;
+
+  top: 18px;
+
+  min-width: 0;
+}
+
+.therapist-quests-layout__workspace {
+  min-width: 0;
+}
+
+/* =========================================================
+   CLIENT CONTEXT PANEL
+========================================================= */
+
+.therapist-quests-page .client-context-panel {
+  display: flex;
+  flex-direction: column;
+
+  gap: 11px;
+
+  min-width: 0;
+
+  padding: 14px;
+
+  border: 1px solid var(--border);
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      155deg,
+      #101923,
+      #0d151e
+    );
+
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.13);
+}
+
+/* BACK */
+
+.therapist-quests-page .client-context-back {
+  display: inline-flex;
+
+  margin-bottom: 2px;
+
+  color: #a982ed;
+
+  font-size: 9px;
+
+  text-decoration: none;
+}
+
+/* =========================================================
+   CLIENT SEARCH
+========================================================= */
+
+.therapist-quests-page .client-switcher {
+  position: relative;
+}
+
+.therapist-quests-page .client-switcher label {
   display: flex;
   align-items: center;
 
   gap: 8px;
 
-  min-height: 36px;
+  min-height: 38px;
   padding: 0 10px;
 
-  border: 1px solid #303947;
+  border: 1px solid #303c49;
   border-radius: 7px;
 
-  background: #0b121a;
+  background: #0c141d;
 }
 
-.therapist-activity-search > span {
-  color: #6f7b8c;
+.therapist-quests-page .client-switcher label > span {
+  color: #748092;
 
-  font-size: 15px;
+  font-size: 14px;
 }
 
-.therapist-activity-search input {
+.therapist-quests-page .client-switcher input {
   width: 100%;
 
   border: 0;
@@ -220,610 +276,512 @@
 
   background: transparent;
 
-  color: #e8edf3;
+  color: #eef2f7;
 
+  font: inherit;
   font-size: 9px;
 }
 
-.therapist-activity-search input::placeholder {
-  color: #667284;
+.therapist-quests-page .client-switcher input::placeholder {
+  color: #667384;
 }
 
-.therapist-activity-filter-list {
+.therapist-quests-page .client-switcher-results {
+  position: absolute;
+  z-index: 50;
+
+  top: calc(100% + 5px);
+  right: 0;
+  left: 0;
+
+  padding: 4px;
+
+  border: 1px solid #354251;
+  border-radius: 8px;
+
+  background: #111b26;
+
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.therapist-quests-page .client-switcher-results button {
   display: flex;
+  width: 100%;
 
-  gap: 5px;
-
-  flex-wrap: wrap;
-}
-
-.therapist-activity-filter {
-  display: inline-flex;
   align-items: center;
 
-  gap: 4px;
+  gap: 8px;
 
-  min-height: 34px;
-  padding: 0 8px;
+  padding: 8px;
 
-  border: 1px solid #303947;
-  border-radius: 7px;
+  border: 0;
+  border-radius: 6px;
 
-  background: #101720;
+  background: transparent;
 
-  color: #8e99aa;
+  color: #e5e9ef;
 
-  font-size: 7px;
+  font-size: 9px;
+
+  text-align: left;
 
   cursor: pointer;
 }
 
-.therapist-activity-filter small {
-  display: inline-flex;
-
-  min-width: 17px;
-  height: 17px;
-
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 999px;
-
-  background: #1a2330;
-
-  color: #a8b1bf;
-
-  font-size: 6px;
+.therapist-quests-page .client-switcher-results button:hover {
+  background: rgba(124, 75, 220, 0.12);
 }
 
-.therapist-activity-filter--active {
-  border-color: #7850ce;
+.therapist-quests-page .client-switcher-results button > span {
+  display: grid;
 
-  background: rgba(119, 71, 210, 0.2);
+  width: 27px;
+  height: 27px;
 
-  color: #ffffff;
-}
+  place-items: center;
 
-.therapist-activity-filter__locked {
-  margin-left: 2px;
-
-  font-size: 7px;
-}
-
-.therapist-activity-date {
-  display: flex;
-  flex-direction: column;
-
-  gap: 3px;
-}
-
-.therapist-activity-date > span {
-  color: #667284;
-
-  font-size: 6px;
-}
-
-.therapist-activity-date select {
-  min-height: 34px;
-  padding: 0 8px;
-
-  border: 1px solid #303947;
-  border-radius: 7px;
-
-  background: #101720;
-
-  color: #cbd2dc;
-
-  font-size: 7px;
-}
-
-/* =========================================================
-   ACTIVITY MAIN PANEL
-========================================================= */
-
-.therapist-activity-main-panel {
-  padding: 15px;
-
-  border: 1px solid #29323e;
-  border-radius: 11px;
+  border-radius: 50%;
 
   background:
     linear-gradient(
       145deg,
-      #111821,
-      #0e151e
+      #8657e3,
+      #5f3baa
     );
-}
 
-/* =========================================================
-   ACTIVITY TIMELINE
-========================================================= */
+  color: #ffffff;
 
-.therapist-activity-timeline {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 18px;
-}
-
-.therapist-activity-day {
-  display: grid;
-
-  grid-template-columns:
-    90px
-    minmax(0, 1fr);
-
-  gap: 16px;
-}
-
-.therapist-activity-day__header {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 5px;
-
-  padding-top: 4px;
-}
-
-.therapist-activity-day__header > div {
-  display: flex;
-
-  flex-direction: column;
-}
-
-.therapist-activity-day__header span {
-  color: #7961ae;
-
-  font-size: 7px;
+  font-size: 8px;
   font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.therapist-activity-day__header strong {
-  margin-top: 3px;
-
-  color: #dce2e9;
-
-  font-size: 11px;
-}
-
-.therapist-activity-day__header small {
-  color: #657183;
-
-  font-size: 7px;
-}
-
-.therapist-activity-day__items {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 8px;
 }
 
 /* =========================================================
-   INDIVIDUAL ACTIVITY EVENT
+   CLIENT IDENTITY
 ========================================================= */
 
-.therapist-activity-item {
-  display: grid;
-
-  grid-template-columns:
-    38px
-    minmax(0, 1fr);
-
-  gap: 11px;
-
+.therapist-quests-page .client-context-card {
   padding: 12px;
 
-  border: 1px solid #29323e;
-  border-radius: 9px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
 
-  background: #0d141d;
+  background: #101923;
 }
 
-.therapist-activity-item__icon {
+.therapist-quests-page .client-context-identity {
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+}
+
+.therapist-quests-page .client-context-avatar {
   display: grid;
 
-  width: 34px;
-  height: 34px;
+  width: 48px;
+  height: 48px;
+
+  flex: 0 0 48px;
 
   place-items: center;
 
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #8a59e6,
+      #5d39a9
+    );
+
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.therapist-quests-page .client-context-identity h2 {
+  margin: 0;
+
+  color: #f1f4f8;
+
+  font-size: 14px;
+}
+
+.therapist-quests-page .client-context-identity strong {
+  display: block;
+
+  margin-top: 4px;
+
+  font-size: 8px;
+}
+
+.therapist-quests-page .client-context-identity p {
+  margin: 4px 0 0;
+
+  color: #7e8999;
+
+  font-size: 8px;
+}
+
+/* =========================================================
+   NEXT SESSION
+========================================================= */
+
+.therapist-quests-page .client-context-session {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 11px;
+
+  border: 1px solid rgba(129, 82, 218, 0.23);
   border-radius: 8px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(117, 69, 214, 0.12),
+      rgba(17, 24, 34, 0.9)
+    );
+}
+
+.therapist-quests-page .context-icon {
+  display: grid;
+
+  width: 30px;
+  height: 30px;
+
+  flex: 0 0 30px;
+
+  place-items: center;
+
+  border-radius: 7px;
+
+  background: rgba(123, 77, 215, 0.16);
+
+  color: #b18af9;
 
   font-size: 13px;
 }
 
-.therapist-activity-item__icon--green {
-  background: rgba(55, 177, 89, 0.16);
-  color: #53d079;
-}
-
-.therapist-activity-item__icon--purple {
-  background: rgba(124, 75, 220, 0.18);
-  color: #b18aff;
-}
-
-.therapist-activity-item__icon--blue {
-  background: rgba(55, 101, 202, 0.17);
-  color: #669aff;
-}
-
-.therapist-activity-item__icon--orange {
-  background: rgba(218, 137, 28, 0.15);
-  color: #f0a230;
-}
-
-.therapist-activity-item__icon--red {
-  background: rgba(207, 68, 68, 0.15);
-  color: #ec7272;
-}
-
-.therapist-activity-item__content {
-  min-width: 0;
-}
-
-.therapist-activity-item__heading {
+.therapist-quests-page .client-context-session > div {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-
-  gap: 12px;
-}
-
-.therapist-activity-item__heading > div {
-  display: flex;
-
   flex-direction: column;
 
   min-width: 0;
 }
 
-.therapist-activity-item__type {
-  color: #78639f;
-
-  font-size: 6px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.therapist-activity-item__heading strong {
-  margin-top: 4px;
-
-  color: #e7ebf1;
-
-  font-size: 10px;
-}
-
-.therapist-activity-item__heading time {
-  color: #687486;
+.therapist-quests-page .client-context-session small {
+  color: #778496;
 
   font-size: 7px;
 }
 
-.therapist-activity-item__detail {
-  margin: 7px 0 0;
+.therapist-quests-page .client-context-session strong {
+  margin-top: 3px;
 
-  color: #8792a2;
+  color: #ffffff;
 
-  font-size: 8px;
-  line-height: 1.5;
+  font-size: 11px;
+}
+
+.therapist-quests-page .client-context-session div > span {
+  margin-top: 3px;
+
+  color: #a17fe7;
+
+  font-size: 7px;
 }
 
 /* =========================================================
-   QUEST LINK
+   CLIENT PANEL STATS
 ========================================================= */
 
-.therapist-activity-item__quest {
+.therapist-quests-page .client-context-card h3 {
+  margin: 0 0 10px;
+
+  color: #707c8d;
+
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.therapist-quests-page .context-stat-list {
   display: flex;
-  align-items: center;
-
-  gap: 7px;
-
-  margin-top: 8px;
-}
-
-.therapist-activity-item__quest span {
-  color: #657183;
-
-  font-size: 6px;
-  text-transform: uppercase;
-}
-
-.therapist-activity-item__quest strong {
-  color: #b38cf8;
-
-  font-size: 8px;
-}
-
-/* =========================================================
-   CONFIDENCE
-========================================================= */
-
-.therapist-activity-confidence {
-  display: flex;
-  align-items: center;
+  flex-direction: column;
 
   gap: 8px;
 
-  margin-top: 9px;
+  margin: 0;
 }
 
-.therapist-activity-confidence > div {
-  display: flex;
-  flex-direction: column;
-
-  min-width: 65px;
-  padding: 7px 9px;
-
-  border: 1px solid #29323e;
-  border-radius: 7px;
-
-  background: #101720;
-}
-
-.therapist-activity-confidence > div span {
-  color: #657183;
-
-  font-size: 6px;
-}
-
-.therapist-activity-confidence > div strong {
-  margin-top: 3px;
-
-  color: #eef2f6;
-
-  font-size: 12px;
-}
-
-.therapist-activity-confidence__arrow {
-  color: #8c6ece;
-}
-
-/* =========================================================
-   REFLECTION
-========================================================= */
-
-.therapist-activity-reflection {
-  margin: 9px 0 0;
-  padding: 9px 11px;
-
-  border-left: 2px solid #8051dd;
-
-  background: rgba(118, 71, 204, 0.08);
-
-  color: #d4dae3;
-
-  font-size: 8px;
-  font-style: italic;
-  line-height: 1.55;
-}
-
-/* =========================================================
-   POINTS
-========================================================= */
-
-.therapist-activity-points {
-  display: inline-flex;
-
-  margin-top: 8px;
-  padding: 4px 7px;
-
-  border-radius: 999px;
-
-  background: rgba(114, 73, 190, 0.15);
-
-  color: #b991ff;
-
-  font-size: 7px;
-  font-weight: 600;
-}
-
-/* =========================================================
-   DISCUSSION POINT
-========================================================= */
-
-.therapist-activity-discussion {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 4px;
-
-  margin-top: 9px;
-  padding: 9px 10px;
-
-  border: 1px solid rgba(61, 108, 202, 0.23);
-  border-radius: 7px;
-
-  background: rgba(53, 98, 185, 0.08);
-}
-
-.therapist-activity-discussion span {
-  color: #6d94df;
-
-  font-size: 6px;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.therapist-activity-discussion strong {
-  color: #dce4ef;
-
-  font-size: 8px;
-  font-weight: 500;
-}
-
-/* =========================================================
-   LOCKED ACTIVITY
-========================================================= */
-
-.therapist-activity-item--locked {
-  border-style: dashed;
-
-  opacity: 0.86;
-}
-
-.therapist-activity-locked {
+.therapist-quests-page .context-stat-list > div {
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  gap: 15px;
-
-  margin-top: 10px;
-  padding: 10px;
-
-  border: 1px solid #34303e;
-  border-radius: 7px;
-
-  background: #11151d;
+  gap: 8px;
 }
 
-.therapist-activity-locked strong {
-  color: #b7bec8;
+.therapist-quests-page .context-stat-list dt {
+  color: #a6afbb;
 
   font-size: 8px;
 }
 
-.therapist-activity-locked p {
-  margin: 3px 0 0;
+.therapist-quests-page .context-stat-list dt i {
+  display: inline-flex;
 
-  color: #6c7787;
+  width: 16px;
 
-  font-size: 7px;
+  font-style: normal;
 }
 
-.therapist-activity-locked button {
-  flex: 0 0 auto;
+.therapist-quests-page .context-stat-list dd {
+  margin: 0;
 
+  color: #e8ecf2;
+
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.therapist-quests-page .context-green {
+  color: var(--green) !important;
+}
+
+.therapist-quests-page .context-blue {
+  color: var(--blue) !important;
+}
+
+.therapist-quests-page .context-orange {
+  color: var(--orange) !important;
+}
+
+/* =========================================================
+   CLIENT PANEL ACTIONS
+========================================================= */
+
+.therapist-quests-page .context-primary,
+.therapist-quests-page .context-outline {
+  display: flex;
+  width: 100%;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 34px;
+  margin-top: 10px;
+
+  border-radius: 6px;
+
+  font-size: 8px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.therapist-quests-page .context-primary {
+  border: 1px solid #8350d8;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7846d2,
+      #6135b0
+    );
+
+  color: #ffffff;
+}
+
+.therapist-quests-page .context-outline {
+  border: 1px solid #3a4654;
+
+  background: #111a24;
+
+  color: #cbd2db;
+}
+
+/* =========================================================
+   CLIENT PERMISSIONS
+========================================================= */
+
+.therapist-quests-page .client-context-permissions {
+  padding: 11px;
+
+  border: 1px solid var(--border);
+  border-radius: 8px;
+
+  background: #0f171f;
+
+  text-align: center;
+}
+
+.therapist-quests-page .client-context-permissions > span {
+  color: #a47ce9;
+
+  font-size: 15px;
+}
+
+.therapist-quests-page .client-context-permissions p {
+  margin: 6px 0 7px;
+
+  color: #748091;
+
+  font-size: 7px;
+  line-height: 1.5;
+}
+
+.therapist-quests-page .client-context-permissions button {
   padding: 0;
 
   border: 0;
 
   background: transparent;
 
-  color: #aa80f4;
+  color: #ac83f2;
 
   font-size: 7px;
+  font-weight: 600;
 
   cursor: pointer;
 }
 
 /* =========================================================
-   ACTIVITY FOOTER
+   WORKSPACE TABS
 ========================================================= */
 
-.therapist-activity-item__footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.therapist-quests-page .workspace-tabs {
+  display: grid;
 
-  gap: 10px;
+  grid-template-columns:
+    repeat(6, minmax(100px, 1fr));
 
-  margin-top: 10px;
-  padding-top: 8px;
+  margin-bottom: 16px;
 
-  border-top: 1px solid #252e39;
+  overflow: hidden;
 
-  color: #657183;
+  border: 1px solid var(--border);
+  border-radius: 9px;
 
-  font-size: 6px;
+  background: #0e161f;
 }
 
-.therapist-activity-status {
-  display: inline-flex;
+.therapist-quests-page .workspace-tabs button {
+  min-height: 46px;
 
-  padding: 3px 6px;
+  border: 0;
+  border-right: 1px solid var(--border-soft);
+
+  background: transparent;
+
+  color: #9ca6b5;
+
+  font-size: 8px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.therapist-quests-page .workspace-tabs button:last-child {
+  border-right: 0;
+}
+
+.therapist-quests-page .workspace-tabs button:hover {
+  background: rgba(124, 75, 220, 0.07);
+
+  color: #dce2e9;
+}
+
+.therapist-quests-page .workspace-tabs button.active {
+  box-shadow:
+    inset 0 2px #a866ef;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(125, 76, 220, 0.16),
+      rgba(125, 76, 220, 0.05)
+    );
+
+  color: #c695ff;
+}
+
+.therapist-quests-page .workspace-tabs button span {
+  margin-right: 5px;
+}
+
+.therapist-quests-page .workspace-tabs button small {
+  margin-left: 4px;
+  padding: 2px 5px;
 
   border-radius: 999px;
+
+  background: rgba(127, 73, 224, 0.17);
+
+  color: #c59aff;
 
   font-size: 6px;
   font-weight: 700;
 }
 
-.therapist-activity-status--green {
-  background: rgba(54, 176, 89, 0.13);
-  color: #56cf7b;
-}
-
-.therapist-activity-status--purple {
-  background: rgba(124, 75, 220, 0.15);
-  color: #b28bff;
-}
-
-.therapist-activity-status--blue {
-  background: rgba(55, 101, 202, 0.15);
-  color: #6e9fff;
-}
-
-.therapist-activity-status--orange {
-  background: rgba(211, 133, 29, 0.15);
-  color: #efa842;
-}
-
-.therapist-activity-status--red {
-  background: rgba(206, 69, 69, 0.15);
-  color: #ec7373;
-}
-
-.therapist-activity-status--neutral {
-  background: #1a222d;
-  color: #8893a3;
-}
-
 /* =========================================================
-   ACTIVITY EMPTY
+   SHARED WORKSPACE HEADERS
 ========================================================= */
 
-.therapist-activity-empty {
-  padding: 40px 20px;
+.therapist-quest-workspace-header h2,
+.therapist-activity-workspace__header h2 {
+  margin: 0;
 
-  text-align: center;
+  color: var(--text);
+
+  font-size: 21px;
+  letter-spacing: -0.025em;
 }
 
-.therapist-activity-empty strong {
-  color: #dfe4ea;
+.therapist-quest-workspace-header p,
+.therapist-activity-workspace__header p {
+  max-width: 620px;
 
-  font-size: 12px;
+  margin: 5px 0 0;
+
+  color: var(--muted);
+
+  font-size: 9px;
+  line-height: 1.55;
 }
 
-.therapist-activity-empty p {
-  margin: 6px 0 0;
-
-  color: #748091;
-
-  font-size: 8px;
-}
 
 /* =========================================================
-   FUTURE WORKSPACE PLACEHOLDERS
+   WORKSPACE PLACEHOLDERS
 ========================================================= */
 
 .therapist-workspace-placeholder {
   display: flex;
 
-  min-height: 420px;
+  min-height: 390px;
 
   align-items: center;
   justify-content: center;
   flex-direction: column;
 
-  padding: 40px;
+  padding: 36px;
 
-  border: 1px solid #29323e;
-  border-radius: 11px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
 
   background:
     linear-gradient(
       145deg,
-      #111821,
-      #0e151e
+      #111b25,
+      #0e161f
     );
 
   text-align: center;
@@ -832,28 +790,28 @@
 .therapist-workspace-placeholder__icon {
   display: grid;
 
-  width: 54px;
-  height: 54px;
+  width: 50px;
+  height: 50px;
 
   place-items: center;
 
-  margin-bottom: 13px;
+  margin-bottom: 12px;
 
-  border-radius: 12px;
+  border-radius: 11px;
 
-  background: rgba(124, 75, 220, 0.16);
+  background: rgba(124, 75, 220, 0.15);
 
   color: #b38cff;
 
-  font-size: 23px;
+  font-size: 20px;
 }
 
 .therapist-workspace-placeholder__premium {
-  margin-bottom: 8px;
+  margin-bottom: 7px;
 
   color: #a77cf1;
 
-  font-size: 7px;
+  font-size: 6px;
   font-weight: 700;
   letter-spacing: 0.1em;
 }
@@ -863,64 +821,160 @@
 
   color: #eef2f6;
 
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .therapist-workspace-placeholder p {
-  max-width: 450px;
+  max-width: 440px;
 
-  margin: 8px 0;
+  margin: 7px 0 12px;
 
   color: #8490a0;
 
-  font-size: 9px;
+  font-size: 8px;
   line-height: 1.55;
 }
 
 .therapist-workspace-placeholder small {
+  margin-top: 9px;
+
   color: #667284;
 
-  font-size: 7px;
+  font-size: 6px;
 }
 
 /* =========================================================
-   ACTIVITY RESPONSIVE
+   DEMO NOTICE
 ========================================================= */
 
-@media (max-width: 1250px) {
-  .therapist-activity-summary-grid {
+.therapist-quest-notice {
+  position: fixed;
+  z-index: 100;
+
+  top: 20px;
+  right: 24px;
+
+  max-width: 340px;
+
+  padding: 10px 13px;
+
+  border: 1px solid rgba(128, 82, 219, 0.4);
+  border-radius: 7px;
+
+  background: rgba(17, 24, 34, 0.97);
+
+  box-shadow:
+    0 16px 35px rgba(0, 0, 0, 0.34);
+
+  color: #e8edf4;
+
+  font-size: 8px;
+}
+
+.therapist-quest-notice-enter-active,
+.therapist-quest-notice-leave-active {
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.therapist-quest-notice-enter-from,
+.therapist-quest-notice-leave-to {
+  opacity: 0;
+
+  transform: translateY(-6px);
+}
+
+/* =========================================================
+   NO CLIENT
+========================================================= */
+
+.therapist-quests-empty {
+  padding: 50px 22px;
+
+  border: 1px solid var(--border);
+  border-radius: 10px;
+
+  background: #0e161f;
+
+  text-align: center;
+}
+
+.therapist-quests-empty h2 {
+  margin: 0;
+
+  color: #eef2f6;
+
+  font-size: 17px;
+}
+
+.therapist-quests-empty p {
+  margin: 7px 0 15px;
+
+  color: #8290a1;
+
+  font-size: 8px;
+}
+
+/* =========================================================
+   RESPONSIVE — MEDIUM
+========================================================= */
+
+@media (max-width: 1200px) {
+  .therapist-quests-layout {
     grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-  }
-
-  .therapist-activity-controls {
-    grid-template-columns: 1fr;
+      minmax(225px, 250px)
+      minmax(0, 1fr);
   }
 }
 
-@media (max-width: 800px) {
-  .therapist-activity-workspace__header {
-    flex-direction: column;
+/* =========================================================
+   RESPONSIVE — TABLET
+========================================================= */
+
+@media (max-width: 950px) {
+  .therapist-quests-page {
+    padding: 20px;
   }
 
-  .therapist-activity-day {
+  .therapist-quests-layout {
     grid-template-columns: 1fr;
   }
 
-  .therapist-activity-day__header {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+  .therapist-quests-layout__client {
+    position: static;
+  }
+
+  .therapist-quests-page__header {
+    flex-direction: column;
+  }
+
+  .therapist-quests-page__header-actions {
+    width: 100%;
+  }
+
+  .therapist-quests-page__header-actions
+    .therapist-quest-button {
+    flex: 1;
+  }
+
+  .therapist-quests-page .workspace-tabs {
+    grid-template-columns:
+      repeat(3, 1fr);
   }
 }
 
-@media (max-width: 600px) {
-  .therapist-activity-summary-grid {
-    grid-template-columns: 1fr;
+/* =========================================================
+   RESPONSIVE — MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+  .therapist-quests-page {
+    padding: 14px;
   }
 
-  .therapist-activity-locked {
-    align-items: flex-start;
-    flex-direction: column;
+  .therapist-quests-page .workspace-tabs {
+    grid-template-columns:
+      repeat(2, 1fr);
   }
 }

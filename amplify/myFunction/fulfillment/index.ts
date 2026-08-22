@@ -3,6 +3,7 @@ import { logger } from '../shared/logger'
 import { createPrintfulOrder } from '../printful'
 import { fetchRevolutMerchantOrder } from '../revolut'
 import { isPrintfulFulfillmentEnabled, REVOLUT_MODE } from '../config/env'
+import { decodeFulfillmentOrder } from './orderJson'
 
 type FulfillmentItem = {
   productId: string
@@ -27,6 +28,16 @@ async function getDataClient() {
 
 function audit(action: string, result: string, provider?: string) {
   return { timestamp: new Date().toISOString(), action, result, provider: provider || null }
+}
+
+function fulfillmentOrderInput(order: any) {
+  return {
+    ...order,
+    shippingAddress: JSON.stringify(order.shippingAddress || {}),
+    items: JSON.stringify(order.items || []),
+    providerStatuses: JSON.stringify(order.providerStatuses || {}),
+    auditHistory: JSON.stringify(order.auditHistory || []),
+  }
 }
 
 function overallStatus(providerStatuses: ProviderStatuses) {
@@ -61,21 +72,24 @@ function isProductionOrder(order: any) {
 
 export function buildFulfillmentOrder(body: any, paymentState: unknown, now = new Date().toISOString()) {
   const revolutOrderId = String(body?.revolutOrderId || '')
+  const normalizedPaymentState = String(paymentState).toLowerCase()
+  const paid = isPaid(normalizedPaymentState)
   return {
     projectOrderId: String(body?.projectOrderId || revolutOrderId),
     revolutOrderId,
-    paymentStatus: String(paymentState).toLowerCase(),
-    paymentDate: now,
+    paymentStatus: normalizedPaymentState,
+    paymentDate: paid ? now : null,
     paymentAmount: typeof body?.paymentAmount === 'number' ? body.paymentAmount : null,
     currency: typeof body?.currency === 'string' ? body.currency : null,
     environment: transactionEnvironment(),
     overallFulfillmentStatus: 'pending',
     customerName: String(body?.customerName || ''),
     email: String(body?.email || ''),
+    phone: String(body?.phone || ''),
     shippingAddress: body?.shippingAddress || {},
     items: body?.items || [],
     providerStatuses: {},
-    auditHistory: [audit('Order created', 'success'), audit('Payment successful', 'verified')],
+    auditHistory: [audit('Order created', 'success'), audit(paid ? 'Payment successful' : 'Payment pending', paid ? 'verified' : 'pending')],
     createdAt: now,
     updatedAt: now,
   }
@@ -84,9 +98,9 @@ export function buildFulfillmentOrder(body: any, paymentState: unknown, now = ne
 async function saveProviderStatuses(client: any, order: any, providerStatuses: ProviderStatuses, auditEntries: unknown[]) {
   await client.models.FulfillmentOrder.update({
     id: order.id,
-    providerStatuses,
+    providerStatuses: JSON.stringify(providerStatuses),
     overallFulfillmentStatus: overallStatus(providerStatuses),
-    auditHistory: [...(order.auditHistory || []), ...auditEntries],
+    auditHistory: JSON.stringify([...(order.auditHistory || []), ...auditEntries]),
     updatedAt: new Date().toISOString(),
   })
 }
@@ -96,6 +110,7 @@ export async function dispatchFulfillment(order: any, injected?: {
   createPrintful?: typeof createPrintfulOrder
   fulfillmentEnabled?: () => boolean
 }) {
+  order = decodeFulfillmentOrder(order)
   const getClient = injected?.getClient || getDataClient
   const client = await getClient() as any
   const createPrintful = injected?.createPrintful || createPrintfulOrder
@@ -178,9 +193,28 @@ export async function dispatchFulfillment(order: any, injected?: {
 
 async function findOrder(client: any, identifier: string) {
   const byRevolut = await client.models.FulfillmentOrder.list({ filter: { revolutOrderId: { eq: identifier } } })
-  if (byRevolut.data?.[0]) return byRevolut.data[0]
+  if (byRevolut.data?.[0]) return decodeFulfillmentOrder(byRevolut.data[0])
   const byProject = await client.models.FulfillmentOrder.list({ filter: { projectOrderId: { eq: identifier } } })
-  return byProject.data?.[0] || null
+  return decodeFulfillmentOrder(byProject.data?.[0] || null)
+}
+
+export async function persistPendingFulfillmentOrder(body: any, revolutOrderId: string) {
+  const client = await getDataClient() as any
+  const existing = await findOrder(client, revolutOrderId)
+  if (existing) return existing
+  const create = await client.models.FulfillmentOrder.create(fulfillmentOrderInput(buildFulfillmentOrder({
+    ...body,
+    projectOrderId: body?.orderId || body?.projectOrderId,
+    revolutOrderId,
+    paymentAmount: body?.amount,
+  }, 'pending')))
+  if (!create.data) {
+    const details = Array.isArray(create.errors)
+      ? create.errors.map((error: any) => error?.message).filter(Boolean).join('; ')
+      : ''
+    throw new Error(details ? `Pending fulfillment order could not be persisted: ${details}` : 'Pending fulfillment order could not be persisted')
+  }
+  return create.data
 }
 
 export async function persistPendingFulfillmentOrder(body: any, revolutOrderId: string) {
@@ -213,7 +247,7 @@ export async function handleFulfillmentRequest(body: any) {
   let order = await findOrder(client, revolutOrderId)
   const alreadyFulfilled = Boolean(order) && Object.keys(order.providerStatuses || {}).length > 0 && Object.values(order.providerStatuses || {}).every((status: any) => status?.status === 'fulfilled')
   if (!order) {
-    const create = await client.models.FulfillmentOrder.create(buildFulfillmentOrder(body, paymentState))
+    const create = await client.models.FulfillmentOrder.create(fulfillmentOrderInput(buildFulfillmentOrder(body, paymentState)))
     order = create.data
   } else {
     const paidUpdate = {
@@ -271,7 +305,7 @@ export async function handleExistingRevolutOrderImport(body: any) {
     return jsonResponse(409, { error: 'Revolut payment is not paid', revolutOrderId })
   }
   const missingData = 'Recovery requires the original shipping address, item quantities, fulfillment providers, and Printful sync variant IDs.'
-  const create = await client.models.FulfillmentOrder.create({
+  const create = await client.models.FulfillmentOrder.create(fulfillmentOrderInput({
     projectOrderId: paymentBody.merchant_order_ext_ref || revolutOrderId,
     revolutOrderId,
     paymentStatus: String(paymentBody.state).toLowerCase(),
@@ -288,6 +322,6 @@ export async function handleExistingRevolutOrderImport(body: any) {
     auditHistory: [audit('Existing Revolut order imported', 'recovery_required')],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-  })
+  }))
   return jsonResponse(200, { success: true, imported: true, recoveryRequired: true, missingData, order: create.data })
 }
