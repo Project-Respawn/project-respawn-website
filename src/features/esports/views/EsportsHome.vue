@@ -26,12 +26,22 @@ import NextUp from "../components/NextUp.vue";
 
 
     <!-- =========================================================
-         CURRENT OBJECTIVE
+         CURRENT CAMPAIGN
+         LEFT: NEXT UP
+         RIGHT: CURRENT OBJECTIVE
     ========================================================== -->
 
-    <CurrentObjective
-      :objective="esportsData.currentObjective"
-    />
+    <section class="esports-objective-grid">
+
+      <NextUp
+        :objective="esportsData.currentObjective"
+      />
+
+      <CurrentObjective
+        :objective="esportsData.currentObjective"
+      />
+
+    </section>
 
 
     <!-- =========================================================
@@ -70,15 +80,6 @@ import NextUp from "../components/NextUp.vue";
       />
 
     </section>
-
-
-    <!-- =========================================================
-         NEXT UP
-    ========================================================== -->
-
-    <NextUp
-      :objective="esportsData.currentObjective"
-    />
 
 
     <!-- =========================================================
@@ -139,6 +140,43 @@ import NextUp from "../components/NextUp.vue";
       center top / cover fixed;
 
   color: #ffffff;
+}
+
+
+/* =========================================================
+   CURRENT CAMPAIGN GRID
+========================================================= */
+
+.esports-objective-grid {
+  width:
+    min(
+      1500px,
+      calc(100% - 40px)
+    );
+
+  margin:
+    18px auto;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(260px, 0.42fr)
+    minmax(0, 1fr);
+
+  gap: 16px;
+
+  align-items: stretch;
+}
+
+
+.esports-objective-grid > * {
+  min-width: 0;
+
+  width: 100%;
+
+  height: 100%;
+
+  margin: 0;
 }
 
 
@@ -415,8 +453,19 @@ import NextUp from "../components/NextUp.vue";
 }
 
 
+@media (max-width: 950px) {
+
+  .esports-objective-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+}
+
+
 @media (max-width: 720px) {
 
+  .esports-objective-grid,
   .esports-dashboard-grid,
   .esports-lower-grid,
   .final-esports-cta {
