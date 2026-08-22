@@ -195,7 +195,7 @@ const remaining = computed(() => {
                 <div class="hero-brand">
 
                     <img
-                        src="@/assets/respawn-logo.png"
+                        src="@/assets/logo.png"
                         alt="Project Respawn"
                     />
 
@@ -425,7 +425,7 @@ const remaining = computed(() => {
                         <div class="portrait-glow"></div>
 
                         <img
-                            src="@/assets/respawn-logo.png"
+                            src="@/assets/logo.png"
                             alt=""
                         />
 
@@ -489,7 +489,7 @@ const remaining = computed(() => {
                     <div class="coach-logo">
 
                         <img
-                            src="@/assets/respawn-logo.png"
+                            src="@/assets/logo.png"
                             alt=""
                         />
 
@@ -593,7 +593,7 @@ const remaining = computed(() => {
                     <div class="fixture-team">
 
                         <img
-                            src="@/assets/respawn-logo.png"
+                            src="@/assets/logo.png"
                             alt="Project Respawn"
                         />
 
