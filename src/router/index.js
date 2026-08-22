@@ -39,9 +39,16 @@ const routes = [
 
     // --------------------------------------------------------
     // PROJECT RESPAWN FEATURES
+    //
+    // Feature routes are combined inside:
+    // src/router/features.routes.js
+    //
+    // Current feature areas include:
     // Creator Tools
     // Partner Hub
     // Trainer Hub
+    // Therapist
+    // Esports
     // --------------------------------------------------------
 
     ...featureRoutes,
@@ -73,7 +80,9 @@ const routes = [
 
     // --------------------------------------------------------
     // 404
-    // IMPORTANT: Keep this route last
+    //
+    // IMPORTANT:
+    // This route must always remain last.
     // --------------------------------------------------------
 
     {
@@ -93,9 +102,17 @@ const router = createRouter({
     routes,
 
     scrollBehavior(to, from, savedPosition) {
+        // ----------------------------------------------------
+        // RESTORE PREVIOUS SCROLL POSITION
+        // ----------------------------------------------------
+
         if (savedPosition) {
             return savedPosition;
         }
+
+        // ----------------------------------------------------
+        // HASH / ANCHOR NAVIGATION
+        // ----------------------------------------------------
 
         if (to.hash) {
             return {
@@ -107,6 +124,10 @@ const router = createRouter({
                     : 'smooth',
             };
         }
+
+        // ----------------------------------------------------
+        // DEFAULT TO TOP OF PAGE
+        // ----------------------------------------------------
 
         return {
             top: 0,
@@ -138,16 +159,19 @@ router.beforeEach(async (to) => {
     const requiresBrandAccess = to.matched.some(
         (record) => record.meta?.requiresBrandAccess
     );
-    const requiresInvestorAccess = to.matched.some((record) => record.meta?.requiresInvestorAccess);
+
+    const requiresInvestorAccess = to.matched.some(
+        (record) => record.meta?.requiresInvestorAccess
+    );
 
     // --------------------------------------------------------
     // AUTH-AWARE HOMEPAGE
     //
-    // Logged-out users:
-    // "/" -> public landing page
+    // Logged-out:
+    // "/" -> public website
     //
-    // Logged-in users:
-    // "/" -> user home dashboard at "/home"
+    // Logged-in:
+    // "/" -> "/home"
     // --------------------------------------------------------
 
     if (to.path === '/') {
@@ -182,7 +206,7 @@ router.beforeEach(async (to) => {
     }
 
     // --------------------------------------------------------
-    // NO ADDITIONAL ACCESS REQUIREMENTS
+    // NO EXTRA ACCESS REQUIREMENTS
     // --------------------------------------------------------
 
     if (
@@ -195,27 +219,60 @@ router.beforeEach(async (to) => {
     }
 
     // --------------------------------------------------------
-    // PERMISSION / GROUP / BRAND ACCESS
+    // PERMISSION / GROUP / BRAND / INVESTOR ACCESS
     // --------------------------------------------------------
 
     try {
-        const context = (requiredPermission || requiredGroups.length || requiresBrandAccess) ? await refreshAccessContext() : null;
-        const investor = requiresInvestorAccess ? await refreshInvestorAccess() : null;
+        const needsAccessContext =
+            requiredPermission ||
+            requiredGroups.length ||
+            requiresBrandAccess;
+
+        const context = needsAccessContext
+            ? await refreshAccessContext()
+            : null;
+
+        const investor = requiresInvestorAccess
+            ? await refreshInvestorAccess()
+            : null;
+
+        // ----------------------------------------------------
+        // PERMISSION CHECK
+        // ----------------------------------------------------
 
         const hasPermission =
             !requiredPermission ||
-            context?.permissions.includes(requiredPermission);
+            context?.permissions?.includes(requiredPermission);
+
+        // ----------------------------------------------------
+        // GROUP CHECK
+        // ----------------------------------------------------
 
         const hasGroup =
             !requiredGroups.length ||
             requiredGroups.some((group) =>
-                context?.groups.includes(group)
+                context?.groups?.includes(group)
             );
+
+        // ----------------------------------------------------
+        // BRAND ACCESS CHECK
+        // ----------------------------------------------------
 
         const hasBrandAccess =
             !requiresBrandAccess ||
-            context?.brands.length > 0;
-        const hasInvestorAccess = !requiresInvestorAccess || investor?.hasAccess === true;
+            (context?.brands?.length ?? 0) > 0;
+
+        // ----------------------------------------------------
+        // INVESTOR ACCESS CHECK
+        // ----------------------------------------------------
+
+        const hasInvestorAccess =
+            !requiresInvestorAccess ||
+            investor?.hasAccess === true;
+
+        // ----------------------------------------------------
+        // ACCESS GRANTED
+        // ----------------------------------------------------
 
         if (
             hasPermission &&
@@ -226,10 +283,21 @@ router.beforeEach(async (to) => {
             return true;
         }
 
+        // ----------------------------------------------------
+        // ACCESS DENIED
+        // ----------------------------------------------------
+
         return {
-            path: requiresInvestorAccess ? '/investors' : '/',
+            path: requiresInvestorAccess
+                ? '/investors'
+                : '/',
         };
-    } catch {
+    } catch (error) {
+        console.error(
+            '[Router] Access-control check failed:',
+            error
+        );
+
         return {
             path: '/',
         };
