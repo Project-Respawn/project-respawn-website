@@ -34,6 +34,8 @@ export const myFunction = defineFunction({
     TWITCH_CLIENT_SECRET: secret('TWITCH_CLIENT_SECRET'),
     TWITCH_OAUTH_STATE_SECRET: secret('TWITCH_OAUTH_STATE_SECRET'),
     TWITCH_RUNTIME_AUTH_SECRET: secret('TWITCH_RUNTIME_AUTH_SECRET'),
+    ALPHA_REWARD_EVENT_AUTH_SECRET: secret('ALPHA_REWARD_EVENT_AUTH_SECRET'),
+    ALPHA_REWARD_EVENT_CLIENT_ID: 'alpha-app',
     TWITCH_RUNTIME_CLIENT_ID: 'respawn-twitch-bot',
     TWITCH_TOKEN_KMS_KEY_ID: process.env.TWITCH_TOKEN_KMS_KEY_ID || '',
     TWITCH_REDIRECT_URI: 'https://9qp7ehd406.execute-api.eu-north-1.amazonaws.com/twitch/oauth/callback',
