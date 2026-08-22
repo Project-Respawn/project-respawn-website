@@ -1,5 +1,4 @@
 import { randomUUID } from 'node:crypto'
-import { getDataClient } from '../shared/dataClient'
 import { getRequestBody } from '../shared/http'
 import { jsonResponse } from '../shared/responses'
 import { createRuntimeLease, runtimeLeaseMetadata, verifyRuntimeLease, verifyRuntimeRequest } from './runtimeAuth'
@@ -21,7 +20,7 @@ async function integration(client: any, id: string) { const result = await clien
 function bearer(event: any) { return headers(event).authorization?.replace(/^Bearer\s+/i, '') || '' }
 
 export async function handleTwitchRuntime(path: string, method: string, event: any, injectedClient?: any) {
-  const body: any = getRequestBody(event) || {}; const client = injectedClient || await getDataClient()
+  const body: any = getRequestBody(event) || {}; const client = injectedClient || await (await import('../shared/dataClient')).getDataClient()
   if (path === '/twitch/runtime/lease' && method === 'POST') {
     authenticateRuntime(event, path, method, body); const record = await integration(client, String(body.integrationId || ''))
     if (!record.twitchBroadcasterId || record.connectionStatus === 'DISCONNECTED') return jsonResponse(409, { error: 'Integration is not runtime-ready' })

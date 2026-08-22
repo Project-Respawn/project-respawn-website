@@ -1,5 +1,4 @@
 import { randomUUID } from 'node:crypto'
-import { getDataClient } from '../shared/dataClient'
 import { getRequestBody } from '../shared/http'
 import { jsonResponse } from '../shared/responses'
 import { verifyAlphaRequest } from './rewardEventAuth'
@@ -13,7 +12,7 @@ function headers(event: any) { return Object.fromEntries(Object.entries(event.he
 function safeName(value: unknown) { return String(value || 'A Project Respawn member').normalize('NFKC').replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, 40) || 'A Project Respawn member' }
 
 export async function handleAlphaRewardEvent(event: any, injectedClient?: any, now = Date.now()) {
-  const body: any = getRequestBody(event) || {}; const h = headers(event); const client = injectedClient || await getDataClient()
+  const body: any = getRequestBody(event) || {}; const h = headers(event); const client = injectedClient || await (await import('../shared/dataClient')).getDataClient()
   if (h['x-respawn-alpha-client'] !== (process.env.ALPHA_REWARD_EVENT_CLIENT_ID || 'alpha-app')) throw new Error('Alpha service client is not authorized')
   const nonceHash = verifyAlphaRequest({ method: 'POST', path: PATH, timestamp: h['x-respawn-timestamp'], nonce: h['x-respawn-nonce'], body }, h['x-respawn-signature'], process.env.ALPHA_REWARD_EVENT_AUTH_SECRET || '', now)
   const nonce = await client.models.AlphaServiceNonce.create({ nonceHash, expiresAt: new Date(now + 2 * 60_000).toISOString() })
@@ -42,6 +41,8 @@ export async function claimRewardEvent(client: any, integrationId: string, now =
   const current = (listed.data || []).filter((x: any) => Date.parse(x.expiresAt) >= now).sort((a: any, b: any) => Date.parse(a.occurredAt) - Date.parse(b.occurredAt))[0]
   if (!current) return null
   const claimToken = randomUUID(); const claimedAt = new Date(now).toISOString()
+  const mutex = await client.models.RewardRedemptionEventClaim.create({ eventId: current.eventId, integrationId, claimToken, claimedAt })
+  if (mutex.errors?.length) return null
   await client.models.RewardRedemptionEvent.update({ eventId: current.eventId, status: 'CLAIMED', claimToken, claimedAt })
   const confirmed = (await client.models.RewardRedemptionEvent.get({ eventId: current.eventId })).data
   if (!confirmed || confirmed.claimToken !== claimToken || confirmed.status !== 'CLAIMED') return null
@@ -50,7 +51,9 @@ export async function claimRewardEvent(client: any, integrationId: string, now =
 
 export async function resolveRewardEvent(client: any, integrationId: string, input: any, now = Date.now()) {
   const record = (await client.models.RewardRedemptionEvent.get({ eventId: String(input.eventId || '') })).data
-  if (!record || record.integrationId !== integrationId || record.status !== 'CLAIMED' || record.claimToken !== input.claimToken) throw new Error('Reward event claim is invalid')
+  const mutex = (await client.models.RewardRedemptionEventClaim.get({ eventId: String(input.eventId || '') })).data
+  const allowedCurrent = input.resolution === 'UNCERTAIN' ? ['CLAIMED'] : ['CLAIMED', 'UNCERTAIN']
+  if (!record || !mutex || record.integrationId !== integrationId || mutex.integrationId !== integrationId || !allowedCurrent.includes(record.status) || record.claimToken !== input.claimToken || mutex.claimToken !== input.claimToken) throw new Error('Reward event claim is invalid')
   if (!['SENT', 'SKIPPED', 'UNCERTAIN'].includes(input.resolution)) throw new Error('Reward event resolution is invalid')
   const updated = await client.models.RewardRedemptionEvent.update({ eventId: record.eventId, status: input.resolution, resolution: input.reason || input.resolution, resolvedAt: new Date(now).toISOString() })
   if (updated.errors?.length) throw new Error('Failed to resolve reward event')
