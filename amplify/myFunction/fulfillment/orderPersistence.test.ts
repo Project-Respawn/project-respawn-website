@@ -25,7 +25,7 @@ const checkout = {
   orderId: 'PR-123', amount: 42.5, currency: 'GBP', customerName: 'Customer Name',
   email: 'customer@example.invalid', phone: '+441234567890',
   shippingAddress: { address: '1 Test Street', city: 'London', postcode: 'SW1A 1AA', country: 'GB' },
-  items: [{ productId: 'product-1', variantId: 'variant-1', quantity: 2, fulfillmentProvider: 'printful', fulfillmentVariantId: 'sync-1' }],
+  items: [{ productId: '86f2fc08-6552-4bd2-b47e-494085653bb7', variantId: 'd63cf866-70a5-4d34-9fee-e67d1d445f32', externalVariantId: '5352643000', color: 'True Royal', size: 'L', unitPrice: 20, quantity: 1, fulfillmentProvider: 'printful', fulfillmentVariantId: '5352643000' }],
 }
 
 test('one checkout persists exactly one populated pending order and preserves its Revolut ID and commerce data', async () => {
@@ -42,6 +42,8 @@ test('one checkout persists exactly one populated pending order and preserves it
   assert.equal(first.phone, checkout.phone)
   assert.deepEqual(JSON.parse(first.shippingAddress), checkout.shippingAddress)
   assert.deepEqual(JSON.parse(first.items), checkout.items)
+  assert.equal(JSON.parse(first.items)[0].fulfillmentProvider, 'printful')
+  assert.equal(JSON.parse(first.items)[0].fulfillmentVariantId, '5352643000')
   assert.equal(first.paymentAmount, checkout.amount)
   assert.equal(first.currency, checkout.currency)
   assert.equal(first.paymentStatus, 'pending')

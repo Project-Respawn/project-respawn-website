@@ -5,6 +5,11 @@ import { fetchProducts, fetchProductById } from '../../Merch/merchService';
 import { refreshAccessContext } from '@/composables/useAccessContext.js';
 import { filterProductsForProductControl, getProductControlCapabilities } from './ProductControl.access.js';
 import { findExistingPrintfulVariant, printfulSyncVariantId } from '@/commerce/printfulVariant.js';
+import {
+  decodeManagedMediaLibrary,
+  normalizeProductControlProduct,
+  normalizeProductControlRecords,
+} from './ProductControl.data.js';
 
 let client = null;
 function getClient() {
@@ -306,7 +311,7 @@ async function listAllModelRecords(modelName, authMode = 'userPool') {
       throw new Error(listResult.errors[0].message || `Failed to list ${modelName}.`);
     }
 
-    records.push(...(listResult.data || []));
+    records.push(...normalizeProductControlRecords(listResult.data, `${modelName} records`));
     nextToken = listResult.nextToken;
   } while (nextToken);
 
@@ -885,7 +890,7 @@ export default {
         if (managedMediaResult.errors?.length) {
           throw new Error(managedMediaResult.errors[0].message || 'Failed to load Media Library.');
         }
-        const managedMedia = managedMediaResult.data || { mediaItems: [], collections: [] };
+        const managedMedia = decodeManagedMediaLibrary(managedMediaResult.data);
         const [
           products,
           brands,
@@ -1024,7 +1029,7 @@ export default {
             const sourceType = normalizeText(product.sourceType).toLowerCase() || 'other';
             const status = normalizeText(product.status).toLowerCase() || 'inactive';
 
-            return {
+            return normalizeProductControlProduct({
               ...product,
               title: normalizeText(product.title) || 'Untitled product',
               slug: normalizeText(product.slug),
@@ -1051,7 +1056,7 @@ export default {
               whatsIncluded: normalizeText(product.whatsIncluded),
               careInstructions: normalizeText(product.careInstructions),
               fitNotes: normalizeText(product.fitNotes),
-            };
+            }, variantRecords);
           })
           .sort((a, b) => {
             const aOrder = Number.isFinite(Number(a.sortOrder)) ? Number(a.sortOrder) : 9999;

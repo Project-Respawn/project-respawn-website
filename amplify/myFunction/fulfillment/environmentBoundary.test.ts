@@ -7,9 +7,10 @@ import { createPrintfulOrder, handlePrintfulCreateOrder, handlePrintfulProducts 
 function testOrder(environment = 'sandbox') {
   return {
     id: 'internal-order-id',
+    projectOrderId: 'PR-1787514285491',
     revolutOrderId: 'revolut-order-id',
     environment,
-    items: [{ productId: 'product', variantId: 'internal-amplify-variant', quantity: 1, fulfillmentProvider: 'printful', fulfillmentVariantId: 'printful-sync-variant' }],
+    items: [{ productId: '86f2fc08-6552-4bd2-b47e-494085653bb7', variantId: 'd63cf866-70a5-4d34-9fee-e67d1d445f32', externalVariantId: '5352643000', color: 'True Royal', size: 'L', unitPrice: 20, quantity: 1, fulfillmentProvider: 'printful', fulfillmentVariantId: '5352643000' }],
     providerStatuses: {},
     auditHistory: [],
     shippingAddress: {},
@@ -113,9 +114,9 @@ test('explicit production keeps the existing Printful fulfillment path reachable
 
   assert.equal(enabled(), true)
   assert.equal(createCalls, 1)
-  assert.deepEqual(printfulPayload.items, [{ sync_variant_id: 'printful-sync-variant', quantity: 1 }])
-  assert.equal(printfulPayload.recipient.zip, 'SW1A 1AA')
-  assert.equal('postcode' in printfulPayload.recipient, false)
+  assert.deepEqual(printfulPayload.items, [{ sync_variant_id: '5352643000', quantity: 1 }])
+  assert.equal(printfulPayload.zip, 'SW1A 1AA')
+  assert.equal('postcode' in printfulPayload, false)
   assert.notEqual(printfulPayload.items[0].sync_variant_id, testOrder('production').items[0].variantId)
   assert.equal(statuses.printful.status, 'fulfilled')
 })
@@ -163,18 +164,23 @@ test('Printful creation reuses an existing external order and never posts a dupl
 
 test('Printful creation posts only after a 404 duplicate lookup', async () => {
   const methods: string[] = []
+  let postedBody: any
   await createPrintfulOrder(
-    { orderId: 'PR-123', items: [{ sync_variant_id: '5352643000', quantity: 1 }] },
+    { orderId: 'PR-123', zip: 'SW1A 1AA', items: [{ sync_variant_id: '5352643000', quantity: 1 }] },
     {
       fulfillmentEnabled: () => true,
       authHeader: () => 'Bearer test',
-      request: async (_url, method) => {
+      request: async (_url, method, body) => {
         methods.push(method)
+        if (method === 'POST') postedBody = body
         return method === 'GET' ? { statusCode: 404, body: {} } as any : { statusCode: 200, body: { result: { id: 'new' } } } as any
       },
     },
   )
   assert.deepEqual(methods, ['GET', 'POST'])
+  assert.deepEqual(postedBody.items, [{ sync_variant_id: '5352643000', quantity: 1 }])
+  assert.equal(postedBody.recipient.zip, 'SW1A 1AA')
+  assert.equal('postcode' in postedBody.recipient, false)
 })
 
 test('Printful API failure leaves the order recoverable with its error', async () => {

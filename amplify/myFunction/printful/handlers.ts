@@ -25,7 +25,7 @@ function buildPrintfulOrderPayload(body: any) {
       address1: body.address,
       city: body.city,
       state_code: body.state,
-      postcode: body.postcode,
+      zip: body.zip ?? body.postcode,
       country_code: body.country || 'GB',
       email: body.email,
     },
