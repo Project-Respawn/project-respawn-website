@@ -2,6 +2,7 @@ import { writePermissionAudit } from '../shared/audit'
 import { requireEffectivePermission } from '../shared/requirePermission'
 import { getIdentityUsername, getResolverIdentity } from '../shared/auth'
 import { decodeFulfillmentOrder } from '../fulfillment/orderJson'
+import { isProvablyMalformedFulfillmentOrder } from '../fulfillment/orderValidation'
 
 async function loadDataClient() { return (await import('../shared/dataClient')).getDataClient() as any }
 
@@ -13,9 +14,21 @@ async function listAll(client: any, modelName: string) {
 function ok(result: any, label: string) { if (result.errors?.length) throw new Error(result.errors[0].message || `${label} failed`); return result.data }
 function mutationResult(id: string, message?: string) { return { success: true, message: message || null, resourceId: id } }
 
+function orderTime(order: any) {
+  const timestamp = Date.parse(String(order?.createdAt || order?.updatedAt || ''))
+  return Number.isFinite(timestamp) ? timestamp : 0
+}
+
+export function prepareManagedOrders(records: any[]) {
+  return records
+    .map(decodeFulfillmentOrder)
+    .filter((order) => order && !isProvablyMalformedFulfillmentOrder(order))
+    .sort((left, right) => orderTime(right) - orderTime(left))
+}
+
 export async function handleListManagedOrders(event: any, injected?: any) {
   const client = injected || await loadDataClient(); await requireEffectivePermission(event, client, 'orders.view')
-  return { orders: (await listAll(client, 'FulfillmentOrder')).map(decodeFulfillmentOrder) }
+  return { orders: prepareManagedOrders(await listAll(client, 'FulfillmentOrder')) }
 }
 export async function handleListManagedProfiles(event: any, injected?: any) {
   const client = injected || await loadDataClient(); await requireEffectivePermission(event, client, 'profiles.staff.view')

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { readFileSync } from 'node:fs'
-import { fulfillmentSummary, hasProviderError, orderMatchesFilters, sortOrdersNewestFirst } from './AdminOrders.js'
+import { fulfillmentSummary, hasProviderError, orderMatchesFilters, parseManagedOrders, sortOrdersNewestFirst } from './AdminOrders.js'
 
 const statuses = [
   { paymentStatus: 'pending', overallFulfillmentStatus: 'pending', providerStatuses: {} },
@@ -23,8 +23,22 @@ test('pending, fulfilled, failed, and recovery-required summaries are preserved'
 })
 
 test('newest stored orders appear first', () => {
-  const sorted = sortOrdersNewestFirst([{ id: 'old', createdAt: '2026-01-01T00:00:00Z' }, { id: 'new', createdAt: '2026-02-01T00:00:00Z' }])
-  assert.deepEqual(sorted.map((order) => order.id), ['new', 'old'])
+  const sorted = sortOrdersNewestFirst([{ id: 'missing' }, { id: 'old', createdAt: '2026-01-01T00:00:00Z' }, { id: 'new', createdAt: '2026-02-01T00:00:00Z' }])
+  assert.deepEqual(sorted.map((order) => order.id), ['new', 'old', 'missing'])
+})
+
+test('AWSJSON string responses decode to orders instead of blank character rows', () => {
+  const orders = [{ id: 'stored', projectOrderId: 'PR-1' }]
+  assert.deepEqual(parseManagedOrders(JSON.stringify(orders)), orders)
+  assert.deepEqual(parseManagedOrders(JSON.stringify(JSON.stringify(orders))), orders)
+  assert.deepEqual(parseManagedOrders('not-json'), [])
+})
+
+test('search matches Project ID, Revolut ID, email, and customer name', () => {
+  const order = { projectOrderId: 'PR-SEARCH', revolutOrderId: 'REV-SEARCH', email: 'buyer@example.invalid', customerName: 'Example Buyer' }
+  for (const search of ['pr-search', 'rev-search', 'buyer@example', 'example buyer']) {
+    assert.equal(orderMatchesFilters(order, { search }), true)
+  }
 })
 
 test('detail view renders provider errors and complete item identity', () => {
