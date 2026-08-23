@@ -1568,7 +1568,7 @@ const schema = a
         paymentDate: a.datetime(),
         paymentAmount: a.float(),
         currency: a.string(),
-        environment: a.string(),
+        environment: a.string().required(),
         overallFulfillmentStatus: a.string().required(),
         customerName: a.string().required(),
         email: a.string().required(),
@@ -1578,8 +1578,8 @@ const schema = a
         providerStatuses: a.json().required(),
         reconciliationError: a.string(),
         auditHistory: a.json().required(),
-        createdAt: a.datetime(),
-        updatedAt: a.datetime(),
+        createdAt: a.datetime().required(),
+        updatedAt: a.datetime().required(),
       })
       .authorization((allow) => [
         allow.groups(['SuperAdmin', 'Admin']).to(['read']),

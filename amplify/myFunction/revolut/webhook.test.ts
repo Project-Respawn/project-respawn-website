@@ -14,7 +14,7 @@ function order(overrides: Record<string, unknown> = {}) {
 function harness(stored: any = order(), authoritative: Record<string, unknown> = { id: 'rev-1', state: 'completed', amount: 2500, currency: 'GBP' }) {
   const updates: any[] = []
   let creates = 0
-  let printfulCalls = 0
+  let dispatchCalls = 0
   const client = { models: { FulfillmentOrder: {
     list: async () => ({ data: stored ? [stored] : [] }),
     update: async (value: any) => { updates.push(value); return { data: { ...stored, ...value } } },
@@ -25,9 +25,9 @@ function harness(stored: any = order(), authoritative: Record<string, unknown> =
     return handleRevolutWebhook({ body, headers: {
       'Revolut-Request-Timestamp': timestamp,
       'Revolut-Signature': signature ? signRevolutWebhook(body, timestamp, secret) : 'v1=invalid',
-    } }, { signingSecret: secret, now: () => now, getClient: async () => client, fetchOrder: async () => ({ statusCode: 200, body: authoritative }) })
+    } }, { signingSecret: secret, now: () => now, getClient: async () => client, fetchOrder: async () => ({ statusCode: 200, body: authoritative }), dispatch: async () => { dispatchCalls += 1 } })
   }
-  return { invoke, updates, get creates() { return creates }, get printfulCalls() { return printfulCalls } }
+  return { invoke, updates, get creates() { return creates }, get dispatchCalls() { return dispatchCalls } }
 }
 
 test('valid signed webhook updates the same pending order and preserves merchandise/provider data', async () => {
@@ -40,7 +40,7 @@ test('valid signed webhook updates the same pending order and preserves merchand
   assert.equal(h.updates[0].items, undefined)
   assert.equal(h.updates[0].providerStatuses, undefined)
   assert.equal(h.creates, 0)
-  assert.equal(h.printfulCalls, 0)
+  assert.equal(h.dispatchCalls, 1)
 })
 
 test('valid webhook preserves JSON-serialized audit history returned by the Amplify client', async () => {
@@ -77,11 +77,20 @@ for (const [name, authoritative] of [
 })
 
 test('duplicate delivery of an already-current state is idempotent', async () => {
-  const h = harness(order({ paymentStatus: 'completed', paymentDate: 'already-paid' }))
+  const h = harness(order({ paymentStatus: 'completed', paymentDate: 'already-paid', providerStatuses: { printful: { status: 'fulfilled', providerOrderId: 'printful-1' } } }))
   await h.invoke()
   await h.invoke()
   assert.equal(h.updates.length, 0)
   assert.equal(h.creates, 0)
+  assert.equal(h.dispatchCalls, 0)
+})
+
+test('a paid webhook retries an incomplete fulfillment without creating another order', async () => {
+  const h = harness(order({ paymentStatus: 'completed', paymentDate: 'already-paid', providerStatuses: {} }))
+  await h.invoke()
+  assert.equal(h.updates.length, 0)
+  assert.equal(h.creates, 0)
+  assert.equal(h.dispatchCalls, 1)
 })
 
 for (const state of ['failed', 'cancelled']) test(`${state} authoritative state updates appropriately`, async () => {

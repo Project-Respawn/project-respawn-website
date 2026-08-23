@@ -4,6 +4,7 @@ import { createPrintfulOrder } from '../printful'
 import { fetchRevolutMerchantOrder } from '../revolut'
 import { isPrintfulFulfillmentEnabled, REVOLUT_MODE } from '../config/env'
 import { decodeFulfillmentOrder } from './orderJson'
+import { createValidatedFulfillmentOrder, validateFulfillmentOrder } from './orderValidation'
 
 type FulfillmentItem = {
   productId: string
@@ -30,7 +31,8 @@ function audit(action: string, result: string, provider?: string) {
   return { timestamp: new Date().toISOString(), action, result, provider: provider || null }
 }
 
-function fulfillmentOrderInput(order: any) {
+export function fulfillmentOrderInput(order: any) {
+  validateFulfillmentOrder(order)
   return {
     ...order,
     shippingAddress: JSON.stringify(order.shippingAddress || {}),
@@ -198,23 +200,18 @@ async function findOrder(client: any, identifier: string) {
   return decodeFulfillmentOrder(byProject.data?.[0] || null)
 }
 
-export async function persistPendingFulfillmentOrder(body: any, revolutOrderId: string) {
-  const client = await getDataClient() as any
+export async function persistPendingFulfillmentOrder(body: any, revolutOrderId: string, injectedClient?: any) {
+  if (!String(revolutOrderId || '').trim()) throw new Error('Cannot persist checkout without a Revolut order ID')
+  const client = injectedClient || await getDataClient() as any
   const existing = await findOrder(client, revolutOrderId)
   if (existing) return existing
-  const create = await client.models.FulfillmentOrder.create(fulfillmentOrderInput(buildFulfillmentOrder({
+  const created = await createValidatedFulfillmentOrder(client, fulfillmentOrderInput(buildFulfillmentOrder({
     ...body,
     projectOrderId: body?.orderId || body?.projectOrderId,
     revolutOrderId,
     paymentAmount: body?.amount,
   }, 'pending')))
-  if (!create.data) {
-    const details = Array.isArray(create.errors)
-      ? create.errors.map((error: any) => error?.message).filter(Boolean).join('; ')
-      : ''
-    throw new Error(details ? `Pending fulfillment order could not be persisted: ${details}` : 'Pending fulfillment order could not be persisted')
-  }
-  return create.data
+  return created
 }
 
 export async function handleFulfillmentRequest(body: any) {
@@ -233,8 +230,7 @@ export async function handleFulfillmentRequest(body: any) {
   let order = await findOrder(client, revolutOrderId)
   const alreadyFulfilled = Boolean(order) && Object.keys(order.providerStatuses || {}).length > 0 && Object.values(order.providerStatuses || {}).every((status: any) => status?.status === 'fulfilled')
   if (!order) {
-    const create = await client.models.FulfillmentOrder.create(fulfillmentOrderInput(buildFulfillmentOrder(body, paymentState)))
-    order = create.data
+    order = await createValidatedFulfillmentOrder(client, fulfillmentOrderInput(buildFulfillmentOrder(body, paymentState)))
   } else {
     const paidUpdate = {
       id: order.id,
@@ -291,7 +287,7 @@ export async function handleExistingRevolutOrderImport(body: any) {
     return jsonResponse(409, { error: 'Revolut payment is not paid', revolutOrderId })
   }
   const missingData = 'Recovery requires the original shipping address, item quantities, fulfillment providers, and Printful sync variant IDs.'
-  const create = await client.models.FulfillmentOrder.create(fulfillmentOrderInput({
+  const created = await createValidatedFulfillmentOrder(client, fulfillmentOrderInput({
     projectOrderId: paymentBody.merchant_order_ext_ref || revolutOrderId,
     revolutOrderId,
     paymentStatus: String(paymentBody.state).toLowerCase(),
@@ -309,5 +305,7 @@ export async function handleExistingRevolutOrderImport(body: any) {
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   }))
-  return jsonResponse(200, { success: true, imported: true, recoveryRequired: true, missingData, order: create.data })
+  return jsonResponse(200, { success: true, imported: true, recoveryRequired: true, missingData, order: created })
 }
+
+export { createValidatedFulfillmentOrder, validateFulfillmentOrder } from './orderValidation'
