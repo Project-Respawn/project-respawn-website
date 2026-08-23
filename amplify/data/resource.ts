@@ -913,6 +913,18 @@ const schema = a
       .identifier(['eventId'])
       .authorization((allow) => [allow.groups(['TwitchBackendService'])]),
 
+    // Atomic claim mutex: create-by-eventId succeeds for only one runtime,
+    // including during ECS replacement overlap or runtime restart.
+    RewardRedemptionEventClaim: a
+      .model({
+        eventId: a.string().required(),
+        integrationId: a.id().required(),
+        claimToken: a.string().required(),
+        claimedAt: a.datetime().required(),
+      })
+      .identifier(['eventId'])
+      .authorization((allow) => [allow.groups(['TwitchBackendService'])]),
+
     // Persistent replay guard for Alpha service-authenticated ingestion.
     AlphaServiceNonce: a
       .model({
