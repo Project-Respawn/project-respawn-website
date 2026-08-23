@@ -217,20 +217,6 @@ export async function persistPendingFulfillmentOrder(body: any, revolutOrderId: 
   return create.data
 }
 
-export async function persistPendingFulfillmentOrder(body: any, revolutOrderId: string) {
-  const client = await getDataClient() as any
-  const existing = await findOrder(client, revolutOrderId)
-  if (existing) return existing
-  const create = await client.models.FulfillmentOrder.create(buildFulfillmentOrder({
-    ...body,
-    projectOrderId: body?.orderId || body?.projectOrderId,
-    revolutOrderId,
-    paymentAmount: body?.amount,
-  }, 'pending'))
-  if (!create.data) throw new Error('Pending fulfillment order could not be persisted')
-  return create.data
-}
-
 export async function handleFulfillmentRequest(body: any) {
   const client = await getDataClient() as any
   const revolutOrderId = String(body?.revolutOrderId || '')
