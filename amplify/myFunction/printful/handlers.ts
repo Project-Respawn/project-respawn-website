@@ -45,6 +45,9 @@ function normalizePrintfulListItem(product: any) {
 function normalizePrintfulVariant(variant: any, fallbackImage = '') {
   return {
     id: variant.id,
+    fulfillmentVariantId: variant.id,
+    catalogVariantId: variant.variant_id,
+    externalVariantId: variant.external_id || '',
     name: variant.name,
     retailPrice: variant.retail_price || '',
     currency: variant.currency || '',
@@ -136,7 +139,7 @@ export async function handlePrintfulProductLookup(path: string) {
 
 export async function createPrintfulOrder(
   body: any,
-  injected?: { request?: PrintfulRequest; fulfillmentEnabled?: () => boolean },
+  injected?: { request?: PrintfulRequest; fulfillmentEnabled?: () => boolean; authHeader?: () => string },
 ) {
   const fulfillmentEnabled = injected?.fulfillmentEnabled || isPrintfulFulfillmentEnabled
 
@@ -150,12 +153,22 @@ export async function createPrintfulOrder(
 
   const orderData = buildPrintfulOrderPayload(body)
   const request = injected?.request || makeRequest
+  const authHeader = injected?.authHeader || buildPrintfulAuthHeader
+
+  const existing = await request(
+    `https://api.printful.com/orders/${encodeURIComponent(`@${orderData.external_id}`)}`,
+    'GET',
+    null,
+    authHeader()
+  )
+  if (existing.statusCode === 200) return existing
+  if (existing.statusCode !== 404) return existing
 
   const result = await request(
     'https://api.printful.com/orders',
     'POST',
     orderData,
-    buildPrintfulAuthHeader()
+    authHeader()
   )
 
   return result

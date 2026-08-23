@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { persistPendingFulfillmentOrder } from './index'
+import { assertPaymentMatchesStoredOrder, hydrateFulfillmentVariantIds, persistPendingFulfillmentOrder } from './index'
 import { createValidatedFulfillmentOrder, isProvablyMalformedFulfillmentOrder, validateFulfillmentOrder } from './orderValidation'
 
 function clientHarness() {
@@ -61,4 +61,29 @@ test('cleanup predicate only selects records with no IDs or meaningful commerce/
   assert.equal(isProvablyMalformedFulfillmentOrder({ revolutOrderId: 'rev-1' }), false)
   assert.equal(isProvablyMalformedFulfillmentOrder({ auditHistory: JSON.stringify([{ action: 'import' }]) }), false)
   assert.equal(isProvablyMalformedFulfillmentOrder({ customerName: 'Customer' }), false)
+})
+
+test('pending persistence rejects a Printful item without its sync variant ID', async () => {
+  const h = clientHarness()
+  await assert.rejects(
+    () => persistPendingFulfillmentOrder({ ...checkout, items: [{ ...checkout.items[0], fulfillmentVariantId: '' }] }, 'revolut-missing', h.client),
+    /missing its Printful sync variant ID/,
+  )
+  assert.equal(h.records.length, 0)
+})
+
+test('recovery hydrates only an exact product, colour, and size mapping', async () => {
+  const item = { productId: 'product-1', variantId: 'variant-1', color: 'True Royal', size: 'L', quantity: 1, fulfillmentProvider: 'printful' }
+  const client = { models: { MerchProductVariant: { get: async () => ({ data: { id: 'variant-1', productId: 'product-1', color: 'True Royal', size: 'L', externalVariantId: '5352643000' } }) } } }
+  const [hydrated] = await hydrateFulfillmentVariantIds({ items: [item] }, client)
+  assert.equal(hydrated.fulfillmentVariantId, '5352643000')
+  const wrong = { models: { MerchProductVariant: { get: async () => ({ data: { productId: 'product-1', color: 'Black', size: 'L', externalVariantId: 'wrong' } }) } } }
+  await assert.rejects(() => hydrateFulfillmentVariantIds({ items: [item] }, wrong), /does not exactly match/)
+})
+
+test('recovery requires the authoritative Revolut amount and currency to match', () => {
+  const stored = { paymentAmount: 20, currency: 'GBP' }
+  assert.equal(assertPaymentMatchesStoredOrder(stored, { amount: 2000, currency: 'GBP' }), true)
+  assert.throws(() => assertPaymentMatchesStoredOrder(stored, { amount: 2100, currency: 'GBP' }), /does not match/)
+  assert.throws(() => assertPaymentMatchesStoredOrder(stored, { amount: 2000, currency: 'EUR' }), /does not match/)
 })

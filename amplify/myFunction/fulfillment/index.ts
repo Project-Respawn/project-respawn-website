@@ -72,6 +72,51 @@ function isProductionOrder(order: any) {
   return String(order?.environment || '').trim().toLowerCase() === 'production'
 }
 
+export function assertPaymentMatchesStoredOrder(order: any, payment: any) {
+  const storedAmount = Number(order?.paymentAmount)
+  const authoritativeMinorUnits = Number(payment?.amount)
+  const amountMatches = Number.isFinite(storedAmount) && Number.isFinite(authoritativeMinorUnits) && Math.round(storedAmount * 100) === authoritativeMinorUnits
+  const currencyMatches = String(order?.currency || '').trim().toUpperCase() === String(payment?.currency || '').trim().toUpperCase()
+  if (!amountMatches || !currencyMatches) throw new Error('Revolut payment amount or currency does not match the stored order')
+  return true
+}
+
+export function assertPrintfulItemsHaveFulfillmentIds(items: unknown) {
+  if (!Array.isArray(items)) throw new Error('Checkout items are required')
+  for (const item of items as FulfillmentItem[]) {
+    if (String(item.fulfillmentProvider || '').toLowerCase() !== 'printful') continue
+    if (!String(item.fulfillmentVariantId || '').trim()) {
+      throw new Error('Printful-backed checkout item is missing its Printful sync variant ID')
+    }
+  }
+  return items
+}
+
+export async function hydrateFulfillmentVariantIds(order: any, client: any) {
+  const items = Array.isArray(order?.items) ? order.items as FulfillmentItem[] : []
+  const hydrated: FulfillmentItem[] = []
+  for (const item of items) {
+    if (String(item.fulfillmentProvider || '').toLowerCase() !== 'printful' || String(item.fulfillmentVariantId || '').trim()) {
+      hydrated.push(item)
+      continue
+    }
+    if (!String(item.variantId || '').trim()) throw new Error('Printful recovery item has no internal variant ID')
+    const result = await client.models.MerchProductVariant.get({ id: item.variantId })
+    const variant = result?.data
+    if (result?.errors?.length || !variant) throw new Error('Printful recovery variant could not be loaded')
+    const sameProduct = String(variant.productId || '') === String(item.productId || '')
+    const sameColor = String(variant.color || '').trim().toLowerCase() === String(item.color || '').trim().toLowerCase()
+    const sameSize = String(variant.size || '').trim().toUpperCase() === String(item.size || '').trim().toUpperCase()
+    const syncVariantId = String(variant.externalVariantId || '').trim()
+    if (!sameProduct || !sameColor || !sameSize || !syncVariantId) {
+      throw new Error('Stored Printful variant mapping does not exactly match the purchased product, colour, and size')
+    }
+    hydrated.push({ ...item, externalVariantId: syncVariantId, fulfillmentVariantId: syncVariantId })
+  }
+  assertPrintfulItemsHaveFulfillmentIds(hydrated)
+  return hydrated
+}
+
 export function buildFulfillmentOrder(body: any, paymentState: unknown, now = new Date().toISOString()) {
   const revolutOrderId = String(body?.revolutOrderId || '')
   const normalizedPaymentState = String(paymentState).toLowerCase()
@@ -159,7 +204,7 @@ export async function dispatchFulfillment(order: any, injected?: {
     try {
       logger.info('Creating Printful order', { orderId: order.revolutOrderId })
       const result = await createPrintful({
-        orderId: order.revolutOrderId,
+        orderId: order.projectOrderId,
         shippingMethod: 'STANDARD',
         items: printfulItems,
         customerName: order.customerName,
@@ -205,6 +250,7 @@ export async function persistPendingFulfillmentOrder(body: any, revolutOrderId: 
   const client = injectedClient || await getDataClient() as any
   const existing = await findOrder(client, revolutOrderId)
   if (existing) return existing
+  assertPrintfulItemsHaveFulfillmentIds(body?.items)
   const created = await createValidatedFulfillmentOrder(client, fulfillmentOrderInput(buildFulfillmentOrder({
     ...body,
     projectOrderId: body?.orderId || body?.projectOrderId,
@@ -221,7 +267,8 @@ export async function handleFulfillmentRequest(body: any) {
   if (!revolutOrderId || !Array.isArray(body?.items)) return jsonResponse(400, { error: 'Missing paid order fulfillment data' })
 
   const payment = await fetchRevolutMerchantOrder(revolutOrderId)
-  const paymentState = (payment.body as { state?: string }).state
+  const paymentBody = payment.body as { state?: string; amount?: number; currency?: string }
+  const paymentState = paymentBody.state
   if (payment.statusCode < 200 || payment.statusCode >= 300 || !isPaid(paymentState)) {
     return jsonResponse(409, { error: 'Revolut payment is not paid', revolutOrderId })
   }
@@ -232,6 +279,7 @@ export async function handleFulfillmentRequest(body: any) {
   if (!order) {
     order = await createValidatedFulfillmentOrder(client, fulfillmentOrderInput(buildFulfillmentOrder(body, paymentState)))
   } else {
+    assertPaymentMatchesStoredOrder(order, paymentBody)
     const paidUpdate = {
       id: order.id,
       paymentStatus: String(paymentState).toLowerCase(),
@@ -262,12 +310,28 @@ export async function handleRecoveryFulfillment(body: any) {
   logger.info('Recovery requested', { identifier })
   if (!identifier) return jsonResponse(400, { error: 'Missing revolutOrderId or projectOrderId' })
   const client = await getDataClient() as any
-  const order = await findOrder(client, identifier)
+  let order = await findOrder(client, identifier)
   if (!order) return jsonResponse(404, { error: 'Order was not stored; shipping address, provider assignments, and variant quantities cannot be safely reconstructed from Revolut.' })
   const payment = await fetchRevolutMerchantOrder(order.revolutOrderId)
-  const paymentState = (payment.body as { state?: string }).state
+  const paymentBody = payment.body as { state?: string; amount?: number; currency?: string }
+  const paymentState = paymentBody.state
   if (!isPaid(paymentState)) return jsonResponse(409, { error: 'Revolut payment is not paid', revolutOrderId: order.revolutOrderId })
+  try { assertPaymentMatchesStoredOrder(order, paymentBody) }
+  catch (error) { return jsonResponse(409, { error: error instanceof Error ? error.message : 'Revolut payment verification failed', revolutOrderId: order.revolutOrderId }) }
   logger.info('Payment verified', { orderId: order.revolutOrderId, state: paymentState })
+  const hydratedItems = await hydrateFulfillmentVariantIds(order, client)
+  if (JSON.stringify(hydratedItems) !== JSON.stringify(order.items || [])) {
+    const mappingEntry = audit('Printful variant mapping restored', 'verified', 'printful')
+    const update = {
+      id: order.id,
+      items: JSON.stringify(hydratedItems),
+      auditHistory: JSON.stringify([...(order.auditHistory || []), mappingEntry]),
+      updatedAt: new Date().toISOString(),
+    }
+    const result = await client.models.FulfillmentOrder.update(update)
+    if (result?.errors?.length || !result?.data) throw new Error('Failed to persist restored Printful variant mapping')
+    order = { ...order, items: hydratedItems, auditHistory: [...(order.auditHistory || []), mappingEntry] }
+  }
   const alreadyFulfilled = Object.keys(order.providerStatuses || {}).length > 0 && Object.values(order.providerStatuses || {}).every((status: any) => status?.status === 'fulfilled')
   await saveProviderStatuses(client, order, order.providerStatuses || {}, [audit('Admin recovery started', 'verified')])
   const refreshed = { ...order, auditHistory: [...(order.auditHistory || []), audit('Admin recovery started', 'verified')] }

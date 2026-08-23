@@ -139,6 +139,40 @@ test('duplicate fulfilled provider dispatch does not create a second Printful or
   assert.equal(calls, 0)
 })
 
+test('Printful creation reuses an existing external order and never posts a duplicate', async () => {
+  const calls: Array<{ url: string; method: string }> = []
+  const result = await createPrintfulOrder(
+    { orderId: 'PR-123', items: [{ sync_variant_id: '5352643000', quantity: 1 }] },
+    {
+      fulfillmentEnabled: () => true,
+      authHeader: () => 'Bearer test',
+      request: async (url, method) => {
+        calls.push({ url, method })
+        return { statusCode: 200, body: { result: { id: 'existing-printful-order', external_id: 'PR-123' } } } as any
+      },
+    },
+  )
+  assert.equal((result.body as any).result.id, 'existing-printful-order')
+  assert.deepEqual(calls.map((call) => call.method), ['GET'])
+  assert.match(calls[0].url, /orders\/%40PR-123$/)
+})
+
+test('Printful creation posts only after a 404 duplicate lookup', async () => {
+  const methods: string[] = []
+  await createPrintfulOrder(
+    { orderId: 'PR-123', items: [{ sync_variant_id: '5352643000', quantity: 1 }] },
+    {
+      fulfillmentEnabled: () => true,
+      authHeader: () => 'Bearer test',
+      request: async (_url, method) => {
+        methods.push(method)
+        return method === 'GET' ? { statusCode: 404, body: {} } as any : { statusCode: 200, body: { result: { id: 'new' } } } as any
+      },
+    },
+  )
+  assert.deepEqual(methods, ['GET', 'POST'])
+})
+
 test('Printful API failure leaves the order recoverable with its error', async () => {
   const updates: any[] = []
   const statuses = await dispatchFulfillment(testOrder('production'), {
