@@ -99,7 +99,9 @@ test('explicit production keeps the existing Printful fulfillment path reachable
   const updates: any[] = []
   const enabled = () => isPrintfulFulfillmentEnabled('prod', 'prod')
 
-  const statuses = await dispatchFulfillment(testOrder('production'), {
+  const order = testOrder('production') as any
+  order.shippingAddress = { address: '1 Test Street', city: 'London', postcode: 'SW1A 1AA', country: 'GB' }
+  const statuses = await dispatchFulfillment(order, {
     getClient: fakeClient(updates),
     fulfillmentEnabled: enabled,
     createPrintful: async (payload) => {
@@ -112,6 +114,8 @@ test('explicit production keeps the existing Printful fulfillment path reachable
   assert.equal(enabled(), true)
   assert.equal(createCalls, 1)
   assert.deepEqual(printfulPayload.items, [{ sync_variant_id: 'printful-sync-variant', quantity: 1 }])
+  assert.equal(printfulPayload.recipient.zip, 'SW1A 1AA')
+  assert.equal('postcode' in printfulPayload.recipient, false)
   assert.notEqual(printfulPayload.items[0].sync_variant_id, testOrder('production').items[0].variantId)
   assert.equal(statuses.printful.status, 'fulfilled')
 })

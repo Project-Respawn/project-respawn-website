@@ -212,7 +212,7 @@ export async function dispatchFulfillment(order: any, injected?: {
         address: order.shippingAddress?.address,
         city: order.shippingAddress?.city,
         state: order.shippingAddress?.state,
-        postcode: order.shippingAddress?.postcode,
+        zip: order.shippingAddress?.postcode,
         country: order.shippingAddress?.country,
       })
       logger.info('Printful response status', { status: result.statusCode })
