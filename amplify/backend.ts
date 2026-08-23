@@ -176,6 +176,12 @@ httpApi.addRoutes({
   integration: httpLambdaIntegration,
 });
 
+httpApi.addRoutes({
+  path: '/integrations/alpha/reward-events',
+  methods: [HttpMethod.POST],
+  integration: httpLambdaIntegration,
+});
+
 // Generic provider-aware fulfillment routes.
 httpApi.addRoutes({
   path: '/orders/fulfill',
