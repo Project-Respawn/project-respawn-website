@@ -337,10 +337,6 @@ export default {
     },
 
     async refreshStatus({ silent = false } = {}) {
-      console.info('[Twitch status diagnostic] Integrations.refreshStatus start', {
-        selectedBrandId: this.selectedBrandId || null,
-        workspaceIdPresent: Boolean(this.workspaces[0]?.id),
-      });
       try {
         if (!this.secureFoundationEnabled) {
           const connection = await this.fetchLegacyConnectionForAuthenticatedUser();
@@ -354,20 +350,9 @@ export default {
         this.twitchHealth = status.health;
         this.twitchConnected = status.connected;
         this.twitchAccountName = status.accountName;
-        console.info('[Twitch status diagnostic] Integrations.refreshStatus applied', {
-          connectionStatus: status.integration?.connectionStatus || null,
-          twitchLogin: status.integration?.twitchLogin || null,
-          selectedBrandId: this.selectedBrandId || null,
-          workspaceIdPresent: Boolean(status.integration?.workspaceId),
-        });
         return this.twitchConnected;
       } catch (error) {
-        console.error('[Twitch status diagnostic] Integrations.refreshStatus error', {
-          name: error?.name || 'Error',
-          message: error?.message || 'Unknown error',
-          selectedBrandId: this.selectedBrandId || null,
-          workspaceIdPresent: Boolean(this.workspaces[0]?.id),
-        });
+        console.error('Failed to refresh Twitch status:', error);
         this.twitchConnected = false;
         this.twitchAccountName = '';
         if (!silent) {

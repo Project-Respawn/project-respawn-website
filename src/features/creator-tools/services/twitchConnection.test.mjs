@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { consumeTwitchReturnTarget, getTwitchConnectionStatus, parseTwitchOAuthReturn, startTwitchConnection, twitchReturnPath } from './twitchConnection.js';
+import { consumeTwitchReturnTarget, decodeTwitchJson, getTwitchConnectionStatus, parseTwitchOAuthReturn, startTwitchConnection, twitchReturnPath } from './twitchConnection.js';
 
 const storage = () => { const values = new Map(); return { getItem: (key) => values.get(key), setItem: (key, value) => values.set(key, value), removeItem: (key) => values.delete(key) }; };
 const client = (response) => ({ mutations: { startTwitchIntegrationOAuth: async () => response } });
@@ -46,4 +46,30 @@ test('status mapping safely accepts already-decoded integration and health', asy
   assert.equal(status.integration, integration);
   assert.equal(status.connected, true);
   assert.deepEqual(status.health, { botConnected: null });
+});
+
+test('AWSJSON decoder accepts object, serialized, and production double-encoded representations', () => {
+  const integration = { connectionStatus: 'CONNECTED', twitchLogin: 'ravens_gamer', workspaceId: 'workspace-1' };
+  assert.equal(decodeTwitchJson(integration), integration);
+  assert.deepEqual(decodeTwitchJson(JSON.stringify(integration)), integration);
+  assert.deepEqual(decodeTwitchJson(JSON.stringify(JSON.stringify(integration))), integration);
+  assert.equal(decodeTwitchJson(null), null);
+  assert.equal(decodeTwitchJson(undefined), null);
+  assert.equal(decodeTwitchJson('{malformed'), null);
+  assert.equal(decodeTwitchJson(JSON.stringify(JSON.stringify(JSON.stringify(integration)))), null, 'decoding is bounded to two passes');
+});
+
+test('production double-encoded integration and health retain connected application state', async () => {
+  const integration = { connectionStatus: 'CONNECTED', twitchLogin: 'ravens_gamer', workspaceId: 'workspace-1' };
+  const health = { stale: true, botConnected: null };
+  const status = await getTwitchConnectionStatus({ queries: { getMyTwitchIntegration: async () => ({ data: {
+    integration: JSON.stringify(JSON.stringify(integration)),
+    health: JSON.stringify(JSON.stringify(health)),
+  } }) } }, 'brand-1');
+  assert.equal(status.connected, true);
+  assert.equal(status.accountName, 'ravens_gamer');
+  assert.equal(status.integration.connectionStatus, 'CONNECTED');
+  assert.equal(status.integration.twitchLogin, 'ravens_gamer');
+  assert.equal(status.integration.workspaceId, 'workspace-1');
+  assert.equal(status.health.stale, true);
 });

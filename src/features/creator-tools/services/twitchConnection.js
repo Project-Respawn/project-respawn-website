@@ -14,13 +14,11 @@ export class TwitchConnectionError extends Error {
 
 export function decodeTwitchJson(value, fallback = null) {
   if (value == null) return fallback;
-  if (typeof value !== 'string') return value;
-  try { return JSON.parse(value); } catch { return fallback; }
-}
-
-function diagnosticValueType(value) {
-  if (value == null) return 'null';
-  return typeof value === 'string' ? 'string' : 'object';
+  let decoded = value;
+  for (let pass = 0; pass < 2 && typeof decoded === 'string'; pass += 1) {
+    try { decoded = JSON.parse(decoded); } catch { return fallback; }
+  }
+  return decoded && typeof decoded === 'object' && !Array.isArray(decoded) ? decoded : fallback;
 }
 
 export function parseTwitchOAuthReturn(locationLike) {
@@ -86,38 +84,14 @@ export async function startTwitchConnection({ client, brandId, workspaceId, retu
 
 export async function getTwitchConnectionStatus(client, brandId) {
   if (!brandId) return { connected: false, integration: null, health: null, accountName: '' };
-  try {
-    const response = await client.queries.getMyTwitchIntegration({ brandId });
-    console.info('[Twitch status diagnostic] AppSync result', {
-      resultReturned: response != null,
-      responseKeys: response && typeof response === 'object' ? Object.keys(response) : [],
-      integrationType: diagnosticValueType(response?.data?.integration),
-      healthType: diagnosticValueType(response?.data?.health),
-      selectedBrandId: brandId,
-    });
-    if (response?.errors?.length) throw new TwitchConnectionError('STATUS_FAILED', response.errors[0].message || 'Could not load Twitch connection status.');
-    const integration = decodeTwitchJson(response?.data?.integration, null);
-    const health = decodeTwitchJson(response?.data?.health, null);
-    console.info('[Twitch status diagnostic] decoded', {
-      connectionStatus: integration?.connectionStatus || null,
-      twitchLogin: integration?.twitchLogin || null,
-      selectedBrandId: brandId,
-      workspaceIdPresent: Boolean(integration?.workspaceId),
-      integrationType: diagnosticValueType(integration),
-      healthType: diagnosticValueType(health),
-    });
-    return {
-      connected: integration?.connectionStatus === 'CONNECTED',
-      integration,
-      health,
-      accountName: integration?.twitchDisplayName || integration?.twitchLogin || '',
-    };
-  } catch (error) {
-    console.error('[Twitch status diagnostic] error', {
-      name: error?.name || 'Error',
-      message: error?.message || 'Unknown error',
-      selectedBrandId: brandId,
-    });
-    throw error;
-  }
+  const response = await client.queries.getMyTwitchIntegration({ brandId });
+  if (response?.errors?.length) throw new TwitchConnectionError('STATUS_FAILED', response.errors[0].message || 'Could not load Twitch connection status.');
+  const integration = decodeTwitchJson(response?.data?.integration, null);
+  const health = decodeTwitchJson(response?.data?.health, null);
+  return {
+    connected: integration?.connectionStatus === 'CONNECTED',
+    integration,
+    health,
+    accountName: integration?.twitchDisplayName || integration?.twitchLogin || '',
+  };
 }
