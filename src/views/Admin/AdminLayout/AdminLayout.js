@@ -47,7 +47,7 @@ export default {
           id: 'brand-permissions',
           icon: '🔐',
           label: 'Brand Permissions',
-          route: '/brand-permissions',
+          route: '/dashboard/brand-permissions',
           requiredGroups: ['SuperAdmin', 'Admin', 'Staff'],
         },
         {

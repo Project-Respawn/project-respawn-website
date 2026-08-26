@@ -16,7 +16,6 @@ import forumRoutes from './forum.routes.js';
 // ============================================================
 
 import NotFound from '../views/NotFound/NotFound.vue';
-import BrandPermissions from '../views/BrandPermissions/BrandPermissions.vue';
 
 // ============================================================
 // ACCESS CONTROL
@@ -71,11 +70,7 @@ const routes = [
 
     {
         path: '/brand-permissions',
-        name: 'BrandPermissions',
-        component: BrandPermissions,
-        meta: {
-            requiresBrandAccess: true,
-        },
+        redirect: { name: 'BrandPermissions' },
     },
 
     // --------------------------------------------------------
