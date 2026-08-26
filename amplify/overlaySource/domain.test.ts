@@ -34,11 +34,32 @@ test('credential rotation changes the hash, accepts only the new credential, and
   assert.equal(JSON.stringify(rotated).includes('new-credential'), false);
 });
 
-test('snapshot filters disabled/hidden widgets and rejects secret-shaped data', () => {
-  const snapshot = validateSceneSnapshot({ ...scene, widgets: [...scene.widgets, { ...scene.widgets[0], id: 'disabled', enabled: false }] });
+test('snapshot ignores discarded editor runtime metadata while preserving sanitized persisted fields', () => {
+  const snapshot = validateSceneSnapshot({
+    ...scene,
+    runtime: { credentialStatus: 'not-provisioned', callback: () => {} },
+    editorState: { selection: 'chat' },
+    widgets: [...scene.widgets, { ...scene.widgets[0], id: 'disabled', enabled: false }, { ...scene.widgets[0], id: 'hidden', hidden: true }],
+  });
+  assert.equal('runtime' in snapshot, false);
+  assert.equal('editorState' in snapshot, false);
   assert.equal(snapshot.widgets.length, 2);
+  assert.deepEqual(snapshot.widgets[0].frame, { x: 10, y: 20, width: 400, height: 600, rotation: 0 });
+  assert.equal(snapshot.widgets[0].type, 'twitch-chat');
+  assert.deepEqual(snapshot.widgets[0].settings, { maxMessages: 6 });
+});
+
+test('snapshot still rejects secret-shaped keys in every persisted nested boundary', () => {
   assert.throws(() => validateSceneSnapshot({ ...scene, theme: { accessToken: 'forbidden' } }), /unsupported data/);
   assert.throws(() => validateSceneSnapshot({ ...scene, theme: { accessKeyId: 'forbidden' } }), /unsupported data/);
+  assert.throws(() => validateSceneSnapshot({ ...scene, widgets: [{ ...scene.widgets[0], settings: { nested: { credential: 'forbidden' } } }] }), /unsupported data/);
+  assert.throws(() => validateSceneSnapshot({ ...scene, widgets: [{ ...scene.widgets[0], dataSource: { password: 'forbidden' } }] }), /unsupported data/);
+  assert.throws(() => validateSceneSnapshot({ ...scene, widgets: [{ ...scene.widgets[0], animations: { clientSecret: 'forbidden' } }] }), /unsupported data/);
+});
+
+test('snapshot enforces widget-count and serialized-size limits after sanitization', () => {
+  assert.throws(() => validateSceneSnapshot({ ...scene, widgets: Array.from({ length: 101 }, (_, index) => ({ ...scene.widgets[0], id: `widget-${index}` })) }), /unsupported data/);
+  assert.throws(() => validateSceneSnapshot({ ...scene, widgets: [{ ...scene.widgets[0], settings: { safeText: 'x'.repeat(351_000) } }] }), /too large/);
 });
 
 test('workspace, Brand, and publication ownership deny cross-tenant access without SuperAdmin bypass', () => {

@@ -30,7 +30,7 @@ export function validateSceneSnapshot(value: unknown) {
   if (!safeObject(value) || !safeObject(value.resolution) || !Array.isArray(value.widgets)) throw new Error('Scene snapshot is invalid');
   const width = Number(value.resolution.width), height = Number(value.resolution.height);
   if (!Number.isInteger(width) || !Number.isInteger(height) || width < 320 || height < 180 || width > 7680 || height > 4320) throw new Error('Scene resolution is invalid');
-  if (value.widgets.length > 100 || containsForbiddenKey(value)) throw new Error('Scene snapshot contains unsupported data');
+  if (value.widgets.length > 100) throw new Error('Scene snapshot contains unsupported data');
   const widgets = value.widgets.filter((widget: any) => widget?.enabled !== false && widget?.hidden !== true).map((widget: any) => {
     if (!safeObject(widget) || !safeObject(widget.frame) || !widget.id || !widget.type) throw new Error('Scene widget is invalid');
     const frame = { x: Number(widget.frame.x), y: Number(widget.frame.y), width: Number(widget.frame.width), height: Number(widget.frame.height), rotation: Number(widget.frame.rotation || 0) };
@@ -43,6 +43,7 @@ export function validateSceneSnapshot(value: unknown) {
     };
   });
   const snapshot = { schemaVersion: Number(value.schemaVersion || 1), id: String(value.id || ''), name: String(value.name || ''), resolution: { width, height }, themeId: String(value.themeId || 'respawn-dark'), theme: safeObject(value.theme) ? value.theme : undefined, widgets };
+  if (containsForbiddenKey(snapshot)) throw new Error('Scene snapshot contains unsupported data');
   if (Buffer.byteLength(JSON.stringify(snapshot), 'utf8') > 350_000) throw new Error('Scene snapshot is too large');
   return snapshot;
 }
