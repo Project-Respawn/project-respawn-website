@@ -50,13 +50,23 @@ async function findIntegration(client: any, brandId: string) {
   return result.data?.[0] || null
 }
 
+function modelWriteError(operation: string, result: any) {
+  const errors = Array.isArray(result?.errors) ? result.errors : []
+  const safeErrors = errors.map((error: any) => ({
+    message: String(error?.message || 'Unknown model error'),
+    errorType: error?.errorType ? String(error.errorType) : undefined,
+  }))
+  console.error(JSON.stringify({ level: 'error', message: 'Twitch OAuth model write failed', context: { operation, errors: safeErrors } }))
+  return new Error(safeErrors[0]?.message || `Failed to ${operation}`)
+}
+
 export async function handleStartTwitchIntegrationOAuth(event: any, injectedClient?: any) {
   const brandId = String(event.arguments?.brandId || '').trim(); if (!brandId) throw new Error('brandId is required')
   const client = injectedClient || await getDataClient(); const { userId, workspaceId } = await authorizedContext(event, brandId, client)
   let integration = await findIntegration(client, brandId)
   if (!integration) {
     const created = await client.models.TwitchIntegration.create({ workspaceId, brandId, ownerUserId: userId, provider: 'twitch', connectionStatus: 'DISCONNECTED', grantedScopes: [], capabilities: {}, configurationVersion: 1 })
-    if (created.errors?.length || !created.data) throw new Error('Failed to create Twitch integration')
+    if (created.errors?.length || !created.data) throw modelWriteError('create Twitch integration', created)
     integration = created.data
   } else if (integration.ownerUserId !== userId || integration.workspaceId !== workspaceId) {
     throw new Error('Twitch integration owner does not match authenticated creator')
@@ -65,7 +75,7 @@ export async function handleStartTwitchIntegrationOAuth(event: any, injectedClie
   const state = createOAuthState(transactionId, secret)
   const nonceHash = createHash('sha256').update(state.payload.nonce).digest('hex')
   const transaction = await client.models.TwitchOAuthTransaction.create({ id: transactionId, workspaceId, ownerUserId: userId, brandId, integrationId: integration.id, nonceHash, expiresAt: new Date(state.payload.expiresAt).toISOString() })
-  if (transaction.errors?.length) throw new Error('Failed to create Twitch OAuth transaction')
+  if (transaction.errors?.length || !transaction.data) throw modelWriteError('create Twitch OAuth transaction', transaction)
   const scopes = [...REQUIRED_BROADCASTER_SCOPES, ...OPTIONAL_PHASE1_SCOPES]
   const params = new URLSearchParams({ response_type: 'code', client_id: process.env.TWITCH_CLIENT_ID || '', redirect_uri: process.env.TWITCH_REDIRECT_URI || '', scope: scopes.join(' '), state: state.token, force_verify: 'true' })
   return { integrationId: integration.id, authorizeUrl: `https://id.twitch.tv/oauth2/authorize?${params}` }

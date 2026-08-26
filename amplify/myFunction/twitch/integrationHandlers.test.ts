@@ -35,4 +35,16 @@ assert.equal(createdTransactions[0].workspaceId, 'workspace-1')
 assert.equal(new URL(result.authorizeUrl).searchParams.get('redirect_uri'), process.env.TWITCH_REDIRECT_URI)
 assert.equal(toSafeIntegration({ id: 'i', workspaceId: 'w', brandId: 'b', ownerUserId: 'u' })?.workspaceId, 'w')
 
+const persistenceFailureClient: any = { models: {
+  ...client.models,
+  TwitchIntegration: {
+    list: async () => ({ data: [] }),
+    create: async () => ({ data: null, errors: [{ message: 'Safe AppSync persistence failure', errorType: 'ValidationError' }] }),
+  },
+} }
+await assert.rejects(
+  handleStartTwitchIntegrationOAuth({ identity: { username: 'creator-sub', claims: {} }, arguments: { brandId: 'brand-1' } }, persistenceFailureClient),
+  /Safe AppSync persistence failure/,
+)
+
 console.log('Workspace-bound Twitch OAuth start tests passed')
