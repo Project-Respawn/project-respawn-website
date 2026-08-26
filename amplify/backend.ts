@@ -10,7 +10,7 @@ import {
   HttpMethod,
 } from 'aws-cdk-lib/aws-apigatewayv2';
 import { HttpLambdaIntegration } from 'aws-cdk-lib/aws-apigatewayv2-integrations';
-import { OverlaySourceInfrastructure } from './overlaySource/infrastructure';
+import { composeOverlaySourceStack } from './overlaySource/composition';
 
 import { auth } from './auth/resource';
 import { data } from './data/resource';
@@ -276,14 +276,4 @@ backend.addOutput({
 const overlaySourceStack = backend.createStack('overlay-source-stack');
 const userPool = backend.auth.resources.userPool;
 const userPoolClient = backend.auth.resources.userPoolClient;
-const overlaySource = new OverlaySourceInfrastructure(overlaySourceStack, 'OverlaySource', { workspaceTable: backend.data.resources.tables.CreatorWorkspace, brandTable: backend.data.resources.tables.Brand, userPoolId: userPool.userPoolId, userPoolClientId: userPoolClient.userPoolClientId, frontendOrigin: process.env.AWS_BRANCH === 'master' ? 'https://www.projectrespawn.com' : 'http://localhost:5174' });
-
-backend.addOutput({
-  custom: {
-    overlaySource: {
-      httpUrl: overlaySource.httpUrl,
-      websocketUrl: overlaySource.websocketUrl,
-      region: overlaySourceStack.region,
-    },
-  },
-});
+composeOverlaySourceStack({ stack: overlaySourceStack, tables: backend.data.resources.tables, userPoolId: userPool.userPoolId, userPoolClientId: userPoolClient.userPoolClientId, frontendOrigin: process.env.AWS_BRANCH === 'master' ? 'https://www.projectrespawn.com' : 'http://localhost:5174', addOutput: (output) => backend.addOutput(output as any) });
