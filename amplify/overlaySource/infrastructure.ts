@@ -41,6 +41,7 @@ export class OverlaySourceInfrastructure extends Construct {
     httpApi.addRoutes({ path: '/overlay/publications', methods: [HttpMethod.POST], integration, authorizer });
     httpApi.addRoutes({ path: '/overlay/publications/{publicationId}', methods: [HttpMethod.PUT, HttpMethod.DELETE], integration, authorizer });
     httpApi.addRoutes({ path: '/overlay/publications/{publicationId}/events', methods: [HttpMethod.POST], integration, authorizer });
+    httpApi.addRoutes({ path: '/overlay/publications/{publicationId}/rotate', methods: [HttpMethod.POST], integration, authorizer });
     const wsIntegration = new WebSocketLambdaIntegration('OverlaySourceWebSocketIntegration', this.handler);
     const wsApi = new WebSocketApi(this, 'OverlaySourceWebSocketApi', { apiName: 'projectRespawnOverlaySourceWebSocket', connectRouteOptions: { integration: wsIntegration }, disconnectRouteOptions: { integration: wsIntegration }, defaultRouteOptions: { integration: wsIntegration } });
     const wsStage = new WebSocketStage(this, 'OverlaySourceWebSocketStage', { webSocketApi: wsApi, stageName: 'live', autoDeploy: true });

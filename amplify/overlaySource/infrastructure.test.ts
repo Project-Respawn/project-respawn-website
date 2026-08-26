@@ -23,7 +23,7 @@ test('dedicated stack synthesizes two isolated on-demand tables with required in
 test('Creator endpoints are JWT authorized while opaque source configuration is credential authorized', () => {
   const value = template(); value.resourceCountIs('AWS::ApiGatewayV2::Authorizer', 1);
   value.hasResourceProperties('AWS::ApiGatewayV2::Route', { RouteKey: 'GET /overlay/source/{credential}', AuthorizationType: 'NONE' });
-  for (const routeKey of ['POST /overlay/publications', 'PUT /overlay/publications/{publicationId}', 'DELETE /overlay/publications/{publicationId}', 'POST /overlay/publications/{publicationId}/events']) value.hasResourceProperties('AWS::ApiGatewayV2::Route', { RouteKey: routeKey, AuthorizationType: 'JWT' });
+  for (const routeKey of ['POST /overlay/publications', 'PUT /overlay/publications/{publicationId}', 'DELETE /overlay/publications/{publicationId}', 'POST /overlay/publications/{publicationId}/events', 'POST /overlay/publications/{publicationId}/rotate']) value.hasResourceProperties('AWS::ApiGatewayV2::Route', { RouteKey: routeKey, AuthorizationType: 'JWT' });
 });
 
 test('one managed WebSocket API owns connect, disconnect and default routes', () => {

@@ -12,11 +12,13 @@ Create a dedicated `overlay-source-stack`; do not add more directives to the exi
 - One dedicated overlay-source Lambda for Browser Source configuration, connection lifecycle, test-publication writes, and test-event fan-out.
 - One HTTP API JWT authorizer using the existing Master Cognito user pool for Creator Tools publication/event operations.
 - Public `GET /overlay/source/{credential}` handled by the same Lambda. Authorization is the opaque credential, not Cognito and not broadcaster/workspace/Brand IDs.
-- DynamoDB `OverlayTestPublication` table keyed by publication ID, with a credential-hash GSI and server-side workspace/Brand/scene bindings.
+- DynamoDB `OverlayPublication` table keyed by publication ID, with a credential-hash GSI and server-side workspace/Brand/scene bindings.
 - DynamoDB `OverlaySourceConnection` table keyed by connection ID, with a publication-ID GSI and TTL cleanup.
 - API Gateway Management API permission scoped to the new WebSocket API.
 
-The publication table stores only a SHA-256 credential hash. The random credential is returned once in the test URL. Revocation/status and expiry are checked on configuration retrieval and WebSocket connect. Publishing requires an authenticated Cognito identity with `workspace.overlays.manage`; the server resolves the Workspace and Brand and never trusts client identity fields.
+The publication table stores only a SHA-256 credential hash. The random credential is returned once in the test URL. Revocation/status and expiry are checked on configuration retrieval and WebSocket connect. Publishing currently requires the authenticated Cognito identity to own both the canonical Workspace and Brand; the server resolves those records and never trusts client identity fields.
+
+Creators can rotate a publication URL through the authenticated management API. Rotation atomically replaces the stored SHA-256 hash and returns the new plaintext credential once. The old credential immediately fails configuration lookup and all future WebSocket reconnects. Connections established before rotation remain active until they disconnect or reconnect; rotation does not force-close existing sockets.
 
 ## Data shapes
 

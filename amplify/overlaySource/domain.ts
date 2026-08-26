@@ -5,7 +5,7 @@ export const OVERLAY_EVENT_TYPES = new Set([
   'stream.cheer', 'reward.redeemed', 'tts.requested',
 ]);
 
-const forbiddenSnapshotKey = /token|secret|credential|oauth|authorization|runtimelease/i;
+const forbiddenSnapshotKey = /token|secret|credential|oauth|authorization|runtimelease|accesskey|privatekey|password/i;
 
 export function hashOverlayCredential(credential: string) {
   return createHash('sha256').update(credential).digest('hex');
@@ -84,6 +84,12 @@ export function createPublicationRecord(input: any, ownerUserId: string, credent
 export function updatePublicationRecord(publication: any, sceneSnapshot: unknown, now: Date) {
   if (!publicationIsActive(publication, now.getTime())) throw new Error('Overlay publication is not active');
   return { ...publication, sceneSnapshot: validateSceneSnapshot(sceneSnapshot), revision: Number(publication.revision || 0) + 1, updatedAt: now.toISOString() };
+}
+
+export function rotatePublicationCredential(publication: any, credentialHash: string, now: Date) {
+  if (!publicationIsActive(publication, now.getTime())) throw new Error('Overlay publication is not active');
+  if (!/^[a-f0-9]{64}$/.test(credentialHash)) throw new Error('Overlay credential hash is invalid');
+  return { ...publication, credentialHash, credentialRotatedAt: now.toISOString(), updatedAt: now.toISOString() };
 }
 
 export function createConnectionRecord(connectionId: string, publicationId: string, now = Date.now()) {

@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { refreshAccessContext } from '@/composables/useAccessContext.js'
 import { createTestOverlayEvent } from '../../../overlays/overlayEventContract.js'
-import { createOverlayPublication, revokeOverlayPublication, sendOverlayTestEvent, updateOverlayPublication } from '../../../services/overlaySource.js'
+import { createOverlayPublication, revokeOverlayPublication, rotateOverlayPublicationCredential, sendOverlayTestEvent, updateOverlayPublication } from '../../../services/overlaySource.js'
 
 export function useBrowserSources({ notice, previewMode, project, scene }) {
   const publicationId = ref(''), sourceUrl = ref(''), sourceRevision = ref(0), sourceBusy = ref(false), sourceError = ref('')
@@ -19,7 +19,8 @@ export function useBrowserSources({ notice, previewMode, project, scene }) {
   async function copySourceUrl() { if (!sourceUrl.value) return; await navigator.clipboard?.writeText(sourceUrl.value); notice.value = 'Browser Source URL copied' }
   function openSourceUrl() { if (sourceUrl.value) window.open(sourceUrl.value, '_blank', 'noopener,noreferrer') }
   async function revokeTestSource() { if (!publicationId.value) return; sourceBusy.value = true; try { await revokeOverlayPublication(publicationId.value); publicationId.value = ''; sourceUrl.value = ''; sourceRevision.value = 0; notice.value = 'TEST Browser Source revoked'; } catch (error) { sourceError.value = error?.message || 'Could not revoke TEST Browser Source'; notice.value = sourceError.value } finally { sourceBusy.value = false } }
+  async function rotateSourceUrl() { if (!publicationId.value) return; sourceBusy.value = true; sourceError.value = ''; try { const result = await rotateOverlayPublicationCredential(publicationId.value); sourceUrl.value = result.browserSourceUrl; notice.value = 'Browser Source URL rotated · Copy the replacement URL now'; } catch (error) { sourceError.value = error?.message || 'Could not rotate Browser Source URL'; notice.value = sourceError.value } finally { sourceBusy.value = false } }
   async function sendSourceTest(type) { if (!publicationId.value) { notice.value = 'Create a TEST Browser Source first'; return false } try { const result = await sendOverlayTestEvent(publicationId.value, createTestOverlayEvent(type)); notice.value = `${type} sent to ${result.delivered} Browser Source connection${result.delivered === 1 ? '' : 's'}`; return true } catch (error) { sourceError.value = error?.message || 'Could not send test event'; notice.value = sourceError.value; return false } }
   function openBrowserSourcePreview() { previewMode.value = true }
-  return { publicationId, sourceUrl, sourceRevision, sourceBusy, sourceError, createTestSource, updateTestSource, copySourceUrl, openSourceUrl, revokeTestSource, sendSourceTest, openBrowserSourcePreview }
+  return { publicationId, sourceUrl, sourceRevision, sourceBusy, sourceError, createTestSource, updateTestSource, copySourceUrl, openSourceUrl, rotateSourceUrl, revokeTestSource, sendSourceTest, openBrowserSourcePreview }
 }

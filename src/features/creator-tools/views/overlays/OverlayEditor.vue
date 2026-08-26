@@ -385,6 +385,7 @@
           @update="updateTestSource"
           @copy="copySourceUrl"
           @open="openSourceUrl"
+          @rotate="rotateSourceUrl"
           @revoke="revokeTestSource"
           @preview="openBrowserSourcePreview"
         />
@@ -1013,6 +1014,7 @@ const {
   updateTestSource,
   copySourceUrl,
   openSourceUrl,
+  rotateSourceUrl,
   revokeTestSource,
   sendSourceTest,
   openBrowserSourcePreview,

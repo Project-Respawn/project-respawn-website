@@ -40,6 +40,10 @@ export function revokeOverlayPublication(publicationId, fetchImpl = fetch) {
   return authenticatedRequest(`overlay/publications/${encodeURIComponent(publicationId)}`, { method: 'DELETE' }, fetchImpl);
 }
 
+export function rotateOverlayPublicationCredential(publicationId, fetchImpl = fetch) {
+  return authenticatedRequest(`overlay/publications/${encodeURIComponent(publicationId)}/rotate`, { method: 'POST' }, fetchImpl);
+}
+
 export function sendOverlayTestEvent(publicationId, event, fetchImpl = fetch) {
   return authenticatedRequest(`overlay/publications/${encodeURIComponent(publicationId)}/events`, { method: 'POST', body: JSON.stringify({ event }) }, fetchImpl);
 }

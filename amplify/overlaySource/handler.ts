@@ -2,7 +2,7 @@ import type { APIGatewayProxyHandlerV2, APIGatewayProxyWebsocketHandlerV2 } from
 import { ApiGatewayManagementApiClient, PostToConnectionCommand } from '@aws-sdk/client-apigatewaymanagementapi';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DeleteCommand, DynamoDBDocumentClient, GetCommand, PutCommand, QueryCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
-import { assertPublicationOwner, assertWorkspaceBrandOwner, createConnectionRecord, createPublicationRecord, fanOutOverlayEvent, hashOverlayCredential, issueOverlayCredential, publicationIsActive, validateOverlayEvent, validateSceneSnapshot } from './domain';
+import { assertPublicationOwner, assertWorkspaceBrandOwner, createConnectionRecord, createPublicationRecord, fanOutOverlayEvent, hashOverlayCredential, issueOverlayCredential, publicationIsActive, rotatePublicationCredential, validateOverlayEvent, validateSceneSnapshot } from './domain';
 import { randomUUID } from 'node:crypto';
 
 const db = DynamoDBDocumentClient.from(new DynamoDBClient({}));
@@ -47,6 +47,21 @@ async function revokePublication(event: any, publicationId: string) {
   return json(200, { publicationId, status: 'REVOKED' });
 }
 
+async function rotateCredential(event: any, publicationId: string) {
+  const sub = userId(event), publication = await getPublication(publicationId);
+  assertPublicationOwner(publication, sub); await authorizeBindings(publication, sub);
+  if (!publication) throw new Error('Overlay publication access is denied');
+  const issued = issueOverlayCredential(), now = new Date();
+  const rotated = rotatePublicationCredential(publication, issued.credentialHash, now);
+  await db.send(new UpdateCommand({
+    TableName: env('PUBLICATION_TABLE'), Key: { publicationId },
+    UpdateExpression: 'SET credentialHash = :credentialHash, credentialRotatedAt = :now, updatedAt = :now',
+    ConditionExpression: 'ownerUserId = :owner AND credentialHash = :previousHash',
+    ExpressionAttributeValues: { ':credentialHash': rotated.credentialHash, ':now': now.toISOString(), ':owner': sub, ':previousHash': publication.credentialHash },
+  }));
+  return json(200, { publicationId, credential: issued.credential, browserSourceUrl: `${env('FRONTEND_ORIGIN')}/overlay-source/${encodeURIComponent(issued.credential)}` });
+}
+
 async function sourceConfig(credential: string) {
   const publication = await publicationForCredential(credential); if (!publication || !publicationIsActive(publication)) return json(403, { error: 'Overlay source credential is invalid or expired' });
   return json(200, { revision: publication.revision, status: publication.status, scene: publication.sceneSnapshot, websocketUrl: env('WEBSOCKET_URL') });
@@ -79,9 +94,10 @@ export const handler: APIGatewayProxyHandlerV2 & APIGatewayProxyWebsocketHandler
     const method = event.requestContext?.http?.method, path = String(event.rawPath || '');
     if (method === 'GET' && path.startsWith('/overlay/source/')) return await sourceConfig(decodeURIComponent(path.slice('/overlay/source/'.length)));
     if (method === 'POST' && path === '/overlay/publications') return await createPublication(event);
-    const match = path.match(/^\/overlay\/publications\/([^/]+)(?:\/(events))?$/); if (!match) return json(404, { error: 'Route not found' });
+    const match = path.match(/^\/overlay\/publications\/([^/]+)(?:\/(events|rotate))?$/); if (!match) return json(404, { error: 'Route not found' });
     if (method === 'PUT' && !match[2]) return await updatePublication(event, match[1]);
     if (method === 'DELETE' && !match[2]) return await revokePublication(event, match[1]);
+    if (method === 'POST' && match[2] === 'rotate') return await rotateCredential(event, match[1]);
     if (method === 'POST' && match[2] === 'events') return await sendTestEvent(event, match[1]);
     return json(405, { error: 'Method not allowed' });
   } catch (error: any) { return json(/access|Authentication/.test(error?.message || '') ? 403 : 400, { error: error?.message || 'Overlay source request failed' }); }

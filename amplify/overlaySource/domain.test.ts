@@ -3,7 +3,7 @@ import test from 'node:test';
 import {
   assertPublicationOwner, assertWorkspaceBrandOwner, createConnectionRecord, createPublicationRecord,
   credentialMatches, fanOutOverlayEvent, hashOverlayCredential, publicationIsActive,
-  updatePublicationRecord, validateOverlayEvent, validateSceneSnapshot,
+  rotatePublicationCredential, updatePublicationRecord, validateOverlayEvent, validateSceneSnapshot,
 } from './domain';
 
 const now = new Date('2026-08-26T20:00:00.000Z');
@@ -25,10 +25,20 @@ test('publication update replaces snapshot and increments revision', () => {
   assert.equal(updated.revision, 2); assert.equal(updated.sceneSnapshot.widgets.length, 1); assert.equal(updated.publicationId, record.publicationId);
 });
 
+test('credential rotation changes the hash, accepts only the new credential, and never persists plaintext', () => {
+  const record = createPublicationRecord({ workspaceId: 'workspace-1', brandId: 'brand-1', sceneId: 'scene-1', sceneSnapshot: scene }, 'owner-1', hashOverlayCredential('old-credential'), now, 'publication-1');
+  const rotated = rotatePublicationCredential(record, hashOverlayCredential('new-credential'), new Date(now.getTime() + 1000));
+  assert.notEqual(rotated.credentialHash, record.credentialHash);
+  assert.equal(credentialMatches(rotated, 'old-credential'), false);
+  assert.equal(credentialMatches(rotated, 'new-credential'), true);
+  assert.equal(JSON.stringify(rotated).includes('new-credential'), false);
+});
+
 test('snapshot filters disabled/hidden widgets and rejects secret-shaped data', () => {
   const snapshot = validateSceneSnapshot({ ...scene, widgets: [...scene.widgets, { ...scene.widgets[0], id: 'disabled', enabled: false }] });
   assert.equal(snapshot.widgets.length, 2);
   assert.throws(() => validateSceneSnapshot({ ...scene, theme: { accessToken: 'forbidden' } }), /unsupported data/);
+  assert.throws(() => validateSceneSnapshot({ ...scene, theme: { accessKeyId: 'forbidden' } }), /unsupported data/);
 });
 
 test('workspace, Brand, and publication ownership deny cross-tenant access without SuperAdmin bypass', () => {
