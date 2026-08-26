@@ -40,6 +40,7 @@ import OverlayManager from './views/overlays/OverlayManager.vue'
 import OverlayEditor from './views/overlays/OverlayEditor.vue'
 
 import OverlayEntry from './views/overlays/OverlayEntry.vue'
+import OverlayBrowserSource from './views/overlays/OverlayBrowserSource.vue'
 
 import Overlay from '../../views/Bot/OverlayEngine/Overlay.vue'
 
@@ -51,6 +52,12 @@ const protectedCreatorRoute = {
 
 
 export default [
+  {
+    path: '/overlay-source/:credential',
+    name: 'OverlayBrowserSource',
+    component: OverlayBrowserSource,
+    meta: { hideLayout: true }
+  },
   {
     path: '/creator-tools',
     component: CreatorLayout,

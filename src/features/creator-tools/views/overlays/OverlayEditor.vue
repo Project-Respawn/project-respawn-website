@@ -377,7 +377,15 @@
           data-overlay-section="10"
           data-overlay-section-name="browser-source-outputs"
           :resolution="scene.resolution"
-          @copy="copyPlaceholder"
+          :source-url="sourceUrl"
+          :revision="sourceRevision"
+          :busy="sourceBusy"
+          :error="sourceError"
+          @create="createTestSource"
+          @update="updateTestSource"
+          @copy="copySourceUrl"
+          @open="openSourceUrl"
+          @revoke="revokeTestSource"
           @preview="openBrowserSourcePreview"
         />
       </div>
@@ -400,7 +408,7 @@
             selectedWidget?.type === 'twitch-chat'
           "
           :chat-locked="selectedWidget?.locked"
-          @test="replay"
+          @test="sendSourceTest($event.type)"
           @demo-chat-move="demoChatMove"
           @pause="
             setProject(
@@ -997,12 +1005,23 @@ const {
 // ============================================================
 
 const {
-  copyPlaceholder,
+  sourceUrl,
+  sourceRevision,
+  sourceBusy,
+  sourceError,
+  createTestSource,
+  updateTestSource,
+  copySourceUrl,
+  openSourceUrl,
+  revokeTestSource,
+  sendSourceTest,
   openBrowserSourcePreview,
 } =
   useBrowserSources({
     notice,
     previewMode,
+    project,
+    scene,
   })
 
 
