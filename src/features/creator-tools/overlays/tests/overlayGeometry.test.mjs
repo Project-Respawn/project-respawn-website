@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { canvasScalesFromBounds, chatShowcaseTarget, clientDeltaToCanvas, detectResizeDirection, editorScale, moveFrame, resizeFrame, resizeFrameWithSnapping, scaleLayout } from '../overlayGeometry.js'
+import { canvasScalesFromBounds, chatShowcaseTarget, clientDeltaToCanvas, detectResizeDirection, editorScale, moveFrame, nudgeWidgetFrame, resizeFrame, resizeFrameWithSnapping, scaleLayout } from '../overlayGeometry.js'
 
 test('canvas uses stable native coordinates at visual scale', () => {
   assert.equal(editorScale(1920, 1080, 960, 700), .5)
@@ -36,6 +36,14 @@ test('chat showcase target moves to the opposite safe side without changing size
 test('movement clamps and snaps to canvas edges', () => {
   const result = moveFrame({ x: 8, y: 7, width: 100, height: 50 }, { x: -2, y: -1 }, { width: 500, height: 300 })
   assert.equal(result.frame.x, 0); assert.equal(result.frame.y, 0); assert.equal(result.guides.length, 2)
+})
+test('movement remains inside every canvas boundary without snapping', () => {
+  const frame = { x: 100, y: 80, width: 200, height: 120 }
+  const bounds = { width: 500, height: 300 }
+  assert.deepEqual(moveFrame(frame, { x: -1000, y: 0 }, bounds, [], false).frame, { ...frame, x: 0 })
+  assert.deepEqual(moveFrame(frame, { x: 0, y: -1000 }, bounds, [], false).frame, { ...frame, y: 0 })
+  assert.deepEqual(moveFrame(frame, { x: 1000, y: 0 }, bounds, [], false).frame, { ...frame, x: 300 })
+  assert.deepEqual(moveFrame(frame, { x: 0, y: 1000 }, bounds, [], false).frame, { ...frame, y: 180 })
 })
 test('movement snaps centres and reports the actual canvas guide coordinate', () => {
   const result = moveFrame({ x: 440, y: 240, width: 100, height: 100 }, { x: 8, y: 7 }, { width: 1000, height: 600 })
@@ -76,6 +84,28 @@ test('north and south resize preserve their opposite edge in both directions', (
 })
 test('widget minimum size is respected from anchored sides', () => {
   assert.deepEqual(resizeFrame({ x: 100, y: 100, width: 200, height: 100 }, 'nw', { x: 150, y: 90 }, { width: 500, height: 300 }, { width: 120, height: 80 }), { x: 180, y: 120, width: 120, height: 80 })
+})
+test('widget minimum width and height are enforced independently', () => {
+  const frame = { x: 100, y: 100, width: 200, height: 160 }
+  const bounds = { width: 500, height: 400 }
+  assert.equal(resizeFrame(frame, 'e', { x: -500, y: 0 }, bounds, { width: 120, height: 90 }).width, 120)
+  assert.equal(resizeFrame(frame, 's', { x: 0, y: -500 }, bounds, { width: 120, height: 90 }).height, 90)
+})
+test('resize stays within top, left, right and bottom canvas boundaries', () => {
+  const frame = { x: 100, y: 80, width: 200, height: 120 }
+  const bounds = { width: 500, height: 300 }
+  assert.deepEqual(resizeFrame(frame, 'nw', { x: -1000, y: -1000 }, bounds), { x: 0, y: 0, width: 300, height: 200 })
+  assert.deepEqual(resizeFrame(frame, 'se', { x: 1000, y: 1000 }, bounds), { x: 100, y: 80, width: 400, height: 220 })
+})
+test('keyboard nudging uses 1px or 10px, clamps to bounds, and rejects locked widgets', () => {
+  const widget = { locked: false, frame: { x: 5, y: 5, width: 100, height: 50 } }
+  const bounds = { width: 200, height: 100 }
+  assert.equal(nudgeWidgetFrame(widget, 'ArrowRight', false, bounds).x, 6)
+  assert.equal(nudgeWidgetFrame(widget, 'ArrowDown', true, bounds).y, 15)
+  assert.equal(nudgeWidgetFrame({ ...widget, frame: { ...widget.frame, x: 0 } }, 'ArrowLeft', true, bounds).x, 0)
+  assert.equal(nudgeWidgetFrame({ ...widget, frame: { ...widget.frame, x: 100, y: 50 } }, 'ArrowRight', true, bounds).x, 100)
+  assert.equal(nudgeWidgetFrame({ ...widget, locked: true }, 'ArrowRight', false, bounds), null)
+  assert.equal(nudgeWidgetFrame(widget, 'ArrowRight', false, bounds, false), null)
 })
 test('resized edges snap to other widgets and report the alignment coordinate', () => {
   const result = resizeFrameWithSnapping({ x: 100, y: 100, width: 190, height: 100 }, 'e', { x: 4, y: 0 }, { width: 1000, height: 600 }, { width: 80, height: 50 }, [{ x: 300, y: 50, width: 100, height: 100 }])

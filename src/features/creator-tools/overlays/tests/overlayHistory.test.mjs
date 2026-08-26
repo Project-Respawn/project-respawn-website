@@ -25,3 +25,14 @@ test('overlay snapshots exclude runtime callbacks and retain editable data', () 
   assert.equal('runtimeCallback' in snapshot,false)
   assert.deepEqual(snapshot.scenes[0].widgets[0].settings,{message:'Hi'})
 })
+
+test('a transient canvas interaction creates exactly one history entry when committed', () => {
+  const original = { widgets: [{ id: 'one', frame: { x: 10, y: 20, width: 100, height: 80 } }] }
+  const project = structuredClone(original)
+  const history = createHistory(project)
+  project.widgets[0].frame = { x: 30, y: 40, width: 140, height: 110 }
+  history.commit(project)
+  assert.deepEqual(history.undo(), original)
+  assert.deepEqual(history.undo(), original, 'a second undo proves pointer moves did not create extra entries')
+  assert.deepEqual(history.redo(), project)
+})
