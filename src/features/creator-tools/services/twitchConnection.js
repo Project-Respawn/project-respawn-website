@@ -12,6 +12,12 @@ export class TwitchConnectionError extends Error {
   }
 }
 
+export function decodeTwitchJson(value, fallback = null) {
+  if (value == null) return fallback;
+  if (typeof value !== 'string') return value;
+  try { return JSON.parse(value); } catch { return fallback; }
+}
+
 export function parseTwitchOAuthReturn(locationLike) {
   const params = new URLSearchParams(locationLike?.search || '');
   const twitch = String(params.get('twitch') || '').toLowerCase();
@@ -77,11 +83,12 @@ export async function getTwitchConnectionStatus(client, brandId) {
   if (!brandId) return { connected: false, integration: null, health: null, accountName: '' };
   const response = await client.queries.getMyTwitchIntegration({ brandId });
   if (response?.errors?.length) throw new TwitchConnectionError('STATUS_FAILED', response.errors[0].message || 'Could not load Twitch connection status.');
-  const integration = response?.data?.integration || null;
+  const integration = decodeTwitchJson(response?.data?.integration, null);
+  const health = decodeTwitchJson(response?.data?.health, null);
   return {
     connected: integration?.connectionStatus === 'CONNECTED',
     integration,
-    health: response?.data?.health || null,
+    health,
     accountName: integration?.twitchDisplayName || integration?.twitchLogin || '',
   };
 }

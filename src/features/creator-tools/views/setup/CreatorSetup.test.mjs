@@ -23,4 +23,7 @@ test('Setup and Integrations use the same canonical Twitch action', async () => 
   assert.doesNotMatch(integrations, /mutations\.startTwitchIntegrationOAuth/);
   assert.match(integrations, /oauthError/);
   assert.match(integrations, /connectingTwitch/);
+  assert.match(setup, /this\.twitchConnected = status\.connected/);
+  assert.match(integrations, /this\.twitchConnected = status\.connected/);
+  assert.match(integrations, /this\.twitchHealth = status\.health/);
 });

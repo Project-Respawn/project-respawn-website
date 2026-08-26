@@ -51,6 +51,13 @@ async function findIntegration(client: any, brandId: string) {
   return result.data?.[0] || null
 }
 
+function safeIntegrationResult(integration: any, health: any) {
+  return {
+    integration: integration ? encodeAwsJson(toSafeIntegration(integration)) : null,
+    health: health ? encodeAwsJson(health) : null,
+  }
+}
+
 function modelWriteError(operation: string, result: any) {
   const errors = Array.isArray(result?.errors) ? result.errors : []
   const safeErrors = errors.map((error: any) => ({
@@ -85,9 +92,9 @@ export async function handleStartTwitchIntegrationOAuth(event: any, injectedClie
 export async function handleGetMyTwitchIntegration(event: any, injectedClient?: any) {
   const brandId = String(event.arguments?.brandId || '').trim(); const client = injectedClient || await getDataClient()
   await authorizedContext(event, brandId, client); const integration = await findIntegration(client, brandId)
-  if (!integration) return { integration: null, health: null }
+  if (!integration) return safeIntegrationResult(null, null)
   const runtime = (await client.models.TwitchRuntimeHealth.get({ integrationId: integration.id })).data
-  return { integration: toSafeIntegration(integration), health: buildTwitchHealth(integration, runtime) }
+  return safeIntegrationResult(integration, buildTwitchHealth(integration, runtime))
 }
 
 export async function handleDisconnectTwitchIntegration(event: any, injectedClient?: any) {
@@ -96,7 +103,7 @@ export async function handleDisconnectTwitchIntegration(event: any, injectedClie
   if (!integration || integration.id !== integrationId) throw new Error('Twitch integration does not belong to the selected Brand')
   await client.models.TwitchTokenVault.delete({ integrationId })
   const updated = await client.models.TwitchIntegration.update({ id: integrationId, connectionStatus: 'DISCONNECTED', disconnectedAt: new Date().toISOString(), tokenExpiresAt: null, lastErrorCode: null, configurationVersion: Number(integration.configurationVersion || 1) + 1 })
-  return { integration: toSafeIntegration(updated.data), health: buildTwitchHealth(updated.data, null) }
+  return safeIntegrationResult(updated.data, buildTwitchHealth(updated.data, null))
 }
 
-export { authorizedContext, findIntegration, deriveTwitchCapabilities }
+export { authorizedContext, findIntegration, deriveTwitchCapabilities, safeIntegrationResult }

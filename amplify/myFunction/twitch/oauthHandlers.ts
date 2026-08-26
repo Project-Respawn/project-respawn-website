@@ -31,9 +31,19 @@ export async function handleTwitchOAuthCallback(event: any, injectedClient?: any
   if (!query.code || !query.state) return jsonResponse(400, { error: 'Missing OAuth callback parameters' })
   const state = verifyOAuthState(query.state, process.env.TWITCH_OAUTH_STATE_SECRET || '')
   const client = injectedClient || await getDataClient(); const txResult = await client.models.TwitchOAuthTransaction.get({ id: state.transactionId }); const tx = txResult.data
-  if (!tx || tx.consumedAt) return jsonResponse(400, { error: 'OAuth transaction is invalid or already consumed' })
+  if (!tx) return jsonResponse(400, { error: 'OAuth transaction is invalid or already consumed' })
   if (Date.parse(tx.expiresAt) < Date.now()) return jsonResponse(400, { error: 'OAuth transaction expired' })
   if (createHash('sha256').update(state.nonce).digest('hex') !== tx.nonceHash) return jsonResponse(400, { error: 'OAuth transaction nonce mismatch' })
+  if (tx.consumedAt) {
+    const integrationResult = await client.models.TwitchIntegration.get({ id: tx.integrationId })
+    const integration = integrationResult.data
+    const bindingsMatch = integration
+      && integration.workspaceId === tx.workspaceId
+      && integration.brandId === tx.brandId
+      && integration.ownerUserId === tx.ownerUserId
+    if (!bindingsMatch || integration.connectionStatus !== 'CONNECTED') return jsonResponse(400, { error: 'OAuth transaction is invalid or already consumed' })
+    return redirect(`${frontend}/creator-tools/integrations?twitch=connected`)
+  }
   const token = await twitchToken(query.code); const user = await twitchUser(token.access_token); const scopes = token.scope || []
   const duplicate = await client.models.TwitchIntegration.list({ filter: { twitchBroadcasterId: { eq: user.id } }, limit: 10 })
   if ((duplicate.data || []).some((item: any) => item.id !== tx.integrationId && item.connectionStatus === 'CONNECTED')) return jsonResponse(409, { error: 'Twitch broadcaster is already connected to another integration' })

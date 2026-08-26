@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { handleStartTwitchIntegrationOAuth, toSafeIntegration } from './integrationHandlers'
+import { handleStartTwitchIntegrationOAuth, safeIntegrationResult, toSafeIntegration } from './integrationHandlers'
 import { testPermissionModels } from '../shared/testPermissionModels'
 
 process.env.TWITCH_OAUTH_STATE_SECRET = 'test-secret-with-enough-entropy'
@@ -44,6 +44,11 @@ assert.equal(new URL(result.authorizeUrl).searchParams.get('redirect_uri'), proc
 assert.equal(new URL(result.authorizeUrl).protocol, 'https:')
 assert.equal(new URL(result.authorizeUrl).hostname, 'id.twitch.tv')
 assert.deepEqual(toSafeIntegration({ id: 'i', workspaceId: 'w', brandId: 'b', ownerUserId: 'u', capabilities: '{"eventSub":true}' })?.capabilities, { eventSub: true })
+const connectedResult = safeIntegrationResult({ id: 'i', workspaceId: 'w', brandId: 'b', ownerUserId: 'u', connectionStatus: 'CONNECTED', twitchLogin: 'creator', capabilities: '{}' }, { botConnected: null })
+assert.equal(typeof connectedResult.integration, 'string')
+assert.equal(JSON.parse(connectedResult.integration as string).connectionStatus, 'CONNECTED')
+assert.equal(JSON.parse(connectedResult.integration as string).twitchLogin, 'creator')
+assert.equal(JSON.parse(connectedResult.health as string).botConnected, null)
 
 const persistenceFailureClient: any = { models: {
   ...client.models,
