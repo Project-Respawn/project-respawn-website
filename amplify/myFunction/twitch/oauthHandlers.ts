@@ -5,8 +5,13 @@ import { getQueryParams } from '../shared/http'
 import { verifyOAuthState } from './oauthState'
 import { deriveTwitchCapabilities } from './capabilities'
 import { putTokenBundle } from './tokenStore'
+import { encodeAwsJson } from './awsJson'
 
 function redirect(location: string) { return { statusCode: 302, headers: { Location: location, 'Cache-Control': 'no-store' }, body: '' } }
+export function twitchIntegrationCallbackUpdate(tx: any, user: any, scopes: string[], expiresAt: string | null) {
+  const derived = deriveTwitchCapabilities(scopes)
+  return { id: tx.integrationId, twitchBroadcasterId: user.id, twitchLogin: user.login, twitchDisplayName: user.display_name, connectionStatus: derived.requiredScopesPresent ? 'CONNECTED' : 'MISSING_PERMISSIONS', grantedScopes: scopes, capabilities: encodeAwsJson(derived.capabilities), tokenExpiresAt: expiresAt, tokenUpdatedAt: new Date().toISOString(), connectedAt: new Date().toISOString(), disconnectedAt: null, lastValidatedAt: new Date().toISOString(), lastErrorCode: derived.requiredScopesPresent ? null : 'MISSING_REQUIRED_SCOPES' }
+}
 async function twitchToken(code: string) {
   const body = new URLSearchParams({ client_id: process.env.TWITCH_CLIENT_ID || '', client_secret: process.env.TWITCH_CLIENT_SECRET || '', code, grant_type: 'authorization_code', redirect_uri: process.env.TWITCH_REDIRECT_URI || '' })
   const response = await fetch('https://id.twitch.tv/oauth2/token', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body })
@@ -34,8 +39,7 @@ export async function handleTwitchOAuthCallback(event: any, injectedClient?: any
   if ((duplicate.data || []).some((item: any) => item.id !== tx.integrationId && item.connectionStatus === 'CONNECTED')) return jsonResponse(409, { error: 'Twitch broadcaster is already connected to another integration' })
   const expiresAt = token.expires_in ? new Date(Date.now() + token.expires_in * 1000).toISOString() : null
   await putTokenBundle(client, tx.integrationId, { accessToken: token.access_token, refreshToken: token.refresh_token, expiresAt, scopes })
-  const derived = deriveTwitchCapabilities(scopes)
-  await client.models.TwitchIntegration.update({ id: tx.integrationId, twitchBroadcasterId: user.id, twitchLogin: user.login, twitchDisplayName: user.display_name, connectionStatus: derived.requiredScopesPresent ? 'CONNECTED' : 'MISSING_PERMISSIONS', grantedScopes: scopes, capabilities: derived.capabilities, tokenExpiresAt: expiresAt, tokenUpdatedAt: new Date().toISOString(), connectedAt: new Date().toISOString(), disconnectedAt: null, lastValidatedAt: new Date().toISOString(), lastErrorCode: derived.requiredScopesPresent ? null : 'MISSING_REQUIRED_SCOPES' })
+  await client.models.TwitchIntegration.update(twitchIntegrationCallbackUpdate(tx, user, scopes, expiresAt))
   await client.models.TwitchOAuthTransaction.update({ id: tx.id, consumedAt: new Date().toISOString() })
   return redirect(`${frontend}/creator-tools/integrations?twitch=connected`)
 }

@@ -4,6 +4,7 @@ import { jsonResponse } from '../shared/responses'
 import { createRuntimeLease, runtimeLeaseMetadata, verifyRuntimeLease, verifyRuntimeRequest } from './runtimeAuth'
 import { decryptTokenBundle } from './tokenStore'
 import { claimRewardEvent, resolveRewardEvent } from './rewardEventHandlers'
+import { decodeAwsJson } from './awsJson'
 
 const seenNonces = new Map<string, number>()
 function headers(event: any) { const input = event.headers || {}; return Object.fromEntries(Object.entries(input).map(([key, value]) => [key.toLowerCase(), String(value)])) }
@@ -30,7 +31,7 @@ export async function handleTwitchRuntime(path: string, method: string, event: a
   }
   const operation = path.split('/').pop() || ''; const claims = verifyRuntimeLease(bearer(event), runtimeSecret(), operation); const record = await integration(client, claims.integrationId)
   if (record.workspaceId !== claims.workspaceId || record.brandId !== claims.brandId || record.twitchBroadcasterId !== claims.broadcasterId) throw new Error('Runtime lease integration binding mismatch')
-  if (operation === 'manifest' && method === 'GET') return jsonResponse(200, { integrationId: record.id, workspaceId: record.workspaceId, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, configurationVersion: record.configurationVersion, connectionStatus: record.connectionStatus, capabilities: record.capabilities || {}, grantedScopes: record.grantedScopes || [] })
+  if (operation === 'manifest' && method === 'GET') return jsonResponse(200, { integrationId: record.id, workspaceId: record.workspaceId, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, configurationVersion: record.configurationVersion, connectionStatus: record.connectionStatus, capabilities: decodeAwsJson(record.capabilities, {}), grantedScopes: record.grantedScopes || [] })
   if (operation === 'snapshot' && method === 'GET') {
     const commands = await client.models.TwitchCommand.list({ filter: { streamerId: { eq: record.twitchBroadcasterId } }, limit: 1000 })
     return jsonResponse(200, { integrationId: record.id, workspaceId: record.workspaceId, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, configurationVersion: record.configurationVersion, commands: commands.data || [] })

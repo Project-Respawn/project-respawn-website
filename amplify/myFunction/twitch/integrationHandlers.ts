@@ -7,6 +7,7 @@ import { deriveTwitchCapabilities } from './capabilities'
 import { getDataClient } from '../shared/dataClient'
 import { hasBrandTwitchManagePermission } from './managedPolicy'
 import { REQUIRED_BROADCASTER_SCOPES, OPTIONAL_PHASE1_SCOPES } from './integrationTypes'
+import { decodeAwsJson, encodeAwsJson } from './awsJson'
 
 async function listAll(client: any, modelName: string) {
   const output: any[] = []; let nextToken: string | undefined | null
@@ -37,7 +38,7 @@ export function toSafeIntegration(record: any) {
     id: record.id, workspaceId: record.workspaceId || null, brandId: record.brandId, ownerUserId: record.ownerUserId,
     twitchBroadcasterId: record.twitchBroadcasterId || null, twitchLogin: record.twitchLogin || null,
     twitchDisplayName: record.twitchDisplayName || null, connectionStatus: record.connectionStatus,
-    grantedScopes: record.grantedScopes || [], capabilities: record.capabilities || {},
+    grantedScopes: record.grantedScopes || [], capabilities: decodeAwsJson(record.capabilities, {}),
     tokenExpiresAt: record.tokenExpiresAt || null, configurationVersion: record.configurationVersion || 1,
     createdAt: record.createdAt || null, updatedAt: record.updatedAt || null,
   }
@@ -65,7 +66,7 @@ export async function handleStartTwitchIntegrationOAuth(event: any, injectedClie
   const client = injectedClient || await getDataClient(); const { userId, workspaceId } = await authorizedContext(event, brandId, client)
   let integration = await findIntegration(client, brandId)
   if (!integration) {
-    const created = await client.models.TwitchIntegration.create({ workspaceId, brandId, ownerUserId: userId, provider: 'twitch', connectionStatus: 'DISCONNECTED', grantedScopes: [], capabilities: {}, configurationVersion: 1 })
+    const created = await client.models.TwitchIntegration.create({ workspaceId, brandId, ownerUserId: userId, provider: 'twitch', connectionStatus: 'DISCONNECTED', grantedScopes: [], capabilities: encodeAwsJson({}), configurationVersion: 1 })
     if (created.errors?.length || !created.data) throw modelWriteError('create Twitch integration', created)
     integration = created.data
   } else if (integration.ownerUserId !== userId || integration.workspaceId !== workspaceId) {

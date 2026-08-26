@@ -8,6 +8,7 @@ process.env.TWITCH_REDIRECT_URI = 'http://localhost:3000/twitch/oauth/callback'
 
 const createdIntegrations: any[] = []
 const createdTransactions: any[] = []
+const writeOrder: string[] = []
 const client: any = { models: {
   ...testPermissionModels([]),
   Brand: { get: async () => ({ data: { id: 'brand-1', workspaceId: 'workspace-1', ownerUserId: 'creator-sub' } }) },
@@ -17,12 +18,15 @@ const client: any = { models: {
   TwitchIntegration: {
     list: async () => ({ data: [] }),
     create: async (input: any) => {
+      if (typeof input.capabilities !== 'string') return { data: null, errors: [{ message: "Variable 'capabilities' has an invalid value." }] }
+      JSON.parse(input.capabilities)
       createdIntegrations.push(input)
+      writeOrder.push('integration')
       return { data: { id: 'integration-1', ...input } }
     },
   },
   TwitchOAuthTransaction: {
-    create: async (input: any) => { createdTransactions.push(input); return { data: input } },
+    create: async (input: any) => { createdTransactions.push(input); writeOrder.push('transaction'); return { data: input } },
   },
 } }
 
@@ -31,9 +35,15 @@ const result = await handleStartTwitchIntegrationOAuth({
 }, client)
 assert.equal(result.integrationId, 'integration-1')
 assert.equal(createdIntegrations[0].workspaceId, 'workspace-1')
+assert.equal(createdIntegrations[0].brandId, 'brand-1')
+assert.equal(createdIntegrations[0].ownerUserId, 'creator-sub')
+assert.equal(createdIntegrations[0].capabilities, '{}')
 assert.equal(createdTransactions[0].workspaceId, 'workspace-1')
+assert.deepEqual(writeOrder, ['integration', 'transaction'])
 assert.equal(new URL(result.authorizeUrl).searchParams.get('redirect_uri'), process.env.TWITCH_REDIRECT_URI)
-assert.equal(toSafeIntegration({ id: 'i', workspaceId: 'w', brandId: 'b', ownerUserId: 'u' })?.workspaceId, 'w')
+assert.equal(new URL(result.authorizeUrl).protocol, 'https:')
+assert.equal(new URL(result.authorizeUrl).hostname, 'id.twitch.tv')
+assert.deepEqual(toSafeIntegration({ id: 'i', workspaceId: 'w', brandId: 'b', ownerUserId: 'u', capabilities: '{"eventSub":true}' })?.capabilities, { eventSub: true })
 
 const persistenceFailureClient: any = { models: {
   ...client.models,

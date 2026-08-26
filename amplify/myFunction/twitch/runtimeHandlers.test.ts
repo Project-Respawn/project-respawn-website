@@ -3,7 +3,7 @@ import test from 'node:test'
 import { handleTwitchRuntime } from './runtimeHandlers'
 import { signRuntimeRequest } from './runtimeAuth'
 
-const integration = { id: 'integration-1', workspaceId: 'workspace-1', brandId: 'brand-1', ownerUserId: 'owner-1', twitchBroadcasterId: 'broadcaster-1', connectionStatus: 'CONNECTED', configurationVersion: 4, capabilities: { eventSub: true }, grantedScopes: ['channel:read:subscriptions'] }
+const integration = { id: 'integration-1', workspaceId: 'workspace-1', brandId: 'brand-1', ownerUserId: 'owner-1', twitchBroadcasterId: 'broadcaster-1', connectionStatus: 'CONNECTED', configurationVersion: 4, capabilities: '{"eventSub":true}', grantedScopes: ['channel:read:subscriptions'] }
 const client: any = { models: {
   TwitchIntegration: { get: async ({ id }: any) => ({ data: id === integration.id ? integration : null }) },
   TwitchCommand: { list: async () => ({ data: [] }) },
@@ -23,6 +23,7 @@ test('HMAC lease and bearer manifest/snapshot preserve integration binding', asy
   const manifest: any = JSON.parse((await handleTwitchRuntime('/twitch/runtime/manifest', 'GET', authEvent, client) as any).body)
   const snapshot: any = JSON.parse((await handleTwitchRuntime('/twitch/runtime/snapshot', 'GET', authEvent, client) as any).body)
   assert.equal(manifest.brandId, integration.brandId); assert.equal(manifest.broadcasterId, integration.twitchBroadcasterId)
+  assert.deepEqual(manifest.capabilities, { eventSub: true })
   assert.equal(snapshot.integrationId, integration.id); assert.equal(snapshot.broadcasterId, integration.twitchBroadcasterId)
 })
 
