@@ -129,7 +129,6 @@ export async function getAccessibleBrandSummaries(client: any, userId: string, i
 export async function handleCreateBrand(event: any, injectedClient?: any) {
   const client = injectedClient || await loadDataClient()
   const actor = await getActor(event, client)
-  assertPlatformBrandOperator(actor)
   const args = event.arguments || {}
   if (typeof args.name !== 'string' || !args.name.trim() || typeof args.slug !== 'string' || !args.slug.trim()) {
     throw new Error('Brand name and slug are required')
@@ -141,7 +140,21 @@ export async function handleCreateBrand(event: any, injectedClient?: any) {
   const ownerUserId = typeof args.ownerUserId === 'string' && args.ownerUserId.trim()
     ? args.ownerUserId.trim()
     : null
+  let workspaceId: string | null = null
+  if (!actor.isPlatformOperator && ownerUserId !== actor.userId) {
+    throw new Error('Creators may create Brands only for their own Creator Workspace')
+  }
+  if (ownerUserId === actor.userId) {
+    const workspaceResult = await client.models.CreatorWorkspaceRecord.list({
+      filter: { ownerUserId: { eq: actor.userId } }, limit: 2,
+    })
+    if (workspaceResult.errors?.length) throw new Error(workspaceResult.errors[0].message || 'Failed to load Creator Workspace')
+    const ownedWorkspaces = (workspaceResult.data || []).filter((workspace: any) => workspace.ownerUserId === actor.userId)
+    if (!actor.isPlatformOperator && ownedWorkspaces.length !== 1) throw new Error('Exactly one owned Creator Workspace is required to create a Brand')
+    if (ownedWorkspaces.length === 1) workspaceId = ownedWorkspaces[0].id
+  }
   const result = await client.models.Brand.create({
+    workspaceId,
     name: args.name.trim(),
     slug: args.slug.trim(),
     description: typeof args.description === 'string' ? args.description.trim() : null,

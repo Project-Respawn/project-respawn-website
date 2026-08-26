@@ -3,7 +3,7 @@ import test from 'node:test'
 import { handleTwitchRuntime } from './runtimeHandlers'
 import { signRuntimeRequest } from './runtimeAuth'
 
-const integration = { id: 'integration-1', brandId: 'brand-1', ownerUserId: 'owner-1', twitchBroadcasterId: 'broadcaster-1', connectionStatus: 'CONNECTED', configurationVersion: 4, capabilities: { eventSub: true }, grantedScopes: ['channel:read:subscriptions'] }
+const integration = { id: 'integration-1', workspaceId: 'workspace-1', brandId: 'brand-1', ownerUserId: 'owner-1', twitchBroadcasterId: 'broadcaster-1', connectionStatus: 'CONNECTED', configurationVersion: 4, capabilities: { eventSub: true }, grantedScopes: ['channel:read:subscriptions'] }
 const client: any = { models: {
   TwitchIntegration: { get: async ({ id }: any) => ({ data: id === integration.id ? integration : null }) },
   TwitchCommand: { list: async () => ({ data: [] }) },

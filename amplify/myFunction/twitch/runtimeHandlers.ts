@@ -23,16 +23,17 @@ export async function handleTwitchRuntime(path: string, method: string, event: a
   const body: any = getRequestBody(event) || {}; const client = injectedClient || await (await import('../shared/dataClient')).getDataClient()
   if (path === '/twitch/runtime/lease' && method === 'POST') {
     authenticateRuntime(event, path, method, body); const record = await integration(client, String(body.integrationId || ''))
+    if (!record.workspaceId) return jsonResponse(409, { error: 'Integration is not assigned to a Creator Workspace' })
     if (!record.twitchBroadcasterId || record.connectionStatus === 'DISCONNECTED') return jsonResponse(409, { error: 'Integration is not runtime-ready' })
-    const lease = createRuntimeLease({ integrationId: record.id, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, operations: ['manifest', 'snapshot', 'token', 'heartbeat', 'reward-events-claim', 'reward-events-resolve'] }, runtimeSecret())
-    return jsonResponse(200, { lease, ...runtimeLeaseMetadata(lease), integrationId: record.id, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, requestId: randomUUID() })
+    const lease = createRuntimeLease({ integrationId: record.id, workspaceId: record.workspaceId, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, operations: ['manifest', 'snapshot', 'token', 'heartbeat', 'reward-events-claim', 'reward-events-resolve'] }, runtimeSecret())
+    return jsonResponse(200, { lease, ...runtimeLeaseMetadata(lease), integrationId: record.id, workspaceId: record.workspaceId, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, requestId: randomUUID() })
   }
   const operation = path.split('/').pop() || ''; const claims = verifyRuntimeLease(bearer(event), runtimeSecret(), operation); const record = await integration(client, claims.integrationId)
-  if (record.brandId !== claims.brandId || record.twitchBroadcasterId !== claims.broadcasterId) throw new Error('Runtime lease integration binding mismatch')
-  if (operation === 'manifest' && method === 'GET') return jsonResponse(200, { integrationId: record.id, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, configurationVersion: record.configurationVersion, connectionStatus: record.connectionStatus, capabilities: record.capabilities || {}, grantedScopes: record.grantedScopes || [] })
+  if (record.workspaceId !== claims.workspaceId || record.brandId !== claims.brandId || record.twitchBroadcasterId !== claims.broadcasterId) throw new Error('Runtime lease integration binding mismatch')
+  if (operation === 'manifest' && method === 'GET') return jsonResponse(200, { integrationId: record.id, workspaceId: record.workspaceId, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, configurationVersion: record.configurationVersion, connectionStatus: record.connectionStatus, capabilities: record.capabilities || {}, grantedScopes: record.grantedScopes || [] })
   if (operation === 'snapshot' && method === 'GET') {
     const commands = await client.models.TwitchCommand.list({ filter: { streamerId: { eq: record.twitchBroadcasterId } }, limit: 1000 })
-    return jsonResponse(200, { integrationId: record.id, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, configurationVersion: record.configurationVersion, commands: commands.data || [] })
+    return jsonResponse(200, { integrationId: record.id, workspaceId: record.workspaceId, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, configurationVersion: record.configurationVersion, commands: commands.data || [] })
   }
   if (operation === 'token' && method === 'GET') {
     const vault = (await client.models.TwitchTokenVault.get({ integrationId: record.id })).data; if (!vault) return jsonResponse(409, { error: 'Integration token is unavailable' })
@@ -50,7 +51,7 @@ export async function handleTwitchRuntime(path: string, method: string, event: a
       await putTokenBundle(client, record.id, token)
       await client.models.TwitchIntegration.update({ id: record.id, tokenExpiresAt: token.expiresAt, tokenUpdatedAt: new Date().toISOString(), grantedScopes: token.scopes, lastValidatedAt: new Date().toISOString(), lastErrorCode: null })
     }
-    return jsonResponse(200, { integrationId: record.id, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, accessToken: token.accessToken, tokenExpiresAt: token.expiresAt, grantedScopes: token.scopes })
+    return jsonResponse(200, { integrationId: record.id, workspaceId: record.workspaceId, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, accessToken: token.accessToken, tokenExpiresAt: token.expiresAt, grantedScopes: token.scopes })
   }
   if (operation === 'heartbeat' && method === 'POST') {
     const now = new Date().toISOString(); const input = { integrationId: record.id, botAuthenticated: true, botConnected: Boolean(body.botConnected), eventSubConnected: Boolean(body.eventSubConnected), chatReadAvailable: Boolean(body.chatReadAvailable), chatWriteAvailable: Boolean(body.chatWriteAvailable), lastEventReceivedAt: body.lastEventReceivedAt || null, lastBotHeartbeatAt: now, lastConfigurationSyncAt: body.lastConfigurationSyncAt || null, appliedConfigurationVersion: Number(body.appliedConfigurationVersion || 0), warnings: Array.isArray(body.warnings) ? body.warnings.map(String) : [], errors: Array.isArray(body.errors) ? body.errors.map(String) : [] }

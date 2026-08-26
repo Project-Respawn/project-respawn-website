@@ -24,6 +24,23 @@
               Refresh Status
             </button>
           </div>
+
+          <div v-if="secureFoundationEnabled" class="brand-controls">
+            <label v-if="brands.length">
+              Brand
+              <select v-model="selectedBrandId" @change="refreshStatus({ silent: true })">
+                <option v-for="brand in brands" :key="brand.brandId" :value="brand.brandId">{{ brand.name }}</option>
+              </select>
+            </label>
+            <form v-else-if="workspaces.length" class="brand-create" @submit.prevent="createBrand">
+              <p>A Brand is required before connecting Twitch.</p>
+              <input v-model.trim="newBrandName" required maxlength="80" placeholder="Brand name" aria-label="Brand name">
+              <button class="secondary-btn" type="submit" :disabled="creatingBrand">
+                {{ creatingBrand ? 'Creating…' : 'Create Brand' }}
+              </button>
+            </form>
+            <p v-else class="hero-text">Create a Creator Workspace before connecting Twitch.</p>
+          </div>
         </div>
 
         <div class="hero-stats">
@@ -157,7 +174,11 @@ export default {
       selectedBrandId: '',
       twitchIntegration: null,
       twitchHealth: null,
-      secureFoundationEnabled: import.meta.env.VITE_TWITCH_SECURE_INTEGRATION === 'true',
+      brands: [],
+      workspaces: [],
+      newBrandName: '',
+      creatingBrand: false,
+      secureFoundationEnabled: import.meta.env.VITE_TWITCH_SECURE_INTEGRATION !== 'false',
       twitchPermissions: [
         {
           badge: 'Twitch',
@@ -187,7 +208,7 @@ export default {
 
     await this.loadCurrentUser();
     const access = await refreshAccessContext();
-    this.selectedBrandId = access.brands?.[0]?.brandId || '';
+    this.applyAccessContext(access);
 
     const callback = this.parseCallbackResult();
 
@@ -215,6 +236,40 @@ export default {
   },
 
   methods: {
+    applyAccessContext(access) {
+      this.brands = Array.isArray(access?.brands) ? access.brands : [];
+      this.workspaces = Array.isArray(access?.workspaces) ? access.workspaces : [];
+      if (!this.brands.some((brand) => brand.brandId === this.selectedBrandId)) {
+        this.selectedBrandId = this.brands[0]?.brandId || '';
+      }
+    },
+    slugifyBrandName(name) {
+      return String(name || '').toLowerCase().trim()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+    },
+    async createBrand() {
+      const workspaceId = this.workspaces[0]?.id;
+      const name = this.newBrandName.trim();
+      const slug = this.slugifyBrandName(name);
+      if (!workspaceId) return this.showToast('No accessible Creator Workspace found');
+      if (!name || !slug) return this.showToast('Enter a valid Brand name');
+      this.creatingBrand = true;
+      try {
+        const response = await twitchDataClient.mutations.createManagedBrand({ name, slug, ownerUserId: this.currentUserId });
+        if (response?.errors?.length || !response?.data?.brandId) throw new Error(response?.errors?.[0]?.message || 'Brand creation failed');
+        const access = await refreshAccessContext({ force: true });
+        this.applyAccessContext(access);
+        this.selectedBrandId = response.data.brandId;
+        this.newBrandName = '';
+        this.showToast('Brand created. You can now connect Twitch.');
+        await this.refreshStatus({ silent: true });
+      } catch (error) {
+        this.showToast(error.message || 'Could not create Brand');
+      } finally {
+        this.creatingBrand = false;
+      }
+    },
     async fetchLegacyConnectionForAuthenticatedUser() {
       for (const userId of this.lookupUserIds) {
         const response = await fetch(`http://localhost:3000/api/twitch/connection-by-user?userId=${encodeURIComponent(userId)}&t=${Date.now()}`, { cache: 'no-store' });

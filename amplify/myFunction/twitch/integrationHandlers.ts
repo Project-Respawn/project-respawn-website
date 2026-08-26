@@ -24,13 +24,17 @@ async function authorizedContext(event: any, brandId: string, client: any) {
   if (!brand) throw new Error('Brand not found')
   const platformOperator = permissionContext.effective.has('bots.twitch.manage')
   if (!platformOperator && !hasBrandTwitchManagePermission(userId, brand, accesses, permissions)) throw new Error('Brand Twitch management permission is required')
-  return { userId, brand }
+  if (!brand.workspaceId) throw new Error('Brand is not assigned to a Creator Workspace')
+  const workspaceResult = await client.models.CreatorWorkspaceRecord.get({ id: brand.workspaceId })
+  if (workspaceResult.errors?.length || !workspaceResult.data) throw new Error('Creator Workspace not found for Brand')
+  if (workspaceResult.data.ownerUserId !== userId && !platformOperator) throw new Error('Creator Workspace owner access is required')
+  return { userId, brand, workspaceId: brand.workspaceId }
 }
 
 export function toSafeIntegration(record: any) {
   if (!record) return null
   return {
-    id: record.id, brandId: record.brandId, ownerUserId: record.ownerUserId,
+    id: record.id, workspaceId: record.workspaceId || null, brandId: record.brandId, ownerUserId: record.ownerUserId,
     twitchBroadcasterId: record.twitchBroadcasterId || null, twitchLogin: record.twitchLogin || null,
     twitchDisplayName: record.twitchDisplayName || null, connectionStatus: record.connectionStatus,
     grantedScopes: record.grantedScopes || [], capabilities: record.capabilities || {},
@@ -48,19 +52,19 @@ async function findIntegration(client: any, brandId: string) {
 
 export async function handleStartTwitchIntegrationOAuth(event: any, injectedClient?: any) {
   const brandId = String(event.arguments?.brandId || '').trim(); if (!brandId) throw new Error('brandId is required')
-  const client = injectedClient || await getDataClient(); const { userId } = await authorizedContext(event, brandId, client)
+  const client = injectedClient || await getDataClient(); const { userId, workspaceId } = await authorizedContext(event, brandId, client)
   let integration = await findIntegration(client, brandId)
   if (!integration) {
-    const created = await client.models.TwitchIntegration.create({ brandId, ownerUserId: userId, provider: 'twitch', connectionStatus: 'DISCONNECTED', grantedScopes: [], capabilities: {}, configurationVersion: 1 })
+    const created = await client.models.TwitchIntegration.create({ workspaceId, brandId, ownerUserId: userId, provider: 'twitch', connectionStatus: 'DISCONNECTED', grantedScopes: [], capabilities: {}, configurationVersion: 1 })
     if (created.errors?.length || !created.data) throw new Error('Failed to create Twitch integration')
     integration = created.data
-  } else if (integration.ownerUserId !== userId) {
+  } else if (integration.ownerUserId !== userId || integration.workspaceId !== workspaceId) {
     throw new Error('Twitch integration owner does not match authenticated creator')
   }
   const transactionId = randomUUID(); const secret = process.env.TWITCH_OAUTH_STATE_SECRET || ''
   const state = createOAuthState(transactionId, secret)
   const nonceHash = createHash('sha256').update(state.payload.nonce).digest('hex')
-  const transaction = await client.models.TwitchOAuthTransaction.create({ id: transactionId, ownerUserId: userId, brandId, integrationId: integration.id, nonceHash, expiresAt: new Date(state.payload.expiresAt).toISOString() })
+  const transaction = await client.models.TwitchOAuthTransaction.create({ id: transactionId, workspaceId, ownerUserId: userId, brandId, integrationId: integration.id, nonceHash, expiresAt: new Date(state.payload.expiresAt).toISOString() })
   if (transaction.errors?.length) throw new Error('Failed to create Twitch OAuth transaction')
   const scopes = [...REQUIRED_BROADCASTER_SCOPES, ...OPTIONAL_PHASE1_SCOPES]
   const params = new URLSearchParams({ response_type: 'code', client_id: process.env.TWITCH_CLIENT_ID || '', redirect_uri: process.env.TWITCH_REDIRECT_URI || '', scope: scopes.join(' '), state: state.token, force_verify: 'true' })

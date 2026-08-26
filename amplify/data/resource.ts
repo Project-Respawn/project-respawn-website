@@ -827,6 +827,7 @@ const schema = a
 
     TwitchIntegration: a
       .model({
+        workspaceId: a.id(),
         brandId: a.id().required(),
         ownerUserId: a.string().required(),
         provider: a.string().required(),
@@ -860,6 +861,7 @@ const schema = a
 
     TwitchOAuthTransaction: a
       .model({
+        workspaceId: a.id(),
         ownerUserId: a.string().required(),
         brandId: a.id().required(),
         integrationId: a.id().required(),
@@ -1470,6 +1472,7 @@ const schema = a
 
     Brand: a
       .model({
+        workspaceId: a.id(),
         name: a.string().required(),
         slug: a.string().required(),
         description: a.string(),

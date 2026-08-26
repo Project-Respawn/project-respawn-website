@@ -76,7 +76,27 @@ await assert.rejects(
 
 await assert.rejects(
   handleCreateBrand(event('member-a', ['Member'], { name: 'Ravens', slug: 'ravens' }), makeClient({ data: { id: 'should-not-create' } })),
-  /Only platform brand administration can change the Brand Owner/i,
+  /only for their own Creator Workspace/i,
+)
+
+const workspaceBrandClient: any = makeClient({ data: { id: 'workspace-brand-id', name: 'Creator Brand' } })
+workspaceBrandClient.models.CreatorWorkspaceRecord = {
+  list: async () => ({ data: [{ id: 'workspace-1', ownerUserId: 'creator-sub' }] }),
+}
+const workspaceBrand = await handleCreateBrand(event('creator-sub', ['Member'], {
+  name: 'Creator Brand', slug: 'creator-brand', ownerUserId: 'creator-sub',
+}), workspaceBrandClient)
+assert.equal(workspaceBrand.brandId, 'workspace-brand-id')
+assert.deepEqual(workspaceBrandClient.created[0], {
+  workspaceId: 'workspace-1', name: 'Creator Brand', slug: 'creator-brand', description: null,
+  sortOrder: 0, isActive: true, ownerUserId: 'creator-sub', ownerAssignedBy: 'creator-sub',
+  ownerAssignedAt: workspaceBrandClient.created[0].ownerAssignedAt,
+})
+await assert.rejects(
+  handleCreateBrand(event('other-sub', ['Member'], {
+    name: 'Denied', slug: 'denied', ownerUserId: 'creator-sub',
+  }), workspaceBrandClient),
+  /only for their own Creator Workspace/i,
 )
 
 console.log('managed Brand creation result tests passed')
