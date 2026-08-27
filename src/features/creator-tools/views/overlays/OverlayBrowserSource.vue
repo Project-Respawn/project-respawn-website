@@ -1,7 +1,7 @@
 <template>
   <main ref="viewport" class="overlay-browser-source">
     <div v-if="scene" class="overlay-browser-source__stage" :style="stageStyle">
-      <OverlaySceneRenderer :scene="scene" />
+      <OverlaySceneRenderer :scene="scene" runtime-mode="browser-source" />
     </div>
   </main>
 </template>
@@ -102,11 +102,12 @@ html.overlay-browser-source-document,
 html.overlay-browser-source-document body,
 html.overlay-browser-source-document #app {
   margin: 0;
+  padding: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
   background: transparent !important;
 }
-.overlay-browser-source { position: relative; width: 100vw; height: 100vh; overflow: hidden; background: transparent; }
+.overlay-browser-source { position: fixed; inset: 0; overflow: hidden; background: transparent; }
 .overlay-browser-source__stage { position: absolute; left: 0; top: 0; transform-origin: top left; }
 </style>

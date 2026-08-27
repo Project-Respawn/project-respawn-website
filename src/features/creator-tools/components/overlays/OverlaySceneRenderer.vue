@@ -10,7 +10,7 @@
       :data-widget-type="widget.type"
       :style="frameStyle(widget)"
     >
-      <component :is="registry[widget.type].component" class="widget-renderer" :widget="widget" />
+      <component :is="registry[widget.type].component" class="widget-renderer" :widget="widget" :runtime-mode="runtimeMode" />
     </div>
   </div>
 </template>
@@ -23,7 +23,10 @@ import { widgetEventBus } from '../../overlays/widgetEventBus.js';
 import { createTriggeredWidgetSubscription } from '../../overlays/triggeredWidgetState.js';
 import { widgetDisplayMode } from '../../overlays/overlayPublicationSnapshot.js';
 
-const props = defineProps({ scene: { type: Object, required: true } });
+const props = defineProps({
+  scene: { type: Object, required: true },
+  runtimeMode: { type: String, default: 'editor-preview' },
+});
 const triggerVisibility = reactive({});
 let disposeTriggers = [];
 const orderedWidgets = computed(() => (props.scene.widgets || [])

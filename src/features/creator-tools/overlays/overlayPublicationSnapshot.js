@@ -1,6 +1,6 @@
 import { cloneSerializableData } from './overlaySnapshots.js';
 
-const triggeredAlertTypes = new Set(['alerts', 'subscription-alert', 'raid-alert']);
+const triggeredWidgetTypes = new Set(['alerts', 'subscription-alert', 'raid-alert', 'tts']);
 const canonicalTopicsByType = Object.freeze({
   alerts: ['stream.follow', 'stream.subscription', 'stream.cheer', 'stream.raid', 'reward.redeemed'],
   'subscription-alert': ['stream.subscription'],
@@ -11,7 +11,7 @@ const canonicalTopicsByType = Object.freeze({
 
 export function widgetDisplayMode(widget) {
   if (widget?.displayMode === 'triggered' || widget?.displayMode === 'always') return widget.displayMode;
-  return triggeredAlertTypes.has(widget?.type) ? 'triggered' : 'always';
+  return triggeredWidgetTypes.has(widget?.type) ? 'triggered' : 'always';
 }
 
 export function createPublicationSceneSnapshot(scene) {

@@ -35,6 +35,17 @@ test('unrelated events do not trigger a widget', () => {
   state.dispose();
 });
 
+test('a second matching event resets the timeout and can trigger again after hiding', () => {
+  const state = harness(['stream.follow']);
+  state.bus.publish({ topic: 'stream.follow' });
+  const firstTimeout = state.getTimeout();
+  firstTimeout.handler();
+  state.bus.publish({ topic: 'stream.follow' });
+  assert.deepEqual(state.visibility, [true, false, true]);
+  assert.notEqual(state.getTimeout(), firstTimeout);
+  state.dispose();
+});
+
 test('chat messages continue through the shared event bus to chat widgets', () => {
   const bus = createWidgetEventBus();
   let received = null;

@@ -22,5 +22,6 @@ test('explicit canonical widget topics are retained', () => {
 
 test('renderer derives the same triggered default for legacy alert snapshots', () => {
   assert.equal(widgetDisplayMode({ type: 'subscription-alert' }), 'triggered');
+  assert.equal(widgetDisplayMode({ type: 'tts' }), 'triggered');
   assert.equal(widgetDisplayMode({ type: 'twitch-chat' }), 'always');
 });
