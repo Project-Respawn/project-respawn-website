@@ -19,7 +19,7 @@
 
           <div class="hero-actions">
             <button class="primary-btn" type="button" :disabled="saving" @click="saveCanonicalSettings">{{ saving ? 'Saving…' : 'Save Alert Settings' }}</button>
-            <button class="secondary-btn" type="button">Trigger Test Alert</button>
+            <button class="secondary-btn" type="button" @click="sendSelectedTest">Trigger Test Alert</button>
           </div>
         </div>
 
@@ -245,7 +245,8 @@ import BotSidebar from '@/components/BotSidebar/BotSidebar.vue';
 
 <script>
 import { refreshAccessContext } from '@/composables/useAccessContext.js';
-import { getTwitchOverlayConfig, updateTwitchOverlayConfig } from '@/features/creator-tools/services/overlaySource.js';
+import { getActiveOverlayPublication, getTwitchOverlayConfig, sendOverlayTestEvent, updateTwitchOverlayConfig } from '@/features/creator-tools/services/overlaySource.js';
+import { createTestOverlayEvent } from '@/features/creator-tools/overlays/overlayEventContract.js';
 export default {
   name: 'TwitchAlerts',
   data() {
@@ -454,6 +455,12 @@ export default {
         for (const [local, canonical] of Object.entries(map)) { const value = this.alertConfigs[local]; alerts[canonical] = { ...alerts[canonical], enabled: value.enabled, duration: Number.parseFloat(value.duration) || 6, template: value.title, soundUrl: value.soundUrl, volume: Number(value.volume) / 100 }; }
         const result = await updateTwitchOverlayConfig(this.workspaceId, this.brandId, { ...this.canonicalConfig, alerts }); this.canonicalConfig = result.config;
       } finally { this.saving = false; }
+    },
+    async sendSelectedTest() {
+      const type = { follow: 'stream.follow', sub: 'stream.subscription', raid: 'stream.raid', bits: 'stream.cheer', redemption: 'reward.redeemed', tts: 'tts.requested' }[this.selectedAlertKey];
+      if (!type) return; const result = await getActiveOverlayPublication(this.workspaceId, this.brandId); const publicationId = result.publication?.publicationId;
+      if (!publicationId) throw new Error('Create a Browser Source before sending a test alert');
+      await sendOverlayTestEvent(publicationId, createTestOverlayEvent(type));
     },
     selectAlert(key) {
       this.selectedAlertKey = key;

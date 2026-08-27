@@ -2,8 +2,9 @@ import { getCurrentUser, fetchAuthSession } from 'aws-amplify/auth';
 import { generateClient } from 'aws-amplify/data';
 import BotSidebar from '@/components/BotSidebar/BotSidebar.vue';
 import { refreshAccessContext } from '@/composables/useAccessContext.js';
-import { getTwitchOverlayConfig, updateTwitchOverlayConfig } from '@/features/creator-tools/services/overlaySource.js';
+import { getActiveOverlayPublication, getTwitchOverlayConfig, sendOverlayTestEvent, updateTwitchOverlayConfig } from '@/features/creator-tools/services/overlaySource.js';
 import { decodeTwitchJson } from '@/features/creator-tools/services/twitchConnection.js';
+import { createTestOverlayEvent } from '@/features/creator-tools/overlays/overlayEventContract.js';
 
 const twitchDataClient = generateClient();
 
@@ -467,43 +468,12 @@ export default {
 
     // ── API ────────────────────────────────────────────────────────
     async sendTestTts() {
-      if (!this.broadcasterId) {
-        console.warn('[TTS Settings] test TTS blocked: missing broadcasterId');
-        this.showStatus('Select a connected broadcaster before running a TTS test', 'error');
-        return;
-      }
-
       try {
         this.sendingTest = true;
-        console.log('[TTS Settings] sending test TTS:', {
-          broadcasterId: this.broadcasterId,
-          username: this.testUsername,
-          textLength: String(this.testMessage || '').length
-        });
-
-        const response = await fetch(`${this.apiBaseUrl}/api/tts/test`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            broadcasterId: this.broadcasterId,
-            username: this.testUsername,
-            text: this.testMessage,
-            voiceName: this.selectedVoiceName,
-            rate: this.rate,
-            pitch: this.pitch,
-            volume: this.volume,
-          }),
-        });
-
-        const raw = await response.text();
-        let result = {};
-        try {
-          result = raw ? JSON.parse(raw) : {};
-        } catch {
-          result = { message: raw || 'Non-JSON response' };
-        }
-
-        if (!response.ok) throw new Error(result.message || `Failed (${response.status})`);
+        const active = await getActiveOverlayPublication(this.workspaceId, this.selectedBrandId); const publicationId = active.publication?.publicationId;
+        if (!publicationId) throw new Error('Create a Browser Source before sending a TTS test');
+        const event = createTestOverlayEvent('tts.requested'); event.data.actor.displayName = this.testUsername || 'Test User'; event.data.payload.text = this.testMessage || 'Project Respawn text to speech test';
+        await sendOverlayTestEvent(publicationId, event);
         this.showStatus('Test TTS sent successfully', 'success');
       } catch (error) {
         console.error('Failed to send test TTS', error);

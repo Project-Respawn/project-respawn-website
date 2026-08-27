@@ -18,6 +18,7 @@ test('canonical alert configuration controls enablement, duration, templates and
 test('TTS and chat use server-backed safe configuration without Browser Source localStorage', () => {
   for (const field of ['voice', 'rate', 'pitch', 'volume', 'maxLength']) assert.match(tts, new RegExp(`config\\.${field}`));
   assert.match(ttsPage, /getTwitchOverlayConfig/); assert.match(ttsPage, /updateTwitchOverlayConfig/); assert.doesNotMatch(ttsPage, /localStorage/);
+  assert.match(ttsPage, /sendOverlayTestEvent/); assert.doesNotMatch(ttsPage, /fetch\(`\$\{this\.apiBaseUrl\}\/api\/tts\/test/);
   assert.match(chat, /blockedTerms/); assert.match(chat, /maxMessages/); assert.match(chat, /platforms/); assert.match(moderation, /updateTwitchOverlayConfig/);
 });
 
