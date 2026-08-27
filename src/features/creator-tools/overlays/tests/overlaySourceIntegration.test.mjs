@@ -30,3 +30,11 @@ test('Browser Source transparency is isolated to its route lifecycle', () => {
   assert.match(source, /document\.documentElement\.classList\.remove\(documentClass\)/);
   assert.doesNotMatch(source, /html,\s*body,\s*#app\s*\{/);
 });
+
+test('temporary Browser Source geometry diagnostic contains only safe layout metadata', () => {
+  assert.match(source, /\[Overlay Source geometry diagnostic\]/);
+  for (const field of ['viewport', 'scene', 'computedScale', 'stageBoundingRect', 'devicePixelRatio', 'widgetBoundingRects']) {
+    assert.match(source, new RegExp(field));
+  }
+  assert.doesNotMatch(source, /console\.(?:info|log)[\s\S]{0,500}(?:credential|publicationId|authorization|token)/i);
+});
