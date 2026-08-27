@@ -38,6 +38,14 @@ test('unrelated events do not trigger a widget', () => {
   state.dispose();
 });
 
+test('canonical runtime settings suppress disabled alerts and override snapshot duration', () => {
+  const bus = createWidgetEventBus(), visibility = []; let delay = null;
+  createTriggeredWidgetSubscription({ dataSource: { topics: ['stream.follow'] }, settings: { duration: 99 } }, { bus, onVisibility: value => visibility.push(value), runtimeSettings: { enabled: false, duration: 3 }, setTimer: (_handler, value) => { delay = value; return 1; } });
+  bus.publish({ topic: 'stream.follow' }); assert.deepEqual(visibility, []); assert.equal(delay, null);
+  createTriggeredWidgetSubscription({ dataSource: { topics: ['stream.raid'] }, settings: { duration: 99 } }, { bus, onVisibility: value => visibility.push(value), runtimeSettings: { enabled: true, duration: 3 }, setTimer: (_handler, value) => { delay = value; return 1; } });
+  bus.publish({ topic: 'stream.raid' }); assert.deepEqual(visibility, [true]); assert.equal(delay, 3000);
+});
+
 test('a second matching event resets the timeout and can trigger again after hiding', () => {
   const state = harness(['stream.follow']);
   state.bus.publish({ topic: 'stream.follow' });

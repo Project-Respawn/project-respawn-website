@@ -39,6 +39,7 @@ export class OverlaySourceInfrastructure extends Construct {
     const httpApi = new HttpApi(this, 'OverlaySourceHttpApi', { apiName: 'projectRespawnOverlaySourceApi', corsPreflight: { allowMethods: [CorsHttpMethod.GET, CorsHttpMethod.POST, CorsHttpMethod.PUT, CorsHttpMethod.DELETE, CorsHttpMethod.OPTIONS], allowOrigins: [props.frontendOrigin], allowHeaders: ['authorization', 'content-type'] } });
     const authorizer = new HttpJwtAuthorizer('OverlayCreatorAuthorizer', `https://cognito-idp.${stack.region}.amazonaws.com/${props.userPoolId}`, { jwtAudience: [props.userPoolClientId] });
     httpApi.addRoutes({ path: '/overlay/source/{credential}', methods: [HttpMethod.GET], integration });
+    httpApi.addRoutes({ path: '/overlay/twitch-config', methods: [HttpMethod.GET, HttpMethod.PUT], integration, authorizer });
     httpApi.addRoutes({ path: '/overlay/publications', methods: [HttpMethod.POST], integration, authorizer });
     httpApi.addRoutes({ path: '/overlay/publications/active', methods: [HttpMethod.GET], integration, authorizer });
     httpApi.addRoutes({ path: '/overlay/publications/{publicationId}', methods: [HttpMethod.PUT, HttpMethod.DELETE], integration, authorizer });

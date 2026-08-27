@@ -1,4 +1,6 @@
 import BotSidebar from '@/components/BotSidebar/BotSidebar.vue';
+import { refreshAccessContext } from '@/composables/useAccessContext.js';
+import { getTwitchOverlayConfig, updateTwitchOverlayConfig } from '@/features/creator-tools/services/overlaySource.js';
 
 const DEFAULT_RULES = [
   {
@@ -51,6 +53,7 @@ export default {
   data() {
     return {
       toastMessage: '',
+      workspaceId: '', brandId: '', canonicalConfig: null,
       toastTimer: null,
       moderationEnabled: true,
       activeFilter: 'all',
@@ -154,6 +157,14 @@ export default {
       ]
     };
   },
+  async mounted() {
+    const access = await refreshAccessContext(); const requestedBrandId = String(this.$route?.query?.brandId || ''); const brand = access.brands?.find(item => item.brandId === requestedBrandId) || access.brands?.[0], workspace = access.workspaces?.[0];
+    this.brandId = brand?.brandId || ''; this.workspaceId = brand?.workspaceId || workspace?.workspaceId || workspace?.id || '';
+    if (!this.brandId || !this.workspaceId) return;
+    const result = await getTwitchOverlayConfig(this.workspaceId, this.brandId); this.canonicalConfig = result.config;
+    const terms = result.config?.chat?.blockedTerms || []; if (terms.length) this.moderationRules = terms.map((label, index) => ({ id: index + 1, label, category: 'Language', scope: 'twitch', action: 'delete', enabled: true }));
+    this.moderationEnabled = result.config?.chat?.enabled !== false;
+  },
   computed: {
     filteredRules() {
       switch (this.activeFilter) {
@@ -247,7 +258,11 @@ export default {
       this.moderationRules = this.moderationRules.filter((rule) => rule.id !== id);
       this.showToast('Moderation rule removed');
     },
-    saveSettings() {
+    async saveSettings() {
+      if (this.canonicalConfig && this.workspaceId && this.brandId) {
+        const blockedTerms = this.moderationRules.filter(rule => rule.enabled && (rule.scope === 'twitch' || rule.scope === 'both')).map(rule => rule.label);
+        const result = await updateTwitchOverlayConfig(this.workspaceId, this.brandId, { ...this.canonicalConfig, chat: { ...this.canonicalConfig.chat, enabled: this.moderationEnabled, blockedTerms } }); this.canonicalConfig = result.config;
+      }
       this.showToast('Moderation settings saved');
     },
     resetSettings() {

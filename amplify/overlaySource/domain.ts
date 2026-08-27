@@ -7,6 +7,44 @@ export const OVERLAY_EVENT_TYPES = new Set([
 
 const forbiddenSnapshotKey = /token|secret|credential|oauth|authorization|runtimelease|accesskey|privatekey|password/i;
 const triggeredWidgetTypes = new Set(['alerts', 'subscription-alert', 'raid-alert', 'tts']);
+const twitchBehaviorKeys: Record<string, string[]> = { alerts: ['enabledEvents', 'messageTemplate', 'duration', 'minimumCheer', 'soundPlaceholder', 'mediaPlaceholder'], 'subscription-alert': ['title'], 'raid-alert': ['title'], tts: ['duration'], 'twitch-chat': ['platforms', 'maxMessages', 'hideBotMessages', 'hideCommands'] };
+const alertKinds = ['follow', 'subscription', 'raid', 'cheer', 'redemption'] as const;
+
+export const DEFAULT_TWITCH_OVERLAY_CONFIG = Object.freeze({
+  alerts: Object.freeze(Object.fromEntries(alertKinds.map((kind) => [kind, Object.freeze({ enabled: kind !== 'cheer' && kind !== 'redemption', duration: kind === 'follow' ? 6 : 8, template: defaultAlertTemplate(kind), soundUrl: '', volume: 0.8 })]))),
+  tts: Object.freeze({ enabled: true, voice: '', volume: 1, rate: 1, pitch: 1, maxLength: 200 }),
+  chat: Object.freeze({ enabled: true, maxMessages: 6, platforms: Object.freeze(['Twitch']), blockedTerms: Object.freeze([]) }),
+});
+
+function defaultAlertTemplate(kind: string) {
+  if (kind === 'follow') return '{user} followed!';
+  if (kind === 'subscription') return '{user} subscribed!';
+  if (kind === 'raid') return '{user} brought {viewers} viewers';
+  if (kind === 'cheer') return '{user} cheered {bits} bits';
+  return '{user} redeemed {reward}';
+}
+
+const clamp = (value: unknown, fallback: number, min: number, max: number) => {
+  const number = Number(value); return Number.isFinite(number) ? Math.min(max, Math.max(min, number)) : fallback;
+};
+const cleanText = (value: unknown, fallback = '', max = 240) => typeof value === 'string' ? value.trim().slice(0, max) : fallback;
+const cleanHttpsUrl = (value: unknown) => { const text = cleanText(value, '', 500); if (!text) return ''; try { const url = new URL(text); return url.protocol === 'https:' && !url.username && !url.password ? url.toString() : ''; } catch { return ''; } };
+
+export function validateTwitchOverlayConfig(value: unknown) {
+  const input = safeObject(value) ? value : {}, inputAlerts = safeObject(input.alerts) ? input.alerts : {};
+  const alerts = Object.fromEntries(alertKinds.map((kind) => {
+    const defaults = (DEFAULT_TWITCH_OVERLAY_CONFIG.alerts as any)[kind], raw = safeObject(inputAlerts[kind]) ? inputAlerts[kind] : {};
+    return [kind, { enabled: raw.enabled === undefined ? defaults.enabled : raw.enabled === true, duration: clamp(raw.duration, defaults.duration, 1, 60), template: cleanText(raw.template, defaults.template), soundUrl: cleanHttpsUrl(raw.soundUrl), volume: clamp(raw.volume, defaults.volume, 0, 1) }];
+  }));
+  const rawTts = safeObject(input.tts) ? input.tts : {}, rawChat = safeObject(input.chat) ? input.chat : {};
+  return {
+    alerts,
+    tts: { enabled: rawTts.enabled !== false, voice: cleanText(rawTts.voice, '', 120), volume: clamp(rawTts.volume, 1, 0, 1), rate: clamp(rawTts.rate, 1, 0.5, 2), pitch: clamp(rawTts.pitch, 1, 0, 2), maxLength: Math.round(clamp(rawTts.maxLength, 200, 1, 500)) },
+    chat: { enabled: rawChat.enabled !== false, maxMessages: Math.round(clamp(rawChat.maxMessages, 6, 1, 50)), platforms: Array.isArray(rawChat.platforms) ? rawChat.platforms.map((item: unknown) => cleanText(item, '', 30)).filter(Boolean).slice(0, 8) : ['Twitch'], blockedTerms: Array.isArray(rawChat.blockedTerms) ? rawChat.blockedTerms.map((item: unknown) => cleanText(item, '', 80).toLowerCase()).filter(Boolean).slice(0, 100) : [] },
+  };
+}
+
+export function twitchOverlayConfigId(brandId: string) { if (!brandId) throw new Error('Brand is required'); return `TWITCH_CONFIG#${brandId}`; }
 
 export function hashOverlayCredential(credential: string) {
   return createHash('sha256').update(credential).digest('hex');
@@ -36,11 +74,12 @@ export function validateSceneSnapshot(value: unknown) {
     if (!safeObject(widget) || !safeObject(widget.frame) || !widget.id || !widget.type) throw new Error('Scene widget is invalid');
     const frame = { x: Number(widget.frame.x), y: Number(widget.frame.y), width: Number(widget.frame.width), height: Number(widget.frame.height), rotation: Number(widget.frame.rotation || 0) };
     if (Object.values(frame).some((number) => !Number.isFinite(number)) || frame.width <= 0 || frame.height <= 0) throw new Error('Scene widget frame is invalid');
+    const settings = safeObject(widget.settings) ? { ...widget.settings } : {}; for (const key of twitchBehaviorKeys[String(widget.type)] || []) delete settings[key];
     return {
       schemaVersion: Number(widget.schemaVersion || 1), id: String(widget.id), type: String(widget.type), name: String(widget.name || widget.type),
       enabled: true, hidden: false, locked: Boolean(widget.locked), frame, zIndex: Number(widget.zIndex || 0),
       displayMode: triggeredWidgetTypes.has(String(widget.type)) || widget.displayMode === 'triggered' ? 'triggered' : 'always',
-      settings: safeObject(widget.settings) ? widget.settings : {}, dataSource: safeObject(widget.dataSource) ? widget.dataSource : {},
+      settings, dataSource: safeObject(widget.dataSource) ? widget.dataSource : {},
       animations: safeObject(widget.animations) ? widget.animations : {},
       ...(widget.themeId ? { themeId: String(widget.themeId) } : {}),
     };

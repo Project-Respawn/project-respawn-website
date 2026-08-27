@@ -22,6 +22,8 @@ test('all required Creator Tools test buttons use the shared server event bounda
 
 test('Browser Source retrieves server configuration and opens one reconnecting scene connection', () => {
   assert.match(source, /fetchOverlaySource\(credential\.value\)/); assert.match(source, /createOverlaySourceConnection/); assert.match(source, /widgetEventBus\.publish/);
+  assert.match(source, /runtimeConfig\.value = source\.twitchConfig/); assert.match(source, /30_000/);
+  assert.match(service, /overlay\/twitch-config/);
   assert.match(service, /Math\.min\(1000 \* \(2 \*\* attempts\), 15000\)/); assert.match(service, /url\.searchParams\.set\('credential', credential\)/);
 });
 

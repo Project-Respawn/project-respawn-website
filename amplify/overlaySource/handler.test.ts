@@ -30,3 +30,11 @@ test('active lookup and test events re-check owner, Workspace, and Brand binding
   assert.match(handler, /async function sendTestEvent/);
   assert.match(handler, /await authorizeActivePublication\(publication, sub\)/);
 });
+
+test('canonical Twitch config is Brand-bound, revisioned separately, and safely merged into public source config', () => {
+  assert.match(handler, /await authorizeBindings\(input, sub\)/);
+  assert.match(handler, /TWITCH_OVERLAY_CONFIG/);
+  assert.match(handler, /revision = if_not_exists\(revision, :zero\) \+ :one/);
+  assert.match(handler, /twitchConfig: configRecord\?\.config/);
+  assert.doesNotMatch(handler, /encryptedTokenBundle|TWITCH_CLIENT_SECRET|authorization.*twitchConfig/i);
+});

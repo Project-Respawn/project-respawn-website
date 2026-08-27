@@ -53,6 +53,15 @@ export function sendOverlayTestEvent(publicationId, event, fetchImpl = fetch) {
   return authenticatedRequest(`overlay/publications/${encodeURIComponent(publicationId)}/events`, { method: 'POST', body: JSON.stringify({ event }) }, fetchImpl);
 }
 
+export function getTwitchOverlayConfig(workspaceId, brandId, fetchImpl = fetch) {
+  const query = new URLSearchParams({ workspaceId, brandId });
+  return authenticatedRequest(`overlay/twitch-config?${query}`, { method: 'GET' }, fetchImpl);
+}
+
+export function updateTwitchOverlayConfig(workspaceId, brandId, config, fetchImpl = fetch) {
+  return authenticatedRequest('overlay/twitch-config', { method: 'PUT', body: JSON.stringify({ workspaceId, brandId, config }) }, fetchImpl);
+}
+
 export function createOverlaySourceConnection({ websocketUrl, credential, WebSocketImpl = WebSocket, onEvent, onReconnect = () => {} }) {
   let socket = null; let stopped = false; let reconnectTimer = null; let attempts = 0;
   const connect = () => {

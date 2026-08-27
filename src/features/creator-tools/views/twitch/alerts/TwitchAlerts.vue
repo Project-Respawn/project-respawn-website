@@ -18,7 +18,7 @@
           </p>
 
           <div class="hero-actions">
-            <button class="primary-btn" type="button">Save Alert Settings</button>
+            <button class="primary-btn" type="button" :disabled="saving" @click="saveCanonicalSettings">{{ saving ? 'Saving…' : 'Save Alert Settings' }}</button>
             <button class="secondary-btn" type="button">Trigger Test Alert</button>
           </div>
         </div>
@@ -244,11 +244,14 @@ import BotSidebar from '@/components/BotSidebar/BotSidebar.vue';
 </script>
 
 <script>
+import { refreshAccessContext } from '@/composables/useAccessContext.js';
+import { getTwitchOverlayConfig, updateTwitchOverlayConfig } from '@/features/creator-tools/services/overlaySource.js';
 export default {
   name: 'TwitchAlerts',
   data() {
     return {
       selectedAlertKey: 'follow',
+      workspaceId: '', brandId: '', canonicalConfig: null, saving: false,
       alertTypes: [
         {
           key: 'follow',
@@ -291,6 +294,10 @@ export default {
           badge: 'Planned',
           badgeClass: 'muted',
           description: 'Reserve support alert behaviour for future payments.'
+        }
+        ,{
+          key: 'redemption', name: 'Redemption Alert', badge: 'Ready', badgeClass: '',
+          description: 'Control channel-point redemption alerts.'
         }
       ],
       alertConfigs: {
@@ -419,16 +426,35 @@ export default {
               rule: 'Placeholder for future payment-linked event support.'
             }
           ]
+        },
+        redemption: {
+          name: 'Redemption Alert', enabled: false, duration: '8s', title: '{user} redeemed {reward}', message: 'A channel-point reward was redeemed.', mediaUrl: '', soundUrl: '', animation: 'pop', volume: 80, variations: []
         }
       }
     };
   },
+  async mounted() { await this.loadCanonicalSettings(); },
   computed: {
     selectedAlert() {
       return this.alertConfigs[this.selectedAlertKey];
     }
   },
   methods: {
+    async loadCanonicalSettings() {
+      const access = await refreshAccessContext(); const requestedBrandId = String(this.$route?.query?.brandId || ''); const brand = access.brands?.find(item => item.brandId === requestedBrandId) || access.brands?.[0], workspace = access.workspaces?.[0];
+      this.brandId = brand?.brandId || ''; this.workspaceId = brand?.workspaceId || workspace?.workspaceId || workspace?.id || '';
+      if (!this.brandId || !this.workspaceId) return;
+      const result = await getTwitchOverlayConfig(this.workspaceId, this.brandId); this.canonicalConfig = result.config;
+      const map = { follow: 'follow', sub: 'subscription', raid: 'raid', bits: 'cheer', redemption: 'redemption' };
+      for (const [local, canonical] of Object.entries(map)) { const value = result.config?.alerts?.[canonical]; if (!value) continue; Object.assign(this.alertConfigs[local], { enabled: value.enabled, duration: `${value.duration}s`, title: value.template, soundUrl: value.soundUrl, volume: Math.round(value.volume * 100) }); }
+    },
+    async saveCanonicalSettings() {
+      if (!this.canonicalConfig) return; this.saving = true;
+      try { const map = { follow: 'follow', sub: 'subscription', raid: 'raid', bits: 'cheer', redemption: 'redemption' }, alerts = { ...this.canonicalConfig.alerts };
+        for (const [local, canonical] of Object.entries(map)) { const value = this.alertConfigs[local]; alerts[canonical] = { ...alerts[canonical], enabled: value.enabled, duration: Number.parseFloat(value.duration) || 6, template: value.title, soundUrl: value.soundUrl, volume: Number(value.volume) / 100 }; }
+        const result = await updateTwitchOverlayConfig(this.workspaceId, this.brandId, { ...this.canonicalConfig, alerts }); this.canonicalConfig = result.config;
+      } finally { this.saving = false; }
+    },
     selectAlert(key) {
       this.selectedAlertKey = key;
     }

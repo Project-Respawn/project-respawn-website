@@ -4,6 +4,7 @@ import {
   activePublicationLockId, assertPublicationOwner, assertWorkspaceBrandOwner, createActivePublicationLock, createConnectionRecord, createPublicationRecord,
   credentialMatches, fanOutOverlayEvent, hashOverlayCredential, publicationIsActive,
   rotatePublicationCredential, updatePublicationRecord, validateOverlayEvent, validateSceneSnapshot,
+  twitchOverlayConfigId, validateTwitchOverlayConfig,
 } from './domain';
 
 const now = new Date('2026-08-26T20:00:00.000Z');
@@ -63,11 +64,26 @@ test('snapshot ignores discarded editor runtime metadata while preserving saniti
   assert.equal(snapshot.widgets.length, 2);
   assert.deepEqual(snapshot.widgets[0].frame, { x: 10, y: 20, width: 400, height: 600, rotation: 0 });
   assert.equal(snapshot.widgets[0].type, 'twitch-chat');
-  assert.deepEqual(snapshot.widgets[0].settings, { maxMessages: 6 });
+  assert.deepEqual(snapshot.widgets[0].settings, {});
   assert.equal(snapshot.widgets[0].displayMode, 'always');
   assert.equal(snapshot.widgets[1].displayMode, 'triggered');
   const findUndefined = (value: any): boolean => value && typeof value === 'object' && Object.values(value).some((child) => child === undefined || findUndefined(child));
   assert.equal(findUndefined(snapshot), false, 'sanitized snapshots must be accepted by DynamoDB document marshalling');
+});
+
+test('Brand Twitch configuration is deterministic, renderer-safe, bounded, and independently addressable', () => {
+  const config = validateTwitchOverlayConfig({ alerts: { raid: { enabled: false, duration: 90, template: '{user} brought {viewers}', volume: 4 } }, tts: { voice: 'UK Voice', rate: 9, pitch: -2, volume: .4, maxLength: 900 }, chat: { maxMessages: 200, platforms: ['Twitch'], blockedTerms: ['Spam'] } });
+  assert.equal(twitchOverlayConfigId('brand-1'), 'TWITCH_CONFIG#brand-1');
+  assert.deepEqual(config.alerts.raid, { enabled: false, duration: 60, template: '{user} brought {viewers}', soundUrl: '', volume: 1 });
+  assert.deepEqual(config.tts, { enabled: true, voice: 'UK Voice', rate: 2, pitch: 0, volume: .4, maxLength: 500 });
+  assert.deepEqual(config.chat, { enabled: true, maxMessages: 50, platforms: ['Twitch'], blockedTerms: ['spam'] });
+  assert.equal(JSON.stringify(config).match(/token|secret|credential|oauth/i), null);
+});
+
+test('future snapshots remove Twitch behaviour while retaining geometry and visual presentation', () => {
+  const snapshot = validateSceneSnapshot({ ...scene, widgets: [{ ...scene.widgets[1], settings: { duration: 12, messageTemplate: '{user}', background: '#123456', animation: 'pop' } }] });
+  assert.deepEqual(snapshot.widgets[0].settings, { background: '#123456', animation: 'pop' });
+  assert.deepEqual(snapshot.widgets[0].frame, { x: 500, y: 30, width: 500, height: 200, rotation: 0 });
 });
 
 test('snapshot still rejects secret-shaped keys in every persisted nested boundary', () => {

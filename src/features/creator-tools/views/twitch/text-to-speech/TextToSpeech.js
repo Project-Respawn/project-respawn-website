@@ -1,9 +1,9 @@
-const STORAGE_KEY = 'tts-settings-v1';
-
 import { getCurrentUser, fetchAuthSession } from 'aws-amplify/auth';
 import { generateClient } from 'aws-amplify/data';
 import BotSidebar from '@/components/BotSidebar/BotSidebar.vue';
 import { refreshAccessContext } from '@/composables/useAccessContext.js';
+import { getTwitchOverlayConfig, updateTwitchOverlayConfig } from '@/features/creator-tools/services/overlaySource.js';
+import { decodeTwitchJson } from '@/features/creator-tools/services/twitchConnection.js';
 
 const twitchDataClient = generateClient();
 
@@ -19,6 +19,8 @@ export default {
       broadcasterName: '',
       lookupUserIds: [],
       selectedBrandId: '',
+      workspaceId: '',
+      canonicalConfig: null,
       integrationId: '',
       secureFoundationEnabled: import.meta.env.VITE_TWITCH_SECURE_INTEGRATION === 'true',
       rewardTitle: 'Text To Speech',
@@ -98,7 +100,6 @@ export default {
       this.$route?.query?.broadcasterId ||
       '';
 
-    this.loadSavedSettings();
     this.loadVoices();
 
     if ('speechSynthesis' in window) {
@@ -106,6 +107,7 @@ export default {
     }
 
     await this.resolveBroadcasterContext();
+    await this.loadSavedSettings();
     this.connectSocket();
   },
 
@@ -190,7 +192,7 @@ export default {
           if (!this.selectedBrandId) throw new Error('No accessible Brand selected');
           const response = await twitchDataClient.queries.getMyTwitchIntegration({ brandId: this.selectedBrandId });
           if (response?.errors?.length) throw new Error(response.errors[0].message || 'Integration lookup failed');
-          const integration = response?.data?.integration || null;
+          const integration = decodeTwitchJson(response?.data?.integration, null);
           if (integration?.twitchBroadcasterId) {
             this.integrationId = integration.id;
             this.broadcasterId = String(integration.twitchBroadcasterId);
@@ -228,11 +230,13 @@ export default {
     },
 
     // ── Persistence ────────────────────────────────────────────────
-    loadSavedSettings() {
+    async loadSavedSettings() {
       try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return;
-        const saved = JSON.parse(raw);
+        const access = await refreshAccessContext(); const brand = access.brands?.find(item => item.brandId === this.selectedBrandId) || access.brands?.[0], workspace = access.workspaces?.[0];
+        this.selectedBrandId = brand?.brandId || this.selectedBrandId; this.workspaceId = brand?.workspaceId || workspace?.workspaceId || workspace?.id || '';
+        if (!this.selectedBrandId || !this.workspaceId) return;
+        const result = await getTwitchOverlayConfig(this.workspaceId, this.selectedBrandId); this.canonicalConfig = result.config;
+        const saved = { selectedVoiceName: result.config?.tts?.voice, ...result.config?.tts };
         if (saved.selectedVoiceName !== undefined) this.selectedVoiceName = saved.selectedVoiceName;
         if (saved.rate !== undefined) this.rate = saved.rate;
         if (saved.pitch !== undefined) this.pitch = saved.pitch;
@@ -244,7 +248,7 @@ export default {
       }
     },
 
-    saveSettings() {
+    async saveSettings() {
       try {
         this.saving = true;
         const payload = {
@@ -255,7 +259,8 @@ export default {
           rewardTitle: this.rewardTitle,
           maxLength: this.maxLength,
         };
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+        const result = await updateTwitchOverlayConfig(this.workspaceId, this.selectedBrandId, { ...this.canonicalConfig, tts: { enabled: true, voice: payload.selectedVoiceName, rate: payload.rate, pitch: payload.pitch, volume: payload.volume, maxLength: payload.maxLength } });
+        this.canonicalConfig = result.config;
         this.settingsChanged = false;
         this.showStatus('Settings saved', 'success');
       } catch (err) {

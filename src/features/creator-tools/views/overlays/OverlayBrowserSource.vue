@@ -1,7 +1,7 @@
 <template>
   <main ref="viewport" class="overlay-browser-source">
     <div v-if="scene" class="overlay-browser-source__stage" :style="stageStyle">
-      <OverlaySceneRenderer :scene="scene" runtime-mode="browser-source" />
+      <OverlaySceneRenderer :scene="scene" :runtime-config="runtimeConfig" runtime-mode="browser-source" />
     </div>
   </main>
 </template>
@@ -16,7 +16,8 @@ import { createPublicationSceneSnapshot } from '../../overlays/overlayPublicatio
 import { createOverlaySourceConnection, fetchOverlaySource } from '../../services/overlaySource.js';
 
 const route = useRoute(); const scene = ref(null); const viewport = ref(null); const viewportSize = ref({ width: 0, height: 0 });
-let connection = null; let resizeObserver = null;
+const runtimeConfig = ref(null);
+let connection = null; let resizeObserver = null; let configRefreshTimer = null;
 const documentClass = 'overlay-browser-source-document';
 const credential = computed(() => String(route.params.credential || ''));
 const stageStyle = computed(() => {
@@ -31,13 +32,15 @@ const stageStyle = computed(() => {
 async function load() {
   const source = await fetchOverlaySource(credential.value);
   scene.value = createPublicationSceneSnapshot(source.scene);
+  runtimeConfig.value = source.twitchConfig || null;
   connection?.close();
   connection = createOverlaySourceConnection({
     websocketUrl: source.websocketUrl, credential: credential.value,
     onEvent: (event) => widgetEventBus.publish(event),
-    onReconnect: async () => { const refreshed = await fetchOverlaySource(credential.value); scene.value = createPublicationSceneSnapshot(refreshed.scene); },
+    onReconnect: async () => { const refreshed = await fetchOverlaySource(credential.value); scene.value = createPublicationSceneSnapshot(refreshed.scene); runtimeConfig.value = refreshed.twitchConfig || null; },
   });
 }
+async function refreshRuntimeConfig() { const source = await fetchOverlaySource(credential.value); runtimeConfig.value = source.twitchConfig || null; }
 onMounted(() => {
   document.documentElement.classList.add(documentClass);
   const updateViewport = () => {
@@ -47,11 +50,13 @@ onMounted(() => {
   resizeObserver = new ResizeObserver(updateViewport);
   if (viewport.value) resizeObserver.observe(viewport.value);
   void load();
+  configRefreshTimer = window.setInterval(() => { void refreshRuntimeConfig().catch(() => undefined); }, 30_000);
 });
 onBeforeUnmount(() => {
   document.documentElement.classList.remove(documentClass);
   resizeObserver?.disconnect();
   connection?.close();
+  window.clearInterval(configRefreshTimer);
 });
 </script>
 

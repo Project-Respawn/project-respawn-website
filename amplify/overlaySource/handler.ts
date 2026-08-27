@@ -2,7 +2,7 @@ import type { APIGatewayProxyHandlerV2, APIGatewayProxyWebsocketHandlerV2 } from
 import { ApiGatewayManagementApiClient, PostToConnectionCommand } from '@aws-sdk/client-apigatewaymanagementapi';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DeleteCommand, DynamoDBDocumentClient, GetCommand, PutCommand, QueryCommand, TransactWriteCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
-import { activePublicationLockId, assertPublicationOwner, assertWorkspaceBrandOwner, createActivePublicationLock, createConnectionRecord, createPublicationRecord, fanOutOverlayEvent, hashOverlayCredential, issueOverlayCredential, publicationIsActive, rotatePublicationCredential, validateOverlayEvent, validateSceneSnapshot } from './domain';
+import { activePublicationLockId, assertPublicationOwner, assertWorkspaceBrandOwner, createActivePublicationLock, createConnectionRecord, createPublicationRecord, DEFAULT_TWITCH_OVERLAY_CONFIG, fanOutOverlayEvent, hashOverlayCredential, issueOverlayCredential, publicationIsActive, rotatePublicationCredential, twitchOverlayConfigId, validateOverlayEvent, validateSceneSnapshot, validateTwitchOverlayConfig } from './domain';
 import { randomUUID } from 'node:crypto';
 
 const db = DynamoDBDocumentClient.from(new DynamoDBClient({}));
@@ -12,6 +12,7 @@ const body = (event: any) => { try { return event.body ? JSON.parse(event.body) 
 const userId = (event: any) => String(event.requestContext?.authorizer?.jwt?.claims?.sub || '');
 
 async function getPublication(publicationId: string) { return (await db.send(new GetCommand({ TableName: env('PUBLICATION_TABLE'), Key: { publicationId } }))).Item; }
+async function getTwitchConfigRecord(brandId: string) { return (await db.send(new GetCommand({ TableName: env('PUBLICATION_TABLE'), Key: { publicationId: twitchOverlayConfigId(brandId) }, ConsistentRead: true }))).Item; }
 async function publicationForCredential(credential: string) {
   if (!credential) return null;
   const result = await db.send(new QueryCommand({ TableName: env('PUBLICATION_TABLE'), IndexName: 'credentialHash-index', KeyConditionExpression: 'credentialHash = :hash', ExpressionAttributeValues: { ':hash': hashOverlayCredential(credential) }, Limit: 1 }));
@@ -112,7 +113,21 @@ async function rotateCredential(event: any, publicationId: string) {
 
 async function sourceConfig(credential: string) {
   const publication = await publicationForCredential(credential); if (!publication || !publicationIsActive(publication)) return json(403, { error: 'Overlay source credential is invalid or expired' });
-  return json(200, { revision: publication.revision, status: publication.status, scene: publication.sceneSnapshot, websocketUrl: env('WEBSOCKET_URL') });
+  const configRecord = await getTwitchConfigRecord(publication.brandId);
+  return json(200, { revision: publication.revision, status: publication.status, scene: publication.sceneSnapshot, twitchConfig: configRecord?.config || DEFAULT_TWITCH_OVERLAY_CONFIG, twitchConfigRevision: Number(configRecord?.revision || 1), websocketUrl: env('WEBSOCKET_URL') });
+}
+
+async function managedTwitchConfig(event: any, method: string) {
+  const input = method === 'GET' ? (event.queryStringParameters || {}) : body(event), sub = userId(event);
+  await authorizeBindings(input, sub); const existing = await getTwitchConfigRecord(String(input.brandId));
+  if (method === 'GET') return json(200, { config: existing?.config || DEFAULT_TWITCH_OVERLAY_CONFIG, revision: Number(existing?.revision || 1) });
+  const config = validateTwitchOverlayConfig(input.config), now = new Date().toISOString(), tableName = env('PUBLICATION_TABLE');
+  const result = await db.send(new UpdateCommand({
+    TableName: tableName, Key: { publicationId: twitchOverlayConfigId(String(input.brandId)) },
+    UpdateExpression: 'SET entityType = :type, workspaceId = :workspaceId, brandId = :brandId, ownerUserId = :owner, config = :config, revision = if_not_exists(revision, :zero) + :one, updatedAt = :now, createdAt = if_not_exists(createdAt, :now)',
+    ExpressionAttributeValues: { ':type': 'TWITCH_OVERLAY_CONFIG', ':workspaceId': String(input.workspaceId), ':brandId': String(input.brandId), ':owner': sub, ':config': config, ':zero': 0, ':one': 1, ':now': now }, ReturnValues: 'ALL_NEW',
+  }));
+  return json(200, { config: result.Attributes?.config, revision: Number(result.Attributes?.revision || 1) });
 }
 
 async function sendTestEvent(event: any, publicationId: string) {
@@ -141,6 +156,7 @@ export const handler: APIGatewayProxyHandlerV2 & APIGatewayProxyWebsocketHandler
     if (event.requestContext?.connectionId) return await websocket(event);
     const method = event.requestContext?.http?.method, path = String(event.rawPath || '');
     if (method === 'GET' && path.startsWith('/overlay/source/')) return await sourceConfig(decodeURIComponent(path.slice('/overlay/source/'.length)));
+    if (path === '/overlay/twitch-config' && (method === 'GET' || method === 'PUT')) return await managedTwitchConfig(event, method);
     if (method === 'GET' && path === '/overlay/publications/active') return await activePublication(event);
     if (method === 'POST' && path === '/overlay/publications') return await createPublication(event);
     const match = path.match(/^\/overlay\/publications\/([^/]+)(?:\/(events|rotate))?$/); if (!match) return json(404, { error: 'Route not found' });

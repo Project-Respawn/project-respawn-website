@@ -16,6 +16,7 @@
         class="widget-renderer"
         :widget="widget"
         :runtime-mode="runtimeMode"
+        :runtime-config="runtimeConfig"
       />
     </div>
   </div>
@@ -32,6 +33,7 @@ import { widgetDisplayMode } from '../../overlays/overlayPublicationSnapshot.js'
 const props = defineProps({
   scene: { type: Object, required: true },
   runtimeMode: { type: String, default: 'editor-preview' },
+  runtimeConfig: { type: Object, default: null },
 });
 const triggerVisibility = reactive({});
 const triggerGeneration = reactive({});
@@ -48,19 +50,27 @@ function configureTriggers() {
   disposeTriggers = [];
   for (const widget of props.scene.widgets || []) {
     if (widgetDisplayMode(widget) !== 'triggered') continue;
+    const settings = runtimeSettings(widget);
     triggerVisibility[widget.id] = false;
     disposeTriggers.push(createTriggeredWidgetSubscription(widget, {
       bus: widgetEventBus,
       onVisibility: (visible) => { triggerVisibility[widget.id] = visible; },
       onExpired: () => { triggerGeneration[widget.id] = (triggerGeneration[widget.id] || 0) + 1; },
+      runtimeSettings: settings,
     }));
   }
+}
+function runtimeSettings(widget) {
+  if (widget.type === 'tts') return props.runtimeConfig?.tts || null;
+  if (widget.type === 'alerts') return (event) => props.runtimeConfig?.alerts?.[({ 'stream.follow': 'follow', 'stream.subscription': 'subscription', 'stream.raid': 'raid', 'stream.cheer': 'cheer', 'reward.redeemed': 'redemption' }[event?.topic])] || null;
+  const kind = widget.type === 'subscription-alert' ? 'subscription' : widget.type === 'raid-alert' ? 'raid' : null;
+  return kind ? props.runtimeConfig?.alerts?.[kind] || null : null;
 }
 function widgetIsVisible(widget) {
   return widget.enabled && !widget.hidden
     && (widgetDisplayMode(widget) !== 'triggered' || triggerVisibility[widget.id] === true);
 }
-watch(() => props.scene.widgets, configureTriggers, { immediate: true, deep: true });
+watch(() => [props.scene.widgets, props.runtimeConfig], configureTriggers, { immediate: true, deep: true });
 onBeforeUnmount(() => disposeTriggers.forEach((dispose) => dispose()));
 function frameStyle(widget) {
   return {
