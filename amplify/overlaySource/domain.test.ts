@@ -19,6 +19,14 @@ test('publication creation persists a complete scene snapshot and only a credent
   assert.equal(credentialMatches(record, 'opaque-secret'), true); assert.equal(credentialMatches(record, 'wrong'), false);
 });
 
+test('sanitization forces event-driven widgets to neutral triggered mode', () => {
+  const snapshot = validateSceneSnapshot({ ...scene, widgets: [
+    { ...scene.widgets[1], displayMode: 'always' },
+    { ...scene.widgets[1], id: 'tts', type: 'tts', displayMode: 'always' },
+  ] });
+  assert.deepEqual(snapshot.widgets.map((widget) => widget.displayMode), ['triggered', 'triggered']);
+});
+
 test('publication update replaces snapshot and increments revision', () => {
   const record = createPublicationRecord({ workspaceId: 'workspace-1', brandId: 'brand-1', sceneId: 'scene-1', sceneSnapshot: scene }, 'owner-1', 'hash', now, 'publication-1');
   const updated = updatePublicationRecord(record, 'scene-2', { ...scene, id: 'scene-2', widgets: scene.widgets.slice(0, 1) }, new Date(now.getTime() + 1000));

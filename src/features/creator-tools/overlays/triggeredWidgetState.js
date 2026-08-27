@@ -10,6 +10,7 @@ export function triggerDurationMs(widget) {
 export function createTriggeredWidgetSubscription(widget, {
   bus,
   onVisibility,
+  onExpired = () => {},
   setTimer = setTimeout,
   clearTimer = clearTimeout,
 }) {
@@ -21,6 +22,7 @@ export function createTriggeredWidgetSubscription(widget, {
     timer = setTimer(() => {
       timer = null;
       onVisibility(false);
+      onExpired();
     }, triggerDurationMs(widget));
   };
   const unsubscribers = topics.map((topic) => bus.subscribe(topic, show));

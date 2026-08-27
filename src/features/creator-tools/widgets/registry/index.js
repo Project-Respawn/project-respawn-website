@@ -38,7 +38,7 @@ export function createWidget(type, overlay, position = {}) {
   const now = new Date().toISOString()
   const maxZ = Math.max(0, ...(overlay?.widgets || []).map(item => item.zIndex || 0))
   return {
-    schemaVersion: 1, id: createId('widget'), type, name: definition.displayName, enabled: true, locked: false,
+    schemaVersion: 1, id: createId('widget'), type, name: definition.displayName, enabled: true, hidden: false, locked: false, displayMode: definition.displayMode,
     frame: { x: position.x ?? 80, y: position.y ?? 80, width: definition.defaultSize.width, height: definition.defaultSize.height, rotation: 0 },
     zIndex: maxZ + 1, settings: cloneSerializableData(definition.defaultSettings),
     dataSource: { provider: definition.category === 'Project Respawn' ? 'respawn-demo' : type === 'twitch-chat' || ['alerts', 'tts'].includes(type) ? 'twitch-demo' : 'local-demo', topics: [...definition.topics] },

@@ -10,7 +10,13 @@
       :data-widget-type="widget.type"
       :style="frameStyle(widget)"
     >
-      <component :is="registry[widget.type].component" class="widget-renderer" :widget="widget" :runtime-mode="runtimeMode" />
+      <component
+        :is="registry[widget.type].component"
+        :key="`${widget.id}:${triggerGeneration[widget.id] || 0}`"
+        class="widget-renderer"
+        :widget="widget"
+        :runtime-mode="runtimeMode"
+      />
     </div>
   </div>
 </template>
@@ -28,6 +34,7 @@ const props = defineProps({
   runtimeMode: { type: String, default: 'editor-preview' },
 });
 const triggerVisibility = reactive({});
+const triggerGeneration = reactive({});
 let disposeTriggers = [];
 const orderedWidgets = computed(() => (props.scene.widgets || [])
   .filter((widget) => registry[widget.type])
@@ -45,6 +52,7 @@ function configureTriggers() {
     disposeTriggers.push(createTriggeredWidgetSubscription(widget, {
       bus: widgetEventBus,
       onVisibility: (visible) => { triggerVisibility[widget.id] = visible; },
+      onExpired: () => { triggerGeneration[widget.id] = (triggerGeneration[widget.id] || 0) + 1; },
     }));
   }
 }

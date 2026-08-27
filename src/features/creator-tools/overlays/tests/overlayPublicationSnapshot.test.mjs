@@ -9,7 +9,7 @@ test('publication materializes computed alert display modes without mutating edi
     { id: 'chat', type: 'twitch-chat' },
   ] };
   const snapshot = createPublicationSceneSnapshot(scene);
-  assert.deepEqual(snapshot.widgets.map((widget) => widget.displayMode), ['triggered', 'always', 'always']);
+  assert.deepEqual(snapshot.widgets.map((widget) => widget.displayMode), ['triggered', 'triggered', 'always']);
   assert.deepEqual(snapshot.widgets[0].dataSource.topics, ['stream.follow', 'stream.subscription', 'stream.cheer', 'stream.raid', 'reward.redeemed']);
   assert.deepEqual(snapshot.widgets[2].dataSource.topics, ['chat.message']);
   assert.equal(scene.widgets[0].displayMode, undefined);
@@ -24,4 +24,10 @@ test('renderer derives the same triggered default for legacy alert snapshots', (
   assert.equal(widgetDisplayMode({ type: 'subscription-alert' }), 'triggered');
   assert.equal(widgetDisplayMode({ type: 'tts' }), 'triggered');
   assert.equal(widgetDisplayMode({ type: 'twitch-chat' }), 'always');
+});
+
+test('event-driven widgets cannot publish unsafe always-visible demo state', () => {
+  for (const type of ['alerts', 'subscription-alert', 'raid-alert', 'tts']) {
+    assert.equal(widgetDisplayMode({ type, displayMode: 'always' }), 'triggered');
+  }
 });

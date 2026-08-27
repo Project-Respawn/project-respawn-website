@@ -6,14 +6,16 @@ import { createTriggeredWidgetSubscription } from '../triggeredWidgetState.js';
 function harness(topics) {
   const bus = createWidgetEventBus();
   const visibility = [];
+  let expired = 0;
   let timeout = null;
   const dispose = createTriggeredWidgetSubscription({ dataSource: { topics }, settings: { duration: 2 } }, {
     bus,
     onVisibility: (visible) => visibility.push(visible),
+    onExpired: () => { expired += 1; },
     setTimer: (handler, delay) => { timeout = { handler, delay }; return 1; },
     clearTimer: () => { timeout = null; },
   });
-  return { bus, visibility, dispose, getTimeout: () => timeout };
+  return { bus, visibility, dispose, getTimeout: () => timeout, getExpired: () => expired };
 }
 
 for (const topic of ['stream.follow', 'stream.subscription', 'stream.raid']) {
@@ -24,6 +26,7 @@ for (const topic of ['stream.follow', 'stream.subscription', 'stream.raid']) {
     assert.equal(state.getTimeout().delay, 2000);
     state.getTimeout().handler();
     assert.deepEqual(state.visibility, [true, false]);
+    assert.equal(state.getExpired(), 1);
     state.dispose();
   });
 }

@@ -10,8 +10,9 @@ const canonicalTopicsByType = Object.freeze({
 });
 
 export function widgetDisplayMode(widget) {
+  if (triggeredWidgetTypes.has(widget?.type)) return 'triggered';
   if (widget?.displayMode === 'triggered' || widget?.displayMode === 'always') return widget.displayMode;
-  return triggeredWidgetTypes.has(widget?.type) ? 'triggered' : 'always';
+  return 'always';
 }
 
 export function createPublicationSceneSnapshot(scene) {
