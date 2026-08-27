@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { refreshAccessContext } from '@/composables/useAccessContext.js'
 import { createTestOverlayEvent } from '../../../overlays/overlayEventContract.js'
+import { createPublicationSceneSnapshot } from '../../../overlays/overlayPublicationSnapshot.js'
 import { createOverlayPublication, getActiveOverlayPublication, revokeOverlayPublication, rotateOverlayPublicationCredential, sendOverlayTestEvent, updateOverlayPublication } from '../../../services/overlaySource.js'
 
 export function useBrowserSources({ notice, previewMode, project, scene }) {
@@ -26,12 +27,12 @@ export function useBrowserSources({ notice, previewMode, project, scene }) {
     sourceBusy.value = true; sourceError.value = ''
     try {
       const { workspaceId, brandId } = bindings || await resolveBindings()
-      const result = await createOverlayPublication({ workspaceId, brandId, overlayId: project.id || '', sceneId: scene.value.id, sceneSnapshot: scene.value })
+      const result = await createOverlayPublication({ workspaceId, brandId, overlayId: project.id || '', sceneId: scene.value.id, sceneSnapshot: createPublicationSceneSnapshot(scene.value) })
       applyPublication(result); sourceUrl.value = result.browserSourceUrl || ''
       notice.value = result.created === false ? 'This Brand already has an active Browser Source · Rotate only if its URL was lost' : 'TEST Browser Source created · Copy the URL into OBS'
     } catch (error) { sourceError.value = error?.message || 'Could not create TEST Browser Source'; notice.value = sourceError.value } finally { sourceBusy.value = false }
   }
-  async function updateTestSource() { sourceBusy.value = true; sourceError.value = ''; try { if (!publicationId.value) throw new Error('Create a TEST Browser Source first'); const result = await updateOverlayPublication(publicationId.value, scene.value.id, scene.value); applyPublication(result); notice.value = `TEST Browser Source updated to revision ${result.revision} · Refresh the source`; } catch (error) { sourceError.value = error?.message || 'Could not update TEST Browser Source'; notice.value = sourceError.value } finally { sourceBusy.value = false } }
+  async function updateTestSource() { sourceBusy.value = true; sourceError.value = ''; try { if (!publicationId.value) throw new Error('Create a TEST Browser Source first'); const result = await updateOverlayPublication(publicationId.value, scene.value.id, createPublicationSceneSnapshot(scene.value)); applyPublication(result); notice.value = `TEST Browser Source updated to revision ${result.revision} · Refresh the source`; } catch (error) { sourceError.value = error?.message || 'Could not update TEST Browser Source'; notice.value = sourceError.value } finally { sourceBusy.value = false } }
   async function replaceActiveScene() { await updateTestSource(); notice.value = sourceError.value || `Active Browser Source scene replaced with ${scene.value.name}` }
   async function copySourceUrl() { if (!sourceUrl.value) return; await navigator.clipboard?.writeText(sourceUrl.value); notice.value = 'Browser Source URL copied' }
   function openSourceUrl() { if (sourceUrl.value) window.open(sourceUrl.value, '_blank', 'noopener,noreferrer') }

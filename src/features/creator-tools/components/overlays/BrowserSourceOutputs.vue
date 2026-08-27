@@ -22,7 +22,14 @@
     </article>
     <p v-if="publicationId && !sourceUrl">The active URL is intentionally hidden after issuance. Rotate only if the original URL was lost or exposed.</p>
     <p v-if="error" role="alert">{{ error }}</p>
-    <p>One stable URL renders the Brand's active scene. OBS width: {{ resolution.width }}, height: {{ resolution.height }}. Custom CSS: none.</p>
+    <p>One stable URL renders the Brand's active scene. <strong>Scene resolution: {{ resolution.width }} × {{ resolution.height }}</strong> — use these exact Width and Height values in OBS.</p>
+    <p>Save stores the editor draft in this browser. Update Source (or Replace Active Scene) publishes it to this stable OBS URL.</p>
+    <ul class="browser-source-settings">
+      <li>FPS: 30</li>
+      <li>Custom CSS: none</li>
+      <li>Shutdown source when not visible: recommended</li>
+      <li>Refresh browser when scene becomes active: recommended, so the latest published revision is fetched</li>
+    </ul>
   </section>
 </template>
 

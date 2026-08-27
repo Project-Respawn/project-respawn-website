@@ -2,9 +2,10 @@
   <div class="overlay-scene-renderer" :style="sceneStyle" data-overlay-source-renderer>
     <div
       v-for="widget in orderedWidgets"
-      v-show="widget.enabled && !widget.hidden"
+      v-show="widgetIsVisible(widget)"
       :key="widget.id"
       class="overlay-source-widget"
+      :class="{ 'overlay-source-widget--triggered': widgetDisplayMode(widget) === 'triggered' && triggerVisibility[widget.id] }"
       :data-instance-id="widget.id"
       :data-widget-type="widget.type"
       :style="frameStyle(widget)"
@@ -15,11 +16,16 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, onBeforeUnmount, reactive, watch } from 'vue';
 import { widgetRegistry as registry } from '../../widgets/registry/index.js';
 import { themeVariables } from '../../overlays/overlayThemes.js';
+import { widgetEventBus } from '../../overlays/widgetEventBus.js';
+import { createTriggeredWidgetSubscription } from '../../overlays/triggeredWidgetState.js';
+import { widgetDisplayMode } from '../../overlays/overlayPublicationSnapshot.js';
 
 const props = defineProps({ scene: { type: Object, required: true } });
+const triggerVisibility = reactive({});
+let disposeTriggers = [];
 const orderedWidgets = computed(() => (props.scene.widgets || [])
   .filter((widget) => registry[widget.type])
   .sort((left, right) => Number(left.zIndex || 0) - Number(right.zIndex || 0)));
@@ -27,6 +33,24 @@ const sceneStyle = computed(() => ({
   width: `${props.scene.resolution.width}px`,
   height: `${props.scene.resolution.height}px`,
 }));
+function configureTriggers() {
+  disposeTriggers.forEach((dispose) => dispose());
+  disposeTriggers = [];
+  for (const widget of props.scene.widgets || []) {
+    if (widgetDisplayMode(widget) !== 'triggered') continue;
+    triggerVisibility[widget.id] = false;
+    disposeTriggers.push(createTriggeredWidgetSubscription(widget, {
+      bus: widgetEventBus,
+      onVisibility: (visible) => { triggerVisibility[widget.id] = visible; },
+    }));
+  }
+}
+function widgetIsVisible(widget) {
+  return widget.enabled && !widget.hidden
+    && (widgetDisplayMode(widget) !== 'triggered' || triggerVisibility[widget.id] === true);
+}
+watch(() => props.scene.widgets, configureTriggers, { immediate: true, deep: true });
+onBeforeUnmount(() => disposeTriggers.forEach((dispose) => dispose()));
 function frameStyle(widget) {
   return {
     left: `${widget.frame.x}px`, top: `${widget.frame.y}px`,
@@ -40,5 +64,10 @@ function frameStyle(widget) {
 <style scoped>
 .overlay-scene-renderer { position: relative; overflow: hidden; background: transparent; }
 .overlay-source-widget { position: absolute; overflow: hidden; pointer-events: none; }
+.overlay-source-widget--triggered { animation: overlay-source-trigger-in 240ms ease-out both; }
 .widget-renderer { width: 100%; height: 100%; }
+@keyframes overlay-source-trigger-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
 </style>

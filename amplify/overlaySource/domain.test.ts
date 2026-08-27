@@ -9,7 +9,7 @@ import {
 const now = new Date('2026-08-26T20:00:00.000Z');
 const scene = { id: 'scene-1', name: 'Main Gameplay', resolution: { width: 1920, height: 1080 }, themeId: 'respawn-dark', widgets: [
   { id: 'chat', type: 'twitch-chat', enabled: true, frame: { x: 10, y: 20, width: 400, height: 600 }, zIndex: 2, settings: { maxMessages: 6 }, dataSource: { topics: ['chat.message'] } },
-  { id: 'alert', type: 'alerts', enabled: true, frame: { x: 500, y: 30, width: 500, height: 200 }, zIndex: 3, settings: {}, dataSource: { topics: ['stream.follow'] } },
+  { id: 'alert', type: 'alerts', enabled: true, displayMode: 'triggered', frame: { x: 500, y: 30, width: 500, height: 200 }, zIndex: 3, settings: {}, dataSource: { topics: ['stream.follow'] } },
 ] };
 
 test('publication creation persists a complete scene snapshot and only a credential hash', () => {
@@ -56,6 +56,8 @@ test('snapshot ignores discarded editor runtime metadata while preserving saniti
   assert.deepEqual(snapshot.widgets[0].frame, { x: 10, y: 20, width: 400, height: 600, rotation: 0 });
   assert.equal(snapshot.widgets[0].type, 'twitch-chat');
   assert.deepEqual(snapshot.widgets[0].settings, { maxMessages: 6 });
+  assert.equal(snapshot.widgets[0].displayMode, 'always');
+  assert.equal(snapshot.widgets[1].displayMode, 'triggered');
   const findUndefined = (value: any): boolean => value && typeof value === 'object' && Object.values(value).some((child) => child === undefined || findUndefined(child));
   assert.equal(findUndefined(snapshot), false, 'sanitized snapshots must be accepted by DynamoDB document marshalling');
 });

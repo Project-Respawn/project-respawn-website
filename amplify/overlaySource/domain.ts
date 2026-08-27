@@ -38,6 +38,7 @@ export function validateSceneSnapshot(value: unknown) {
     return {
       schemaVersion: Number(widget.schemaVersion || 1), id: String(widget.id), type: String(widget.type), name: String(widget.name || widget.type),
       enabled: true, hidden: false, locked: Boolean(widget.locked), frame, zIndex: Number(widget.zIndex || 0),
+      displayMode: widget.displayMode === 'triggered' ? 'triggered' : 'always',
       settings: safeObject(widget.settings) ? widget.settings : {}, dataSource: safeObject(widget.dataSource) ? widget.dataSource : {},
       animations: safeObject(widget.animations) ? widget.animations : {},
       ...(widget.themeId ? { themeId: String(widget.themeId) } : {}),

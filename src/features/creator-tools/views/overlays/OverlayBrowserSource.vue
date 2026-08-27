@@ -1,6 +1,8 @@
 <template>
-  <main class="overlay-browser-source" :style="viewportStyle">
-    <OverlaySceneRenderer v-if="scene" :scene="scene" />
+  <main ref="viewport" class="overlay-browser-source">
+    <div v-if="scene" class="overlay-browser-source__stage" :style="stageStyle">
+      <OverlaySceneRenderer :scene="scene" />
+    </div>
   </main>
 </template>
 
@@ -9,28 +11,46 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import OverlaySceneRenderer from '../../components/overlays/OverlaySceneRenderer.vue';
 import { widgetEventBus } from '../../overlays/widgetEventBus.js';
+import { calculateOverlayStage } from '../../overlays/overlayStage.js';
+import { createPublicationSceneSnapshot } from '../../overlays/overlayPublicationSnapshot.js';
 import { createOverlaySourceConnection, fetchOverlaySource } from '../../services/overlaySource.js';
 
-const route = useRoute(); const scene = ref(null); let connection = null;
+const route = useRoute(); const scene = ref(null); const viewport = ref(null); const viewportSize = ref({ width: 0, height: 0 });
+let connection = null; let resizeObserver = null;
 const documentClass = 'overlay-browser-source-document';
 const credential = computed(() => String(route.params.credential || ''));
-const viewportStyle = computed(() => scene.value ? { width: `${scene.value.resolution.width}px`, height: `${scene.value.resolution.height}px` } : {});
+const stageStyle = computed(() => {
+  if (!scene.value) return {};
+  const { width, height } = scene.value.resolution;
+  const stage = calculateOverlayStage(width, height, viewportSize.value.width, viewportSize.value.height);
+  return {
+    width: `${width}px`, height: `${height}px`,
+    transform: `translate(${stage.x}px, ${stage.y}px) scale(${stage.scale})`,
+  };
+});
 async function load() {
   const source = await fetchOverlaySource(credential.value);
-  scene.value = source.scene;
+  scene.value = createPublicationSceneSnapshot(source.scene);
   connection?.close();
   connection = createOverlaySourceConnection({
     websocketUrl: source.websocketUrl, credential: credential.value,
     onEvent: (event) => widgetEventBus.publish(event),
-    onReconnect: async () => { const refreshed = await fetchOverlaySource(credential.value); scene.value = refreshed.scene; },
+    onReconnect: async () => { const refreshed = await fetchOverlaySource(credential.value); scene.value = createPublicationSceneSnapshot(refreshed.scene); },
   });
 }
 onMounted(() => {
   document.documentElement.classList.add(documentClass);
+  const updateViewport = () => {
+    viewportSize.value = { width: viewport.value?.clientWidth || window.innerWidth, height: viewport.value?.clientHeight || window.innerHeight };
+  };
+  updateViewport();
+  resizeObserver = new ResizeObserver(updateViewport);
+  if (viewport.value) resizeObserver.observe(viewport.value);
   void load();
 });
 onBeforeUnmount(() => {
   document.documentElement.classList.remove(documentClass);
+  resizeObserver?.disconnect();
   connection?.close();
 });
 </script>
@@ -45,5 +65,6 @@ html.overlay-browser-source-document #app {
   overflow: hidden;
   background: transparent !important;
 }
-.overlay-browser-source { position: relative; overflow: hidden; background: transparent; }
+.overlay-browser-source { position: relative; width: 100vw; height: 100vh; overflow: hidden; background: transparent; }
+.overlay-browser-source__stage { position: absolute; left: 0; top: 0; transform-origin: top left; }
 </style>

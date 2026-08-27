@@ -15,3 +15,9 @@ test('browser renderer is transparent and contains no editor chrome', () => {
   assert.doesNotMatch(source, /resize-handle|selection|selectedId|pointerdown|dragging/);
   assert.match(source, /pointer-events: none/);
 });
+
+test('browser renderer scopes triggered visibility to canonical widget topics', () => {
+  assert.match(source, /widgetDisplayMode\(widget\) !== 'triggered'/);
+  assert.match(source, /createTriggeredWidgetSubscription/);
+  assert.match(source, /overlay-source-trigger-in/);
+});
