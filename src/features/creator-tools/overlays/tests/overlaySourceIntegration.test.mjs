@@ -9,9 +9,10 @@ const source = await readFile(new URL('../../views/overlays/OverlayBrowserSource
 const service = await readFile(new URL('../../services/overlaySource.js', import.meta.url), 'utf8');
 
 test('Overlay Builder exposes one scene publication lifecycle and no per-widget URLs', () => {
-  for (const action of ['createTestSource','updateTestSource','copySourceUrl','openSourceUrl','rotateSourceUrl','revokeTestSource']) assert.match(editor, new RegExp(action));
-  assert.match(outputs, /One URL renders every enabled widget/); assert.doesNotMatch(outputs, /Universal Source|Scene URLs/);
-  assert.match(outputs, /Rotate URL/); assert.match(service, /overlay\/publications\/\$\{encodeURIComponent\(publicationId\)\}\/rotate/);
+  for (const action of ['refreshSourceState','createTestSource','updateTestSource','replaceActiveScene','copySourceUrl','openSourceUrl','rotateSourceUrl','revokeTestSource']) assert.match(editor, new RegExp(action));
+  assert.match(outputs, /One stable URL renders the Brand's active scene/); assert.doesNotMatch(outputs, /Universal Source|Scene URLs/);
+  assert.match(outputs, /Replace Active Scene/); assert.match(outputs, /Rotate \/ Reissue URL/);
+  assert.match(service, /overlay\/publications\/active/); assert.match(service, /overlay\/publications\/\$\{encodeURIComponent\(publicationId\)\}\/rotate/);
 });
 
 test('all required Creator Tools test buttons use the shared server event boundary', () => {

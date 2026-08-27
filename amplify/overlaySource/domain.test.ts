@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { marshall } from '@aws-sdk/util-dynamodb';
 import {
-  assertPublicationOwner, assertWorkspaceBrandOwner, createConnectionRecord, createPublicationRecord,
+  activePublicationLockId, assertPublicationOwner, assertWorkspaceBrandOwner, createActivePublicationLock, createConnectionRecord, createPublicationRecord,
   credentialMatches, fanOutOverlayEvent, hashOverlayCredential, publicationIsActive,
   rotatePublicationCredential, updatePublicationRecord, validateOverlayEvent, validateSceneSnapshot,
 } from './domain';
@@ -21,8 +22,17 @@ test('publication creation persists a complete scene snapshot and only a credent
 
 test('publication update replaces snapshot and increments revision', () => {
   const record = createPublicationRecord({ workspaceId: 'workspace-1', brandId: 'brand-1', sceneId: 'scene-1', sceneSnapshot: scene }, 'owner-1', 'hash', now, 'publication-1');
-  const updated = updatePublicationRecord(record, { ...scene, widgets: scene.widgets.slice(0, 1) }, new Date(now.getTime() + 1000));
+  const updated = updatePublicationRecord(record, 'scene-2', { ...scene, id: 'scene-2', widgets: scene.widgets.slice(0, 1) }, new Date(now.getTime() + 1000));
   assert.equal(updated.revision, 2); assert.equal(updated.sceneSnapshot.widgets.length, 1); assert.equal(updated.publicationId, record.publicationId);
+  assert.equal(updated.sceneId, 'scene-2'); assert.equal(updated.credentialHash, record.credentialHash);
+});
+
+test('one deterministic active lock represents a Brand without changing its opaque publication ID', () => {
+  const record = createPublicationRecord({ workspaceId: 'workspace-1', brandId: 'brand-1', sceneId: 'scene-1', sceneSnapshot: scene }, 'owner-1', 'hash', now, 'random-publication');
+  const lock = createActivePublicationLock(record);
+  assert.equal(activePublicationLockId('brand-1'), 'BRAND_ACTIVE#brand-1');
+  assert.equal(lock.publicationId, 'BRAND_ACTIVE#brand-1'); assert.equal(lock.activePublicationId, 'random-publication');
+  assert.equal(lock.workspaceId, record.workspaceId); assert.equal(lock.ownerUserId, record.ownerUserId);
 });
 
 test('credential rotation changes the hash, accepts only the new credential, and never persists plaintext', () => {
@@ -47,6 +57,9 @@ test('snapshot ignores discarded editor runtime metadata while preserving saniti
   assert.deepEqual(snapshot.widgets[0].frame, { x: 10, y: 20, width: 400, height: 600, rotation: 0 });
   assert.equal(snapshot.widgets[0].type, 'twitch-chat');
   assert.deepEqual(snapshot.widgets[0].settings, { maxMessages: 6 });
+  const findUndefined = (value: any): boolean => value && typeof value === 'object' && Object.values(value).some((child) => child === undefined || findUndefined(child));
+  assert.equal(findUndefined(snapshot), false, 'sanitized snapshots must be accepted by DynamoDB document marshalling');
+  assert.doesNotThrow(() => marshall(snapshot));
 });
 
 test('snapshot still rejects secret-shaped keys in every persisted nested boundary', () => {

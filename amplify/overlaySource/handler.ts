@@ -1,8 +1,8 @@
 import type { APIGatewayProxyHandlerV2, APIGatewayProxyWebsocketHandlerV2 } from 'aws-lambda';
 import { ApiGatewayManagementApiClient, PostToConnectionCommand } from '@aws-sdk/client-apigatewaymanagementapi';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { DeleteCommand, DynamoDBDocumentClient, GetCommand, PutCommand, QueryCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
-import { assertPublicationOwner, assertWorkspaceBrandOwner, createConnectionRecord, createPublicationRecord, fanOutOverlayEvent, hashOverlayCredential, issueOverlayCredential, publicationIsActive, rotatePublicationCredential, validateOverlayEvent, validateSceneSnapshot } from './domain';
+import { DeleteCommand, DynamoDBDocumentClient, GetCommand, PutCommand, QueryCommand, TransactWriteCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
+import { activePublicationLockId, assertPublicationOwner, assertWorkspaceBrandOwner, createActivePublicationLock, createConnectionRecord, createPublicationRecord, fanOutOverlayEvent, hashOverlayCredential, issueOverlayCredential, publicationIsActive, rotatePublicationCredential, validateOverlayEvent, validateSceneSnapshot } from './domain';
 import { randomUUID } from 'node:crypto';
 
 const db = DynamoDBDocumentClient.from(new DynamoDBClient({}));
@@ -30,26 +30,74 @@ async function createPublication(event: any) {
   const input = body(event), sub = userId(event); await authorizeBindings(input, sub);
   const issued = issueOverlayCredential();
   const publication = createPublicationRecord(input, sub, issued.credentialHash, new Date(), randomUUID());
-  await db.send(new PutCommand({ TableName: env('PUBLICATION_TABLE'), Item: publication, ConditionExpression: 'attribute_not_exists(publicationId)' }));
-  return json(201, { publicationId: publication.publicationId, revision: 1, status: 'TEST', credential: issued.credential, browserSourceUrl: `${env('FRONTEND_ORIGIN')}/overlay-source/${encodeURIComponent(issued.credential)}`, expiresAt: publication.expiresAt });
+  const lock = createActivePublicationLock(publication), tableName = env('PUBLICATION_TABLE');
+  try {
+    await db.send(new TransactWriteCommand({ TransactItems: [
+      { Put: { TableName: tableName, Item: publication, ConditionExpression: 'attribute_not_exists(publicationId)' } },
+      { Put: { TableName: tableName, Item: lock, ConditionExpression: 'attribute_not_exists(publicationId)' } },
+    ] }));
+    return json(201, publicationResponse(publication, { credential: issued.credential, created: true }));
+  } catch (error: any) {
+    if (error?.name !== 'TransactionCanceledException') throw error;
+    const existing = await getActivePublication(input.brandId);
+    assertPublicationOwner(existing, sub); await authorizeBindings(existing, sub);
+    return json(200, publicationResponse(existing, { created: false }));
+  }
+}
+
+function publicationResponse(publication: any, extra: Record<string, unknown> = {}) {
+  const credential = extra.credential as string | undefined;
+  return {
+    publicationId: publication.publicationId, workspaceId: publication.workspaceId, brandId: publication.brandId,
+    sceneId: publication.sceneId, sceneName: publication.sceneSnapshot?.name || '', revision: publication.revision,
+    status: publication.status, ...extra,
+    ...(credential ? { browserSourceUrl: `${env('FRONTEND_ORIGIN')}/overlay-source/${encodeURIComponent(credential)}` } : {}),
+  };
+}
+
+async function getActivePublication(brandId: string) {
+  const tableName = env('PUBLICATION_TABLE');
+  const lock = (await db.send(new GetCommand({ TableName: tableName, Key: { publicationId: activePublicationLockId(String(brandId || '')) }, ConsistentRead: true }))).Item;
+  if (!lock?.activePublicationId) return null;
+  return (await db.send(new GetCommand({ TableName: tableName, Key: { publicationId: lock.activePublicationId }, ConsistentRead: true }))).Item || null;
+}
+
+async function activePublication(event: any) {
+  const sub = userId(event), input = event.queryStringParameters || {};
+  await authorizeBindings(input, sub);
+  const publication = await getActivePublication(input.brandId);
+  if (!publication) return json(200, { publication: null });
+  assertPublicationOwner(publication, sub); await authorizeBindings(publication, sub);
+  return json(200, { publication: publicationResponse(publication) });
+}
+
+async function authorizeActivePublication(publication: any, sub: string) {
+  assertPublicationOwner(publication, sub); await authorizeBindings(publication, sub);
+  const active = await getActivePublication(publication?.brandId);
+  if (!active || active.publicationId !== publication.publicationId) throw new Error('Overlay publication is not active');
 }
 
 async function updatePublication(event: any, publicationId: string) {
-  const input = body(event), sub = userId(event), publication = await getPublication(publicationId); assertPublicationOwner(publication, sub);
-  await authorizeBindings(publication, sub); const sceneSnapshot = validateSceneSnapshot(input.sceneSnapshot); const now = new Date().toISOString();
-  const result = await db.send(new UpdateCommand({ TableName: env('PUBLICATION_TABLE'), Key: { publicationId }, UpdateExpression: 'SET sceneSnapshot = :snapshot, revision = revision + :one, updatedAt = :now', ConditionExpression: 'ownerUserId = :owner AND attribute_not_exists(revokedAt)', ExpressionAttributeValues: { ':snapshot': sceneSnapshot, ':one': 1, ':now': now, ':owner': sub }, ReturnValues: 'ALL_NEW' }));
-  return json(200, { publicationId, revision: result.Attributes?.revision, status: result.Attributes?.status, expiresAt: result.Attributes?.expiresAt });
+  const input = body(event), sub = userId(event), publication = await getPublication(publicationId);
+  await authorizeActivePublication(publication, sub); const sceneSnapshot = validateSceneSnapshot(input.sceneSnapshot); const now = new Date().toISOString();
+  const sceneId = String(input.sceneId || sceneSnapshot.id || '');
+  const result = await db.send(new UpdateCommand({ TableName: env('PUBLICATION_TABLE'), Key: { publicationId }, UpdateExpression: 'SET sceneId = :sceneId, sceneSnapshot = :snapshot, revision = revision + :one, updatedAt = :now', ConditionExpression: 'ownerUserId = :owner AND attribute_not_exists(revokedAt)', ExpressionAttributeValues: { ':sceneId': sceneId, ':snapshot': sceneSnapshot, ':one': 1, ':now': now, ':owner': sub }, ReturnValues: 'ALL_NEW' }));
+  return json(200, publicationResponse(result.Attributes));
 }
 
 async function revokePublication(event: any, publicationId: string) {
-  const sub = userId(event), publication = await getPublication(publicationId); assertPublicationOwner(publication, sub); await authorizeBindings(publication, sub); const now = new Date().toISOString();
-  await db.send(new UpdateCommand({ TableName: env('PUBLICATION_TABLE'), Key: { publicationId }, UpdateExpression: 'SET #status = :revoked, revokedAt = :now, updatedAt = :now', ConditionExpression: 'ownerUserId = :owner', ExpressionAttributeNames: { '#status': 'status' }, ExpressionAttributeValues: { ':revoked': 'REVOKED', ':now': now, ':owner': sub } }));
+  const sub = userId(event), publication = await getPublication(publicationId); await authorizeActivePublication(publication, sub); const now = new Date().toISOString();
+  if (!publication) throw new Error('Overlay publication access is denied');
+  await db.send(new TransactWriteCommand({ TransactItems: [
+    { Update: { TableName: env('PUBLICATION_TABLE'), Key: { publicationId }, UpdateExpression: 'SET #status = :revoked, revokedAt = :now, updatedAt = :now', ConditionExpression: 'ownerUserId = :owner AND attribute_not_exists(revokedAt)', ExpressionAttributeNames: { '#status': 'status' }, ExpressionAttributeValues: { ':revoked': 'REVOKED', ':now': now, ':owner': sub } } },
+    { Delete: { TableName: env('PUBLICATION_TABLE'), Key: { publicationId: activePublicationLockId(publication.brandId) }, ConditionExpression: 'activePublicationId = :publicationId AND ownerUserId = :owner', ExpressionAttributeValues: { ':publicationId': publicationId, ':owner': sub } } },
+  ] }));
   return json(200, { publicationId, status: 'REVOKED' });
 }
 
 async function rotateCredential(event: any, publicationId: string) {
   const sub = userId(event), publication = await getPublication(publicationId);
-  assertPublicationOwner(publication, sub); await authorizeBindings(publication, sub);
+  await authorizeActivePublication(publication, sub);
   if (!publication) throw new Error('Overlay publication access is denied');
   const issued = issueOverlayCredential(), now = new Date();
   const rotated = rotatePublicationCredential(publication, issued.credentialHash, now);
@@ -68,7 +116,7 @@ async function sourceConfig(credential: string) {
 }
 
 async function sendTestEvent(event: any, publicationId: string) {
-  const sub = userId(event), publication = await getPublication(publicationId); assertPublicationOwner(publication, sub); await authorizeBindings(publication, sub);
+  const sub = userId(event), publication = await getPublication(publicationId); await authorizeActivePublication(publication, sub);
   if (!publicationIsActive(publication)) throw new Error('Overlay publication is not active'); const envelope = validateOverlayEvent(body(event).event);
   const connections = await db.send(new QueryCommand({ TableName: env('CONNECTION_TABLE'), IndexName: 'publicationId-index', KeyConditionExpression: 'publicationId = :publicationId', ExpressionAttributeValues: { ':publicationId': publicationId } }));
   const gateway = new ApiGatewayManagementApiClient({ endpoint: env('WEBSOCKET_MANAGEMENT_URL') });
@@ -93,6 +141,7 @@ export const handler: APIGatewayProxyHandlerV2 & APIGatewayProxyWebsocketHandler
     if (event.requestContext?.connectionId) return await websocket(event);
     const method = event.requestContext?.http?.method, path = String(event.rawPath || '');
     if (method === 'GET' && path.startsWith('/overlay/source/')) return await sourceConfig(decodeURIComponent(path.slice('/overlay/source/'.length)));
+    if (method === 'GET' && path === '/overlay/publications/active') return await activePublication(event);
     if (method === 'POST' && path === '/overlay/publications') return await createPublication(event);
     const match = path.match(/^\/overlay\/publications\/([^/]+)(?:\/(events|rotate))?$/); if (!match) return json(404, { error: 'Route not found' });
     if (method === 'PUT' && !match[2]) return await updatePublication(event, match[1]);

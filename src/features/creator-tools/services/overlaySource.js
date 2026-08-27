@@ -32,8 +32,13 @@ export function createOverlayPublication(input, fetchImpl = fetch) {
   return authenticatedRequest('overlay/publications', { method: 'POST', body: JSON.stringify(input) }, fetchImpl);
 }
 
-export function updateOverlayPublication(publicationId, sceneSnapshot, fetchImpl = fetch) {
-  return authenticatedRequest(`overlay/publications/${encodeURIComponent(publicationId)}`, { method: 'PUT', body: JSON.stringify({ sceneSnapshot }) }, fetchImpl);
+export function getActiveOverlayPublication(workspaceId, brandId, fetchImpl = fetch) {
+  const query = new URLSearchParams({ workspaceId, brandId });
+  return authenticatedRequest(`overlay/publications/active?${query}`, { method: 'GET' }, fetchImpl);
+}
+
+export function updateOverlayPublication(publicationId, sceneId, sceneSnapshot, fetchImpl = fetch) {
+  return authenticatedRequest(`overlay/publications/${encodeURIComponent(publicationId)}`, { method: 'PUT', body: JSON.stringify({ sceneId, sceneSnapshot }) }, fetchImpl);
 }
 
 export function revokeOverlayPublication(publicationId, fetchImpl = fetch) {

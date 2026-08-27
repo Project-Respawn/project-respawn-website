@@ -39,10 +39,15 @@ export function validateSceneSnapshot(value: unknown) {
       schemaVersion: Number(widget.schemaVersion || 1), id: String(widget.id), type: String(widget.type), name: String(widget.name || widget.type),
       enabled: true, hidden: false, locked: Boolean(widget.locked), frame, zIndex: Number(widget.zIndex || 0),
       settings: safeObject(widget.settings) ? widget.settings : {}, dataSource: safeObject(widget.dataSource) ? widget.dataSource : {},
-      animations: safeObject(widget.animations) ? widget.animations : {}, themeId: widget.themeId ? String(widget.themeId) : undefined,
+      animations: safeObject(widget.animations) ? widget.animations : {},
+      ...(widget.themeId ? { themeId: String(widget.themeId) } : {}),
     };
   });
-  const snapshot = { schemaVersion: Number(value.schemaVersion || 1), id: String(value.id || ''), name: String(value.name || ''), resolution: { width, height }, themeId: String(value.themeId || 'respawn-dark'), theme: safeObject(value.theme) ? value.theme : undefined, widgets };
+  const snapshot = {
+    schemaVersion: Number(value.schemaVersion || 1), id: String(value.id || ''), name: String(value.name || ''),
+    resolution: { width, height }, themeId: String(value.themeId || 'respawn-dark'),
+    ...(safeObject(value.theme) ? { theme: value.theme } : {}), widgets,
+  };
   if (containsForbiddenKey(snapshot)) throw new Error('Scene snapshot contains unsupported data');
   if (Buffer.byteLength(JSON.stringify(snapshot), 'utf8') > 350_000) throw new Error('Scene snapshot is too large');
   return snapshot;
@@ -76,15 +81,28 @@ export function createPublicationRecord(input: any, ownerUserId: string, credent
   return {
     publicationId, overlayId: String(input.overlayId || ''), sceneId: String(input.sceneId || sceneSnapshot.id || ''),
     workspaceId: String(input.workspaceId), brandId: String(input.brandId), ownerUserId,
-    revision: 1, status: 'TEST', credentialHash,
-    expiresAt: new Date(now.getTime() + 7 * 86400_000).toISOString(), sceneSnapshot,
+    entityType: 'PUBLICATION', revision: 1, status: 'TEST', credentialHash, sceneSnapshot,
     createdAt: now.toISOString(), updatedAt: now.toISOString(),
   };
 }
 
-export function updatePublicationRecord(publication: any, sceneSnapshot: unknown, now: Date) {
+export function activePublicationLockId(brandId: string) {
+  if (!brandId) throw new Error('Brand is required');
+  return `BRAND_ACTIVE#${brandId}`;
+}
+
+export function createActivePublicationLock(publication: any) {
+  return {
+    publicationId: activePublicationLockId(publication.brandId), entityType: 'BRAND_ACTIVE_LOCK',
+    workspaceId: publication.workspaceId, brandId: publication.brandId, ownerUserId: publication.ownerUserId,
+    activePublicationId: publication.publicationId, createdAt: publication.createdAt, updatedAt: publication.updatedAt,
+  };
+}
+
+export function updatePublicationRecord(publication: any, sceneId: string, sceneSnapshot: unknown, now: Date) {
   if (!publicationIsActive(publication, now.getTime())) throw new Error('Overlay publication is not active');
-  return { ...publication, sceneSnapshot: validateSceneSnapshot(sceneSnapshot), revision: Number(publication.revision || 0) + 1, updatedAt: now.toISOString() };
+  const snapshot = validateSceneSnapshot(sceneSnapshot);
+  return { ...publication, sceneId: String(sceneId || snapshot.id || ''), sceneSnapshot: snapshot, revision: Number(publication.revision || 0) + 1, updatedAt: now.toISOString() };
 }
 
 export function rotatePublicationCredential(publication: any, credentialHash: string, now: Date) {

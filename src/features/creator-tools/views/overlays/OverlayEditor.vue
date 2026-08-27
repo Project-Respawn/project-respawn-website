@@ -378,11 +378,17 @@
           data-overlay-section-name="browser-source-outputs"
           :resolution="scene.resolution"
           :source-url="sourceUrl"
+          :publication-id="publicationId"
           :revision="sourceRevision"
+          :selected-scene-id="scene.id"
+          :selected-scene-name="scene.name"
+          :active-scene-id="activeSceneId"
+          :active-scene-name="activeSceneName"
           :busy="sourceBusy"
           :error="sourceError"
           @create="createTestSource"
           @update="updateTestSource"
+          @replace="replaceActiveScene"
           @copy="copySourceUrl"
           @open="openSourceUrl"
           @rotate="rotateSourceUrl"
@@ -764,6 +770,7 @@
 // ============================================================
 
 import {
+  onMounted,
   ref,
 } from 'vue'
 
@@ -1006,12 +1013,17 @@ const {
 // ============================================================
 
 const {
+  publicationId,
   sourceUrl,
   sourceRevision,
+  activeSceneId,
+  activeSceneName,
   sourceBusy,
   sourceError,
+  refreshSourceState,
   createTestSource,
   updateTestSource,
+  replaceActiveScene,
   copySourceUrl,
   openSourceUrl,
   rotateSourceUrl,
@@ -1025,6 +1037,8 @@ const {
     project,
     scene,
   })
+
+onMounted(refreshSourceState)
 
 
 // ============================================================

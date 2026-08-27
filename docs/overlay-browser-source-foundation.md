@@ -2,9 +2,9 @@
 
 ## Product boundary
 
-One published/test overlay scene maps to one OBS Browser Source URL. That source loads one immutable scene snapshot and renders every enabled widget through the shared widget registry. Widgets never open their own network connections.
+Each Brand has at most one active OBS Browser Source URL. That stable source loads the Brand's currently active scene snapshot and renders every enabled widget through the shared widget registry. Editor projects may still contain multiple scenes; **Replace Active Scene** switches the existing publication without changing its URL. Widgets never open their own network connections.
 
-## Proposed Master infrastructure (not deployed)
+## Master infrastructure
 
 Create a dedicated `overlay-source-stack`; do not add more directives to the existing FunctionDirectiveStack.
 
@@ -16,17 +16,21 @@ Create a dedicated `overlay-source-stack`; do not add more directives to the exi
 - DynamoDB `OverlaySourceConnection` table keyed by connection ID, with a publication-ID GSI and TTL cleanup.
 - API Gateway Management API permission scoped to the new WebSocket API.
 
-The publication table stores only a SHA-256 credential hash. The random credential is returned once in the test URL. Revocation/status and expiry are checked on configuration retrieval and WebSocket connect. Publishing currently requires the authenticated Cognito identity to own both the canonical Workspace and Brand; the server resolves those records and never trusts client identity fields.
+The publication table stores only a SHA-256 credential hash. The random credential is returned once in the test URL. Revocation/status and any legacy expiry are checked on configuration retrieval and WebSocket connect. New early-access publications remain valid until explicitly revoked or rotated. Publishing requires the authenticated Cognito identity to own both the canonical Workspace and Brand; the server resolves those records and never trusts client identity fields.
+
+A deterministic `BRAND_ACTIVE#{brandId}` lock item in the retained publication table points to the Brand's opaque publication ID. Creation writes the publication and lock in one DynamoDB transaction with conditional puts, so concurrent create requests cannot produce two active publications. An authenticated active-publication lookup restores non-secret metadata after refresh; the plaintext URL cannot be recovered and is never returned again.
 
 Creators can rotate a publication URL through the authenticated management API. Rotation atomically replaces the stored SHA-256 hash and returns the new plaintext credential once. The old credential immediately fails configuration lookup and all future WebSocket reconnects. Connections established before rotation remain active until they disconnect or reconnect; rotation does not force-close existing sockets.
+
+Revocation atomically marks the publication revoked and removes its matching Brand lock. A later create issues a new publication ID and credential; revoked credentials are never reused. This deterministic lock is an early-access uniqueness constraint rather than a permanent table-key design, so a future multi-publication product can remove the constraint without migrating publication records.
 
 ## Data shapes
 
 Test publication:
 
 ```text
-publicationId, credentialHash, ownerUserId, workspaceId, brandId, sceneId,
-revision, status, expiresAt, sceneSnapshot, createdAt, updatedAt
+publicationId, entityType, credentialHash, ownerUserId, workspaceId, brandId,
+sceneId, revision, status, sceneSnapshot, createdAt, updatedAt
 ```
 
 Connection:
@@ -35,7 +39,7 @@ Connection:
 connectionId, publicationId, expiresAt, connectedAt
 ```
 
-The scene snapshot is separate from browser-local draft/session storage. Pressing **Update Test Source** replaces the server-side snapshot and increments `revision`. Browser Sources reload the snapshot after reconnect; explicit refresh is the predictable v1 update policy.
+The scene snapshot is separate from browser-local draft/session storage. Pressing **Update Source** updates the selected active scene; **Replace Active Scene** changes `sceneId` and snapshot on the same publication. Both increment `revision` without changing the credential. Browser Sources reload the snapshot after reconnect; explicit refresh is the predictable v1 update policy.
 
 ## Event flow
 
@@ -57,7 +61,7 @@ Creator Tools sends a versioned event to the authenticated test-event endpoint. 
 
 ## Capacity
 
-One connection per open Browser Source, not per widget. At 100 creators with four active scenes and two OBS/browser instances per scene, the initial expectation is roughly 800 concurrent WebSocket connections. API Gateway WebSocket, Lambda, and DynamoDB on-demand capacity are horizontally shared and do not depend on an ECS task's memory.
+One connection per open Browser Source, not per widget. At 100 early-access creators/Brands with one active publication each and one or two OBS/browser instances, the normal expectation is roughly 100–200 concurrent WebSocket connections, with additional headroom for previews and secondary clients. This is an application lifecycle rule, not an infrastructure throttle: API Gateway WebSocket, Lambda, and DynamoDB on-demand capacity remain horizontally shared and can scale beyond the early-access cohort.
 
 ## OBS settings
 
