@@ -12,6 +12,7 @@ import { widgetEventBus } from '../../overlays/widgetEventBus.js';
 import { createOverlaySourceConnection, fetchOverlaySource } from '../../services/overlaySource.js';
 
 const route = useRoute(); const scene = ref(null); let connection = null;
+const documentClass = 'overlay-browser-source-document';
 const credential = computed(() => String(route.params.credential || ''));
 const viewportStyle = computed(() => scene.value ? { width: `${scene.value.resolution.width}px`, height: `${scene.value.resolution.height}px` } : {});
 async function load() {
@@ -24,11 +25,25 @@ async function load() {
     onReconnect: async () => { const refreshed = await fetchOverlaySource(credential.value); scene.value = refreshed.scene; },
   });
 }
-onMounted(() => { void load(); });
-onBeforeUnmount(() => connection?.close());
+onMounted(() => {
+  document.documentElement.classList.add(documentClass);
+  void load();
+});
+onBeforeUnmount(() => {
+  document.documentElement.classList.remove(documentClass);
+  connection?.close();
+});
 </script>
 
 <style>
-html, body, #app { margin: 0; width: 100%; height: 100%; overflow: hidden; background: transparent !important; }
+html.overlay-browser-source-document,
+html.overlay-browser-source-document body,
+html.overlay-browser-source-document #app {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent !important;
+}
 .overlay-browser-source { position: relative; overflow: hidden; background: transparent; }
 </style>

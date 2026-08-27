@@ -24,3 +24,9 @@ test('Browser Source retrieves server configuration and opens one reconnecting s
   assert.match(source, /fetchOverlaySource\(credential\.value\)/); assert.match(source, /createOverlaySourceConnection/); assert.match(source, /widgetEventBus\.publish/);
   assert.match(service, /Math\.min\(1000 \* \(2 \*\* attempts\), 15000\)/); assert.match(service, /url\.searchParams\.set\('credential', credential\)/);
 });
+
+test('Browser Source transparency is isolated to its route lifecycle', () => {
+  assert.match(source, /document\.documentElement\.classList\.add\(documentClass\)/);
+  assert.match(source, /document\.documentElement\.classList\.remove\(documentClass\)/);
+  assert.doesNotMatch(source, /html,\s*body,\s*#app\s*\{/);
+});
