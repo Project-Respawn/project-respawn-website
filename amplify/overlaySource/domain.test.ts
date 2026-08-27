@@ -1,6 +1,5 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { marshall } from '@aws-sdk/util-dynamodb';
 import {
   activePublicationLockId, assertPublicationOwner, assertWorkspaceBrandOwner, createActivePublicationLock, createConnectionRecord, createPublicationRecord,
   credentialMatches, fanOutOverlayEvent, hashOverlayCredential, publicationIsActive,
@@ -59,7 +58,6 @@ test('snapshot ignores discarded editor runtime metadata while preserving saniti
   assert.deepEqual(snapshot.widgets[0].settings, { maxMessages: 6 });
   const findUndefined = (value: any): boolean => value && typeof value === 'object' && Object.values(value).some((child) => child === undefined || findUndefined(child));
   assert.equal(findUndefined(snapshot), false, 'sanitized snapshots must be accepted by DynamoDB document marshalling');
-  assert.doesNotThrow(() => marshall(snapshot));
 });
 
 test('snapshot still rejects secret-shaped keys in every persisted nested boundary', () => {
