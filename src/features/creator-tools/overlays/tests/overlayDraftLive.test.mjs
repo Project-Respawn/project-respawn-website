@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { readFile } from 'node:fs/promises';
+import { chooseCreatorBrandId, resolveCreatorBrand } from '../../composables/useCreatorBrandContext.js';
 
 const read = (path) => readFile(new URL(path, import.meta.url), 'utf8');
 const [core, sources, service, handler, context, editor, status] = await Promise.all([
@@ -18,9 +19,41 @@ test('editor and publication management share explicit Brand bindings without fi
   assert.match(context, /brands\.find/); assert.match(context, /Select an accessible Brand/);
 });
 
+test('Brand selection prioritises the route, then shared context, then a sole accessible Brand', () => {
+  const access = { brands: [
+    { brandId: 'brand-a', workspaceId: 'workspace-a' },
+    { brandId: 'brand-b', workspaceId: 'workspace-b' },
+  ] };
+  assert.equal(chooseCreatorBrandId(access, 'brand-b', 'brand-a'), 'brand-b');
+  assert.equal(chooseCreatorBrandId(access, '', 'brand-a'), 'brand-a');
+  assert.equal(chooseCreatorBrandId(access), '');
+  assert.equal(chooseCreatorBrandId({ brands: [access.brands[0]] }), 'brand-a');
+  assert.equal(chooseCreatorBrandId({ brands: [] }), '');
+  assert.equal(resolveCreatorBrand(access, 'brand-a')?.workspaceId, 'workspace-a');
+});
+
+test('legacy one-Brand access can use the sole workspace without guessing among multiple workspaces', () => {
+  const brand = { brandId: 'brand-a' };
+  assert.equal(resolveCreatorBrand({ brands: [brand], workspaces: [{ id: 'workspace-a' }] }, 'brand-a')?.workspaceId, 'workspace-a');
+  assert.equal(resolveCreatorBrand({ brands: [brand], workspaces: [{ id: 'workspace-a' }, { id: 'workspace-b' }] }, 'brand-a'), null);
+});
+
 test('Save Draft remains independent and successful saves clear dirty state', () => {
   assert.match(core, /updateEditableOverlayProject/); assert.match(core, /dirty\.value = false/);
   assert.doesNotMatch(core, /updateOverlayPublication/); assert.match(status, /Save Draft/);
+});
+
+test('toolbar exposes the contextual Draft to Live actions without hiding Save Draft', () => {
+  assert.match(editor, /@live="handleToolbarLiveAction"/);
+  assert.match(editor, /hasActivePublication\.value\s*\? saveAndUpdateLive\(\)\s*: createBrowserSource\(\)/);
+  assert.match(context, /chooseCreatorBrandId/);
+  return read('../../components/overlays/OverlayBuilderToolbar.vue').then((toolbar) => {
+    assert.match(toolbar, /Save Draft/);
+    assert.match(toolbar, /Create Browser Source/);
+    assert.match(toolbar, /Save & Update Live/);
+    assert.match(toolbar, /Update Live/);
+    assert.match(toolbar, /Live up to date/);
+  });
 });
 
 test('Save and Update Live saves first, never publishes after a failed save, and preserves stale state on publication failure', () => {

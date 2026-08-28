@@ -89,6 +89,7 @@ async function assertBrandPermissionManager(client: any, actor: BrandActor, bran
 function brandSummary(brand: any, userId: string, permissionKeys: string[]) {
   return {
     brandId: brand.id,
+    workspaceId: brand.workspaceId || null,
     name: brand.name,
     ownerUserId: brand.ownerUserId || null,
     isOwner: brand.ownerUserId === userId,

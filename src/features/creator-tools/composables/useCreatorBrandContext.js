@@ -1,13 +1,25 @@
 import { computed, ref } from 'vue'
 import { refreshAccessContext } from '../../../composables/useAccessContext.js'
 
+const sharedCreatorBrandId = ref('')
+
 export function resolveCreatorBrand(access, requestedBrandId) {
   const brands = Array.isArray(access?.brands) ? access.brands : []
   const brand = brands.find((item) => (item.brandId || item.id) === requestedBrandId) || null
   if (!brand) return null
   const brandId = brand.brandId || brand.id
-  const workspaceId = brand.workspaceId || access.workspaces?.find((item) => (item.workspaceId || item.id) === brand.workspaceId)?.id || ''
+  const workspaces = Array.isArray(access?.workspaces) ? access.workspaces : []
+  const workspaceId = brand.workspaceId
+    || (workspaces.length === 1 ? (workspaces[0].workspaceId || workspaces[0].id) : '')
   return workspaceId ? { brand, brandId, workspaceId } : null
+}
+
+export function chooseCreatorBrandId(access, requestedBrandId = '', sharedBrandId = '') {
+  const brands = Array.isArray(access?.brands) ? access.brands : []
+  const ids = brands.map((brand) => String(brand.brandId || brand.id || '')).filter(Boolean)
+  if (requestedBrandId) return ids.includes(String(requestedBrandId)) ? String(requestedBrandId) : ''
+  if (sharedBrandId && ids.includes(String(sharedBrandId))) return String(sharedBrandId)
+  return ids.length === 1 ? ids[0] : ''
 }
 
 export function useCreatorBrandContext(route, router) {
@@ -17,6 +29,7 @@ export function useCreatorBrandContext(route, router) {
     const resolved = resolveCreatorBrand(access.value, String(brandId || ''))
     if (!resolved) throw new Error('Select an accessible Brand')
     selectedBrandId.value = resolved.brandId; workspaceId.value = resolved.workspaceId
+    sharedCreatorBrandId.value = resolved.brandId
     if (updateRoute && route?.query?.brandId !== resolved.brandId) await router.replace({ query: { ...route.query, brandId: resolved.brandId } })
     return resolved
   }
@@ -26,11 +39,12 @@ export function useCreatorBrandContext(route, router) {
     try {
       access.value = await refreshAccessContext(); brands.value = access.value.brands || []
       const requested = String(route?.query?.brandId || '')
-      if (!requested) {
-        if (brands.value.length !== 1) throw new Error('Select a Brand before editing Creator settings')
-        return await select(brands.value[0].brandId || brands.value[0].id)
-      }
-      return await select(requested, { updateRoute: false })
+      const shared = String(sharedCreatorBrandId.value || '')
+      const chosen = chooseCreatorBrandId(access.value, requested, shared)
+      if (chosen) return await select(chosen, { updateRoute: chosen !== requested })
+      if (requested) throw new Error('Select an accessible Brand')
+      if (!brands.value.length) throw new Error('Select or create a Brand before editing Creator settings')
+      throw new Error('Select a Brand before editing Creator settings')
     } catch (cause) { error.value = cause?.message || 'Could not resolve Creator Brand'; throw cause }
     finally { loading.value = false }
   }
@@ -38,5 +52,5 @@ export function useCreatorBrandContext(route, router) {
     if (!loadPromise) loadPromise = loadOnce().catch((cause) => { loadPromise = null; throw cause })
     return loadPromise
   }
-  return { access, brands, selectedBrand, selectedBrandId, workspaceId, loading, error, load, select }
+  return { access, brands, selectedBrand, selectedBrandId, workspaceId, sharedCreatorBrandId, loading, error, load, select }
 }

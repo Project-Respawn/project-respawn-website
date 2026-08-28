@@ -149,6 +149,7 @@ const schema = a
 
     AccessibleBrandSummary: a.customType({
       brandId: a.id().required(),
+      workspaceId: a.id(),
       name: a.string().required(),
       ownerUserId: a.string(),
       isOwner: a.boolean().required(),

@@ -22,6 +22,9 @@
       :saving="saving"
       :dirty="dirty"
       :revision="revision"
+      :has-active-publication="hasActivePublication"
+      :live-out-of-date="liveOutOfDate"
+      :live-busy="sourceBusy"
       :obs-status-label="obsStatusLabel"
       @rename="renameProject"
       @theme="changeTheme"
@@ -31,7 +34,7 @@
       @redo="redo"
       @save="saveDemo"
       @preview="previewMode = true"
-      @publish="openHeaderPanel('publish')"
+      @live="handleToolbarLiveAction"
       @settings="openObsConnection"
     />
 
@@ -1069,6 +1072,12 @@ const {
   })
 
 onMounted(refreshSourceState)
+
+function handleToolbarLiveAction() {
+  return hasActivePublication.value
+    ? saveAndUpdateLive()
+    : createBrowserSource()
+}
 
 
 // ============================================================
