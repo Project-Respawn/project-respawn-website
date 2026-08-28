@@ -87,6 +87,7 @@ async function authorizeActivePublication(publication: any, sub: string) {
 
 async function updatePublication(event: any, publicationId: string) {
   const input = body(event), sub = userId(event), publication = await getPublication(publicationId);
+  if (!publication) throw new Error('Overlay publication access is denied');
   await authorizeActivePublication(publication, sub); const sceneSnapshot = validateSceneSnapshot(input.sceneSnapshot); const now = new Date().toISOString();
   const sceneId = String(input.sceneId || sceneSnapshot.id || '');
   await assertCurrentEditorRevision(String(publication.brandId), input.sourceEditorRevision);
