@@ -14,7 +14,9 @@ test('create atomically claims the deterministic Brand lock and never uses scan-
 });
 
 test('update switches scene on the existing publication while preserving credential state', () => {
-  assert.match(handler, /SET sceneId = :sceneId, sceneSnapshot = :snapshot, revision = revision \+ :one/);
+  assert.match(handler, /SET sceneId = :sceneId, sceneSnapshot = :snapshot, sourceEditorRevision = :sourceEditorRevision, revision = revision \+ :one/);
+  assert.match(handler, /Source editor revision is required/);
+  assert.match(handler, /Save the current overlay draft before updating Live/);
   assert.doesNotMatch(handler, /UpdateExpression: '[^']*credentialHash[^']*sceneSnapshot/);
 });
 

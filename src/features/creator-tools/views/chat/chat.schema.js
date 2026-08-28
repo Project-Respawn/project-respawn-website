@@ -11,6 +11,8 @@ export const CHAT_SOURCE_IDS = Object.freeze({
   TWITCH: 'twitch',
   YOUTUBE: 'youtube',
   TIKTOK: 'tiktok',
+  DISCORD: 'discord',
+  KICK: 'kick',
 })
 
 export const CHAT_BACKGROUND_TYPES = Object.freeze([

@@ -384,19 +384,24 @@
           :source-url="sourceUrl"
           :publication-id="publicationId"
           :revision="sourceRevision"
+          :draft-dirty="dirty"
+          :draft-revision="revision"
+          :live-out-of-date="liveOutOfDate"
+          :live-status-unknown="liveStatusUnknown"
+          :last-published-at="lastPublishedAt"
           :selected-scene-id="scene.id"
           :selected-scene-name="scene.name"
           :active-scene-id="activeSceneId"
           :active-scene-name="activeSceneName"
           :busy="sourceBusy"
           :error="sourceError"
-          @create="createTestSource"
-          @update="updateTestSource"
+          @create="createBrowserSource"
+          @update="saveAndUpdateLive"
           @replace="replaceActiveScene"
           @copy="copySourceUrl"
           @open="openSourceUrl"
           @rotate="rotateSourceUrl"
-          @revoke="revokeTestSource"
+          @revoke="revokeBrowserSource"
           @preview="openBrowserSourcePreview"
         />
       </div>
@@ -780,6 +785,7 @@ import {
 
 import {
   useRoute,
+  useRouter,
 } from 'vue-router'
 
 
@@ -857,9 +863,11 @@ const inspectorTab =
 
 const route =
   useRoute()
+const router =
+  useRouter()
 
 const core =
-  useOverlayEditorCore(route)
+  useOverlayEditorCore(route, router)
 
 const {
   project,
@@ -878,6 +886,9 @@ const {
   saving,
   dirty,
   revision,
+  workspaceId,
+  brandId,
+  brandContext,
 } = core
 
 
@@ -1024,18 +1035,23 @@ const {
   publicationId,
   sourceUrl,
   sourceRevision,
+  sourceEditorRevision,
   activeSceneId,
   activeSceneName,
   sourceBusy,
   sourceError,
+  hasActivePublication,
+  liveStatusUnknown,
+  liveOutOfDate,
+  lastPublishedAt,
   refreshSourceState,
-  createTestSource,
-  updateTestSource,
+  createBrowserSource,
+  saveAndUpdateLive,
   replaceActiveScene,
   copySourceUrl,
   openSourceUrl,
   rotateSourceUrl,
-  revokeTestSource,
+  revokeBrowserSource,
   sendSourceTest,
   openBrowserSourcePreview,
 } =
@@ -1044,6 +1060,12 @@ const {
     previewMode,
     project,
     scene,
+    dirty,
+    revision,
+    workspaceId,
+    brandId,
+    brandContext,
+    saveDraft: saveDemo,
   })
 
 onMounted(refreshSourceState)

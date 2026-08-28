@@ -199,6 +199,7 @@
 import {
   computed,
 } from 'vue'
+import { normalizeCreatorChatConfig } from './chat.config.js'
 
 const props = defineProps({
   settings: {
@@ -239,29 +240,33 @@ const previewDevices = Object.freeze([
   },
 ])
 
+// The preview and Browser Source widget share the same v2 normalization boundary.
+const normalizedSettings = computed(() => normalizeCreatorChatConfig(props.settings))
+
 const sourceSettings = computed(() => {
-  return props.settings?.sources ?? {}
+  return normalizedSettings.value.sources
 })
 
 const contentSettings = computed(() => {
-  return props.settings?.content ?? {}
+  return normalizedSettings.value.content
 })
 
 const behaviourSettings = computed(() => {
-  return props.settings?.behaviour ?? {}
+  return normalizedSettings.value.behaviour
 })
 
 const appearanceSettings = computed(() => {
-  return props.settings?.appearance ?? {}
+  return normalizedSettings.value.appearance
 })
 
 const layoutSettings = computed(() => {
-  return props.settings?.layout ?? {}
+  return normalizedSettings.value.layout
 })
 
 const typographySettings = computed(() => {
-  return props.settings?.typography ?? {}
+  return normalizedSettings.value.typography
 })
+
 
 const enabledSources = computed(() => {
   return new Set(

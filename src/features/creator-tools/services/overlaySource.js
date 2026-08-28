@@ -37,8 +37,11 @@ export function getActiveOverlayPublication(workspaceId, brandId, fetchImpl = fe
   return authenticatedRequest(`overlay/publications/active?${query}`, { method: 'GET' }, fetchImpl);
 }
 
-export function updateOverlayPublication(publicationId, sceneId, sceneSnapshot, fetchImpl = fetch) {
-  return authenticatedRequest(`overlay/publications/${encodeURIComponent(publicationId)}`, { method: 'PUT', body: JSON.stringify({ sceneId, sceneSnapshot }) }, fetchImpl);
+export function updateOverlayPublication(publicationId, sceneId, sceneSnapshot, sourceEditorRevisionOrFetch, fetchImpl = fetch) {
+  const legacyCall = typeof sourceEditorRevisionOrFetch === 'function';
+  const sourceEditorRevision = legacyCall ? undefined : sourceEditorRevisionOrFetch;
+  const effectiveFetch = legacyCall ? sourceEditorRevisionOrFetch : fetchImpl;
+  return authenticatedRequest(`overlay/publications/${encodeURIComponent(publicationId)}`, { method: 'PUT', body: JSON.stringify({ sceneId, sceneSnapshot, sourceEditorRevision }) }, effectiveFetch);
 }
 
 export function revokeOverlayPublication(publicationId, fetchImpl = fetch) {

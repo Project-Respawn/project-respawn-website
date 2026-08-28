@@ -14,10 +14,18 @@ const scene = { id: 'scene-1', name: 'Main Gameplay', resolution: { width: 1920,
 ] };
 
 test('publication creation persists a complete scene snapshot and only a credential hash', () => {
-  const record = createPublicationRecord({ workspaceId: 'workspace-1', brandId: 'brand-1', overlayId: 'overlay-1', sceneId: 'scene-1', sceneSnapshot: scene }, 'owner-1', hashOverlayCredential('opaque-secret'), now, 'publication-1');
+  const record = createPublicationRecord({ workspaceId: 'workspace-1', brandId: 'brand-1', overlayId: 'overlay-1', sceneId: 'scene-1', sceneSnapshot: scene, sourceEditorRevision: 7 }, 'owner-1', hashOverlayCredential('opaque-secret'), now, 'publication-1');
   assert.equal(record.revision, 1); assert.equal(record.status, 'TEST'); assert.equal(record.sceneSnapshot.widgets.length, 2);
   assert.equal(record.credentialHash.length, 64); assert.equal(JSON.stringify(record).includes('opaque-secret'), false);
   assert.equal(credentialMatches(record, 'opaque-secret'), true); assert.equal(credentialMatches(record, 'wrong'), false);
+  assert.equal(record.sourceEditorRevision, 7);
+});
+
+test('legacy publications remain readable and updates add the optional editor relationship', () => {
+  const legacy = createPublicationRecord({ workspaceId: 'workspace-1', brandId: 'brand-1', sceneSnapshot: scene }, 'owner-1', hashOverlayCredential('opaque-secret'), now, 'legacy');
+  assert.equal('sourceEditorRevision' in legacy, false);
+  const updated = updatePublicationRecord(legacy, 'scene-1', scene, new Date('2026-08-26T20:01:00.000Z'), 8);
+  assert.equal(updated.sourceEditorRevision, 8); assert.equal(updated.publicationId, legacy.publicationId); assert.equal(updated.credentialHash, legacy.credentialHash);
 });
 
 test('sanitization forces event-driven widgets to neutral triggered mode', () => {
@@ -76,8 +84,16 @@ test('Brand Twitch configuration is deterministic, renderer-safe, bounded, and i
   assert.equal(twitchOverlayConfigId('brand-1'), 'TWITCH_CONFIG#brand-1');
   assert.deepEqual(config.alerts.raid, { enabled: false, duration: 60, template: '{user} brought {viewers}', soundUrl: '', volume: 1 });
   assert.deepEqual(config.tts, { enabled: true, voice: 'UK Voice', rate: 2, pitch: 0, volume: .4, maxLength: 500 });
-  assert.deepEqual(config.chat, { enabled: true, maxMessages: 50, platforms: ['Twitch'], blockedTerms: ['spam'] });
+  assert.equal(config.chat.schemaVersion, 2); assert.equal(config.chat.content.maximumVisibleMessages, 100);
+  assert.equal(config.chat.sources.twitch.enabled, true); assert.deepEqual(config.chat.blockedTerms, ['spam']);
   assert.equal(JSON.stringify(config).match(/token|secret|credential|oauth/i), null);
+});
+
+test('current Chat configuration rejects unsupported values instead of trusting arbitrary JSON', () => {
+  const valid = validateTwitchOverlayConfig({}).chat;
+  assert.throws(() => validateTwitchOverlayConfig({ chat: { ...valid, sources: { ...valid.sources, unknown: { enabled: true } } } }), /Chat configuration is invalid/);
+  assert.throws(() => validateTwitchOverlayConfig({ chat: { ...valid, content: { ...valid.content, maximumVisibleMessages: 101 } } }), /Chat configuration is invalid/);
+  assert.throws(() => validateTwitchOverlayConfig({ chat: { ...valid, typography: { ...valid.typography, messageColor: 'red' } } }), /Chat configuration is invalid/);
 });
 
 test('editable projects preserve all scene geometry while discarding runtime state and Twitch behaviour', () => {

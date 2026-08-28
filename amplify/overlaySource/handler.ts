@@ -13,6 +13,11 @@ const userId = (event: any) => String(event.requestContext?.authorizer?.jwt?.cla
 
 async function getPublication(publicationId: string) { return (await db.send(new GetCommand({ TableName: env('PUBLICATION_TABLE'), Key: { publicationId } }))).Item; }
 async function getTwitchConfigRecord(brandId: string) { return (await db.send(new GetCommand({ TableName: env('PUBLICATION_TABLE'), Key: { publicationId: twitchOverlayConfigId(brandId) }, ConsistentRead: true }))).Item; }
+async function assertCurrentEditorRevision(brandId: string, sourceEditorRevision: unknown) {
+  if (!Number.isInteger(sourceEditorRevision) || Number(sourceEditorRevision) < 1) throw new Error('Source editor revision is required');
+  const editor = (await db.send(new GetCommand({ TableName: env('PUBLICATION_TABLE'), Key: { publicationId: editableOverlayProjectId(brandId) }, ConsistentRead: true }))).Item;
+  if (!editor || Number(editor.revision) !== Number(sourceEditorRevision)) throw new Error('Save the current overlay draft before updating Live');
+}
 async function publicationForCredential(credential: string) {
   if (!credential) return null;
   const result = await db.send(new QueryCommand({ TableName: env('PUBLICATION_TABLE'), IndexName: 'credentialHash-index', KeyConditionExpression: 'credentialHash = :hash', ExpressionAttributeValues: { ':hash': hashOverlayCredential(credential) }, Limit: 1 }));
@@ -29,6 +34,7 @@ async function authorizeBindings(input: any, sub: string) {
 
 async function createPublication(event: any) {
   const input = body(event), sub = userId(event); await authorizeBindings(input, sub);
+  await assertCurrentEditorRevision(String(input.brandId), input.sourceEditorRevision);
   const issued = issueOverlayCredential();
   const publication = createPublicationRecord(input, sub, issued.credentialHash, new Date(), randomUUID());
   const lock = createActivePublicationLock(publication), tableName = env('PUBLICATION_TABLE');
@@ -51,7 +57,8 @@ function publicationResponse(publication: any, extra: Record<string, unknown> = 
   return {
     publicationId: publication.publicationId, workspaceId: publication.workspaceId, brandId: publication.brandId,
     sceneId: publication.sceneId, sceneName: publication.sceneSnapshot?.name || '', revision: publication.revision,
-    status: publication.status, ...extra,
+    status: publication.status, updatedAt: publication.updatedAt,
+    ...(Number.isInteger(publication.sourceEditorRevision) ? { sourceEditorRevision: publication.sourceEditorRevision } : {}), ...extra,
     ...(credential ? { browserSourceUrl: `${env('FRONTEND_ORIGIN')}/overlay-source/${encodeURIComponent(credential)}` } : {}),
   };
 }
@@ -82,7 +89,9 @@ async function updatePublication(event: any, publicationId: string) {
   const input = body(event), sub = userId(event), publication = await getPublication(publicationId);
   await authorizeActivePublication(publication, sub); const sceneSnapshot = validateSceneSnapshot(input.sceneSnapshot); const now = new Date().toISOString();
   const sceneId = String(input.sceneId || sceneSnapshot.id || '');
-  const result = await db.send(new UpdateCommand({ TableName: env('PUBLICATION_TABLE'), Key: { publicationId }, UpdateExpression: 'SET sceneId = :sceneId, sceneSnapshot = :snapshot, revision = revision + :one, updatedAt = :now', ConditionExpression: 'ownerUserId = :owner AND attribute_not_exists(revokedAt)', ExpressionAttributeValues: { ':sceneId': sceneId, ':snapshot': sceneSnapshot, ':one': 1, ':now': now, ':owner': sub }, ReturnValues: 'ALL_NEW' }));
+  await assertCurrentEditorRevision(String(publication.brandId), input.sourceEditorRevision);
+  const sourceEditorRevision = Number(input.sourceEditorRevision);
+  const result = await db.send(new UpdateCommand({ TableName: env('PUBLICATION_TABLE'), Key: { publicationId }, UpdateExpression: 'SET sceneId = :sceneId, sceneSnapshot = :snapshot, sourceEditorRevision = :sourceEditorRevision, revision = revision + :one, updatedAt = :now', ConditionExpression: 'ownerUserId = :owner AND attribute_not_exists(revokedAt)', ExpressionAttributeValues: { ':sceneId': sceneId, ':snapshot': sceneSnapshot, ':sourceEditorRevision': sourceEditorRevision, ':one': 1, ':now': now, ':owner': sub }, ReturnValues: 'ALL_NEW' }));
   return json(200, publicationResponse(result.Attributes));
 }
 

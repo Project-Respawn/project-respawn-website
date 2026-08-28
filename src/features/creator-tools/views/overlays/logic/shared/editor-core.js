@@ -2,12 +2,12 @@ import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue'
 import { overlayState, rememberOverlay } from '../../../../overlays/overlayStore.js'
 import { createBuilderProject, restoreBuilderProject } from '../../../../overlays/overlayBuilderDemoState.js'
 import { createHistory } from '../../../../overlays/overlayHistory.js'
-import { refreshAccessContext } from '@/composables/useAccessContext.js'
+import { useCreatorBrandContext } from '@/features/creator-tools/composables/useCreatorBrandContext.js'
 import { getEditableOverlayProject, updateEditableOverlayProject } from '@/features/creator-tools/services/overlaySource.js'
 
 const STORAGE_KEY = 'project-respawn.overlay-builder-demo.v1'
 
-export function useOverlayEditorCore(route) {
+export function useOverlayEditorCore(route, router) {
   const restored = typeof sessionStorage === 'undefined'
     ? createBuilderProject()
     : restoreBuilderProject(sessionStorage.getItem(STORAGE_KEY))
@@ -23,6 +23,7 @@ export function useOverlayEditorCore(route) {
   const workspaceId = ref('')
   const brandId = ref('')
   const revision = ref(0)
+  const brandContext = useCreatorBrandContext(route, router)
   const cleanupCallbacks = new Set()
   let noticeTimer
 
@@ -58,9 +59,9 @@ export function useOverlayEditorCore(route) {
     notice.value = 'Redo applied'
   }
 
-  async function saveDemo() {
+  async function saveDemo({ rethrow = false } = {}) {
     if (loading.value || saving.value) return
-    if (!workspaceId.value || !brandId.value) { notice.value = 'Cannot save: Creator Workspace or Brand is unavailable'; return }
+    if (!workspaceId.value || !brandId.value) { const error = new Error('Cannot save: Creator Workspace or Brand is unavailable'); notice.value = error.message; if (rethrow) throw error; return null }
     saving.value = true
     try {
       const result = await updateEditableOverlayProject(workspaceId.value, brandId.value, project, revision.value)
@@ -70,8 +71,11 @@ export function useOverlayEditorCore(route) {
       dirty.value = false
       sessionStorage.setItem(STORAGE_KEY, JSON.stringify(project))
       notice.value = `Saved to Project Respawn · Revision ${revision.value} · Browser Source not published`
+      return { project, revision: revision.value }
     } catch (error) {
       notice.value = error?.message || 'Overlay save failed'
+      if (rethrow) throw error
+      return null
     } finally {
       saving.value = false
     }
@@ -96,10 +100,9 @@ export function useOverlayEditorCore(route) {
     rememberOverlay(String(route.params.overlayId || ''))
     window.addEventListener('beforeunload', warnUnsaved)
     try {
-      const access = await refreshAccessContext()
-      const brand = access.brands?.[0], workspace = access.workspaces?.find(item => (item.workspaceId || item.id) === brand?.workspaceId) || access.workspaces?.[0]
-      brandId.value = brand?.brandId || brand?.id || ''
-      workspaceId.value = brand?.workspaceId || workspace?.workspaceId || workspace?.id || ''
+      const resolved = await brandContext.load()
+      brandId.value = resolved?.brandId || ''
+      workspaceId.value = resolved?.workspaceId || ''
       if (!brandId.value || !workspaceId.value) throw new Error('Creator Workspace or Brand is unavailable')
       const result = await getEditableOverlayProject(workspaceId.value, brandId.value)
       revision.value = Number(result.revision || 0)
@@ -132,7 +135,7 @@ export function useOverlayEditorCore(route) {
   })
 
   return {
-    project, history, notice, offerWidget, activeWidgetId, previewMode, loading, saving, dirty, revision,
+    project, history, notice, offerWidget, activeWidgetId, previewMode, loading, saving, dirty, revision, workspaceId, brandId, brandContext,
     scene, selectedWidget, commit, selectWidget, changeWidget, undo, redo,
     saveDemo, registerCleanup, storageKey: STORAGE_KEY,
   }

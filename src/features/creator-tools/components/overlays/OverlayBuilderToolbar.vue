@@ -5,7 +5,7 @@
     <span class="builder-badge">Work in progress</span><span class="builder-badge cyan">Server-backed draft</span>
     <div class="toolbar-actions">
       <button @click="$emit('import')">⇩ Import OBS Setup</button><button @click="$emit('export')">⇧ Export to OBS</button>
-      <button :disabled="loading || saving" @click="$emit('save')">▣ {{ saving ? 'Saving…' : !revision ? 'Save to Project Respawn' : dirty ? 'Save changes' : 'Saved' }}</button><button @click="$emit('preview')">▶ Preview</button>
+      <button :disabled="loading || saving || !dirty" @click="$emit('save')">▣ {{ saving ? 'Saving…' : dirty ? 'Save Draft' : 'Draft saved' }}</button><button @click="$emit('preview')">▶ Preview</button>
       <button class="publish" @click="$emit('publish')">➤ &nbsp; Publish Overlay</button>
     </div>
     <button class="obs-offline" type="button" @click="$emit('settings')">○ {{ obsStatusLabel }}</button>

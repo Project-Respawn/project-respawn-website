@@ -7,13 +7,25 @@ export const OVERLAY_EVENT_TYPES = new Set([
 
 const forbiddenSnapshotKey = /token|secret|credential|oauth|authorization|runtimelease|accesskey|privatekey|password/i;
 const triggeredWidgetTypes = new Set(['alerts', 'subscription-alert', 'raid-alert', 'tts']);
-const twitchBehaviorKeys: Record<string, string[]> = { alerts: ['enabledEvents', 'messageTemplate', 'duration', 'minimumCheer', 'soundPlaceholder', 'mediaPlaceholder'], 'subscription-alert': ['title'], 'raid-alert': ['title'], tts: ['duration'], 'twitch-chat': ['platforms', 'maxMessages', 'hideBotMessages', 'hideCommands'] };
+const twitchBehaviorKeys: Record<string, string[]> = { alerts: ['enabledEvents', 'messageTemplate', 'duration', 'minimumCheer', 'soundPlaceholder', 'mediaPlaceholder'], 'subscription-alert': ['title'], 'raid-alert': ['title'], tts: ['duration'], 'twitch-chat': ['platforms', 'maxMessages', 'hideBotMessages', 'hideCommands', 'showUsername', 'showBadges', 'showEmotes', 'messageDuration', 'direction', 'fontSize', 'backgroundOpacity', 'animation'] };
 const alertKinds = ['follow', 'subscription', 'raid', 'cheer', 'redemption'] as const;
+const chatSourceIds = ['twitch', 'youtube', 'tiktok', 'discord', 'kick'] as const;
+
+const DEFAULT_CHAT_CONFIG = Object.freeze({
+  schemaVersion: 2, enabled: true,
+  sources: Object.freeze(Object.fromEntries(chatSourceIds.map((id) => [id, Object.freeze({ enabled: id === 'twitch' })]))),
+  content: Object.freeze({ showUsername: true, showBadges: true, showTimestamps: true, showPlatformIndicator: true, showEmotes: true, maximumVisibleMessages: 10, messageDisplayDuration: 10, hideCommandMessages: false, hideBotMessages: false, highlightMentions: true }),
+  appearance: Object.freeze({ container: Object.freeze({ backgroundType: 'glass', backgroundColor: '#0f172a', opacity: .7, blur: 10, borderEnabled: true, borderColor: '#6d28d9', borderRadius: 12, padding: 16 }), message: Object.freeze({ backgroundType: 'none', backgroundColor: '#111827', opacity: .6, borderRadius: 8, verticalPadding: 6, horizontalPadding: 10 }) }),
+  behaviour: Object.freeze({ messageDirection: 'top-to-bottom', messageSpacing: 8, messageAnimation: 'fade', animationSpeed: 'normal', fadeDuration: 1.5, messageLifetime: 15, autoScroll: true, pauseOnHover: true, smoothScrolling: true }),
+  layout: Object.freeze({ alignment: 'left', width: 'full', avatarBadgePosition: 'left', timestampPosition: 'left', showMessageSeparators: false, separatorStyle: 'solid', separatorColor: '#334155' }),
+  typography: Object.freeze({ usernameFont: 'Inter', usernameWeight: 600, usernameSize: 14, usernameColor: '#a78bfa', messageFont: 'Inter', messageWeight: 400, messageSize: 14, messageColor: '#e2e8f0', timestampColor: '#94a3b8', systemMessageColor: '#f59e0b', linkColor: '#60a5fa', textShadow: false }),
+  blockedTerms: Object.freeze([] as string[]),
+});
 
 export const DEFAULT_TWITCH_OVERLAY_CONFIG = Object.freeze({
   alerts: Object.freeze(Object.fromEntries(alertKinds.map((kind) => [kind, Object.freeze({ enabled: kind !== 'cheer' && kind !== 'redemption', duration: kind === 'follow' ? 6 : 8, template: defaultAlertTemplate(kind), soundUrl: '', volume: 0.8 })]))),
   tts: Object.freeze({ enabled: true, voice: '', volume: 1, rate: 1, pitch: 1, maxLength: 200 }),
-  chat: Object.freeze({ enabled: true, maxMessages: 6, platforms: Object.freeze(['Twitch']), blockedTerms: Object.freeze([]) }),
+  chat: DEFAULT_CHAT_CONFIG,
 });
 
 function defaultAlertTemplate(kind: string) {
@@ -29,6 +41,71 @@ const clamp = (value: unknown, fallback: number, min: number, max: number) => {
 };
 const cleanText = (value: unknown, fallback = '', max = 240) => typeof value === 'string' ? value.trim().slice(0, max) : fallback;
 const cleanHttpsUrl = (value: unknown) => { const text = cleanText(value, '', 500); if (!text) return ''; try { const url = new URL(text); return url.protocol === 'https:' && !url.username && !url.password ? url.toString() : ''; } catch { return ''; } };
+const bool = (value: unknown, fallback: boolean) => typeof value === 'boolean' ? value : fallback;
+const choice = (value: unknown, allowed: readonly string[], fallback: string) => allowed.includes(String(value)) ? String(value) : fallback;
+const color = (value: unknown, fallback: string) => /^#[0-9a-f]{6}$/i.test(String(value || '')) ? String(value).toLowerCase() : fallback;
+const font = (value: unknown, fallback: string) => /^[\p{L}\p{N} _-]{1,60}$/u.test(String(value || '')) ? String(value) : fallback;
+
+function assertCurrentChatConfig(value: Record<string, any>) {
+  if (value.schemaVersion !== 2) return;
+  const fail = () => { throw new Error('Chat configuration is invalid'); };
+  const object = (candidate: unknown) => { if (!safeObject(candidate)) fail(); return candidate as Record<string, any>; };
+  const exactKeys = (candidate: Record<string, any>, allowed: readonly string[]) => {
+    if (Object.keys(candidate).some((key) => !allowed.includes(key))) fail();
+  };
+  const boolean = (candidate: unknown) => { if (typeof candidate !== 'boolean') fail(); };
+  const number = (candidate: unknown, min: number, max: number, integer = false) => {
+    if (typeof candidate !== 'number' || !Number.isFinite(candidate) || candidate < min || candidate > max || (integer && !Number.isInteger(candidate))) fail();
+  };
+  const option = (candidate: unknown, allowed: readonly string[]) => { if (typeof candidate !== 'string' || !allowed.includes(candidate)) fail(); };
+  const colour = (candidate: unknown) => { if (typeof candidate !== 'string' || !/^#[0-9a-f]{6}$/i.test(candidate)) fail(); };
+  const fontName = (candidate: unknown) => { if (typeof candidate !== 'string' || !/^[\p{L}\p{N} _-]{1,60}$/u.test(candidate)) fail(); };
+
+  exactKeys(value, ['schemaVersion', 'enabled', 'sources', 'content', 'appearance', 'behaviour', 'layout', 'typography', 'blockedTerms']);
+  boolean(value.enabled);
+  const sources = object(value.sources); exactKeys(sources, chatSourceIds);
+  for (const id of chatSourceIds) { const source = object(sources[id]); exactKeys(source, ['enabled']); boolean(source.enabled); }
+  const content = object(value.content); exactKeys(content, ['showUsername', 'showBadges', 'showTimestamps', 'showPlatformIndicator', 'showEmotes', 'maximumVisibleMessages', 'messageDisplayDuration', 'hideCommandMessages', 'hideBotMessages', 'highlightMentions']);
+  for (const key of ['showUsername', 'showBadges', 'showTimestamps', 'showPlatformIndicator', 'showEmotes', 'hideCommandMessages', 'hideBotMessages', 'highlightMentions']) boolean(content[key]);
+  number(content.maximumVisibleMessages, 1, 100, true); number(content.messageDisplayDuration, 1, 300);
+  const appearance = object(value.appearance); exactKeys(appearance, ['container', 'message']);
+  const container = object(appearance.container); exactKeys(container, ['backgroundType', 'backgroundColor', 'opacity', 'blur', 'borderEnabled', 'borderColor', 'borderRadius', 'padding']);
+  option(container.backgroundType, ['none', 'solid', 'glass']); colour(container.backgroundColor); number(container.opacity, 0, 1); number(container.blur, 0, 50); boolean(container.borderEnabled); colour(container.borderColor); number(container.borderRadius, 0, 100); number(container.padding, 0, 80);
+  const message = object(appearance.message); exactKeys(message, ['backgroundType', 'backgroundColor', 'opacity', 'borderRadius', 'verticalPadding', 'horizontalPadding']);
+  option(message.backgroundType, ['none', 'solid', 'glass']); colour(message.backgroundColor); number(message.opacity, 0, 1); number(message.borderRadius, 0, 100); number(message.verticalPadding, 0, 40); number(message.horizontalPadding, 0, 60);
+  const behaviour = object(value.behaviour); exactKeys(behaviour, ['messageDirection', 'messageSpacing', 'messageAnimation', 'animationSpeed', 'fadeDuration', 'messageLifetime', 'autoScroll', 'pauseOnHover', 'smoothScrolling']);
+  option(behaviour.messageDirection, ['top-to-bottom', 'bottom-to-top']); number(behaviour.messageSpacing, 0, 40); option(behaviour.messageAnimation, ['none', 'fade', 'slide']); option(behaviour.animationSpeed, ['slow', 'normal', 'fast']); number(behaviour.fadeDuration, 0, 10); number(behaviour.messageLifetime, 1, 600); boolean(behaviour.autoScroll); boolean(behaviour.pauseOnHover); boolean(behaviour.smoothScrolling);
+  const layout = object(value.layout); exactKeys(layout, ['alignment', 'width', 'avatarBadgePosition', 'timestampPosition', 'showMessageSeparators', 'separatorStyle', 'separatorColor']);
+  option(layout.alignment, ['left', 'center', 'right']); option(layout.width, ['compact', 'medium', 'full']); option(layout.avatarBadgePosition, ['left', 'right']); option(layout.timestampPosition, ['left', 'right']); boolean(layout.showMessageSeparators); option(layout.separatorStyle, ['solid', 'dashed', 'dotted']); colour(layout.separatorColor);
+  const typography = object(value.typography); exactKeys(typography, ['usernameFont', 'usernameWeight', 'usernameSize', 'usernameColor', 'messageFont', 'messageWeight', 'messageSize', 'messageColor', 'timestampColor', 'systemMessageColor', 'linkColor', 'textShadow']);
+  fontName(typography.usernameFont); number(typography.usernameWeight, 100, 900, true); if (typography.usernameWeight % 100) fail(); number(typography.usernameSize, 8, 72); colour(typography.usernameColor); fontName(typography.messageFont); number(typography.messageWeight, 100, 900, true); if (typography.messageWeight % 100) fail(); number(typography.messageSize, 8, 72); colour(typography.messageColor); colour(typography.timestampColor); colour(typography.systemMessageColor); colour(typography.linkColor); boolean(typography.textShadow);
+  if (!Array.isArray(value.blockedTerms) || value.blockedTerms.length > 100 || value.blockedTerms.some((term: unknown) => typeof term !== 'string' || !term.trim() || term.length > 80)) fail();
+}
+
+export function normalizeChatConfig(value: unknown) {
+  const raw = safeObject(value) ? value : {}, d: any = DEFAULT_CHAT_CONFIG;
+  const sources = safeObject(raw.sources) ? raw.sources : {};
+  const legacyPlatforms = Array.isArray(raw.platforms) ? new Set(raw.platforms.map((item: unknown) => String(item).toLowerCase())) : null;
+  const content = safeObject(raw.content) ? raw.content : {}, appearance = safeObject(raw.appearance) ? raw.appearance : {};
+  const container = safeObject(appearance.container) ? appearance.container : {}, message = safeObject(appearance.message) ? appearance.message : {};
+  const behaviour = safeObject(raw.behaviour) ? raw.behaviour : {}, layout = safeObject(raw.layout) ? raw.layout : {}, typography = safeObject(raw.typography) ? raw.typography : {};
+  const normalizedSources = Object.fromEntries(chatSourceIds.map((id) => [id, { enabled: bool(safeObject(sources[id]) ? sources[id].enabled : undefined, legacyPlatforms ? legacyPlatforms.has(id) : d.sources[id].enabled) }]));
+  return {
+    schemaVersion: 2, enabled: bool(raw.enabled, d.enabled), sources: normalizedSources,
+    content: {
+      showUsername: bool(content.showUsername, d.content.showUsername), showBadges: bool(content.showBadges, d.content.showBadges), showTimestamps: bool(content.showTimestamps, d.content.showTimestamps), showPlatformIndicator: bool(content.showPlatformIndicator, d.content.showPlatformIndicator), showEmotes: bool(content.showEmotes, d.content.showEmotes),
+      maximumVisibleMessages: Math.round(clamp(content.maximumVisibleMessages ?? raw.maxMessages, d.content.maximumVisibleMessages, 1, 100)), messageDisplayDuration: clamp(content.messageDisplayDuration, d.content.messageDisplayDuration, 1, 300), hideCommandMessages: bool(content.hideCommandMessages, d.content.hideCommandMessages), hideBotMessages: bool(content.hideBotMessages, d.content.hideBotMessages), highlightMentions: bool(content.highlightMentions, d.content.highlightMentions),
+    },
+    appearance: {
+      container: { backgroundType: choice(container.backgroundType, ['none', 'solid', 'glass'], d.appearance.container.backgroundType), backgroundColor: color(container.backgroundColor, d.appearance.container.backgroundColor), opacity: clamp(container.opacity, d.appearance.container.opacity, 0, 1), blur: clamp(container.blur, d.appearance.container.blur, 0, 50), borderEnabled: bool(container.borderEnabled, d.appearance.container.borderEnabled), borderColor: color(container.borderColor, d.appearance.container.borderColor), borderRadius: clamp(container.borderRadius, d.appearance.container.borderRadius, 0, 100), padding: clamp(container.padding, d.appearance.container.padding, 0, 80) },
+      message: { backgroundType: choice(message.backgroundType, ['none', 'solid', 'glass'], d.appearance.message.backgroundType), backgroundColor: color(message.backgroundColor, d.appearance.message.backgroundColor), opacity: clamp(message.opacity, d.appearance.message.opacity, 0, 1), borderRadius: clamp(message.borderRadius, d.appearance.message.borderRadius, 0, 100), verticalPadding: clamp(message.verticalPadding, d.appearance.message.verticalPadding, 0, 40), horizontalPadding: clamp(message.horizontalPadding, d.appearance.message.horizontalPadding, 0, 60) },
+    },
+    behaviour: { messageDirection: choice(behaviour.messageDirection, ['top-to-bottom', 'bottom-to-top'], d.behaviour.messageDirection), messageSpacing: clamp(behaviour.messageSpacing, d.behaviour.messageSpacing, 0, 40), messageAnimation: choice(behaviour.messageAnimation, ['none', 'fade', 'slide'], d.behaviour.messageAnimation), animationSpeed: choice(behaviour.animationSpeed, ['slow', 'normal', 'fast'], d.behaviour.animationSpeed), fadeDuration: clamp(behaviour.fadeDuration, d.behaviour.fadeDuration, 0, 10), messageLifetime: clamp(behaviour.messageLifetime, d.behaviour.messageLifetime, 1, 600), autoScroll: bool(behaviour.autoScroll, d.behaviour.autoScroll), pauseOnHover: bool(behaviour.pauseOnHover, d.behaviour.pauseOnHover), smoothScrolling: bool(behaviour.smoothScrolling, d.behaviour.smoothScrolling) },
+    layout: { alignment: choice(layout.alignment, ['left', 'center', 'right'], d.layout.alignment), width: choice(layout.width, ['compact', 'medium', 'full'], d.layout.width), avatarBadgePosition: choice(layout.avatarBadgePosition, ['left', 'right'], d.layout.avatarBadgePosition), timestampPosition: choice(layout.timestampPosition, ['left', 'right'], d.layout.timestampPosition), showMessageSeparators: bool(layout.showMessageSeparators, d.layout.showMessageSeparators), separatorStyle: choice(layout.separatorStyle, ['solid', 'dashed', 'dotted'], d.layout.separatorStyle), separatorColor: color(layout.separatorColor, d.layout.separatorColor) },
+    typography: { usernameFont: font(typography.usernameFont, d.typography.usernameFont), usernameWeight: Math.round(clamp(typography.usernameWeight, d.typography.usernameWeight, 100, 900) / 100) * 100, usernameSize: clamp(typography.usernameSize, d.typography.usernameSize, 8, 72), usernameColor: color(typography.usernameColor, d.typography.usernameColor), messageFont: font(typography.messageFont, d.typography.messageFont), messageWeight: Math.round(clamp(typography.messageWeight, d.typography.messageWeight, 100, 900) / 100) * 100, messageSize: clamp(typography.messageSize, d.typography.messageSize, 8, 72), messageColor: color(typography.messageColor, d.typography.messageColor), timestampColor: color(typography.timestampColor, d.typography.timestampColor), systemMessageColor: color(typography.systemMessageColor, d.typography.systemMessageColor), linkColor: color(typography.linkColor, d.typography.linkColor), textShadow: bool(typography.textShadow, d.typography.textShadow) },
+    blockedTerms: Array.isArray(raw.blockedTerms) ? raw.blockedTerms.map((item: unknown) => cleanText(item, '', 80).toLowerCase()).filter(Boolean).slice(0, 100) : [],
+  };
+}
 
 export function validateTwitchOverlayConfig(value: unknown) {
   const input = safeObject(value) ? value : {}, inputAlerts = safeObject(input.alerts) ? input.alerts : {};
@@ -37,10 +114,11 @@ export function validateTwitchOverlayConfig(value: unknown) {
     return [kind, { enabled: raw.enabled === undefined ? defaults.enabled : raw.enabled === true, duration: clamp(raw.duration, defaults.duration, 1, 60), template: cleanText(raw.template, defaults.template), soundUrl: cleanHttpsUrl(raw.soundUrl), volume: clamp(raw.volume, defaults.volume, 0, 1) }];
   }));
   const rawTts = safeObject(input.tts) ? input.tts : {}, rawChat = safeObject(input.chat) ? input.chat : {};
+  assertCurrentChatConfig(rawChat);
   return {
     alerts,
     tts: { enabled: rawTts.enabled !== false, voice: cleanText(rawTts.voice, '', 120), volume: clamp(rawTts.volume, 1, 0, 1), rate: clamp(rawTts.rate, 1, 0.5, 2), pitch: clamp(rawTts.pitch, 1, 0, 2), maxLength: Math.round(clamp(rawTts.maxLength, 200, 1, 500)) },
-    chat: { enabled: rawChat.enabled !== false, maxMessages: Math.round(clamp(rawChat.maxMessages, 6, 1, 50)), platforms: Array.isArray(rawChat.platforms) ? rawChat.platforms.map((item: unknown) => cleanText(item, '', 30)).filter(Boolean).slice(0, 8) : ['Twitch'], blockedTerms: Array.isArray(rawChat.blockedTerms) ? rawChat.blockedTerms.map((item: unknown) => cleanText(item, '', 80).toLowerCase()).filter(Boolean).slice(0, 100) : [] },
+    chat: normalizeChatConfig(rawChat),
   };
 }
 
@@ -163,6 +241,7 @@ export function createPublicationRecord(input: any, ownerUserId: string, credent
     publicationId, overlayId: String(input.overlayId || ''), sceneId: String(input.sceneId || sceneSnapshot.id || ''),
     workspaceId: String(input.workspaceId), brandId: String(input.brandId), ownerUserId,
     entityType: 'PUBLICATION', revision: 1, status: 'TEST', credentialHash, sceneSnapshot,
+    ...(Number.isInteger(input.sourceEditorRevision) && input.sourceEditorRevision >= 0 ? { sourceEditorRevision: input.sourceEditorRevision } : {}),
     createdAt: now.toISOString(), updatedAt: now.toISOString(),
   };
 }
@@ -180,10 +259,10 @@ export function createActivePublicationLock(publication: any) {
   };
 }
 
-export function updatePublicationRecord(publication: any, sceneId: string, sceneSnapshot: unknown, now: Date) {
+export function updatePublicationRecord(publication: any, sceneId: string, sceneSnapshot: unknown, now: Date, sourceEditorRevision?: number) {
   if (!publicationIsActive(publication, now.getTime())) throw new Error('Overlay publication is not active');
   const snapshot = validateSceneSnapshot(sceneSnapshot);
-  return { ...publication, sceneId: String(sceneId || snapshot.id || ''), sceneSnapshot: snapshot, revision: Number(publication.revision || 0) + 1, updatedAt: now.toISOString() };
+  return { ...publication, sceneId: String(sceneId || snapshot.id || ''), sceneSnapshot: snapshot, revision: Number(publication.revision || 0) + 1, updatedAt: now.toISOString(), ...(Number.isInteger(sourceEditorRevision) && Number(sourceEditorRevision) >= 0 ? { sourceEditorRevision } : {}) };
 }
 
 export function rotatePublicationCredential(publication: any, credentialHash: string, now: Date) {

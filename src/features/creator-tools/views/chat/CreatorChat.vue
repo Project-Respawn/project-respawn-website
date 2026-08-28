@@ -22,6 +22,13 @@
           </div>
 
           <div class="creator-chat-header__actions">
+            <label class="chat-brand-select">
+              <span>Brand</span>
+              <select v-model="selectedBrandId" :disabled="loading || saving" @change="changeBrand">
+                <option value="" disabled>Select a Brand</option>
+                <option v-for="brand in brands" :key="brand.brandId || brand.id" :value="brand.brandId || brand.id">{{ brand.name }}</option>
+              </select>
+            </label>
             <button
               type="button"
               class="chat-action-button chat-action-button--secondary"
@@ -33,6 +40,7 @@
             <button
               type="button"
               class="chat-action-button chat-action-button--primary"
+              :disabled="loading || saving || !selectedBrandId"
               :class="{
                 'chat-action-button--dirty':
                   isDirty,
@@ -44,6 +52,7 @@
           </div>
         </div>
       </header>
+      <p v-if="statusMessage" class="chat-status" :class="`chat-status--${statusType}`" role="status">{{ statusMessage }}</p>
 
       <!-- =========================================================
            TABS
@@ -316,9 +325,8 @@
 </template>
 
 <script setup>
-import {
-  ref,
-} from 'vue'
+import { onMounted, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 import ChatLivePreview from './ChatLivePreview.vue'
 
@@ -337,6 +345,20 @@ import {
 import {
   chatPresets,
 } from './chat.presets.js'
+import { creatorChatSettings, normalizeCreatorChatConfig, toCanonicalChatConfig } from './chat.config.js'
+import { useCreatorBrandContext } from '../../composables/useCreatorBrandContext.js'
+import { getTwitchOverlayConfig, updateTwitchOverlayConfig } from '../../services/overlaySource.js'
+
+const route = useRoute()
+const router = useRouter()
+const brandContext = useCreatorBrandContext(route, router)
+const { brands, selectedBrandId, workspaceId } = brandContext
+const loading = ref(true)
+const saving = ref(false)
+const statusMessage = ref('')
+const statusType = ref('info')
+const canonicalConfig = ref(null)
+const savedChat = ref(null)
 
 /* =========================================================
    TABS
@@ -790,17 +812,57 @@ function testChat() {
    SAVE
 ========================================================= */
 
-function saveSettings() {
-  console.info(
-    '[Creator Chat] Save requested',
-    structuredClone(
-      settings.value
-    )
-  )
-
-  isDirty.value =
-    false
+function showStatus(message, type = 'info') {
+  statusMessage.value = message
+  statusType.value = type
 }
+
+async function loadSettings() {
+  loading.value = true
+  try {
+    const result = await getTwitchOverlayConfig(workspaceId.value, selectedBrandId.value)
+    canonicalConfig.value = result.config || {}
+    const normalized = normalizeCreatorChatConfig(result.config?.chat)
+    settings.value = creatorChatSettings(normalized)
+    savedChat.value = normalized
+    activePreset.value = null
+    isDirty.value = false
+    showStatus(`Loaded Chat settings for ${brandContext.selectedBrand.value?.name || 'Brand'}`, 'success')
+  } catch (error) {
+    showStatus(error?.message || 'Could not load Chat settings', 'error')
+    throw error
+  } finally { loading.value = false }
+}
+
+async function changeBrand() {
+  try {
+    await brandContext.select(selectedBrandId.value)
+    await loadSettings()
+  } catch (error) { showStatus(error?.message || 'Could not switch Brand', 'error') }
+}
+
+async function saveSettings() {
+  if (!canonicalConfig.value || !workspaceId.value || !selectedBrandId.value) return
+  saving.value = true
+  try {
+    const chat = toCanonicalChatConfig(settings.value, savedChat.value || canonicalConfig.value.chat)
+    const result = await updateTwitchOverlayConfig(workspaceId.value, selectedBrandId.value, { ...canonicalConfig.value, chat })
+    canonicalConfig.value = result.config
+    const normalized = normalizeCreatorChatConfig(result.config?.chat)
+    settings.value = creatorChatSettings(normalized)
+    savedChat.value = normalized
+    isDirty.value = false
+    showStatus('Chat settings saved', 'success')
+  } catch (error) {
+    isDirty.value = true
+    showStatus(error?.message || 'Could not save Chat settings', 'error')
+  } finally { saving.value = false }
+}
+
+onMounted(async () => {
+  try { await brandContext.load(); await loadSettings() }
+  catch (error) { loading.value = false; showStatus(error?.message || 'Could not open Chat settings', 'error') }
+})
 </script>
 
 <style scoped>
@@ -930,6 +992,12 @@ function saveSettings() {
   gap:
     8px;
 }
+
+.chat-brand-select { display: grid; gap: 4px; color: #818c9a; font-size: 9px; }
+.chat-brand-select select { min-width: 160px; height: 36px; padding: 0 9px; border: 1px solid #2d3744; border-radius: 7px; color: #e1e6ec; background: #111821; }
+.chat-status { margin: -8px 0 14px; padding: 9px 12px; border: 1px solid #263241; border-radius: 7px; color: #aeb8c5; background: #101721; font-size: 11px; }
+.chat-status--success { border-color: rgba(34,197,94,.35); color: #86efac; }
+.chat-status--error { border-color: rgba(239,68,68,.4); color: #fca5a5; }
 
 .chat-action-button {
   display:

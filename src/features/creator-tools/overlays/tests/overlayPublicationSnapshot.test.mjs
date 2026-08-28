@@ -31,3 +31,15 @@ test('event-driven widgets cannot publish unsafe always-visible demo state', () 
     assert.equal(widgetDisplayMode({ type, displayMode: 'always' }), 'triggered');
   }
 });
+
+test('publication excludes disabled, hidden, and physically deleted widgets', () => {
+  const visible = { id: 'visible', type: 'text', enabled: true, hidden: false };
+  const disabled = { id: 'disabled', type: 'text', enabled: false };
+  const hidden = { id: 'hidden', type: 'text', enabled: true, hidden: true };
+  const deleted = { id: 'deleted', type: 'text', enabled: true };
+  const scene = { widgets: [visible, disabled, hidden] };
+  const snapshot = createPublicationSceneSnapshot(scene);
+  assert.deepEqual(snapshot.widgets.map((widget) => widget.id), ['visible']);
+  assert.equal(snapshot.widgets.some((widget) => widget.id === deleted.id), false);
+  assert.equal(scene.widgets.length, 3, 'snapshotting must not mutate the editable project');
+});

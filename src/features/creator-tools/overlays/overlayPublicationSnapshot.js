@@ -11,7 +11,7 @@ const canonicalTopicsByType = Object.freeze({
 const twitchBehaviorKeysByType = Object.freeze({
   alerts: ['enabledEvents', 'messageTemplate', 'duration', 'minimumCheer', 'soundPlaceholder', 'mediaPlaceholder'],
   'subscription-alert': ['title'], 'raid-alert': ['title'], tts: ['duration'],
-  'twitch-chat': ['platforms', 'maxMessages', 'hideBotMessages', 'hideCommands'],
+  'twitch-chat': ['platforms', 'maxMessages', 'hideBotMessages', 'hideCommands', 'showUsername', 'showBadges', 'showEmotes', 'messageDuration', 'direction', 'fontSize', 'backgroundOpacity', 'animation'],
 });
 function overlayOwnedSettings(widget) { const settings = { ...(widget.settings || {}) }; for (const key of twitchBehaviorKeysByType[widget.type] || []) delete settings[key]; return settings; }
 
@@ -23,7 +23,9 @@ export function widgetDisplayMode(widget) {
 
 export function createPublicationSceneSnapshot(scene) {
   const snapshot = cloneSerializableData(scene);
-  snapshot.widgets = (snapshot.widgets || []).map((widget) => {
+  snapshot.widgets = (snapshot.widgets || [])
+    .filter((widget) => widget?.enabled !== false && widget?.hidden !== true)
+    .map((widget) => {
     const configuredTopics = Array.isArray(widget.dataSource?.topics) ? widget.dataSource.topics : [];
     return {
       ...widget,
@@ -34,6 +36,6 @@ export function createPublicationSceneSnapshot(scene) {
         topics: configuredTopics.length ? configuredTopics : [...(canonicalTopicsByType[widget.type] || [])],
       },
     };
-  });
+    });
   return snapshot;
 }
