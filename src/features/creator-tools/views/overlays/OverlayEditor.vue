@@ -21,6 +21,7 @@
       :loading="loading"
       :saving="saving"
       :dirty="dirty"
+      :revision="revision"
       :obs-status-label="obsStatusLabel"
       @rename="renameProject"
       @theme="changeTheme"
@@ -876,6 +877,7 @@ const {
   loading,
   saving,
   dirty,
+  revision,
 } = core
 
 
