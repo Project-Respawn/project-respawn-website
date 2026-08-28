@@ -43,6 +43,7 @@ test('editable overlay save is owner-bound, separate from publication, and revis
   assert.match(handler, /async function managedEditorProject/);
   assert.match(handler, /editableOverlayProjectId/);
   assert.match(handler, /EDITABLE_OVERLAY_PROJECT/);
+  assert.match(handler, /ExpressionAttributeNames: \{ '#project': 'project' \}/);
   assert.match(handler, /attribute_not_exists\(revision\).*revision = :expected/);
   assert.match(handler, /Editable overlay changed in another session/);
 });

@@ -141,8 +141,9 @@ async function managedEditorProject(event: any, method: string) {
   try {
     const result = await db.send(new UpdateCommand({
       TableName: tableName, Key: key,
-      UpdateExpression: 'SET entityType = :type, workspaceId = :workspaceId, brandId = :brandId, ownerUserId = :owner, project = :project, revision = if_not_exists(revision, :zero) + :one, updatedAt = :now, createdAt = if_not_exists(createdAt, :now)',
+      UpdateExpression: 'SET entityType = :type, workspaceId = :workspaceId, brandId = :brandId, ownerUserId = :owner, #project = :project, revision = if_not_exists(revision, :zero) + :one, updatedAt = :now, createdAt = if_not_exists(createdAt, :now)',
       ConditionExpression: '(attribute_not_exists(revision) AND :expected = :zero) OR revision = :expected',
+      ExpressionAttributeNames: { '#project': 'project' },
       ExpressionAttributeValues: { ':type': 'EDITABLE_OVERLAY_PROJECT', ':workspaceId': String(input.workspaceId), ':brandId': String(input.brandId), ':owner': sub, ':project': project, ':zero': 0, ':one': 1, ':expected': expectedRevision, ':now': now }, ReturnValues: 'ALL_NEW',
     }));
     return json(200, { project: result.Attributes?.project, revision: Number(result.Attributes?.revision || 1) });
