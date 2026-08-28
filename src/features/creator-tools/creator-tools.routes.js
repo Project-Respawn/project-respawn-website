@@ -2,43 +2,29 @@ import CreatorLayout from './components/CreatorLayout.vue'
 
 import CreatorDashboard from './views/dashboard/CreatorDashboard.vue'
 import CreatorProfile from './views/profile/CreatorProfile.vue'
-
 import CreatorDiscord from './views/discord/CreatorDiscord.vue'
+import CreatorCommunity from './views/community/CreatorCommunity.vue'
+import CreatorRewards from './views/rewards/CreatorRewards.vue'
+import CreatorAchievements from './views/achievements/CreatorAchievements.vue'
+import CreatorEvents from './views/events/CreatorEvents.vue'
+import CreatorMembers from './views/members/CreatorMembers.vue'
+import CreatorAnalytics from './views/analytics/CreatorAnalytics.vue'
+import CreatorSetup from './views/setup/CreatorSetup.vue'
+import CreatorChat from './views/chat/CreatorChat.vue'
 
 import BotsOverview from './views/bots/overview/BotsOverview.vue'
-
-import CreatorCommunity from './views/community/CreatorCommunity.vue'
-
-import CreatorRewards from './views/rewards/CreatorRewards.vue'
-
-import CreatorAchievements from './views/achievements/CreatorAchievements.vue'
-
-import CreatorEvents from './views/events/CreatorEvents.vue'
-
-import CreatorMembers from './views/members/CreatorMembers.vue'
-
-import CreatorAnalytics from './views/analytics/CreatorAnalytics.vue'
-
-import CreatorSetup from './views/setup/CreatorSetup.vue'
+import Automation from './views/bots/automation/Automation.vue'
 
 import TwitchOverview from './views/twitch/overview/TwitchOverview.vue'
-
 import BasicCommands from './views/twitch/commands/basic/BasicCommands.vue'
-
 import TwitchAlerts from './views/twitch/alerts/TwitchAlerts.vue'
-
 import TextToSpeech from './views/twitch/text-to-speech/TextToSpeech.vue'
-
 import TwitchModeration from './views/twitch/moderation/TwitchModeration.vue'
-
-import Automation from './views/bots/automation/Automation.vue'
 
 import Integrations from './views/integrations/Integrations.vue'
 
 import OverlayManager from './views/overlays/OverlayManager.vue'
-
 import OverlayEditor from './views/overlays/OverlayEditor.vue'
-
 import OverlayEntry from './views/overlays/OverlayEntry.vue'
 import OverlayBrowserSource from './views/overlays/OverlayBrowserSource.vue'
 
@@ -56,8 +42,11 @@ export default [
     path: '/overlay-source/:credential',
     name: 'OverlayBrowserSource',
     component: OverlayBrowserSource,
-    meta: { hideLayout: true }
+    meta: {
+      hideLayout: true
+    }
   },
+
   {
     path: '/creator-tools',
     component: CreatorLayout,
@@ -67,7 +56,10 @@ export default [
       {
         path: '',
         name: 'CreatorDashboard',
-        component: CreatorDashboard
+        component: CreatorDashboard,
+        meta: {
+          creatorFeature: 'dashboard'
+        }
       },
 
       {
@@ -83,56 +75,89 @@ export default [
         path: 'twitch',
         name: 'CreatorTwitch',
         component: TwitchOverview,
-        alias: '/bot/twitch'
+        alias: '/bot/twitch',
+        meta: {
+          creatorFeature: 'twitch'
+        }
       },
 
       {
         path: 'discord',
         name: 'CreatorDiscord',
         component: CreatorDiscord,
-        alias: '/bot/discord'
+        alias: '/bot/discord',
+        meta: {
+          creatorFeature: 'discord'
+        }
       },
 
       {
         path: 'bots',
         name: 'CreatorBots',
         component: BotsOverview,
-        alias: '/bot'
+        alias: '/bot',
+        meta: {
+          creatorFeature: 'bots'
+        }
       },
 
       {
         path: 'bots/twitch/commands',
         name: 'CreatorTwitchCommands',
         component: BasicCommands,
-        alias: '/bot/twitch/commands'
+        alias: '/bot/twitch/commands',
+        meta: {
+          creatorFeature: 'bots'
+        }
       },
 
       {
         path: 'bots/twitch/alerts',
         name: 'CreatorTwitchAlerts',
         component: TwitchAlerts,
-        alias: '/bot/twitch/alerts'
+        alias: '/bot/twitch/alerts',
+        meta: {
+          creatorFeature: 'bots'
+        }
       },
 
       {
         path: 'bots/twitch/tts',
         name: 'CreatorTwitchTts',
         component: TextToSpeech,
-        alias: '/bot/twitch/tts'
+        alias: '/bot/twitch/tts',
+        meta: {
+          creatorFeature: 'bots'
+        }
       },
 
       {
         path: 'bots/moderation',
         name: 'CreatorBotModeration',
         component: TwitchModeration,
-        alias: '/bot/twitch/moderation'
+        alias: '/bot/twitch/moderation',
+        meta: {
+          creatorFeature: 'bots'
+        }
       },
 
       {
         path: 'bots/automation',
         name: 'CreatorBotAutomation',
         component: Automation,
-        alias: '/bot/automation'
+        alias: '/bot/automation',
+        meta: {
+          creatorFeature: 'bots'
+        }
+      },
+
+      {
+        path: 'chat',
+        name: 'CreatorChat',
+        component: CreatorChat,
+        meta: {
+          creatorFeature: 'chat'
+        }
       },
 
       {
@@ -165,50 +190,74 @@ export default [
       {
         path: 'community',
         name: 'CreatorCommunity',
-        component: CreatorCommunity
+        component: CreatorCommunity,
+        meta: {
+          creatorFeature: 'community'
+        }
       },
 
       {
         path: 'rewards',
         name: 'CreatorRewards',
-        component: CreatorRewards
+        component: CreatorRewards,
+        meta: {
+          creatorFeature: 'rewards'
+        }
       },
 
       {
         path: 'achievements',
         name: 'CreatorAchievements',
-        component: CreatorAchievements
+        component: CreatorAchievements,
+        meta: {
+          creatorFeature: 'achievements'
+        }
       },
 
       {
         path: 'events',
         name: 'CreatorEvents',
-        component: CreatorEvents
+        component: CreatorEvents,
+        meta: {
+          creatorFeature: 'events'
+        }
       },
 
       {
         path: 'members',
         name: 'CreatorMembers',
-        component: CreatorMembers
+        component: CreatorMembers,
+        meta: {
+          creatorFeature: 'members'
+        }
       },
 
       {
         path: 'analytics',
         name: 'CreatorAnalytics',
-        component: CreatorAnalytics
+        component: CreatorAnalytics,
+        meta: {
+          creatorFeature: 'analytics'
+        }
       },
 
       {
         path: 'integrations',
         name: 'CreatorIntegrations',
         component: Integrations,
-        alias: '/bot/settings'
+        alias: '/bot/settings',
+        meta: {
+          creatorFeature: 'integrations'
+        }
       },
 
       {
         path: 'setup',
         name: 'CreatorSetup',
-        component: CreatorSetup
+        component: CreatorSetup,
+        meta: {
+          creatorFeature: 'setup'
+        }
       }
     ]
   },

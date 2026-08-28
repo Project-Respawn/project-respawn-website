@@ -49,6 +49,20 @@ export const creatorFeatureRegistry = Object.freeze({
     status: CREATOR_FEATURE_STATUS.LIVE
   },
 
+  chat: {
+    id: 'chat',
+    label: 'Chat',
+    icon: 'chat',
+    routeName: 'CreatorChat',
+    routePath: '/creator-tools/chat',
+    navigationGroup: 'Tools',
+    status: CREATOR_FEATURE_STATUS.PREVIEW,
+    description:
+      'Configure unified stream chat sources, appearance and behaviour.',
+    showInSidebar: true,
+    showInMobileNavigation: true
+  },
+
   overlays: {
     id: 'overlays',
     label: 'Overlay Builder',
@@ -57,6 +71,7 @@ export const creatorFeatureRegistry = Object.freeze({
     routePath: '/creator-tools/overlays',
     activeRouteNames: [
       'CreatorOverlays',
+      'CreatorOverlayLibrary',
       'CreatorOverlayEditor'
     ],
     navigationGroup: 'Tools',
@@ -141,6 +156,7 @@ export const creatorNavigation = Object.freeze([
   {
     label: 'Tools',
     items: [
+      'chat',
       'overlays',
       'bots',
       'community',
