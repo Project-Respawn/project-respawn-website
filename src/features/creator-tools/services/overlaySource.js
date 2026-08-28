@@ -62,6 +62,15 @@ export function updateTwitchOverlayConfig(workspaceId, brandId, config, fetchImp
   return authenticatedRequest('overlay/twitch-config', { method: 'PUT', body: JSON.stringify({ workspaceId, brandId, config }) }, fetchImpl);
 }
 
+export function getEditableOverlayProject(workspaceId, brandId, fetchImpl = fetch) {
+  const query = new URLSearchParams({ workspaceId, brandId });
+  return authenticatedRequest(`overlay/editor-project?${query}`, { method: 'GET' }, fetchImpl);
+}
+
+export function updateEditableOverlayProject(workspaceId, brandId, project, revision, fetchImpl = fetch) {
+  return authenticatedRequest('overlay/editor-project', { method: 'PUT', body: JSON.stringify({ workspaceId, brandId, project, revision }) }, fetchImpl);
+}
+
 export function createOverlaySourceConnection({ websocketUrl, credential, WebSocketImpl = WebSocket, onEvent, onReconnect = () => {} }) {
   let socket = null; let stopped = false; let reconnectTimer = null; let attempts = 0;
   const connect = () => {

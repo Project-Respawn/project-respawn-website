@@ -23,7 +23,7 @@ test('dedicated stack synthesizes two isolated on-demand tables with required in
 test('Creator endpoints are JWT authorized while opaque source configuration is credential authorized', () => {
   const value = template(); value.resourceCountIs('AWS::ApiGatewayV2::Authorizer', 1);
   value.hasResourceProperties('AWS::ApiGatewayV2::Route', { RouteKey: 'GET /overlay/source/{credential}', AuthorizationType: 'NONE' });
-  for (const routeKey of ['POST /overlay/publications', 'GET /overlay/publications/active', 'GET /overlay/twitch-config', 'PUT /overlay/twitch-config', 'PUT /overlay/publications/{publicationId}', 'DELETE /overlay/publications/{publicationId}', 'POST /overlay/publications/{publicationId}/events', 'POST /overlay/publications/{publicationId}/rotate']) value.hasResourceProperties('AWS::ApiGatewayV2::Route', { RouteKey: routeKey, AuthorizationType: 'JWT' });
+  for (const routeKey of ['POST /overlay/publications', 'GET /overlay/publications/active', 'GET /overlay/twitch-config', 'PUT /overlay/twitch-config', 'GET /overlay/editor-project', 'PUT /overlay/editor-project', 'PUT /overlay/publications/{publicationId}', 'DELETE /overlay/publications/{publicationId}', 'POST /overlay/publications/{publicationId}/events', 'POST /overlay/publications/{publicationId}/rotate']) value.hasResourceProperties('AWS::ApiGatewayV2::Route', { RouteKey: routeKey, AuthorizationType: 'JWT' });
 });
 
 test('publication IAM includes transactional writes needed for the race-safe Brand lock', () => {

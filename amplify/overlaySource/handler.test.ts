@@ -38,3 +38,11 @@ test('canonical Twitch config is Brand-bound, revisioned separately, and safely 
   assert.match(handler, /twitchConfig: configRecord\?\.config/);
   assert.doesNotMatch(handler, /encryptedTokenBundle|TWITCH_CLIENT_SECRET|authorization.*twitchConfig/i);
 });
+
+test('editable overlay save is owner-bound, separate from publication, and revision-safe', () => {
+  assert.match(handler, /async function managedEditorProject/);
+  assert.match(handler, /editableOverlayProjectId/);
+  assert.match(handler, /EDITABLE_OVERLAY_PROJECT/);
+  assert.match(handler, /attribute_not_exists\(revision\).*revision = :expected/);
+  assert.match(handler, /Editable overlay changed in another session/);
+});

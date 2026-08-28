@@ -2,7 +2,7 @@ import type { APIGatewayProxyHandlerV2, APIGatewayProxyWebsocketHandlerV2 } from
 import { ApiGatewayManagementApiClient, PostToConnectionCommand } from '@aws-sdk/client-apigatewaymanagementapi';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DeleteCommand, DynamoDBDocumentClient, GetCommand, PutCommand, QueryCommand, TransactWriteCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
-import { activePublicationLockId, assertPublicationOwner, assertWorkspaceBrandOwner, createActivePublicationLock, createConnectionRecord, createPublicationRecord, DEFAULT_TWITCH_OVERLAY_CONFIG, fanOutOverlayEvent, hashOverlayCredential, issueOverlayCredential, publicationIsActive, rotatePublicationCredential, twitchOverlayConfigId, validateOverlayEvent, validateSceneSnapshot, validateTwitchOverlayConfig } from './domain';
+import { activePublicationLockId, assertPublicationOwner, assertWorkspaceBrandOwner, createActivePublicationLock, createConnectionRecord, createPublicationRecord, DEFAULT_TWITCH_OVERLAY_CONFIG, editableOverlayProjectId, fanOutOverlayEvent, hashOverlayCredential, issueOverlayCredential, publicationIsActive, rotatePublicationCredential, twitchOverlayConfigId, validateEditableOverlayProject, validateOverlayEvent, validateSceneSnapshot, validateTwitchOverlayConfig } from './domain';
 import { randomUUID } from 'node:crypto';
 
 const db = DynamoDBDocumentClient.from(new DynamoDBClient({}));
@@ -130,6 +130,28 @@ async function managedTwitchConfig(event: any, method: string) {
   return json(200, { config: result.Attributes?.config, revision: Number(result.Attributes?.revision || 1) });
 }
 
+async function managedEditorProject(event: any, method: string) {
+  const input = method === 'GET' ? (event.queryStringParameters || {}) : body(event), sub = userId(event);
+  await authorizeBindings(input, sub); const tableName = env('PUBLICATION_TABLE'), key = { publicationId: editableOverlayProjectId(String(input.brandId)) };
+  if (method === 'GET') {
+    const existing = (await db.send(new GetCommand({ TableName: tableName, Key: key, ConsistentRead: true }))).Item;
+    return json(200, { project: existing?.project || null, revision: Number(existing?.revision || 0) });
+  }
+  const project = validateEditableOverlayProject(input.project), expectedRevision = Number(input.revision || 0), now = new Date().toISOString();
+  try {
+    const result = await db.send(new UpdateCommand({
+      TableName: tableName, Key: key,
+      UpdateExpression: 'SET entityType = :type, workspaceId = :workspaceId, brandId = :brandId, ownerUserId = :owner, project = :project, revision = if_not_exists(revision, :zero) + :one, updatedAt = :now, createdAt = if_not_exists(createdAt, :now)',
+      ConditionExpression: '(attribute_not_exists(revision) AND :expected = :zero) OR revision = :expected',
+      ExpressionAttributeValues: { ':type': 'EDITABLE_OVERLAY_PROJECT', ':workspaceId': String(input.workspaceId), ':brandId': String(input.brandId), ':owner': sub, ':project': project, ':zero': 0, ':one': 1, ':expected': expectedRevision, ':now': now }, ReturnValues: 'ALL_NEW',
+    }));
+    return json(200, { project: result.Attributes?.project, revision: Number(result.Attributes?.revision || 1) });
+  } catch (error: any) {
+    if (error?.name === 'ConditionalCheckFailedException') throw new Error('Editable overlay changed in another session; reload before saving');
+    throw error;
+  }
+}
+
 async function sendTestEvent(event: any, publicationId: string) {
   const sub = userId(event), publication = await getPublication(publicationId); await authorizeActivePublication(publication, sub);
   if (!publicationIsActive(publication)) throw new Error('Overlay publication is not active'); const envelope = validateOverlayEvent(body(event).event);
@@ -157,6 +179,7 @@ export const handler: APIGatewayProxyHandlerV2 & APIGatewayProxyWebsocketHandler
     const method = event.requestContext?.http?.method, path = String(event.rawPath || '');
     if (method === 'GET' && path.startsWith('/overlay/source/')) return await sourceConfig(decodeURIComponent(path.slice('/overlay/source/'.length)));
     if (path === '/overlay/twitch-config' && (method === 'GET' || method === 'PUT')) return await managedTwitchConfig(event, method);
+    if (path === '/overlay/editor-project' && (method === 'GET' || method === 'PUT')) return await managedEditorProject(event, method);
     if (method === 'GET' && path === '/overlay/publications/active') return await activePublication(event);
     if (method === 'POST' && path === '/overlay/publications') return await createPublication(event);
     const match = path.match(/^\/overlay\/publications\/([^/]+)(?:\/(events|rotate))?$/); if (!match) return json(404, { error: 'Route not found' });

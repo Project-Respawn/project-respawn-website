@@ -18,6 +18,9 @@
       :themes="themes"
       :can-undo="history.canUndo"
       :can-redo="history.canRedo"
+      :loading="loading"
+      :saving="saving"
+      :dirty="dirty"
       :obs-status-label="obsStatusLabel"
       @rename="renameProject"
       @theme="changeTheme"
@@ -870,6 +873,9 @@ const {
   selectWidget,
   changeWidget,
   saveDemo,
+  loading,
+  saving,
+  dirty,
 } = core
 
 

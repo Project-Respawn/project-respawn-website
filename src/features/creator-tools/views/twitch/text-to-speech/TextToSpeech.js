@@ -1,4 +1,3 @@
-import { getCurrentUser, fetchAuthSession } from 'aws-amplify/auth';
 import { generateClient } from 'aws-amplify/data';
 import BotSidebar from '@/components/BotSidebar/BotSidebar.vue';
 import { refreshAccessContext } from '@/composables/useAccessContext.js';
@@ -18,13 +17,10 @@ export default {
     return {
       broadcasterId: '',
       broadcasterName: '',
-      lookupUserIds: [],
       selectedBrandId: '',
       workspaceId: '',
       canonicalConfig: null,
       integrationId: '',
-      secureFoundationEnabled: import.meta.env.VITE_TWITCH_SECURE_INTEGRATION === 'true',
-      rewardTitle: 'Text To Speech',
       maxLength: 200,
 
       voices: [],
@@ -32,13 +28,6 @@ export default {
       rate: 1,
       pitch: 1,
       volume: 1,
-
-      socket: null,
-      socketState: 'idle',
-      reconnectTimer: null,
-      reconnectDelayMs: 3000,
-      useSocket: true,
-      suppressSocketReconnect: false,
 
       events: [],
       queue: [],
@@ -58,38 +47,6 @@ export default {
   },
 
   computed: {
-    frontendOrigin() {
-      return window.location.origin;
-    },
-    apiBaseUrl() {
-      return 'http://127.0.0.1:3000';
-    },
-    socketUrl() {
-      const params = new URLSearchParams();
-      if (this.broadcasterId) params.set('broadcasterId', this.broadcasterId);
-      const query = params.toString();
-      return `ws://localhost:3000/events-ws${query ? `?${query}` : ''}`;
-    },
-    overlayUrl() {
-      const params = new URLSearchParams();
-      if (this.broadcasterId) params.set('broadcasterId', this.broadcasterId);
-      if (this.selectedVoiceName) params.set('voice', this.selectedVoiceName);
-      const query = params.toString();
-      return `${this.frontendOrigin}/tts-overlay${query ? `?${query}` : ''}`;
-    },
-    connectionLabel() {
-      if (this.socketState === 'open') return 'Overlay socket connected';
-      if (this.socketState === 'connecting') return 'Connecting…';
-      if (this.socketState === 'error') return 'Connection error';
-      if (this.socketState === 'closed') return 'Disconnected';
-      return 'Socket idle';
-    },
-    connectionClass() {
-      return {
-        online: this.socketState === 'open',
-        offline: this.socketState !== 'open',
-      };
-    },
     selectedVoice() {
       return this.voices.find((v) => v.name === this.selectedVoiceName) || null;
     },
@@ -109,33 +66,9 @@ export default {
 
     await this.resolveBroadcasterContext();
     await this.loadSavedSettings();
-    this.connectSocket();
-  },
-
-  watch: {
-    '$route.query.broadcasterId': {
-      async handler(newValue) {
-        const nextBroadcasterId = String(newValue || '').trim();
-
-        if (nextBroadcasterId && nextBroadcasterId !== this.broadcasterId) {
-          this.broadcasterId = nextBroadcasterId;
-          console.log('[TTS Settings] broadcasterId updated from route query:', nextBroadcasterId);
-          this.reconnectSocket();
-          return;
-        }
-
-        if (!nextBroadcasterId && !this.broadcasterId) {
-          await this.resolveBroadcasterContext();
-          this.reconnectSocket();
-        }
-      }
-    }
   },
 
   beforeUnmount() {
-    this.suppressSocketReconnect = true;
-    this.useSocket = false;
-    this.cleanupSocket();
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       window.speechSynthesis.onvoiceschanged = null;
@@ -144,52 +77,17 @@ export default {
   },
 
   methods: {
-    async loadCurrentUserIdentifiers() {
-      try {
-        const user = await getCurrentUser();
-        const session = await fetchAuthSession();
-
-        const tokenSub = session?.tokens?.idToken?.payload?.sub || '';
-        const amplifyUserId = user?.userId || '';
-        const amplifyUsername = user?.username || '';
-
-        this.lookupUserIds = [tokenSub, amplifyUserId, amplifyUsername]
-          .map((value) => String(value || '').trim())
-          .filter((value, index, list) => value && list.indexOf(value) === index);
-      } catch (error) {
-        console.warn('[TTS Settings] failed to load current user identifiers:', error);
-        this.lookupUserIds = [];
-      }
-    },
-
-    async fetchConnectionForUser(userId) {
-      const response = await fetch(
-        `http://localhost:3000/api/twitch/connection-by-user?userId=${encodeURIComponent(userId)}&t=${Date.now()}`,
-        {
-          cache: 'no-store'
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error('Connection request failed');
-      }
-
-      const data = await response.json();
-      return data?.connection || null;
-    },
-
     async resolveBroadcasterContext() {
       if (this.broadcasterId) {
         console.log('[TTS Settings] using broadcasterId from route:', this.broadcasterId);
         return this.broadcasterId;
       }
 
-      await this.loadCurrentUserIdentifiers();
-
       try {
-        if (this.secureFoundationEnabled) {
           const access = await refreshAccessContext();
-          this.selectedBrandId = access.brands?.[0]?.brandId || '';
+          const brand = access.brands?.[0], workspace = access.workspaces?.find(item => (item.workspaceId || item.id) === brand?.workspaceId) || access.workspaces?.[0];
+          this.selectedBrandId = brand?.brandId || brand?.id || '';
+          this.workspaceId = brand?.workspaceId || workspace?.workspaceId || workspace?.id || '';
           if (!this.selectedBrandId) throw new Error('No accessible Brand selected');
           const response = await twitchDataClient.queries.getMyTwitchIntegration({ brandId: this.selectedBrandId });
           if (response?.errors?.length) throw new Error(response.errors[0].message || 'Integration lookup failed');
@@ -201,25 +99,6 @@ export default {
             return this.broadcasterId;
           }
           throw new Error('No Twitch integration exists for the selected Brand');
-        }
-        for (const userId of this.lookupUserIds) {
-          const connection = await this.fetchConnectionForUser(userId);
-
-          if (!connection?.broadcasterUserId) {
-            continue;
-          }
-
-          this.broadcasterId = String(connection.broadcasterUserId);
-          this.broadcasterName = connection.twitchDisplayName || connection.twitchLogin || '';
-
-          console.log('[TTS Settings] broadcaster resolved by user connection:', {
-            userId,
-            broadcasterId: this.broadcasterId,
-            broadcasterName: this.broadcasterName
-          });
-
-          return this.broadcasterId;
-        }
       } catch (error) {
         console.error('[TTS Settings] failed to resolve broadcaster context:', error);
       }
@@ -242,8 +121,8 @@ export default {
         if (saved.rate !== undefined) this.rate = saved.rate;
         if (saved.pitch !== undefined) this.pitch = saved.pitch;
         if (saved.volume !== undefined) this.volume = saved.volume;
-        if (saved.rewardTitle !== undefined) this.rewardTitle = saved.rewardTitle;
         if (saved.maxLength !== undefined) this.maxLength = saved.maxLength;
+        this.settingsChanged = false;
       } catch (err) {
         console.warn('Could not load saved TTS settings', err);
       }
@@ -257,10 +136,10 @@ export default {
           rate: this.rate,
           pitch: this.pitch,
           volume: this.volume,
-          rewardTitle: this.rewardTitle,
           maxLength: this.maxLength,
         };
-        const result = await updateTwitchOverlayConfig(this.workspaceId, this.selectedBrandId, { ...this.canonicalConfig, tts: { enabled: true, voice: payload.selectedVoiceName, rate: payload.rate, pitch: payload.pitch, volume: payload.volume, maxLength: payload.maxLength } });
+        if (!this.workspaceId || !this.selectedBrandId || !this.canonicalConfig) throw new Error('TTS settings are still loading');
+        const result = await updateTwitchOverlayConfig(this.workspaceId, this.selectedBrandId, { ...this.canonicalConfig, tts: { enabled: this.canonicalConfig.tts?.enabled !== false, voice: payload.selectedVoiceName, rate: payload.rate, pitch: payload.pitch, volume: payload.volume, maxLength: payload.maxLength } });
         this.canonicalConfig = result.config;
         this.settingsChanged = false;
         this.showStatus('Settings saved', 'success');

@@ -19,6 +19,7 @@ test('TTS and chat use server-backed safe configuration without Browser Source l
   for (const field of ['voice', 'rate', 'pitch', 'volume', 'maxLength']) assert.match(tts, new RegExp(`config\\.${field}`));
   assert.match(ttsPage, /getTwitchOverlayConfig/); assert.match(ttsPage, /updateTwitchOverlayConfig/); assert.doesNotMatch(ttsPage, /localStorage/);
   assert.match(ttsPage, /sendOverlayTestEvent/); assert.doesNotMatch(ttsPage, /fetch\(`\$\{this\.apiBaseUrl\}\/api\/tts\/test/);
+  assert.doesNotMatch(ttsPage, /VITE_TWITCH_SECURE_INTEGRATION/); assert.match(ttsPage, /refreshAccessContext/);
   assert.match(chat, /blockedTerms/); assert.match(chat, /maxMessages/); assert.match(chat, /platforms/); assert.match(moderation, /updateTwitchOverlayConfig/);
 });
 

@@ -4,7 +4,7 @@ import {
   activePublicationLockId, assertPublicationOwner, assertWorkspaceBrandOwner, createActivePublicationLock, createConnectionRecord, createPublicationRecord,
   credentialMatches, fanOutOverlayEvent, hashOverlayCredential, publicationIsActive,
   rotatePublicationCredential, updatePublicationRecord, validateOverlayEvent, validateSceneSnapshot,
-  twitchOverlayConfigId, validateTwitchOverlayConfig,
+  editableOverlayProjectId, twitchOverlayConfigId, validateEditableOverlayProject, validateTwitchOverlayConfig,
 } from './domain';
 
 const now = new Date('2026-08-26T20:00:00.000Z');
@@ -78,6 +78,19 @@ test('Brand Twitch configuration is deterministic, renderer-safe, bounded, and i
   assert.deepEqual(config.tts, { enabled: true, voice: 'UK Voice', rate: 2, pitch: 0, volume: .4, maxLength: 500 });
   assert.deepEqual(config.chat, { enabled: true, maxMessages: 50, platforms: ['Twitch'], blockedTerms: ['spam'] });
   assert.equal(JSON.stringify(config).match(/token|secret|credential|oauth/i), null);
+});
+
+test('editable projects preserve all scene geometry while discarding runtime state and Twitch behaviour', () => {
+  const project = validateEditableOverlayProject({ schemaVersion: 1, name: 'Creator Overlay', selectedSceneId: 'scene-1', selectedWidgetId: 'disabled', scenes: [{
+    ...scene, runtime: { credentialStatus: 'not-provisioned' }, preview: { backgroundType: 'reference' },
+    widgets: [{ ...scene.widgets[0], id: 'disabled', enabled: false, locked: true, frame: { x: 44, y: 55, width: 400, height: 600 }, settings: { maxMessages: 20, background: '#123456' } }],
+  }] });
+  assert.equal(editableOverlayProjectId('brand-1'), 'EDITOR_PROJECT#brand-1');
+  assert.equal(project.scenes[0].widgets.length, 1); assert.equal(project.scenes[0].widgets[0].enabled, false);
+  assert.deepEqual(project.scenes[0].widgets[0].frame, { x: 44, y: 55, width: 400, height: 600, rotation: 0 });
+  assert.deepEqual(project.scenes[0].widgets[0].settings, { background: '#123456' });
+  assert.equal('runtime' in project.scenes[0], false);
+  assert.throws(() => validateEditableOverlayProject({ ...project, scenes: [{ ...project.scenes[0], preview: { accessToken: 'forbidden' } }] }), /unsupported data/);
 });
 
 test('future snapshots remove Twitch behaviour while retaining geometry and visual presentation', () => {

@@ -45,6 +45,7 @@ export function validateTwitchOverlayConfig(value: unknown) {
 }
 
 export function twitchOverlayConfigId(brandId: string) { if (!brandId) throw new Error('Brand is required'); return `TWITCH_CONFIG#${brandId}`; }
+export function editableOverlayProjectId(brandId: string) { if (!brandId) throw new Error('Brand is required'); return `EDITOR_PROJECT#${brandId}`; }
 
 export function hashOverlayCredential(credential: string) {
   return createHash('sha256').update(credential).digest('hex');
@@ -92,6 +93,45 @@ export function validateSceneSnapshot(value: unknown) {
   if (containsForbiddenKey(snapshot)) throw new Error('Scene snapshot contains unsupported data');
   if (Buffer.byteLength(JSON.stringify(snapshot), 'utf8') > 350_000) throw new Error('Scene snapshot is too large');
   return snapshot;
+}
+
+function validateEditableWidget(value: unknown) {
+  if (!safeObject(value) || !safeObject(value.frame) || !value.id || !value.type) throw new Error('Editable overlay widget is invalid');
+  const frame = { x: Number(value.frame.x), y: Number(value.frame.y), width: Number(value.frame.width), height: Number(value.frame.height), rotation: Number(value.frame.rotation || 0) };
+  if (Object.values(frame).some((number) => !Number.isFinite(number)) || frame.width <= 0 || frame.height <= 0) throw new Error('Editable overlay widget frame is invalid');
+  const settings = safeObject(value.settings) ? { ...value.settings } : {}; for (const key of twitchBehaviorKeys[String(value.type)] || []) delete settings[key];
+  return {
+    schemaVersion: Number(value.schemaVersion || 1), id: cleanText(value.id, '', 120), type: cleanText(value.type, '', 80), name: cleanText(value.name, String(value.type), 120),
+    enabled: value.enabled !== false, hidden: value.hidden === true, locked: value.locked === true, frame, zIndex: Number(value.zIndex || 0),
+    displayMode: value.displayMode === 'triggered' ? 'triggered' : 'always', settings,
+    dataSource: safeObject(value.dataSource) ? value.dataSource : {}, animations: safeObject(value.animations) ? value.animations : {},
+    ...(value.themeId ? { themeId: cleanText(value.themeId, '', 80) } : {}),
+  };
+}
+
+export function validateEditableOverlayProject(value: unknown) {
+  if (!safeObject(value) || !Array.isArray(value.scenes) || !value.scenes.length || value.scenes.length > 25) throw new Error('Editable overlay project is invalid');
+  const scenes = value.scenes.map((scene: any) => {
+    if (!safeObject(scene) || !safeObject(scene.resolution) || !Array.isArray(scene.widgets) || scene.widgets.length > 100) throw new Error('Editable overlay scene is invalid');
+    const width = Number(scene.resolution.width), height = Number(scene.resolution.height);
+    if (!Number.isInteger(width) || !Number.isInteger(height) || width < 320 || height < 180 || width > 7680 || height > 4320) throw new Error('Editable overlay scene resolution is invalid');
+    return {
+      schemaVersion: Number(scene.schemaVersion || 1), id: cleanText(scene.id, '', 120), name: cleanText(scene.name, '', 120), description: cleanText(scene.description, '', 500),
+      resolution: { width, height, ...(scene.resolution.label ? { label: cleanText(scene.resolution.label, '', 40) } : {}), ...(scene.resolution.preset ? { preset: cleanText(scene.resolution.preset, '', 40) } : {}) },
+      version: Number(scene.version || 1), required: scene.required === true, isDefault: scene.isDefault === true, themeId: cleanText(scene.themeId, 'respawn-purple', 80),
+      preview: safeObject(scene.preview) ? scene.preview : {}, widgets: scene.widgets.map(validateEditableWidget),
+    };
+  });
+  const project = {
+    schemaVersion: Number(value.schemaVersion || 1), name: cleanText(value.name, 'Creator Overlay', 120), themeId: cleanText(value.themeId, 'respawn-purple', 80),
+    selectedSceneId: cleanText(value.selectedSceneId, scenes[0].id, 120), selectedWidgetId: cleanText(value.selectedWidgetId, '', 120),
+    grid: value.grid !== false, snapping: value.snapping !== false, safeZone: value.safeZone !== false, animationsPaused: value.animationsPaused === true,
+    publishReady: value.publishReady === true, scenes,
+  };
+  if (containsForbiddenKey(project)) throw new Error('Editable overlay project contains unsupported data');
+  const serialized = JSON.stringify(project);
+  if (Buffer.byteLength(serialized, 'utf8') > 1_000_000) throw new Error('Editable overlay project is too large');
+  return JSON.parse(serialized);
 }
 
 export function validateOverlayEvent(value: unknown) {

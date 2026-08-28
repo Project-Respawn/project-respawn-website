@@ -1,5 +1,5 @@
 export function useDemoInformationBar() {
   return {
-    demoInformation: 'ⓘ  Demo only  ·  Changes stay in this browser  ·  Nothing is sent to Twitch, Discord or OBS',
+    demoInformation: 'ⓘ  Editable scenes save to Project Respawn  ·  Browser Source changes only when you choose Update Source',
   }
 }
