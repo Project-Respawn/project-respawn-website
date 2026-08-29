@@ -9,6 +9,7 @@ const forbiddenSnapshotKey = /token|secret|credential|oauth|authorization|runtim
 const triggeredWidgetTypes = new Set(['alerts', 'subscription-alert', 'raid-alert', 'tts']);
 const twitchBehaviorKeys: Record<string, string[]> = { alerts: ['enabledEvents', 'messageTemplate', 'duration', 'minimumCheer', 'soundPlaceholder', 'mediaPlaceholder'], 'subscription-alert': ['title'], 'raid-alert': ['title'], tts: ['duration'], 'twitch-chat': ['platforms', 'maxMessages', 'hideBotMessages', 'hideCommands', 'showUsername', 'showBadges', 'showEmotes', 'messageDuration', 'direction', 'fontSize', 'backgroundOpacity', 'animation'] };
 const alertKinds = ['follow', 'subscription', 'raid', 'cheer', 'redemption'] as const;
+export const ALERT_ANIMATIONS = ['none', 'fade', 'slide-up', 'slide-down', 'slide-left', 'slide-right', 'scale'] as const;
 const chatSourceIds = ['twitch', 'youtube', 'tiktok', 'discord', 'kick'] as const;
 
 const DEFAULT_CHAT_CONFIG = Object.freeze({
@@ -23,17 +24,32 @@ const DEFAULT_CHAT_CONFIG = Object.freeze({
 });
 
 export const DEFAULT_TWITCH_OVERLAY_CONFIG = Object.freeze({
-  alerts: Object.freeze(Object.fromEntries(alertKinds.map((kind) => [kind, Object.freeze({ enabled: kind !== 'cheer' && kind !== 'redemption', duration: kind === 'follow' ? 6 : 8, template: defaultAlertTemplate(kind), soundUrl: '', volume: 0.8 })]))),
+  alerts: Object.freeze(Object.fromEntries(alertKinds.map((kind) => [kind, Object.freeze({
+    enabled: kind !== 'cheer' && kind !== 'redemption',
+    duration: kind === 'follow' ? 6 : 8,
+    titleTemplate: defaultAlertTitle(kind),
+    messageTemplate: defaultAlertMessage(kind),
+    mediaUrl: '', soundUrl: '', volume: 0.8,
+    entryAnimation: 'slide-up', exitAnimation: 'fade',
+  })]))),
   tts: Object.freeze({ enabled: true, voice: '', volume: 1, rate: 1, pitch: 1, maxLength: 200 }),
   chat: DEFAULT_CHAT_CONFIG,
 });
 
-function defaultAlertTemplate(kind: string) {
+function defaultAlertTitle(kind: string) {
   if (kind === 'follow') return '{user} followed!';
   if (kind === 'subscription') return '{user} subscribed!';
   if (kind === 'raid') return '{user} brought {viewers} viewers';
   if (kind === 'cheer') return '{user} cheered {bits} bits';
   return '{user} redeemed {reward}';
+}
+
+function defaultAlertMessage(kind: string) {
+  if (kind === 'follow') return 'Welcome to the community, {user}.';
+  if (kind === 'subscription') return 'Thank you for supporting the channel.';
+  if (kind === 'raid') return 'Welcome, raiders!';
+  if (kind === 'cheer') return 'Thank you for the {bits} bits.';
+  return 'Reward: {reward}';
 }
 
 const clamp = (value: unknown, fallback: number, min: number, max: number) => {
@@ -111,7 +127,24 @@ export function validateTwitchOverlayConfig(value: unknown) {
   const input = safeObject(value) ? value : {}, inputAlerts = safeObject(input.alerts) ? input.alerts : {};
   const alerts = Object.fromEntries(alertKinds.map((kind) => {
     const defaults = (DEFAULT_TWITCH_OVERLAY_CONFIG.alerts as any)[kind], raw = safeObject(inputAlerts[kind]) ? inputAlerts[kind] : {};
-    return [kind, { enabled: raw.enabled === undefined ? defaults.enabled : raw.enabled === true, duration: clamp(raw.duration, defaults.duration, 1, 60), template: cleanText(raw.template, defaults.template), soundUrl: cleanHttpsUrl(raw.soundUrl), volume: clamp(raw.volume, defaults.volume, 0, 1) }];
+    const reject = (condition: boolean, field: string) => { if (condition) throw new Error(`Alert ${field} is invalid`); };
+    reject(raw.enabled !== undefined && typeof raw.enabled !== 'boolean', 'enabled');
+    for (const [field, max] of [['titleTemplate', 240], ['messageTemplate', 500]] as const) reject(raw[field] !== undefined && (typeof raw[field] !== 'string' || raw[field].length > max), field);
+    for (const field of ['mediaUrl', 'soundUrl'] as const) reject(raw[field] !== undefined && raw[field] !== null && (typeof raw[field] !== 'string' || (raw[field] !== '' && !cleanHttpsUrl(raw[field]))), field);
+    reject(raw.volume !== undefined && (typeof raw.volume !== 'number' || !Number.isFinite(raw.volume) || raw.volume < 0 || raw.volume > 1), 'volume');
+    reject(raw.duration !== undefined && (typeof raw.duration !== 'number' || !Number.isFinite(raw.duration) || raw.duration < 1 || raw.duration > 60), 'duration');
+    for (const field of ['entryAnimation', 'exitAnimation'] as const) reject(raw[field] !== undefined && !ALERT_ANIMATIONS.includes(raw[field]), field);
+    const legacyTemplate = typeof raw.template === 'string' && raw.template.length <= 240 ? raw.template : undefined;
+    return [kind, {
+      enabled: raw.enabled ?? defaults.enabled,
+      duration: raw.duration ?? defaults.duration,
+      titleTemplate: cleanText(raw.titleTemplate, legacyTemplate ?? defaults.titleTemplate, 240),
+      messageTemplate: cleanText(raw.messageTemplate, defaults.messageTemplate, 500),
+      mediaUrl: cleanHttpsUrl(raw.mediaUrl), soundUrl: cleanHttpsUrl(raw.soundUrl),
+      volume: raw.volume ?? defaults.volume,
+      entryAnimation: raw.entryAnimation ?? defaults.entryAnimation,
+      exitAnimation: raw.exitAnimation ?? defaults.exitAnimation,
+    }];
   }));
   const rawTts = safeObject(input.tts) ? input.tts : {}, rawChat = safeObject(input.chat) ? input.chat : {};
   assertCurrentChatConfig(rawChat);

@@ -17,6 +17,7 @@
         :widget="widget"
         :runtime-mode="runtimeMode"
         :runtime-config="runtimeConfig"
+        :exiting="triggerExiting[widget.id] === true"
       />
     </div>
   </div>
@@ -37,6 +38,7 @@ const props = defineProps({
 });
 const triggerVisibility = reactive({});
 const triggerGeneration = reactive({});
+const triggerExiting = reactive({});
 let disposeTriggers = [];
 const orderedWidgets = computed(() => (props.scene.widgets || [])
   .filter((widget) => registry[widget.type])
@@ -52,9 +54,11 @@ function configureTriggers() {
     if (widgetDisplayMode(widget) !== 'triggered') continue;
     const settings = runtimeSettings(widget);
     triggerVisibility[widget.id] = false;
+    triggerExiting[widget.id] = false;
     disposeTriggers.push(createTriggeredWidgetSubscription(widget, {
       bus: widgetEventBus,
       onVisibility: (visible) => { triggerVisibility[widget.id] = visible; },
+      onExpiring: (value = true) => { triggerExiting[widget.id] = value; },
       onExpired: () => { triggerGeneration[widget.id] = (triggerGeneration[widget.id] || 0) + 1; },
       runtimeSettings: settings,
     }));
@@ -85,10 +89,5 @@ function frameStyle(widget) {
 <style scoped>
 .overlay-scene-renderer { position: relative; overflow: hidden; background: transparent; }
 .overlay-source-widget { position: absolute; overflow: hidden; pointer-events: none; }
-.overlay-source-widget--triggered { animation: overlay-source-trigger-in 240ms ease-out both; }
 .widget-renderer { width: 100%; height: 100%; }
-@keyframes overlay-source-trigger-in {
-  from { opacity: 0; transform: translateY(12px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
 </style>

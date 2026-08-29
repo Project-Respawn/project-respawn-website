@@ -20,9 +20,9 @@ test('public Browser Source explicitly selects non-demo runtime mode', () => {
 
 test('live alert starts neutral while editor preview retains its explicit sample', () => {
   assert.match(alert, /runtimeMode==='browser-source'\?null/);
-  assert.match(alert, /v-if="event"/);
+  assert.match(alert, /v-if="event && config"/);
+  assert.match(alert, /AlertPresentation/);
   assert.match(alert, /NovaRespawn/);
-  assert.match(alert, /runtimeMode === 'browser-source' \? 'STREAM ALERT' : 'SIMULATED ALERT'/);
 });
 
 test('live chat starts empty and hides editor-only preview labeling', () => {

@@ -24,6 +24,7 @@ export function parseOverlayEvent(value) {
     type: value.type,
     timestamp: value.timestamp,
     source: value.source,
+    configRevision: Number.isInteger(value.configRevision) && value.configRevision > 0 ? value.configRevision : 0,
     data: {
       actor: value.data.actor && typeof value.data.actor === 'object' ? value.data.actor : null,
       payload: value.data.payload && typeof value.data.payload === 'object' ? value.data.payload : {},
@@ -40,6 +41,7 @@ export function toWidgetEvent(value) {
     topic: event.type,
     occurredAt: event.timestamp,
     provider: event.source,
+    configRevision: event.configRevision,
     actor: event.data.actor,
     payload: event.data.payload,
   };

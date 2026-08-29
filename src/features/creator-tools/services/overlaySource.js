@@ -1,10 +1,12 @@
-import { getApiBaseUrl, joinApiUrl } from '@/config/apiBaseUrl.js';
+import { joinApiUrl } from '@/config/apiBaseUrl.js';
 import { parseOverlayEvent, toWidgetEvent } from '../overlays/overlayEventContract.js';
 import { fetchAuthSession } from 'aws-amplify/auth';
 import outputs from '../../../../amplify_outputs.json';
 
 function overlayApiBaseUrl() {
-  return outputs.custom?.overlaySource?.httpUrl || getApiBaseUrl('OBS Browser Source');
+  const url = outputs.custom?.overlaySource?.httpUrl;
+  if (!url) throw new Error('Canonical Overlay Source API is unavailable in this build. Regenerate Amplify outputs from the intended backend before using Twitch Alerts.');
+  return url;
 }
 
 async function authenticatedRequest(path, options = {}, fetchImpl = fetch) {
@@ -81,9 +83,9 @@ export function createOverlaySourceConnection({ websocketUrl, credential, WebSoc
     const url = new URL(websocketUrl); url.searchParams.set('credential', credential);
     socket = new WebSocketImpl(url);
     socket.addEventListener('open', () => { attempts = 0; });
-    socket.addEventListener('message', (message) => {
+    socket.addEventListener('message', async (message) => {
       let raw; try { raw = JSON.parse(message.data); } catch { return; }
-      const event = parseOverlayEvent(raw); if (event) onEvent(toWidgetEvent(event));
+      const event = parseOverlayEvent(raw); if (event) await onEvent(toWidgetEvent(event));
     });
     socket.addEventListener('close', () => {
       if (stopped) return;

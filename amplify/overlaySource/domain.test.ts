@@ -80,13 +80,29 @@ test('snapshot ignores discarded editor runtime metadata while preserving saniti
 });
 
 test('Brand Twitch configuration is deterministic, renderer-safe, bounded, and independently addressable', () => {
-  const config = validateTwitchOverlayConfig({ alerts: { raid: { enabled: false, duration: 90, template: '{user} brought {viewers}', volume: 4 } }, tts: { voice: 'UK Voice', rate: 9, pitch: -2, volume: .4, maxLength: 900 }, chat: { maxMessages: 200, platforms: ['Twitch'], blockedTerms: ['Spam'] } });
+  const config = validateTwitchOverlayConfig({ alerts: { raid: { enabled: false, duration: 12, template: '{user} brought {viewers}', mediaUrl: 'https://cdn.example/raid.gif', soundUrl: 'https://cdn.example/raid.ogg', volume: .4, entryAnimation: 'scale', exitAnimation: 'fade' } }, tts: { voice: 'UK Voice', rate: 9, pitch: -2, volume: .4, maxLength: 900 }, chat: { maxMessages: 200, platforms: ['Twitch'], blockedTerms: ['Spam'] } });
   assert.equal(twitchOverlayConfigId('brand-1'), 'TWITCH_CONFIG#brand-1');
-  assert.deepEqual(config.alerts.raid, { enabled: false, duration: 60, template: '{user} brought {viewers}', soundUrl: '', volume: 1 });
+  assert.deepEqual(config.alerts.raid, { enabled: false, duration: 12, titleTemplate: '{user} brought {viewers}', messageTemplate: 'Welcome, raiders!', mediaUrl: 'https://cdn.example/raid.gif', soundUrl: 'https://cdn.example/raid.ogg', volume: .4, entryAnimation: 'scale', exitAnimation: 'fade' });
   assert.deepEqual(config.tts, { enabled: true, voice: 'UK Voice', rate: 2, pitch: 0, volume: .4, maxLength: 500 });
   assert.equal(config.chat.schemaVersion, 2); assert.equal(config.chat.content.maximumVisibleMessages, 100);
   assert.equal(config.chat.sources.twitch.enabled, true); assert.deepEqual(config.chat.blockedTerms, ['spam']);
   assert.equal(JSON.stringify(config).match(/token|secret|credential|oauth/i), null);
+});
+
+test('complete alert config round trips while legacy template migrates to title', () => {
+  const input = { enabled: true, titleTemplate: '{user} followed!', messageTemplate: 'Welcome {user}', mediaUrl: 'https://cdn.example/media', soundUrl: 'https://cdn.example/audio', volume: .25, duration: 9, entryAnimation: 'slide-left', exitAnimation: 'slide-right' };
+  assert.deepEqual(validateTwitchOverlayConfig({ alerts: { follow: input } }).alerts.follow, input);
+  const legacy = validateTwitchOverlayConfig({ alerts: { follow: { template: 'Legacy {user}' } } }).alerts.follow;
+  assert.equal(legacy.titleTemplate, 'Legacy {user}'); assert.equal(legacy.messageTemplate, 'Welcome to the community, {user}.');
+});
+
+test('alert validation rejects malformed values and unsafe URLs', () => {
+  for (const follow of [
+    { volume: NaN }, { volume: 2 }, { duration: Infinity }, { duration: 0 },
+    { mediaUrl: 'http://example.com/a.gif' }, { mediaUrl: 'https://user:pass@example.com/a.gif' },
+    { soundUrl: 'javascript:alert(1)' }, { entryAnimation: 'explode' }, { exitAnimation: 'spin' },
+    { titleTemplate: 'x'.repeat(241) }, { messageTemplate: 'x'.repeat(501) },
+  ]) assert.throws(() => validateTwitchOverlayConfig({ alerts: { follow } }), /Alert .* is invalid/);
 });
 
 test('current Chat configuration rejects unsupported values instead of trusting arbitrary JSON', () => {

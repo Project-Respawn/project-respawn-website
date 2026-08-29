@@ -76,7 +76,10 @@ async function activePublication(event: any) {
   const publication = await getActivePublication(input.brandId);
   if (!publication) return json(200, { publication: null });
   assertPublicationOwner(publication, sub); await authorizeBindings(publication, sub);
-  return json(200, { publication: publicationResponse(publication) });
+  const connections = await db.send(new QueryCommand({ TableName: env('CONNECTION_TABLE'), IndexName: 'publicationId-index', KeyConditionExpression: 'publicationId = :publicationId', ExpressionAttributeValues: { ':publicationId': publication.publicationId } }));
+  const now = Math.floor(Date.now() / 1000); const connectionCount = (connections.Items || []).filter((item) => Number(item.expiresAtEpoch || 0) > now).length;
+  const alertWidget = (publication.sceneSnapshot?.widgets || []).find((widget: any) => widget.type === 'alerts' && widget.enabled !== false && widget.hidden !== true);
+  return json(200, { publication: publicationResponse(publication, { connectionCount, alertTopics: alertWidget?.dataSource?.topics || [], hasAlertsWidget: Boolean(alertWidget) }) });
 }
 
 async function authorizeActivePublication(publication: any, sub: string) {
@@ -123,7 +126,7 @@ async function rotateCredential(event: any, publicationId: string) {
 
 async function sourceConfig(credential: string) {
   const publication = await publicationForCredential(credential); if (!publication || !publicationIsActive(publication)) return json(403, { error: 'Overlay source credential is invalid or expired' });
-  const configRecord = await getTwitchConfigRecord(publication.brandId);
+  const configRecord = await getTwitchConfigRecord(publication!.brandId);
   return json(200, { revision: publication.revision, status: publication.status, scene: publication.sceneSnapshot, twitchConfig: configRecord?.config || DEFAULT_TWITCH_OVERLAY_CONFIG, twitchConfigRevision: Number(configRecord?.revision || 1), websocketUrl: env('WEBSOCKET_URL') });
 }
 
@@ -165,13 +168,16 @@ async function managedEditorProject(event: any, method: string) {
 
 async function sendTestEvent(event: any, publicationId: string) {
   const sub = userId(event), publication = await getPublication(publicationId); await authorizeActivePublication(publication, sub);
+  if (!publication) throw new Error('Overlay publication access is denied');
   if (!publicationIsActive(publication)) throw new Error('Overlay publication is not active'); const envelope = validateOverlayEvent(body(event).event);
+  const configRecord = await getTwitchConfigRecord(publication.brandId);
+  const message = { ...envelope, configRevision: Number(configRecord?.revision || 1) };
   const connections = await db.send(new QueryCommand({ TableName: env('CONNECTION_TABLE'), IndexName: 'publicationId-index', KeyConditionExpression: 'publicationId = :publicationId', ExpressionAttributeValues: { ':publicationId': publicationId } }));
   const gateway = new ApiGatewayManagementApiClient({ endpoint: env('WEBSOCKET_MANAGEMENT_URL') });
-  const delivered = await fanOutOverlayEvent(connections.Items || [], envelope,
+  const delivered = await fanOutOverlayEvent(connections.Items || [], message,
     async (connectionId, message) => { await gateway.send(new PostToConnectionCommand({ ConnectionId: connectionId, Data: Buffer.from(JSON.stringify(message)) })); },
     async (connectionId) => { await db.send(new DeleteCommand({ TableName: env('CONNECTION_TABLE'), Key: { connectionId } })); });
-  return json(200, { publicationId, eventId: envelope.id, delivered });
+  return json(200, { publicationId, eventId: envelope.id, delivered, configRevision: message.configRevision });
 }
 
 async function websocket(event: any) {

@@ -11,26 +11,29 @@ export function createTriggeredWidgetSubscription(widget, {
   bus,
   onVisibility,
   onExpired = () => {},
+  onExpiring = () => {},
   runtimeSettings = null,
   setTimer = setTimeout,
   clearTimer = clearTimeout,
 }) {
-  let timer = null;
+  let timer = null; let exitTimer = null;
   const topics = Array.isArray(widget?.dataSource?.topics) ? widget.dataSource.topics : [];
   const show = (event) => {
     const activeSettings = typeof runtimeSettings === 'function' ? runtimeSettings(event) : runtimeSettings;
     if (activeSettings?.enabled === false) return;
-    onVisibility(true);
-    if (timer) clearTimer(timer);
+    onVisibility(true); onExpiring(false);
+    if (timer) clearTimer(timer); if (exitTimer) clearTimer(exitTimer);
+    const duration = triggerDurationMs(widget, activeSettings);
+    exitTimer = setTimer(() => { exitTimer = null; onExpiring(); }, Math.max(0, duration - 300));
     timer = setTimer(() => {
       timer = null;
       onVisibility(false);
       onExpired();
-    }, triggerDurationMs(widget, activeSettings));
+    }, duration);
   };
   const unsubscribers = topics.map((topic) => bus.subscribe(topic, show));
   return () => {
-    if (timer) clearTimer(timer);
+    if (timer) clearTimer(timer); if (exitTimer) clearTimer(exitTimer);
     unsubscribers.forEach((unsubscribe) => unsubscribe());
   };
 }

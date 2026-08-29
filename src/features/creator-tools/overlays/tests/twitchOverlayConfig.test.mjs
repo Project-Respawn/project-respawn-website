@@ -3,15 +3,17 @@ import test from 'node:test';
 import { readFile } from 'node:fs/promises';
 
 const read = (path) => readFile(new URL(path, import.meta.url), 'utf8');
-const [renderer, triggerState, alert, tts, chat, alertsPage, ttsPage, moderation, properties, publication] = await Promise.all([
+const [renderer, triggerState, alert, presentation, tts, chat, alertsPage, ttsPage, moderation, properties, publication] = await Promise.all([
   read('../../components/overlays/OverlaySceneRenderer.vue'), read('../triggeredWidgetState.js'), read('../../widgets/alerts/alerts/AlertsWidget.vue'),
+  read('../alertPresentation.js'),
   read('../../widgets/tts-audio/tts/TtsWidget.vue'), read('../../widgets/chat/twitch-chat/ChatWidget.vue'), read('../../views/twitch/alerts/TwitchAlerts.vue'),
   read('../../views/twitch/text-to-speech/TextToSpeech.js'), read('../../views/twitch/moderation/TwitchModeration.js'), read('../../components/overlays/WidgetPropertiesPanel.vue'), read('../overlayPublicationSnapshot.js'),
 ]);
 
 test('canonical alert configuration controls enablement, duration, templates and event payload interpolation', () => {
   assert.match(triggerState, /activeSettings\?\.enabled === false/); assert.match(triggerState, /triggerDurationMs\(widget, activeSettings\)/);
-  for (const token of ['{user}', '{viewers}', '{bits}', '{reward}']) assert.match(alert, new RegExp(token.replace(/[{}]/g, '\\$&')));
+  for (const token of ['user', 'viewers', 'bits', 'reward']) assert.match(presentation, new RegExp(`${token}:`));
+  assert.match(alert, /AlertPresentation/); assert.match(alertsPage, /titleTemplate/); assert.match(alertsPage, /messageTemplate/); assert.match(alertsPage, /mediaUrl/);
   assert.match(renderer, /runtimeConfig\?\.alerts/); assert.match(alertsPage, /updateTwitchOverlayConfig/);
 });
 

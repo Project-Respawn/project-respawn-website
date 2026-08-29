@@ -57,7 +57,7 @@ test('Browser Source forwards refreshed Chat config and twitch-chat prefers cano
     read('../../widgets/chat/twitch-chat/ChatWidget.vue'),
     read('../../views/chat/ChatLivePreview.vue'),
   ])
-  assert.match(source, /runtimeConfig\.value = source\.twitchConfig/)
+  assert.match(source, /runtimeConfig\.value = \{ \.\.\.\(source\.twitchConfig/)
   assert.match(source, /30_000/)
   assert.match(renderer, /:runtime-config="runtimeConfig"/)
   assert.match(widget, /props\.runtimeConfig\?\.chat \|\| legacyConfig\(\)/)

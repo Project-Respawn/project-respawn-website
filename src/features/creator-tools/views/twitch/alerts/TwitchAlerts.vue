@@ -1,472 +1,52 @@
 <template>
-  <div class="bot-page">
-    <BotSidebar
-      :title="'Twitch Alerts'"
-      :colourBrand1="'#7c3aed'"
-      :colourBrand2="'#a78bfa'"
-      :colourBoxShadow="'rgba(124, 58, 237, 0.35)'"
-    />
-
+  <div class="bot-page"><BotSidebar title="Twitch Alerts" colourBrand1="#7c3aed" colourBrand2="#a78bfa" colourBoxShadow="rgba(124,58,237,.35)" />
     <main class="bot-main">
-      <section class="hero-card alerts-hero">
-        <div class="hero-copy">
-          <p class="eyebrow">Alert control centre</p>
-          <h2>Configure viewer-facing alerts for follows, subs, raids, and rewards</h2>
-          <p class="hero-text">
-            Build a StreamElements-style alert system for Project Respawn by controlling
-            what appears on stream, how it sounds, and how each event behaves per channel.
-          </p>
+      <section class="hero-card alerts-hero"><div class="hero-copy"><p class="eyebrow">Canonical alert control centre</p><h2>Configure Preview and Browser Source alerts</h2><p class="hero-text">Preview reflects unsaved edits. Send Test Alert saves first, then delivers the saved Brand configuration through the canonical WebSocket path.</p>
+        <label v-if="brands.length > 1" class="field brand-selector"><span class="field-label">Creator Brand</span><select :value="brandId" @change="changeBrand($event.target.value)"><option value="">Select a Brand</option><option v-for="brand in brands" :key="brand.brandId || brand.id" :value="brand.brandId || brand.id">{{ brand.name }}</option></select></label>
+        <div class="hero-actions"><button class="primary-btn" type="button" :disabled="!canManage || busy" @click="saveSettings()">{{ saving ? 'Saving…' : 'Save Alert Settings' }}</button><button class="secondary-btn" type="button" :disabled="!canManage || busy" @click="sendTest">{{ testing ? 'Sending…' : `Send Test ${selectedDefinition.name}` }}</button></div>
+        <p v-if="status.message" class="operation-status" :class="status.kind" role="status">{{ status.message }}</p><p v-if="contextError" class="operation-status error" role="alert">{{ contextError }}</p></div>
+        <div class="hero-stats"><div class="mini-stat"><span class="mini-label">Selected Brand</span><strong>{{ selectedBrandName || 'Not selected' }}</strong></div><div class="mini-stat"><span class="mini-label">Browser Source</span><strong>{{ connectionLabel }}</strong></div><div class="mini-stat"><span class="mini-label">Saved revision</span><strong>{{ revision || 'Not loaded' }}</strong></div></div></section>
 
-          <div class="hero-actions">
-            <button class="primary-btn" type="button" :disabled="saving" @click="saveCanonicalSettings">{{ saving ? 'Saving…' : 'Save Alert Settings' }}</button>
-            <button class="secondary-btn" type="button" @click="sendSelectedTest">Trigger Test Alert</button>
-          </div>
-        </div>
+      <section class="dashboard-section"><div class="section-heading"><div><p class="section-kicker">Supported in Phase 1</p><h3>Choose an alert type</h3></div><div class="inline-status">Brand-scoped</div></div><div class="alert-type-grid"><button v-for="definition in definitions" :key="definition.key" type="button" class="alert-type-card" :class="{active:selectedKey===definition.key}" @click="selectedKey=definition.key"><span class="card-badge">Ready</span><h4>{{ definition.name }}</h4><p>{{ definition.description }}</p></button></div></section>
 
-        <div class="hero-stats">
-          <div class="mini-stat">
-            <span class="mini-label">Selected Alert</span>
-            <strong>{{ selectedAlert.name }}</strong>
-          </div>
-          <div class="mini-stat">
-            <span class="mini-label">Overlay Mode</span>
-            <strong>Preview Ready</strong>
-          </div>
-          <div class="mini-stat">
-            <span class="mini-label">Current Focus</span>
-            <strong>Alert Editor MVP</strong>
-          </div>
-        </div>
-      </section>
-
-      <section class="dashboard-section">
-        <div class="section-heading">
-          <div>
-            <p class="section-kicker">Alert editor</p>
-            <h3>Choose an alert type</h3>
-          </div>
-          <div class="inline-status">Main config area</div>
-        </div>
-
-        <div class="alert-type-grid">
-          <button
-            v-for="alert in alertTypes"
-            :key="alert.key"
-            type="button"
-            class="alert-type-card"
-            :class="{ active: selectedAlertKey === alert.key }"
-            @click="selectAlert(alert.key)"
-          >
-            <span class="card-badge" :class="alert.badgeClass">{{ alert.badge }}</span>
-            <h4>{{ alert.name }}</h4>
-            <p>{{ alert.description }}</p>
-          </button>
-        </div>
-      </section>
-
-      <section class="dashboard-section editor-layout">
-        <div class="editor-main">
-          <div class="section-heading">
-            <div>
-              <p class="section-kicker">Settings</p>
-              <h3>{{ selectedAlert.name }} configuration</h3>
-            </div>
-          </div>
-
-          <div class="editor-card">
-            <div class="form-row split">
-              <label class="field">
-                <span class="field-label">Enable alert</span>
-                <select v-model="selectedAlert.enabled">
-                  <option :value="true">Enabled</option>
-                  <option :value="false">Disabled</option>
-                </select>
-              </label>
-
-              <label class="field">
-                <span class="field-label">Duration</span>
-                <select v-model="selectedAlert.duration">
-                  <option value="4s">4 seconds</option>
-                  <option value="6s">6 seconds</option>
-                  <option value="8s">8 seconds</option>
-                  <option value="10s">10 seconds</option>
-                </select>
-              </label>
-            </div>
-
-            <div class="form-row">
-              <label class="field">
-                <span class="field-label">Alert title</span>
-                <input
-                  v-model="selectedAlert.title"
-                  type="text"
-                  placeholder="Enter alert title"
-                />
-              </label>
-            </div>
-
-            <div class="form-row">
-           <label class="field">
-  <span class="field-label">Alert message</span>
-  <textarea
-    v-model="selectedAlert.message"
-    rows="4"
-    placeholder="Write the message viewers will see on stream"
-  ></textarea>
-</label>
-            </div>
-
-            <div class="form-row split">
-              <label class="field">
-                <span class="field-label">Image / GIF URL</span>
-                <input
-                  v-model="selectedAlert.mediaUrl"
-                  type="text"
-                  placeholder="https://..."
-                />
-              </label>
-
-              <label class="field">
-                <span class="field-label">Sound URL</span>
-                <input
-                  v-model="selectedAlert.soundUrl"
-                  type="text"
-                  placeholder="https://..."
-                />
-              </label>
-            </div>
-
-            <div class="form-row split">
-              <label class="field">
-                <span class="field-label">Animation style</span>
-                <select v-model="selectedAlert.animation">
-                  <option value="slide-up">Slide Up</option>
-                  <option value="fade-in">Fade In</option>
-                  <option value="pop">Pop</option>
-                  <option value="zoom">Zoom</option>
-                </select>
-              </label>
-
-              <label class="field">
-                <span class="field-label">Volume</span>
-                <input v-model="selectedAlert.volume" type="range" min="0" max="100" />
-              </label>
-            </div>
-          </div>
-
-          <div class="section-heading variation-heading">
-            <div>
-              <p class="section-kicker">Variations</p>
-              <h3>Variation rules</h3>
-            </div>
-          </div>
-
-          <div class="card-grid variation-grid">
-            <article
-              class="feature-card variation-card"
-              v-for="variation in selectedAlert.variations"
-              :key="variation.id"
-            >
-              <span class="card-badge muted">{{ variation.badge }}</span>
-              <h4>{{ variation.name }}</h4>
-              <p>{{ variation.rule }}</p>
-              <button class="card-btn secondary" type="button">Edit Variation</button>
-            </article>
-
-            <article class="feature-card variation-card add-card">
-              <span class="card-badge">Next</span>
-              <h4>Add variation</h4>
-              <p>Create alternate versions based on amount, tier, randomization, or reward type.</p>
-              <button class="card-btn" type="button">Add Rule</button>
-            </article>
-          </div>
-        </div>
-
-        <aside class="editor-side">
-          <div class="preview-card">
-            <div class="section-heading compact">
-              <div>
-                <p class="section-kicker">Preview</p>
-                <h3>Live style preview</h3>
-              </div>
-            </div>
-
-            <div class="alert-preview-stage">
-              <div class="alert-preview-box">
-                <div class="preview-media">Media</div>
-                <div class="preview-copy">
-                  <span class="preview-title">{{ selectedAlert.title }}</span>
-                  <p>{{ selectedAlert.message }}</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="preview-meta">
-              <div class="mini-stat">
-                <span class="mini-label">Animation</span>
-                <strong>{{ selectedAlert.animation }}</strong>
-              </div>
-              <div class="mini-stat">
-                <span class="mini-label">Duration</span>
-                <strong>{{ selectedAlert.duration }}</strong>
-              </div>
-            </div>
-
-            <div class="hero-actions preview-actions">
-              <button class="primary-btn" type="button">Preview Alert</button>
-              <button class="secondary-btn" type="button">Send Test Event</button>
-            </div>
-          </div>
-
-          <div class="preview-card helper-card">
-            <div class="section-heading compact">
-              <div>
-                <p class="section-kicker">Overlay notes</p>
-                <h3>What comes next</h3>
-              </div>
-            </div>
-
-            <ul class="helper-list">
-              <li>Link this page to a viewer-facing overlay route.</li>
-              <li>Save configs per broadcaster account.</li>
-              <li>Trigger test events from Twitch or internal tools.</li>
-              <li>Extend to bits, gifts, donations, and TTS reward variants.</li>
-            </ul>
-          </div>
-        </aside>
-      </section>
+      <section v-if="selectedConfig" class="dashboard-section editor-layout"><div class="editor-main"><div class="section-heading"><div><p class="section-kicker">Settings</p><h3>{{ selectedDefinition.name }} configuration</h3></div><span v-if="dirty" class="inline-status">Unsaved preview</span></div><div class="editor-card">
+        <div class="form-row split"><label class="field"><span class="field-label">Enable alert</span><select v-model="selectedConfig.enabled"><option :value="true">Enabled</option><option :value="false">Disabled</option></select></label><label class="field"><span class="field-label">Duration</span><input v-model.number="selectedConfig.duration" type="number" min="1" max="60" step="1"></label></div>
+        <div class="form-row"><label class="field"><span class="field-label">Title template</span><input v-model="selectedConfig.titleTemplate" maxlength="240" placeholder="{user} followed!"></label></div><div class="form-row"><label class="field"><span class="field-label">Message template</span><textarea v-model="selectedConfig.messageTemplate" maxlength="500" rows="3" placeholder="Welcome to the community, {user}."></textarea></label></div>
+        <div class="form-row split"><label class="field"><span class="field-label">Image / GIF HTTPS URL</span><input v-model.trim="selectedConfig.mediaUrl" type="url" placeholder="https://..."></label><label class="field"><span class="field-label">Sound HTTPS URL</span><input v-model.trim="selectedConfig.soundUrl" type="url" placeholder="https://..."></label></div>
+        <div class="form-row split"><label class="field"><span class="field-label">Entry animation</span><select v-model="selectedConfig.entryAnimation"><option v-for="animation in animations" :key="animation" :value="animation">{{ animation }}</option></select></label><label class="field"><span class="field-label">Exit animation</span><select v-model="selectedConfig.exitAnimation"><option v-for="animation in animations" :key="animation" :value="animation">{{ animation }}</option></select></label></div>
+        <div class="form-row"><label class="field"><span class="field-label">Volume · {{ Math.round(selectedConfig.volume*100) }}%</span><input v-model.number="selectedConfig.volume" type="range" min="0" max="1" step="0.01"></label></div></div>
+        <div class="preview-card prototype-note"><p><strong>Deferred:</strong> resub, gift sub, donation, variations, hype train, and stream online/offline remain unavailable until their canonical contracts exist.</p></div></div>
+        <aside class="editor-side"><div class="preview-card"><div class="section-heading compact"><div><p class="section-kicker">Shared renderer</p><h3>Live local preview</h3></div></div><div class="alert-preview-stage"><AlertPresentation :event="previewEvent" :configuration="selectedConfig" :style="previewStyle" :play-audio="previewAudio" /></div><div class="preview-meta"><div class="mini-stat"><span class="mini-label">Entry / Exit</span><strong>{{ selectedConfig.entryAnimation }} / {{ selectedConfig.exitAnimation }}</strong></div><div class="mini-stat"><span class="mini-label">Duration</span><strong>{{ selectedConfig.duration }} seconds</strong></div></div><div class="hero-actions preview-actions"><button class="secondary-btn" type="button" @click="previewSound">Preview sound</button></div><p class="preview-note">Preview uses unsaved local values. Browser-source tests always use saved canonical configuration.</p></div>
+          <div class="preview-card helper-card"><div class="section-heading compact"><div><p class="section-kicker">Browser Source readiness</p><h3>{{ readiness.title }}</h3></div></div><ul class="helper-list"><li v-for="item in readiness.items" :key="item">{{ item }}</li></ul></div></aside></section>
     </main>
   </div>
 </template>
 
 <script setup>
-import BotSidebar from '@/components/BotSidebar/BotSidebar.vue';
-</script>
+import { computed, reactive, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import BotSidebar from '@/components/BotSidebar/BotSidebar.vue'
+import AlertPresentation from '@/features/creator-tools/components/overlays/AlertPresentation.vue'
+import { useCreatorBrandContext } from '@/features/creator-tools/composables/useCreatorBrandContext.js'
+import { ALERT_ANIMATIONS, normalizeAlertConfiguration, previewEventForKind } from '@/features/creator-tools/overlays/alertPresentation.js'
+import { createTestOverlayEvent } from '@/features/creator-tools/overlays/overlayEventContract.js'
+import { getActiveOverlayPublication, getTwitchOverlayConfig, sendOverlayTestEvent, updateTwitchOverlayConfig } from '@/features/creator-tools/services/overlaySource.js'
 
-<script>
-import { refreshAccessContext } from '@/composables/useAccessContext.js';
-import { getActiveOverlayPublication, getTwitchOverlayConfig, sendOverlayTestEvent, updateTwitchOverlayConfig } from '@/features/creator-tools/services/overlaySource.js';
-import { createTestOverlayEvent } from '@/features/creator-tools/overlays/overlayEventContract.js';
-export default {
-  name: 'TwitchAlerts',
-  data() {
-    return {
-      selectedAlertKey: 'follow',
-      workspaceId: '', brandId: '', canonicalConfig: null, saving: false,
-      alertTypes: [
-        {
-          key: 'follow',
-          name: 'Follow Alert',
-          badge: 'Ready',
-          badgeClass: '',
-          description: 'Control how new follower alerts appear on stream.'
-        },
-        {
-          key: 'sub',
-          name: 'Sub Alert',
-          badge: 'Next',
-          badgeClass: 'alert',
-          description: 'Set the layout and message for subscriber alerts.'
-        },
-        {
-          key: 'raid',
-          name: 'Raid Alert',
-          badge: 'Next',
-          badgeClass: 'alert',
-          description: 'Create custom welcome moments for incoming raids.'
-        },
-        {
-          key: 'tts',
-          name: 'TTS Reward Alert',
-          badge: 'In Progress',
-          badgeClass: 'alert',
-          description: 'Link channel point or reward-based TTS moments.'
-        },
-        {
-          key: 'bits',
-          name: 'Bits Alert',
-          badge: 'Planned',
-          badgeClass: 'muted',
-          description: 'Prepare thresholds and cheer-based alert variants.'
-        },
-        {
-          key: 'donation',
-          name: 'Donation Alert',
-          badge: 'Planned',
-          badgeClass: 'muted',
-          description: 'Reserve support alert behaviour for future payments.'
-        }
-        ,{
-          key: 'redemption', name: 'Redemption Alert', badge: 'Ready', badgeClass: '',
-          description: 'Control channel-point redemption alerts.'
-        }
-      ],
-      alertConfigs: {
-        follow: {
-          name: 'Follow Alert',
-          enabled: true,
-          duration: '6s',
-          title: 'New follower!',
-          message: 'A new viewer has joined the respawn.',
-          mediaUrl: '',
-          soundUrl: '',
-          animation: 'slide-up',
-          volume: 75,
-          variations: [
-            {
-              id: 'follow-default',
-              badge: 'Default',
-              name: 'Standard Follow',
-              rule: 'Used for all follows unless a future special condition is added.'
-            }
-          ]
-        },
-        sub: {
-          name: 'Sub Alert',
-          enabled: true,
-          duration: '8s',
-          title: 'New subscriber!',
-          message: 'Thank you for subscribing and supporting the channel.',
-          mediaUrl: '',
-          soundUrl: '',
-          animation: 'pop',
-          volume: 80,
-          variations: [
-            {
-              id: 'sub-tier1',
-              badge: 'Tier',
-              name: 'Tier 1 Default',
-              rule: 'Base subscriber alert for normal subscription events.'
-            },
-            {
-              id: 'sub-gift',
-              badge: 'Gift',
-              name: 'Gifted Sub',
-              rule: 'Show a different alert when a gifted sub event is detected.'
-            }
-          ]
-        },
-        raid: {
-          name: 'Raid Alert',
-          enabled: true,
-          duration: '8s',
-          title: 'Raid incoming!',
-          message: 'Welcome in raiders — thanks for joining the stream.',
-          mediaUrl: '',
-          soundUrl: '',
-          animation: 'zoom',
-          volume: 85,
-          variations: [
-            {
-              id: 'raid-small',
-              badge: 'Size',
-              name: 'Small Raid',
-              rule: 'Used for normal or low-count raids.'
-            },
-            {
-              id: 'raid-large',
-              badge: 'Size',
-              name: 'Big Raid',
-              rule: 'Use a more dramatic version for larger raid sizes later.'
-            }
-          ]
-        },
-        tts: {
-          name: 'TTS Reward Alert',
-          enabled: true,
-          duration: '10s',
-          title: 'TTS activated',
-          message: 'A viewer has triggered a text-to-speech alert moment.',
-          mediaUrl: '',
-          soundUrl: '',
-          animation: 'fade-in',
-          volume: 90,
-          variations: [
-            {
-              id: 'tts-channel-points',
-              badge: 'Reward',
-              name: 'Channel Points',
-              rule: 'Used when the TTS reward is triggered through Twitch channel points.'
-            }
-          ]
-        },
-        bits: {
-          name: 'Bits Alert',
-          enabled: false,
-          duration: '6s',
-          title: 'Cheer received!',
-          message: 'Thanks for the bits and support.',
-          mediaUrl: '',
-          soundUrl: '',
-          animation: 'slide-up',
-          volume: 70,
-          variations: [
-            {
-              id: 'bits-100',
-              badge: 'Threshold',
-              name: '100+ Bits',
-              rule: 'Example threshold alert variation for higher bit amounts.'
-            }
-          ]
-        },
-        donation: {
-          name: 'Donation Alert',
-          enabled: false,
-          duration: '8s',
-          title: 'Support received!',
-          message: 'Thank you for the donation and support.',
-          mediaUrl: '',
-          soundUrl: '',
-          animation: 'pop',
-          volume: 85,
-          variations: [
-            {
-              id: 'donation-default',
-              badge: 'Default',
-              name: 'Base Donation Alert',
-              rule: 'Placeholder for future payment-linked event support.'
-            }
-          ]
-        },
-        redemption: {
-          name: 'Redemption Alert', enabled: false, duration: '8s', title: '{user} redeemed {reward}', message: 'A channel-point reward was redeemed.', mediaUrl: '', soundUrl: '', animation: 'pop', volume: 80, variations: []
-        }
-      }
-    };
-  },
-  async mounted() { await this.loadCanonicalSettings(); },
-  computed: {
-    selectedAlert() {
-      return this.alertConfigs[this.selectedAlertKey];
-    }
-  },
-  methods: {
-    async loadCanonicalSettings() {
-      const access = await refreshAccessContext(); const requestedBrandId = String(this.$route?.query?.brandId || ''); const brand = access.brands?.find(item => item.brandId === requestedBrandId) || access.brands?.[0], workspace = access.workspaces?.[0];
-      this.brandId = brand?.brandId || ''; this.workspaceId = brand?.workspaceId || workspace?.workspaceId || workspace?.id || '';
-      if (!this.brandId || !this.workspaceId) return;
-      const result = await getTwitchOverlayConfig(this.workspaceId, this.brandId); this.canonicalConfig = result.config;
-      const map = { follow: 'follow', sub: 'subscription', raid: 'raid', bits: 'cheer', redemption: 'redemption' };
-      for (const [local, canonical] of Object.entries(map)) { const value = result.config?.alerts?.[canonical]; if (!value) continue; Object.assign(this.alertConfigs[local], { enabled: value.enabled, duration: `${value.duration}s`, title: value.template, soundUrl: value.soundUrl, volume: Math.round(value.volume * 100) }); }
-    },
-    async saveCanonicalSettings() {
-      if (!this.canonicalConfig) return; this.saving = true;
-      try { const map = { follow: 'follow', sub: 'subscription', raid: 'raid', bits: 'cheer', redemption: 'redemption' }, alerts = { ...this.canonicalConfig.alerts };
-        for (const [local, canonical] of Object.entries(map)) { const value = this.alertConfigs[local]; alerts[canonical] = { ...alerts[canonical], enabled: value.enabled, duration: Number.parseFloat(value.duration) || 6, template: value.title, soundUrl: value.soundUrl, volume: Number(value.volume) / 100 }; }
-        const result = await updateTwitchOverlayConfig(this.workspaceId, this.brandId, { ...this.canonicalConfig, alerts }); this.canonicalConfig = result.config;
-      } finally { this.saving = false; }
-    },
-    async sendSelectedTest() {
-      const type = { follow: 'stream.follow', sub: 'stream.subscription', raid: 'stream.raid', bits: 'stream.cheer', redemption: 'reward.redeemed', tts: 'tts.requested' }[this.selectedAlertKey];
-      if (!type) return; const result = await getActiveOverlayPublication(this.workspaceId, this.brandId); const publicationId = result.publication?.publicationId;
-      if (!publicationId) throw new Error('Create a Browser Source before sending a test alert');
-      await sendOverlayTestEvent(publicationId, createTestOverlayEvent(type));
-    },
-    selectAlert(key) {
-      this.selectedAlertKey = key;
-    }
-  }
-};
+const route=useRoute(),router=useRouter(),brandContext=useCreatorBrandContext(route,router)
+const definitions=Object.freeze([{key:'follow',name:'Follow Alert',type:'stream.follow',description:'New follower alerts.'},{key:'subscription',name:'Subscription Alert',type:'stream.subscription',description:'New subscription alerts.'},{key:'raid',name:'Raid Alert',type:'stream.raid',description:'Incoming raid alerts.'},{key:'cheer',name:'Bits Alert',type:'stream.cheer',description:'Twitch cheer and Bits alerts.'},{key:'redemption',name:'Redemption Alert',type:'reward.redeemed',description:'Channel-point reward alerts.'}])
+const animations=ALERT_ANIMATIONS,selectedKey=ref('follow'),workspaceId=ref(''),brandId=ref(''),revision=ref(0),canonicalConfig=ref(null),savedSnapshot=ref(''),configs=reactive({}),saving=ref(false),testing=ref(false),previewAudio=ref(false),previewNonce=ref(0),contextError=ref(''),publication=ref(null),status=reactive({kind:'',message:''})
+const brands=computed(()=>brandContext.brands.value||[]),busy=computed(()=>saving.value||testing.value),selectedDefinition=computed(()=>definitions.find(item=>item.key===selectedKey.value)||definitions[0]),selectedConfig=computed(()=>configs[selectedKey.value]||null),selectedBrandName=computed(()=>brands.value.find(item=>(item.brandId||item.id)===brandId.value)?.name||''),canManage=computed(()=>Boolean(workspaceId.value&&brandId.value&&canonicalConfig.value&&selectedConfig.value)),dirty=computed(()=>Boolean(canonicalConfig.value&&JSON.stringify(configs)!==savedSnapshot.value)),previewEvent=computed(()=>({...previewEventForKind(selectedKey.value),id:`preview-${selectedKey.value}-${previewNonce.value}`})),previewStyle={background:'linear-gradient(135deg,rgba(91,33,182,.7),rgba(15,23,42,.96))',borderRadius:'20px',border:'1px solid rgba(167,139,250,.3)'}
+const connectionLabel=computed(()=>!publication.value?'Not published':Number(publication.value.connectionCount||0)>0?`● Connected (${publication.value.connectionCount})`:'○ Not connected')
+const readiness=computed(()=>{const items=[];if(!publication.value)items.push('Create and publish a Browser Source in Overlay Builder.');else{if(!publication.value.hasAlertsWidget)items.push('The published scene needs an enabled Alerts widget.');else if(!(publication.value.alertTopics||[]).includes(selectedDefinition.value.type))items.push(`The Alerts widget is not subscribed to ${selectedDefinition.value.type}.`);if(Number(publication.value.connectionCount||0)===0)items.push('Open the Browser Source in OBS or another tab.')}if(!items.length)items.push('Active publication, matching Alerts widget, and connected Browser Source detected.');return{title:items.length===1&&items[0].startsWith('Active')?'Ready':'Action required',items}})
+function setStatus(kind,message){status.kind=kind;status.message=message}
+function applyConfig(result){canonicalConfig.value=result.config;revision.value=Number(result.revision||0);for(const definition of definitions)configs[definition.key]=normalizeAlertConfiguration(result.config?.alerts?.[definition.key]);savedSnapshot.value=JSON.stringify(configs)}
+async function loadConfig(){contextError.value='';setStatus('','');const [configResult,publicationResult]=await Promise.all([getTwitchOverlayConfig(workspaceId.value,brandId.value),getActiveOverlayPublication(workspaceId.value,brandId.value)]);applyConfig(configResult);publication.value=publicationResult.publication||null}
+async function resolveContext(){try{const resolved=await brandContext.load();workspaceId.value=resolved.workspaceId;brandId.value=resolved.brandId;await loadConfig()}catch(error){workspaceId.value='';brandId.value='';canonicalConfig.value=null;contextError.value=error?.message||'Select an accessible Creator Brand.'}}
+async function changeBrand(next){try{const resolved=await brandContext.select(next);workspaceId.value=resolved.workspaceId;brandId.value=resolved.brandId;await loadConfig()}catch(error){contextError.value=error?.message||'Could not select Brand.'}}
+async function saveSettings({quiet=false}={}){if(!canManage.value)return false;saving.value=true;if(!quiet)setStatus('','');try{const alerts={...canonicalConfig.value.alerts};for(const definition of definitions)alerts[definition.key]={...configs[definition.key]};const result=await updateTwitchOverlayConfig(workspaceId.value,brandId.value,{...canonicalConfig.value,alerts});applyConfig(result);if(!quiet)setStatus('success',`Alert settings saved · revision ${revision.value}`);return true}catch(error){setStatus('error',error?.message||'Could not save alert settings.');return false}finally{saving.value=false}}
+async function refreshPublication(){const result=await getActiveOverlayPublication(workspaceId.value,brandId.value);publication.value=result.publication||null;return publication.value}
+async function sendTest(){if(!canManage.value)return;testing.value=true;setStatus('','');try{if(dirty.value&&!await saveSettings({quiet:true}))return;const active=await refreshPublication();if(!active)throw new Error('Create and publish a Browser Source before sending a test alert.');if(!active.hasAlertsWidget)throw new Error('The published scene does not contain an enabled Alerts widget.');if(!(active.alertTopics||[]).includes(selectedDefinition.value.type))throw new Error(`The published Alerts widget is not subscribed to ${selectedDefinition.value.type}.`);const result=await sendOverlayTestEvent(active.publicationId,createTestOverlayEvent(selectedDefinition.value.type));publication.value={...active,connectionCount:result.delivered};if(Number(result.delivered||0)===0)setStatus('warning','No browser source is currently connected.');else setStatus('success',`Test alert delivered to ${result.delivered} browser source${result.delivered===1?'':'s'}.`)}catch(error){setStatus('error',error?.message||'Test alert failed.')}finally{testing.value=false}}
+function previewSound(){previewAudio.value=true;previewNonce.value+=1}
+void resolveContext()
 </script>
-
 <style scoped src="./TwitchAlerts.css"></style>
