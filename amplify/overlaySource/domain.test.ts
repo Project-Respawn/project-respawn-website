@@ -166,13 +166,41 @@ test('event validation accepts all v1 test types and rejects malformed events', 
 
 test('multiple active clients receive one event while stale and gone connections are cleaned up', async () => {
   const future = Math.floor(Date.now() / 1000) + 1000, sent: string[] = [], removed: string[] = [];
-  const delivered = await fanOutOverlayEvent([
+  const outcome = await fanOutOverlayEvent([
     { connectionId: 'a', publicationId: 'publication-1', expiresAtEpoch: future },
     { connectionId: 'b', publicationId: 'publication-1', expiresAtEpoch: future },
     { connectionId: 'stale', publicationId: 'publication-1', expiresAtEpoch: 1 },
     { connectionId: 'gone', publicationId: 'publication-1', expiresAtEpoch: future },
   ], { type: 'stream.follow' }, async (id) => { if (id === 'gone') throw Object.assign(new Error('gone'), { name: 'GoneException' }); sent.push(id); }, async (id) => { removed.push(id); });
-  assert.equal(delivered, 2); assert.deepEqual(sent.sort(), ['a', 'b']); assert.deepEqual(removed.sort(), ['gone', 'stale']);
+  assert.deepEqual(outcome, { delivered: 2, staleRemoved: 2, failed: 0 }); assert.deepEqual(sent.sort(), ['a', 'b']); assert.deepEqual(removed.sort(), ['gone', 'stale']);
+});
+
+test('fan-out isolates non-Gone failures and reports every outcome', async () => {
+  const future = Math.floor(Date.now() / 1000) + 1000, removed: string[] = [], failures: string[] = [];
+  const outcome = await fanOutOverlayEvent([
+    { connectionId: 'ok', expiresAtEpoch: future }, { connectionId: 'bad', expiresAtEpoch: future }, { connectionId: 'gone', expiresAtEpoch: future },
+  ], {}, async (id) => { if (id === 'bad') throw new Error('network'); if (id === 'gone') throw Object.assign(new Error('gone'), { $metadata: { httpStatusCode: 410 } }); }, async (id) => { removed.push(id); }, (_error, id) => failures.push(id));
+  assert.deepEqual(outcome, { delivered: 1, staleRemoved: 1, failed: 1 }); assert.deepEqual(removed, ['gone']); assert.deepEqual(failures, ['bad']);
+  assert.deepEqual(await fanOutOverlayEvent([], {}, async () => {}, async () => {}), { delivered: 0, staleRemoved: 0, failed: 0 });
+});
+
+test('fan-out isolates Gone and expired cleanup failures from successful clients', async () => {
+  const future = Math.floor(Date.now() / 1000) + 1000, sent: string[] = [], failures: string[] = [];
+  const outcome = await fanOutOverlayEvent([
+    { connectionId: 'ok', expiresAtEpoch: future }, { connectionId: 'gone-cleanup-fails', expiresAtEpoch: future },
+    { connectionId: 'expired-cleanup-fails', expiresAtEpoch: 1 }, { connectionId: 'expired-cleanup-succeeds', expiresAtEpoch: 1 },
+  ], {}, async (id) => { if (id === 'gone-cleanup-fails') throw Object.assign(new Error('gone'), { name: 'GoneException' }); sent.push(id); },
+  async (id) => { if (id.endsWith('fails')) throw new Error('delete failed'); }, (_error, id) => failures.push(id));
+  assert.deepEqual(outcome, { delivered: 1, staleRemoved: 1, failed: 2 }); assert.deepEqual(sent, ['ok']);
+  assert.deepEqual(failures.sort(), ['expired-cleanup-fails', 'gone-cleanup-fails']);
+});
+
+test('fan-out never rejects when every stale cleanup fails', async () => {
+  const future = Math.floor(Date.now() / 1000) + 1000;
+  const outcome = await fanOutOverlayEvent([
+    { connectionId: 'gone', expiresAtEpoch: future }, { connectionId: 'expired', expiresAtEpoch: 1 },
+  ], {}, async () => { throw Object.assign(new Error('gone'), { $metadata: { httpStatusCode: 410 } }); }, async () => { throw new Error('delete failed'); }, () => { throw new Error('logger failed'); });
+  assert.deepEqual(outcome, { delivered: 0, staleRemoved: 0, failed: 2 });
 });
 
 test('connection records bind one connection to the server-resolved publication with TTL', () => {

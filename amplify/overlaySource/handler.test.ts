@@ -32,7 +32,8 @@ test('active lookup and test events re-check owner, Workspace, and Brand binding
   assert.match(handler, /async function sendTestEvent/);
   assert.match(handler, /await authorizeActivePublication\(publication, sub\)/);
   assert.match(handler, /connectionCount/); assert.match(handler, /hasAlertsWidget/); assert.match(handler, /alertTopics/);
-  assert.match(handler, /configRevision/); assert.match(handler, /delivered, configRevision/);
+  assert.match(handler, /publishCanonicalOverlayEvent/);
+  assert.match(handler, /delivered: result\.delivered/); assert.match(handler, /configRevision: result\.configRevision/);
 });
 
 test('canonical Twitch config is Brand-bound, revisioned separately, and safely merged into public source config', () => {

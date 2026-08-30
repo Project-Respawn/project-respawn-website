@@ -3,7 +3,7 @@ import path from 'node:path';
 import { readFile, readdir, stat, mkdtemp, rm } from 'node:fs/promises';
 import os from 'node:os';
 import { spawnSync } from 'node:child_process';
-import { MASTER, compareTemplates, phase1Allowlist, verdict, stableJson, isExpectedApiKeyExpiry, compareLambdaArtifactContent } from './lib/master-backend-preview.mjs';
+import { MASTER, compareTemplates, phase2Allowlist, validatePhase2ChangeSet, verdict, stableJson, isExpectedApiKeyExpiry, compareLambdaArtifactContent } from './lib/master-backend-preview.mjs';
 
 const assemblyDir = path.resolve(process.argv[2] || path.join('.amplify', 'master-preview', 'cdk.out'));
 const errors = [], allChanges = [];
@@ -98,7 +98,7 @@ async function compareStack(stackName, logicalPath, desired, templates, seen = n
   const deployed = aws(['cloudformation', 'get-template', '--stack-name', stackName, '--region', MASTER.region, '--template-stage', 'Original', '--output', 'json']).TemplateBody;
   const resources = aws(['cloudformation', 'describe-stack-resources', '--stack-name', stackName, '--region', MASTER.region, '--output', 'json']).StackResources || [];
   const physical = Object.fromEntries(resources.map((resource) => [resource.LogicalResourceId, resource.PhysicalResourceId]));
-  const stackChanges = compareTemplates({ stack: logicalPath, desired, deployed, physicalByLogical: physical, allowlist: phase1Allowlist });
+  const stackChanges = compareTemplates({ stack: logicalPath, desired, deployed, physicalByLogical: physical, allowlist: phase2Allowlist });
   for (const change of stackChanges) {
     if (isExpectedApiKeyExpiry(change)) {
       change.classification = 'EXPECTED OPERATIONAL REFRESH';
@@ -155,6 +155,7 @@ try {
   checkOutputs(identity.root);
   const templates = await assemblyTemplates();
   await compareStack(identity.root, identity.root, templates.byFile[templates.rootFile], templates);
+  errors.push(...validatePhase2ChangeSet(allChanges));
   printReport(identity);
   if (verdict(allChanges, errors) !== 'SAFE TO DEPLOY') process.exitCode = 1;
 } catch (error) {

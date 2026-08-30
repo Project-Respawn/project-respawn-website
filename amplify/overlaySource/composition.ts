@@ -1,6 +1,7 @@
 import type { Stack } from 'aws-cdk-lib';
 import type { ITable } from 'aws-cdk-lib/aws-dynamodb';
 import { OverlaySourceInfrastructure } from './infrastructure';
+import type { RuntimeLambdaMutationTarget } from './runtimeLambdaMutationTarget';
 
 export interface OverlaySourceTableRegistry {
   CreatorWorkspaceRecord?: ITable;
@@ -15,6 +16,7 @@ export function composeOverlaySourceStack(input: {
   frontendOrigin: string;
   addOutput: (output: Record<string, unknown>) => void;
   handlerEntry?: string;
+  runtimeHandler?: RuntimeLambdaMutationTarget;
 }) {
   const workspaceTable = input.tables.CreatorWorkspaceRecord;
   const brandTable = input.tables.Brand;
@@ -28,6 +30,7 @@ export function composeOverlaySourceStack(input: {
     userPoolClientId: input.userPoolClientId,
     frontendOrigin: input.frontendOrigin,
     handlerEntry: input.handlerEntry,
+    runtimeHandler: input.runtimeHandler,
   });
   input.addOutput({ custom: { overlaySource: { httpUrl: overlaySource.httpUrl, websocketUrl: overlaySource.websocketUrl, region: input.stack.region } } });
   return overlaySource;

@@ -1,8 +1,9 @@
 import type { APIGatewayProxyHandlerV2, APIGatewayProxyWebsocketHandlerV2 } from 'aws-lambda';
-import { ApiGatewayManagementApiClient, PostToConnectionCommand } from '@aws-sdk/client-apigatewaymanagementapi';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DeleteCommand, DynamoDBDocumentClient, GetCommand, PutCommand, QueryCommand, TransactWriteCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
-import { activePublicationLockId, assertPublicationOwner, assertWorkspaceBrandOwner, createActivePublicationLock, createConnectionRecord, createPublicationRecord, DEFAULT_TWITCH_OVERLAY_CONFIG, editableOverlayProjectId, fanOutOverlayEvent, hashOverlayCredential, issueOverlayCredential, publicationIsActive, rotatePublicationCredential, twitchOverlayConfigId, validateEditableOverlayProject, validateOverlayEvent, validateSceneSnapshot, validateTwitchOverlayConfig } from './domain';
+import { activePublicationLockId, assertPublicationOwner, assertWorkspaceBrandOwner, createActivePublicationLock, createConnectionRecord, createPublicationRecord, DEFAULT_TWITCH_OVERLAY_CONFIG, editableOverlayProjectId, hashOverlayCredential, issueOverlayCredential, publicationIsActive, rotatePublicationCredential, twitchOverlayConfigId, validateEditableOverlayProject, validateOverlayEvent, validateSceneSnapshot, validateTwitchOverlayConfig } from './domain';
+import { publishCanonicalOverlayEvent } from './canonicalPublisher';
+import { createAwsCanonicalPublisherDependencies } from './awsPublisher';
 import { randomUUID } from 'node:crypto';
 
 const db = DynamoDBDocumentClient.from(new DynamoDBClient({}));
@@ -170,14 +171,9 @@ async function sendTestEvent(event: any, publicationId: string) {
   const sub = userId(event), publication = await getPublication(publicationId); await authorizeActivePublication(publication, sub);
   if (!publication) throw new Error('Overlay publication access is denied');
   if (!publicationIsActive(publication)) throw new Error('Overlay publication is not active'); const envelope = validateOverlayEvent(body(event).event);
-  const configRecord = await getTwitchConfigRecord(publication.brandId);
-  const message = { ...envelope, configRevision: Number(configRecord?.revision || 1) };
-  const connections = await db.send(new QueryCommand({ TableName: env('CONNECTION_TABLE'), IndexName: 'publicationId-index', KeyConditionExpression: 'publicationId = :publicationId', ExpressionAttributeValues: { ':publicationId': publicationId } }));
-  const gateway = new ApiGatewayManagementApiClient({ endpoint: env('WEBSOCKET_MANAGEMENT_URL') });
-  const delivered = await fanOutOverlayEvent(connections.Items || [], message,
-    async (connectionId, message) => { await gateway.send(new PostToConnectionCommand({ ConnectionId: connectionId, Data: Buffer.from(JSON.stringify(message)) })); },
-    async (connectionId) => { await db.send(new DeleteCommand({ TableName: env('CONNECTION_TABLE'), Key: { connectionId } })); });
-  return json(200, { publicationId, eventId: envelope.id, delivered, configRevision: message.configRevision });
+  const result = await publishCanonicalOverlayEvent({ workspaceId: publication.workspaceId, brandId: publication.brandId, expectedPublicationId: publicationId, event: envelope }, createAwsCanonicalPublisherDependencies());
+  if (result.status === 'SKIPPED') throw new Error(result.reason || 'Overlay event is not eligible');
+  return json(200, { publicationId, eventId: envelope.id, delivered: result.delivered, staleRemoved: result.staleRemoved, failed: result.failed, configRevision: result.configRevision });
 }
 
 async function websocket(event: any) {

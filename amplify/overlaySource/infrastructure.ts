@@ -8,6 +8,7 @@ import { HttpJwtAuthorizer } from 'aws-cdk-lib/aws-apigatewayv2-authorizers';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import { join } from 'node:path';
+import type { RuntimeLambdaMutationTarget } from './runtimeLambdaMutationTarget';
 
 export interface OverlaySourceInfrastructureProps {
   workspaceTable: ITable;
@@ -16,11 +17,13 @@ export interface OverlaySourceInfrastructureProps {
   userPoolClientId: string;
   frontendOrigin: string;
   handlerEntry?: string;
+  runtimeHandler?: RuntimeLambdaMutationTarget;
 }
 
 export class OverlaySourceInfrastructure extends Construct {
   readonly publicationTable: Table;
   readonly connectionTable: Table;
+  readonly dedupeTable: Table;
   readonly handler: NodejsFunction;
   readonly httpUrl: string;
   readonly websocketUrl: string;
@@ -32,6 +35,7 @@ export class OverlaySourceInfrastructure extends Construct {
     this.publicationTable.addGlobalSecondaryIndex({ indexName: 'credentialHash-index', partitionKey: { name: 'credentialHash', type: AttributeType.STRING }, projectionType: ProjectionType.ALL });
     this.connectionTable = new Table(this, 'OverlaySourceConnection', { partitionKey: { name: 'connectionId', type: AttributeType.STRING }, billingMode: BillingMode.PAY_PER_REQUEST, timeToLiveAttribute: 'expiresAtEpoch', removalPolicy: RemovalPolicy.DESTROY });
     this.connectionTable.addGlobalSecondaryIndex({ indexName: 'publicationId-index', partitionKey: { name: 'publicationId', type: AttributeType.STRING }, projectionType: ProjectionType.ALL });
+    this.dedupeTable = new Table(this, 'TwitchEventDeliveryDedupe', { partitionKey: { name: 'dedupeKey', type: AttributeType.STRING }, billingMode: BillingMode.PAY_PER_REQUEST, timeToLiveAttribute: 'expiresAt', pointInTimeRecoverySpecification: { pointInTimeRecoveryEnabled: true }, removalPolicy: RemovalPolicy.RETAIN });
     this.handler = new NodejsFunction(this, 'OverlaySourceFunction', { entry: props.handlerEntry || join(process.cwd(), 'amplify', 'overlaySource', 'handler.ts'), handler: 'handler', runtime: Runtime.NODEJS_22_X, architecture: Architecture.ARM_64, memorySize: 512, timeout: Duration.seconds(15), bundling: { minify: true, sourceMap: true }, environment: { PUBLICATION_TABLE: this.publicationTable.tableName, CONNECTION_TABLE: this.connectionTable.tableName, WORKSPACE_TABLE: props.workspaceTable.tableName, BRAND_TABLE: props.brandTable.tableName, FRONTEND_ORIGIN: props.frontendOrigin } });
     this.publicationTable.grantReadWriteData(this.handler); this.connectionTable.grantReadWriteData(this.handler); props.workspaceTable.grantReadData(this.handler); props.brandTable.grantReadData(this.handler);
     this.handler.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['dynamodb:TransactWriteItems'], resources: [this.publicationTable.tableArn] }));
@@ -53,6 +57,17 @@ export class OverlaySourceInfrastructure extends Construct {
     const managementUrl = `https://${wsApi.apiId}.execute-api.${stack.region}.amazonaws.com/${wsStage.stageName}`;
     this.handler.addEnvironment('WEBSOCKET_URL', this.websocketUrl); this.handler.addEnvironment('WEBSOCKET_MANAGEMENT_URL', managementUrl);
     this.handler.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['execute-api:ManageConnections'], resources: [`arn:${stack.partition}:execute-api:${stack.region}:${stack.account}:${wsApi.apiId}/${wsStage.stageName}/POST/@connections/*`] }));
+    if (props.runtimeHandler) {
+      props.runtimeHandler.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['dynamodb:GetItem'], resources: [this.publicationTable.tableArn] }));
+      props.runtimeHandler.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['dynamodb:Query'], resources: [`${this.connectionTable.tableArn}/index/publicationId-index`] }));
+      props.runtimeHandler.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['dynamodb:DeleteItem'], resources: [this.connectionTable.tableArn] }));
+      props.runtimeHandler.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['dynamodb:PutItem', 'dynamodb:UpdateItem'], resources: [this.dedupeTable.tableArn] }));
+      props.runtimeHandler.addEnvironment('OVERLAY_PUBLICATION_TABLE', this.publicationTable.tableName);
+      props.runtimeHandler.addEnvironment('OVERLAY_CONNECTION_TABLE', this.connectionTable.tableName);
+      props.runtimeHandler.addEnvironment('TWITCH_EVENT_DEDUPE_TABLE', this.dedupeTable.tableName);
+      props.runtimeHandler.addEnvironment('OVERLAY_WEBSOCKET_MANAGEMENT_URL', managementUrl);
+      props.runtimeHandler.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['execute-api:ManageConnections'], resources: [`arn:${stack.partition}:execute-api:${stack.region}:${stack.account}:${wsApi.apiId}/${wsStage.stageName}/POST/@connections/*`] }));
+    }
     this.httpUrl = httpApi.url!;
   }
 }

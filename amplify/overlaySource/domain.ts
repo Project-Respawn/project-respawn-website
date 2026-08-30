@@ -246,9 +246,14 @@ export function validateEditableOverlayProject(value: unknown) {
 }
 
 export function validateOverlayEvent(value: unknown) {
-  if (!safeObject(value) || value.version !== 1 || !OVERLAY_EVENT_TYPES.has(String(value.type)) || value.source !== 'test') throw new Error('Overlay event is invalid');
-  if (!Number.isFinite(Date.parse(String(value.timestamp))) || !safeObject(value.data)) throw new Error('Overlay event is invalid');
-  return { version: 1, id: String(value.id || randomUUID()), type: String(value.type), timestamp: String(value.timestamp), source: 'test', data: { actor: safeObject(value.data.actor) ? value.data.actor : null, payload: safeObject(value.data.payload) ? value.data.payload : {} } };
+  if (safeObject(value) && !value.id) value = { ...value, id: randomUUID() };
+  return validateTrustedOverlayEvent(value, 'test');
+}
+
+export function validateTrustedOverlayEvent(value: unknown, source: 'test' | 'twitch') {
+  if (!safeObject(value) || value.version !== 1 || !OVERLAY_EVENT_TYPES.has(String(value.type)) || value.source !== source) throw new Error('Overlay event is invalid');
+  if (!String(value.id || '').trim() || !Number.isFinite(Date.parse(String(value.timestamp))) || !safeObject(value.data)) throw new Error('Overlay event is invalid');
+  return { version: 1, id: String(value.id), type: String(value.type), timestamp: String(value.timestamp), source, data: { actor: safeObject(value.data.actor) ? value.data.actor : null, payload: safeObject(value.data.payload) ? value.data.payload : {} } };
 }
 
 export function assertPublicationOwner(publication: any, userId: string) {
@@ -308,12 +313,17 @@ export function createConnectionRecord(connectionId: string, publicationId: stri
   return { connectionId, publicationId, connectedAt: new Date(now).toISOString(), expiresAtEpoch: Math.floor(now / 1000) + 86400 };
 }
 
-export async function fanOutOverlayEvent(connections: any[], event: any, send: (connectionId: string, event: any) => Promise<void>, remove: (connectionId: string) => Promise<void>) {
-  let delivered = 0;
+export async function fanOutOverlayEvent(connections: any[], event: any, send: (connectionId: string, event: any) => Promise<void>, remove: (connectionId: string) => Promise<void>, onFailure: (error: any, connectionId: string) => void = () => undefined) {
+  let delivered = 0, staleRemoved = 0, failed = 0;
+  const reportFailure = (error: any, connectionId: string) => { failed += 1; try { onFailure(error, connectionId); } catch {} };
+  const removeStale = async (connectionId: string) => {
+    try { await remove(connectionId); staleRemoved += 1; }
+    catch (error) { reportFailure(error, connectionId); }
+  };
   await Promise.all(connections.map(async (connection) => {
-    if (Number(connection.expiresAtEpoch || 0) <= Math.floor(Date.now() / 1000)) { await remove(connection.connectionId); return; }
+    if (Number(connection.expiresAtEpoch || 0) <= Math.floor(Date.now() / 1000)) { await removeStale(connection.connectionId); return; }
     try { await send(connection.connectionId, event); delivered += 1; }
-    catch (error: any) { if (error?.name === 'GoneException' || error?.$metadata?.httpStatusCode === 410) await remove(connection.connectionId); else throw error; }
+    catch (error: any) { if (error?.name === 'GoneException' || error?.$metadata?.httpStatusCode === 410) await removeStale(connection.connectionId); else reportFailure(error, connection.connectionId); }
   }));
-  return delivered;
+  return { delivered, staleRemoved, failed };
 }

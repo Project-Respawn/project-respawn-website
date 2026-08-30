@@ -11,6 +11,7 @@ import {
 } from 'aws-cdk-lib/aws-apigatewayv2';
 import { HttpLambdaIntegration } from 'aws-cdk-lib/aws-apigatewayv2-integrations';
 import { composeOverlaySourceStack } from './overlaySource/composition';
+import { assertRuntimeLambdaMutationTarget } from './overlaySource/runtimeLambdaMutationTarget';
 
 import { auth } from './auth/resource';
 import { data } from './data/resource';
@@ -177,6 +178,7 @@ httpApi.addRoutes({
   integration: httpLambdaIntegration,
 });
 
+
 httpApi.addRoutes({
   path: '/integrations/alpha/reward-events',
   methods: [HttpMethod.POST],
@@ -276,4 +278,6 @@ backend.addOutput({
 const overlaySourceStack = backend.createStack('overlay-source-stack');
 const userPool = backend.auth.resources.userPool;
 const userPoolClient = backend.auth.resources.userPoolClient;
-composeOverlaySourceStack({ stack: overlaySourceStack, tables: backend.data.resources.tables, userPoolId: userPool.userPoolId, userPoolClientId: userPoolClient.userPoolClientId, frontendOrigin: process.env.AWS_BRANCH === 'master' ? 'https://www.projectrespawn.com' : 'http://localhost:5174', addOutput: (output) => backend.addOutput(output as any) });
+const runtimeHandler = backend.myFunction.resources.lambda;
+assertRuntimeLambdaMutationTarget(runtimeHandler);
+composeOverlaySourceStack({ stack: overlaySourceStack, tables: backend.data.resources.tables, userPoolId: userPool.userPoolId, userPoolClientId: userPoolClient.userPoolClientId, frontendOrigin: process.env.AWS_BRANCH === 'master' ? 'https://www.projectrespawn.com' : 'http://localhost:5174', runtimeHandler, addOutput: (output) => backend.addOutput(output as any) });

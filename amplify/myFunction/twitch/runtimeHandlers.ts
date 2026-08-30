@@ -1,10 +1,14 @@
-import { randomUUID } from 'node:crypto'
+import { createHash, randomUUID } from 'node:crypto'
 import { getRequestBody } from '../shared/http'
 import { jsonResponse } from '../shared/responses'
 import { createRuntimeLease, runtimeLeaseMetadata, verifyRuntimeLease, verifyRuntimeRequest } from './runtimeAuth'
 import { decryptTokenBundle } from './tokenStore'
 import { claimRewardEvent, resolveRewardEvent } from './rewardEventHandlers'
 import { decodeAwsJson } from './awsJson'
+import { validateTrustedOverlayEvent } from '../../overlaySource/domain'
+import { CanonicalPublicationError, publishCanonicalOverlayEvent } from '../../overlaySource/canonicalPublisher'
+import { createAwsCanonicalPublisherDependencies } from '../../overlaySource/awsPublisher'
+import { createTwitchEventDedupeStore, LEGACY_DISPOSITIONS, type LegacyDisposition } from '../../overlaySource/twitchEventDedupe'
 
 const seenNonces = new Map<string, number>()
 function headers(event: any) { const input = event.headers || {}; return Object.fromEntries(Object.entries(input).map(([key, value]) => [key.toLowerCase(), String(value)])) }
@@ -20,16 +24,26 @@ function authenticateRuntime(event: any, path: string, method: string, body: unk
 async function integration(client: any, id: string) { const result = await client.models.TwitchIntegration.get({ id }); if (!result.data) throw new Error('Twitch integration not found'); return result.data }
 function bearer(event: any) { return headers(event).authorization?.replace(/^Bearer\s+/i, '') || '' }
 
-export async function handleTwitchRuntime(path: string, method: string, event: any, injectedClient?: any) {
+function deliveryLog(context: Record<string, unknown>) { console.log(JSON.stringify({ component: 'twitch-overlay-bridge', ...context })) }
+function errorName(error: unknown) { return error instanceof Error ? error.name : 'Error' }
+function duplicateDisposition(record: Record<string, unknown>): { legacyDisposition: LegacyDisposition; reason: string } {
+  if (record.state === 'CLAIMED' || record.outcome === 'PROCESSING') return { legacyDisposition: LEGACY_DISPOSITIONS.suppress, reason: 'INDETERMINATE_CLAIMED' }
+  if (record.legacyDisposition === LEGACY_DISPOSITIONS.allowFallback) return { legacyDisposition: LEGACY_DISPOSITIONS.allowFallback, reason: String(record.outcome || 'PROCESSING_FAILED') }
+  if (record.legacyDisposition === LEGACY_DISPOSITIONS.suppress) return { legacyDisposition: LEGACY_DISPOSITIONS.suppress, reason: String(record.outcome || 'PRIOR_CANONICAL_DECISION') }
+  if (record.outcome === 'PROCESSING_FAILED') return { legacyDisposition: LEGACY_DISPOSITIONS.allowFallback, reason: 'PROCESSING_FAILED' }
+  return { legacyDisposition: LEGACY_DISPOSITIONS.suppress, reason: String(record.outcome || 'INDETERMINATE_PRIOR_ATTEMPT') }
+}
+
+export async function handleTwitchRuntime(path: string, method: string, event: any, injectedClient?: any, injectedPublisher?: any, injectedDedupe?: any) {
   const body: any = getRequestBody(event) || {}; const client = injectedClient || await (await import('../shared/dataClient')).getDataClient()
   if (path === '/twitch/runtime/lease' && method === 'POST') {
     authenticateRuntime(event, path, method, body); const record = await integration(client, String(body.integrationId || ''))
     if (!record.workspaceId) return jsonResponse(409, { error: 'Integration is not assigned to a Creator Workspace' })
     if (!record.twitchBroadcasterId || record.connectionStatus === 'DISCONNECTED') return jsonResponse(409, { error: 'Integration is not runtime-ready' })
-    const lease = createRuntimeLease({ integrationId: record.id, workspaceId: record.workspaceId, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, operations: ['manifest', 'snapshot', 'token', 'heartbeat', 'reward-events-claim', 'reward-events-resolve'] }, runtimeSecret())
+    const lease = createRuntimeLease({ integrationId: record.id, workspaceId: record.workspaceId, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, operations: ['manifest', 'snapshot', 'token', 'heartbeat', 'reward-events-claim', 'reward-events-resolve', 'publish-overlay-event'] }, runtimeSecret())
     return jsonResponse(200, { lease, ...runtimeLeaseMetadata(lease), integrationId: record.id, workspaceId: record.workspaceId, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, requestId: randomUUID() })
   }
-  const operation = path.split('/').pop() || ''; const claims = verifyRuntimeLease(bearer(event), runtimeSecret(), operation); const record = await integration(client, claims.integrationId)
+  const routeOperation = path.split('/').pop() || ''; const operation = routeOperation === 'overlay-events' ? 'publish-overlay-event' : routeOperation; const claims = verifyRuntimeLease(bearer(event), runtimeSecret(), operation); const record = await integration(client, claims.integrationId)
   if (record.workspaceId !== claims.workspaceId || record.brandId !== claims.brandId || record.twitchBroadcasterId !== claims.broadcasterId) throw new Error('Runtime lease integration binding mismatch')
   if (operation === 'manifest' && method === 'GET') return jsonResponse(200, { integrationId: record.id, workspaceId: record.workspaceId, brandId: record.brandId, broadcasterId: record.twitchBroadcasterId, configurationVersion: record.configurationVersion, connectionStatus: record.connectionStatus, capabilities: decodeAwsJson(record.capabilities, {}), grantedScopes: record.grantedScopes || [] })
   if (operation === 'snapshot' && method === 'GET') {
@@ -59,6 +73,59 @@ export async function handleTwitchRuntime(path: string, method: string, event: a
     const existing = await client.models.TwitchRuntimeHealth.get({ integrationId: record.id }); const result = existing.data ? await client.models.TwitchRuntimeHealth.update(input) : await client.models.TwitchRuntimeHealth.create(input)
     if (result.errors?.length) throw new Error('Failed to record Twitch runtime health')
     return jsonResponse(200, { ok: true, observedAt: now })
+  }
+  if (operation === 'publish-overlay-event' && method === 'POST') {
+    if (record.connectionStatus !== 'CONNECTED') throw new Error('Twitch integration is not connected')
+    const twitchMessageId = String(body.twitchMessageId || '').trim(), broadcasterId = String(body.broadcasterId || '').trim()
+    if (!twitchMessageId || twitchMessageId.length > 200) throw new Error('Twitch message ID is invalid')
+    if (!broadcasterId || broadcasterId !== claims.broadcasterId || broadcasterId !== record.twitchBroadcasterId) throw new Error('Twitch broadcaster binding mismatch')
+    const canonicalEvent = validateTrustedOverlayEvent(body.event, 'twitch')
+    if (canonicalEvent.id !== twitchMessageId) throw new Error('Canonical event ID must match Twitch message ID')
+    const [workspace, brand] = await Promise.all([
+      client.models.CreatorWorkspaceRecord.get({ id: record.workspaceId }),
+      client.models.Brand.get({ id: record.brandId }),
+    ])
+    if (!workspace.data || !brand.data || brand.data.workspaceId !== record.workspaceId) throw new Error('Runtime Workspace and Brand binding is invalid')
+    const dedupeKey = createHash('sha256').update(`${record.id}\0${twitchMessageId}`).digest('hex'), expiresAt = Math.floor(Date.now() / 1000) + 86400
+    const dedupe = injectedDedupe || createTwitchEventDedupeStore()
+    let claim
+    try {
+      claim = await dedupe.claim({ dedupeKey, integrationId: record.id, twitchMessageId, canonicalEventId: canonicalEvent.id, eventType: canonicalEvent.type, eventTimestamp: canonicalEvent.timestamp, state: 'CLAIMED', outcome: 'PROCESSING', legacyDisposition: LEGACY_DISPOSITIONS.suppress, expiresAt })
+    } catch (error: unknown) {
+      deliveryLog({ eventType: canonicalEvent.type, twitchMessageId, broadcasterId, integrationId: record.id, workspaceId: record.workspaceId, brandId: record.brandId, canonicalEventId: canonicalEvent.id, dedupeOutcome: 'CLAIM_FAILED', failureStage: 'dedupe-claim', errorName: errorName(error) })
+      return jsonResponse(200, { status: 'PROCESSING_FAILED', reason: 'DEDUPE_CLAIM_FAILED', duplicate: false, delivered: 0, staleRemoved: 0, failed: 0, legacyDisposition: LEGACY_DISPOSITIONS.allowFallback })
+    }
+    if (claim.status === 'DUPLICATE') {
+      const disposition = duplicateDisposition(claim.record)
+      deliveryLog({ eventType: canonicalEvent.type, twitchMessageId, broadcasterId, integrationId: record.id, workspaceId: record.workspaceId, brandId: record.brandId, canonicalEventId: canonicalEvent.id, dedupeOutcome: 'DUPLICATE', priorState: claim.record.state || null, priorOutcome: claim.record.outcome || null, legacyDisposition: disposition.legacyDisposition, failureStage: null })
+      return jsonResponse(200, { status: 'DUPLICATE', reason: disposition.reason, duplicate: true, priorState: claim.record.state || null, priorOutcome: claim.record.outcome || null, delivered: Number(claim.record.delivered || 0), staleRemoved: Number(claim.record.staleRemoved || 0), failed: Number(claim.record.failed || 0), legacyDisposition: disposition.legacyDisposition })
+    }
+    try {
+      const result = await publishCanonicalOverlayEvent({ workspaceId: record.workspaceId, brandId: record.brandId, event: canonicalEvent }, injectedPublisher || createAwsCanonicalPublisherDependencies())
+      const state = result.status === 'SKIPPED' ? 'SKIPPED' : 'DELIVERED'
+      const outcome = result.reason || (result.delivered || result.failed ? 'DELIVERED' : 'ZERO_CONNECTIONS')
+      let dedupePersisted = true
+      try {
+        await dedupe.update(dedupeKey, { state, outcome, legacyDisposition: LEGACY_DISPOSITIONS.suppress, publicationId: result.publicationId, delivered: result.delivered, staleRemoved: result.staleRemoved, failed: result.failed })
+      } catch (error: unknown) {
+        dedupePersisted = false
+        deliveryLog({ eventType: canonicalEvent.type, twitchMessageId, canonicalEventId: canonicalEvent.id, dedupeOutcome: 'TERMINAL_UPDATE_FAILED', failureStage: 'dedupe-terminal-update', authoritativeOutcome: outcome, legacyDisposition: LEGACY_DISPOSITIONS.suppress, errorName: errorName(error) })
+      }
+      deliveryLog({ eventType: canonicalEvent.type, twitchMessageId, broadcasterId, integrationId: record.id, workspaceId: record.workspaceId, brandId: record.brandId, publicationId: result.publicationId, canonicalEventId: canonicalEvent.id, dedupeOutcome: 'CLAIMED', delivered: result.delivered, staleRemoved: result.staleRemoved, failed: result.failed, failureStage: null, outcome })
+      return jsonResponse(200, { ...result, duplicate: false, legacyDisposition: LEGACY_DISPOSITIONS.suppress, dedupePersisted })
+    } catch (error: unknown) {
+      const deliveryMayHaveOccurred = !(error instanceof CanonicalPublicationError) || error.deliveryMayHaveOccurred
+      const legacyDisposition = deliveryMayHaveOccurred ? LEGACY_DISPOSITIONS.suppress : LEGACY_DISPOSITIONS.allowFallback
+      let dedupePersisted = true
+      try {
+        await dedupe.update(dedupeKey, { state: 'SKIPPED', outcome: 'PROCESSING_FAILED', legacyDisposition })
+      } catch (updateError: unknown) {
+        dedupePersisted = false
+        deliveryLog({ eventType: canonicalEvent.type, twitchMessageId, canonicalEventId: canonicalEvent.id, dedupeOutcome: 'TERMINAL_UPDATE_FAILED', failureStage: 'dedupe-terminal-update', authoritativeOutcome: 'PROCESSING_FAILED', legacyDisposition, errorName: errorName(updateError) })
+      }
+      deliveryLog({ eventType: canonicalEvent.type, twitchMessageId, broadcasterId, integrationId: record.id, workspaceId: record.workspaceId, brandId: record.brandId, canonicalEventId: canonicalEvent.id, dedupeOutcome: 'CLAIMED', failureStage: 'canonical-publication', deliveryMayHaveOccurred, legacyDisposition, errorName: errorName(error) })
+      return jsonResponse(200, { status: 'PROCESSING_FAILED', reason: deliveryMayHaveOccurred ? 'CANONICAL_DELIVERY_INDETERMINATE' : 'CANONICAL_PROCESSING_FAILED', duplicate: false, delivered: 0, staleRemoved: 0, failed: 0, legacyDisposition, dedupePersisted })
+    }
   }
   if (operation === 'reward-events-claim' && method === 'POST') return jsonResponse(200, { event: await claimRewardEvent(client, record.id) })
   if (operation === 'reward-events-resolve' && method === 'POST') return jsonResponse(200, await resolveRewardEvent(client, record.id, body))
