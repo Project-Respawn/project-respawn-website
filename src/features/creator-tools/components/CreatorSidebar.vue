@@ -2,7 +2,7 @@
   <aside class="creator-sidebar">
     <!-- Creator Tools brand -->
     <router-link
-      :to="{ name: 'CreatorDashboard' }"
+      :to="creatorLocation('CreatorDashboard')"
       class="creator-product"
     >
       <span class="creator-product-mark">
@@ -49,28 +49,29 @@
       </span>
     </button>
 
-    <!-- Frontend shell only.
-         Codex should connect this to canonical Workspace/Brand context. -->
     <div
       v-if="brandMenuOpen"
       class="creator-brand-menu"
     >
       <div class="creator-brand-menu-label">
-        Current context
-      </div>
-
-      <div class="creator-brand-menu-current">
-        <strong>{{ activeBrand.name }}</strong>
-        <span>{{ activeBrand.workspaceName }}</span>
+        Active Brand
       </div>
 
       <button
+        v-for="item in brands"
+        :key="item.brandId || item.id"
         type="button"
         class="creator-brand-menu-action"
-        @click="emitBrandRequest"
+        :class="{ 'is-active': (item.brandId || item.id) === selectedBrandId }"
+        @click="selectBrand(item.brandId || item.id)"
       >
-        Switch brand
+        <span aria-hidden="true">{{ (item.brandId || item.id) === selectedBrandId ? '✓' : '' }}</span>
+        <span>{{ item.name }}</span>
       </button>
+
+      <p v-if="loading" class="creator-brand-menu-state">Loading Brands…</p>
+      <p v-else-if="!brands.length" class="creator-brand-menu-state">No Brand available</p>
+      <p v-if="error" class="creator-brand-menu-error" role="alert">{{ error }}</p>
     </div>
 
     <div class="creator-workspace-status">
@@ -119,7 +120,7 @@
           <router-link
             v-for="key in visibleItems(group.items)"
             :key="key"
-            :to="{ name: registry[key].routeName }"
+            :to="creatorLocation(registry[key].routeName)"
             class="creator-nav-link"
             :class="{ 'is-active': isFeatureActive(key) }"
           >
@@ -157,6 +158,7 @@ import { useRoute } from 'vue-router'
 import FeatureStatusBadge from '../../../components/FeatureStatusBadge/FeatureStatusBadge.vue'
 import CreatorFeatureIcon from './CreatorFeatureIcon.vue'
 import projectRespawnLogo from '../views/events/project-respawn-mark.png'
+import { creatorRouteLocation } from '../composables/useCreatorBrandContext.js'
 
 import {
   creatorFeatureRegistry as registry,
@@ -164,27 +166,24 @@ import {
 } from '../config/creatorFeatureRegistry.js'
 
 const props = defineProps({
-  brand: {
-    type: Object,
-    default: () => ({
-      name: 'Sea Guardian',
-      logo: null,
-      workspaceName: 'Main Workspace',
-      active: true
-    })
-  }
+  brands: { type: Array, default: () => [] },
+  selectedBrand: { type: Object, default: null },
+  selectedBrandId: { type: String, default: '' },
+  workspaceName: { type: String, default: '' },
+  loading: { type: Boolean, default: false },
+  error: { type: String, default: '' }
 })
 
-const emit = defineEmits(['request-brand-switch'])
+const emit = defineEmits(['select-brand'])
 
 const route = useRoute()
 const brandMenuOpen = ref(false)
 
 const activeBrand = computed(() => ({
-  name: props.brand?.name || 'Select Brand',
-  logo: props.brand?.logo || null,
-  workspaceName: props.brand?.workspaceName || 'Workspace',
-  active: props.brand?.active !== false
+  name: props.loading ? 'Loading Brand…' : props.selectedBrand?.name || (props.brands.length ? 'Select a Brand' : 'No Brand available'),
+  logo: props.selectedBrand?.logo || null,
+  workspaceName: props.workspaceName || (props.selectedBrand ? 'Creator Workspace' : ''),
+  active: Boolean(props.selectedBrand)
 }))
 
 const brandInitials = computed(() => {
@@ -243,9 +242,13 @@ function ensureActiveGroupOpen() {
   })
 }
 
-function emitBrandRequest() {
+function selectBrand(brandId) {
   brandMenuOpen.value = false
-  emit('request-brand-switch')
+  emit('select-brand', brandId)
+}
+
+function creatorLocation(name) {
+  return creatorRouteLocation(name, props.selectedBrandId)
 }
 
 watch(
@@ -419,6 +422,28 @@ watch(
   border: 0;
   border-radius: 7px;
   cursor: pointer;
+}
+
+.creator-brand-menu-action {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr);
+  gap: 6px;
+}
+
+.creator-brand-menu-action.is-active {
+  color: #fff;
+  background: rgba(124, 58, 237, .3);
+}
+
+.creator-brand-menu-state,
+.creator-brand-menu-error {
+  margin: 8px 2px 2px;
+  color: #94a3b8;
+  font-size: .72rem;
+}
+
+.creator-brand-menu-error {
+  color: #fca5a5;
 }
 
 .creator-workspace-status {

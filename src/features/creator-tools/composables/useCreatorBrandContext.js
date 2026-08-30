@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { refreshAccessContext } from '../../../composables/useAccessContext.js'
 
 const sharedCreatorBrandId = ref('')
@@ -22,14 +22,32 @@ export function chooseCreatorBrandId(access, requestedBrandId = '', sharedBrandI
   return ids.length === 1 ? ids[0] : ''
 }
 
+export function creatorRouteLocation(name, brandId = '') {
+  return brandId ? { name, query: { brandId } } : { name }
+}
+
+export function creatorContextMatches(expected, workspaceId, brandId) {
+  return expected.workspaceId === workspaceId && expected.brandId === brandId
+}
+
+export function creatorRequestIsCurrent(expectedGeneration, currentGeneration, expectedContext, workspaceId, brandId) {
+  return expectedGeneration === currentGeneration && creatorContextMatches(expectedContext, workspaceId, brandId)
+}
+
 export function useCreatorBrandContext(route, router) {
   const access = ref(null), brands = ref([]), selectedBrandId = ref(''), workspaceId = ref(''), loading = ref(false), error = ref('')
   const selectedBrand = computed(() => brands.value.find((item) => (item.brandId || item.id) === selectedBrandId.value) || null)
+  function clearSelection(message = '') {
+    selectedBrandId.value = ''
+    workspaceId.value = ''
+    error.value = message
+  }
   async function select(brandId, { updateRoute = true } = {}) {
     const resolved = resolveCreatorBrand(access.value, String(brandId || ''))
     if (!resolved) throw new Error('Select an accessible Brand')
     selectedBrandId.value = resolved.brandId; workspaceId.value = resolved.workspaceId
     sharedCreatorBrandId.value = resolved.brandId
+    error.value = ''
     if (updateRoute && route?.query?.brandId !== resolved.brandId) await router.replace({ query: { ...route.query, brandId: resolved.brandId } })
     return resolved
   }
@@ -52,5 +70,25 @@ export function useCreatorBrandContext(route, router) {
     if (!loadPromise) loadPromise = loadOnce().catch((cause) => { loadPromise = null; throw cause })
     return loadPromise
   }
+  watch(
+    () => route?.query?.brandId,
+    async (nextBrandId) => {
+      if (!access.value) return
+      const requested = String(nextBrandId || '')
+      if (requested === selectedBrandId.value) return
+      if (requested) {
+        const resolved = resolveCreatorBrand(access.value, requested)
+        if (!resolved) {
+          clearSelection('Select an accessible Brand')
+          return
+        }
+        await select(requested, { updateRoute: false })
+        return
+      }
+      const chosen = chooseCreatorBrandId(access.value, '', String(sharedCreatorBrandId.value || ''))
+      if (chosen) await select(chosen)
+      else clearSelection(brands.value.length ? 'Select a Brand before editing Creator settings' : 'Select or create a Brand before editing Creator settings')
+    },
+  )
   return { access, brands, selectedBrand, selectedBrandId, workspaceId, sharedCreatorBrandId, loading, error, load, select }
 }

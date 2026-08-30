@@ -11,14 +11,20 @@
       :class="{ 'is-mobile-open': mobileNavigationOpen }"
     >
       <CreatorSidebar
-        :brand="activeBrand"
-        @request-brand-switch="handleBrandSwitchRequest"
+        :brands="brandContext.brands.value"
+        :selected-brand="brandContext.selectedBrand.value"
+        :selected-brand-id="brandContext.selectedBrandId.value"
+        :workspace-name="selectedWorkspaceName"
+        :loading="brandContext.loading.value"
+        :error="brandContext.error.value"
+        @select-brand="handleBrandSelection"
       />
     </div>
 
     <div class="creator-content">
       <CreatorContextHeader
-        :brand-name="activeBrand.name"
+        :brand-name="selectedBrandName"
+        :brand-id="brandContext.selectedBrandId.value"
         :breadcrumbs="breadcrumbs"
         @toggle-navigation="mobileNavigationOpen = !mobileNavigationOpen"
       />
@@ -32,32 +38,33 @@
 
 <script setup>
 import { computed, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 import CreatorSidebar from './CreatorSidebar.vue'
 import CreatorContextHeader from './CreatorContextHeader.vue'
+import { useCreatorBrandContext } from '../composables/useCreatorBrandContext.js'
 
 import {
   creatorFeatureRegistry as registry
 } from '../config/creatorFeatureRegistry.js'
 
 const route = useRoute()
+const router = useRouter()
+const brandContext = useCreatorBrandContext(route, router)
 
 const mobileNavigationOpen = ref(false)
 
-/*
- * Frontend shell placeholder.
- *
- * Do not turn this into a second Brand source of truth.
- * Codex/backend integration should replace this with the canonical
- * authenticated Account -> Workspace -> Brand context.
- */
-const activeBrand = ref({
-  id: null,
-  name: 'Sea Guardian',
-  logo: null,
-  workspaceName: 'Main Workspace',
-  active: true
+const selectedBrandName = computed(() => {
+  if (brandContext.loading.value) return 'Loading Brand…'
+  if (brandContext.selectedBrand.value) return brandContext.selectedBrand.value.name
+  return brandContext.brands.value.length ? 'Select a Brand' : 'No Brand available'
+})
+
+const selectedWorkspaceName = computed(() => {
+  const workspace = brandContext.access.value?.workspaces?.find((item) => (
+    (item.workspaceId || item.id) === brandContext.workspaceId.value
+  ))
+  return workspace?.name || (brandContext.selectedBrand.value ? 'Creator Workspace' : '')
 })
 
 const routeBreadcrumbOverrides = {
@@ -138,17 +145,15 @@ const breadcrumbs = computed(() => {
   return []
 })
 
-function handleBrandSwitchRequest() {
-  /*
-   * Frontend boundary only.
-   *
-   * Codex should connect this to the canonical Workspace/Brand
-   * selector rather than browser storage or demo state.
-   */
-  console.info(
-    '[Creator Tools] Brand switch requested.'
-  )
+async function handleBrandSelection(brandId) {
+  try {
+    await brandContext.select(brandId)
+  } catch {
+    // The composable exposes a controlled validation error to the selector.
+  }
 }
+
+void brandContext.load().catch(() => undefined)
 
 watch(
   () => route.fullPath,

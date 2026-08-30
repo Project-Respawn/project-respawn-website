@@ -14,7 +14,7 @@
         class="creator-breadcrumbs"
         aria-label="Breadcrumb"
       >
-        <router-link :to="{ name: 'CreatorDashboard' }">
+        <router-link :to="creatorLocation('CreatorDashboard')">
           Creator Tools
         </router-link>
 
@@ -29,7 +29,7 @@
 
           <router-link
             v-if="crumb.routeName"
-            :to="{ name: crumb.routeName }"
+            :to="creatorLocation(crumb.routeName)"
           >
             {{ crumb.label }}
           </router-link>
@@ -51,10 +51,17 @@
 </template>
 
 <script setup>
-defineProps({
+import { creatorRouteLocation } from '../composables/useCreatorBrandContext.js'
+
+const props = defineProps({
   brandName: {
     type: String,
-    default: 'Sea Guardian'
+    default: 'Select a Brand'
+  },
+
+  brandId: {
+    type: String,
+    default: ''
   },
 
   breadcrumbs: {
@@ -64,6 +71,10 @@ defineProps({
 })
 
 defineEmits(['toggle-navigation'])
+
+function creatorLocation(name) {
+  return creatorRouteLocation(name, props.brandId)
+}
 </script>
 
 <style scoped>
