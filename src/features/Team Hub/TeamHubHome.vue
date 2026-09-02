@@ -320,6 +320,8 @@ onMounted(async () => {
 });
 
 async function refreshTeams() {
+  loading.value = true;
+  errorMessage.value = '';
   try {
     const activePage = await loadBoundedPages((nextToken) => listMyTeams({ status: 'ACTIVE', limit: 50, ...(nextToken ? { nextToken } : {}) }));
     const inactivePage = canAdmin.value ? await loadBoundedPages((nextToken) => listMyTeams({ status: 'INACTIVE', limit: 50, ...(nextToken ? { nextToken } : {}) })) : { items: [], complete: true };
@@ -345,8 +347,10 @@ async function createNewTeam() {
   const slug = window.prompt('Unique team slug', name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
   if (!slug) return;
   try {
-    await createTeam({ name, slug, gameKey: 'LEAGUE_OF_LEGENDS' });
+    const created = await createTeam({ name, slug, gameKey: 'LEAGUE_OF_LEGENDS' });
     await refreshTeams();
+    selectedGameId.value = games.value.find((game) => game.teams.some((team) => team.id === created.id))?.id ?? selectedGameId.value;
+    selectedTeamId.value = created.id;
   } catch (error) {
     errorMessage.value = error instanceof Error ? error.message : 'Unable to create team.';
   }

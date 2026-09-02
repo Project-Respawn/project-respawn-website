@@ -23,6 +23,7 @@ import AdminInductions from '../views/Admin/AdminApplications/AdminInductions.vu
 import AdminInductionDetail from '../views/Admin/AdminApplications/AdminInductionDetail.vue';
 import AdminAvailability from '../views/Admin/Bookings/AdminAvailability.vue';
 import AdminInvestors from '../views/Admin/AdminInvestors/AdminInvestors.vue';
+import TeamAdministration from '../features/Team Hub/TeamAdministration.vue';
 
 export default [
 
@@ -54,6 +55,12 @@ export default [
                 path: 'investors',
                 name: 'AdminInvestors',
                 component: AdminInvestors,
+                meta: { requiredGroups: ['SuperAdmin', 'Admin'] }
+            },
+            {
+                path: 'esports/teams',
+                name: 'AdminTeamAdministration',
+                component: TeamAdministration,
                 meta: { requiredGroups: ['SuperAdmin', 'Admin'] }
             },
             {

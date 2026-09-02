@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { canShowAdminControls, clearPrivateTeamState, indexRoleIndependentPool, isTeamHubConflict, isTeamHubDenied, managerAssignmentInput, memberAssignmentInput, revocationInput } from './teamHub.viewModel.js';
+import { activeManager, normalizeTeamSlug, replaceTeamInList } from './teamAdministration.viewModel.js';
 
 test('runtime view-model: Admin controls are hidden from members and visible to both platform Admin roles', () => {
   assert.equal(canShowAdminControls({}), false);
@@ -59,4 +60,34 @@ test('runtime view-model: assignment sends normalized exact email without a user
 
 test('runtime view-model: revocation uses an existing membership record, never typed identity', () => {
   assert.deepEqual(revocationInput({ id: 'team:alpha', membershipRevision: 7 }, { id: 'membership-1', role: 'PLAYER' }), { teamId: 'team:alpha', targetMembershipId: 'membership-1', role: 'PLAYER', action: 'REVOKE', expectedRevision: 7 });
+});
+
+test('team administration immediately inserts a successful create and selects one active manager', () => {
+  const created = { id: 'team:new-team', slug: 'new-team', name: 'New Team' };
+  assert.deepEqual(replaceTeamInList([{ id: 'team:old' }], created), [created, { id: 'team:old' }]);
+  assert.deepEqual(replaceTeamInList([created], { ...created, name: 'Updated' }), [{ ...created, name: 'Updated' }]);
+  assert.equal(normalizeTeamSlug('  New Team!! '), 'new-team');
+  assert.equal(activeManager({ members: [{ id: 'old', role: 'MANAGER', status: 'INACTIVE' }, { id: 'active', role: 'MANAGER', status: 'ACTIVE' }] }).id, 'active');
+});
+
+test('admin dashboard routes and presents the existing consolidated Team Hub administration flow', async () => {
+  const [page, routes, layout, service, home] = await Promise.all([
+    readFile(new URL('./TeamAdministration.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../router/admin.routes.js', import.meta.url), 'utf8'),
+    readFile(new URL('../../views/Admin/AdminLayout/AdminLayout.js', import.meta.url), 'utf8'),
+    readFile(new URL('./teamHub.service.js', import.meta.url), 'utf8'),
+    readFile(new URL('./TeamHubHome.vue', import.meta.url), 'utf8'),
+  ]);
+  assert.match(routes, /path: 'esports\/teams'[\s\S]*requiredGroups: \['SuperAdmin', 'Admin'\]/);
+  assert.match(layout, /Esports · Team Administration/);
+  assert.match(page, /listAdminTeams/);
+  assert.match(page, /if \(submitting\.value\) return/);
+  assert.match(page, /window\.confirm/);
+  assert.match(page, /managerAssignmentInput/);
+  assert.match(page, /Open operational Team Hub/);
+  assert.match(service, /queries\.readTeamHub/);
+  assert.match(service, /mutations\.mutateTeamHub/);
+  assert.match(home, /errorMessage\.value = ''/);
+  assert.match(home, /selectedTeamId\.value = created\.id/);
+  assert.doesNotMatch(page, /generateClient|localStorage|\.models\./);
 });

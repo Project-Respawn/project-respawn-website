@@ -104,7 +104,7 @@ async function teamFromInput(data: any, args: any, isAdmin: boolean) {
   if (found.items.length !== 1) fail(TEAM_HUB_DENIED)
   return teamFor(data, found.items[0].id, isAdmin)
 }
-const publicTeam = (team: any) => ({ id: team.id, slug: team.slug, name: team.name, gameKey: team.gameKey, status: team.status, rosterRevision: team.rosterRevision || 0, membershipRevision: team.membershipRevision || 0 })
+const publicTeam = (team: any) => ({ id: team.id, slug: team.slug, name: team.name, gameKey: team.gameKey, status: team.status, rosterRevision: team.rosterRevision || 0, membershipRevision: team.membershipRevision || 0, createdAt: team.createdAt || null, updatedAt: team.updatedAt || null })
 const publicMember = (row: any) => ({ id: row.id, teamId: row.teamId, displayName: row.displayName || 'Project Respawn member', role: row.role, status: row.status, revokedAt: row.revokedAt || null })
 const publicSlot = (row: any) => ({ id: row.id, teamId: row.teamId, membershipId: row.membershipId, gameRoleKey: row.gameRoleKey, slotType: row.slotType, status: row.status })
 const now = () => new Date().toISOString()

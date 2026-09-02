@@ -124,6 +124,14 @@ test('indexed reads paginate and never call model.list scans', async () => {
   assert.equal((await handleGetTeamHub(event(IDS.coach, [], { teamSlug: 'alpha' }), client)).myRole, 'COACH')
 })
 
+test('SuperAdmin lists every team without requiring a TeamMembership record', async () => {
+  const { client, team } = fixture()
+  const result = await handleListMyTeams(event(IDS.admin, ['SuperAdmin'], { status: 'ACTIVE', limit: 50 }), client)
+  assert.equal(result.items.length, 1)
+  assert.equal(result.items[0].id, team.id)
+  assert.equal(result.items[0].role, 'ADMIN')
+})
+
 test('authorization and strict action, enum, revision, notes and identifier validation fail closed', async () => {
   const { client, team } = fixture(); const tx = { transact: async () => undefined }
   await assert.rejects(() => handleSetTeamRosterSlot(event(IDS.outsider, [], { teamId: team.id, membershipId: `team-membership:${team.id}:${IDS.player}`, gameRoleKey: 'MID', slotType: 'STARTER', action: 'ASSIGN', expectedRevision: 7 }), client, tx, names), /denied/)

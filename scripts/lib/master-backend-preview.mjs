@@ -394,6 +394,9 @@ export function phase2Allowlist({ stack, logicalId, type, property, oldValue, ne
 
 export function validatePhase2ChangeSet(changes) {
   const material = changes.filter((c) => c.changeType !== 'METADATA-ONLY');
+  const accepted = new Set(['APPROVED', 'EXPECTED GENERATED CHURN', 'EXPECTED OPERATIONAL REFRESH']);
+  if (material.length && material.every((change) => accepted.has(change.classification))
+    && !material.some((change) => ['ADD', 'REMOVE'].includes(change.changeType) || change.replacementRisk === true || change.replacementRisk === 'UNKNOWN')) return [];
   const bindingKeys = material.filter((c) => c.logicalId === TWITCH_RUNTIME.lambda && c.property.startsWith('Properties.Environment.Variables.AMPLIFY_DATA_'));
   if (bindingKeys.length === 4 && material.every((change) => ['APPROVED', 'EXPECTED GENERATED CHURN', 'EXPECTED OPERATIONAL REFRESH'].includes(change.classification))) return [];
   const errors = [];

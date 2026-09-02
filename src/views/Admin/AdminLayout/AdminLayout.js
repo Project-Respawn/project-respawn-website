@@ -32,6 +32,7 @@ export default {
           requiredGroups: ['SuperAdmin', 'Admin'],
         },
         { id: 'events', icon: '📅', label: 'Events', route: '/dashboard/events', requiredPermission: 'events.manage' },
+        { id: 'team-administration', icon: '🏆', label: 'Esports · Team Administration', route: '/dashboard/esports/teams', requiredGroups: ['SuperAdmin', 'Admin'] },
         {
           id: 'applications',
           icon: '📋',
@@ -112,6 +113,7 @@ export default {
       if (path.includes('/forums')) return 'forums';
       if (path.includes('/orders')) return 'orders';
       if (path.includes('/events')) return 'events';
+      if (path.includes('/esports/teams')) return 'team-administration';
       if (path.includes('/permissions')) return 'permissions';
       if (path.includes('/users')) return 'users';
 
