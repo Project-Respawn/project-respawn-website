@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { MASTER, PHASE2, compareTemplates, normalizeResource, phase1Allowlist, phase2Allowlist, validatePhase2ChangeSet, isExactPhase2DedupeTable, isExactPhase2IamChange, verdict, isExpectedApiKeyExpiry, compareLambdaArtifactContent } from './lib/master-backend-preview.mjs';
+import { readFileSync } from 'node:fs';
+import { MASTER, PHASE2, compareTemplates, normalizeResource, phase1Allowlist, phase2Allowlist, validatePhase2ChangeSet, isExactPhase2DedupeTable, isExactPhase2IamChange, isExactTwitchRuntimeTemplate, verdict, isExpectedApiKeyExpiry, compareLambdaArtifactContent } from './lib/master-backend-preview.mjs';
 
 const lambda = (code = 'old.zip', environment = 'master') => ({ Type: 'AWS::Lambda::Function', Properties: { Code: { S3Key: code }, Environment: { Variables: { ENV: environment } }, Runtime: 'nodejs22.x' }, Metadata: { generated: Date.now() } });
 
@@ -36,6 +37,14 @@ test('environment, IAM, persistent-resource uncertainty, additions and removals 
 });
 
 test('no material change fails closed', () => assert.equal(verdict([]), 'BLOCKED'));
+
+test('dedicated Twitch runtime template is exact and rejects wildcard IAM', () => {
+  const template = JSON.parse(readFileSync('.amplify/master-preview/cdk.out/amplifyd2cux232bpa951masterbranch53ef67772afunction92C3F819.nested.template.json', 'utf8'));
+  assert.equal(isExactTwitchRuntimeTemplate(template), true);
+  const unsafe = structuredClone(template);
+  unsafe.Resources.twitchruntimelambdaServiceRoleDefaultPolicy2D9A9F50.Properties.PolicyDocument.Statement[0].Resource = '*';
+  assert.equal(isExactTwitchRuntimeTemplate(unsafe), false);
+});
 
 test('only a bounded AppSync API key expiry extension is expected operational refresh', () => {
   const now = 2_000_000_000;

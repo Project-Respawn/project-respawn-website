@@ -3,7 +3,7 @@ import path from 'node:path';
 import { readFile, readdir, stat, mkdtemp, rm } from 'node:fs/promises';
 import os from 'node:os';
 import { spawnSync } from 'node:child_process';
-import { MASTER, TEAM_HUB, compareTemplates, phase2Allowlist, validatePhase2ChangeSet, validateTeamHubChangeSet, isExactTeamHubModelTemplate, verdict, stableJson, isExpectedApiKeyExpiry, compareLambdaArtifactContent } from './lib/master-backend-preview.mjs';
+import { MASTER, TEAM_HUB, TWITCH_RUNTIME, compareTemplates, phase2Allowlist, validatePhase2ChangeSet, validateTeamHubChangeSet, isExactTeamHubModelTemplate, isExactTwitchRuntimeTemplate, verdict, stableJson, isExpectedApiKeyExpiry, compareLambdaArtifactContent } from './lib/master-backend-preview.mjs';
 
 const assemblyDir = path.resolve(process.argv[2] || path.join('.amplify', 'master-preview', 'cdk.out'));
 const errors = [], allChanges = [];
@@ -116,6 +116,10 @@ async function compareStack(stackName, logicalPath, desired, templates, seen = n
     const childStack = deployedNested.get(logicalId), childFile = nestedTemplateFile(resource, templates.byFile);
     if (!childStack && childFile && logicalId in TEAM_HUB.nestedStacks) {
       if (!isExactTeamHubModelTemplate(templates.byFile[childFile], TEAM_HUB.nestedStacks[logicalId])) errors.push(`Team Hub nested template failed exact validation: ${logicalPath}/${logicalId}`);
+      continue;
+    }
+    if (!childStack && childFile && logicalId === TWITCH_RUNTIME.stack) {
+      if (!isExactTwitchRuntimeTemplate(templates.byFile[childFile])) errors.push(`Dedicated Twitch runtime nested template failed exact validation: ${logicalPath}/${logicalId}`);
       continue;
     }
     if (!childStack || !childFile) { errors.push(`Cannot prove nested stack ${logicalPath}/${logicalId}: deployed=${Boolean(childStack)} desiredTemplate=${childFile || '<missing>'}`); continue; }

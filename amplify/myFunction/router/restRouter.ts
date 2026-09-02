@@ -1,7 +1,7 @@
 import { handlePrintfulCreateOrder, handlePrintfulOrderLookup, handlePrintfulProductLookup, handlePrintfulProducts } from '../printful'
 import { handleRevolutCheckout, handleRevolutOrderLookup } from '../revolut'
 import { handleRevolutWebhook } from '../revolut/webhook'
-import { handleTwitchCommandsLookup, handleTwitchCommandsMe, handleTwitchOAuthCallback, handleTwitchRuntime } from '../twitch'
+import { handleTwitchCommandsLookup, handleTwitchCommandsMe, handleTwitchOAuthCallback } from '../twitch'
 import { handleAlphaRewardEvent } from '../twitch/rewardEventHandlers'
 import { handleExistingRevolutOrderImport, handleFulfillmentRequest, handleRecoveryFulfillment } from '../fulfillment'
 
@@ -20,6 +20,5 @@ export async function routeRest(path: string, method: string, body: unknown, eve
   if (path === '/twitch/commands' && method === 'GET') return handleTwitchCommandsLookup(event)
   if (path === '/twitch/oauth/callback' && method === 'GET') return handleTwitchOAuthCallback(event)
   if (path === '/integrations/alpha/reward-events' && method === 'POST') return handleAlphaRewardEvent(event)
-  if (path.startsWith('/twitch/runtime/')) return handleTwitchRuntime(path, method, event)
   return null
 }

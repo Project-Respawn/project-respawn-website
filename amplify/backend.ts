@@ -3,7 +3,7 @@ import { Aspects, CfnResource, IAspect, RemovalPolicy, Stack } from 'aws-cdk-lib
 import { IConstruct } from 'constructs';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Key } from 'aws-cdk-lib/aws-kms';
-import { Function as LambdaFunction } from 'aws-cdk-lib/aws-lambda';
+import { CfnPermission, Function as LambdaFunction } from 'aws-cdk-lib/aws-lambda';
 import {
   CorsHttpMethod,
   HttpApi,
@@ -19,6 +19,7 @@ import { storage } from './storage/resource';
 import { myFunction } from './myFunction/resource';
 import { adminUserManagement } from './functions/admin-user-management/resource';
 import { postConfirmation } from './auth/post-confirmation/resource';
+import { twitchRuntime } from './functions/twitch-runtime/resource';
 
 // =============================================================================
 // Core backend resources
@@ -31,6 +32,7 @@ const backend = defineBackend({
   myFunction,
   adminUserManagement,
   postConfirmation,
+  twitchRuntime,
 });
 
 // Explicitly pin Identity Pool role attachments so branch environments
@@ -113,12 +115,18 @@ class RetainTwitchTokenKeyAspect implements IAspect {
 }
 Aspects.of(Stack.of(twitchTokenKey)).add(new RetainTwitchTokenKeyAspect());
 twitchTokenKey.grantEncryptDecrypt(backend.myFunction.resources.lambda);
+twitchTokenKey.grantDecrypt(backend.twitchRuntime.resources.lambda);
 (backend.myFunction.resources.lambda as LambdaFunction).addEnvironment('TWITCH_TOKEN_KMS_KEY_ID', twitchTokenKey.keyArn);
+(backend.twitchRuntime.resources.lambda as LambdaFunction).addEnvironment('TWITCH_TOKEN_KMS_KEY_ID', twitchTokenKey.keyArn);
 
 // Main shared Lambda integration
 const httpLambdaIntegration = new HttpLambdaIntegration(
   'MyFunctionIntegration',
   backend.myFunction.resources.lambda
+);
+const twitchRuntimeIntegration = new HttpLambdaIntegration(
+  'TwitchRuntimeIntegration',
+  backend.twitchRuntime.resources.lambda
 );
 
 // Shared HTTP API
@@ -175,8 +183,25 @@ httpApi.addRoutes({
 httpApi.addRoutes({
   path: '/twitch/runtime/{proxy+}',
   methods: [HttpMethod.GET, HttpMethod.POST],
-  integration: httpLambdaIntegration,
+  integration: twitchRuntimeIntegration,
 });
+const retainedRuntimeSourceArn = Stack.of(httpApi).formatArn({
+  service: 'execute-api',
+  resource: httpApi.apiId,
+  resourceName: '*/*/twitch/runtime/{proxy+}',
+});
+for (const [id, logicalId] of [
+  ['RetainedGetRuntimePermission', 'HttpApiGETtwitchruntimeproxyMyFunctionIntegrationPermission2D5F0CC6'],
+  ['RetainedPostRuntimePermission', 'HttpApiPOSTtwitchruntimeproxyMyFunctionIntegrationPermission05736304'],
+] as const) {
+  const permission = new CfnPermission(apiStack, id, {
+    action: 'lambda:InvokeFunction',
+    functionName: backend.myFunction.resources.lambda.functionArn,
+    principal: 'apigateway.amazonaws.com',
+    sourceArn: retainedRuntimeSourceArn,
+  });
+  permission.overrideLogicalId(logicalId);
+}
 
 const teamHubTables = backend.data.resources.tables;
 const teamHubLambda = backend.myFunction.resources.lambda;
@@ -193,6 +218,15 @@ teamHubLambda.addToRolePolicy(new PolicyStatement({
     teamHubTables.TeamRosterSlot.tableArn,
   ],
 }));
+
+backend.data.resources.graphqlApi.grantQuery(backend.twitchRuntime.resources.lambda,
+  'getTwitchIntegration', 'listTwitchCommands', 'getTwitchTokenVault', 'getTwitchRuntimeHealth',
+  'getCreatorWorkspaceRecord', 'getBrand', 'listRewardRedemptionEvents', 'getRewardRedemptionEvent',
+  'getRewardRedemptionEventClaim');
+backend.data.resources.graphqlApi.grantMutation(backend.twitchRuntime.resources.lambda,
+  'updateTwitchIntegration', 'updateTwitchTokenVault', 'createTwitchTokenVault',
+  'updateTwitchRuntimeHealth', 'createTwitchRuntimeHealth', 'createRewardRedemptionEventClaim',
+  'updateRewardRedemptionEvent');
 teamHubLambda.addToRolePolicy(new PolicyStatement({
   effect: Effect.ALLOW,
   actions: ['cognito-idp:ListUsers'],
@@ -299,6 +333,6 @@ backend.addOutput({
 const overlaySourceStack = backend.createStack('overlay-source-stack');
 const userPool = backend.auth.resources.userPool;
 const userPoolClient = backend.auth.resources.userPoolClient;
-const runtimeHandler = backend.myFunction.resources.lambda;
+const runtimeHandler = backend.twitchRuntime.resources.lambda;
 assertRuntimeLambdaMutationTarget(runtimeHandler);
 composeOverlaySourceStack({ stack: overlaySourceStack, tables: backend.data.resources.tables, userPoolId: userPool.userPoolId, userPoolClientId: userPoolClient.userPoolClientId, frontendOrigin: process.env.AWS_BRANCH === 'master' ? 'https://www.projectrespawn.com' : 'http://localhost:5174', runtimeHandler, addOutput: (output) => backend.addOutput(output as any) });

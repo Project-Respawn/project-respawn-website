@@ -35,7 +35,7 @@ function duplicateDisposition(record: Record<string, unknown>): { legacyDisposit
 }
 
 export async function handleTwitchRuntime(path: string, method: string, event: any, injectedClient?: any, injectedPublisher?: any, injectedDedupe?: any) {
-  const body: any = getRequestBody(event) || {}; const client = injectedClient || await (await import('../shared/dataClient')).getDataClient()
+  const body: any = getRequestBody(event) || {}; const client = injectedClient || await (await import('../shared/twitchRuntimeDataClient')).getTwitchRuntimeDataClient()
   if (path === '/twitch/runtime/lease' && method === 'POST') {
     authenticateRuntime(event, path, method, body); const record = await integration(client, String(body.integrationId || ''))
     if (!record.workspaceId) return jsonResponse(409, { error: 'Integration is not assigned to a Creator Workspace' })
