@@ -262,13 +262,14 @@ export function isExactTwitchRuntimeTemplate(template) {
   const statements = resources[TWITCH_RUNTIME.policy]?.Properties?.PolicyDocument?.Statement || [];
   const env = lambda?.Properties?.Environment?.Variables || {};
   const body = resourceText(template).toLowerCase();
-  const requiredActions = ['kms:Decrypt', 'appsync:GraphQL', 'dynamodb:GetItem', 'dynamodb:Query', 'dynamodb:DeleteItem', 'dynamodb:PutItem', 'dynamodb:UpdateItem', 'execute-api:ManageConnections', 'ssm:GetParameters'];
+  const requiredActions = ['kms:Decrypt', 'appsync:GraphQL', 'dynamodb:GetItem', 'dynamodb:Query', 'dynamodb:DeleteItem', 'dynamodb:PutItem', 'dynamodb:UpdateItem', 'execute-api:ManageConnections', 'ssm:GetParameters', 's3:GetObject'];
   const actions = statements.flatMap((statement) => actionList(statement.Action));
   return lambda?.Type === 'AWS::Lambda::Function' && resources[TWITCH_RUNTIME.role].Type === 'AWS::IAM::Role'
     && resources[TWITCH_RUNTIME.policy].Type === 'AWS::IAM::Policy'
     && requiredActions.every((action) => actions.includes(action)) && actions.every((action) => requiredActions.includes(action))
     && !statements.some((statement) => statement.Resource === '*' || actionList(statement.Action).some((action) => action.endsWith(':*')))
-    && ['OVERLAY_PUBLICATION_TABLE', 'OVERLAY_CONNECTION_TABLE', 'TWITCH_EVENT_DEDUPE_TABLE', 'OVERLAY_WEBSOCKET_MANAGEMENT_URL', 'TWITCH_RUNTIME_CLIENT_ID', 'TWITCH_RUNTIME_AUTH_SECRET', 'TWITCH_TOKEN_KMS_KEY_ID'].every((key) => key in env)
+    && ['OVERLAY_PUBLICATION_TABLE', 'OVERLAY_CONNECTION_TABLE', 'TWITCH_EVENT_DEDUPE_TABLE', 'OVERLAY_WEBSOCKET_MANAGEMENT_URL', 'TWITCH_RUNTIME_CLIENT_ID', 'TWITCH_RUNTIME_AUTH_SECRET', 'TWITCH_TOKEN_KMS_KEY_ID', 'AMPLIFY_DATA_DEFAULT_NAME', '_GRAPHQL_ENDPOINT', '_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAME', '_MODEL_INTROSPECTION_SCHEMA_KEY'].every((key) => key in env)
+    && statements.some((statement) => exactActions(statement, ['s3:GetObject']) && resourceText(statement.Resource).includes('modelIntrospectionSchema.json'))
     && body.includes('/types/query/fields/gettwitchintegration') && body.includes('/types/mutation/fields/updatetwitchintegration')
     && !body.match(/ntgrestage8|staging/);
 }

@@ -4,6 +4,7 @@ import { IConstruct } from 'constructs';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { CfnPermission, Function as LambdaFunction } from 'aws-cdk-lib/aws-lambda';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
 import {
   CorsHttpMethod,
   HttpApi,
@@ -227,6 +228,20 @@ backend.data.resources.graphqlApi.grantMutation(backend.twitchRuntime.resources.
   'updateTwitchIntegration', 'updateTwitchTokenVault', 'createTwitchTokenVault',
   'updateTwitchRuntimeHealth', 'createTwitchRuntimeHealth', 'createRewardRedemptionEventClaim',
   'updateRewardRedemptionEvent');
+const modelIntrospectionSchemaBucket = backend.data.stack.node.tryFindChild('modelIntrospectionSchemaBucket');
+if (!(modelIntrospectionSchemaBucket instanceof Bucket)) {
+  throw new Error('Amplify Data model introspection schema bucket was not found');
+}
+const twitchRuntimeLambda = backend.twitchRuntime.resources.lambda as LambdaFunction;
+twitchRuntimeLambda.addEnvironment('AMPLIFY_DATA_DEFAULT_NAME', 'amplifyData');
+twitchRuntimeLambda.addEnvironment('_GRAPHQL_ENDPOINT', backend.data.resources.cfnResources.cfnGraphqlApi.attrGraphQlUrl);
+twitchRuntimeLambda.addEnvironment('_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAME', modelIntrospectionSchemaBucket.bucketName);
+twitchRuntimeLambda.addEnvironment('_MODEL_INTROSPECTION_SCHEMA_KEY', 'modelIntrospectionSchema.json');
+twitchRuntimeLambda.addToRolePolicy(new PolicyStatement({
+  effect: Effect.ALLOW,
+  actions: ['s3:GetObject'],
+  resources: [`${modelIntrospectionSchemaBucket.bucketArn}/modelIntrospectionSchema.json`],
+}));
 teamHubLambda.addToRolePolicy(new PolicyStatement({
   effect: Effect.ALLOW,
   actions: ['cognito-idp:ListUsers'],
