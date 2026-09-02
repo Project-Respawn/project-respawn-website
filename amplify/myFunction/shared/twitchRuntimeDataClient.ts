@@ -9,7 +9,8 @@ let clientPromise: Promise<ReturnType<typeof generateClient<Schema>>> | null = n
 export async function getTwitchRuntimeDataClient() {
   if (!clientPromise) {
     clientPromise = (async () => {
-      const { resourceConfig, libraryOptions } = await getAmplifyDataClientConfig(env);
+      const dataClientEnv = env as typeof env & { AMPLIFY_DATA_DEFAULT_NAME: string };
+      const { resourceConfig, libraryOptions } = await getAmplifyDataClientConfig(dataClientEnv);
       Amplify.configure(resourceConfig, libraryOptions);
       return generateClient<Schema>();
     })();
