@@ -234,9 +234,9 @@ if (!(modelIntrospectionSchemaBucket instanceof Bucket)) {
 }
 const twitchRuntimeLambda = backend.twitchRuntime.resources.lambda as LambdaFunction;
 twitchRuntimeLambda.addEnvironment('AMPLIFY_DATA_DEFAULT_NAME', 'amplifyData');
-twitchRuntimeLambda.addEnvironment('_GRAPHQL_ENDPOINT', backend.data.resources.cfnResources.cfnGraphqlApi.attrGraphQlUrl);
-twitchRuntimeLambda.addEnvironment('_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAME', modelIntrospectionSchemaBucket.bucketName);
-twitchRuntimeLambda.addEnvironment('_MODEL_INTROSPECTION_SCHEMA_KEY', 'modelIntrospectionSchema.json');
+twitchRuntimeLambda.addEnvironment('AMPLIFY_DATA_GRAPHQL_ENDPOINT', backend.data.resources.cfnResources.cfnGraphqlApi.attrGraphQlUrl);
+twitchRuntimeLambda.addEnvironment('AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAME', modelIntrospectionSchemaBucket.bucketName);
+twitchRuntimeLambda.addEnvironment('AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_KEY', 'modelIntrospectionSchema.json');
 twitchRuntimeLambda.addToRolePolicy(new PolicyStatement({
   effect: Effect.ALLOW,
   actions: ['s3:GetObject'],

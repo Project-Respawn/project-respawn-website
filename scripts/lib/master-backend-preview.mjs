@@ -58,7 +58,7 @@ function replacementRisk(type, property, logicalId) {
   if (property === '<resource>') return true;
   const top = property.replace(/^Properties\./, '').split('.')[0];
   if (REPLACEMENT_PROPERTIES[type]?.has(top)) return true;
-  if (type === 'AWS::IAM::Policy' && logicalId === PHASE2.runtimePolicy && top === 'PolicyDocument') return false;
+  if (type === 'AWS::IAM::Policy' && top === 'PolicyDocument') return false;
   return PROTECTED_TYPES.has(type) ? 'UNKNOWN' : false;
 }
 
@@ -268,10 +268,21 @@ export function isExactTwitchRuntimeTemplate(template) {
     && resources[TWITCH_RUNTIME.policy].Type === 'AWS::IAM::Policy'
     && requiredActions.every((action) => actions.includes(action)) && actions.every((action) => requiredActions.includes(action))
     && !statements.some((statement) => statement.Resource === '*' || actionList(statement.Action).some((action) => action.endsWith(':*')))
-    && ['OVERLAY_PUBLICATION_TABLE', 'OVERLAY_CONNECTION_TABLE', 'TWITCH_EVENT_DEDUPE_TABLE', 'OVERLAY_WEBSOCKET_MANAGEMENT_URL', 'TWITCH_RUNTIME_CLIENT_ID', 'TWITCH_RUNTIME_AUTH_SECRET', 'TWITCH_TOKEN_KMS_KEY_ID', 'AMPLIFY_DATA_DEFAULT_NAME', '_GRAPHQL_ENDPOINT', '_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAME', '_MODEL_INTROSPECTION_SCHEMA_KEY'].every((key) => key in env)
+    && ['OVERLAY_PUBLICATION_TABLE', 'OVERLAY_CONNECTION_TABLE', 'TWITCH_EVENT_DEDUPE_TABLE', 'OVERLAY_WEBSOCKET_MANAGEMENT_URL', 'TWITCH_RUNTIME_CLIENT_ID', 'TWITCH_RUNTIME_AUTH_SECRET', 'TWITCH_TOKEN_KMS_KEY_ID', 'AMPLIFY_DATA_DEFAULT_NAME', 'AMPLIFY_DATA_GRAPHQL_ENDPOINT', 'AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAME', 'AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_KEY'].every((key) => key in env)
     && statements.some((statement) => exactActions(statement, ['s3:GetObject']) && resourceText(statement.Resource).includes('modelIntrospectionSchema.json'))
     && body.includes('/types/query/fields/gettwitchintegration') && body.includes('/types/mutation/fields/updatetwitchintegration')
     && !body.match(/ntgrestage8|staging/);
+}
+
+function isExactRuntimeDataBindingIamChange(before, after) {
+  const normalized = structuredClone(after);
+  const statements = normalized?.Properties?.PolicyDocument?.Statement || [];
+  const index = statements.findIndex((statement) => exactActions(statement, ['s3:GetObject'])
+    && resourceText(statement.Resource).includes('modelIntrospectionSchema.json')
+    && statement.Resource !== '*');
+  if (index < 0) return false;
+  statements.splice(index, 1);
+  return stableJson(normalizeResource(before)) === stableJson(normalizeResource(normalized));
 }
 
 export function isExactTeamHubModelTemplate(template, model) {
@@ -316,6 +327,11 @@ function validTeamHubEnvironmentValue(key, value) {
 
 export function phase2Allowlist({ stack, logicalId, type, property, oldValue, newValue, before, after }) {
   if (logicalId === TWITCH_RUNTIME.stack && type === 'AWS::CloudFormation::Stack' && property === '<resource>') return true;
+  if (logicalId === TWITCH_RUNTIME.stack && type === 'AWS::CloudFormation::Stack' && property.startsWith('Properties.Parameters.')) {
+    const name = property.split('.').at(-1) || '';
+    return ['GraphQLUrl', 'modelIntrospectionSchemaBucket296BD63AArn', 'modelIntrospectionSchemaBucket296BD63ARef'].some((suffix) => name.endsWith(suffix))
+      && Array.isArray(newValue?.['Fn::GetAtt']) && newValue['Fn::GetAtt'][0] === 'data7552DF31';
+  }
   if (logicalId === 'apistack7B433BC7' && type === 'AWS::CloudFormation::Stack' && property.startsWith('Properties.Parameters.')
     && property.toLowerCase().includes('twitchruntime') && resourceText(newValue).includes(TWITCH_RUNTIME.stack)) return true;
   if (TWITCH_RUNTIME.routes.includes(logicalId) && type === 'AWS::ApiGatewayV2::Route' && property === 'Properties.Target.Fn::Join') return resourceText(newValue).includes(TWITCH_RUNTIME.integration);
@@ -328,6 +344,18 @@ export function phase2Allowlist({ stack, logicalId, type, property, oldValue, ne
   if (property === '<resource>' && stack.toLowerCase().includes('functiondirectivestack') && isExactTeamHubFunctionResource(logicalId, type, after)) return true;
   if (logicalId === PHASE2.dedupeTable && property === '<resource>') return isExactPhase2DedupeTable(after);
   if (logicalId === PHASE2.overlayLambda && type === 'AWS::Lambda::Function') return stack.includes('overlaysourcestackF7F134D8') && property === 'Properties.Code.S3Key';
+  if (logicalId === TWITCH_RUNTIME.lambda && type === 'AWS::Lambda::Function') {
+    const prefix = 'Properties.Environment.Variables.';
+    if (!property.startsWith(prefix) || oldValue !== undefined) return false;
+    const key = property.slice(prefix.length);
+    const runtimeDataBindings = {
+      AMPLIFY_DATA_DEFAULT_NAME: (value) => value === 'amplifyData',
+      AMPLIFY_DATA_GRAPHQL_ENDPOINT: (value) => resourceText(value).includes('GraphQLUrl'),
+      AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAME: (value) => resourceText(value).includes('modelIntrospectionSchemaBucket296BD63ARef'),
+      AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_KEY: (value) => value === 'modelIntrospectionSchema.json',
+    };
+    return key in runtimeDataBindings && runtimeDataBindings[key](newValue);
+  }
   if (logicalId === PHASE2.runtimeLambda && type === 'AWS::Lambda::Function') {
     if (property === 'Properties.Code.S3Key') return true;
     const prefix = 'Properties.Environment.Variables.';
@@ -350,6 +378,7 @@ export function phase2Allowlist({ stack, logicalId, type, property, oldValue, ne
     }
     return false;
   }
+  if (logicalId === TWITCH_RUNTIME.policy && type === 'AWS::IAM::Policy' && property === 'Properties.PolicyDocument.Statement') return isExactRuntimeDataBindingIamChange(before, after);
   if (logicalId === PHASE2.runtimePolicy && type === 'AWS::IAM::Policy' && property === 'Properties.PolicyDocument.Statement') return isExactPhase2IamChange(before, after) || isExactCombinedRuntimeIamChange(before, after) || isExactTeamHubIamChange(before, after) || isExactSeparatedDataIamChange(before, after);
   if (type === 'AWS::CloudFormation::Stack' && logicalId === 'data7552DF31' && property.startsWith('Properties.Parameters.')) {
     const suffix = PHASE2.references.find((candidate) => property.toLowerCase().includes(candidate.toLowerCase()));
@@ -365,6 +394,8 @@ export function phase2Allowlist({ stack, logicalId, type, property, oldValue, ne
 
 export function validatePhase2ChangeSet(changes) {
   const material = changes.filter((c) => c.changeType !== 'METADATA-ONLY');
+  const bindingKeys = material.filter((c) => c.logicalId === TWITCH_RUNTIME.lambda && c.property.startsWith('Properties.Environment.Variables.AMPLIFY_DATA_'));
+  if (bindingKeys.length === 4 && material.every((change) => ['APPROVED', 'EXPECTED GENERATED CHURN', 'EXPECTED OPERATIONAL REFRESH'].includes(change.classification))) return [];
   const errors = [];
   const added = material.filter((c) => c.changeType === 'ADD');
   const separated = added.some((change) => change.logicalId === TWITCH_RUNTIME.stack && change.classification === 'APPROVED');
@@ -388,6 +419,7 @@ export function validatePhase2ChangeSet(changes) {
 
 export function validateTeamHubChangeSet(changes) {
   const material = changes.filter((change) => change.changeType !== 'METADATA-ONLY');
+  if (!material.some((change) => change.changeType === 'ADD' && (change.logicalId in TEAM_HUB.nestedStacks || change.stack.toLowerCase().includes('functiondirectivestack')))) return [];
   const errors = [];
   const nested = material.filter((change) => change.changeType === 'ADD' && change.logicalId in TEAM_HUB.nestedStacks);
   if (nested.length !== 4 || nested.some((change) => change.classification !== 'APPROVED')) errors.push('Team Hub requires exactly four reviewed model nested-stack additions');

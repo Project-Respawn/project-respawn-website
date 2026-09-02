@@ -37,11 +37,11 @@ export const MUTATION_ACTIONS: Record<string, Route> = {
 }
 
 function safeArguments(event: any) {
-  const args = event?.arguments
-  if (!args || typeof args !== 'object' || Array.isArray(args) || Object.getPrototypeOf(args) !== Object.prototype) fail('Invalid Team Hub gateway input')
-  if (JSON.stringify(args).length > MAX_GATEWAY_BYTES) fail('Team Hub gateway input too large')
-  for (const value of Object.values(args)) if (value !== null && typeof value === 'object') fail('Invalid nested Team Hub gateway input')
-  return args as Record<string, unknown>
+  const raw = event?.arguments
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw) || Object.getPrototypeOf(raw) !== Object.prototype) fail('Invalid Team Hub gateway input')
+  if (JSON.stringify(raw).length > MAX_GATEWAY_BYTES) fail('Team Hub gateway input too large')
+  for (const value of Object.values(raw)) if (value !== null && typeof value === 'object') fail('Invalid nested Team Hub gateway input')
+  return Object.fromEntries(Object.entries(raw).filter(([, value]) => value !== null)) as Record<string, unknown>
 }
 
 async function dispatch(event: any, routes: Record<string, Route>) {

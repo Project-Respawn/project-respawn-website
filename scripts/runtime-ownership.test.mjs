@@ -14,6 +14,11 @@ test('Twitch runtime route and overlay grants belong to the dedicated function',
   assert.match(runtimeResource, /name: 'twitch-runtime'/);
 });
 
+test('Lambda environment bindings never use AWS-invalid underscore-prefixed names', () => {
+  const configuredNames = [...backend.matchAll(/addEnvironment\(['"]([^'"]+)['"]/g)].map((match) => match[1]);
+  assert.equal(configuredNames.some((name) => name.startsWith('_')), false);
+});
+
 test('synthesized dependency graph has no data to overlay edge', () => {
   const directory = '.amplify/master-preview/cdk.out';
   const rootFile = readdirSync(directory).find((file) => file.startsWith('amplify-') && file.endsWith('.template.json'));

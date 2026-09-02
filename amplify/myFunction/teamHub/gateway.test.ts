@@ -36,6 +36,15 @@ test('mutation gateway exhaustively dispatches each action and remaps only bound
   assert.deepEqual(calls, Object.keys(mutationArgs))
 })
 
+test('gateway ignores AppSync null placeholders for unrelated optional fields', async () => {
+  const [routes] = spies(MUTATION_ACTIONS)
+  const forwarded = await routeTeamHubMutation({ arguments: {
+    action: 'CREATE_TEAM', ...mutationArgs.CREATE_TEAM,
+    teamId: null, targetEmail: null, expectedRevision: null, championId: null,
+  } }, routes)
+  assert.deepEqual(forwarded, mutationArgs.CREATE_TEAM)
+})
+
 test('gateways reject missing, unknown, cross-protocol and unexpected actions or fields', async () => {
   await assert.rejects(() => routeTeamHubRead({ arguments: {} }), /Missing Team Hub action/)
   await assert.rejects(() => routeTeamHubRead({ arguments: { action: 'NOPE' } }), /Unsupported Team Hub action/)
