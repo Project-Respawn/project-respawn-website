@@ -2,6 +2,12 @@
 
 const teamHubRoutes = [
   {
+    path: '/team-hub/:teamSlug/manage',
+    name: 'team-hub-manage',
+    component: () => import('./TeamManagement.vue'),
+    meta: { requiresAuth: true, requiresTeamMembership: true, teamRoles: ['ADMIN', 'MANAGER'] },
+  },
+  {
     path: '/team-hub',
     name: 'team-hub-home',
     component: () => import('./TeamHubHome.vue'),
@@ -22,6 +28,7 @@ const teamHubRoutes = [
     meta: {
       requiresAuth: true,
       requiresTeamMembership: true,
+      teamRoles: ['PLAYER'],
     },
   },
 
@@ -33,6 +40,7 @@ const teamHubRoutes = [
     meta: {
       requiresAuth: true,
       requiresTeamMembership: true,
+      teamRoles: ['PLAYER'],
     },
   },
 
@@ -44,7 +52,7 @@ const teamHubRoutes = [
     meta: {
       requiresAuth: true,
       requiresTeamMembership: true,
-      teamRoles: ['COACH', 'ADMIN'],
+      teamRoles: ['COACH'],
       requiredCapability: 'COACH_REVIEW',
     },
   },
@@ -52,12 +60,11 @@ const teamHubRoutes = [
   {
     path: '/team-hub/:teamSlug/team-pool',
     name: 'team-hub-team-pool',
-    component: () =>
-      import('./champion-pool/TeamPool.vue'),
+    redirect: (to) => ({ name: 'team-hub-coach-review', params: { teamSlug: to.params.teamSlug } }),
     meta: {
       requiresAuth: true,
       requiresTeamMembership: true,
-      teamRoles: ['COACH', 'ADMIN'],
+      teamRoles: ['COACH'],
     },
   },
 ];

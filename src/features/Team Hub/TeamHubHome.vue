@@ -11,17 +11,21 @@
       </div>
 
       <div class="header-actions">
-        <button type="button" class="button button--primary">
+        <button v-if="canAdmin" type="button" class="button button--primary" @click="createNewTeam">
           Create Team
         </button>
 
-        <button type="button" class="button button--secondary">
+        <button type="button" class="button button--secondary" disabled title="Invitations are outside the Team Hub MVP">
           Join with Invitation
         </button>
       </div>
     </header>
 
-    <div class="team-hub-grid">
+    <p v-if="loading" class="empty-state">Loading your teams…</p>
+    <p v-else-if="errorMessage" class="empty-state">{{ errorMessage }}</p>
+    <p v-else-if="!games.length" class="empty-state">No Team Hub access is currently assigned to this account.</p>
+
+    <div v-if="games.length" class="team-hub-grid">
       <!-- Main team-selection area -->
       <div class="team-hub-main">
         <section class="team-selection">
@@ -241,133 +245,21 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import logoUrl from '../../assets/logo.png';
+import { useAuth } from '../../composables/useAuth.js';
+import { createTeam, listMyTeams, loadBoundedPages } from './teamHub.service.js';
+import { canShowAdminControls } from './teamHub.viewModel.js';
 
 const router = useRouter();
-
-const games = ref([
-  {
-    id: 'league-of-legends',
-    name: 'League of Legends',
-    shortName: 'LoL',
-    teams: [
-      {
-        id: 'project-respawn-main',
-        slug: 'project-respawn',
-        name: 'Project Respawn — Main Roster',
-        userRole: 'Owner',
-        plan: 'Team Hub Pro',
-        players: 5,
-        coaches: 1,
-        poolSubmissions: 4,
-        publicProfilePath: '/esports/teams/project-respawn',
-        tournament: {
-          name: 'Respawn Cup 2026',
-          date: '24 November 2026',
-          status: 'Registered',
-          nextFixture: 'First fixture pending',
-          path: '/tournaments/respawn-cup-2026',
-        },
-      },
-      {
-        id: 'project-respawn-academy',
-        slug: 'project-respawn-academy',
-        name: 'Project Respawn — Academy',
-        userRole: 'Owner',
-        plan: 'Team Hub Core',
-        players: 5,
-        coaches: 1,
-        poolSubmissions: 2,
-        publicProfilePath: '/esports/teams/project-respawn-academy',
-        tournament: null,
-      },
-    ],
-  },
-  {
-    id: 'valorant',
-    name: 'Valorant',
-    shortName: 'VAL',
-    teams: [
-      {
-        id: 'respawn-valorant',
-        slug: 'respawn-valorant',
-        name: 'Project Respawn — Valorant',
-        userRole: 'Owner',
-        plan: 'Team Hub Core',
-        players: 5,
-        coaches: 0,
-        poolSubmissions: 0,
-        publicProfilePath: '/esports/teams/respawn-valorant',
-        tournament: null,
-      },
-    ],
-  },
-  {
-    id: 'fortnite',
-    name: 'Fortnite',
-    shortName: 'FN',
-    teams: [
-      {
-        id: 'respawn-fortnite',
-        slug: 'respawn-fortnite',
-        name: 'Project Respawn — Fortnite',
-        userRole: 'Owner',
-        plan: 'Team Hub Core',
-        players: 2,
-        coaches: 0,
-        poolSubmissions: 0,
-        publicProfilePath: '/esports/teams/respawn-fortnite',
-        tournament: null,
-      },
-    ],
-  },
-]);
-
-const history = ref([
-  {
-    id: 'respawn-cup-entry',
-    type: 'tournament',
-    icon: '🏆',
-    date: '24 November 2026',
-    title: 'Respawn Cup 2026',
-    description: 'Tournament entry',
-  },
-  {
-    id: 'roster-approved',
-    type: 'roster',
-    icon: '👥',
-    date: '18 November 2026',
-    title: 'Roster approved',
-    description: 'Five players and one coach confirmed',
-  },
-  {
-    id: 'pool-approved',
-    type: 'achievement',
-    icon: '✓',
-    date: '4 September 2026',
-    title: 'Champion pool approved',
-    description: 'Mid submission approved',
-  },
-  {
-    id: 'training-started',
-    type: 'achievement',
-    icon: '↗',
-    date: '1 September 2026',
-    title: 'Training started',
-    description: 'Season Zero',
-  },
-  {
-    id: 'team-created',
-    type: 'roster',
-    icon: '◯',
-    date: '12 August 2026',
-    title: 'Team created',
-    description: 'Project Respawn was founded',
-  },
-]);
+const { isAdmin, isSuperAdmin } = useAuth();
+const canAdmin = computed(() => canShowAdminControls({ isAdmin: isAdmin.value, isSuperAdmin: isSuperAdmin.value }));
+const games = ref([]);
+const history = ref([]);
+const loading = ref(true);
+const errorMessage = ref('');
 
 const historyFilters = [
   { id: 'all', label: 'All' },
@@ -376,8 +268,8 @@ const historyFilters = [
   { id: 'achievement', label: 'Achievements' },
 ];
 
-const selectedGameId = ref(games.value[0].id);
-const selectedTeamId = ref(games.value[0].teams[0].id);
+const selectedGameId = ref(null);
+const selectedTeamId = ref(null);
 const selectedHistoryFilter = ref('all');
 
 const selectedGame = computed(() => {
@@ -417,9 +309,47 @@ function openSelectedTeam() {
     return;
   }
 
-  router.push(
-    `/team-hub/${selectedTeam.value.slug}/champion-pool`,
-  );
+  const destination = ['ADMIN', 'MANAGER'].includes(selectedTeam.value.userRole)
+    ? 'manage'
+    : selectedTeam.value.userRole === 'COACH' ? 'coach-review' : 'champion-pool';
+  router.push(`/team-hub/${selectedTeam.value.slug}/${destination}`);
+}
+
+onMounted(async () => {
+  await refreshTeams();
+});
+
+async function refreshTeams() {
+  try {
+    const activePage = await loadBoundedPages((nextToken) => listMyTeams({ status: 'ACTIVE', limit: 50, ...(nextToken ? { nextToken } : {}) }));
+    const inactivePage = canAdmin.value ? await loadBoundedPages((nextToken) => listMyTeams({ status: 'INACTIVE', limit: 50, ...(nextToken ? { nextToken } : {}) })) : { items: [], complete: true };
+    if (!activePage.complete || !inactivePage.complete) throw new Error('Team Hub data limit exceeded');
+    const teams = [...activePage.items, ...inactivePage.items];
+    const leagueTeams = teams.filter((team) => team.gameKey === 'LEAGUE_OF_LEGENDS').map((team) => ({
+      ...team, userRole: team.role, plan: null, players: 0, coaches: 0, poolSubmissions: 0,
+      publicProfilePath: `/team-hub/${team.slug}`, tournament: null,
+    }));
+    games.value = leagueTeams.length ? [{ id: 'league-of-legends', name: 'League of Legends', shortName: 'LoL', teams: leagueTeams }] : [];
+    selectedGameId.value = games.value[0]?.id ?? null;
+    selectedTeamId.value = games.value[0]?.teams[0]?.id ?? null;
+  } catch (error) {
+    errorMessage.value = error instanceof Error ? error.message : 'Unable to load Team Hub.';
+  } finally {
+    loading.value = false;
+  }
+}
+
+async function createNewTeam() {
+  const name = window.prompt('Team name');
+  if (!name) return;
+  const slug = window.prompt('Unique team slug', name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
+  if (!slug) return;
+  try {
+    await createTeam({ name, slug, gameKey: 'LEAGUE_OF_LEGENDS' });
+    await refreshTeams();
+  } catch (error) {
+    errorMessage.value = error instanceof Error ? error.message : 'Unable to create team.';
+  }
 }
 </script>
 

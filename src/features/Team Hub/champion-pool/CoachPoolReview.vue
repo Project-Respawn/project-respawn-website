@@ -7,6 +7,7 @@
         <div>
           <span class="eyebrow">LEAGUE OF LEGENDS</span>
           <h1>Coach Review</h1>
+          <p>Recommendations, private notes, approvals, and flex decisions are not available in the MVP. Pool data is read-only.</p>
         </div>
 
         <div class="review-controls">
@@ -201,6 +202,8 @@
                   type="button"
                   class="secondary-button"
                   :disabled="!selectedChampion"
+                  disabled
+                  title="Coach editing is outside the Team Hub MVP"
                   @click="saveChampionReview"
                 >
                   Save Champion Note
@@ -291,6 +294,8 @@
                     <button
                       v-if="flexPick.status !== 'CONFIRMED'"
                       type="button"
+                      disabled
+                      title="Flex decisions are outside the Team Hub MVP"
                       @click="confirmFlexPick(flexPick.champion.id)"
                     >
                       Confirm
@@ -453,6 +458,8 @@
                 type="button"
                 class="recommend-button"
                 :disabled="!canSubmitRecommendation"
+                disabled
+                title="Recommendations are outside the Team Hub MVP"
                 @click="recommendChampion"
               >
                 Recommend Champion
@@ -512,6 +519,7 @@ import {
   championImageUrl,
   loadChampionCatalogue,
 } from './dataDragon.service.js';
+import { getTeamHub, listTeamChampionPools, loadBoundedPages } from '../teamHub.service.js';
 
 const TIERS = [
   { id: 'S', label: 'Signature' },
@@ -529,7 +537,7 @@ const dataDragonVersion = ref('');
 const loading = ref(true);
 const loadError = ref('');
 
-const selectedPlayerId = ref('alex');
+const selectedPlayerId = ref('');
 const selectedPatch = ref('');
 const selectedChampionId = ref(null);
 const selectedRecommendationChampionId = ref(null);
@@ -554,84 +562,7 @@ const teamSlug = computed(() => {
   return route.params.teamSlug || 'project-respawn';
 });
 
-const players = ref([
-  {
-    id: 'alex',
-    name: 'Alex',
-    role: 'Mid',
-    status: 'UNDER_REVIEW',
-    statusLabel: 'Under Review',
-    submittedAt: '3 September 2026, 19:42',
-    ratings: {
-      Ahri: 'S',
-      Syndra: 'S',
-      Aurora: 'S',
-      Orianna: 'A',
-      Viktor: 'A',
-      Taliyah: 'B',
-      Gragas: 'C',
-      Akali: 'B',
-    },
-  },
-  {
-    id: 'jordan',
-    name: 'Jordan',
-    role: 'Top',
-    status: 'APPROVED',
-    statusLabel: 'Approved',
-    submittedAt: '3 September 2026, 18:20',
-    ratings: {
-      Aurora: 'A',
-      Gragas: 'B',
-      Kled: 'A',
-      Ornn: 'S',
-      Renekton: 'B',
-    },
-  },
-  {
-    id: 'sam',
-    name: 'Sam',
-    role: 'Jungle',
-    status: 'UNDER_REVIEW',
-    statusLabel: 'Under Review',
-    submittedAt: '3 September 2026, 17:10',
-    ratings: {
-      Gragas: 'A',
-      Taliyah: 'B',
-      Vi: 'S',
-      Sejuani: 'A',
-      Nocturne: 'B',
-    },
-  },
-  {
-    id: 'taylor',
-    name: 'Taylor',
-    role: 'ADC',
-    status: 'DRAFT',
-    statusLabel: 'Draft',
-    submittedAt: 'Not submitted',
-    ratings: {
-      Smolder: 'A',
-      KaiSa: 'S',
-      Jinx: 'A',
-      Ezreal: 'B',
-    },
-  },
-  {
-    id: 'morgan',
-    name: 'Morgan',
-    role: 'Support',
-    status: 'UNDER_REVIEW',
-    statusLabel: 'Under Review',
-    submittedAt: '3 September 2026, 16:45',
-    ratings: {
-      Rakan: 'S',
-      Nautilus: 'A',
-      Gragas: 'C',
-      Braum: 'A',
-    },
-  },
-]);
+const players = ref([]);
 
 const championReviews = ref({});
 const recommendations = ref([]);
@@ -755,8 +686,27 @@ watch(selectedPlayerId, () => {
 });
 
 onMounted(async () => {
-  restoreCoachData();
   await loadChampions();
+  try {
+    const context = await getTeamHub({ teamSlug: teamSlug.value });
+    const pool = await loadBoundedPages((nextToken) => listTeamChampionPools(context.team.id, { limit: 50, ...(nextToken ? { nextToken } : {}) }));
+    if (!pool.complete) throw new Error('Team Hub data limit exceeded');
+    const entries = pool.items;
+    const slots = new Map(context.roster.map((slot) => [slot.membershipId, slot.gameRoleKey]));
+    players.value = context.members.filter((member) => member.role === 'PLAYER' && member.status === 'ACTIVE').map((member) => ({
+      id: member.id,
+      name: member.displayName,
+      role: slots.get(member.id) || 'Unassigned',
+      status: 'ACTIVE',
+      statusLabel: 'Active',
+      submittedAt: 'Not applicable',
+      ratings: Object.fromEntries(entries.filter((entry) => entry.membershipId === member.id).map((entry) => [entry.championId, entry.comfortLevel])),
+    }));
+    selectedPlayerId.value = players.value[0]?.id || '';
+    if (!players.value.length) loadError.value = 'No active players are assigned to this team.';
+  } catch (error) {
+    loadError.value = error instanceof Error ? error.message : 'Unable to load team champion pools.';
+  }
 });
 
 async function loadChampions() {
@@ -851,14 +801,12 @@ function saveChampionReview() {
     },
   };
 
-  persistCoachData();
 }
 
 function approvePool() {
   selectedPlayer.value.status = 'APPROVED';
   selectedPlayer.value.statusLabel = 'Approved';
 
-  persistCoachData();
 }
 
 function requestChanges() {
@@ -871,7 +819,6 @@ function requestChanges() {
   selectedPlayer.value.overallFeedback =
     overallFeedback.value.trim();
 
-  persistCoachData();
 }
 
 function confirmFlexPick(championId) {
@@ -880,7 +827,6 @@ function confirmFlexPick(championId) {
     [championId]: 'CONFIRMED',
   };
 
-  persistCoachData();
 }
 
 function selectRecommendationChampion(champion) {
@@ -908,7 +854,6 @@ function recommendChampion() {
     },
   ];
 
-  persistCoachData();
 
   selectedRecommendationChampionId.value = null;
   resetRecommendationForm();
@@ -947,43 +892,6 @@ function resetRecommendationForm() {
   recommendationForm.target = 'PRACTISING';
 }
 
-function coachStorageKey() {
-  return `respawn:coach-review:${teamSlug.value}`;
-}
-
-function persistCoachData() {
-  localStorage.setItem(
-    coachStorageKey(),
-    JSON.stringify({
-      players: players.value,
-      championReviews: championReviews.value,
-      recommendations: recommendations.value,
-      flexDecisions: flexDecisions.value,
-    }),
-  );
-}
-
-function restoreCoachData() {
-  const storedData = localStorage.getItem(coachStorageKey());
-
-  if (!storedData) {
-    return;
-  }
-
-  try {
-    const parsedData = JSON.parse(storedData);
-
-    players.value = parsedData.players ?? players.value;
-    championReviews.value =
-      parsedData.championReviews ?? {};
-    recommendations.value =
-      parsedData.recommendations ?? [];
-    flexDecisions.value =
-      parsedData.flexDecisions ?? {};
-  } catch {
-    localStorage.removeItem(coachStorageKey());
-  }
-}
 </script>
 
 <style scoped>

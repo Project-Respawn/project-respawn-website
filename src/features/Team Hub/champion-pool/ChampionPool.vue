@@ -293,6 +293,8 @@ import {
   championImageUrl,
   loadChampionCatalogue,
 } from './dataDragon.service.js';
+import { deleteMyChampionPoolEntry, getTeamHub, listMyChampionPool, loadBoundedPages, upsertMyChampionPoolEntry } from '../teamHub.service.js';
+import { indexRoleIndependentPool, isTeamHubDenied } from '../teamHub.viewModel.js';
 
 const TIERS = [
   { id: 'S', label: 'Signature' },
@@ -304,8 +306,11 @@ const TIERS = [
 
 const route = useRoute();
 
-const playerName = ref('Alex');
-const assignedRole = ref('Mid');
+const playerName = ref('You');
+const assignedRole = ref('Unassigned');
+const teamId = ref('');
+const originalChampionIds = ref(new Set());
+const storedEntries = ref({});
 
 const champions = ref([]);
 const dataDragonVersion = ref('');
@@ -327,13 +332,6 @@ const tiers = TIERS;
 
 const teamSlug = computed(() => {
   return route.params.teamSlug || 'project-respawn';
-});
-
-const storageKey = computed(() => {
-  return (
-    `respawn:champion-pool:${teamSlug.value}:` +
-    `${playerName.value}:${assignedRole.value}`
-  );
 });
 
 const selectedChampion = computed(() => {
@@ -393,8 +391,28 @@ const formattedSubmissionDate = computed(() => {
 });
 
 onMounted(async () => {
-  restoreLocalPool();
   await loadChampions();
+  try {
+    const context = await getTeamHub({ teamSlug: teamSlug.value });
+    teamId.value = context.team.id;
+    const mine = context.members.find((member) => member.role === 'PLAYER' && member.status === 'ACTIVE');
+    const slot = context.roster.find((entry) => entry.membershipId === mine?.id && entry.status === 'ACTIVE');
+    assignedRole.value = slot?.gameRoleKey || 'Unassigned';
+    const pool = await loadBoundedPages((nextToken) => listMyChampionPool(teamId.value, { limit: 50, ...(nextToken ? { nextToken } : {}) }));
+    if (!pool.complete) throw new Error('Team Hub data limit exceeded');
+    const entries = pool.items;
+    storedEntries.value = indexRoleIndependentPool(entries);
+    ratings.value = Object.fromEntries(entries.map((entry) => [entry.championId, entry.comfortLevel]));
+    originalChampionIds.value = new Set(entries.map((entry) => entry.championId));
+  } catch (error) {
+    if (isTeamHubDenied(error)) {
+      teamId.value = '';
+      ratings.value = {};
+      storedEntries.value = {};
+      originalChampionIds.value = new Set();
+    }
+    loadError.value = error instanceof Error ? error.message : 'Unable to load your champion pool.';
+  }
 });
 
 async function loadChampions() {
@@ -494,63 +512,39 @@ function markAsChanged() {
   }
 }
 
-function saveDraft() {
-  persistLocalPool();
-  isDirty.value = false;
+async function saveDraft() {
+  await persistPool();
 }
 
-function submitPool() {
-  persistLocalPool({
-    status: 'UNDER_REVIEW',
-    submittedAt: new Date().toISOString(),
-  });
-
-  submissionStatus.value = 'UNDER_REVIEW';
-  lastSubmittedAt.value = new Date().toISOString();
-  isDirty.value = false;
+async function submitPool() {
+  await persistPool();
 }
 
 function withdrawSubmission() {
   submissionStatus.value = 'DRAFT';
-  persistLocalPool({
-    status: 'DRAFT',
-  });
 }
 
-function persistLocalPool(overrides = {}) {
-  const payload = {
-    teamSlug: teamSlug.value,
-    playerName: playerName.value,
-    assignedRole: assignedRole.value,
-    dataDragonVersion: dataDragonVersion.value,
-    ratings: ratings.value,
-    status: submissionStatus.value,
-    submittedAt: lastSubmittedAt.value,
-    savedAt: new Date().toISOString(),
-    ...overrides,
-  };
-
-  localStorage.setItem(
-    storageKey.value,
-    JSON.stringify(payload),
-  );
-}
-
-function restoreLocalPool() {
-  const savedPool = localStorage.getItem(storageKey.value);
-
-  if (!savedPool) {
-    return;
-  }
-
+async function persistPool() {
+  if (!teamId.value) return;
   try {
-    const parsedPool = JSON.parse(savedPool);
-
-    ratings.value = parsedPool.ratings ?? {};
-    submissionStatus.value = parsedPool.status ?? 'DRAFT';
-    lastSubmittedAt.value = parsedPool.submittedAt ?? null;
-  } catch {
-    localStorage.removeItem(storageKey.value);
+    await Promise.all(Object.entries(ratings.value).map(([championId, comfortLevel]) => upsertMyChampionPoolEntry({
+      teamId: teamId.value, championId, gameRoleKey: assignedRole.value === 'Unassigned' ? null : assignedRole.value,
+      comfortLevel, priority: 'NORMAL', competitiveReady: ['S', 'A'].includes(comfortLevel),
+    })));
+    await Promise.all([...originalChampionIds.value].filter((id) => !ratings.value[id]).map((championId) => deleteMyChampionPoolEntry({
+      teamId: teamId.value, championId, gameRoleKey: storedEntries.value[championId]?.gameRoleKey || null,
+    })));
+    originalChampionIds.value = new Set(Object.keys(ratings.value));
+    isDirty.value = false;
+    submissionStatus.value = 'DRAFT';
+  } catch (error) {
+    if (isTeamHubDenied(error)) {
+      teamId.value = '';
+      ratings.value = {};
+      storedEntries.value = {};
+      originalChampionIds.value = new Set();
+    }
+    loadError.value = error instanceof Error ? error.message : 'Unable to save your champion pool.';
   }
 }
 </script>

@@ -1062,6 +1062,88 @@ const schema = a
       .authorization((allow) => [allow.authenticated()])
       .handler(a.handler.function(myFunction)),
 
+    Team: a
+      .model({
+        slug: a.string().required(),
+        name: a.string().required(),
+        gameKey: a.string().required(),
+        status: a.string().required(),
+        createdByUserId: a.string().required(),
+        updatedByUserId: a.string().required(),
+        rosterRevision: a.integer().required(),
+        membershipRevision: a.integer().required(),
+        managerMembershipId: a.id(),
+        coachMembershipId: a.id(),
+      })
+      .secondaryIndexes((index) => [
+        index('slug').queryField('listTeamBySlug'),
+        index('status').queryField('listTeamByStatus'),
+      ])
+      .authorization((allow) => [allow.groups(['SuperAdmin']).to([])]),
+
+    TeamMembership: a
+      .model({
+        teamId: a.id().required(),
+        userId: a.string().required(),
+        displayName: a.string().required(),
+        role: a.string().required(),
+        status: a.string().required(),
+        addedByUserId: a.string().required(),
+        revokedAt: a.datetime(),
+        revokedByUserId: a.string(),
+      })
+      .secondaryIndexes((index) => [
+        index('teamId').queryField('listTeamMembershipByTeamId'),
+        index('userId').queryField('listTeamMembershipByUserId'),
+      ])
+      .authorization((allow) => [allow.groups(['SuperAdmin']).to([])]),
+
+    TeamRosterSlot: a
+      .model({
+        teamId: a.id().required(),
+        membershipId: a.id().required(),
+        playerUserId: a.string().required(),
+        gameRoleKey: a.string().required(),
+        slotType: a.string().required(),
+        status: a.string().required(),
+        assignedByUserId: a.string().required(),
+        deactivatedAt: a.datetime(),
+      })
+      .secondaryIndexes((index) => [
+        index('teamId').queryField('listTeamRosterSlotByTeamId'),
+        index('membershipId').queryField('listTeamRosterSlotByMembershipId'),
+      ])
+      .authorization((allow) => [allow.groups(['SuperAdmin']).to([])]),
+
+    PlayerChampionPoolEntry: a
+      .model({
+        teamId: a.id().required(),
+        membershipId: a.id().required(),
+        playerUserId: a.string().required(),
+        championId: a.string().required(),
+        gameRoleKey: a.string(),
+        comfortLevel: a.string().required(),
+        priority: a.string().required(),
+        competitiveReady: a.boolean().required(),
+        playerNotes: a.string(),
+      })
+      .secondaryIndexes((index) => [
+        index('teamId').queryField('listPlayerChampionPoolEntryByTeamId'),
+        index('membershipId').queryField('listPlayerChampionPoolEntryByMembershipId'),
+      ])
+      .authorization((allow) => [allow.groups(['SuperAdmin']).to([])]),
+
+    readTeamHub: a.query().arguments({
+      action: a.string().required(), teamId: a.id(), teamSlug: a.string(), status: a.string(),
+      limit: a.integer(), nextToken: a.string(),
+    }).returns(a.json().required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    mutateTeamHub: a.mutation().arguments({
+      action: a.string().required(), teamId: a.id(), slug: a.string(), name: a.string(), gameKey: a.string(), status: a.string(),
+      targetEmail: a.string(), targetMembershipId: a.id(), role: a.string(), membershipId: a.id(),
+      memberAction: a.string(), rosterAction: a.string(), expectedRevision: a.integer(), gameRoleKey: a.string(), slotType: a.string(),
+      championId: a.string(), comfortLevel: a.string(), priority: a.string(), competitiveReady: a.boolean(), playerNotes: a.string(),
+    }).returns(a.json().required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+
     UserProfile: a
       .model({
         owner: a

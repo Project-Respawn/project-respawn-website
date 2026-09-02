@@ -113,6 +113,22 @@ export const PHASE2 = Object.freeze({
   references: ['OverlayPublication1B877843Arn', 'OverlayPublication1B877843Ref', 'OverlaySourceConnectionD663E654Arn', 'OverlaySourceConnectionD663E654Ref', 'OverlaySourceWebSocketApi6EB9FD5BRef', 'TwitchEventDeliveryDedupeB1DA3E46Arn', 'TwitchEventDeliveryDedupeB1DA3E46Ref'],
 });
 
+export const TEAM_HUB = Object.freeze({
+  nestedStacks: Object.freeze({
+    amplifyDataPlayerChampionPoolEntryNestedStackPlayerChampionPoolEntryNestedStackResource808D3522: 'PlayerChampionPoolEntry',
+    amplifyDataTeamMembershipNestedStackTeamMembershipNestedStackResource7B5D8A56: 'TeamMembership',
+    amplifyDataTeamNestedStackTeamNestedStackResource39C028EF: 'Team',
+    amplifyDataTeamRosterSlotNestedStackTeamRosterSlotNestedStackResourceAD18E533: 'TeamRosterSlot',
+  }),
+  operations: Object.freeze(['readTeamHub', 'mutateTeamHub']),
+  environment: Object.freeze({
+    TEAM_HUB_MEMBERSHIP_TABLE: 'teammembership',
+    TEAM_HUB_ROSTER_TABLE: 'teamrosterslot',
+    TEAM_HUB_TEAM_TABLE: 'team',
+    TEAM_HUB_USER_POOL_ID: 'userpool',
+  }),
+});
+
 const actionList = (action) => (Array.isArray(action) ? action : [action]).slice().sort();
 const resourceText = (resource) => stableJson(resource);
 const exactActions = (statement, expected) => stableJson(actionList(statement.Action)) === stableJson(expected.slice().sort()) && statement.Effect === 'Allow';
@@ -171,6 +187,61 @@ export function isExactPhase2IamChange(before, after) {
     && !forbidden.includes('/index/*') && !forbidden.includes('creatorworkspacerecord') && !forbidden.includes('amplifydatabrand');
 }
 
+function addedPolicyStatements(before, after) {
+  if (stableJson(before?.Properties?.PolicyName) !== stableJson(after?.Properties?.PolicyName)
+    || stableJson(before?.Properties?.Roles) !== stableJson(after?.Properties?.Roles)) return null;
+  const remaining = [...(after?.Properties?.PolicyDocument?.Statement || [])];
+  for (const statement of before?.Properties?.PolicyDocument?.Statement || []) {
+    const index = remaining.findIndex((candidate) => stableJson(candidate) === stableJson(statement));
+    if (index < 0) return null;
+    remaining.splice(index, 1);
+  }
+  return remaining;
+}
+
+export function isExactCombinedRuntimeIamChange(before, after) {
+  const added = addedPolicyStatements(before, after);
+  if (!added || added.length !== 7) return false;
+  const phase2After = structuredClone(after);
+  phase2After.Properties.PolicyDocument.Statement = [
+    ...(before?.Properties?.PolicyDocument?.Statement || []),
+    ...added.filter((statement) => !exactActions(statement, ['dynamodb:TransactWriteItems']) && !exactActions(statement, ['cognito-idp:ListUsers'])),
+  ];
+  if (!isExactPhase2IamChange(before, phase2After)) return false;
+  const transaction = added.find((statement) => exactActions(statement, ['dynamodb:TransactWriteItems']));
+  const listUsers = added.find((statement) => exactActions(statement, ['cognito-idp:ListUsers']));
+  const transactionText = resourceText(transaction?.Resource).toLowerCase();
+  const userPoolText = resourceText(listUsers?.Resource).toLowerCase();
+  return Array.isArray(transaction?.Resource) && transaction.Resource.length === 3
+    && ['teamnestedstack', 'teammembershipnestedstack', 'teamrosterslotnestedstack'].every((token) => transactionText.includes(token))
+    && userPoolText.includes('userpool')
+    && !resourceText([transaction, listUsers]).toLowerCase().match(/ntgrestage8|staging|"resource":"\*"/);
+}
+
+export function isExactTeamHubModelTemplate(template, model) {
+  const resources = Object.values(template?.Resources || {}).filter((resource) => resource.Type !== 'AWS::CDK::Metadata');
+  const counts = resources.reduce((result, resource) => ({ ...result, [resource.Type]: (result[resource.Type] || 0) + 1 }), {});
+  const expected = {
+    'Custom::AmplifyDynamoDBTable': 1,
+    'AWS::IAM::Role': 1,
+    'AWS::AppSync::DataSource': 1,
+    'AWS::AppSync::FunctionConfiguration': 32,
+    'AWS::AppSync::Resolver': 10,
+  };
+  const body = resourceText(template).toLowerCase();
+  return resources.length === 45 && stableJson(counts) === stableJson(expected)
+    && body.includes(model.toLowerCase()) && !body.match(/ntgrestage8|staging/);
+}
+
+function isExactTeamHubFunctionResource(logicalId, type, resource) {
+  const body = `${logicalId} ${resourceText(resource)}`.toLowerCase();
+  const operations = TEAM_HUB.operations.filter((operation) => body.includes(operation.toLowerCase()));
+  if (operations.length !== 1) return false;
+  if (!['AWS::AppSync::DataSource', 'AWS::IAM::Role', 'AWS::IAM::Policy', 'AWS::AppSync::FunctionConfiguration', 'AWS::AppSync::Resolver'].includes(type)) return false;
+  if (type === 'AWS::AppSync::Resolver') return TEAM_HUB.operations.includes(resource?.Properties?.FieldName);
+  return !body.toLowerCase().match(/ntgrestage8|staging/);
+}
+
 function validEnvironmentValue(key, value) {
   const text = resourceText(value).toLowerCase();
   if (text.includes('ntgrestage8') || text.includes('staging')) return false;
@@ -181,7 +252,18 @@ function validEnvironmentValue(key, value) {
   return text.includes(token) && (key !== 'OVERLAY_WEBSOCKET_MANAGEMENT_URL' || text.includes('https://'));
 }
 
+function validTeamHubEnvironmentValue(key, value) {
+  const text = resourceText(value).toLowerCase();
+  return Boolean(TEAM_HUB.environment[key]) && text.includes(TEAM_HUB.environment[key])
+    && !text.match(/ntgrestage8|staging/);
+}
+
 export function phase2Allowlist({ stack, logicalId, type, property, oldValue, newValue, before, after }) {
+  if (logicalId === 'amplifyDataGraphQLAPITransformerSchemaFF50A789' && type === 'AWS::AppSync::GraphQLSchema' && property === 'Properties.DefinitionS3Location.Fn::Sub') return true;
+  if (['amplifyDataAmplifyCodegenAssetsAmplifyCodegenAssetsDeploymentCustomResource1536MiB21775929', 'modelIntrospectionSchemaBucketDeploymentCustomResource1536MiB104B97EC'].includes(logicalId)
+    && type === 'Custom::CDKBucketDeployment' && property === 'Properties.SourceObjectKeys') return true;
+  if (property === '<resource>' && logicalId in TEAM_HUB.nestedStacks && type === 'AWS::CloudFormation::Stack') return true;
+  if (property === '<resource>' && stack.toLowerCase().includes('functiondirectivestack') && isExactTeamHubFunctionResource(logicalId, type, after)) return true;
   if (logicalId === PHASE2.dedupeTable && property === '<resource>') return isExactPhase2DedupeTable(after);
   if (logicalId === PHASE2.overlayLambda && type === 'AWS::Lambda::Function') return stack.includes('overlaysourcestackF7F134D8') && property === 'Properties.Code.S3Key';
   if (logicalId === PHASE2.runtimeLambda && type === 'AWS::Lambda::Function') {
@@ -190,15 +272,18 @@ export function phase2Allowlist({ stack, logicalId, type, property, oldValue, ne
     if (property.startsWith(prefix)) {
       const key = property.slice(prefix.length);
       if (key === 'TWITCH_RUNTIME_CLIENT_ID') return oldValue === PHASE2.runtimeClientIdentity.old && newValue === PHASE2.runtimeClientIdentity.new;
+      if (key in TEAM_HUB.environment) return oldValue === undefined && validTeamHubEnvironmentValue(key, newValue);
       return PHASE2.environment.includes(key) && validEnvironmentValue(key, newValue);
     }
     return false;
   }
-  if (logicalId === PHASE2.runtimePolicy && type === 'AWS::IAM::Policy' && property === 'Properties.PolicyDocument.Statement') return isExactPhase2IamChange(before, after);
+  if (logicalId === PHASE2.runtimePolicy && type === 'AWS::IAM::Policy' && property === 'Properties.PolicyDocument.Statement') return isExactPhase2IamChange(before, after) || isExactCombinedRuntimeIamChange(before, after);
   if (type === 'AWS::CloudFormation::Stack' && logicalId === 'data7552DF31' && property.startsWith('Properties.Parameters.')) {
     const suffix = PHASE2.references.find((candidate) => property.toLowerCase().includes(candidate.toLowerCase()));
     const getAtt = newValue?.['Fn::GetAtt'];
-    return Boolean(suffix) && Array.isArray(getAtt) && getAtt.length === 2 && getAtt[0] === 'overlaysourcestackF7F134D8'
+    if (!suffix) return property.toLowerCase().includes('userpool') && resourceText(newValue).toLowerCase().includes('auth')
+      && resourceText(newValue).toLowerCase().includes('userpool') && !resourceText(newValue).toLowerCase().match(/ntgrestage8|staging/);
+    return Array.isArray(getAtt) && getAtt.length === 2 && getAtt[0] === 'overlaysourcestackF7F134D8'
       && typeof getAtt[1] === 'string' && getAtt[1].startsWith('Outputs.') && getAtt[1].endsWith(suffix)
       && !resourceText(newValue).toLowerCase().match(/ntgrestage8|staging/);
   }
@@ -209,17 +294,36 @@ export function validatePhase2ChangeSet(changes) {
   const material = changes.filter((c) => c.changeType !== 'METADATA-ONLY');
   const errors = [];
   const added = material.filter((c) => c.changeType === 'ADD');
-  if (added.length !== 1 || added[0].logicalId !== PHASE2.dedupeTable || added[0].classification !== 'APPROVED') errors.push('Phase 2A requires exactly the reviewed dedupe table addition');
+  const permittedAdds = new Set([PHASE2.dedupeTable, ...Object.keys(TEAM_HUB.nestedStacks)]);
+  const nonFunctionAdds = added.filter((change) => !String(change.stack || '').toLowerCase().includes('functiondirectivestack'));
+  if (!nonFunctionAdds.some((change) => change.logicalId === PHASE2.dedupeTable && change.classification === 'APPROVED')) errors.push('Phase 2A requires the reviewed dedupe table addition');
+  if (nonFunctionAdds.some((change) => !permittedAdds.has(change.logicalId))) errors.push('Only the reviewed Phase 2A and Team Hub resources may be added');
   const env = material.filter((c) => c.logicalId === PHASE2.runtimeLambda && c.property.startsWith('Properties.Environment.Variables.'));
-  const additions = env.filter((c) => c.oldValue === undefined);
+  const additions = env.filter((c) => c.oldValue === undefined && PHASE2.environment.includes(c.property.split('.').at(-1)));
   const additionKeys = additions.map((c) => c.property.split('.').at(-1)).sort();
   const identity = env.filter((c) => c.property.endsWith('.TWITCH_RUNTIME_CLIENT_ID'));
   if (stableJson(additionKeys) !== stableJson(PHASE2.environment)) errors.push('Phase 2A requires exactly four new reviewed runtime environment values');
   if (identity.length !== 1 || identity[0].oldValue !== PHASE2.runtimeClientIdentity.old || identity[0].newValue !== PHASE2.runtimeClientIdentity.new || identity[0].classification !== 'APPROVED') errors.push('Phase 2A requires exactly the reviewed production runtime client identity change');
-  if (env.length !== PHASE2.environment.length + 1) errors.push('Phase 2A permits no other runtime environment changes');
+  const permittedEnvironment = new Set([...PHASE2.environment, ...Object.keys(TEAM_HUB.environment), 'TWITCH_RUNTIME_CLIENT_ID']);
+  if (env.some((change) => !permittedEnvironment.has(change.property.split('.').at(-1)))) errors.push('No unreviewed runtime environment changes are permitted');
   const refs = material.filter((c) => c.resourceType === 'AWS::CloudFormation::Stack' && c.logicalId === 'data7552DF31' && c.property.startsWith('Properties.Parameters.'));
-  if (refs.length !== 7 || !PHASE2.references.every((suffix) => refs.some((c) => c.property.toLowerCase().includes(suffix.toLowerCase())))) errors.push('Phase 2A requires exactly seven reviewed cross-stack references');
+  if (![7, 8].includes(refs.length) || !PHASE2.references.every((suffix) => refs.some((c) => c.property.toLowerCase().includes(suffix.toLowerCase())))) errors.push('Phase 2A requires its seven reviewed cross-stack references and at most the Team Hub user-pool reference');
   for (const required of [PHASE2.runtimeLambda, PHASE2.runtimePolicy, PHASE2.overlayLambda]) if (!material.some((c) => c.logicalId === required && c.classification === 'APPROVED')) errors.push(`Missing reviewed Phase 2A change for ${required}`);
+  return errors;
+}
+
+export function validateTeamHubChangeSet(changes) {
+  const material = changes.filter((change) => change.changeType !== 'METADATA-ONLY');
+  const errors = [];
+  const nested = material.filter((change) => change.changeType === 'ADD' && change.logicalId in TEAM_HUB.nestedStacks);
+  if (nested.length !== 4 || nested.some((change) => change.classification !== 'APPROVED')) errors.push('Team Hub requires exactly four reviewed model nested-stack additions');
+  const functions = material.filter((change) => change.changeType === 'ADD' && change.stack.toLowerCase().includes('functiondirectivestack'));
+  const typeCounts = functions.reduce((result, change) => ({ ...result, [change.resourceType]: (result[change.resourceType] || 0) + 1 }), {});
+  const expectedCounts = { 'AWS::AppSync::DataSource': 2, 'AWS::IAM::Role': 2, 'AWS::IAM::Policy': 2, 'AWS::AppSync::FunctionConfiguration': 4, 'AWS::AppSync::Resolver': 2 };
+  if (functions.length !== 12 || stableJson(typeCounts) !== stableJson(expectedCounts) || functions.some((change) => change.classification !== 'APPROVED')) errors.push('Team Hub requires exactly the two reviewed gateway operation resource sets');
+  const env = material.filter((change) => change.logicalId === PHASE2.runtimeLambda && change.property.startsWith('Properties.Environment.Variables.') && change.oldValue === undefined);
+  for (const key of Object.keys(TEAM_HUB.environment)) if (!env.some((change) => change.property.endsWith(`.${key}`) && change.classification === 'APPROVED')) errors.push(`Missing reviewed Team Hub environment value ${key}`);
+  if (material.some((change) => change.changeType === 'REMOVE' || change.replacementRisk === true || change.replacementRisk === 'UNKNOWN')) errors.push('Team Hub deployment may not remove or replace resources');
   return errors;
 }
 

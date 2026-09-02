@@ -178,6 +178,27 @@ httpApi.addRoutes({
   integration: httpLambdaIntegration,
 });
 
+const teamHubTables = backend.data.resources.tables;
+const teamHubLambda = backend.myFunction.resources.lambda;
+(teamHubLambda as LambdaFunction).addEnvironment('TEAM_HUB_TEAM_TABLE', teamHubTables.Team.tableName);
+(teamHubLambda as LambdaFunction).addEnvironment('TEAM_HUB_MEMBERSHIP_TABLE', teamHubTables.TeamMembership.tableName);
+(teamHubLambda as LambdaFunction).addEnvironment('TEAM_HUB_ROSTER_TABLE', teamHubTables.TeamRosterSlot.tableName);
+(teamHubLambda as LambdaFunction).addEnvironment('TEAM_HUB_USER_POOL_ID', backend.auth.resources.userPool.userPoolId);
+teamHubLambda.addToRolePolicy(new PolicyStatement({
+  effect: Effect.ALLOW,
+  actions: ['dynamodb:TransactWriteItems'],
+  resources: [
+    teamHubTables.Team.tableArn,
+    teamHubTables.TeamMembership.tableArn,
+    teamHubTables.TeamRosterSlot.tableArn,
+  ],
+}));
+teamHubLambda.addToRolePolicy(new PolicyStatement({
+  effect: Effect.ALLOW,
+  actions: ['cognito-idp:ListUsers'],
+  resources: [backend.auth.resources.userPool.userPoolArn],
+}));
+
 
 httpApi.addRoutes({
   path: '/integrations/alpha/reward-events',
