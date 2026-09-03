@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { canShowAdminControls, clearPrivateTeamState, indexRoleIndependentPool, isTeamHubConflict, isTeamHubDenied, managerAssignmentInput, memberAssignmentInput, revocationInput } from './teamHub.viewModel.js';
-import { activeManager, decodeTeamHubPayload, filterAdminTeams, normalizeAdminTeam, normalizeTeamSlug, replaceTeamInList } from './teamAdministration.viewModel.js';
+import { activeManager, decodeTeamHubPayload, filterAdminTeams, nextAccountSearchIndex, normalizeAdminTeam, normalizeAssignableUser, normalizeTeamSlug, replaceTeamInList } from './teamAdministration.viewModel.js';
 
 test('runtime view-model: Admin controls are hidden from members and visible to both platform Admin roles', () => {
   assert.equal(canShowAdminControls({}), false);
@@ -96,6 +96,15 @@ test('duplicate team creation remains fail-closed before the create write', asyn
   assert.ok(createWrite > duplicateGuard);
 });
 
+test('manager account selection preserves canonical identity and keyboard navigation is bounded', () => {
+  const nicholas = normalizeAssignableUser({ username: '209c19dc-e0a1-7090-0b35-879fed200271', displayName: 'Ravens Gamer', email: ' N.Grefsheim@ProjectRespawn.com ', enabled: true, confirmed: true, eligible: true });
+  assert.deepEqual(nicholas, { username: '209c19dc-e0a1-7090-0b35-879fed200271', displayName: 'Ravens Gamer', email: 'n.grefsheim@projectrespawn.com', enabled: true, confirmed: true, eligible: true });
+  assert.equal(nextAccountSearchIndex(-1, 1, 3), 0);
+  assert.equal(nextAccountSearchIndex(0, -1, 3), 2);
+  assert.equal(nextAccountSearchIndex(2, 1, 3), 0);
+  assert.equal(nextAccountSearchIndex(0, 1, 0), -1);
+});
+
 test('admin dashboard routes and presents the existing consolidated Team Hub administration flow', async () => {
   const [page, routes, layout, service, home] = await Promise.all([
     readFile(new URL('./TeamAdministration.vue', import.meta.url), 'utf8'),
@@ -113,6 +122,17 @@ test('admin dashboard routes and presents the existing consolidated Team Hub adm
   assert.match(page, /Open operational Team Hub/);
   assert.match(page, /statusFilter/);
   assert.match(page, /filterAdminTeams/);
+  assert.match(page, /role="combobox"/);
+  assert.match(page, /role="listbox"/);
+  assert.match(page, /role="option"/);
+  assert.match(page, /Searching accounts/);
+  assert.match(page, /No matching accounts found/);
+  assert.match(page, /managerSearchError/);
+  assert.match(page, /selectedAccount\.value = null/);
+  assert.match(page, /selectedAccount\.value\.email/);
+  assert.match(page, /@keydown\.down/);
+  assert.match(page, /300/);
+  assert.match(service, /SEARCH_TEAM_ASSIGNABLE_USERS/);
   assert.match(service, /queries\.readTeamHub/);
   assert.match(service, /mutations\.mutateTeamHub/);
   assert.match(home, /errorMessage\.value = ''/);

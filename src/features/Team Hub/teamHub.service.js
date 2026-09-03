@@ -7,6 +7,7 @@ const PUBLIC_ERRORS = [
   'Team Hub access denied', 'Team Hub changed; refresh and try again', 'Team Hub data limit exceeded',
   'Invalid ', 'Active ', 'An active Player membership is required', 'Player already occupies a starting position',
   'No Project Respawn account was found for that email.', 'That account could not be assigned.', 'Team slug already exists',
+  'Invalid account search', 'Account search is temporarily unavailable',
 ];
 const unwrap = async (request) => {
   try {
@@ -30,6 +31,7 @@ const memberMutation = (action, input) => {
 };
 export const listMyTeams = (input = {}) => read('LIST_MY_TEAMS', input);
 export const listAdminTeams = (input = {}) => read('LIST_MY_TEAMS', input);
+export const searchAssignableUsers = (query) => read('SEARCH_TEAM_ASSIGNABLE_USERS', { query });
 export const createTeam = (input) => mutate('CREATE_TEAM', input);
 export const updateTeam = (input) => mutate('UPDATE_TEAM', input);
 export const setTeamManager = (input) => memberMutation('SET_MANAGER', input);

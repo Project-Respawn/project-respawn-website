@@ -5,6 +5,7 @@ import { MUTATION_ACTIONS, READ_ACTIONS, routeTeamHubMutation, routeTeamHubRead 
 const readArgs: Record<string, any> = {
   LIST_MY_TEAMS: {}, GET_TEAM_HUB: { teamId: 'team:alpha' },
   LIST_MY_CHAMPION_POOL: { teamId: 'team:alpha' }, LIST_TEAM_CHAMPION_POOLS: { teamId: 'team:alpha' },
+  SEARCH_TEAM_ASSIGNABLE_USERS: { query: 'ra' },
 }
 const mutationArgs: Record<string, any> = {
   CREATE_TEAM: { slug: 'alpha', name: 'Alpha', gameKey: 'LEAGUE_OF_LEGENDS' },

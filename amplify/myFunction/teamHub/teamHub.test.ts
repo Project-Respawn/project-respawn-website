@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { handleGetTeamHub, handleListMyTeams, handleManageTeamMember, handleSetTeamManager, handleSetTeamRosterSlot, handleUpsertMyChampionPoolEntry } from '.'
-import { ACCOUNT_NOT_FOUND, ACCOUNT_UNAVAILABLE, resolveAssignmentAccount } from './accounts'
+import { handleGetTeamHub, handleListMyTeams, handleManageTeamMember, handleSearchTeamAssignableUsers, handleSetTeamManager, handleSetTeamRosterSlot, handleUpsertMyChampionPoolEntry } from '.'
+import { ACCOUNT_NOT_FOUND, ACCOUNT_UNAVAILABLE, resolveAssignmentAccount, searchAssignableAccounts } from './accounts'
 
 process.env.TEAM_HUB_USER_POOL_ID = 'test-pool'
 
@@ -130,6 +130,29 @@ test('SuperAdmin lists every team without requiring a TeamMembership record', as
   assert.equal(result.items.length, 1)
   assert.equal(result.items[0].id, team.id)
   assert.equal(result.items[0].role, 'ADMIN')
+})
+
+test('admin account search normalizes email and username queries and returns bounded safe Nicholas account data', async () => {
+  const calls: any[] = []
+  const nicholas = { Username: IDS.admin, Enabled: true, UserStatus: 'CONFIRMED', Attributes: [{ Name: 'email', Value: 'N.GREFSHEIM@PROJECTRESPAWN.COM' }, { Name: 'preferred_username', Value: 'Ravens Gamer' }, { Name: 'sub', Value: IDS.admin }] }
+  const directory = { listUsers: async (input: any) => { calls.push(input); return { Users: [nicholas] } } }
+  const result = await handleSearchTeamAssignableUsers({ ...event(IDS.admin, ['SuperAdmin'], { query: '  N.Grefsheim  ' }), assignmentDirectory: directory })
+  assert.deepEqual(result, { items: [{ username: IDS.admin, displayName: 'Ravens Gamer', email: 'n.grefsheim@projectrespawn.com', enabled: true, confirmed: true, eligible: true }] })
+  assert.deepEqual(calls.map((call) => call.Filter), ['email ^= "n.grefsheim"', 'username ^= "N.Grefsheim"', 'preferred_username ^= "N.Grefsheim"'])
+  assert.ok(calls.every((call) => call.Limit === 10 && call.UserPoolId === 'test-pool'))
+})
+
+test('account search is admin-only, rejects undersized enumeration, returns at most ten, and creates no membership', async () => {
+  let calls = 0
+  const directory = { listUsers: async () => { calls += 1; return { Users: Array.from({ length: 12 }, (_, index) => ({ Username: id(index + 20), Enabled: index !== 1, UserStatus: index === 2 ? 'UNCONFIRMED' : 'CONFIRMED', Attributes: [{ Name: 'email', Value: `member${index}@example.com` }] })) } } }
+  await assert.rejects(() => handleSearchTeamAssignableUsers({ ...event(IDS.outsider, [], { query: 'member' }), assignmentDirectory: directory }), /administrator access/)
+  await assert.rejects(() => searchAssignableAccounts(' ', directory), /Invalid account search/)
+  assert.equal(calls, 0)
+  const result = await searchAssignableAccounts('member', directory)
+  assert.equal(result.items.length, 10)
+  assert.equal(result.items[1].eligible, false)
+  assert.equal(result.items[2].eligible, false)
+  assert.equal(calls, 3)
 })
 
 test('authorization and strict action, enum, revision, notes and identifier validation fail closed', async () => {

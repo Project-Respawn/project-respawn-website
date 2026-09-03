@@ -4,6 +4,7 @@ export const ACCOUNT_NOT_FOUND = 'No Project Respawn account was found for that 
 export const ACCOUNT_UNAVAILABLE = 'That account could not be assigned. Check the email and try again.'
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+const SEARCH_LIMIT = 10
 
 export function normalizeAssignmentEmail(value: unknown) {
   if (typeof value !== 'string') throw new Error(ACCOUNT_UNAVAILABLE)
@@ -14,6 +15,51 @@ export function normalizeAssignmentEmail(value: unknown) {
 
 const attribute = (user: any, name: string) => String(user.Attributes?.find((item: any) => item.Name === name)?.Value || '')
 
+const directoryClient = (injected?: { listUsers(input: any): Promise<any> }) => injected || {
+  listUsers: (input: any) => new CognitoIdentityProviderClient({}).send(new ListUsersCommand(input)),
+}
+
+export function normalizeAccountSearch(value: unknown) {
+  if (typeof value !== 'string') throw new Error('Invalid account search')
+  const query = value.trim()
+  if (query.length < 2 || query.length > 100) throw new Error('Invalid account search')
+  return query
+}
+
+export async function searchAssignableAccounts(
+  value: unknown,
+  injected?: { listUsers(input: any): Promise<any> },
+  environment: NodeJS.ProcessEnv = process.env,
+) {
+  const query = normalizeAccountSearch(value)
+  const userPoolId = environment.TEAM_HUB_USER_POOL_ID
+  if (!userPoolId) throw new Error(ACCOUNT_UNAVAILABLE)
+  const safe = query.replace(/[\\"]/g, '')
+  if (safe.length < 2) throw new Error('Invalid account search')
+  const filters = [
+    `email ^= "${safe.toLowerCase()}"`,
+    `username ^= "${safe}"`,
+    `preferred_username ^= "${safe}"`,
+  ]
+  try {
+    const directory = directoryClient(injected)
+    const responses = await Promise.all(filters.map((Filter) => directory.listUsers({ UserPoolId: userPoolId, Filter, Limit: SEARCH_LIMIT })))
+    const unique = new Map<string, any>()
+    for (const user of responses.flatMap((response) => response.Users || [])) {
+      const username = String(user.Username || '').trim(), email = attribute(user, 'email').trim().toLowerCase()
+      if (!username || !email || unique.has(username)) continue
+      const displayName = (attribute(user, 'name') || attribute(user, 'preferred_username') || username).trim().slice(0, 100)
+      unique.set(username, { username, displayName, email, enabled: user.Enabled === true, confirmed: user.UserStatus === 'CONFIRMED', eligible: user.Enabled === true && user.UserStatus === 'CONFIRMED' })
+      if (unique.size >= SEARCH_LIMIT) break
+    }
+    return { items: [...unique.values()] }
+  } catch (error) {
+    if (error instanceof Error && error.message === 'Invalid account search') throw error
+    console.error('Team Hub account search failed', { category: 'directory_failure' })
+    throw new Error('Account search is temporarily unavailable')
+  }
+}
+
 export async function resolveAssignmentAccount(
   value: unknown,
   injected?: { listUsers(input: any): Promise<any> },
@@ -23,7 +69,7 @@ export async function resolveAssignmentAccount(
   const userPoolId = environment.TEAM_HUB_USER_POOL_ID
   if (!userPoolId) throw new Error(ACCOUNT_UNAVAILABLE)
   try {
-    const directory = injected || { listUsers: (input: any) => new CognitoIdentityProviderClient({}).send(new ListUsersCommand(input)) }
+    const directory = directoryClient(injected)
     const response = await directory.listUsers({ UserPoolId: userPoolId, Filter: `email = "${email.replace(/[\\"]/g, '')}"`, Limit: 2 })
     const exact = (response.Users || []).filter((user: any) => attribute(user, 'email').trim().toLowerCase() === email)
     if (exact.length === 0) throw new Error(ACCOUNT_NOT_FOUND)

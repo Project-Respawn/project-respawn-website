@@ -27,3 +27,17 @@ export const filterAdminTeams = (teams = [], search = '', status = 'ALL') => {
     (status === 'ALL' || team.status === status)
     && (!query || team.name.toLowerCase().includes(query) || team.slug.toLowerCase().includes(query)));
 };
+
+export const normalizeAssignableUser = (user = {}) => ({
+  username: String(user.username || ''),
+  displayName: String(user.displayName || user.username || 'Project Respawn member'),
+  email: String(user.email || '').trim().toLowerCase(),
+  enabled: user.enabled === true,
+  confirmed: user.confirmed === true,
+  eligible: user.eligible === true,
+});
+
+export const nextAccountSearchIndex = (current, direction, count) => {
+  if (!count) return -1;
+  return (Number(current) + Number(direction) + count) % count;
+};

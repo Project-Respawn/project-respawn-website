@@ -1135,7 +1135,7 @@ const schema = a
 
     readTeamHub: a.query().arguments({
       action: a.string().required(), teamId: a.id(), teamSlug: a.string(), status: a.string(),
-      limit: a.integer(), nextToken: a.string(),
+      limit: a.integer(), nextToken: a.string(), query: a.string(),
     }).returns(a.json().required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
     mutateTeamHub: a.mutation().arguments({
       action: a.string().required(), teamId: a.id(), slug: a.string(), name: a.string(), gameKey: a.string(), status: a.string(),

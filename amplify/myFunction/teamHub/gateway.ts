@@ -2,7 +2,7 @@ import {
   handleCreateTeamHubTeam, handleDeleteMyChampionPoolEntry, handleGetTeamHub,
   handleListMyChampionPool, handleListMyTeams, handleListTeamChampionPools,
   handleManageTeamMember, handleSetTeamManager, handleSetTeamRosterSlot,
-  handleUpdateTeamHubTeam, handleUpsertMyChampionPoolEntry,
+  handleSearchTeamAssignableUsers, handleUpdateTeamHubTeam, handleUpsertMyChampionPoolEntry,
 } from '.'
 
 const MAX_GATEWAY_BYTES = 8_192
@@ -24,6 +24,7 @@ export const READ_ACTIONS: Record<string, Route> = {
   GET_TEAM_HUB: { handler: handleGetTeamHub, allowed: ['teamId', 'teamSlug'], validate: exactlyOne('teamId', 'teamSlug') },
   LIST_MY_CHAMPION_POOL: { handler: handleListMyChampionPool, allowed: ['teamId', 'limit', 'nextToken'], required: ['teamId'] },
   LIST_TEAM_CHAMPION_POOLS: { handler: handleListTeamChampionPools, allowed: ['teamId', 'limit', 'nextToken'], required: ['teamId'] },
+  SEARCH_TEAM_ASSIGNABLE_USERS: { handler: handleSearchTeamAssignableUsers, allowed: ['query'], required: ['query'] },
 }
 
 export const MUTATION_ACTIONS: Record<string, Route> = {

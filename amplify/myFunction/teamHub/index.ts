@@ -1,6 +1,6 @@
 import { ACTIVE, INACTIVE, LEAGUE_STARTING_ROLES, TEAM_HUB_DENIED, actor, requireAdmin, requireCoach, requireManager, requirePlayer, requireTeamAccess } from './policy'
 import { TEAM_HUB_CONFLICT, commitTransaction, tableNames, transactionClient } from './dynamo'
-import { resolveAssignmentAccount } from './accounts'
+import { resolveAssignmentAccount, searchAssignableAccounts } from './accounts'
 
 const PAGE_SIZE = 25
 const MAX_PAGE_SIZE = 50
@@ -155,6 +155,11 @@ export async function handleListMyTeams(event: any, injected?: any) {
   const active = result.items.filter((row: any) => row.status === ACTIVE)
   const teams = await Promise.all(active.map((row: any) => rawTeam(data, row.teamId)))
   return { items: teams.flatMap((team: any, index: number) => team?.status === ACTIVE ? [{ ...publicTeam(team), role: active[index].role }] : []), nextToken: result.nextToken }
+}
+
+export async function handleSearchTeamAssignableUsers(event: any) {
+  requireAdmin(event)
+  return searchAssignableAccounts(event.arguments?.query, event.assignmentDirectory)
 }
 
 export async function handleCreateTeamHubTeam(event: any, injected?: any) {
