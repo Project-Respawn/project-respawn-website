@@ -19,7 +19,7 @@
     </section>
 
     <section class="panel">
-      <div class="section-heading"><h2>All teams</h2><input v-model.trim="search" type="search" placeholder="Search name or slug" aria-label="Search teams" /></div>
+      <div class="section-heading"><h2>All teams</h2><div><select v-model="statusFilter" aria-label="Filter teams by status"><option value="ALL">All statuses</option><option value="ACTIVE">Active</option><option value="INACTIVE">Inactive</option></select><input v-model.trim="search" type="search" placeholder="Search name or slug" aria-label="Search teams" /></div></div>
       <p v-if="loading">Loading teams…</p>
       <p v-else-if="!filteredTeams.length">{{ teams.length ? 'No teams match this search.' : 'No teams have been created.' }}</p>
       <div v-else class="table-wrap"><table><thead><tr><th>Team</th><th>Game</th><th>Status</th><th>Updated</th><th></th></tr></thead><tbody>
@@ -57,16 +57,16 @@
 <script setup>
 import { computed, reactive, ref } from 'vue';
 import { createTeam, getTeamHub, listAdminTeams, loadBoundedPages, setTeamManager, updateTeam } from './teamHub.service.js';
-import { activeManager, activeMemberCount, normalizeTeamSlug, replaceTeamInList } from './teamAdministration.viewModel.js';
+import { activeManager, activeMemberCount, filterAdminTeams, normalizeAdminTeam, normalizeTeamSlug, replaceTeamInList } from './teamAdministration.viewModel.js';
 import { managerAssignmentInput } from './teamHub.viewModel.js';
 
-const teams = ref([]), selectedId = ref(''), context = ref(null), search = ref('');
+const teams = ref([]), selectedId = ref(''), context = ref(null), search = ref(''), statusFilter = ref('ALL');
 const loading = ref(false), detailLoading = ref(false), submitting = ref(false), error = ref(''), notice = ref('');
 const createForm = reactive({ name: '', slug: '', gameKey: 'LEAGUE_OF_LEGENDS' });
 const editForm = reactive({ name: '', status: 'ACTIVE' });
 const managerEmail = ref(''), slugEdited = ref(false);
 const manager = computed(() => activeManager(context.value));
-const filteredTeams = computed(() => { const query = search.value.toLowerCase(); return teams.value.filter((team) => !query || team.name.toLowerCase().includes(query) || team.slug.includes(query)); });
+const filteredTeams = computed(() => filterAdminTeams(teams.value, search.value, statusFilter.value));
 
 function message(reason, fallback) { return reason instanceof Error ? reason.message : fallback; }
 function gameLabel(value) { return value === 'LEAGUE_OF_LEGENDS' ? 'League of Legends' : value; }
@@ -79,7 +79,7 @@ async function refreshTeams(preferredId = selectedId.value) {
   try {
     const [active, inactive] = await Promise.all(['ACTIVE', 'INACTIVE'].map((status) => loadBoundedPages((nextToken) => listAdminTeams({ status, limit: 50, ...(nextToken ? { nextToken } : {}) }))));
     if (!active.complete || !inactive.complete) throw new Error('Team Hub data limit exceeded');
-    teams.value = [...active.items, ...inactive.items].sort((a, b) => a.name.localeCompare(b.name));
+    teams.value = [...active.items, ...inactive.items].map(normalizeAdminTeam).sort((a, b) => a.name.localeCompare(b.name));
     const selected = teams.value.find((team) => team.id === preferredId) || teams.value[0];
     if (selected) await selectTeam(selected); else { selectedId.value = ''; context.value = null; }
   } catch (reason) { error.value = message(reason, 'Unable to load teams.'); }

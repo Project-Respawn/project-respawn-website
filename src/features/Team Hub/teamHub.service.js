@@ -1,4 +1,5 @@
 import { generateClient } from 'aws-amplify/data';
+import { decodeTeamHubPayload } from './teamAdministration.viewModel.js';
 
 let client;
 const api = () => (client ||= generateClient());
@@ -14,7 +15,7 @@ const unwrap = async (request) => {
       const message = result.errors[0]?.message || '';
       throw new Error(PUBLIC_ERRORS.some((prefix) => message.startsWith(prefix)) ? message : 'Team Hub request failed');
     }
-    return result.data;
+    return decodeTeamHubPayload(result.data);
   } catch (error) {
     if (error instanceof Error && PUBLIC_ERRORS.some((prefix) => error.message.startsWith(prefix))) throw error;
     throw new Error('Team Hub request failed');

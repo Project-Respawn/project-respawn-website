@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { canShowAdminControls, clearPrivateTeamState, indexRoleIndependentPool, isTeamHubConflict, isTeamHubDenied, managerAssignmentInput, memberAssignmentInput, revocationInput } from './teamHub.viewModel.js';
-import { activeManager, normalizeTeamSlug, replaceTeamInList } from './teamAdministration.viewModel.js';
+import { activeManager, decodeTeamHubPayload, filterAdminTeams, normalizeAdminTeam, normalizeTeamSlug, replaceTeamInList } from './teamAdministration.viewModel.js';
 
 test('runtime view-model: Admin controls are hidden from members and visible to both platform Admin roles', () => {
   assert.equal(canShowAdminControls({}), false);
@@ -70,6 +70,32 @@ test('team administration immediately inserts a successful create and selects on
   assert.equal(activeManager({ members: [{ id: 'old', role: 'MANAGER', status: 'INACTIVE' }, { id: 'active', role: 'MANAGER', status: 'ACTIVE' }] }).id, 'active');
 });
 
+test('Team Hub AWSJSON responses decode before pagination instead of becoming an empty list', async () => {
+  const existing = { id: 'team:project-respawn', name: 'Project Respawn', slug: 'project-respawn', gameKey: 'LEAGUE_OF_LEGENDS', status: 'ACTIVE', createdAt: '2026-09-02T18:42:56.028Z' };
+  const decoded = decodeTeamHubPayload(JSON.stringify({ items: [existing], nextToken: null }));
+  assert.deepEqual(decoded.items, [existing]);
+  assert.deepEqual(decodeTeamHubPayload(decoded), decoded);
+  assert.throws(() => decodeTeamHubPayload('{bad json'), /Team Hub request failed/);
+});
+
+test('team administration retains and renders the exact managerless active production-team shape', () => {
+  const existing = normalizeAdminTeam({ id: 'team:project-respawn', name: 'Project Respawn', slug: 'project-respawn', gameKey: 'LEAGUE_OF_LEGENDS', status: 'ACTIVE', createdAt: '2026-09-02T18:42:56.028Z' });
+  assert.equal(activeManager({ team: existing, members: [] }), null);
+  assert.deepEqual(filterAdminTeams([existing]), [existing]);
+  assert.deepEqual(filterAdminTeams([existing], '', 'ACTIVE'), [existing]);
+  assert.deepEqual(filterAdminTeams([existing], 'project respawn'), [existing]);
+  assert.deepEqual(filterAdminTeams([existing], 'project-respawn'), [existing]);
+  assert.deepEqual(filterAdminTeams([existing], '', 'INACTIVE'), []);
+});
+
+test('duplicate team creation remains fail-closed before the create write', async () => {
+  const source = await readFile(new URL('../../../amplify/myFunction/teamHub/index.ts', import.meta.url), 'utf8');
+  const duplicateGuard = source.indexOf("if (await rawTeam(data, id)) fail('Team slug already exists')");
+  const createWrite = source.indexOf('data.models.Team.create', duplicateGuard);
+  assert.ok(duplicateGuard >= 0);
+  assert.ok(createWrite > duplicateGuard);
+});
+
 test('admin dashboard routes and presents the existing consolidated Team Hub administration flow', async () => {
   const [page, routes, layout, service, home] = await Promise.all([
     readFile(new URL('./TeamAdministration.vue', import.meta.url), 'utf8'),
@@ -85,6 +111,8 @@ test('admin dashboard routes and presents the existing consolidated Team Hub adm
   assert.match(page, /window\.confirm/);
   assert.match(page, /managerAssignmentInput/);
   assert.match(page, /Open operational Team Hub/);
+  assert.match(page, /statusFilter/);
+  assert.match(page, /filterAdminTeams/);
   assert.match(service, /queries\.readTeamHub/);
   assert.match(service, /mutations\.mutateTeamHub/);
   assert.match(home, /errorMessage\.value = ''/);
