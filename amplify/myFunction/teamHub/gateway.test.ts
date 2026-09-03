@@ -44,6 +44,8 @@ test('gateway ignores AppSync null placeholders for unrelated optional fields', 
     teamId: null, targetEmail: null, expectedRevision: null, championId: null,
   } }, routes)
   assert.deepEqual(forwarded, mutationArgs.CREATE_TEAM)
+  const manager = await routeTeamHubMutation({ arguments: { action: 'SET_MANAGER', ...mutationArgs.SET_MANAGER, teamSlug: null, status: null, query: null } }, routes)
+  assert.deepEqual(manager, { teamId: 'team:alpha', targetEmail: 'manager@example.com', action: 'ASSIGN', expectedRevision: 1 })
 })
 
 test('gateways reject missing, unknown, cross-protocol and unexpected actions or fields', async () => {

@@ -3,7 +3,9 @@ import { CognitoIdentityProviderClient, ListUsersCommand } from '@aws-sdk/client
 export const ACCOUNT_NOT_FOUND = 'No Project Respawn account was found for that email. Ask them to create and verify an account first.'
 export const ACCOUNT_UNAVAILABLE = 'That account could not be assigned. Check the email and try again.'
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+// Cognito subjects are opaque UUID-shaped identifiers; Cognito owns their
+// version and variant nibbles, so do not apply RFC UUID restrictions here.
+const COGNITO_SUB = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 const SEARCH_LIMIT = 10
 
 export function normalizeAssignmentEmail(value: unknown) {
@@ -76,7 +78,7 @@ export async function resolveAssignmentAccount(
     if (exact.length !== 1) throw new Error(ACCOUNT_UNAVAILABLE)
     const user = exact[0]
     const userId = attribute(user, 'sub')
-    if (user.Enabled !== true || user.UserStatus !== 'CONFIRMED' || !UUID.test(userId)) throw new Error(ACCOUNT_UNAVAILABLE)
+    if (user.Enabled !== true || user.UserStatus !== 'CONFIRMED' || !COGNITO_SUB.test(userId)) throw new Error(ACCOUNT_UNAVAILABLE)
     const displayName = attribute(user, 'name') || attribute(user, 'preferred_username') || 'Project Respawn member'
     return { userId, displayName: displayName.trim().slice(0, 100) || 'Project Respawn member' }
   } catch (error) {

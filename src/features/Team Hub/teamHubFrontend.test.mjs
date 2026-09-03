@@ -133,6 +133,9 @@ test('admin dashboard routes and presents the existing consolidated Team Hub adm
   assert.match(page, /@keydown\.down/);
   assert.match(page, /300/);
   assert.match(service, /SEARCH_TEAM_ASSIGNABLE_USERS/);
+  assert.match(service, /extensions\?\.requestId/);
+  assert.match(service, /Team Hub request failed/);
+  assert.match(service, /That account could not be assigned/);
   assert.match(service, /queries\.readTeamHub/);
   assert.match(service, /mutations\.mutateTeamHub/);
   assert.match(home, /errorMessage\.value = ''/);

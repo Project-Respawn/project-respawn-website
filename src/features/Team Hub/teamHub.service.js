@@ -8,13 +8,16 @@ const PUBLIC_ERRORS = [
   'Invalid ', 'Active ', 'An active Player membership is required', 'Player already occupies a starting position',
   'No Project Respawn account was found for that email.', 'That account could not be assigned.', 'Team slug already exists',
   'Invalid account search', 'Account search is temporarily unavailable',
+  'Team Hub request failed',
 ];
 const unwrap = async (request) => {
   try {
     const result = await request;
     if (result.errors?.length) {
       const message = result.errors[0]?.message || '';
-      throw new Error(PUBLIC_ERRORS.some((prefix) => message.startsWith(prefix)) ? message : 'Team Hub request failed');
+      const candidate = result.errors[0]?.extensions?.requestId || result.errors[0]?.extensions?.requestID || '';
+      const requestId = /^[A-Za-z0-9-]{8,128}$/.test(candidate) ? candidate : '';
+      throw new Error(PUBLIC_ERRORS.some((prefix) => message.startsWith(prefix)) ? message : `Team Hub request failed${requestId ? ` (request ${requestId})` : ''}`);
     }
     return decodeTeamHubPayload(result.data);
   } catch (error) {

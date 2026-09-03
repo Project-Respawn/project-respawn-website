@@ -8,7 +8,7 @@ const MAX_INTERNAL_PAGES = 2
 const MAX_TEAM_MEMBERS = 50
 const MAX_MEMBER_SLOTS = 20
 const MAX_TX_ITEMS = 25
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+const COGNITO_SUB = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 const TEAM_ID = /^team:[a-z0-9]+(?:-[a-z0-9]+)*$/
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 const CHAMPION = /^[A-Za-z0-9]{1,40}$/
@@ -33,7 +33,7 @@ const teamIdValue = (value: unknown) => {
 }
 const membershipIdValue = (value: unknown, teamId: string) => {
   const result = bounded(value, 'membership ID', 160)
-  if (!result.startsWith(`team-membership:${teamId}:`) || !UUID.test(result.slice(`team-membership:${teamId}:`.length))) fail('Invalid membership ID')
+  if (!result.startsWith(`team-membership:${teamId}:`) || !COGNITO_SUB.test(result.slice(`team-membership:${teamId}:`.length))) fail('Invalid membership ID')
   return result
 }
 const revisionValue = (value: unknown) => {

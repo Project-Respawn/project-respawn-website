@@ -7,6 +7,7 @@ process.env.TEAM_HUB_USER_POOL_ID = 'test-pool'
 
 const id = (n: number) => `00000000-0000-4000-8000-${String(n).padStart(12, '0')}`
 const IDS = { admin: id(1), manager: id(2), coach: id(3), player: id(4), player2: id(5), outsider: id(6) }
+const NICHOLAS = '209c19dc-e0a1-7090-0b35-879fed200271'
 const emailById = new Map([[IDS.manager, 'manager@example.com'], [IDS.coach, 'coach@example.com'], [IDS.player, 'player@example.com'], [IDS.player2, 'player2@example.com']])
 const assignmentDirectory = { listUsers: async ({ Filter }: any) => {
   const email = String(Filter).match(/"(.+)"/)?.[1]
@@ -181,6 +182,57 @@ test('exact email resolution normalizes case, limits to two, and returns only ca
   assert.equal(request.Limit, 2)
   assert.equal(request.Filter, 'email = "player@example.com"')
   assert.equal('email' in result, false)
+})
+
+test('exact deployed Cognito subject shape revalidates and maps username to canonical sub', async () => {
+  const result = await resolveAssignmentAccount('  N.GREFSHEIM@PROJECTRESPAWN.COM ', { listUsers: async () => ({ Users: [{ Username: NICHOLAS, Enabled: true, UserStatus: 'CONFIRMED', Attributes: [{ Name: 'sub', Value: NICHOLAS }, { Name: 'email', Value: 'n.grefsheim@projectrespawn.com' }, { Name: 'preferred_username', Value: 'Ravens Gamer' }, { Name: 'email_verified', Value: 'true' }] }] }) })
+  assert.deepEqual(result, { userId: NICHOLAS, displayName: 'Ravens Gamer' })
+})
+
+test('eligible SuperAdmin self-assignment creates the first manager atomically with canonical keys', async () => {
+  const { client, team, memberships } = fixture(); memberships.splice(0)
+  let request: any[] = []
+  const directory = { listUsers: async () => ({ Users: [{ Username: NICHOLAS, Enabled: true, UserStatus: 'CONFIRMED', Attributes: [{ Name: 'sub', Value: NICHOLAS }, { Name: 'email', Value: 'n.grefsheim@projectrespawn.com' }, { Name: 'preferred_username', Value: 'Ravens Gamer' }] }] }) }
+  const result = await handleSetTeamManager({ ...event(NICHOLAS, ['Member', 'SuperAdmin'], { teamId: team.id, targetEmail: 'n.grefsheim@projectrespawn.com', action: 'ASSIGN', expectedRevision: 4 }), assignmentDirectory: directory }, client, { transact: async (items: any[]) => { request = items } }, names)
+  const membershipId = `team-membership:${team.id}:${NICHOLAS}`
+  assert.equal(request.length, 2)
+  assert.equal(request[0].Update.Key.id, team.id)
+  assert.equal(request[0].Update.ExpressionAttributeValues[':s0'], membershipId)
+  assert.equal(request[1].Put.Item.id, membershipId)
+  assert.equal(request[1].Put.Item.userId, NICHOLAS)
+  assert.equal(request[1].Put.Item.role, 'MANAGER')
+  assert.equal(request[1].Put.Item.status, 'ACTIVE')
+  assert.deepEqual(result, { teamId: team.id, membershipRevision: 5, role: 'MANAGER', action: 'ASSIGN' })
+  assert.equal('userId' in result, false)
+})
+
+test('failed first-manager transaction creates no partial membership and inactive identity is deterministically reused', async () => {
+  const { client, team, memberships } = fixture(); memberships.splice(0)
+  let modelWrites = 0, txCalls = 0
+  client.models.Team.update = async () => { modelWrites += 1 }
+  client.models.TeamMembership.create = async () => { modelWrites += 1 }
+  const directory = { listUsers: async () => ({ Users: [{ Username: NICHOLAS, Enabled: true, UserStatus: 'CONFIRMED', Attributes: [{ Name: 'sub', Value: NICHOLAS }, { Name: 'email', Value: 'n.grefsheim@projectrespawn.com' }] }] }) }
+  const call = () => handleSetTeamManager({ ...event(NICHOLAS, ['SuperAdmin'], { teamId: team.id, targetEmail: 'n.grefsheim@projectrespawn.com', action: 'ASSIGN', expectedRevision: 4 }), assignmentDirectory: directory }, client, { transact: async () => { txCalls += 1; throw Object.assign(new Error('cancelled'), { name: 'TransactionCanceledException' }) } }, names)
+  await assert.rejects(call, /refresh and try again/)
+  assert.equal(txCalls, 1)
+  assert.equal(modelWrites, 0)
+
+  const inactive: any = { id: `team-membership:${team.id}:${NICHOLAS}`, teamId: team.id, userId: NICHOLAS, displayName: 'Old name', role: 'PLAYER', status: 'INACTIVE', createdAt: '2026-08-01T00:00:00.000Z' }
+  memberships.push(inactive)
+  let request: any[] = []
+  await handleSetTeamManager({ ...event(NICHOLAS, ['SuperAdmin'], { teamId: team.id, targetEmail: 'n.grefsheim@projectrespawn.com', action: 'ASSIGN', expectedRevision: 4 }), assignmentDirectory: directory }, client, { transact: async (items: any[]) => { request = items } }, names)
+  assert.equal(request[1].Put.Item.id, memberships[0].id)
+  assert.equal(request[1].Put.Item.createdAt, inactive.createdAt)
+  assert.equal(request.filter((item) => item.Put?.TableName === names.membership).length, 1)
+})
+
+test('deployed Cognito subject can be removed through its canonical membership ID', async () => {
+  const { client, team, memberships } = fixture()
+  const membership = { id: `team-membership:${team.id}:${NICHOLAS}`, teamId: team.id, userId: NICHOLAS, displayName: 'Ravens Gamer', role: 'MANAGER', status: 'ACTIVE' }
+  memberships.splice(0, memberships.length, membership); team.managerMembershipId = membership.id
+  let request: any[] = []
+  await handleSetTeamManager(event(NICHOLAS, ['SuperAdmin'], { teamId: team.id, targetMembershipId: membership.id, action: 'REVOKE', expectedRevision: 4 }), client, { transact: async (items: any[]) => { request = items } }, names)
+  assert.equal(request[1].Update.Key.id, membership.id)
 })
 
 test('account resolution rejects malformed, oversized, missing, ambiguous, disabled, and unconfirmed accounts', async () => {
