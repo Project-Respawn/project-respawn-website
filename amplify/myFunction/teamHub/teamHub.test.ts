@@ -227,13 +227,28 @@ test('failed first-manager transaction creates no partial membership and inactiv
   assert.equal(request.filter((item) => item.Put?.TableName === names.membership).length, 1)
 })
 
-test('transaction permission contract covers every concrete write operation without wildcard resources', async () => {
+test('deployed managerless assignment operation set is completely covered by the exact table IAM grant', async () => {
+  const { client, team, memberships } = fixture(); memberships.splice(0)
+  const directory = { listUsers: async () => ({ Users: [{ Username: NICHOLAS, Enabled: true, UserStatus: 'CONFIRMED', Attributes: [{ Name: 'sub', Value: NICHOLAS }, { Name: 'email', Value: 'n.grefsheim@projectrespawn.com' }] }] }) }
+  let request: any[] = []
+  await handleSetTeamManager({ ...event(NICHOLAS, ['SuperAdmin'], { teamId: team.id, targetEmail: 'n.grefsheim@projectrespawn.com', action: 'ASSIGN', expectedRevision: 4 }), assignmentDirectory: directory }, client, { transact: async (items: any[]) => { request = items } }, names)
+  const operations = request.map((item) => {
+    const operation = ['Put', 'Update', 'ConditionCheck', 'Delete'].find((candidate) => candidate in item)
+    return { operation, table: operation ? item[operation].TableName : undefined }
+  })
+  assert.deepEqual(operations, [
+    { operation: 'Update', table: names.team },
+    { operation: 'Put', table: names.membership },
+  ])
   const source = await import('node:fs/promises').then(({ readFile }) => readFile(new URL('../../backend.ts', import.meta.url), 'utf8'))
   const policy = source.slice(source.indexOf('teamHubLambda.addToRolePolicy'), source.indexOf('backend.data.resources.graphqlApi.grantQuery'))
-  assert.match(policy, /'dynamodb:PutItem'/)
-  assert.match(policy, /'dynamodb:UpdateItem'/)
+  const requiredActions = new Set(operations.map(({ operation }) => `dynamodb:${operation}Item`))
+  for (const action of requiredActions) assert.match(policy, new RegExp(`['"]${action}['"]`))
+  assert.doesNotMatch(policy, /dynamodb:(?:ConditionCheckItem|DeleteItem|\*)/)
   assert.doesNotMatch(policy, /resources:\s*\[\s*['"]\*['"]\s*\]/)
-  for (const table of ['Team', 'TeamMembership', 'TeamRosterSlot']) assert.match(policy, new RegExp(`teamHubTables\\.${table}\\.tableArn`))
+  const requiredTables = new Set(operations.map(({ table }) => table))
+  const tableKeys: Record<string, string> = { [names.team]: 'Team', [names.membership]: 'TeamMembership', [names.roster]: 'TeamRosterSlot' }
+  for (const table of requiredTables) assert.match(policy, new RegExp(`teamHubTables\\.${tableKeys[table!]}\\.tableArn`))
 })
 
 test('conditional and AWS transaction cancellations map safely while access failures stay generic', async () => {
