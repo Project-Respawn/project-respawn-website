@@ -240,6 +240,28 @@ export function isExactTeamHubIamChange(before, after) {
     && !resourceText(added).toLowerCase().match(/ntgrestage8|staging|"resource":"\*"/);
 }
 
+export function isExactTeamHubTransactionIamChange(before, after) {
+  if (stableJson(before?.Properties?.PolicyName) !== stableJson(after?.Properties?.PolicyName)
+    || stableJson(before?.Properties?.Roles) !== stableJson(after?.Properties?.Roles)) return false;
+  const oldStatements = before?.Properties?.PolicyDocument?.Statement || [];
+  const newStatements = after?.Properties?.PolicyDocument?.Statement || [];
+  if (oldStatements.length !== newStatements.length) return false;
+  const oldIndex = oldStatements.findIndex((statement) => exactActions(statement, ['dynamodb:TransactWriteItems']));
+  const newIndex = newStatements.findIndex((statement) => exactActions(statement, ['dynamodb:PutItem', 'dynamodb:UpdateItem']));
+  if (oldIndex < 0 || newIndex < 0 || oldIndex !== newIndex) return false;
+  const oldTransaction = oldStatements[oldIndex];
+  const newTransaction = newStatements[newIndex];
+  const resourceTextValue = resourceText(newTransaction.Resource).toLowerCase();
+  if (oldTransaction.Effect !== 'Allow' || newTransaction.Effect !== 'Allow'
+    || stableJson(oldTransaction.Resource) !== stableJson(newTransaction.Resource)
+    || !Array.isArray(newTransaction.Resource) || newTransaction.Resource.length !== 3
+    || !['teamnestedstack', 'teammembershipnestedstack', 'teamrosterslotnestedstack'].every((token) => resourceTextValue.includes(token))
+    || resourceTextValue.match(/ntgrestage8|staging|"resource":"\*"/)) return false;
+  const restored = structuredClone(after);
+  restored.Properties.PolicyDocument.Statement[newIndex] = oldTransaction;
+  return stableJson(before) === stableJson(restored);
+}
+
 export function isExactSeparatedDataIamChange(before, after) {
   const normalized = structuredClone(before);
   let removed = 0;
@@ -379,7 +401,7 @@ export function phase2Allowlist({ stack, logicalId, type, property, oldValue, ne
     return false;
   }
   if (logicalId === TWITCH_RUNTIME.policy && type === 'AWS::IAM::Policy' && property === 'Properties.PolicyDocument.Statement') return isExactRuntimeDataBindingIamChange(before, after);
-  if (logicalId === PHASE2.runtimePolicy && type === 'AWS::IAM::Policy' && property === 'Properties.PolicyDocument.Statement') return isExactPhase2IamChange(before, after) || isExactCombinedRuntimeIamChange(before, after) || isExactTeamHubIamChange(before, after) || isExactSeparatedDataIamChange(before, after);
+  if (logicalId === PHASE2.runtimePolicy && type === 'AWS::IAM::Policy' && property === 'Properties.PolicyDocument.Statement') return isExactPhase2IamChange(before, after) || isExactCombinedRuntimeIamChange(before, after) || isExactTeamHubIamChange(before, after) || isExactSeparatedDataIamChange(before, after) || isExactTeamHubTransactionIamChange(before, after);
   if (type === 'AWS::CloudFormation::Stack' && logicalId === 'data7552DF31' && property.startsWith('Properties.Parameters.')) {
     const suffix = PHASE2.references.find((candidate) => property.toLowerCase().includes(candidate.toLowerCase()));
     const getAtt = newValue?.['Fn::GetAtt'];

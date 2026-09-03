@@ -212,7 +212,7 @@ const teamHubLambda = backend.myFunction.resources.lambda;
 (teamHubLambda as LambdaFunction).addEnvironment('TEAM_HUB_USER_POOL_ID', backend.auth.resources.userPool.userPoolId);
 teamHubLambda.addToRolePolicy(new PolicyStatement({
   effect: Effect.ALLOW,
-  actions: ['dynamodb:TransactWriteItems'],
+  actions: ['dynamodb:PutItem', 'dynamodb:UpdateItem'],
   resources: [
     teamHubTables.Team.tableArn,
     teamHubTables.TeamMembership.tableArn,

@@ -2,6 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { handleGetTeamHub, handleListMyTeams, handleManageTeamMember, handleSearchTeamAssignableUsers, handleSetTeamManager, handleSetTeamRosterSlot, handleUpsertMyChampionPoolEntry } from '.'
 import { ACCOUNT_NOT_FOUND, ACCOUNT_UNAVAILABLE, resolveAssignmentAccount, searchAssignableAccounts } from './accounts'
+import { commitTransaction } from './dynamo'
 
 process.env.TEAM_HUB_USER_POOL_ID = 'test-pool'
 
@@ -224,6 +225,20 @@ test('failed first-manager transaction creates no partial membership and inactiv
   assert.equal(request[1].Put.Item.id, memberships[0].id)
   assert.equal(request[1].Put.Item.createdAt, inactive.createdAt)
   assert.equal(request.filter((item) => item.Put?.TableName === names.membership).length, 1)
+})
+
+test('transaction permission contract covers every concrete write operation without wildcard resources', async () => {
+  const source = await import('node:fs/promises').then(({ readFile }) => readFile(new URL('../../backend.ts', import.meta.url), 'utf8'))
+  const policy = source.slice(source.indexOf('teamHubLambda.addToRolePolicy'), source.indexOf('backend.data.resources.graphqlApi.grantQuery'))
+  assert.match(policy, /'dynamodb:PutItem'/)
+  assert.match(policy, /'dynamodb:UpdateItem'/)
+  assert.doesNotMatch(policy, /resources:\s*\[\s*['"]\*['"]\s*\]/)
+  for (const table of ['Team', 'TeamMembership', 'TeamRosterSlot']) assert.match(policy, new RegExp(`teamHubTables\\.${table}\\.tableArn`))
+})
+
+test('conditional and AWS transaction cancellations map safely while access failures stay generic', async () => {
+  await assert.rejects(() => commitTransaction({ transact: async () => { throw Object.assign(new Error('condition'), { name: 'TransactionCanceledException' }) } }, []), /Team Hub changed; refresh and try again/)
+  await assert.rejects(() => commitTransaction({ transact: async () => { throw Object.assign(new Error('denied'), { name: 'AccessDeniedException' }) } }, []), /Team Hub update failed/)
 })
 
 test('deployed Cognito subject can be removed through its canonical membership ID', async () => {

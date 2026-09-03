@@ -15,7 +15,8 @@ const unwrap = async (request) => {
     const result = await request;
     if (result.errors?.length) {
       const message = result.errors[0]?.message || '';
-      const candidate = result.errors[0]?.extensions?.requestId || result.errors[0]?.extensions?.requestID || '';
+      const embedded = message.match(/\(request ([A-Za-z0-9-]{8,128})\)$/)?.[1] || '';
+      const candidate = result.errors[0]?.extensions?.requestId || result.errors[0]?.extensions?.requestID || embedded;
       const requestId = /^[A-Za-z0-9-]{8,128}$/.test(candidate) ? candidate : '';
       throw new Error(PUBLIC_ERRORS.some((prefix) => message.startsWith(prefix)) ? message : `Team Hub request failed${requestId ? ` (request ${requestId})` : ''}`);
     }

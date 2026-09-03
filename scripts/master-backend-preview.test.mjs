@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { MASTER, PHASE2, compareTemplates, normalizeResource, phase1Allowlist, phase2Allowlist, validatePhase2ChangeSet, isExactPhase2DedupeTable, isExactPhase2IamChange, isExactTwitchRuntimeTemplate, verdict, isExpectedApiKeyExpiry, compareLambdaArtifactContent } from './lib/master-backend-preview.mjs';
+import { MASTER, PHASE2, compareTemplates, normalizeResource, phase1Allowlist, phase2Allowlist, validatePhase2ChangeSet, isExactPhase2DedupeTable, isExactPhase2IamChange, isExactTeamHubTransactionIamChange, isExactTwitchRuntimeTemplate, verdict, isExpectedApiKeyExpiry, compareLambdaArtifactContent } from './lib/master-backend-preview.mjs';
 
 const lambda = (code = 'old.zip', environment = 'master') => ({ Type: 'AWS::Lambda::Function', Properties: { Code: { S3Key: code }, Environment: { Variables: { ENV: environment } }, Runtime: 'nodejs22.x' }, Metadata: { generated: Date.now() } });
 
@@ -34,6 +34,26 @@ test('environment, IAM, persistent-resource uncertainty, additions and removals 
   assert.equal(verdict(compareTemplates({ stack: 'root', deployed: { Resources: { Table: table } }, desired: { Resources: { Table: changedTable } } })), 'BLOCKED');
   assert.equal(verdict(compareTemplates({ stack: 'root', deployed: { Resources: { Table: table } }, desired: { Resources: {} } })), 'BLOCKED');
   assert.equal(verdict(compareTemplates({ stack: 'root', deployed: { Resources: {} }, desired: { Resources: { Table: table } } })), 'BLOCKED');
+});
+
+test('Team Hub transaction IAM correction allows only PutItem and UpdateItem on the same three tables', () => {
+  const resources = [{ Ref: 'TeamNestedStackTeamTableArn' }, { Ref: 'TeamMembershipNestedStackTeamMembershipTableArn' }, { Ref: 'TeamRosterSlotNestedStackTeamRosterSlotTableArn' }];
+  const before = { Type: 'AWS::IAM::Policy', Properties: { PolicyName: 'runtime', Roles: [{ Ref: 'Role' }], PolicyDocument: { Statement: [
+    { Effect: 'Allow', Action: 'logs:CreateLogGroup', Resource: 'arn:aws:logs:eu-north-1:058264289478:*' },
+    { Effect: 'Allow', Action: 'dynamodb:TransactWriteItems', Resource: resources },
+  ] } } };
+  const after = structuredClone(before);
+  after.Properties.PolicyDocument.Statement[1].Action = ['dynamodb:PutItem', 'dynamodb:UpdateItem'];
+  assert.equal(isExactTeamHubTransactionIamChange(before, after), true);
+  const wildcard = structuredClone(after);
+  wildcard.Properties.PolicyDocument.Statement[1].Resource = '*';
+  assert.equal(isExactTeamHubTransactionIamChange(before, wildcard), false);
+  const deleteItem = structuredClone(after);
+  deleteItem.Properties.PolicyDocument.Statement[1].Action.push('dynamodb:DeleteItem');
+  assert.equal(isExactTeamHubTransactionIamChange(before, deleteItem), false);
+  const unrelated = structuredClone(after);
+  unrelated.Properties.PolicyDocument.Statement[0].Action = 'logs:*';
+  assert.equal(isExactTeamHubTransactionIamChange(before, unrelated), false);
 });
 
 test('no material change fails closed', () => assert.equal(verdict([]), 'BLOCKED'));
