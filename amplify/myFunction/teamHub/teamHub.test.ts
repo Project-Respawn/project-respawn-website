@@ -144,16 +144,44 @@ test('admin account search normalizes email and username queries and returns bou
   assert.ok(calls.every((call) => call.Limit === 10 && call.UserPoolId === 'test-pool'))
 })
 
-test('account search is admin-only, rejects undersized enumeration, returns at most ten, and creates no membership', async () => {
+test('account search rejects unauthorized team access and undersized enumeration, returns at most ten, and creates no membership', async () => {
+  const { client, team } = fixture()
   let calls = 0
   const directory = { listUsers: async () => { calls += 1; return { Users: Array.from({ length: 12 }, (_, index) => ({ Username: id(index + 20), Enabled: index !== 1, UserStatus: index === 2 ? 'UNCONFIRMED' : 'CONFIRMED', Attributes: [{ Name: 'email', Value: `member${index}@example.com` }] })) } } }
-  await assert.rejects(() => handleSearchTeamAssignableUsers({ ...event(IDS.outsider, [], { query: 'member' }), assignmentDirectory: directory }), /administrator access/)
+  await assert.rejects(() => handleSearchTeamAssignableUsers({ ...event(IDS.outsider, [], { query: 'member', teamId: team.id }), assignmentDirectory: directory }, client), /denied/)
   await assert.rejects(() => searchAssignableAccounts(' ', directory), /Invalid account search/)
   assert.equal(calls, 0)
   const result = await searchAssignableAccounts('member', directory)
   assert.equal(result.items.length, 10)
   assert.equal(result.items[1].eligible, false)
   assert.equal(result.items[2].eligible, false)
+  assert.equal(calls, 3)
+})
+
+test('dual SuperAdmin Manager retains platform and team capabilities while plain Admin lacks manager capabilities', async () => {
+  const { client, team, memberships } = fixture()
+  memberships[0].userId = IDS.admin
+  const dual = await handleGetTeamHub(event(IDS.admin, ['SuperAdmin'], { teamId: team.id }), client)
+  assert.equal(dual.isPlatformAdmin, true)
+  assert.equal(dual.teamRole, 'MANAGER')
+  assert.equal(dual.myRole, 'MANAGER')
+  assert.deepEqual(dual.capabilities, { canAdministerTeam: true, canManageMembers: true, canManageRoster: true, canReviewChampionPools: false, canEditChampionPool: false })
+
+  const plain = fixture()
+  const admin = await handleGetTeamHub(event(IDS.admin, ['SuperAdmin'], { teamId: plain.team.id }), plain.client)
+  assert.equal(admin.isPlatformAdmin, true)
+  assert.equal(admin.teamRole, null)
+  assert.equal(admin.capabilities.canManageMembers, false)
+  await assert.rejects(() => handleManageTeamMember(event(IDS.admin, ['SuperAdmin'], { teamId: plain.team.id, targetEmail: 'player2@example.com', role: 'PLAYER', action: 'ASSIGN', expectedRevision: 4 }), plain.client, { transact: async () => undefined }, names), /denied/)
+})
+
+test('active Manager searches only for their exact team while Coach and cross-team searches fail before Cognito', async () => {
+  const { client, team } = fixture(); let calls = 0
+  const directory = { listUsers: async () => { calls += 1; return { Users: [] } } }
+  await handleSearchTeamAssignableUsers({ ...event(IDS.manager, [], { query: 'pl', teamId: team.id }), assignmentDirectory: directory }, client)
+  assert.equal(calls, 3)
+  await assert.rejects(() => handleSearchTeamAssignableUsers({ ...event(IDS.manager, [], { query: 'pl', teamId: 'team:other' }), assignmentDirectory: directory }, client), /denied/)
+  await assert.rejects(() => handleSearchTeamAssignableUsers({ ...event(IDS.coach, [], { query: 'pl', teamId: team.id }), assignmentDirectory: directory }, client), /denied/)
   assert.equal(calls, 3)
 })
 
@@ -381,9 +409,9 @@ test('missing and conflicting Cognito identities, cross-team access, and inactiv
   assert.equal(probes, 0)
 })
 
-test('Admin can assign a Player, while removed Player and Coach lose pool access', async () => {
+test('Manager can assign a Player, while removed Player and Coach lose pool access', async () => {
   const { client, team, memberships } = fixture(); let request: any[] = []
-  await handleManageTeamMember(event(IDS.admin, ['Admin'], { teamId: team.id, targetEmail: 'player2@example.com', role: 'PLAYER', action: 'ASSIGN', expectedRevision: 4 }), client, { transact: async (items: any[]) => { request = items } }, names)
+  await handleManageTeamMember(event(IDS.manager, [], { teamId: team.id, targetEmail: 'player2@example.com', role: 'PLAYER', action: 'ASSIGN', expectedRevision: 4 }), client, { transact: async (items: any[]) => { request = items } }, names)
   assert.equal(request.find((item) => item.Put?.TableName === names.membership).Put.Item.userId, IDS.player2)
   memberships[2].status = 'INACTIVE'
   await assert.rejects(() => handleUpsertMyChampionPoolEntry(event(IDS.player, [], { teamId: team.id, championId: 'Ahri', comfortLevel: 'S', priority: 'HIGH', competitiveReady: true }), client), /denied/)

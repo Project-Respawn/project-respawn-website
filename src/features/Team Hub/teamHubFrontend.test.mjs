@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { canShowAdminControls, clearPrivateTeamState, indexRoleIndependentPool, isTeamHubConflict, isTeamHubDenied, managerAssignmentInput, memberAssignmentInput, revocationInput } from './teamHub.viewModel.js';
+import { canShowAdminControls, clearPrivateTeamState, indexRoleIndependentPool, isTeamHubConflict, isTeamHubDenied, managerAssignmentInput, memberAssignmentInput, revocationInput, teamHubLandingRoute } from './teamHub.viewModel.js';
 import { activeManager, decodeTeamHubPayload, filterAdminTeams, nextAccountSearchIndex, normalizeAdminTeam, normalizeAssignableUser, normalizeTeamSlug, replaceTeamInList } from './teamAdministration.viewModel.js';
 
 test('runtime view-model: Admin controls are hidden from members and visible to both platform Admin roles', () => {
@@ -43,7 +43,9 @@ test('static wiring check: operational screens use secured backend services and 
   assert.match(management, /type="email"/);
   assert.match(management, /if \(submitting\.value\) return/);
   assert.match(management, /managerEmail\.value = ''/);
-  assert.match(management, /memberEmail\.value = ''/);
+  assert.match(management, /selectedAccount\.value = null/);
+  assert.match(management, /searchAssignableUsers\(query, context\.value\.team\.id\)/);
+  assert.match(management, /context\.capabilities\.canManageMembers/);
   assert.match(service, /queries\.readTeamHub/);
   assert.match(service, /mutations\.mutateTeamHub/);
   for (const action of ['LIST_MY_TEAMS', 'GET_TEAM_HUB', 'LIST_MY_CHAMPION_POOL', 'LIST_TEAM_CHAMPION_POOLS', 'CREATE_TEAM', 'UPDATE_TEAM', 'SET_MANAGER', 'MANAGE_MEMBER', 'SET_ROSTER_SLOT', 'UPSERT_MY_CHAMPION', 'DELETE_MY_CHAMPION']) assert.match(service, new RegExp(`['"]${action}['"]`));
@@ -60,6 +62,14 @@ test('runtime view-model: assignment sends normalized exact email without a user
 
 test('runtime view-model: revocation uses an existing membership record, never typed identity', () => {
   assert.deepEqual(revocationInput({ id: 'team:alpha', membershipRevision: 7 }, { id: 'membership-1', role: 'PLAYER' }), { teamId: 'team:alpha', targetMembershipId: 'membership-1', role: 'PLAYER', action: 'REVOKE', expectedRevision: 7 });
+});
+
+test('role-aware landing sends Admin and Manager to management, Coach to review, and Player to their pool', () => {
+  assert.equal(teamHubLandingRoute({ capabilities: { canAdministerTeam: true } }), 'team-hub-manage');
+  assert.equal(teamHubLandingRoute({ capabilities: { canManageMembers: true } }), 'team-hub-manage');
+  assert.equal(teamHubLandingRoute({ capabilities: { canReviewChampionPools: true } }), 'team-hub-coach-review');
+  assert.equal(teamHubLandingRoute({ capabilities: { canEditChampionPool: true } }), 'team-hub-champion-pool');
+  assert.equal(teamHubLandingRoute({ capabilities: {} }), 'team-hub-home');
 });
 
 test('team administration immediately inserts a successful create and selects one active manager', () => {
