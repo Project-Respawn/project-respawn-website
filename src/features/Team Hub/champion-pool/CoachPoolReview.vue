@@ -4,9 +4,11 @@
 
     <main class="coach-review-page">
       <header class="review-header">
+        <TeamLogo v-if="teamContext" :src="teamContext.team.logoUrl" :name="teamContext.team.name" :size="64" />
         <div>
           <span class="eyebrow">LEAGUE OF LEGENDS</span>
           <h1>{{ canEditAssessments ? 'Coach Review' : 'Competitive Overview' }}</h1>
+          <span v-if="teamContext?.team?.entitlement?.isPro" class="status-badge">PRO</span>
           <p>{{ canEditAssessments ? 'Review Player-authored pools and save independent Coach assessments.' : 'Read-only Player pools and Coach assessments for team planning.' }}</p>
         </div>
 
@@ -492,6 +494,7 @@ import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 import TeamHubSidebar from '../TeamHubSidebar.vue';
+import TeamLogo from '../TeamLogo.vue';
 
 import {
   championImageUrl,
@@ -541,7 +544,7 @@ const recommendationForm = reactive({
 });
 
 const teamSlug = computed(() => {
-  return route.params.teamSlug || 'project-respawn';
+  return String(route.params.teamSlug || '');
 });
 
 const players = ref([]);

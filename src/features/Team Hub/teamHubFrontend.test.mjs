@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { canShowAdminControls, clearPrivateTeamState, indexRoleIndependentPool, isTeamHubConflict, isTeamHubDenied, managerAssignmentInput, memberAssignmentInput, revocationInput, teamHubLandingRoute } from './teamHub.viewModel.js';
 import { activeManager, decodeTeamHubPayload, filterAdminTeams, nextAccountSearchIndex, normalizeAdminTeam, normalizeAssignableUser, normalizeTeamSlug, replaceTeamInList } from './teamAdministration.viewModel.js';
 import { buildTeamHubShortcuts } from './teamHubDashboard.js';
+import { validateTeamLogoFile } from './teamBranding.js';
 
 test('runtime view-model: Admin controls are hidden from members and visible to both platform Admin roles', () => {
   assert.equal(canShowAdminControls({}), false);
@@ -125,7 +126,7 @@ test('admin dashboard routes and presents the existing consolidated Team Hub adm
     readFile(new URL('./teamHub.service.js', import.meta.url), 'utf8'),
     readFile(new URL('./TeamHubHome.vue', import.meta.url), 'utf8'),
   ]);
-  assert.match(routes, /path: 'esports\/teams'[\s\S]*requiredGroups: \['SuperAdmin', 'Admin'\]/);
+  assert.match(routes, /path: 'esports\/teams'[\s\S]*requiredPermission: 'teams\.branding\.manage'/);
   assert.match(layout, /Esports · Team Administration/);
   assert.match(page, /listAdminTeams/);
   assert.match(page, /if \(submitting\.value\) return/);
@@ -177,4 +178,19 @@ test('dashboard shortcuts support multiple memberships and exclude inactive or m
   ]);
   assert.deepEqual(shortcuts.map((item) => item.to), ['/team-hub/alpha/champion-pool', '/team-hub/beta/coach-review', '/team-hub/gamma/manage', '/team-hub/gamma/coach-review']);
   assert.equal(shortcuts.some((item) => item.to.includes('inactive')), false);
+});
+
+test('PNG selection rejects spoofed type, signature, size and dimensions before upload', async () => {
+  const file = (bytes, overrides = {}) => ({ name: 'team.png', type: 'image/png', size: bytes.length, slice: () => ({ arrayBuffer: async () => Uint8Array.from(bytes).buffer }), ...overrides });
+  const signature = [137,80,78,71,13,10,26,10,...Array(16).fill(0)];
+  assert.deepEqual(await validateTeamLogoFile(file(signature), async () => ({ width: 256, height: 512 })), { width: 256, height: 512, square: false });
+  await assert.rejects(() => validateTeamLogoFile(file(signature, { name: 'team.jpg' }), async () => ({ width: 256, height: 256 })), /Choose a PNG/);
+  await assert.rejects(() => validateTeamLogoFile(file([255,216,255], { size: 3 }), async () => ({ width: 256, height: 256 })), /genuine PNG/);
+  await assert.rejects(() => validateTeamLogoFile(file(signature), async () => ({ width: 64, height: 64 })), /dimensions/);
+  await assert.rejects(() => validateTeamLogoFile(file(signature), async () => { throw new Error('decode'); }), /corrupt/);
+});
+
+test('Team Home is a real secured page and branding/plan controls remain administrative', async () => {
+  const [routes, home, admin, logo, service] = await Promise.all([readFile(new URL('./team-hub.routes.js', import.meta.url),'utf8'),readFile(new URL('./TeamHome.vue', import.meta.url),'utf8'),readFile(new URL('./TeamAdministration.vue', import.meta.url),'utf8'),readFile(new URL('./TeamLogo.vue', import.meta.url),'utf8'),readFile(new URL('./teamHub.service.js', import.meta.url),'utf8')]);
+  assert.match(routes, /team-hub-team[\s\S]*TeamHome\.vue/); assert.doesNotMatch(routes, /teamHubLandingRoute/); assert.match(home, /Manage team/); assert.match(home, /Review champion pools/); assert.match(home, /Update champion pool/); assert.match(admin, /Team plan/); assert.match(admin, /Team branding/); assert.match(admin, /window\.confirm/); assert.match(logo, /object-fit:contain/); assert.match(service, /REQUEST_TEAM_LOGO_UPLOAD/); assert.match(service, /COMMIT_TEAM_LOGO/); assert.match(service, /SET_TEAM_PLAN/);
 });

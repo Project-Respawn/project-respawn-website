@@ -51,6 +51,16 @@ export const deleteMyChampionPoolEntry = (input) => mutate('DELETE_MY_CHAMPION',
 export const listTeamChampionPools = (teamId, page = {}) => read('LIST_TEAM_CHAMPION_POOLS', { teamId, ...page });
 export const getPlayerCompetitiveDetail = (teamId, membershipId) => read('GET_PLAYER_COMPETITIVE_DETAIL', { teamId, membershipId });
 export const upsertCoachAssessment = (input) => mutate('UPSERT_COACH_ASSESSMENT', { ...input, payload: JSON.stringify(input.payload) });
+export const setTeamPlan = (teamId, input) => mutate('SET_TEAM_PLAN', { teamId, payload: JSON.stringify(input) });
+export const requestTeamLogoUpload = (teamId, input) => mutate('REQUEST_TEAM_LOGO_UPLOAD', { teamId, payload: JSON.stringify(input) });
+export const commitTeamLogo = (teamId, input) => mutate('COMMIT_TEAM_LOGO', { teamId, payload: JSON.stringify(input) });
+export const removeTeamLogo = (teamId, input) => mutate('REMOVE_TEAM_LOGO', { teamId, payload: JSON.stringify(input) });
+export async function uploadTeamLogo(teamId, file, expectedRevision) {
+  const request = await requestTeamLogoUpload(teamId, { fileName: file.name, contentType: file.type, size: file.size });
+  const response = await fetch(request.uploadUrl, { method: 'PUT', headers: { 'Content-Type': 'image/png' }, body: file });
+  if (!response.ok) throw new Error('Team logo upload failed');
+  return commitTeamLogo(teamId, { key: request.key, expectedRevision });
+}
 
 export async function loadBoundedPages(load, maxPages = 2) {
   const items = [];

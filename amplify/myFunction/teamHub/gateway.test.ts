@@ -15,6 +15,10 @@ const mutationArgs: Record<string, any> = {
   SET_ROSTER_SLOT: { teamId: 'team:alpha', membershipId: 'membership', gameRoleKey: 'MID', slotType: 'STARTER', rosterAction: 'ASSIGN', expectedRevision: 1 },
   UPSERT_MY_CHAMPION: { teamId: 'team:alpha', championId: 'Ahri', comfortLevel: 'S', priority: 'HIGH', competitiveReady: true },
   DELETE_MY_CHAMPION: { teamId: 'team:alpha', championId: 'Ahri' },
+  SET_TEAM_PLAN: { teamId: 'team:alpha', payload: '{"plan":"PRO","expectedRevision":0}' },
+  REQUEST_TEAM_LOGO_UPLOAD: { teamId: 'team:alpha', payload: '{"fileName":"logo.png","contentType":"image/png","size":100}' },
+  COMMIT_TEAM_LOGO: { teamId: 'team:alpha', payload: '{"key":"team-logos/team:alpha/id.png","expectedRevision":0}' },
+  REMOVE_TEAM_LOGO: { teamId: 'team:alpha', payload: '{"expectedRevision":0}' },
 }
 
 function spies(routes: Record<string, any>) {

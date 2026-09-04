@@ -4,6 +4,7 @@ import {
   handleManageTeamMember, handleSetTeamManager, handleSetTeamRosterSlot,
   handleSearchTeamAssignableUsers, handleUpdateTeamHubTeam, handleUpsertMyChampionPoolEntry,
   handleGetPlayerCompetitiveDetail, handleUpsertCoachAssessment,
+  handleSetTeamPlan, handleRequestTeamLogoUpload, handleCommitTeamLogo, handleRemoveTeamLogo,
 } from '.'
 
 const MAX_GATEWAY_BYTES = 8_192
@@ -38,6 +39,10 @@ export const MUTATION_ACTIONS: Record<string, Route> = {
   UPSERT_MY_CHAMPION: { handler: handleUpsertMyChampionPoolEntry, allowed: ['teamId', 'championId', 'gameRoleKey', 'comfortLevel', 'priority', 'competitiveReady', 'playerNotes'], required: ['teamId', 'championId', 'comfortLevel', 'priority', 'competitiveReady'] },
   DELETE_MY_CHAMPION: { handler: handleDeleteMyChampionPoolEntry, allowed: ['teamId', 'championId', 'gameRoleKey'], required: ['teamId', 'championId'] },
   UPSERT_COACH_ASSESSMENT: { handler: handleUpsertCoachAssessment, allowed: ['teamId', 'membershipId', 'championId', 'payload'], required: ['teamId', 'membershipId', 'championId', 'payload'] },
+  SET_TEAM_PLAN: { handler: handleSetTeamPlan, allowed: ['teamId', 'payload'], required: ['teamId', 'payload'] },
+  REQUEST_TEAM_LOGO_UPLOAD: { handler: handleRequestTeamLogoUpload, allowed: ['teamId', 'payload'], required: ['teamId', 'payload'] },
+  COMMIT_TEAM_LOGO: { handler: handleCommitTeamLogo, allowed: ['teamId', 'payload'], required: ['teamId', 'payload'] },
+  REMOVE_TEAM_LOGO: { handler: handleRemoveTeamLogo, allowed: ['teamId', 'payload'], required: ['teamId', 'payload'] },
 }
 
 function safeArguments(event: any) {

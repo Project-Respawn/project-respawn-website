@@ -50,9 +50,11 @@
       </section>
 
       <header class="page-heading">
+        <TeamLogo v-if="teamContext" :src="teamContext.team.logoUrl" :name="teamContext.team.name" :size="64" />
         <div>
           <span class="page-eyebrow">LEAGUE OF LEGENDS</span>
           <h1>My Champion Pool</h1>
+          <span v-if="teamContext?.team?.entitlement?.isPro" class="submission-status">PRO</span>
 
           <p>
             {{ playerName }} · {{ assignedRole }} ·
@@ -288,6 +290,7 @@ import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 import TeamHubSidebar from '../TeamHubSidebar.vue';
+import TeamLogo from '../TeamLogo.vue';
 
 import {
   championImageUrl,
@@ -309,6 +312,7 @@ const route = useRoute();
 const playerName = ref('You');
 const assignedRole = ref('Unassigned');
 const teamId = ref('');
+const teamContext = ref(null);
 const originalChampionIds = ref(new Set());
 const storedEntries = ref({});
 
@@ -331,7 +335,7 @@ const isDirty = ref(false);
 const tiers = TIERS;
 
 const teamSlug = computed(() => {
-  return route.params.teamSlug || 'project-respawn';
+  return String(route.params.teamSlug || '');
 });
 
 const selectedChampion = computed(() => {
@@ -394,6 +398,7 @@ onMounted(async () => {
   await loadChampions();
   try {
     const context = await getTeamHub({ teamSlug: teamSlug.value });
+    teamContext.value = context;
     teamId.value = context.team.id;
     const mine = context.members.find((member) => member.role === 'PLAYER' && member.status === 'ACTIVE');
     const slot = context.roster.find((entry) => entry.membershipId === mine?.id && entry.status === 'ACTIVE');

@@ -61,7 +61,7 @@ export default [
                 path: 'esports/teams',
                 name: 'AdminTeamAdministration',
                 component: TeamAdministration,
-                meta: { requiredGroups: ['SuperAdmin', 'Admin'] }
+                meta: { requiredPermission: 'teams.branding.manage' }
             },
             {
                 path: 'events',

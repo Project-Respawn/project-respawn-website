@@ -8,7 +8,7 @@
     <p v-if="notice" class="notice" role="status">{{ notice }}</p>
     <p v-if="error" class="error" role="alert">{{ error }}</p>
 
-    <section class="panel">
+    <section v-if="canPlatformAdmin" class="panel">
       <h2>Create team</h2>
       <form class="form-grid" @submit.prevent="submitCreate">
         <label>Name<input v-model.trim="createForm.name" required maxlength="100" @input="suggestSlug" /></label>
@@ -33,13 +33,25 @@
     <section v-if="detailLoading" class="panel">Loading team details…</section>
     <section v-else-if="context" class="panel details">
       <div class="section-heading"><div><p class="eyebrow">SELECTED TEAM</p><h2>{{ context.team.name }}</h2><p>{{ context.team.slug }} · {{ context.team.status }} · {{ activeMemberCount(context) }} active members</p></div><RouterLink :to="`/team-hub/${context.team.slug}/manage`">Open operational Team Hub</RouterLink></div>
-      <form class="form-grid" @submit.prevent="saveTeam">
+      <form v-if="context.capabilities.canAdministerTeam" class="form-grid" @submit.prevent="saveTeam">
         <label>Name<input v-model.trim="editForm.name" required maxlength="100" /></label>
         <label>Status<select v-model="editForm.status"><option>ACTIVE</option><option>INACTIVE</option></select></label>
         <button :disabled="submitting">{{ submitting ? 'Saving…' : 'Save team' }}</button>
       </form>
 
-      <div class="manager-card">
+      <div v-if="context.capabilities.canAdministerTeam" class="settings-card">
+        <h3>Team plan</h3>
+        <p><strong>{{ context.team.entitlement?.expired ? 'Expired' : (context.team.entitlement?.isPro ? 'Pro' : 'Free') }}</strong><span v-if="context.team.entitlement?.expiresAt"> · expires {{ formatDate(context.team.entitlement.expiresAt) }}</span></p>
+        <form class="form-grid" @submit.prevent="savePlan"><label class="toggle"><input v-model="planForm.pro" type="checkbox" /> Enable Pro</label><label>Optional expiry<input v-model="planForm.expiresAt" type="datetime-local" :disabled="!planForm.pro" /></label><button :disabled="submitting">{{ submitting ? 'Saving…' : 'Update plan' }}</button></form>
+        <p v-if="context.team.planAdministration?.changedAt" class="hint">Last changed {{ formatDate(context.team.planAdministration.changedAt) }} by {{ context.team.planAdministration.changedBy }}</p>
+      </div>
+
+      <div v-if="context.capabilities.canManageBranding" class="settings-card">
+        <h3>Team branding</h3>
+        <div class="branding-row"><TeamLogo :src="logoPreview || context.team.logoUrl" :name="context.team.name" :size="96"/><div><input ref="logoInput" type="file" accept="image/png,.png" :disabled="submitting" @change="chooseLogo"/><p class="hint">PNG only, 2 MB maximum, 256–2048 pixels. Non-square images are contained within a square frame.</p><p v-if="logoMessage" :class="logoError ? 'error' : 'hint'">{{ logoMessage }}</p><button type="button" :disabled="submitting || !logoFile" @click="saveLogo">{{ submitting ? 'Uploading…' : (context.team.logoUrl ? 'Replace logo' : 'Upload logo') }}</button> <button v-if="context.team.logoUrl" type="button" class="danger" :disabled="submitting" @click="clearLogo">Remove logo</button></div></div>
+      </div>
+
+      <div v-if="context.capabilities.canAdministerTeam" class="manager-card">
         <h3>Team Manager</h3>
         <p v-if="manager"><strong>{{ manager.displayName }}</strong><br /><small>Active manager membership</small></p>
         <p v-else>No Team Manager is assigned.</p>
@@ -68,14 +80,21 @@
 
 <script setup>
 import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue';
-import { createTeam, getTeamHub, listAdminTeams, loadBoundedPages, searchAssignableUsers, setTeamManager, updateTeam } from './teamHub.service.js';
+import { createTeam, getTeamHub, listAdminTeams, loadBoundedPages, removeTeamLogo, searchAssignableUsers, setTeamManager, setTeamPlan, updateTeam, uploadTeamLogo } from './teamHub.service.js';
+import TeamLogo from './TeamLogo.vue';
+import { validateTeamLogoFile } from './teamBranding.js';
+import { useAuth } from '../../composables/useAuth.js';
 import { activeManager, activeMemberCount, filterAdminTeams, nextAccountSearchIndex, normalizeAdminTeam, normalizeAssignableUser, normalizeTeamSlug, replaceTeamInList } from './teamAdministration.viewModel.js';
 import { managerAssignmentInput } from './teamHub.viewModel.js';
 
 const teams = ref([]), selectedId = ref(''), context = ref(null), search = ref(''), statusFilter = ref('ALL');
+const { isAdmin, isSuperAdmin } = useAuth();
+const canPlatformAdmin = computed(() => isAdmin.value || isSuperAdmin.value);
 const loading = ref(false), detailLoading = ref(false), submitting = ref(false), error = ref(''), notice = ref('');
 const createForm = reactive({ name: '', slug: '', gameKey: 'LEAGUE_OF_LEGENDS' });
 const editForm = reactive({ name: '', status: 'ACTIVE' });
+const planForm = reactive({ pro: false, expiresAt: '' });
+const logoFile = ref(null), logoPreview = ref(''), logoMessage = ref(''), logoError = ref(false), logoInput = ref(null);
 const managerQuery = ref(''), accountResults = ref([]), selectedAccount = ref(null), managerSearching = ref(false), managerSearchError = ref(''), searchOpen = ref(false), activeSearchIndex = ref(-1), slugEdited = ref(false);
 let searchTimer, searchRequest = 0;
 const manager = computed(() => activeManager(context.value));
@@ -121,7 +140,7 @@ async function refreshTeams(preferredId = selectedId.value) {
 
 async function selectTeam(team) {
   selectedId.value = team.id; detailLoading.value = true; error.value = '';
-  try { context.value = await getTeamHub({ teamId: team.id }); editForm.name = context.value.team.name; editForm.status = context.value.team.status; }
+  try { context.value = await getTeamHub({ teamId: team.id }); editForm.name = context.value.team.name; editForm.status = context.value.team.status; planForm.pro = context.value.team.entitlement?.storedPlan === 'PRO'; planForm.expiresAt = context.value.team.entitlement?.expiresAt ? new Date(context.value.team.entitlement.expiresAt).toISOString().slice(0,16) : ''; clearLogoSelection(); }
   catch (reason) { context.value = null; error.value = message(reason, 'Unable to load team details.'); }
   finally { detailLoading.value = false; }
 }
@@ -135,6 +154,11 @@ async function submitCreate() {
   }, 'Team created and opened.');
 }
 async function saveTeam() { await run(async () => { const updated = await updateTeam({ teamId: context.value.team.id, name: editForm.name, status: editForm.status }); teams.value = replaceTeamInList(teams.value, { ...teams.value.find((team) => team.id === updated.id), ...updated }); await selectTeam(updated); }, 'Team details saved.'); }
+async function savePlan() { const verb=planForm.pro?'enable Pro for':'disable Pro for'; if(!window.confirm(`Confirm you want to ${verb} ${context.value.team.name}?`))return; await run(async()=>{await setTeamPlan(context.value.team.id,{plan:planForm.pro?'PRO':'FREE',expiresAt:planForm.pro&&planForm.expiresAt?new Date(planForm.expiresAt).toISOString():null,expectedRevision:context.value.team.settingsRevision});await selectTeam(context.value.team);},`Team plan updated to ${planForm.pro?'Pro':'Free'}.`); }
+function clearLogoSelection(){if(logoPreview.value)URL.revokeObjectURL(logoPreview.value);logoFile.value=null;logoPreview.value='';logoMessage.value='';logoError.value=false;if(logoInput.value)logoInput.value.value='';}
+async function chooseLogo(event){clearLogoSelection();const file=event.target.files?.[0];if(!file)return;try{const info=await validateTeamLogoFile(file);logoFile.value=file;logoPreview.value=URL.createObjectURL(file);logoMessage.value=info.square?`${info.width} × ${info.height} PNG ready.`:`${info.width} × ${info.height} PNG ready; it will be contained in a square frame.`;}catch(reason){logoError.value=true;logoMessage.value=message(reason,'Invalid PNG.');}}
+async function saveLogo(){if(!logoFile.value)return;await run(async()=>{await uploadTeamLogo(context.value.team.id,logoFile.value,context.value.team.settingsRevision);await selectTeam(context.value.team);},'Team logo updated.');}
+async function clearLogo(){if(!window.confirm(`Remove the logo for ${context.value.team.name}?`))return;await run(async()=>{await removeTeamLogo(context.value.team.id,{expectedRevision:context.value.team.settingsRevision});await selectTeam(context.value.team);},'Team logo removed.');}
 async function assignManager() {
   if (!selectedAccount.value?.eligible) return;
   if (manager.value && !window.confirm(`Replace ${manager.value.displayName} as Team Manager?`)) return;
@@ -150,4 +174,5 @@ refreshTeams();
 
 <style scoped>
 .team-admin{padding:28px;color:#eef1f6}.page-heading,.section-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}.page-heading{margin-bottom:24px}.page-heading h1,.section-heading h2{margin:0}.eyebrow{margin:0 0 5px;color:#a9ff38;font-size:.75rem;font-weight:800;letter-spacing:.12em}.panel{margin:18px 0;padding:20px;border:1px solid #303641;border-radius:12px;background:#11151c}.form-grid{display:flex;align-items:end;gap:12px;flex-wrap:wrap}.form-grid label{display:grid;gap:6px;min-width:210px}.form-grid input,.form-grid select,.form-grid button,.page-heading button,.section-heading input{min-height:42px;padding:8px 11px;color:#eef1f6;border:1px solid #48515f;border-radius:7px;background:#090c11}.form-grid button,.page-heading button{cursor:pointer;background:#6f35c5}.form-grid button:disabled,.page-heading button:disabled{cursor:not-allowed;opacity:.55}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse}th,td{padding:12px;text-align:left;border-bottom:1px solid #2b313a}td small{display:block;color:#9ca6b5}.selected{background:rgba(169,255,56,.06)}.notice{padding:12px;color:#cfff91;background:#172312}.error{padding:12px;color:#ffb0b0;background:#2c1518}.manager-card{margin-top:22px;padding-top:18px;border-top:1px solid #303641}.hint{color:#aab2bf;font-size:.88rem}.danger{background:#782d3b!important}.account-search{position:relative;min-width:min(430px,100%)}.account-search>label{display:block;margin-bottom:6px}.account-search>input{width:100%}.account-results{position:absolute;z-index:5;right:0;left:0;margin:4px 0 0;padding:4px;list-style:none;border:1px solid #48515f;border-radius:7px;background:#11151c;box-shadow:0 10px 30px #0008}.account-results li button{display:grid;width:100%;padding:10px;text-align:left;border:0;background:transparent}.account-results li.active button{background:#263044}.account-results li.ineligible{opacity:.6}.account-results span,.selected-account span,.selected-account small{display:block;color:#aab2bf}.selected-account{display:grid;gap:3px;padding:10px;border:1px solid #48515f;border-radius:7px}.selected-account button{justify-self:start;min-height:auto;margin-top:4px;padding:4px 8px}@media(max-width:760px){.team-admin{padding:18px}.page-heading,.section-heading{display:grid}.form-grid{display:grid}.form-grid label{min-width:0}}
+.settings-card{margin-top:22px;padding-top:18px;border-top:1px solid #303641}.branding-row{display:flex;align-items:center;gap:18px;flex-wrap:wrap}.toggle{display:flex!important;align-items:center;gap:8px;min-width:auto!important}
 </style>

@@ -6,3 +6,4 @@ const { register } = await import('tsx/esm/api');
 register();
 await import('../amplify/myFunction/teamHub/teamHub.test.ts');
 await import('../amplify/myFunction/teamHub/gateway.test.ts');
+await import('../amplify/myFunction/teamHub/branding.test.ts');

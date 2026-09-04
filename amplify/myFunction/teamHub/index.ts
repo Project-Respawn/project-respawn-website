@@ -1,6 +1,10 @@
 import { ACTIVE, INACTIVE, LEAGUE_STARTING_ROLES, TEAM_HUB_DENIED, actor, requireAdmin, requireCoach, requireCompetitiveReader, requireManager, requirePlayer, requireTeamAccess } from './policy'
 import { TEAM_HUB_CONFLICT, commitTransaction, tableNames, transactionClient } from './dynamo'
 import { resolveAssignmentAccount, searchAssignableAccounts } from './accounts'
+import { getEffectivePermissions } from '../shared/requirePermission'
+import { createLogoUpload, deleteLogo, logoBucket, logoDisplayUrl, storageClient, verifyStoredLogo } from './branding'
+import { teamEntitlement } from './entitlements'
+import { getIdentityGroups } from '../shared/auth'
 
 const PAGE_SIZE = 25
 const MAX_PAGE_SIZE = 50
@@ -104,7 +108,10 @@ async function teamFromInput(data: any, args: any, isAdmin: boolean) {
   if (found.items.length !== 1) fail(TEAM_HUB_DENIED)
   return teamFor(data, found.items[0].id, isAdmin)
 }
-const publicTeam = (team: any) => ({ id: team.id, slug: team.slug, name: team.name, gameKey: team.gameKey, status: team.status, rosterRevision: team.rosterRevision || 0, membershipRevision: team.membershipRevision || 0, createdAt: team.createdAt || null, updatedAt: team.updatedAt || null })
+const publicTeam = (team: any) => ({ id: team.id, slug: team.slug, name: team.name, gameKey: team.gameKey, status: team.status, rosterRevision: team.rosterRevision || 0, membershipRevision: team.membershipRevision || 0, settingsRevision: team.settingsRevision || 0, entitlement: teamEntitlement(team), createdAt: team.createdAt || null, updatedAt: team.updatedAt || null })
+async function safeTeam(team: any, storage = storageClient()) {
+  return { ...publicTeam(team), logoUrl: team.logoKey ? await logoDisplayUrl(storage, logoBucket(), team.logoKey, team.id) : null }
+}
 const publicMember = (row: any) => ({ id: row.id, teamId: row.teamId, displayName: row.displayName || 'Project Respawn member', role: row.role, status: row.status, revokedAt: row.revokedAt || null })
 const publicSlot = (row: any) => ({ id: row.id, teamId: row.teamId, membershipId: row.membershipId, gameRoleKey: row.gameRoleKey, slotType: row.slotType, status: row.status })
 const now = () => new Date().toISOString()
@@ -133,6 +140,16 @@ const deactivateSlot = (table: string, slot: any, timestamp: string) => ({ Updat
 const putSlot = (table: string, item: any) => ({ Put: { TableName: table, Item: item } })
 const ensureTxBound = (items: any[]) => { if (items.length > MAX_TX_ITEMS) fail('Team Hub roster limit exceeded'); return items }
 const auditMembership = (value: Record<string, unknown>) => console.info('Team Hub membership audit', value)
+const auditSettings = (value: Record<string, unknown>) => console.info('Team Hub settings audit', value)
+const mayHoldBrandingPermission = (identity: any) => getIdentityGroups(identity).some((group) => group.toLowerCase() === 'staff')
+const settingsUpdate = (table: string, team: any, expected: number, by: string, set: Record<string, any>, remove: string[] = []) => {
+  const names: Record<string, string> = { '#revision': 'settingsRevision', '#updatedBy': 'updatedByUserId', '#updatedAt': 'updatedAt' }
+  const values: Record<string, any> = { ':expected': expected, ':zero': 0, ':next': expected + 1, ':by': by, ':at': now() }
+  const sets = ['#revision = :next', '#updatedBy = :by', '#updatedAt = :at']
+  Object.entries(set).forEach(([key, value], index) => { names[`#s${index}`] = key; values[`:s${index}`] = value; sets.push(`#s${index} = :s${index}`) })
+  const removes = remove.map((key, index) => { names[`#r${index}`] = key; return `#r${index}` })
+  return { Update: { TableName: table, Key: { id: team.id }, ConditionExpression: '(attribute_not_exists(#revision) AND :expected = :zero) OR #revision = :expected', UpdateExpression: `SET ${sets.join(', ')}${removes.length ? ` REMOVE ${removes.join(', ')}` : ''}`, ExpressionAttributeNames: names, ExpressionAttributeValues: values } }
+}
 async function resolveForAssignment(event: any, actorUserId: string, teamId: string, action: string) {
   try {
     return await resolveAssignmentAccount(event.arguments?.targetEmail, event.assignmentDirectory)
@@ -149,16 +166,18 @@ async function transact(injectedTx: any, injectedNames: any, items: any[]) {
 export async function handleListMyTeams(event: any, injected?: any) {
   const current = actor(event), data = await client(injected)
   const limit = pageLimit(event.arguments?.limit), nextToken = pageToken(event.arguments?.nextToken)
-  if (current.isAdmin) {
+  const canBrand = current.isAdmin || (mayHoldBrandingPermission(current.identity) && (await getEffectivePermissions(event, data)).effective.has('teams.branding.manage'))
+  if (current.isAdmin || canBrand) {
     const status = oneOf(event.arguments?.status || ACTIVE, [ACTIVE, INACTIVE], 'team status')
     const result = await page(data.models.Team.listTeamByStatus, { status }, limit, nextToken)
-    return { items: result.items.map((team: any) => ({ ...publicTeam(team), role: 'ADMIN' })), nextToken: result.nextToken }
+    return { items: await Promise.all(result.items.map(async (team: any) => ({ ...await safeTeam(team), role: current.isAdmin ? 'ADMIN' : 'STAFF' }))), nextToken: result.nextToken }
   }
   if (event.arguments?.status && event.arguments.status !== ACTIVE) fail(TEAM_HUB_DENIED)
   const result = await page(data.models.TeamMembership.listTeamMembershipByUserId, { userId: current.userId }, limit, nextToken)
   const active = result.items.filter((row: any) => row.status === ACTIVE)
   const teams = await Promise.all(active.map((row: any) => rawTeam(data, row.teamId)))
-  return { items: teams.flatMap((team: any, index: number) => team?.status === ACTIVE ? [{ ...publicTeam(team), role: active[index].role }] : []), nextToken: result.nextToken }
+  const visible = teams.flatMap((team: any, index: number) => team?.status === ACTIVE ? [{ team, role: active[index].role }] : [])
+  return { items: await Promise.all(visible.map(async ({ team, role }) => ({ ...await safeTeam(team), role }))), nextToken: result.nextToken }
 }
 
 export async function handleSearchTeamAssignableUsers(event: any, injected?: any) {
@@ -190,6 +209,62 @@ export async function handleUpdateTeamHubTeam(event: any, injected?: any) {
   const name = event.arguments?.name == null ? existing.name : bounded(event.arguments.name, 'team name', 100)
   const status = event.arguments?.status == null ? existing.status : oneOf(event.arguments.status, [ACTIVE, INACTIVE], 'team status')
   return publicTeam(ok(await data.models.Team.update({ id, name, status, updatedByUserId: current.userId }), 'Team update failed'))
+}
+
+export async function handleSetTeamPlan(event: any, injected?: any, injectedTx?: any, injectedNames?: any) {
+  const current = requireAdmin(event), data = await client(injected), teamId = teamIdValue(event.arguments?.teamId)
+  const team = await teamFor(data, teamId, true), input = jsonPayload(event.arguments?.payload), expected = revisionValue(input.expectedRevision)
+  const plan = oneOf(input.plan, ['FREE', 'PRO'], 'team plan'), timestamp = now()
+  let expiresAt: string | null = null
+  if (plan === 'PRO' && input.expiresAt) {
+    expiresAt = bounded(input.expiresAt, 'Pro expiry', 40)
+    const parsed = Date.parse(expiresAt)
+    if (!Number.isFinite(parsed)) fail('Invalid Pro expiry')
+    expiresAt = new Date(parsed).toISOString()
+  }
+  const names = injectedNames || tableNames()
+  const set = { teamPlan: plan, planUpdatedAt: timestamp, planUpdatedBy: current.userId, ...(plan === 'PRO' ? { proGrantedAt: timestamp, proGrantedBy: current.userId, ...(expiresAt ? { proExpiresAt: expiresAt } : {}) } : {}) }
+  const remove = plan === 'FREE' ? ['proGrantedAt', 'proGrantedBy', 'proExpiresAt'] : expiresAt ? [] : ['proExpiresAt']
+  await transact(injectedTx, names, [settingsUpdate(names.team, team, expected, current.userId, set, remove)])
+  auditSettings({ actorUserId: current.userId, teamId, action: `PLAN_${plan}`, expiresAt, category: 'success', timestamp })
+  return { teamId, settingsRevision: expected + 1, entitlement: teamEntitlement({ ...team, ...set, ...(plan === 'FREE' ? { proExpiresAt: null } : {}) }) }
+}
+
+async function requireBranding(event: any, data: any) {
+  const current = actor(event)
+  if (current.isAdmin) return current
+  const { effective } = await getEffectivePermissions(event, data)
+  if (!effective.has('teams.branding.manage')) fail(TEAM_HUB_DENIED)
+  return current
+}
+
+export async function handleRequestTeamLogoUpload(event: any, injected?: any, injectedStorage?: any) {
+  actor(event); const data = await client(injected); await requireBranding(event, data)
+  const teamId = teamIdValue(event.arguments?.teamId); await teamFor(data, teamId, true)
+  const input = jsonPayload(event.arguments?.payload)
+  return createLogoUpload(injectedStorage || storageClient(), logoBucket(), teamId, input.fileName, input.contentType, input.size)
+}
+
+export async function handleCommitTeamLogo(event: any, injected?: any, injectedTx?: any, injectedNames?: any, injectedStorage?: any) {
+  actor(event); const data = await client(injected), current = await requireBranding(event, data), teamId = teamIdValue(event.arguments?.teamId)
+  const team = await teamFor(data, teamId, true), input = jsonPayload(event.arguments?.payload), expected = revisionValue(input.expectedRevision)
+  const storage = injectedStorage || storageClient(), bucket = logoBucket(), dimensions = await verifyStoredLogo(storage, bucket, input.key, teamId)
+  const names = injectedNames || tableNames(), timestamp = now()
+  try { await transact(injectedTx, names, [settingsUpdate(names.team, team, expected, current.userId, { logoKey: input.key, logoUpdatedAt: timestamp, logoUpdatedBy: current.userId })]) }
+  catch (error) { await deleteLogo(storage, bucket, input.key, teamId).catch(() => undefined); throw error }
+  if (team.logoKey && team.logoKey !== input.key) await deleteLogo(storage, bucket, team.logoKey, teamId).catch((error) => console.error('Old Team logo cleanup failed', error))
+  auditSettings({ actorUserId: current.userId, teamId, action: 'LOGO_SET', category: 'success', timestamp })
+  return { teamId, settingsRevision: expected + 1, dimensions }
+}
+
+export async function handleRemoveTeamLogo(event: any, injected?: any, injectedTx?: any, injectedNames?: any, injectedStorage?: any) {
+  actor(event); const data = await client(injected), current = await requireBranding(event, data), teamId = teamIdValue(event.arguments?.teamId)
+  const team = await teamFor(data, teamId, true), input = jsonPayload(event.arguments?.payload), expected = revisionValue(input.expectedRevision)
+  const names = injectedNames || tableNames(), timestamp = now(), storage = injectedStorage || storageClient(), bucket = logoBucket()
+  await transact(injectedTx, names, [settingsUpdate(names.team, team, expected, current.userId, { logoUpdatedAt: timestamp, logoUpdatedBy: current.userId }, ['logoKey'])])
+  await deleteLogo(storage, bucket, team.logoKey, teamId).catch((error) => console.error('Removed Team logo cleanup failed', error))
+  auditSettings({ actorUserId: current.userId, teamId, action: 'LOGO_REMOVE', category: 'success', timestamp })
+  return { teamId, settingsRevision: expected + 1 }
 }
 
 export async function handleSetTeamManager(event: any, injected?: any, injectedTx?: any, injectedNames?: any) {
@@ -251,11 +326,13 @@ export async function handleManageTeamMember(event: any, injected?: any, injecte
 }
 
 export async function handleGetTeamHub(event: any, injected?: any) {
-  const current = actor(event), data = await client(injected), team = await teamFromInput(data, event.arguments || {}, current.isAdmin)
+  const current = actor(event), data = await client(injected)
+  const canBrand = current.isAdmin || (mayHoldBrandingPermission(current.identity) && (await getEffectivePermissions(event, data)).effective.has('teams.branding.manage'))
+  const team = await teamFromInput(data, event.arguments || {}, current.isAdmin || canBrand)
   const members = await membershipsFor(data, team.id)
-  requireTeamAccess(members, current.userId, current.isAdmin)
+  requireTeamAccess(members, current.userId, current.isAdmin || canBrand)
   const mine = members.find((row: any) => row.userId === current.userId && row.status === ACTIVE) || null
-  if (!current.isAdmin && team.status !== ACTIVE) fail(TEAM_HUB_DENIED)
+  if (!current.isAdmin && !canBrand && team.status !== ACTIVE) fail(TEAM_HUB_DENIED)
   const teamRole = mine?.role || null
   const capabilities = {
     canAdministerTeam: current.isAdmin,
@@ -268,13 +345,14 @@ export async function handleGetTeamHub(event: any, injected?: any) {
   const activePlayers = new Set(members.filter((row: any) => row.status === ACTIVE && row.role === 'PLAYER' && row.teamId === team.id).map((row: any) => row.id))
   const slots = (await slotsForTeam(data, team.id)).filter((row: any) => row.status === ACTIVE && row.teamId === team.id && activePlayers.has(row.membershipId) && row.slotType !== 'STARTER_GUARD')
   return {
-    team: publicTeam(team),
+    team: { ...await safeTeam(team), ...(current.isAdmin ? { planAdministration: { storedPlan: team.teamPlan || 'FREE', changedAt: team.planUpdatedAt || null, changedBy: team.planUpdatedBy || null }, brandingAdministration: { changedAt: team.logoUpdatedAt || null, changedBy: team.logoUpdatedBy || null } } : {}) },
     myRole: teamRole || (current.isAdmin ? 'ADMIN' : null),
     isPlatformAdmin: current.isAdmin,
     teamRole,
     myMembershipId: mine?.id || null,
     capabilities: {
       canAdministerTeam: current.isAdmin,
+      canManageBranding: canBrand,
       canManageMembers: teamRole === 'MANAGER',
       canManageRoster: teamRole === 'MANAGER',
       canReviewChampionPools: teamRole === 'COACH' || teamRole === 'MANAGER',

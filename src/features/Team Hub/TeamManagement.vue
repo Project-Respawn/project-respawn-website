@@ -4,7 +4,7 @@
     <p v-if="loading">Loading team…</p>
     <p v-else-if="error" class="error">{{ error }}</p>
     <template v-else-if="context">
-      <h1>{{ context.team.name }} management</h1>
+      <div class="team-title"><TeamLogo :src="context.team.logoUrl" :name="context.team.name" :size="72"/><div><h1>{{ context.team.name }} management</h1><span v-if="context.team.entitlement?.isPro">PRO</span></div></div>
       <p>Platform administrator: {{ context.isPlatformAdmin ? 'Yes' : 'No' }} · Team role: {{ context.teamRole || 'None' }}</p>
 
       <section>
@@ -56,6 +56,7 @@ import { useRoute } from 'vue-router';
 import { getTeamHub, manageTeamMember, searchAssignableUsers, setTeamManager, setTeamRosterSlot, updateTeam } from './teamHub.service.js';
 import { isTeamHubConflict, managerAssignmentInput, memberAssignmentInput, revocationInput } from './teamHub.viewModel.js';
 import { nextAccountSearchIndex, normalizeAssignableUser } from './teamAdministration.viewModel.js';
+import TeamLogo from './TeamLogo.vue';
 
 const route = useRoute();
 const loading = ref(true), error = ref(''), context = ref(null);
