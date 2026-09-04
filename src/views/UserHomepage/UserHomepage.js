@@ -279,8 +279,6 @@ export default {
         });
       }
 
-      actions.push(...buildTeamHubShortcuts(teamHubMemberships.value));
-
       return items;
     });
 
@@ -396,6 +394,8 @@ export default {
           to: "/partner",
         });
       }
+
+      actions.push(...buildTeamHubShortcuts(teamHubMemberships.value));
 
       return actions;
     });
