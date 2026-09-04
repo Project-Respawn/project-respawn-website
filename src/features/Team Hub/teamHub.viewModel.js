@@ -11,6 +11,13 @@ export const managerAssignmentInput = (team, email) => ({ teamId: team.id, targe
 export const memberAssignmentInput = (team, email, role) => ({ teamId: team.id, targetEmail: normalizeAssignmentEmail(email), role, action: 'ASSIGN', expectedRevision: team.membershipRevision });
 export const revocationInput = (team, membership) => ({ teamId: team.id, targetMembershipId: membership.id, role: membership.role, action: 'REVOKE', expectedRevision: team.membershipRevision });
 
+export function teamHubLandingRoute(context) {
+  if (context?.capabilities?.canAdministerTeam || context?.capabilities?.canManageMembers) return 'team-hub-manage';
+  if (context?.capabilities?.canReviewChampionPools) return 'team-hub-coach-review';
+  if (context?.capabilities?.canEditChampionPool) return 'team-hub-champion-pool';
+  return 'team-hub-home';
+}
+
 export function clearPrivateTeamState(state) {
   state.context = null;
   state.poolEntries = {};

@@ -157,8 +157,14 @@ export async function handleListMyTeams(event: any, injected?: any) {
   return { items: teams.flatMap((team: any, index: number) => team?.status === ACTIVE ? [{ ...publicTeam(team), role: active[index].role }] : []), nextToken: result.nextToken }
 }
 
-export async function handleSearchTeamAssignableUsers(event: any) {
-  requireAdmin(event)
+export async function handleSearchTeamAssignableUsers(event: any, injected?: any) {
+  const current = actor(event)
+  if (!current.isAdmin) {
+    const teamId = teamIdValue(event.arguments?.teamId)
+    const data = await client(injected)
+    await teamFor(data, teamId)
+    requireManager(await membershipsFor(data, teamId), current.userId)
+  }
   return searchAssignableAccounts(event.arguments?.query, event.assignmentDirectory)
 }
 
@@ -213,7 +219,7 @@ export async function handleSetTeamManager(event: any, injected?: any, injectedT
 export async function handleManageTeamMember(event: any, injected?: any, injectedTx?: any, injectedNames?: any) {
   const current = actor(event), data = await client(injected), teamId = teamIdValue(event.arguments?.teamId)
   const team = await teamFor(data, teamId, current.isAdmin), expected = revisionValue(event.arguments?.expectedRevision)
-  const memberships = await membershipsFor(data, teamId); if (!current.isAdmin) requireManager(memberships, current.userId)
+  const memberships = await membershipsFor(data, teamId); requireManager(memberships, current.userId)
   const role = oneOf(event.arguments?.role, ['COACH', 'PLAYER'], 'team role'), action = oneOf(event.arguments?.action, ['ASSIGN', 'REVOKE'], 'membership action')
   const account = action === 'ASSIGN' ? await resolveForAssignment(event, current.userId, teamId, `${role}_ASSIGN`) : null
   if (action === 'ASSIGN' && event.arguments?.targetMembershipId) fail('Invalid member assignment input')
@@ -242,13 +248,22 @@ export async function handleManageTeamMember(event: any, injected?: any, injecte
 
 export async function handleGetTeamHub(event: any, injected?: any) {
   const current = actor(event), data = await client(injected), team = await teamFromInput(data, event.arguments || {}, current.isAdmin)
-  const members = await membershipsFor(data, team.id), mine = requireTeamAccess(members, current.userId, current.isAdmin)
+  const members = await membershipsFor(data, team.id)
+  requireTeamAccess(members, current.userId, current.isAdmin)
+  const mine = members.find((row: any) => row.userId === current.userId && row.status === ACTIVE) || null
   if (!current.isAdmin && team.status !== ACTIVE) fail(TEAM_HUB_DENIED)
-  const canManage = current.isAdmin || mine?.role === 'MANAGER'
-  const visible = canManage ? members : members.filter((row: any) => row.status === ACTIVE)
+  const teamRole = mine?.role || null
+  const capabilities = {
+    canAdministerTeam: current.isAdmin,
+    canManageMembers: teamRole === 'MANAGER',
+    canManageRoster: teamRole === 'MANAGER',
+    canReviewChampionPools: teamRole === 'COACH',
+    canEditChampionPool: teamRole === 'PLAYER',
+  }
+  const visible = capabilities.canAdministerTeam || capabilities.canManageMembers ? members : members.filter((row: any) => row.status === ACTIVE)
   const activePlayers = new Set(members.filter((row: any) => row.status === ACTIVE && row.role === 'PLAYER' && row.teamId === team.id).map((row: any) => row.id))
   const slots = (await slotsForTeam(data, team.id)).filter((row: any) => row.status === ACTIVE && row.teamId === team.id && activePlayers.has(row.membershipId) && row.slotType !== 'STARTER_GUARD')
-  return { team: publicTeam(team), myRole: current.isAdmin ? 'ADMIN' : mine.role, members: visible.map(publicMember), roster: slots.map(publicSlot) }
+  return { team: publicTeam(team), myRole: teamRole || (current.isAdmin ? 'ADMIN' : null), isPlatformAdmin: current.isAdmin, teamRole, capabilities, members: visible.map(publicMember), roster: slots.map(publicSlot) }
 }
 
 export async function handleSetTeamRosterSlot(event: any, injected?: any, injectedTx?: any, injectedNames?: any) {

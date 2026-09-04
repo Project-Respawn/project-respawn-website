@@ -1,4 +1,6 @@
 // src/features/team-hub/team-hub.routes.js
+import { resolveTeamRouteAccess } from './teamHub.service.js';
+import { teamHubLandingRoute } from './teamHub.viewModel.js';
 
 const teamHubRoutes = [
   {
@@ -19,12 +21,11 @@ const teamHubRoutes = [
   {
     path: '/team-hub/:teamSlug',
     name: 'team-hub-team',
-    redirect: (to) => ({
-      name: 'team-hub-champion-pool',
-      params: {
-        teamSlug: to.params.teamSlug,
-      },
-    }),
+    component: () => import('./TeamHubHome.vue'),
+    beforeEnter: async (to) => {
+      const context = await resolveTeamRouteAccess(String(to.params.teamSlug || ''));
+      return { name: teamHubLandingRoute(context), params: { teamSlug: to.params.teamSlug } };
+    },
     meta: {
       requiresAuth: true,
       requiresTeamMembership: true,
@@ -39,8 +40,6 @@ const teamHubRoutes = [
       import('./champion-pool/ChampionPool.vue'),
     meta: {
       requiresAuth: true,
-      requiresTeamMembership: true,
-      teamRoles: ['PLAYER'],
     },
   },
 

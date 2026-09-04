@@ -35,7 +35,7 @@ const memberMutation = (action, input) => {
 };
 export const listMyTeams = (input = {}) => read('LIST_MY_TEAMS', input);
 export const listAdminTeams = (input = {}) => read('LIST_MY_TEAMS', input);
-export const searchAssignableUsers = (query) => read('SEARCH_TEAM_ASSIGNABLE_USERS', { query });
+export const searchAssignableUsers = (query, teamId) => read('SEARCH_TEAM_ASSIGNABLE_USERS', { query, ...(teamId ? { teamId } : {}) });
 export const createTeam = (input) => mutate('CREATE_TEAM', input);
 export const updateTeam = (input) => mutate('UPDATE_TEAM', input);
 export const setTeamManager = (input) => memberMutation('SET_MANAGER', input);
@@ -64,6 +64,7 @@ export async function loadBoundedPages(load, maxPages = 2) {
 
 export async function resolveTeamRouteAccess(teamSlug, allowedRoles = []) {
   const context = await getTeamHub({ teamSlug });
-  if (allowedRoles.length && !allowedRoles.includes(context.myRole)) throw new Error('Team Hub access denied');
+  const roles = new Set([context.teamRole, context.isPlatformAdmin ? 'ADMIN' : null].filter(Boolean));
+  if (allowedRoles.length && !allowedRoles.some((role) => roles.has(role))) throw new Error('Team Hub access denied');
   return context;
 }
