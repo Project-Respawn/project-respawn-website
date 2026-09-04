@@ -44,18 +44,18 @@
           <select v-model="slotType"><option>STARTER</option><option>SUBSTITUTE</option></select>
           <button :disabled="submitting">Assign slot</button>
         </form>
-        <ul><li v-for="slot in startingRoster" :key="slot.id">{{ slot.gameRoleKey }} — {{ memberName(slot.membershipId) }} <button :disabled="submitting" @click="removeSlot(slot)">Remove</button></li></ul>
+        <ul><li v-for="slot in startingRoster" :key="slot.id">{{ slot.gameRoleKey }} — {{ memberName(slot.membershipId) }} <RouterLink :to="`/team-hub/${route.params.teamSlug}/coach-review?player=${encodeURIComponent(slot.membershipId)}`">View champion pool</RouterLink> <button :disabled="submitting" @click="removeSlot(slot)">Remove</button></li></ul>
       </section>
 
       <section v-if="context.capabilities.canManageRoster">
         <h2>Substitutes</h2>
-        <ul><li v-for="slot in substituteRoster" :key="slot.id">{{ slot.gameRoleKey }} — {{ memberName(slot.membershipId) }} <button :disabled="submitting" @click="removeSlot(slot)">Remove</button></li></ul>
+        <ul><li v-for="slot in substituteRoster" :key="slot.id">{{ slot.gameRoleKey }} — {{ memberName(slot.membershipId) }} <RouterLink :to="playerPoolLink(slot.membershipId)">View champion pool</RouterLink> <button :disabled="submitting" @click="removeSlot(slot)">Remove</button></li></ul>
         <p v-if="!substituteRoster.length">No substitutes assigned.</p>
       </section>
 
       <section v-if="context.capabilities.canManageMembers">
         <h2>Active and inactive members</h2>
-        <ul><li v-for="member in context.members" :key="member.id">{{ member.displayName }} — {{ member.role }} — {{ member.status }} <button v-if="['COACH','PLAYER'].includes(member.role) && member.status === 'ACTIVE'" :disabled="submitting" @click="revokeMember(member)">Revoke</button></li></ul>
+        <ul><li v-for="member in context.members" :key="member.id">{{ member.displayName }} — {{ member.role }} — {{ member.status }} <RouterLink v-if="member.role === 'PLAYER' && member.status === 'ACTIVE'" :to="playerPoolLink(member.id)">View champion pool</RouterLink> <button v-if="['COACH','PLAYER'].includes(member.role) && member.status === 'ACTIVE'" :disabled="submitting" @click="revokeMember(member)">Revoke</button></li></ul>
       </section>
     </template>
   </main>
@@ -107,6 +107,7 @@ const revokeMember = (member) => run(() => manageTeamMember(revocationInput(cont
 const assignSlot = () => run(() => setTeamRosterSlot({ teamId: context.value.team.id, membershipId: rosterMembershipId.value, gameRoleKey: gameRole.value, slotType: slotType.value, action: 'ASSIGN', expectedRevision: context.value.team.rosterRevision }));
 const removeSlot = (slot) => run(() => setTeamRosterSlot({ teamId: context.value.team.id, membershipId: slot.membershipId, gameRoleKey: slot.gameRoleKey, slotType: slot.slotType, action: 'REMOVE', expectedRevision: context.value.team.rosterRevision }));
 const memberName = (membershipId) => context.value?.members.find((member) => member.id === membershipId)?.displayName || 'Player';
+const playerPoolLink = (membershipId) => `/team-hub/${route.params.teamSlug}/coach-review?player=${encodeURIComponent(membershipId)}`;
 onBeforeUnmount(() => { clearTimeout(searchTimer); searchRequest += 1; });
 onMounted(refresh);
 </script>

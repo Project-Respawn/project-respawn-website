@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { handleGetTeamHub, handleListMyTeams, handleManageTeamMember, handleSearchTeamAssignableUsers, handleSetTeamManager, handleSetTeamRosterSlot, handleUpsertMyChampionPoolEntry } from '.'
+import { handleGetPlayerCompetitiveDetail, handleGetTeamHub, handleListMyTeams, handleListTeamChampionPools, handleManageTeamMember, handleSearchTeamAssignableUsers, handleSetTeamManager, handleSetTeamRosterSlot, handleUpsertCoachAssessment, handleUpsertMyChampionPoolEntry } from '.'
 import { ACCOUNT_NOT_FOUND, ACCOUNT_UNAVAILABLE, resolveAssignmentAccount, searchAssignableAccounts } from './accounts'
 import { commitTransaction } from './dynamo'
 
@@ -41,8 +41,38 @@ function fixture() {
     TeamRosterSlot: { ...byId(slots), listTeamRosterSlotByTeamId: paged(slots, 'teamId'), listTeamRosterSlotByMembershipId: paged(slots, 'membershipId') },
     PlayerChampionPoolEntry: { ...byId(pool), listPlayerChampionPoolEntryByTeamId: paged(pool, 'teamId'), listPlayerChampionPoolEntryByMembershipId: paged(pool, 'membershipId') },
   } }
-  return { client, team, memberships, slots }
+  return { client, team, memberships, slots, pool }
 }
+
+test('Manager reads complete exact-team pools and plain SuperAdmin cannot read competitive data', async () => {
+  const { client, team, memberships, pool } = fixture()
+  pool.push({ id: 'pool:1', teamId: team.id, membershipId: memberships[2].id, championId: 'Ahri', comfortLevel: 'A', playerNotes: 'private', coachAssessment: 'MATCH_APPROVED' })
+  const list = await handleListTeamChampionPools(event(IDS.manager, [], { teamId: team.id, limit: 25 }), client)
+  assert.equal(list.items[0].playerNotes, 'private')
+  const detail = await handleGetPlayerCompetitiveDetail(event(IDS.manager, [], { teamId: team.id, membershipId: memberships[2].id }), client)
+  assert.equal(detail.entries[0].coachAssessment, 'MATCH_APPROVED')
+  await assert.rejects(() => handleListTeamChampionPools(event(IDS.admin, ['SuperAdmin'], { teamId: team.id }), client), /denied/)
+})
+
+test('Coach assessments update only Coach-owned fields while Manager cannot edit them', async () => {
+  const { client, team, memberships, pool } = fixture(); let update: any
+  pool.push({ id: `team-pool:${team.id}:${IDS.player}:Ahri`, teamId: team.id, membershipId: memberships[2].id, playerUserId: IDS.player, championId: 'Ahri', comfortLevel: 'A', playerNotes: 'unchanged' })
+  client.models.PlayerChampionPoolEntry.update = async (input: any) => { update = input; return { data: input } }
+  const args = { teamId: team.id, membershipId: memberships[2].id, championId: 'Ahri', payload: JSON.stringify({ coachTier: 'B', coachAssessment: 'Ready', coachRecommendation: 'Practise lane', coachPriorityPractice: true }) }
+  await handleUpsertCoachAssessment(event(IDS.coach, [], args), client)
+  assert.equal(update.coachTier, 'B'); assert.equal(update.playerNotes, undefined)
+  await assert.rejects(() => handleUpsertCoachAssessment(event(IDS.manager, [], args), client), /denied/)
+  const playerEdit = { teamId: team.id, championId: 'Ahri', comfortLevel: 'A', priority: 'NORMAL', competitiveReady: true }
+  await assert.rejects(() => handleUpsertMyChampionPoolEntry(event(IDS.manager, [], playerEdit), client), /denied/)
+  await assert.rejects(() => handleUpsertMyChampionPoolEntry(event(IDS.coach, [], playerEdit), client), /denied/)
+})
+
+test('inactive Manager and cross-team competitive requests fail closed', async () => {
+  const inactive = fixture(); inactive.memberships[0].status = 'INACTIVE'
+  await assert.rejects(() => handleListTeamChampionPools(event(IDS.manager, [], { teamId: inactive.team.id }), inactive.client), /denied/)
+  const cross = fixture(); cross.team.id = 'team:beta'
+  await assert.rejects(() => handleListTeamChampionPools(event(IDS.manager, [], { teamId: 'team:alpha' }), cross.client), /denied/)
+})
 
 test('roster assignment is one transaction with revision condition and deterministic position/player guards', async () => {
   const { client, team } = fixture(); let request: any[] = []
@@ -165,7 +195,7 @@ test('dual SuperAdmin Manager retains platform and team capabilities while plain
   assert.equal(dual.isPlatformAdmin, true)
   assert.equal(dual.teamRole, 'MANAGER')
   assert.equal(dual.myRole, 'MANAGER')
-  assert.deepEqual(dual.capabilities, { canAdministerTeam: true, canManageMembers: true, canManageRoster: true, canReviewChampionPools: false, canEditChampionPool: false })
+  assert.deepEqual(dual.capabilities, { canAdministerTeam: true, canManageMembers: true, canManageRoster: true, canReviewChampionPools: true, canEditCoachAssessments: false, canEditOwnChampionPool: false, canEditChampionPool: false })
 
   const plain = fixture()
   const admin = await handleGetTeamHub(event(IDS.admin, ['SuperAdmin'], { teamId: plain.team.id }), plain.client)

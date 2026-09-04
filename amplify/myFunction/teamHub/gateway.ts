@@ -3,6 +3,7 @@ import {
   handleListMyChampionPool, handleListMyTeams, handleListTeamChampionPools,
   handleManageTeamMember, handleSetTeamManager, handleSetTeamRosterSlot,
   handleSearchTeamAssignableUsers, handleUpdateTeamHubTeam, handleUpsertMyChampionPoolEntry,
+  handleGetPlayerCompetitiveDetail, handleUpsertCoachAssessment,
 } from '.'
 
 const MAX_GATEWAY_BYTES = 8_192
@@ -24,6 +25,7 @@ export const READ_ACTIONS: Record<string, Route> = {
   GET_TEAM_HUB: { handler: handleGetTeamHub, allowed: ['teamId', 'teamSlug'], validate: exactlyOne('teamId', 'teamSlug') },
   LIST_MY_CHAMPION_POOL: { handler: handleListMyChampionPool, allowed: ['teamId', 'limit', 'nextToken'], required: ['teamId'] },
   LIST_TEAM_CHAMPION_POOLS: { handler: handleListTeamChampionPools, allowed: ['teamId', 'limit', 'nextToken'], required: ['teamId'] },
+  GET_PLAYER_COMPETITIVE_DETAIL: { handler: handleGetPlayerCompetitiveDetail, allowed: ['teamId', 'membershipId'], required: ['teamId', 'membershipId'] },
   SEARCH_TEAM_ASSIGNABLE_USERS: { handler: handleSearchTeamAssignableUsers, allowed: ['query', 'teamId'], required: ['query'] },
 }
 
@@ -35,6 +37,7 @@ export const MUTATION_ACTIONS: Record<string, Route> = {
   SET_ROSTER_SLOT: { handler: handleSetTeamRosterSlot, allowed: ['teamId', 'membershipId', 'gameRoleKey', 'slotType', 'rosterAction', 'expectedRevision'], required: ['teamId', 'membershipId', 'gameRoleKey', 'slotType', 'rosterAction', 'expectedRevision'], remap: { rosterAction: 'action' } },
   UPSERT_MY_CHAMPION: { handler: handleUpsertMyChampionPoolEntry, allowed: ['teamId', 'championId', 'gameRoleKey', 'comfortLevel', 'priority', 'competitiveReady', 'playerNotes'], required: ['teamId', 'championId', 'comfortLevel', 'priority', 'competitiveReady'] },
   DELETE_MY_CHAMPION: { handler: handleDeleteMyChampionPoolEntry, allowed: ['teamId', 'championId', 'gameRoleKey'], required: ['teamId', 'championId'] },
+  UPSERT_COACH_ASSESSMENT: { handler: handleUpsertCoachAssessment, allowed: ['teamId', 'membershipId', 'championId', 'payload'], required: ['teamId', 'membershipId', 'championId', 'payload'] },
 }
 
 function safeArguments(event: any) {

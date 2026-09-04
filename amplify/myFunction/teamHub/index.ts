@@ -1,4 +1,4 @@
-import { ACTIVE, INACTIVE, LEAGUE_STARTING_ROLES, TEAM_HUB_DENIED, actor, requireAdmin, requireCoach, requireManager, requirePlayer, requireTeamAccess } from './policy'
+import { ACTIVE, INACTIVE, LEAGUE_STARTING_ROLES, TEAM_HUB_DENIED, actor, requireAdmin, requireCoach, requireCompetitiveReader, requireManager, requirePlayer, requireTeamAccess } from './policy'
 import { TEAM_HUB_CONFLICT, commitTransaction, tableNames, transactionClient } from './dynamo'
 import { resolveAssignmentAccount, searchAssignableAccounts } from './accounts'
 
@@ -108,6 +108,10 @@ const publicTeam = (team: any) => ({ id: team.id, slug: team.slug, name: team.na
 const publicMember = (row: any) => ({ id: row.id, teamId: row.teamId, displayName: row.displayName || 'Project Respawn member', role: row.role, status: row.status, revokedAt: row.revokedAt || null })
 const publicSlot = (row: any) => ({ id: row.id, teamId: row.teamId, membershipId: row.membershipId, gameRoleKey: row.gameRoleKey, slotType: row.slotType, status: row.status })
 const now = () => new Date().toISOString()
+const jsonPayload = (value: unknown, max = 7000) => {
+  const source = bounded(value, 'payload', max)
+  try { const parsed = JSON.parse(source); if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) fail('Invalid payload'); return parsed } catch { return fail('Invalid payload') }
+}
 
 const teamRevisionUpdate = (table: string, team: any, field: 'rosterRevision' | 'membershipRevision', expected: number, by: string, set?: Record<string, any>, remove?: string[], touchRoster = false) => {
   const names: Record<string, string> = { '#revision': field, '#status': 'status', '#updatedBy': 'updatedByUserId', '#updatedAt': 'updatedAt' }
@@ -261,11 +265,14 @@ export async function handleGetTeamHub(event: any, injected?: any) {
     myRole: teamRole || (current.isAdmin ? 'ADMIN' : null),
     isPlatformAdmin: current.isAdmin,
     teamRole,
+    myMembershipId: mine?.id || null,
     capabilities: {
       canAdministerTeam: current.isAdmin,
       canManageMembers: teamRole === 'MANAGER',
       canManageRoster: teamRole === 'MANAGER',
-      canReviewChampionPools: teamRole === 'COACH',
+      canReviewChampionPools: teamRole === 'COACH' || teamRole === 'MANAGER',
+      canEditCoachAssessments: teamRole === 'COACH',
+      canEditOwnChampionPool: teamRole === 'PLAYER',
       canEditChampionPool: teamRole === 'PLAYER',
     },
     members: visible.map(publicMember),
@@ -312,7 +319,7 @@ export async function handleListMyChampionPool(event: any, injected?: any) {
   const current = actor(event), data = await client(injected), teamId = teamIdValue(event.arguments?.teamId)
   await teamFor(data, teamId); const membership = requirePlayer(await membershipsFor(data, teamId), current.userId)
   const result = await page(data.models.PlayerChampionPoolEntry.listPlayerChampionPoolEntryByMembershipId, { membershipId: membership.id }, pageLimit(event.arguments?.limit), pageToken(event.arguments?.nextToken))
-  return { items: result.items, nextToken: result.nextToken }
+  return { items: result.items.map((entry: any) => ({ ...entry, coachTier: null, coachAssessment: null, coachRecommendation: null, coachPriorityPractice: null, coachUpdatedByUserId: null, coachUpdatedAt: null })), nextToken: result.nextToken }
 }
 
 export async function handleUpsertMyChampionPoolEntry(event: any, injected?: any) {
@@ -344,10 +351,37 @@ export async function handleDeleteMyChampionPoolEntry(event: any, injected?: any
 
 export async function handleListTeamChampionPools(event: any, injected?: any) {
   const current = actor(event), data = await client(injected), teamId = teamIdValue(event.arguments?.teamId)
-  await teamFor(data, teamId); const members = await membershipsFor(data, teamId); requireCoach(members, current.userId)
+  await teamFor(data, teamId); const members = await membershipsFor(data, teamId); const viewer = requireCompetitiveReader(members, current.userId)
   const activePlayers = new Set(members.filter((row: any) => row.status === ACTIVE && row.role === 'PLAYER').map((row: any) => row.id))
   const result = await page(data.models.PlayerChampionPoolEntry.listPlayerChampionPoolEntryByTeamId, { teamId }, pageLimit(event.arguments?.limit), pageToken(event.arguments?.nextToken))
-  return { items: result.items.filter((entry: any) => activePlayers.has(entry.membershipId)), nextToken: result.nextToken }
+  return { items: viewer.role === 'MANAGER' ? result.items : result.items.filter((entry: any) => activePlayers.has(entry.membershipId)), nextToken: result.nextToken }
+}
+
+export async function handleGetPlayerCompetitiveDetail(event: any, injected?: any) {
+  const current = actor(event), data = await client(injected), teamId = teamIdValue(event.arguments?.teamId)
+  const members = await membershipsFor(data, teamId); requireCompetitiveReader(members, current.userId); await teamFor(data, teamId)
+  const membershipId = membershipIdValue(event.arguments?.membershipId, teamId)
+  const member = members.find((row: any) => row.id === membershipId && row.teamId === teamId && row.role === 'PLAYER')
+  if (!member) fail(TEAM_HUB_DENIED)
+  const entries = await complete(data.models.PlayerChampionPoolEntry.listPlayerChampionPoolEntryByMembershipId, { membershipId }, MAX_TEAM_MEMBERS)
+  const slots = (await slotsForMember(data, membershipId)).filter((slot: any) => slot.status === ACTIVE && slot.slotType !== 'STARTER_GUARD')
+  return { member: publicMember(member), roster: slots.map(publicSlot), entries }
+}
+
+export async function handleUpsertCoachAssessment(event: any, injected?: any) {
+  const current = actor(event), data = await client(injected), teamId = teamIdValue(event.arguments?.teamId)
+  const members = await membershipsFor(data, teamId); requireCoach(members, current.userId); await teamFor(data, teamId)
+  const membershipId = membershipIdValue(event.arguments?.membershipId, teamId), championId = bounded(event.arguments?.championId, 'champion ID', 40)
+  const player = members.find((row: any) => row.id === membershipId && row.teamId === teamId && row.role === 'PLAYER' && row.status === ACTIVE)
+  if (!player || !CHAMPION.test(championId)) fail(TEAM_HUB_DENIED)
+  const id = poolId(teamId, player.userId, championId), entry = ok(await data.models.PlayerChampionPoolEntry.get({ id }), 'Champion entry lookup failed')
+  if (!entry || entry.teamId !== teamId || entry.membershipId !== membershipId) fail(TEAM_HUB_DENIED)
+  const input = jsonPayload(event.arguments?.payload)
+  const coachTier = input.coachTier ? oneOf(input.coachTier, ['S', 'A', 'B', 'C', 'D'], 'Coach tier') : null
+  const coachAssessment = bounded(input.coachAssessment, 'Coach assessment', 1000, false) || null
+  const coachRecommendation = bounded(input.coachRecommendation, 'Coach recommendation', 1000, false) || null
+  if (typeof input.coachPriorityPractice !== 'boolean') fail('Invalid payload')
+  return ok(await data.models.PlayerChampionPoolEntry.update({ id, coachTier, coachAssessment, coachRecommendation, coachPriorityPractice: input.coachPriorityPractice, coachUpdatedByUserId: current.userId, coachUpdatedAt: now() }), 'Coach assessment update failed')
 }
 
 export { TEAM_HUB_CONFLICT }

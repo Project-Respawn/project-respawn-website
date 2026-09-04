@@ -98,6 +98,9 @@
                 </div>
               </router-link>
             </div>
+            <p v-if="teamHubLoading" class="user-homepage-placeholder-text">Loading Team Hub shortcuts…</p>
+            <p v-else-if="teamHubError" class="user-homepage-placeholder-text" role="status">{{ teamHubError }}</p>
+            <p v-else-if="!teamHubMemberships.length" class="user-homepage-placeholder-text">No active Team Hub memberships.</p>
           </section>
 
           <section class="user-homepage-card">

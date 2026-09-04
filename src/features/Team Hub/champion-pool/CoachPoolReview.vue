@@ -6,8 +6,8 @@
       <header class="review-header">
         <div>
           <span class="eyebrow">LEAGUE OF LEGENDS</span>
-          <h1>Coach Review</h1>
-          <p>Recommendations, private notes, approvals, and flex decisions are not available in the MVP. Pool data is read-only.</p>
+          <h1>{{ canEditAssessments ? 'Coach Review' : 'Competitive Overview' }}</h1>
+          <p>{{ canEditAssessments ? 'Review Player-authored pools and save independent Coach assessments.' : 'Read-only Player pools and Coach assessments for team planning.' }}</p>
         </div>
 
         <div class="review-controls">
@@ -137,6 +137,7 @@
                     {{ selectedChampionTier }} —
                     {{ tierLabel(selectedChampionTier) }}
                   </span>
+                  <small v-if="selectedPoolEntry">Player note: {{ selectedPoolEntry.playerNotes || 'None' }} · Updated {{ selectedPoolEntry.updatedAt || 'Unknown' }}</small>
                 </div>
               </div>
 
@@ -145,11 +146,18 @@
               </div>
 
               <label class="form-field">
+                <span>Coach ranking</span>
+                <select v-model="reviewForm.coachTier" :disabled="!selectedChampion || !canEditAssessments">
+                  <option value="">Not ranked</option><option v-for="tier in tiers" :key="tier.id" :value="tier.id">{{ tier.id }} — {{ tier.label }}</option>
+                </select>
+              </label>
+
+              <label class="form-field">
                 <span>Coach assessment</span>
 
                 <select
                   v-model="reviewForm.assessment"
-                  :disabled="!selectedChampion"
+                  :disabled="!selectedChampion || !canEditAssessments"
                 >
                   <option value="">Select assessment</option>
                   <option value="MATCH_APPROVED">
@@ -172,7 +180,7 @@
 
                 <textarea
                   v-model.trim="reviewForm.suggestion"
-                  :disabled="!selectedChampion"
+                  :disabled="!selectedChampion || !canEditAssessments"
                   maxlength="500"
                   placeholder="Enter your improvement suggestions…"
                 />
@@ -187,7 +195,7 @@
 
                 <textarea
                   v-model.trim="reviewForm.privateNote"
-                  :disabled="!selectedChampion"
+                  :disabled="!selectedChampion || !canEditAssessments"
                   maxlength="300"
                   placeholder="Visible to coaches only…"
                 />
@@ -201,43 +209,13 @@
                 <button
                   type="button"
                   class="secondary-button"
-                  :disabled="!selectedChampion"
-                  disabled
-                  title="Coach editing is outside the Team Hub MVP"
+                  :disabled="!selectedChampion || !canEditAssessments || savingAssessment"
                   @click="saveChampionReview"
                 >
                   Save Champion Note
                 </button>
               </div>
 
-              <label class="form-field">
-                <span>Overall player feedback</span>
-
-                <textarea
-                  v-model.trim="overallFeedback"
-                  maxlength="800"
-                  placeholder="Add overall feedback for the player…"
-                />
-              </label>
-
-              <div class="approval-actions">
-                <button
-                  type="button"
-                  class="secondary-button"
-                  :disabled="!overallFeedback"
-                  @click="requestChanges"
-                >
-                  Request Changes
-                </button>
-
-                <button
-                  type="button"
-                  class="primary-button"
-                  @click="approvePool"
-                >
-                  Approve Pool
-                </button>
-              </div>
             </article>
 
             <!-- Flex picks -->
@@ -519,7 +497,7 @@ import {
   championImageUrl,
   loadChampionCatalogue,
 } from './dataDragon.service.js';
-import { getTeamHub, listTeamChampionPools, loadBoundedPages } from '../teamHub.service.js';
+import { getTeamHub, listTeamChampionPools, loadBoundedPages, upsertCoachAssessment } from '../teamHub.service.js';
 
 const TIERS = [
   { id: 'S', label: 'Signature' },
@@ -536,6 +514,9 @@ const champions = ref([]);
 const dataDragonVersion = ref('');
 const loading = ref(true);
 const loadError = ref('');
+const teamContext = ref(null);
+const savingAssessment = ref(false);
+const canEditAssessments = computed(() => teamContext.value?.capabilities?.canEditCoachAssessments === true);
 
 const selectedPlayerId = ref('');
 const selectedPatch = ref('');
@@ -547,6 +528,7 @@ const recommendationSearch = ref('');
 const recommendUnratedOnly = ref(true);
 
 const reviewForm = reactive({
+  coachTier: '',
   assessment: '',
   suggestion: '',
   privateNote: '',
@@ -589,6 +571,7 @@ const selectedChampionTier = computed(() => {
     selectedPlayer.value.ratings[selectedChampion.value.id] ?? ''
   );
 });
+const selectedPoolEntry = computed(() => selectedPlayer.value?.entries?.find((entry) => entry.championId === selectedChampionId.value) || null);
 
 const selectedRecommendationChampion = computed(() => {
   return championById(selectedRecommendationChampionId.value);
@@ -689,9 +672,11 @@ onMounted(async () => {
   await loadChampions();
   try {
     const context = await getTeamHub({ teamSlug: teamSlug.value });
+    teamContext.value = context;
     const pool = await loadBoundedPages((nextToken) => listTeamChampionPools(context.team.id, { limit: 50, ...(nextToken ? { nextToken } : {}) }));
     if (!pool.complete) throw new Error('Team Hub data limit exceeded');
     const entries = pool.items;
+    championReviews.value = Object.fromEntries(entries.filter((entry) => entry.coachTier || entry.coachAssessment || entry.coachRecommendation).map((entry) => [`${entry.membershipId}:${entry.championId}`, { coachTier: entry.coachTier || '', assessment: entry.coachAssessment || '', suggestion: entry.coachRecommendation || '', privateNote: '' }]));
     const slots = new Map(context.roster.map((slot) => [slot.membershipId, slot.gameRoleKey]));
     players.value = context.members.filter((member) => member.role === 'PLAYER' && member.status === 'ACTIVE').map((member) => ({
       id: member.id,
@@ -699,10 +684,11 @@ onMounted(async () => {
       role: slots.get(member.id) || 'Unassigned',
       status: 'ACTIVE',
       statusLabel: 'Active',
-      submittedAt: 'Not applicable',
+      submittedAt: entries.filter((entry) => entry.membershipId === member.id).map((entry) => entry.updatedAt).filter(Boolean).sort().at(-1) || 'Missing submission',
       ratings: Object.fromEntries(entries.filter((entry) => entry.membershipId === member.id).map((entry) => [entry.championId, entry.comfortLevel])),
+      entries: entries.filter((entry) => entry.membershipId === member.id),
     }));
-    selectedPlayerId.value = players.value[0]?.id || '';
+    selectedPlayerId.value = players.value.some((player) => player.id === route.query.player) ? route.query.player : (players.value[0]?.id || '');
     if (!players.value.length) loadError.value = 'No active players are assigned to this team.';
   } catch (error) {
     loadError.value = error instanceof Error ? error.message : 'Unable to load team champion pools.';
@@ -774,12 +760,13 @@ function selectReviewChampion(champion) {
   const savedReview = championReviews.value[key];
 
   reviewForm.assessment = savedReview?.assessment ?? '';
+  reviewForm.coachTier = savedReview?.coachTier ?? '';
   reviewForm.suggestion = savedReview?.suggestion ?? '';
   reviewForm.privateNote = savedReview?.privateNote ?? '';
 }
 
-function saveChampionReview() {
-  if (!selectedChampion.value) {
+async function saveChampionReview() {
+  if (!selectedChampion.value || !canEditAssessments.value || savingAssessment.value) {
     return;
   }
 
@@ -788,6 +775,9 @@ function saveChampionReview() {
     selectedChampion.value.id,
   );
 
+  savingAssessment.value = true;
+  try {
+    await upsertCoachAssessment({ teamId: teamContext.value.team.id, membershipId: selectedPlayer.value.id, championId: selectedChampion.value.id, payload: { coachTier: reviewForm.coachTier || null, coachAssessment: reviewForm.assessment, coachRecommendation: `${reviewForm.suggestion}${reviewForm.privateNote ? `\nPrivate: ${reviewForm.privateNote}` : ''}`, coachPriorityPractice: reviewForm.assessment === 'MORE_PRACTICE' } });
   championReviews.value = {
     ...championReviews.value,
 
@@ -795,12 +785,14 @@ function saveChampionReview() {
       playerId: selectedPlayer.value.id,
       championId: selectedChampion.value.id,
       assessment: reviewForm.assessment,
+      coachTier: reviewForm.coachTier,
       suggestion: reviewForm.suggestion,
       privateNote: reviewForm.privateNote,
       updatedAt: new Date().toISOString(),
     },
   };
-
+  } catch (error) { loadError.value = error instanceof Error ? error.message : 'Unable to save Coach assessment.'; }
+  finally { savingAssessment.value = false; }
 }
 
 function approvePool() {
@@ -881,6 +873,7 @@ function reviewKey(playerId, championId) {
 }
 
 function resetReviewForm() {
+  reviewForm.coachTier = '';
   reviewForm.assessment = '';
   reviewForm.suggestion = '';
   reviewForm.privateNote = '';

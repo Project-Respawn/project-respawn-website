@@ -49,6 +49,8 @@ export const listMyChampionPool = (teamId, page = {}) => read('LIST_MY_CHAMPION_
 export const upsertMyChampionPoolEntry = (input) => mutate('UPSERT_MY_CHAMPION', input);
 export const deleteMyChampionPoolEntry = (input) => mutate('DELETE_MY_CHAMPION', input);
 export const listTeamChampionPools = (teamId, page = {}) => read('LIST_TEAM_CHAMPION_POOLS', { teamId, ...page });
+export const getPlayerCompetitiveDetail = (teamId, membershipId) => read('GET_PLAYER_COMPETITIVE_DETAIL', { teamId, membershipId });
+export const upsertCoachAssessment = (input) => mutate('UPSERT_COACH_ASSESSMENT', { ...input, payload: JSON.stringify(input.payload) });
 
 export async function loadBoundedPages(load, maxPages = 2) {
   const items = [];
