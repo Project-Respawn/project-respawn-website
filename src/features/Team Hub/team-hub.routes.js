@@ -28,8 +28,6 @@ const teamHubRoutes = [
     },
     meta: {
       requiresAuth: true,
-      requiresTeamMembership: true,
-      teamRoles: ['PLAYER'],
     },
   },
 
@@ -51,8 +49,8 @@ const teamHubRoutes = [
     meta: {
       requiresAuth: true,
       requiresTeamMembership: true,
-      teamRoles: ['COACH'],
-      requiredCapability: 'COACH_REVIEW',
+      teamRoles: ['COACH', 'MANAGER'],
+      requiredCapability: 'canReviewChampionPools',
     },
   },
 
@@ -63,7 +61,7 @@ const teamHubRoutes = [
     meta: {
       requiresAuth: true,
       requiresTeamMembership: true,
-      teamRoles: ['COACH'],
+      teamRoles: ['COACH', 'MANAGER'],
     },
   },
 ];

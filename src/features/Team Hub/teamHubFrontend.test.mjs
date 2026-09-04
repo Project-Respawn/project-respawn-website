@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { canShowAdminControls, clearPrivateTeamState, indexRoleIndependentPool, isTeamHubConflict, isTeamHubDenied, managerAssignmentInput, memberAssignmentInput, revocationInput, teamHubLandingRoute } from './teamHub.viewModel.js';
 import { activeManager, decodeTeamHubPayload, filterAdminTeams, nextAccountSearchIndex, normalizeAdminTeam, normalizeAssignableUser, normalizeTeamSlug, replaceTeamInList } from './teamAdministration.viewModel.js';
+import { buildTeamHubShortcuts } from './teamHubDashboard.js';
 
 test('runtime view-model: Admin controls are hidden from members and visible to both platform Admin roles', () => {
   assert.equal(canShowAdminControls({}), false);
@@ -70,6 +71,7 @@ test('role-aware landing sends Admin and Manager to management, Coach to review,
   assert.equal(teamHubLandingRoute({ capabilities: { canManageMembers: true } }), 'team-hub-manage');
   assert.equal(teamHubLandingRoute({ capabilities: { canReviewChampionPools: true } }), 'team-hub-coach-review');
   assert.equal(teamHubLandingRoute({ capabilities: { canEditChampionPool: true } }), 'team-hub-champion-pool');
+  assert.equal(teamHubLandingRoute({ capabilities: {} }), 'team-hub-home');
 });
 
 test('team administration immediately inserts a successful create and selects one active manager', () => {
@@ -152,4 +154,27 @@ test('admin dashboard routes and presents the existing consolidated Team Hub adm
   assert.match(home, /errorMessage\.value = ''/);
   assert.match(home, /selectedTeamId\.value = created\.id/);
   assert.doesNotMatch(page, /generateClient|localStorage|\.models\./);
+});
+
+test('signed-in dashboard exposes dynamic role-aware Team Hub shortcuts without hard-coded team slugs', async () => {
+  const source = await readFile('src/views/UserHomepage/UserHomepage.js', 'utf8');
+  const shortcuts = await readFile('src/features/Team Hub/teamHubDashboard.js', 'utf8');
+  assert.match(source, /listMyTeams/);
+  assert.match(source, /teamHubMemberships/);
+  assert.match(shortcuts, /Update champion pool/);
+  assert.match(shortcuts, /Review champion pools/);
+  assert.match(shortcuts, /View champion pools/);
+  assert.match(shortcuts, /`\/team-hub\/\$\{slug\}/);
+  assert.doesNotMatch(`${source}${shortcuts}`, /team-hub\/project-respawn/);
+});
+
+test('dashboard shortcuts support multiple memberships and exclude inactive or missing roles', () => {
+  const shortcuts = buildTeamHubShortcuts([
+    { slug: 'alpha', name: 'Alpha', assignedPosition: 'MID', context: { teamRole: 'PLAYER' } },
+    { slug: 'beta', name: 'Beta', context: { teamRole: 'COACH' } },
+    { slug: 'gamma', name: 'Gamma', context: { teamRole: 'MANAGER' } },
+    { slug: 'inactive', name: 'Inactive', context: { teamRole: null } },
+  ]);
+  assert.deepEqual(shortcuts.map((item) => item.to), ['/team-hub/alpha/champion-pool', '/team-hub/beta/coach-review', '/team-hub/gamma/manage', '/team-hub/gamma/coach-review']);
+  assert.equal(shortcuts.some((item) => item.to.includes('inactive')), false);
 });

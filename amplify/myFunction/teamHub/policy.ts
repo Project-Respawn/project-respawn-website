@@ -39,3 +39,7 @@ export function requirePlayer(memberships: any[], userId: string) {
 export function requireCoach(memberships: any[], userId: string) {
   return requireRole(memberships, userId, ['COACH'])
 }
+
+export function requireCompetitiveReader(memberships: any[], userId: string) {
+  return requireRole(memberships, userId, ['MANAGER', 'COACH'])
+}

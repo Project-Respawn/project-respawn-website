@@ -8,6 +8,8 @@ import {
 
 import { useAuth } from "../../composables/useAuth.js";
 import { refreshAccessContext } from "../../composables/useAccessContext.js";
+import { getTeamHub, listMyTeams, loadBoundedPages } from "../../features/Team Hub/teamHub.service.js";
+import { buildTeamHubShortcuts } from "../../features/Team Hub/teamHubDashboard.js";
 
 export default {
   name: "UserHomepage",
@@ -28,6 +30,9 @@ export default {
 
     const userGroups = ref([]);
     const accessReady = ref(false);
+    const teamHubLoading = ref(true);
+    const teamHubError = ref("");
+    const teamHubMemberships = ref([]);
 
     // ------------------------------------------------------------
     // NORMALISE GROUP NAMES
@@ -180,7 +185,25 @@ export default {
 
     onMounted(() => {
       loadAccessContext();
+      loadTeamHubMemberships();
     });
+
+    const loadTeamHubMemberships = async () => {
+      teamHubLoading.value = true;
+      teamHubError.value = "";
+      try {
+        const result = await loadBoundedPages((nextToken) => listMyTeams({ limit: 50, ...(nextToken ? { nextToken } : {}) }));
+        if (!result.complete) throw new Error("Team Hub data limit exceeded");
+        teamHubMemberships.value = await Promise.all(result.items.map(async (team) => {
+          const context = await getTeamHub({ teamId: team.id });
+          const ownSlots = context.roster.filter((slot) => slot.membershipId === context.myMembershipId);
+          return { ...team, context, assignedPosition: ownSlots[0]?.gameRoleKey || "" };
+        }));
+      } catch {
+        teamHubError.value = "Team Hub shortcuts are temporarily unavailable.";
+        teamHubMemberships.value = [];
+      } finally { teamHubLoading.value = false; }
+    };
 
     // ============================================================
     // TOP NAVIGATION
@@ -255,6 +278,8 @@ export default {
           comingSoon: true,
         });
       }
+
+      actions.push(...buildTeamHubShortcuts(teamHubMemberships.value));
 
       return items;
     });
@@ -504,6 +529,9 @@ export default {
       canAccessTrainerHub,
       canAccessTherapistHub,
       canAccessPartnerHub,
+      teamHubLoading,
+      teamHubError,
+      teamHubMemberships,
     };
   },
 };

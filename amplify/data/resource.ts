@@ -1126,6 +1126,12 @@ const schema = a
         priority: a.string().required(),
         competitiveReady: a.boolean().required(),
         playerNotes: a.string(),
+        coachTier: a.string(),
+        coachAssessment: a.string(),
+        coachRecommendation: a.string(),
+        coachPriorityPractice: a.boolean(),
+        coachUpdatedByUserId: a.string(),
+        coachUpdatedAt: a.datetime(),
       })
       .secondaryIndexes((index) => [
         index('teamId').queryField('listPlayerChampionPoolEntryByTeamId'),
@@ -1136,12 +1142,14 @@ const schema = a
     readTeamHub: a.query().arguments({
       action: a.string().required(), teamId: a.id(), teamSlug: a.string(), status: a.string(),
       limit: a.integer(), nextToken: a.string(), query: a.string(),
+      membershipId: a.id(),
     }).returns(a.json().required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
     mutateTeamHub: a.mutation().arguments({
       action: a.string().required(), teamId: a.id(), slug: a.string(), name: a.string(), gameKey: a.string(), status: a.string(),
       targetEmail: a.string(), targetMembershipId: a.id(), role: a.string(), membershipId: a.id(),
       memberAction: a.string(), rosterAction: a.string(), expectedRevision: a.integer(), gameRoleKey: a.string(), slotType: a.string(),
       championId: a.string(), comfortLevel: a.string(), priority: a.string(), competitiveReady: a.boolean(), playerNotes: a.string(),
+      payload: a.string(),
     }).returns(a.json().required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
 
     UserProfile: a
