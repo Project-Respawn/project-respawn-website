@@ -126,6 +126,7 @@ export const TEAM_HUB = Object.freeze({
     TEAM_HUB_ROSTER_TABLE: 'teamrosterslot',
     TEAM_HUB_TEAM_TABLE: 'team',
     TEAM_HUB_USER_POOL_ID: 'userpool',
+    TEAM_HUB_LOGO_BUCKET: 'storage',
   }),
 });
 
@@ -260,6 +261,16 @@ export function isExactTeamHubTransactionIamChange(before, after) {
   const restored = structuredClone(after);
   restored.Properties.PolicyDocument.Statement[newIndex] = oldTransaction;
   return stableJson(before) === stableJson(restored);
+}
+
+export function isExactTeamLogoIamChange(before, after) {
+  const added = addedPolicyStatements(before, after);
+  if (!added || added.length !== 1) return false;
+  const statement = added[0];
+  const resource = resourceText(statement.Resource).toLowerCase();
+  return exactActions(statement, ['s3:DeleteObject', 's3:GetObject', 's3:PutObject'])
+    && resource.includes('storage') && resource.includes('/team-logos/*')
+    && statement.Resource !== '*' && !resource.match(/ntgrestage8|staging/);
 }
 
 export function isExactSeparatedDataIamChange(before, after) {
@@ -401,7 +412,7 @@ export function phase2Allowlist({ stack, logicalId, type, property, oldValue, ne
     return false;
   }
   if (logicalId === TWITCH_RUNTIME.policy && type === 'AWS::IAM::Policy' && property === 'Properties.PolicyDocument.Statement') return isExactRuntimeDataBindingIamChange(before, after);
-  if (logicalId === PHASE2.runtimePolicy && type === 'AWS::IAM::Policy' && property === 'Properties.PolicyDocument.Statement') return isExactPhase2IamChange(before, after) || isExactCombinedRuntimeIamChange(before, after) || isExactTeamHubIamChange(before, after) || isExactSeparatedDataIamChange(before, after) || isExactTeamHubTransactionIamChange(before, after);
+  if (logicalId === PHASE2.runtimePolicy && type === 'AWS::IAM::Policy' && property === 'Properties.PolicyDocument.Statement') return isExactPhase2IamChange(before, after) || isExactCombinedRuntimeIamChange(before, after) || isExactTeamHubIamChange(before, after) || isExactSeparatedDataIamChange(before, after) || isExactTeamHubTransactionIamChange(before, after) || isExactTeamLogoIamChange(before, after);
   if (type === 'AWS::CloudFormation::Stack' && logicalId === 'data7552DF31' && property.startsWith('Properties.Parameters.')) {
     const suffix = PHASE2.references.find((candidate) => property.toLowerCase().includes(candidate.toLowerCase()));
     const getAtt = newValue?.['Fn::GetAtt'];

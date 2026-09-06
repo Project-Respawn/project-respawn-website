@@ -149,6 +149,11 @@ export const INITIAL_PERMISSION_CATALOG: CatalogDefinition[] = [
     defaultGroups: PLATFORM_OPERATIONS,
   },
   {
+    key: 'teams.branding.manage', displayName: 'Manage team branding',
+    description: 'Upload, replace and remove approved Team Hub logos.', domain: 'Teams', module: 'team-hub', sortOrder: 10,
+    defaultGroups: PLATFORM_ADMINS,
+  },
+  {
     key: 'orders.view', displayName: 'View orders',
     description: 'View stored fulfillment orders.', domain: 'Orders', module: 'orders', sortOrder: 10,
     defaultGroups: PLATFORM_OPERATIONS,

@@ -210,6 +210,7 @@ const teamHubLambda = backend.myFunction.resources.lambda;
 (teamHubLambda as LambdaFunction).addEnvironment('TEAM_HUB_MEMBERSHIP_TABLE', teamHubTables.TeamMembership.tableName);
 (teamHubLambda as LambdaFunction).addEnvironment('TEAM_HUB_ROSTER_TABLE', teamHubTables.TeamRosterSlot.tableName);
 (teamHubLambda as LambdaFunction).addEnvironment('TEAM_HUB_USER_POOL_ID', backend.auth.resources.userPool.userPoolId);
+(teamHubLambda as LambdaFunction).addEnvironment('TEAM_HUB_LOGO_BUCKET', backend.storage.resources.bucket.bucketName);
 teamHubLambda.addToRolePolicy(new PolicyStatement({
   effect: Effect.ALLOW,
   actions: ['dynamodb:PutItem', 'dynamodb:UpdateItem'],
@@ -218,6 +219,11 @@ teamHubLambda.addToRolePolicy(new PolicyStatement({
     teamHubTables.TeamMembership.tableArn,
     teamHubTables.TeamRosterSlot.tableArn,
   ],
+}));
+teamHubLambda.addToRolePolicy(new PolicyStatement({
+  effect: Effect.ALLOW,
+  actions: ['s3:GetObject', 's3:PutObject', 's3:DeleteObject'],
+  resources: [`${backend.storage.resources.bucket.bucketArn}/team-logos/*`],
 }));
 
 backend.data.resources.graphqlApi.grantQuery(backend.twitchRuntime.resources.lambda,

@@ -32,7 +32,7 @@ export default {
           requiredGroups: ['SuperAdmin', 'Admin'],
         },
         { id: 'events', icon: '📅', label: 'Events', route: '/dashboard/events', requiredPermission: 'events.manage' },
-        { id: 'team-administration', icon: '🏆', label: 'Esports · Team Administration', route: '/dashboard/esports/teams', requiredGroups: ['SuperAdmin', 'Admin'] },
+        { id: 'team-administration', icon: '🏆', label: 'Esports · Team Administration', route: '/dashboard/esports/teams', requiredPermission: 'teams.branding.manage' },
         {
           id: 'applications',
           icon: '📋',

@@ -1,8 +1,9 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { handleGetPlayerCompetitiveDetail, handleGetTeamHub, handleListMyTeams, handleListTeamChampionPools, handleManageTeamMember, handleSearchTeamAssignableUsers, handleSetTeamManager, handleSetTeamRosterSlot, handleUpsertCoachAssessment, handleUpsertMyChampionPoolEntry } from '.'
+import { handleGetPlayerCompetitiveDetail, handleGetTeamHub, handleListMyTeams, handleListTeamChampionPools, handleManageTeamMember, handleSearchTeamAssignableUsers, handleSetTeamManager, handleSetTeamPlan, handleSetTeamRosterSlot, handleUpsertCoachAssessment, handleUpsertMyChampionPoolEntry } from '.'
 import { ACCOUNT_NOT_FOUND, ACCOUNT_UNAVAILABLE, resolveAssignmentAccount, searchAssignableAccounts } from './accounts'
 import { commitTransaction } from './dynamo'
+import { teamEntitlement } from './entitlements'
 
 process.env.TEAM_HUB_USER_POOL_ID = 'test-pool'
 
@@ -52,6 +53,24 @@ test('Manager reads complete exact-team pools and plain SuperAdmin cannot read c
   const detail = await handleGetPlayerCompetitiveDetail(event(IDS.manager, [], { teamId: team.id, membershipId: memberships[2].id }), client)
   assert.equal(detail.entries[0].coachAssessment, 'MATCH_APPROVED')
   await assert.rejects(() => handleListTeamChampionPools(event(IDS.admin, ['SuperAdmin'], { teamId: team.id }), client), /denied/)
+})
+
+test('team entitlements default to Free and expire server-side in UTC', () => {
+  assert.deepEqual(teamEntitlement({}, new Date('2026-01-01T00:00:00Z')).plan, 'FREE')
+  assert.equal(teamEntitlement({ teamPlan: 'PRO' }, new Date('2026-01-01T00:00:00Z')).isPro, true)
+  const expired = teamEntitlement({ teamPlan: 'PRO', proExpiresAt: '2025-12-31T23:59:59Z' }, new Date('2026-01-01T00:00:00Z'))
+  assert.equal(expired.isPro, false); assert.equal(expired.expired, true); assert.equal(expired.plan, 'FREE')
+})
+
+test('only platform Admin can change plan and the atomic update preserves team data', async () => {
+  const { client, team } = fixture(); let request: any[] = []
+  const input = { teamId: team.id, payload: JSON.stringify({ plan: 'PRO', expiresAt: '2027-01-01T00:00:00Z', expectedRevision: 0 }) }
+  const result = await handleSetTeamPlan(event(IDS.admin, ['Admin'], input), client, { transact: async (items: any[]) => { request = items } }, names)
+  assert.equal(result.entitlement.isPro, true); assert.equal(request.length, 1)
+  assert.match(request[0].Update.ConditionExpression, /attribute_not_exists/)
+  assert.equal(request[0].Update.ExpressionAttributeNames['#s0'], 'teamPlan')
+  assert.equal(request[0].Update.UpdateExpression.includes('REMOVE managerMembershipId'), false)
+  for (const user of [IDS.manager, IDS.coach, IDS.player]) await assert.rejects(() => handleSetTeamPlan(event(user, [], input), client, { transact: async () => undefined }, names), /administrator/)
 })
 
 test('Coach assessments update only Coach-owned fields while Manager cannot edit them', async () => {
@@ -195,7 +214,7 @@ test('dual SuperAdmin Manager retains platform and team capabilities while plain
   assert.equal(dual.isPlatformAdmin, true)
   assert.equal(dual.teamRole, 'MANAGER')
   assert.equal(dual.myRole, 'MANAGER')
-  assert.deepEqual(dual.capabilities, { canAdministerTeam: true, canManageMembers: true, canManageRoster: true, canReviewChampionPools: true, canEditCoachAssessments: false, canEditOwnChampionPool: false, canEditChampionPool: false })
+  assert.deepEqual(dual.capabilities, { canAdministerTeam: true, canManageBranding: true, canManageMembers: true, canManageRoster: true, canReviewChampionPools: true, canEditCoachAssessments: false, canEditOwnChampionPool: false, canEditChampionPool: false })
 
   const plain = fixture()
   const admin = await handleGetTeamHub(event(IDS.admin, ['SuperAdmin'], { teamId: plain.team.id }), plain.client)

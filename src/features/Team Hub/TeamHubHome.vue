@@ -84,11 +84,7 @@
 
           <article v-if="selectedTeam" class="selected-team">
             <div class="team-logo-container">
-              <img
-                :src="logoUrl"
-                :alt="`${selectedTeam.name} logo`"
-                class="team-logo"
-              />
+              <TeamLogo :src="selectedTeam.logoUrl" :name="selectedTeam.name" :size="92" />
             </div>
 
             <div class="selected-team-content">
@@ -248,7 +244,7 @@
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import logoUrl from '../../assets/logo.png';
+import TeamLogo from './TeamLogo.vue';
 import { useAuth } from '../../composables/useAuth.js';
 import { createTeam, listMyTeams, loadBoundedPages } from './teamHub.service.js';
 import { canShowAdminControls } from './teamHub.viewModel.js';
@@ -309,10 +305,7 @@ function openSelectedTeam() {
     return;
   }
 
-  const destination = ['ADMIN', 'MANAGER'].includes(selectedTeam.value.userRole)
-    ? 'manage'
-    : selectedTeam.value.userRole === 'COACH' ? 'coach-review' : 'champion-pool';
-  router.push(`/team-hub/${selectedTeam.value.slug}/${destination}`);
+  router.push(`/team-hub/${selectedTeam.value.slug}`);
 }
 
 onMounted(async () => {
@@ -328,7 +321,7 @@ async function refreshTeams() {
     if (!activePage.complete || !inactivePage.complete) throw new Error('Team Hub data limit exceeded');
     const teams = [...activePage.items, ...inactivePage.items];
     const leagueTeams = teams.filter((team) => team.gameKey === 'LEAGUE_OF_LEGENDS').map((team) => ({
-      ...team, userRole: team.role, plan: null, players: 0, coaches: 0, poolSubmissions: 0,
+      ...team, userRole: team.role, plan: team.entitlement?.isPro ? 'PRO' : null, players: 0, coaches: 0, poolSubmissions: 0,
       publicProfilePath: `/team-hub/${team.slug}`, tournament: null,
     }));
     games.value = leagueTeams.length ? [{ id: 'league-of-legends', name: 'League of Legends', shortName: 'LoL', teams: leagueTeams }] : [];

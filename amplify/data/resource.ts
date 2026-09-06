@@ -1074,6 +1074,16 @@ const schema = a
         membershipRevision: a.integer().required(),
         managerMembershipId: a.id(),
         coachMembershipId: a.id(),
+        teamPlan: a.string(),
+        proGrantedAt: a.datetime(),
+        proGrantedBy: a.string(),
+        proExpiresAt: a.datetime(),
+        planUpdatedAt: a.datetime(),
+        planUpdatedBy: a.string(),
+        logoKey: a.string(),
+        logoUpdatedAt: a.datetime(),
+        logoUpdatedBy: a.string(),
+        settingsRevision: a.integer(),
       })
       .secondaryIndexes((index) => [
         index('slug').queryField('listTeamBySlug'),
