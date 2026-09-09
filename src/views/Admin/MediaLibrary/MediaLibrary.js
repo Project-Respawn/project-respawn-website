@@ -44,6 +44,18 @@ function normalizeText(value) {
   return typeof value === 'string' ? value.trim() : ''
 }
 
+function normalizeArray(value) {
+  if (Array.isArray(value)) return value
+  if (typeof value !== 'string' || !value) return []
+
+  try {
+    const parsed = JSON.parse(value)
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    return []
+  }
+}
+
 function extractStoragePathFromUrl(value) {
   const cleanValue = normalizeText(value)
   if (!cleanValue) return ''
@@ -152,8 +164,8 @@ export function useMediaLibrary (props, ctx) {
   // ========================================
 
   // 1.1 Base state from props
-  const collections = ref(props.collections || [])
-  const mediaItems = ref(props.mediaItems || [])
+  const collections = ref(normalizeArray(props.collections))
+  const mediaItems = ref(normalizeArray(props.mediaItems))
   const { hasPermission, refreshAccessContext } = useAccessContext()
   const canManageMedia = computed(() => hasPermission('media.library.manage'))
 
@@ -161,7 +173,7 @@ export function useMediaLibrary (props, ctx) {
   watch(
     () => props.collections,
     (next) => {
-      collections.value = next || []
+      collections.value = normalizeArray(next)
     },
     { immediate: true, deep: true }
   )
@@ -169,7 +181,7 @@ export function useMediaLibrary (props, ctx) {
   watch(
     () => props.mediaItems,
     (next) => {
-      mediaItems.value = next || []
+      mediaItems.value = normalizeArray(next)
     },
     { immediate: true, deep: true }
   )
@@ -697,8 +709,8 @@ export function useMediaLibrary (props, ctx) {
       if (!canManageMedia.value) throw new Error('You do not have permission to view the Media Library.')
       const result = await getClient().queries.listManagedMediaLibrary()
       if (result.errors?.length) throw new Error(result.errors[0].message || 'Failed to load Media Library.')
-      collections.value = result.data?.collections || []
-      mediaItems.value = result.data?.mediaItems || []
+      collections.value = normalizeArray(result.data?.collections)
+      mediaItems.value = normalizeArray(result.data?.mediaItems)
 
       if (ctx.emit) {
         ctx.emit('update:collections', collections.value)
