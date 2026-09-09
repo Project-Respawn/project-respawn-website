@@ -12,11 +12,11 @@ test('new first-party alerts retain empty inherited presentation fields and pres
   const defaults = validateTwitchOverlayConfig({});
   for (const kind of ['follow', 'subscription', 'cheer', 'raid']) {
     assert.equal(defaults.alerts[kind].enabled, true);
-    for (const field of ['titleTemplate', 'messageTemplate', 'mediaUrl', 'soundUrl']) assert.equal(defaults.alerts[kind][field], '');
+    for (const field of ['titleTemplate', 'messageTemplate', 'mediaUrl', 'soundUrl'] as const) assert.equal(defaults.alerts[kind][field], '');
   }
   const custom = { enabled: false, titleTemplate: 'Custom title', messageTemplate: 'Custom copy', mediaUrl: 'https://creator.example/image.jpg', soundUrl: 'https://creator.example/audio.mp3' };
   const saved = validateTwitchOverlayConfig({ alerts: { follow: custom } });
-  for (const [key, value] of Object.entries(custom)) assert.equal(saved.alerts.follow[key], value);
+  for (const key of ['enabled', 'titleTemplate', 'messageTemplate', 'mediaUrl', 'soundUrl'] as const) assert.equal(saved.alerts.follow[key], custom[key]);
   const reset = validateTwitchOverlayConfig({ alerts: { follow: { ...custom, titleTemplate: '', messageTemplate: '', mediaUrl: '', soundUrl: '' } } });
   assert.equal(reset.alerts.follow.mediaUrl, ''); assert.equal(reset.alerts.follow.messageTemplate, '');
   assert.equal(reset.alerts.follow.enabled, false);
