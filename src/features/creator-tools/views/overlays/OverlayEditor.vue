@@ -410,6 +410,8 @@
           @rotate="rotateSourceUrl"
           @revoke="revokeBrowserSource"
           @preview="openBrowserSourcePreview"
+          @import="importSourceUrl"
+          @refresh="refreshSourceState"
         />
       </div>
 
@@ -1053,6 +1055,7 @@ const {
   liveOutOfDate,
   lastPublishedAt,
   refreshSourceState,
+  importSourceUrl,
   createBrowserSource,
   saveAndUpdateLive,
   replaceActiveScene,

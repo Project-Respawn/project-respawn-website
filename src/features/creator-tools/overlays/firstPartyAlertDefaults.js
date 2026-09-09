@@ -3,7 +3,7 @@
 const assets = (folder, titleTemplate, messageTemplate) => Object.freeze({
   mediaUrl: `/twitch-alerts/${folder}/image.jpg`,
   soundUrl: `/twitch-alerts/${folder}/audio.mp3`,
-  titleTemplate, messageTemplate,
+  titleTemplate, messageTemplate, duration: 20,
 })
 
 export const FIRST_PARTY_ALERT_DEFAULTS = Object.freeze({
@@ -15,5 +15,5 @@ export const FIRST_PARTY_ALERT_DEFAULTS = Object.freeze({
 
 export function resetAlertPresentationOverrides(kind, configuration) {
   if (!FIRST_PARTY_ALERT_DEFAULTS[kind]) return configuration
-  return { ...configuration, mediaUrl: '', soundUrl: '', titleTemplate: '', messageTemplate: '' }
+  return { ...configuration, mediaUrl: '', soundUrl: '', titleTemplate: '', messageTemplate: '', duration: FIRST_PARTY_ALERT_DEFAULTS[kind].duration }
 }

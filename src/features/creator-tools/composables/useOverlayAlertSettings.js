@@ -17,7 +17,7 @@ export function useOverlayAlertSettings(workspaceId, brandId) {
       const result = await getTwitchOverlayConfig(workspaceId.value, brandId.value)
       if (request !== generation) return
       for (const kind of ALERT_KINDS) {
-        configs.value[kind] = normalizeAlertConfiguration(result.config?.alerts?.[kind])
+        configs.value[kind] = normalizeAlertConfiguration(result.config?.alerts?.[kind], kind)
         saved.value[kind] = JSON.stringify(configs.value[kind])
       }
     } catch (failure) { if (request === generation) error.value = failure?.message || 'Could not load alert settings.' }
@@ -35,7 +35,7 @@ export function useOverlayAlertSettings(workspaceId, brandId) {
       if (request !== generation) return false
       const result = await updateTwitchOverlayConfig(workspace, brand, { ...latest.config, alerts: { ...latest.config.alerts, [kind]: { ...latest.config.alerts?.[kind], ...draft } } })
       if (request !== generation) return false
-      const normalized = normalizeAlertConfiguration(result.config?.alerts?.[kind])
+      const normalized = normalizeAlertConfiguration(result.config?.alerts?.[kind], kind)
       saved.value[kind] = JSON.stringify(normalized)
       if (JSON.stringify(configs.value[kind]) === snapshot) configs.value[kind] = normalized
       return true

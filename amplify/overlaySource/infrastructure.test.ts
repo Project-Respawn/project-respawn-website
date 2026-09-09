@@ -43,6 +43,13 @@ test('publication IAM includes transactional writes needed for the race-safe Bra
   template().hasResourceProperties('AWS::IAM::Policy', { PolicyDocument: { Statement: Match.arrayWith([Match.objectLike({ Action: 'dynamodb:TransactWriteItems', Effect: 'Allow' })]) } });
 });
 
+test('URL recovery adds a retained rotating key and an authenticated import route', () => {
+  const value = template();
+  value.resourceCountIs('AWS::KMS::Key', 1);
+  value.hasResource('AWS::KMS::Key', { DeletionPolicy: 'Retain', UpdateReplacePolicy: 'Retain', Properties: Match.objectLike({ EnableKeyRotation: true }) });
+  value.hasResourceProperties('AWS::ApiGatewayV2::Route', { RouteKey: 'POST /overlay/publications/{publicationId}/source-url', AuthorizationType: 'JWT' });
+});
+
 test('one managed WebSocket API owns connect, disconnect and default routes', () => {
   const value = template();
   value.hasResourceProperties('AWS::ApiGatewayV2::Api', { ProtocolType: 'WEBSOCKET' });

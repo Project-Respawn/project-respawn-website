@@ -12,6 +12,8 @@ test('new first-party alerts retain empty inherited presentation fields and pres
   const defaults = validateTwitchOverlayConfig({});
   for (const kind of ['follow', 'subscription', 'cheer', 'raid']) {
     assert.equal(defaults.alerts[kind].enabled, true);
+    assert.equal(defaults.alerts[kind].duration, 20);
+    assert.equal(validateTwitchOverlayConfig({ alerts: { [kind]: { duration: 12 } } }).alerts[kind].duration, 12);
     for (const field of ['titleTemplate', 'messageTemplate', 'mediaUrl', 'soundUrl'] as const) assert.equal(defaults.alerts[kind][field], '');
   }
   const custom = { enabled: false, titleTemplate: 'Custom title', messageTemplate: 'Custom copy', mediaUrl: 'https://creator.example/image.jpg', soundUrl: 'https://creator.example/audio.mp3' };
@@ -21,6 +23,7 @@ test('new first-party alerts retain empty inherited presentation fields and pres
   assert.equal(reset.alerts.follow.mediaUrl, ''); assert.equal(reset.alerts.follow.messageTemplate, '');
   assert.equal(reset.alerts.follow.enabled, false);
   assert.equal(defaults.alerts.redemption.enabled, false);
+  assert.equal(defaults.alerts.redemption.duration, 8);
   assert.equal(defaults.alerts.redemption.titleTemplate, '{user} redeemed {reward}');
   assert.equal(defaults.alerts.redemption.messageTemplate, 'Reward: {reward}');
   assert.equal(defaults.alerts.redemption.mediaUrl, ''); assert.equal(defaults.alerts.redemption.soundUrl, '');

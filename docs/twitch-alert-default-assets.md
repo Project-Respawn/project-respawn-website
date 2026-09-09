@@ -19,11 +19,11 @@ Production URL example: `https://www.projectrespawn.com/twitch-alerts/follow/ima
 
 `src/features/creator-tools/overlays/firstPartyAlertDefaults.js` is the single built-in media/text catalogue. `resolveAlertPresentation` in `alertPresentation.js` applies it inside the shared `AlertPresentation` component used by Tools, Builder, generic legacy alerts, and dedicated live widgets.
 
-Brand records continue to contain raw overrides. Empty/null/missing media fields and empty text inherit built-in presentation; valid custom values win independently. Normalization does not materialize built-in URLs into stored drafts. Reset to Default clears image, sound, title and message fields; users then save through the existing Brand API. Enabled, duration, volume, and animation settings are preserved.
+Brand records continue to contain raw overrides. Empty/null/missing media fields and empty text inherit built-in presentation; valid custom values win independently. Normalization does not materialize built-in URLs into stored drafts. Reset to Default clears image, sound, title and message fields; users then save through the existing Brand API. Enabled, volume, and animation settings are preserved. Reset now restores the built-in 20-second duration.
 
 The backend returns empty inherited presentation fields for new Follow/Subscription/Bits/Raid configurations. New Bits configs default to enabled; an existing explicit `enabled: false` remains false. Redemption defaults and behaviour are unchanged. Existing stored text, including historically saved defaults, is preserved because the records do not identify whether a nonempty value was entered manually. Reset explicitly opts such records into the new defaults; no records are migrated.
 
-Audio plays only on an alert/preview trigger, not on settings load or URL edits. Existing alert duration and volume controls apply; the supplied tracks are 20 seconds long, but shorter configured alert durations may stop live playback earlier. Image failure retains text/animation; audio failure is caught without an automatic retry loop.
+Audio plays only on an alert/preview trigger, not on settings load or URL edits. The four supplied alert kinds default to 20 seconds. Existing explicit duration and volume overrides remain effective; a shorter custom duration may stop playback earlier. Image failure retains text/animation; audio failure is caught without an automatic retry loop.
 
 For future asset changes, preferably add a versioned path and update the catalogue, then update the integrity tests to the newly approved bytes. Creators with empty overrides inherit the new version; custom URLs remain untouched. No new publication or credential is required.
 

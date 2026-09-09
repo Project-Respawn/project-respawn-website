@@ -6,10 +6,11 @@ import { publishCanonicalOverlayEvent } from './canonicalPublisher';
 import { createAwsCanonicalPublisherDependencies } from './awsPublisher';
 import { randomUUID } from 'node:crypto';
 import { activeAlertTopics, hasActiveAlertWidget } from './domain';
+import { browserSourceUrl, decryptCredential, encryptCredential, importedCredential } from './credentialVault';
 
 const db = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 const env = (name: string) => { const value = process.env[name]; if (!value) throw new Error(`Missing ${name}`); return value; };
-const json = (statusCode: number, body: unknown) => ({ statusCode, headers: { 'content-type': 'application/json', 'access-control-allow-origin': process.env.FRONTEND_ORIGIN || 'https://www.projectrespawn.com' }, body: JSON.stringify(body) });
+const json = (statusCode: number, body: unknown) => ({ statusCode, headers: { 'content-type': 'application/json', 'cache-control': 'no-store', 'access-control-allow-origin': process.env.FRONTEND_ORIGIN || 'https://www.projectrespawn.com' }, body: JSON.stringify(body) });
 const body = (event: any) => { try { return event.body ? JSON.parse(event.body) : {}; } catch { throw new Error('Request body is invalid'); } };
 const userId = (event: any) => String(event.requestContext?.authorizer?.jwt?.claims?.sub || '');
 
@@ -38,7 +39,8 @@ async function createPublication(event: any) {
   const input = body(event), sub = userId(event); await authorizeBindings(input, sub);
   await assertCurrentEditorRevision(String(input.brandId), input.sourceEditorRevision);
   const issued = issueOverlayCredential();
-  const publication = createPublicationRecord(input, sub, issued.credentialHash, new Date(), randomUUID());
+  const record = createPublicationRecord(input, sub, issued.credentialHash, new Date(), randomUUID());
+  const publication = { ...record, credentialCiphertext: await encryptCredential(record, issued.credential) };
   const lock = createActivePublicationLock(publication), tableName = env('PUBLICATION_TABLE');
   try {
     await db.send(new TransactWriteCommand({ TransactItems: [
@@ -50,18 +52,18 @@ async function createPublication(event: any) {
     if (error?.name !== 'TransactionCanceledException') throw error;
     const existing = await getActivePublication(input.brandId);
     assertPublicationOwner(existing, sub); await authorizeBindings(existing, sub);
-    return json(200, publicationResponse(existing, { created: false }));
+    return json(200, publicationResponse(existing, { credential: await decryptCredential(existing), created: false }));
   }
 }
 
 function publicationResponse(publication: any, extra: Record<string, unknown> = {}) {
-  const credential = extra.credential as string | undefined;
+  const { credential, ...metadata } = extra;
   return {
     publicationId: publication.publicationId, workspaceId: publication.workspaceId, brandId: publication.brandId,
     sceneId: publication.sceneId, sceneName: publication.sceneSnapshot?.name || '', revision: publication.revision,
     status: publication.status, updatedAt: publication.updatedAt,
-    ...(Number.isInteger(publication.sourceEditorRevision) ? { sourceEditorRevision: publication.sourceEditorRevision } : {}), ...extra,
-    ...(credential ? { browserSourceUrl: `${env('FRONTEND_ORIGIN')}/overlay-source/${encodeURIComponent(credential)}` } : {}),
+    ...(Number.isInteger(publication.sourceEditorRevision) ? { sourceEditorRevision: publication.sourceEditorRevision } : {}), ...metadata,
+    ...(typeof credential === 'string' ? { browserSourceUrl: browserSourceUrl(env('FRONTEND_ORIGIN'), credential) } : {}),
   };
 }
 
@@ -81,7 +83,7 @@ async function activePublication(event: any) {
   const connections = await db.send(new QueryCommand({ TableName: env('CONNECTION_TABLE'), IndexName: 'publicationId-index', KeyConditionExpression: 'publicationId = :publicationId', ExpressionAttributeValues: { ':publicationId': publication.publicationId } }));
   const now = Math.floor(Date.now() / 1000); const connectionCount = (connections.Items || []).filter((item) => Number(item.expiresAtEpoch || 0) > now).length;
   const widgets = publication.sceneSnapshot?.widgets || [];
-  return json(200, { publication: publicationResponse(publication, { connectionCount, alertTopics: activeAlertTopics(widgets), hasAlertsWidget: hasActiveAlertWidget(widgets) }) });
+  return json(200, { publication: publicationResponse(publication, { credential: await decryptCredential(publication), connectionCount, alertTopics: activeAlertTopics(widgets), hasAlertsWidget: hasActiveAlertWidget(widgets) }) });
 }
 
 async function authorizeActivePublication(publication: any, sub: string) {
@@ -119,11 +121,24 @@ async function rotateCredential(event: any, publicationId: string) {
   const rotated = rotatePublicationCredential(publication, issued.credentialHash, now);
   await db.send(new UpdateCommand({
     TableName: env('PUBLICATION_TABLE'), Key: { publicationId },
-    UpdateExpression: 'SET credentialHash = :credentialHash, credentialRotatedAt = :now, updatedAt = :now',
+    UpdateExpression: 'SET credentialHash = :credentialHash, credentialCiphertext = :ciphertext, credentialRotatedAt = :now, updatedAt = :now',
     ConditionExpression: 'ownerUserId = :owner AND credentialHash = :previousHash',
-    ExpressionAttributeValues: { ':credentialHash': rotated.credentialHash, ':now': now.toISOString(), ':owner': sub, ':previousHash': publication.credentialHash },
+    ExpressionAttributeValues: { ':credentialHash': rotated.credentialHash, ':ciphertext': await encryptCredential(publication, issued.credential), ':now': now.toISOString(), ':owner': sub, ':previousHash': publication.credentialHash },
   }));
-  return json(200, { publicationId, credential: issued.credential, browserSourceUrl: `${env('FRONTEND_ORIGIN')}/overlay-source/${encodeURIComponent(issued.credential)}` });
+  return json(200, { publicationId, browserSourceUrl: browserSourceUrl(env('FRONTEND_ORIGIN'), issued.credential) });
+}
+
+async function importSourceUrl(event: any, publicationId: string) {
+  const sub = userId(event), publication = await getPublication(publicationId);
+  if (!publication) throw new Error('Overlay publication access is denied');
+  await authorizeActivePublication(publication, sub);
+  const credential = importedCredential(body(event).browserSourceUrl, env('FRONTEND_ORIGIN'), publication);
+  const ciphertext = await encryptCredential(publication, credential);
+  await db.send(new UpdateCommand({ TableName: env('PUBLICATION_TABLE'), Key: { publicationId },
+    UpdateExpression: 'SET credentialCiphertext = :ciphertext',
+    ConditionExpression: 'ownerUserId = :owner AND credentialHash = :hash AND attribute_not_exists(revokedAt)',
+    ExpressionAttributeValues: { ':ciphertext': ciphertext, ':owner': sub, ':hash': publication.credentialHash } }));
+  return json(200, { publicationId, browserSourceUrl: browserSourceUrl(env('FRONTEND_ORIGIN'), credential) });
 }
 
 async function sourceConfig(credential: string) {
@@ -196,10 +211,11 @@ export const handler: APIGatewayProxyHandlerV2 & APIGatewayProxyWebsocketHandler
     if (path === '/overlay/editor-project' && (method === 'GET' || method === 'PUT')) return await managedEditorProject(event, method);
     if (method === 'GET' && path === '/overlay/publications/active') return await activePublication(event);
     if (method === 'POST' && path === '/overlay/publications') return await createPublication(event);
-    const match = path.match(/^\/overlay\/publications\/([^/]+)(?:\/(events|rotate))?$/); if (!match) return json(404, { error: 'Route not found' });
+    const match = path.match(/^\/overlay\/publications\/([^/]+)(?:\/(events|rotate|source-url))?$/); if (!match) return json(404, { error: 'Route not found' });
     if (method === 'PUT' && !match[2]) return await updatePublication(event, match[1]);
     if (method === 'DELETE' && !match[2]) return await revokePublication(event, match[1]);
     if (method === 'POST' && match[2] === 'rotate') return await rotateCredential(event, match[1]);
+    if (method === 'POST' && match[2] === 'source-url') return await importSourceUrl(event, match[1]);
     if (method === 'POST' && match[2] === 'events') return await sendTestEvent(event, match[1]);
     return json(405, { error: 'Method not allowed' });
   } catch (error: any) { return json(/access|Authentication/.test(error?.message || '') ? 403 : 400, { error: error?.message || 'Overlay source request failed' }); }

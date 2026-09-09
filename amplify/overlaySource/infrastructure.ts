@@ -1,4 +1,4 @@
-import { Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { Aspects, CfnResource, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { AttributeType, BillingMode, ITable, ProjectionType, Table } from 'aws-cdk-lib/aws-dynamodb';
 import { Architecture, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
@@ -6,6 +6,7 @@ import { CorsHttpMethod, HttpApi, HttpMethod, WebSocketApi, WebSocketStage } fro
 import { HttpLambdaIntegration, WebSocketLambdaIntegration } from 'aws-cdk-lib/aws-apigatewayv2-integrations';
 import { HttpJwtAuthorizer } from 'aws-cdk-lib/aws-apigatewayv2-authorizers';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { Key } from 'aws-cdk-lib/aws-kms';
 import { Construct } from 'constructs';
 import { join } from 'node:path';
 import type { RuntimeLambdaMutationTarget } from './runtimeLambdaMutationTarget';
@@ -39,6 +40,12 @@ export class OverlaySourceInfrastructure extends Construct {
     this.handler = new NodejsFunction(this, 'OverlaySourceFunction', { entry: props.handlerEntry || join(process.cwd(), 'amplify', 'overlaySource', 'handler.ts'), handler: 'handler', runtime: Runtime.NODEJS_22_X, architecture: Architecture.ARM_64, memorySize: 512, timeout: Duration.seconds(15), bundling: { minify: true, sourceMap: true }, environment: { PUBLICATION_TABLE: this.publicationTable.tableName, CONNECTION_TABLE: this.connectionTable.tableName, WORKSPACE_TABLE: props.workspaceTable.tableName, BRAND_TABLE: props.brandTable.tableName, FRONTEND_ORIGIN: props.frontendOrigin } });
     this.publicationTable.grantReadWriteData(this.handler); this.connectionTable.grantReadWriteData(this.handler); props.workspaceTable.grantReadData(this.handler); props.brandTable.grantReadData(this.handler);
     this.handler.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['dynamodb:TransactWriteItems'], resources: [this.publicationTable.tableArn] }));
+    const credentialKey = new Key(this, 'OverlayCredentialKey', { enableKeyRotation: true, removalPolicy: RemovalPolicy.RETAIN });
+    const credentialCfnKey = credentialKey.node.defaultChild as CfnResource;
+    // Preserve encrypted URL recovery even when Amplify applies sandbox removal policies.
+    Aspects.of(stack).add({ visit(node) { if (node === credentialCfnKey) credentialCfnKey.applyRemovalPolicy(RemovalPolicy.RETAIN); } });
+    credentialKey.grantEncryptDecrypt(this.handler);
+    this.handler.addEnvironment('OVERLAY_CREDENTIAL_KEY_ID', credentialKey.keyArn);
     const integration = new HttpLambdaIntegration('OverlaySourceHttpIntegration', this.handler);
     const httpApi = new HttpApi(this, 'OverlaySourceHttpApi', { apiName: 'projectRespawnOverlaySourceApi', corsPreflight: { allowMethods: [CorsHttpMethod.GET, CorsHttpMethod.POST, CorsHttpMethod.PUT, CorsHttpMethod.DELETE, CorsHttpMethod.OPTIONS], allowOrigins: [props.frontendOrigin], allowHeaders: ['authorization', 'content-type'] } });
     const authorizer = new HttpJwtAuthorizer('OverlayCreatorAuthorizer', `https://cognito-idp.${stack.region}.amazonaws.com/${props.userPoolId}`, { jwtAudience: [props.userPoolClientId] });
@@ -50,6 +57,7 @@ export class OverlaySourceInfrastructure extends Construct {
     httpApi.addRoutes({ path: '/overlay/publications/{publicationId}', methods: [HttpMethod.PUT, HttpMethod.DELETE], integration, authorizer });
     httpApi.addRoutes({ path: '/overlay/publications/{publicationId}/events', methods: [HttpMethod.POST], integration, authorizer });
     httpApi.addRoutes({ path: '/overlay/publications/{publicationId}/rotate', methods: [HttpMethod.POST], integration, authorizer });
+    httpApi.addRoutes({ path: '/overlay/publications/{publicationId}/source-url', methods: [HttpMethod.POST], integration, authorizer });
     const wsIntegration = new WebSocketLambdaIntegration('OverlaySourceWebSocketIntegration', this.handler);
     const wsApi = new WebSocketApi(this, 'OverlaySourceWebSocketApi', { apiName: 'projectRespawnOverlaySourceWebSocket', connectRouteOptions: { integration: wsIntegration }, disconnectRouteOptions: { integration: wsIntegration }, defaultRouteOptions: { integration: wsIntegration } });
     const wsStage = new WebSocketStage(this, 'OverlaySourceWebSocketStage', { webSocketApi: wsApi, stageName: 'live', autoDeploy: true });

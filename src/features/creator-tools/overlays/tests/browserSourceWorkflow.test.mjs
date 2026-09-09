@@ -32,7 +32,8 @@ function workflow({ existing = false, saveFails = false, saveBlocked = false, on
   const publication = () => ({ publicationId: 'active-publication', revision: 1, sourceEditorRevision: state.revision.value });
   const useSources = runInNewContext(logic.replace(/^import .*$/gm, '').replace('export function', 'function') + '\nuseBrowserSources', {
     ...Vue, createPublicationSceneSnapshot,
-    getActiveOverlayPublication: async () => ({ publication: existing ? publication() : null }),
+    getActiveOverlayPublication: async () => ({ publication: existing ? { ...publication(), browserSourceUrl: testUrl } : null }),
+    importOverlaySourceUrl: async (id, url) => { calls.push(['import', id]); return { browserSourceUrl: url }; },
     createOverlayPublication: async input => { calls.push(['create', input.sourceEditorRevision]); return { ...publication(), browserSourceUrl: testUrl, created: true }; },
     updateOverlayPublication: async (id, sceneId, snapshot, revision) => { calls.push(['update', id, revision]); onUpdate(id, snapshot); return publication(); },
     rotateOverlayPublicationCredential: async () => { throw new Error('Normal saves must never rotate'); },
@@ -68,7 +69,7 @@ test('toolbar labels follow active publication state, including a fresh active-p
     assert.ok(text(primary).includes(existing ? 'Save Changes' : 'Create Browser Source'));
     ui.stop();
     if (existing) {
-      assert.equal(state.sourceUrl.value, '');
+      assert.equal(state.sourceUrl.value, testUrl);
       await state.saveAndUpdateLive();
       assert.deepEqual(state.calls, ['save', ['update', 'active-publication', 6]]);
     }
@@ -85,6 +86,41 @@ test('first creation and repeated saves keep one publication and the issued URL'
   assert.deepEqual(state.calls, ['save', ['create', 6], 'save', ['update', 'active-publication', 7], 'save', ['update', 'active-publication', 8]]);
   assert.equal(state.publicationId.value, 'active-publication');
   assert.equal(state.sourceUrl.value, testUrl);
+});
+
+test('reopening retrieves the same URL; import, preview and repeated saves preserve publication identity', async () => {
+  const state = workflow({ existing: true });
+  await state.refreshSourceState();
+  const reopened = workflow({ existing: true });
+  await reopened.refreshSourceState();
+  assert.equal(reopened.publicationId.value, state.publicationId.value);
+  assert.equal(reopened.sourceUrl.value, state.sourceUrl.value);
+  reopened.openBrowserSourcePreview();
+  assert.deepEqual(reopened.calls, []);
+  reopened.sourceUrl.value = '';
+  await reopened.importSourceUrl(testUrl);
+  await reopened.saveAndUpdateLive();
+  await reopened.refreshSourceState();
+  await reopened.copySourceUrl();
+  assert.equal(reopened.sourceUrl.value, testUrl);
+  assert.deepEqual(reopened.copied, [testUrl]);
+  assert.deepEqual(reopened.calls, [['import', 'active-publication'], 'save', ['update', 'active-publication', 6]]);
+});
+
+test('panel distinguishes absent publication from lookup failures and shows existing-source recovery', () => {
+  const props = Vue.reactive({ publicationId: '', error: '', busy: false, resolution: { width: 1920, height: 1080 } });
+  const ui = component(outputs, props);
+  assert.ok(text(ui.render()).includes('Not published'));
+  assert.ok(button(ui, 'Create Browser Source'));
+  assert.equal(button(ui, 'Save Changes'), undefined);
+  props.error = 'Could not load status';
+  assert.ok(text(ui.render()).includes('Status unavailable'));
+  assert.equal(button(ui, 'Create Browser Source'), undefined);
+  props.error = ''; props.publicationId = 'existing';
+  assert.ok(text(ui.render()).includes('Published'));
+  assert.ok(button(ui, 'Restore existing URL'));
+  assert.equal(button(ui, 'Create Browser Source'), undefined);
+  ui.stop();
 });
 
 test('failed or blocked draft saves never publish or retry', async () => {

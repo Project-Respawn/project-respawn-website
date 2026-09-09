@@ -34,7 +34,7 @@ const DEFAULT_CHAT_CONFIG = Object.freeze({
 export const DEFAULT_TWITCH_OVERLAY_CONFIG = Object.freeze({
   alerts: Object.freeze(Object.fromEntries(alertKinds.map((kind) => [kind, Object.freeze({
     enabled: kind !== 'redemption',
-    duration: kind === 'follow' ? 6 : 8,
+    duration: kind === 'redemption' ? 8 : 20,
     titleTemplate: defaultAlertTitle(kind),
     messageTemplate: defaultAlertMessage(kind),
     mediaUrl: '', soundUrl: '', volume: 0.8,

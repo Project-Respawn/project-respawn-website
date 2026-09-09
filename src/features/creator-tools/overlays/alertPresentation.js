@@ -16,14 +16,14 @@ const bounded = (value, fallback, max) => typeof value === 'string' ? value.slic
 const number = (value, fallback, min, max) => Number.isFinite(Number(value)) ? Math.min(max, Math.max(min, Number(value))) : fallback
 
 // Server defaults are authoritative. These values are renderer-safe fallbacks only for malformed/unavailable responses.
-export function normalizeAlertConfiguration(value = {}) {
+export function normalizeAlertConfiguration(value = {}, kind) {
   value ??= {}
   return {
     enabled: typeof value.enabled === 'boolean' ? value.enabled : false,
     titleTemplate: bounded(value.titleTemplate ?? value.template, '', 240),
     messageTemplate: bounded(value.messageTemplate, '', 500),
     mediaUrl: safeUrl(value.mediaUrl), soundUrl: safeUrl(value.soundUrl),
-    volume: number(value.volume, 0, 0, 1), duration: number(value.duration, 6, 1, 60),
+    volume: number(value.volume, 0, 0, 1), duration: number(value.duration ?? undefined, FIRST_PARTY_ALERT_DEFAULTS[kind]?.duration ?? 6, 1, 60),
     entryAnimation: ALERT_ANIMATIONS.includes(value.entryAnimation) ? value.entryAnimation : 'none',
     exitAnimation: ALERT_ANIMATIONS.includes(value.exitAnimation) ? value.exitAnimation : 'none',
   }
@@ -44,7 +44,7 @@ export function interpolateAlertTemplate(template, event) {
 }
 
 export function resolveAlertPresentation(event, configuration) {
-  const config = normalizeAlertConfiguration(configuration)
+  const config = normalizeAlertConfiguration(configuration, EVENT_KIND[event?.topic])
   const defaults = FIRST_PARTY_ALERT_DEFAULTS[EVENT_KIND[event?.topic]]
   if (defaults) {
     const origin = globalThis.location?.origin || 'https://www.projectrespawn.com'
