@@ -65,8 +65,8 @@ export function useOverlayEditorCore(route, router) {
     saving.value = true
     try {
       const result = await updateEditableOverlayProject(workspaceId.value, brandId.value, project, revision.value)
+      revision.value = result.revision
       replaceProject(result.project)
-      revision.value = Number(result.revision || revision.value + 1)
       history.replace(project)
       dirty.value = false
       sessionStorage.setItem(STORAGE_KEY, JSON.stringify(project))
@@ -105,7 +105,7 @@ export function useOverlayEditorCore(route, router) {
       workspaceId.value = resolved?.workspaceId || ''
       if (!brandId.value || !workspaceId.value) throw new Error('Creator Workspace or Brand is unavailable')
       const result = await getEditableOverlayProject(workspaceId.value, brandId.value)
-      revision.value = Number(result.revision || 0)
+      revision.value = result.revision
       if (result.project) {
         replaceProject(result.project)
         history.replace(project)

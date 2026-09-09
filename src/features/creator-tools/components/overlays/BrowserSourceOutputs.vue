@@ -16,7 +16,7 @@
       <div class="source-actions">
         <button v-if="!publicationId" :disabled="busy" @click="$emit('create')">Create Browser Source</button>
         <template v-else>
-          <button :disabled="busy" @click="$emit('update')">{{ draftDirty ? 'Save & Update Live' : selectedSceneId === activeSceneId ? 'Update Live' : 'Update Live Scene' }}</button>
+          <button :disabled="busy" @click="$emit('update')">Save Changes</button>
           <button v-if="sourceUrl" @click="$emit('copy')">Copy URL</button>
           <button v-if="sourceUrl" @click="$emit('open')">Open</button>
           <button :disabled="busy" @click="$emit('rotate')">Rotate / Reissue URL</button>
@@ -24,6 +24,11 @@
         </template>
       </div>
     </article>
+    <div v-if="publicationId && sourceUrl">
+      <b>Browser Source URL</b>
+      <p>{{ sourceUrlVisible ? sourceUrl : '••••••••••••••••••••••••••••••••' }}</p>
+      <button :aria-pressed="sourceUrlVisible" @click="sourceUrlVisible = !sourceUrlVisible">{{ sourceUrlVisible ? 'Hide URL' : 'Show URL' }}</button>
+    </div>
     <p v-if="publicationId && !sourceUrl">The active URL is intentionally hidden after issuance. Rotate only if the original URL was lost or exposed.</p>
     <p v-if="error" role="alert">{{ error }}</p>
     <p>One stable URL renders the Brand's active scene. <strong>Scene resolution: {{ resolution.width }} × {{ resolution.height }}</strong> — use these exact Width and Height values in OBS.</p>
@@ -38,7 +43,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 const props =
 defineProps({
   resolution: Object, sourceUrl: String, publicationId: String, revision: Number, busy: Boolean, error: String,
@@ -46,6 +51,8 @@ defineProps({
   draftDirty: Boolean, draftRevision: Number, liveOutOfDate: Boolean, liveStatusUnknown: Boolean, lastPublishedAt: String,
 })
 defineEmits(['create', 'update', 'replace', 'copy', 'open', 'rotate', 'revoke', 'preview'])
+const sourceUrlVisible = ref(false)
+watch(() => props.sourceUrl, () => { sourceUrlVisible.value = false })
 const lastPublishedLabel = computed(() => props.lastPublishedAt ? new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(props.lastPublishedAt)) : 'Never')
 </script>
 

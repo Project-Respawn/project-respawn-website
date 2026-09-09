@@ -44,7 +44,9 @@
           :aria-selected="activeTab === tab.id"
           @click="selectTab(tab.id)"
         >
-          {{ tab.label }}
+          <span class="about-tab-icon" aria-hidden="true">{{ tab.icon }}</span>
+          <span class="about-tab-label">{{ tab.label }}</span>
+          <span class="about-tab-short">{{ tab.shortLabel || tab.label }}</span>
         </button>
       </div>
     </nav>

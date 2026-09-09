@@ -50,9 +50,7 @@ test('toolbar exposes the contextual Draft to Live actions without hiding Save D
   return read('../../components/overlays/OverlayBuilderToolbar.vue').then((toolbar) => {
     assert.match(toolbar, /Save Draft/);
     assert.match(toolbar, /Create Browser Source/);
-    assert.match(toolbar, /Save & Update Live/);
-    assert.match(toolbar, /Update Live/);
-    assert.match(toolbar, /Live up to date/);
+    assert.match(toolbar, /Save Changes/);
   });
 });
 

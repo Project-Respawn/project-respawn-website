@@ -11,7 +11,7 @@ const service = await readFile(new URL('../../services/overlaySource.js', import
 test('Overlay Builder exposes one scene publication lifecycle and no per-widget URLs', () => {
   for (const action of ['refreshSourceState','createBrowserSource','saveAndUpdateLive','replaceActiveScene','copySourceUrl','openSourceUrl','rotateSourceUrl','revokeBrowserSource']) assert.match(editor, new RegExp(action));
   assert.match(outputs, /One stable URL renders the Brand's active scene/); assert.doesNotMatch(outputs, /Universal Source|Scene URLs/);
-  assert.match(outputs, /Save & Update Live/); assert.match(outputs, /Rotate \/ Reissue URL/);
+  assert.match(outputs, /Save Changes/); assert.match(outputs, /Rotate \/ Reissue URL/);
   assert.match(service, /overlay\/publications\/active/); assert.match(service, /overlay\/publications\/\$\{encodeURIComponent\(publicationId\)\}\/rotate/);
 });
 

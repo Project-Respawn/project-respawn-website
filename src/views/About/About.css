@@ -622,6 +622,15 @@
   transition: 160ms ease;
 }
 
+.about-tab-icon {
+  margin-right: 7px;
+  color: #71eadc;
+}
+
+.about-tab-short {
+  display: none;
+}
+
 .about-tab:hover {
   border-color: rgba(66, 221, 203, 0.24);
   color: #e7eef8;
@@ -670,6 +679,7 @@
 .about-focus-card,
 .about-usecase-grid article,
 .about-partner-grid article,
+.about-partner-card-link,
 .about-research-grid article,
 .about-principle-grid article,
 .about-example-grid article,
@@ -701,6 +711,7 @@
 .about-focus-card h3,
 .about-usecase-grid h3,
 .about-partner-grid h3,
+.about-partner-card-link h3,
 .about-research-grid h3,
 .about-principle-grid h3 {
   margin: 9px 0 8px;
@@ -710,6 +721,7 @@
 .about-focus-card p,
 .about-usecase-grid p,
 .about-partner-grid p,
+.about-partner-card-link p,
 .about-research-grid p,
 .about-principle-grid p,
 .about-example-grid p {
@@ -721,6 +733,7 @@
 
 .about-usecase-grid article,
 .about-partner-grid article,
+.about-partner-card-link,
 .about-research-grid article,
 .about-principle-grid article {
   min-height: 170px;
@@ -729,10 +742,338 @@
 
 .about-usecase-grid article > span,
 .about-partner-grid article > span,
+.about-partner-card-link > span,
 .about-research-grid article > span {
   display: block;
   margin-bottom: 18px;
   font-size: 1.4rem;
+}
+
+.about-partner-card-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.about-partner-card-link:hover {
+  transform: translateY(-3px);
+  border-color: rgba(66, 221, 203, 0.32);
+  background: rgba(14, 33, 58, 0.9);
+}
+
+.about-partner-card-link > strong {
+  display: inline-block;
+  margin-top: 14px;
+  color: #63e3d3;
+  font-size: 0.78rem;
+}
+
+/* ---------------------------------------------------------
+   Brands & Rewards
+   --------------------------------------------------------- */
+
+.about-brand-intro-grid,
+.about-brand-value-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(330px, 0.82fr);
+  gap: 52px;
+  align-items: center;
+}
+
+.about-brand-intro-grid h2,
+.about-brand-value-grid h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(2rem, 4.4vw, 3.45rem);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
+
+.about-reward-preview {
+  padding: 24px;
+  border: 1px solid rgba(169, 151, 255, 0.26);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 90% 0, rgba(109, 40, 217, 0.22), transparent 38%),
+    linear-gradient(145deg, rgba(17, 34, 61, 0.98), rgba(7, 17, 34, 0.98));
+  box-shadow: 0 28px 72px rgba(0, 0, 0, 0.25);
+}
+
+.about-reward-head,
+.about-reward-preview article {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.about-reward-head strong,
+.about-reward-head small,
+.about-reward-preview article strong,
+.about-reward-preview article small {
+  display: block;
+}
+
+.about-reward-head small,
+.about-reward-preview article small {
+  color: #7f91aa;
+  font-size: 0.64rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.about-reward-head > span {
+  height: fit-content;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(45, 212, 191, 0.1);
+  color: #42ddcb;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.about-reward-preview article {
+  position: relative;
+  flex-wrap: wrap;
+  margin-top: 22px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 17px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.about-reward-preview article > b {
+  color: #b49cff;
+}
+
+.about-reward-preview article > p {
+  flex-basis: 100%;
+  margin: 0;
+  color: #93a4ba;
+  font-size: 0.8rem;
+}
+
+.about-reward-meter {
+  flex-basis: 100%;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.about-reward-meter span {
+  display: block;
+  width: 72%;
+  height: 100%;
+  background: linear-gradient(90deg, #6d28d9, #42ddcb);
+}
+
+.about-reward-preview footer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.about-reward-preview footer span {
+  padding: 8px;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.025);
+  color: #9dadc1;
+  font-size: 0.67rem;
+  font-weight: 750;
+  text-align: center;
+}
+
+.about-brand-journey {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.about-brand-journey article,
+.about-brand-metrics article,
+.about-brand-principles article,
+.about-brand-trial-grid article {
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 16px;
+  background: rgba(11, 25, 46, 0.72);
+}
+
+.about-brand-journey article > span,
+.about-brand-principles article > span,
+.about-brand-trial-grid article > span {
+  color: #42ddcb;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.about-brand-journey strong {
+  display: block;
+  margin: 30px 0 8px;
+  color: #ffffff;
+}
+
+.about-brand-journey p,
+.about-brand-metrics p,
+.about-brand-principles p,
+.about-brand-trial-grid p {
+  margin: 0;
+  color: #8fa1b7;
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.about-choice-signal {
+  padding: 28px;
+  border: 1px solid rgba(66, 221, 203, 0.22);
+  border-radius: 22px;
+  background: linear-gradient(145deg, rgba(10, 53, 58, 0.4), rgba(42, 21, 78, 0.38));
+}
+
+.about-choice-signal small {
+  color: #42ddcb;
+  font-size: 0.67rem;
+  font-weight: 900;
+  letter-spacing: 0.11em;
+}
+
+.about-choice-signal p {
+  margin: 22px 0 5px;
+  color: #899bb2;
+}
+
+.about-choice-signal strong {
+  color: #dce6f3;
+  font-size: clamp(1.45rem, 3vw, 2.4rem);
+}
+
+.about-choice-signal .is-accent {
+  background: linear-gradient(90deg, #b69cff, #42ddcb);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.about-brand-measure-section {
+  background: radial-gradient(circle at 70% 50%, rgba(109, 40, 217, 0.11), transparent 34%);
+}
+
+.about-brand-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.about-brand-metrics article > span {
+  display: block;
+  margin-bottom: 24px;
+  color: #b49cff;
+  font-size: 1.45rem;
+}
+
+.about-brand-metrics h3,
+.about-brand-principles h3,
+.about-brand-trial-grid h3 {
+  margin: 0 0 8px;
+  color: #ffffff;
+  font-size: 1rem;
+}
+
+.about-reward-types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.about-reward-types span {
+  padding: 10px 14px;
+  border: 1px solid rgba(169, 151, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(109, 40, 217, 0.055);
+  color: #c7d2e0;
+  font-size: 0.8rem;
+  font-weight: 750;
+}
+
+.about-brand-principles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.about-brand-trial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.about-brand-trial-grid h3 {
+  margin-top: 22px;
+}
+
+.about-trial-note {
+  margin: 22px 0 0;
+  padding: 16px 18px;
+  border-left: 3px solid #42ddcb;
+  border-radius: 0 12px 12px 0;
+  background: rgba(45, 212, 191, 0.055);
+  color: #aab9ca;
+  font-size: 0.88rem;
+  line-height: 1.65;
+}
+
+.about-brand-principles h3 {
+  margin-top: 22px;
+}
+
+.about-marketplace-trial {
+  padding: 30px;
+  border: 1px solid rgba(66, 221, 203, 0.2);
+  border-radius: 22px;
+  background: linear-gradient(120deg, rgba(45, 212, 191, 0.07), rgba(109, 40, 217, 0.1));
+}
+
+@media (max-width: 980px) {
+  .about-brand-intro-grid,
+  .about-brand-value-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-brand-journey {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .about-brand-metrics,
+  .about-brand-principles,
+  .about-brand-trial-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .about-tab-label {
+    display: none;
+  }
+
+  .about-tab-short {
+    display: inline;
+  }
+
+  .about-brand-journey,
+  .about-brand-metrics,
+  .about-brand-principles,
+  .about-brand-trial-grid,
+  .about-reward-preview footer {
+    grid-template-columns: 1fr;
+  }
+
+  .about-marketplace-trial {
+    padding: 22px;
+  }
 }
 
 .about-principle-grid article > span,
@@ -1108,5 +1449,337 @@
 
   .about-large-cta {
     width: 100%;
+  }
+}
+
+/* ---------------------------------------------------------
+   Editorial flow
+   Keeps the About experience continuous rather than card-led.
+   --------------------------------------------------------- */
+
+.about-page {
+  background:
+    radial-gradient(circle at 82% 6%, rgba(109, 40, 217, 0.2), transparent 30%),
+    radial-gradient(circle at 10% 38%, rgba(45, 212, 191, 0.075), transparent 28%),
+    radial-gradient(circle at 88% 72%, rgba(109, 40, 217, 0.09), transparent 30%),
+    linear-gradient(180deg, #07101e 0%, #091526 48%, #07101e 100%);
+}
+
+.about-hero {
+  border-bottom: 0;
+  padding-bottom: 96px;
+}
+
+.about-hero-card {
+  padding: 10px 0 10px 30px;
+  border: 0;
+  border-left: 2px solid rgba(66, 221, 203, 0.48);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.about-status {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.about-hero-path span {
+  padding: 7px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.about-tabs-wrap {
+  background: rgba(7, 16, 30, 0.66);
+  backdrop-filter: blur(18px);
+}
+
+.about-section {
+  position: relative;
+  padding: 96px 0;
+}
+
+.about-section + .about-section::before {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(1180px, calc(100% - 40px));
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.11), transparent);
+  content: '';
+  transform: translateX(-50%);
+}
+
+.about-section-deep {
+  border-block: 0;
+  background:
+    radial-gradient(circle at 76% 45%, rgba(109, 40, 217, 0.075), transparent 34%),
+    linear-gradient(180deg, transparent, rgba(3, 10, 22, 0.18), transparent);
+}
+
+.about-problem-grid,
+.about-difference-grid,
+.about-focus-grid,
+.about-usecase-grid,
+.about-partner-grid,
+.about-research-grid,
+.about-principle-grid,
+.about-example-grid,
+.about-tool-grid,
+.about-brand-metrics,
+.about-brand-principles,
+.about-brand-trial-grid {
+  gap: 0;
+}
+
+.about-problem-grid article,
+.about-difference-grid article,
+.about-focus-card,
+.about-usecase-grid article,
+.about-partner-grid article,
+.about-partner-card-link,
+.about-research-grid article,
+.about-principle-grid article,
+.about-example-grid article,
+.about-tool-grid article,
+.about-brand-metrics article,
+.about-brand-principles article,
+.about-brand-trial-grid article {
+  min-height: 0;
+  padding: 10px 28px;
+  border: 0;
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0;
+  background: transparent;
+}
+
+.about-problem-grid article:first-child,
+.about-difference-grid article:first-child,
+.about-focus-grid > :first-child,
+.about-usecase-grid > :first-child,
+.about-partner-grid > :first-child,
+.about-research-grid > :first-child,
+.about-principle-grid > :first-child,
+.about-example-grid > :first-child,
+.about-tool-grid > :first-child,
+.about-brand-metrics > :first-child,
+.about-brand-principles > :first-child,
+.about-brand-trial-grid > :first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.about-focus-icon,
+.about-usecase-grid article > span,
+.about-partner-grid article > span,
+.about-partner-card-link > span,
+.about-research-grid article > span,
+.about-brand-metrics article > span {
+  margin-bottom: 20px;
+}
+
+.about-partner-card-link {
+  transition: color 160ms ease;
+}
+
+.about-partner-card-link:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: transparent;
+  color: #63e3d3;
+  transform: none;
+}
+
+.about-journey,
+.about-brand-journey,
+.about-integration-ladder,
+.about-impact-steps {
+  position: relative;
+  gap: 0;
+}
+
+.about-journey::before,
+.about-brand-journey::before,
+.about-integration-ladder::before,
+.about-impact-steps::before {
+  position: absolute;
+  top: 18px;
+  right: 8%;
+  left: 8%;
+  height: 1px;
+  background: linear-gradient(90deg, #6d28d9, #42ddcb);
+  content: '';
+  opacity: 0.55;
+}
+
+.about-journey article,
+.about-brand-journey article,
+.about-integration-ladder article,
+.about-impact-steps article {
+  position: relative;
+  min-height: 0;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.about-journey article::before,
+.about-brand-journey article::before,
+.about-integration-ladder article::before,
+.about-impact-steps article::before {
+  position: absolute;
+  top: 13px;
+  left: 18px;
+  width: 11px;
+  height: 11px;
+  border: 3px solid #091526;
+  border-radius: 50%;
+  background: #42ddcb;
+  box-shadow: 0 0 0 1px rgba(66, 221, 203, 0.36);
+  content: '';
+}
+
+.about-journey article > span,
+.about-brand-journey article > span,
+.about-integration-ladder article > span,
+.about-impact-steps article > span {
+  display: block;
+  padding-left: 22px;
+}
+
+.about-journey strong,
+.about-brand-journey strong,
+.about-integration-ladder strong,
+.about-impact-steps strong {
+  margin-top: 34px;
+}
+
+.about-quote-card,
+.about-research-warning {
+  padding: 10px 0 10px 30px;
+  border: 0;
+  border-left: 2px solid rgba(169, 151, 255, 0.52);
+  border-radius: 0;
+  background: transparent;
+}
+
+.about-marketplace-trial {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.about-trial-note {
+  max-width: 860px;
+  background: transparent;
+}
+
+.about-final-cta {
+  border-top: 0;
+  background:
+    radial-gradient(circle at 72% 50%, rgba(109, 40, 217, 0.15), transparent 34%),
+    linear-gradient(180deg, rgba(3, 10, 22, 0.1), rgba(3, 10, 22, 0.48));
+}
+
+@media (max-width: 980px) {
+  .about-problem-grid article,
+  .about-difference-grid article,
+  .about-focus-card,
+  .about-usecase-grid article,
+  .about-partner-grid article,
+  .about-partner-card-link,
+  .about-research-grid article,
+  .about-principle-grid article,
+  .about-example-grid article,
+  .about-tool-grid article,
+  .about-brand-metrics article,
+  .about-brand-principles article,
+  .about-brand-trial-grid article {
+    padding: 18px 22px;
+  }
+}
+
+@media (max-width: 640px) {
+  .about-section {
+    padding: 72px 0;
+  }
+
+  .about-problem-grid article,
+  .about-difference-grid article,
+  .about-focus-card,
+  .about-usecase-grid article,
+  .about-partner-grid article,
+  .about-partner-card-link,
+  .about-research-grid article,
+  .about-principle-grid article,
+  .about-example-grid article,
+  .about-tool-grid article,
+  .about-brand-metrics article,
+  .about-brand-principles article,
+  .about-brand-trial-grid article {
+    padding: 24px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 0;
+  }
+
+  .about-problem-grid article:first-child,
+  .about-difference-grid article:first-child,
+  .about-focus-grid > :first-child,
+  .about-usecase-grid > :first-child,
+  .about-partner-grid > :first-child,
+  .about-research-grid > :first-child,
+  .about-principle-grid > :first-child,
+  .about-example-grid > :first-child,
+  .about-tool-grid > :first-child,
+  .about-brand-metrics > :first-child,
+  .about-brand-principles > :first-child,
+  .about-brand-trial-grid > :first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .about-journey::before,
+  .about-brand-journey::before,
+  .about-integration-ladder::before,
+  .about-impact-steps::before {
+    top: 0;
+    bottom: 0;
+    left: 5px;
+    width: 1px;
+    height: auto;
+  }
+
+  .about-journey article,
+  .about-brand-journey article,
+  .about-integration-ladder article,
+  .about-impact-steps article {
+    padding: 0 0 32px 30px;
+  }
+
+  .about-journey article::before,
+  .about-brand-journey article::before,
+  .about-integration-ladder article::before,
+  .about-impact-steps article::before {
+    top: 2px;
+    left: 0;
+  }
+
+  .about-journey article > span,
+  .about-brand-journey article > span,
+  .about-integration-ladder article > span,
+  .about-impact-steps article > span {
+    padding-left: 0;
+  }
+
+  .about-journey strong,
+  .about-brand-journey strong,
+  .about-integration-ladder strong,
+  .about-impact-steps strong {
+    margin-top: 12px;
   }
 }

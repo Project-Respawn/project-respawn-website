@@ -34,13 +34,18 @@ export function useBrowserSources({ notice, previewMode, project, scene, dirty, 
     catch (error) { sourceError.value = error?.message || 'Could not load Browser Source status' }
     finally { sourceBusy.value = false }
   }
-  async function ensureSavedDraft() {
-    if (dirty.value || !revision.value) await saveDraft({ rethrow: true })
+  async function ensureSavedDraft(forceSave = false) {
+    if (forceSave || dirty.value || !revision.value) {
+      const saved = await saveDraft({ rethrow: true })
+      if (!saved || dirty.value) throw new Error('Save the overlay draft before updating Live')
+    }
     const savedScene = project.scenes.find((item) => item.id === project.selectedSceneId) || project.scenes[0]
     if (!savedScene || !revision.value) throw new Error('Save the overlay draft before updating Live')
     return savedScene
   }
   async function createBrowserSource() {
+    if (sourceBusy.value) return
+    if (hasActivePublication.value) return saveAndUpdateLive()
     sourceBusy.value = true; sourceError.value = ''
     try {
       const bindings = await resolveBindings(), savedScene = await ensureSavedDraft()
@@ -51,11 +56,11 @@ export function useBrowserSources({ notice, previewMode, project, scene, dirty, 
     finally { sourceBusy.value = false }
   }
   async function saveAndUpdateLive() {
+    if (sourceBusy.value) return
     sourceBusy.value = true; sourceError.value = ''; let draftSaved = false
     try {
       if (!publicationId.value) throw new Error('Create a Browser Source first')
-      const wasDirty = dirty.value || !revision.value
-      const savedScene = await ensureSavedDraft(); draftSaved = wasDirty
+      const savedScene = await ensureSavedDraft(true); draftSaved = true
       const result = await updateOverlayPublication(publicationId.value, savedScene.id, createPublicationSceneSnapshot(savedScene), revision.value)
       applyPublication(result); notice.value = `Live Overlay updated · Publication revision ${sourceRevision.value}`
     } catch (error) {
