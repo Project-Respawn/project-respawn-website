@@ -6,6 +6,7 @@ import * as Vue from 'vue';
 import { parse, compileScript } from '@vue/compiler-sfc';
 import { createBuilderProject } from '../overlayBuilderDemoState.js';
 import { createPublicationSceneSnapshot } from '../overlayPublicationSnapshot.js';
+import { stripTypeScriptTypes } from 'node:module';
 
 const read = path => readFile(new URL(path, import.meta.url), 'utf8');
 const logic = await read('../../views/overlays/logic/section-10-browser-sources.js');
@@ -13,7 +14,7 @@ const toolbar = await read('../../components/overlays/OverlayBuilderToolbar.vue'
 const outputs = await read('../../components/overlays/BrowserSourceOutputs.vue');
 const testUrl = 'https://example.test/overlay-source/test-only';
 
-function workflow({ existing = false, saveFails = false, saveBlocked = false } = {}) {
+function workflow({ existing = false, saveFails = false, saveBlocked = false, onUpdate = () => {} } = {}) {
   const calls = [], copied = [];
   const project = Vue.reactive(createBuilderProject());
   const state = {
@@ -33,7 +34,7 @@ function workflow({ existing = false, saveFails = false, saveBlocked = false } =
     ...Vue, createPublicationSceneSnapshot,
     getActiveOverlayPublication: async () => ({ publication: existing ? publication() : null }),
     createOverlayPublication: async input => { calls.push(['create', input.sourceEditorRevision]); return { ...publication(), browserSourceUrl: testUrl, created: true }; },
-    updateOverlayPublication: async (id, sceneId, snapshot, revision) => { calls.push(['update', id, revision]); return publication(); },
+    updateOverlayPublication: async (id, sceneId, snapshot, revision) => { calls.push(['update', id, revision]); onUpdate(id, snapshot); return publication(); },
     rotateOverlayPublicationCredential: async () => { throw new Error('Normal saves must never rotate'); },
     navigator: { clipboard: { writeText: async value => { copied.push(value); } } },
   });
@@ -96,6 +97,47 @@ test('failed or blocked draft saves never publish or retry', async () => {
     assert.equal(state.revision.value, 5);
     assert.ok(state.notice.value);
   }
+});
+
+test('Save Changes keeps the active publication and subsequent Twitch events use its updated scene', async () => {
+  const handler = await read('../../../../../amplify/overlaySource/handler.ts');
+  const updateHandler = handler.slice(handler.indexOf('async function updatePublication('), handler.indexOf('async function revokePublication('));
+  assert.match(updateHandler, /Key: \{ publicationId \}/);
+  assert.match(updateHandler, /sceneSnapshot = :snapshot/);
+  assert.doesNotMatch(updateHandler, /credential|activePublicationLockId|PutCommand|DeleteCommand|TransactWriteCommand/);
+  const moduleUrl = source => `data:text/javascript;base64,${Buffer.from(stripTypeScriptTypes(source)).toString('base64')}`;
+  const domainUrl = moduleUrl(await read('../../../../../amplify/overlaySource/domain.ts'));
+  const publisherSource = await read('../../../../../amplify/overlaySource/canonicalPublisher.ts');
+  const { publishCanonicalOverlayEvent } = await import(moduleUrl(publisherSource.replace("'./domain'", JSON.stringify(domainUrl))));
+  const publication = { publicationId: 'active-publication', workspaceId: 'workspace', brandId: 'brand', status: 'TEST', sceneSnapshot: { widgets: [] } };
+  const connections = [];
+  const dependencies = {
+    getActivePublication: async brandId => { assert.equal(brandId, 'brand'); return publication; },
+    getConfigRevision: async () => 1,
+    listConnections: async id => { connections.push(id); return [{ connectionId: 'existing-obs', expiresAtEpoch: Math.floor(Date.now() / 1000) + 60 }]; },
+    send: async (id, event) => { assert.equal(id, 'existing-obs'); assert.equal(event.source, 'twitch'); },
+    remove: async () => {},
+  };
+  const event = { version: 1, id: 'twitch-message', type: 'stream.follow', source: 'twitch', timestamp: new Date().toISOString(), data: {} };
+  const publish = () => publishCanonicalOverlayEvent({ workspaceId: 'workspace', brandId: 'brand', event }, dependencies);
+  assert.equal((await publish()).reason, 'ALERTS_WIDGET_DISABLED');
+  const state = workflow({ existing: true, onUpdate(id, snapshot) {
+    assert.equal(id, publication.publicationId);
+    publication.sceneSnapshot = snapshot;
+  } });
+  await state.refreshSourceState();
+  await state.saveAndUpdateLive();
+  assert.equal(state.publicationId.value, publication.publicationId);
+  const result = await publish();
+  assert.equal(result.publicationId, publication.publicationId);
+  assert.equal(result.delivered, 1);
+  assert.deepEqual(connections, ['active-publication']);
+  const scene = state.project.scenes.find(item => item.id === state.project.selectedSceneId);
+  scene.widgets = scene.widgets.filter(widget => widget.type !== 'alerts');
+  state.dirty.value = true;
+  await state.saveAndUpdateLive();
+  assert.equal((await publish()).reason, 'ALERTS_WIDGET_DISABLED');
+  assert.deepEqual(state.calls, ['save', ['update', 'active-publication', 6], 'save', ['update', 'active-publication', 7]]);
 });
 
 test('URL is masked on fresh load, toggles explicitly, and copies the real URL without revealing it', async () => {
