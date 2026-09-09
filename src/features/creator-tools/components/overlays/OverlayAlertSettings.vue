@@ -17,6 +17,10 @@
       <p v-if="dirty">Unsaved Brand alert settings</p>
       <button :disabled="loading || saving || !selectedDirty" @click="saveSelected">{{ saving ? 'Saving…' : 'Save Alert Settings' }}</button>
       <button @click="previewNonce++">Preview Alert</button>
+      <template v-if="FIRST_PARTY_ALERT_DEFAULTS[alert.kind]">
+        <small>Empty image, sound and text fields use Project Respawn defaults.</small>
+        <button :disabled="saving" @click="resetPresentation">Reset to Default</button>
+      </template>
       <p v-if="message" role="status">{{ message }}</p>
       <AlertPresentation v-if="previewNonce" :event="previewEvent" :configuration="configuration" :play-audio="true" />
     </template>
@@ -26,6 +30,7 @@
 import { computed, onBeforeUnmount, onMounted, ref, toRef, watch } from 'vue'
 import AlertPresentation from './AlertPresentation.vue'
 import { ALERT_WIDGETS } from '../../overlays/alertWidgets.js'
+import { FIRST_PARTY_ALERT_DEFAULTS, resetAlertPresentationOverrides } from '../../overlays/firstPartyAlertDefaults.js'
 import { ALERT_ANIMATIONS, previewEventForKind } from '../../overlays/alertPresentation.js'
 import { useOverlayAlertSettings } from '../../composables/useOverlayAlertSettings.js'
 const props = defineProps({ widgetType: String, workspaceId: String, brandId: String })
@@ -37,6 +42,7 @@ const previewNonce = ref(0), message = ref('')
 const previewEvent = computed(() => ({ ...previewEventForKind(alert.value.kind), id: `local-preview-${previewNonce.value}` }))
 watch(() => [props.widgetType, props.brandId], () => { previewNonce.value = 0; message.value = '' })
 async function saveSelected() { const kind = alert.value.kind; message.value = ''; if (await save(kind) && alert.value?.kind === kind) message.value = 'Brand alert settings saved' }
+function resetPresentation() { configs.value[alert.value.kind] = resetAlertPresentationOverrides(alert.value.kind, configuration.value); message.value = 'Defaults restored in preview. Save Alert Settings to keep this change.' }
 function warnUnsaved(event) { if (dirty.value) { event.preventDefault(); event.returnValue = '' } }
 onMounted(() => window.addEventListener('beforeunload', warnUnsaved))
 onBeforeUnmount(() => window.removeEventListener('beforeunload', warnUnsaved))

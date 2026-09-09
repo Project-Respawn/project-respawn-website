@@ -33,7 +33,7 @@ const DEFAULT_CHAT_CONFIG = Object.freeze({
 
 export const DEFAULT_TWITCH_OVERLAY_CONFIG = Object.freeze({
   alerts: Object.freeze(Object.fromEntries(alertKinds.map((kind) => [kind, Object.freeze({
-    enabled: kind !== 'cheer' && kind !== 'redemption',
+    enabled: kind !== 'redemption',
     duration: kind === 'follow' ? 6 : 8,
     titleTemplate: defaultAlertTitle(kind),
     messageTemplate: defaultAlertMessage(kind),
@@ -45,19 +45,12 @@ export const DEFAULT_TWITCH_OVERLAY_CONFIG = Object.freeze({
 });
 
 function defaultAlertTitle(kind: string) {
-  if (kind === 'follow') return '{user} followed!';
-  if (kind === 'subscription') return '{user} subscribed!';
-  if (kind === 'raid') return '{user} brought {viewers} viewers';
-  if (kind === 'cheer') return '{user} cheered {bits} bits';
-  return '{user} redeemed {reward}';
+  // Empty presentation fields mean inherit first-party defaults at rendering time.
+  return kind === 'redemption' ? '{user} redeemed {reward}' : '';
 }
 
 function defaultAlertMessage(kind: string) {
-  if (kind === 'follow') return 'Welcome to the community, {user}.';
-  if (kind === 'subscription') return 'Thank you for supporting the channel.';
-  if (kind === 'raid') return 'Welcome, raiders!';
-  if (kind === 'cheer') return 'Thank you for the {bits} bits.';
-  return 'Reward: {reward}';
+  return kind === 'redemption' ? 'Reward: {reward}' : '';
 }
 
 const clamp = (value: unknown, fallback: number, min: number, max: number) => {

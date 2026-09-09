@@ -1,3 +1,5 @@
+import { FIRST_PARTY_ALERT_DEFAULTS } from './firstPartyAlertDefaults.js'
+
 export const ALERT_KINDS = Object.freeze(['follow', 'subscription', 'raid', 'cheer', 'redemption'])
 export const ALERT_ANIMATIONS = Object.freeze(['none', 'fade', 'slide-up', 'slide-down', 'slide-left', 'slide-right', 'scale'])
 
@@ -15,6 +17,7 @@ const number = (value, fallback, min, max) => Number.isFinite(Number(value)) ? M
 
 // Server defaults are authoritative. These values are renderer-safe fallbacks only for malformed/unavailable responses.
 export function normalizeAlertConfiguration(value = {}) {
+  value ??= {}
   return {
     enabled: typeof value.enabled === 'boolean' ? value.enabled : false,
     titleTemplate: bounded(value.titleTemplate ?? value.template, '', 240),
@@ -42,6 +45,14 @@ export function interpolateAlertTemplate(template, event) {
 
 export function resolveAlertPresentation(event, configuration) {
   const config = normalizeAlertConfiguration(configuration)
+  const defaults = FIRST_PARTY_ALERT_DEFAULTS[EVENT_KIND[event?.topic]]
+  if (defaults) {
+    const origin = globalThis.location?.origin || 'https://www.projectrespawn.com'
+    config.mediaUrl ||= new URL(defaults.mediaUrl, origin).href
+    config.soundUrl ||= new URL(defaults.soundUrl, origin).href
+    if (!config.titleTemplate.trim()) config.titleTemplate = defaults.titleTemplate
+    if (!config.messageTemplate.trim()) config.messageTemplate = defaults.messageTemplate
+  }
   return { config, title: interpolateAlertTemplate(config.titleTemplate, event), message: interpolateAlertTemplate(config.messageTemplate, event) }
 }
 
