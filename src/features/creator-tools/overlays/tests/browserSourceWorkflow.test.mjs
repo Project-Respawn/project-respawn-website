@@ -133,7 +133,7 @@ test('Save Changes keeps the active publication and subsequent Twitch events use
   assert.equal(result.delivered, 1);
   assert.deepEqual(connections, ['active-publication']);
   const scene = state.project.scenes.find(item => item.id === state.project.selectedSceneId);
-  scene.widgets = scene.widgets.filter(widget => widget.type !== 'alerts');
+  scene.widgets = scene.widgets.filter(widget => widget.type !== 'alerts' && widget.type !== 'follow-alert');
   state.dirty.value = true;
   await state.saveAndUpdateLive();
   assert.equal((await publish()).reason, 'ALERTS_WIDGET_DISABLED');

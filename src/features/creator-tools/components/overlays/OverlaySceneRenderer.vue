@@ -30,6 +30,7 @@ import { themeVariables } from '../../overlays/overlayThemes.js';
 import { widgetEventBus } from '../../overlays/widgetEventBus.js';
 import { createTriggeredWidgetSubscription } from '../../overlays/triggeredWidgetState.js';
 import { widgetDisplayMode } from '../../overlays/overlayPublicationSnapshot.js';
+import { ALERT_WIDGETS } from '../../overlays/alertWidgets.js';
 
 const props = defineProps({
   scene: { type: Object, required: true },
@@ -67,7 +68,7 @@ function configureTriggers() {
 function runtimeSettings(widget) {
   if (widget.type === 'tts') return props.runtimeConfig?.tts || null;
   if (widget.type === 'alerts') return (event) => props.runtimeConfig?.alerts?.[({ 'stream.follow': 'follow', 'stream.subscription': 'subscription', 'stream.raid': 'raid', 'stream.cheer': 'cheer', 'reward.redeemed': 'redemption' }[event?.topic])] || null;
-  const kind = widget.type === 'subscription-alert' ? 'subscription' : widget.type === 'raid-alert' ? 'raid' : null;
+  const kind = ALERT_WIDGETS[widget.type]?.kind;
   return kind ? props.runtimeConfig?.alerts?.[kind] || null : null;
 }
 function widgetIsVisible(widget) {

@@ -6,7 +6,15 @@ export const OVERLAY_EVENT_TYPES = new Set([
 ]);
 
 const forbiddenSnapshotKey = /token|secret|credential|oauth|authorization|runtimelease|accesskey|privatekey|password/i;
-const triggeredWidgetTypes = new Set(['alerts', 'subscription-alert', 'raid-alert', 'tts']);
+export const dedicatedAlertTopics: Record<string, string> = { 'follow-alert': 'stream.follow', 'subscription-alert': 'stream.subscription', 'raid-alert': 'stream.raid', 'cheer-alert': 'stream.cheer', 'redemption-alert': 'reward.redeemed' };
+const triggeredWidgetTypes = new Set(['alerts', ...Object.keys(dedicatedAlertTopics), 'tts']);
+const alertBehaviorKeys = ['enabled', 'title', 'template', 'titleTemplate', 'messageTemplate', 'mediaUrl', 'soundUrl', 'volume', 'duration', 'entryAnimation', 'exitAnimation', 'animation'];
+export function activeAlertTopics(widgets: any[] = []) {
+  return [...new Set(widgets.filter(widget => widget.enabled !== false && widget.hidden !== true).flatMap(widget => dedicatedAlertTopics[widget.type] ? [dedicatedAlertTopics[widget.type]] : widget.type === 'alerts' ? widget.dataSource?.topics || [] : []))];
+}
+export function hasActiveAlertWidget(widgets: any[] = []) {
+  return widgets.some(widget => widget.enabled !== false && widget.hidden !== true && (widget.type === 'alerts' || Boolean(dedicatedAlertTopics[widget.type])));
+}
 const twitchBehaviorKeys: Record<string, string[]> = { alerts: ['enabledEvents', 'messageTemplate', 'duration', 'minimumCheer', 'soundPlaceholder', 'mediaPlaceholder'], 'subscription-alert': ['title'], 'raid-alert': ['title'], tts: ['duration'], 'twitch-chat': ['platforms', 'maxMessages', 'hideBotMessages', 'hideCommands', 'showUsername', 'showBadges', 'showEmotes', 'messageDuration', 'direction', 'fontSize', 'backgroundOpacity', 'animation'] };
 const alertKinds = ['follow', 'subscription', 'raid', 'cheer', 'redemption'] as const;
 export const ALERT_ANIMATIONS = ['none', 'fade', 'slide-up', 'slide-down', 'slide-left', 'slide-right', 'scale'] as const;
@@ -186,12 +194,12 @@ export function validateSceneSnapshot(value: unknown) {
     if (!safeObject(widget) || !safeObject(widget.frame) || !widget.id || !widget.type) throw new Error('Scene widget is invalid');
     const frame = { x: Number(widget.frame.x), y: Number(widget.frame.y), width: Number(widget.frame.width), height: Number(widget.frame.height), rotation: Number(widget.frame.rotation || 0) };
     if (Object.values(frame).some((number) => !Number.isFinite(number)) || frame.width <= 0 || frame.height <= 0) throw new Error('Scene widget frame is invalid');
-    const settings = safeObject(widget.settings) ? { ...widget.settings } : {}; for (const key of twitchBehaviorKeys[String(widget.type)] || []) delete settings[key];
+    const settings = safeObject(widget.settings) ? { ...widget.settings } : {}; for (const key of dedicatedAlertTopics[String(widget.type)] ? alertBehaviorKeys : twitchBehaviorKeys[String(widget.type)] || []) delete settings[key];
     return {
       schemaVersion: Number(widget.schemaVersion || 1), id: String(widget.id), type: String(widget.type), name: String(widget.name || widget.type),
       enabled: true, hidden: false, locked: Boolean(widget.locked), frame, zIndex: Number(widget.zIndex || 0),
       displayMode: triggeredWidgetTypes.has(String(widget.type)) || widget.displayMode === 'triggered' ? 'triggered' : 'always',
-      settings, dataSource: safeObject(widget.dataSource) ? widget.dataSource : {},
+      settings, dataSource: dedicatedAlertTopics[String(widget.type)] ? { topics: [dedicatedAlertTopics[String(widget.type)]] } : safeObject(widget.dataSource) ? widget.dataSource : {},
       animations: safeObject(widget.animations) ? widget.animations : {},
       ...(widget.themeId ? { themeId: String(widget.themeId) } : {}),
     };
@@ -210,12 +218,12 @@ function validateEditableWidget(value: unknown) {
   if (!safeObject(value) || !safeObject(value.frame) || !value.id || !value.type) throw new Error('Editable overlay widget is invalid');
   const frame = { x: Number(value.frame.x), y: Number(value.frame.y), width: Number(value.frame.width), height: Number(value.frame.height), rotation: Number(value.frame.rotation || 0) };
   if (Object.values(frame).some((number) => !Number.isFinite(number)) || frame.width <= 0 || frame.height <= 0) throw new Error('Editable overlay widget frame is invalid');
-  const settings = safeObject(value.settings) ? { ...value.settings } : {}; for (const key of twitchBehaviorKeys[String(value.type)] || []) delete settings[key];
+  const settings = safeObject(value.settings) ? { ...value.settings } : {}; for (const key of dedicatedAlertTopics[String(value.type)] ? alertBehaviorKeys : twitchBehaviorKeys[String(value.type)] || []) delete settings[key];
   return {
     schemaVersion: Number(value.schemaVersion || 1), id: cleanText(value.id, '', 120), type: cleanText(value.type, '', 80), name: cleanText(value.name, String(value.type), 120),
     enabled: value.enabled !== false, hidden: value.hidden === true, locked: value.locked === true, frame, zIndex: Number(value.zIndex || 0),
-    displayMode: value.displayMode === 'triggered' ? 'triggered' : 'always', settings,
-    dataSource: safeObject(value.dataSource) ? value.dataSource : {}, animations: safeObject(value.animations) ? value.animations : {},
+    displayMode: dedicatedAlertTopics[String(value.type)] || value.displayMode === 'triggered' ? 'triggered' : 'always', settings,
+    dataSource: dedicatedAlertTopics[String(value.type)] ? { topics: [dedicatedAlertTopics[String(value.type)]] } : safeObject(value.dataSource) ? value.dataSource : {}, animations: safeObject(value.animations) ? value.animations : {},
     ...(value.themeId ? { themeId: cleanText(value.themeId, '', 80) } : {}),
   };
 }

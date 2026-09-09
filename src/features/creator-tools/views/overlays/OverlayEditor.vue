@@ -321,7 +321,11 @@
             @change="changeWidget($event, true)"
             @move="moveSelectedChat"
             @suggestion="applyLocalSuggestion"
-          />
+          >
+            <template #alert-settings>
+              <OverlayAlertSettings :widget-type="selectedWidget?.type" :workspace-id="workspaceId" :brand-id="brandId" />
+            </template>
+          </OverlayBuilderInspector>
         </div>
       </aside>
 
@@ -810,6 +814,7 @@ import WidgetLayersPanel
 
 import OverlayBuilderInspector
   from '../../components/overlays/OverlayBuilderInspector.vue'
+import OverlayAlertSettings from '../../components/overlays/OverlayAlertSettings.vue'
 
 import RecentActivity
   from '../../components/overlays/RecentActivity.vue'

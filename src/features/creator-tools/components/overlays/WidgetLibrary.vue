@@ -451,7 +451,7 @@ const integration = ref('all')
 // ============================================================
 
 const registryWidgets = computed(() => {
-  return getAllWidgets()
+  return getAllWidgets().filter(widget => widget.type !== 'alerts')
 })
 
 

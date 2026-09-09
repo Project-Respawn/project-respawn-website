@@ -1,4 +1,5 @@
 import { cloneSerializableData } from '../../overlays/overlaySnapshots.js'
+import { ALERT_WIDGETS } from '../../overlays/alertWidgets.js'
 import { createId } from '../../overlays/overlayModel.js'
 import { widgetCategoryRegistry } from './categories.js'
 import { widgetIntegrationRegistry } from './integrations.js'
@@ -14,6 +15,9 @@ import achievement from '../achievements/achievement/widget.js'
 import upcomingEvent from '../events/upcoming-event/widget.js'
 import subscriptionAlert from '../alerts/subscription-alert/widget.js'
 import raidAlert from '../alerts/raid-alert/widget.js'
+import followAlert from '../alerts/follow-alert/widget.js'
+import cheerAlert from '../alerts/cheer-alert/widget.js'
+import redemptionAlert from '../alerts/redemption-alert/widget.js'
 import webcamFrame from '../creator/webcam-frame/widget.js'
 import creatorInfo from '../creator/creator-info/widget.js'
 import supporterGoal from '../goals/supporter-goal/widget.js'
@@ -23,7 +27,7 @@ import streamTimer from '../utility/stream-timer/widget.js'
 
 export const widgetDefinitions = Object.freeze([
   text, image, twitchChat, alerts, tts, goal, mission, sponsor, achievement, upcomingEvent,
-  subscriptionAlert, raidAlert, webcamFrame, creatorInfo, supporterGoal, recentActivity, viewerCount, streamTimer,
+  followAlert, subscriptionAlert, raidAlert, cheerAlert, redemptionAlert, webcamFrame, creatorInfo, supporterGoal, recentActivity, viewerCount, streamTimer,
 ])
 export const widgetRegistry = Object.freeze(Object.fromEntries(widgetDefinitions.map(item => [item.type, item])))
 
@@ -41,7 +45,7 @@ export function createWidget(type, overlay, position = {}) {
     schemaVersion: 1, id: createId('widget'), type, name: definition.displayName, enabled: true, hidden: false, locked: false, displayMode: definition.displayMode,
     frame: { x: position.x ?? 80, y: position.y ?? 80, width: definition.defaultSize.width, height: definition.defaultSize.height, rotation: 0 },
     zIndex: maxZ + 1, settings: cloneSerializableData(definition.defaultSettings),
-    dataSource: { provider: definition.category === 'Project Respawn' ? 'respawn-demo' : type === 'twitch-chat' || ['alerts', 'tts'].includes(type) ? 'twitch-demo' : 'local-demo', topics: [...definition.topics] },
+    dataSource: { provider: definition.category === 'Project Respawn' ? 'respawn-demo' : type === 'twitch-chat' || ALERT_WIDGETS[type] || ['alerts', 'tts'].includes(type) ? 'twitch-demo' : 'local-demo', topics: [...definition.topics] },
     animations: { entrance: definition.defaultSettings.animation || 'fade', exit: 'fade', durationMs: Number(definition.defaultSettings.duration || 6) * 1000 },
     createdAt: now, updatedAt: now,
   }

@@ -1,4 +1,4 @@
-import { fanOutOverlayEvent, publicationIsActive } from './domain';
+import { fanOutOverlayEvent, publicationIsActive, activeAlertTopics, hasActiveAlertWidget } from './domain';
 
 export interface CanonicalPublisherDependencies {
   getActivePublication(brandId: string): Promise<any | null>;
@@ -25,9 +25,9 @@ export async function publishCanonicalOverlayEvent(input: { workspaceId: string;
     const skip = (reason: string) => ({ status: 'SKIPPED' as const, reason, publicationId: publication?.publicationId || null, configRevision: null, delivered: 0, staleRemoved: 0, failed: 0 });
     if (!publication || !publicationIsActive(publication)) return skip('NO_ACTIVE_PUBLICATION');
     if (publication.workspaceId !== input.workspaceId || publication.brandId !== input.brandId || (input.expectedPublicationId && publication.publicationId !== input.expectedPublicationId)) return skip('PUBLICATION_IDENTITY_MISMATCH');
-    const alerts = (publication.sceneSnapshot?.widgets || []).find((widget: any) => widget.type === 'alerts' && widget.enabled !== false && widget.hidden !== true);
-    if (!alerts) return skip('ALERTS_WIDGET_DISABLED');
-    if (!(alerts.dataSource?.topics || []).includes(input.event.type)) return skip('TOPIC_NOT_ENABLED');
+    const widgets = publication.sceneSnapshot?.widgets || [];
+    if (!hasActiveAlertWidget(widgets)) return skip('ALERTS_WIDGET_DISABLED');
+    if (!activeAlertTopics(widgets).includes(input.event.type)) return skip('TOPIC_NOT_ENABLED');
     const configRevision = await dependencies.getConfigRevision(input.brandId);
     const message = { ...input.event, configRevision };
     const connections = await dependencies.listConnections(publication.publicationId);

@@ -5,6 +5,7 @@ import { activePublicationLockId, assertPublicationOwner, assertWorkspaceBrandOw
 import { publishCanonicalOverlayEvent } from './canonicalPublisher';
 import { createAwsCanonicalPublisherDependencies } from './awsPublisher';
 import { randomUUID } from 'node:crypto';
+import { activeAlertTopics, hasActiveAlertWidget } from './domain';
 
 const db = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 const env = (name: string) => { const value = process.env[name]; if (!value) throw new Error(`Missing ${name}`); return value; };
@@ -79,8 +80,8 @@ async function activePublication(event: any) {
   assertPublicationOwner(publication, sub); await authorizeBindings(publication, sub);
   const connections = await db.send(new QueryCommand({ TableName: env('CONNECTION_TABLE'), IndexName: 'publicationId-index', KeyConditionExpression: 'publicationId = :publicationId', ExpressionAttributeValues: { ':publicationId': publication.publicationId } }));
   const now = Math.floor(Date.now() / 1000); const connectionCount = (connections.Items || []).filter((item) => Number(item.expiresAtEpoch || 0) > now).length;
-  const alertWidget = (publication.sceneSnapshot?.widgets || []).find((widget: any) => widget.type === 'alerts' && widget.enabled !== false && widget.hidden !== true);
-  return json(200, { publication: publicationResponse(publication, { connectionCount, alertTopics: alertWidget?.dataSource?.topics || [], hasAlertsWidget: Boolean(alertWidget) }) });
+  const widgets = publication.sceneSnapshot?.widgets || [];
+  return json(200, { publication: publicationResponse(publication, { connectionCount, alertTopics: activeAlertTopics(widgets), hasAlertsWidget: hasActiveAlertWidget(widgets) }) });
 }
 
 async function authorizeActivePublication(publication: any, sub: string) {

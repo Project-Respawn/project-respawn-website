@@ -17,6 +17,7 @@ import { createOverlaySourceConnection, fetchOverlaySource } from '../../service
 
 const route = useRoute(); const scene = ref(null); const viewport = ref(null); const viewportSize = ref({ width: 0, height: 0 });
 const runtimeConfig = ref(null);
+const loadedRevision = ref(0);
 let connection = null; let resizeObserver = null; let configRefreshTimer = null;
 const documentClass = 'overlay-browser-source-document';
 const credential = computed(() => String(route.params.credential || ''));
@@ -29,10 +30,16 @@ const stageStyle = computed(() => {
     transform: `translate(${stage.x}px, ${stage.y}px) scale(${stage.scale})`,
   };
 });
+function applySource(source) {
+  if (Number(source.revision) > loadedRevision.value) {
+    scene.value = createPublicationSceneSnapshot(source.scene);
+    loadedRevision.value = Number(source.revision);
+  }
+  runtimeConfig.value = { ...(source.twitchConfig || {}), revision: Number(source.twitchConfigRevision || 0) };
+}
 async function load() {
   const source = await fetchOverlaySource(credential.value);
-  scene.value = createPublicationSceneSnapshot(source.scene);
-  runtimeConfig.value = { ...(source.twitchConfig || {}), revision: Number(source.twitchConfigRevision || 0) };
+  applySource(source);
   connection?.close();
   connection = createOverlaySourceConnection({
     websocketUrl: source.websocketUrl, credential: credential.value,
@@ -40,10 +47,10 @@ async function load() {
       if (Number(event.configRevision || 0) > Number(runtimeConfig.value?.revision || 0)) await refreshRuntimeConfig();
       widgetEventBus.publish(event);
     },
-    onReconnect: async () => { const refreshed = await fetchOverlaySource(credential.value); scene.value = createPublicationSceneSnapshot(refreshed.scene); runtimeConfig.value = { ...(refreshed.twitchConfig || {}), revision: Number(refreshed.twitchConfigRevision || 0) }; },
+    onReconnect: refreshRuntimeConfig,
   });
 }
-async function refreshRuntimeConfig() { const source = await fetchOverlaySource(credential.value); runtimeConfig.value = { ...(source.twitchConfig || {}), revision: Number(source.twitchConfigRevision || 0) }; }
+async function refreshRuntimeConfig() { const source = await fetchOverlaySource(credential.value); applySource(source); }
 onMounted(() => {
   document.documentElement.classList.add(documentClass);
   const updateViewport = () => {
