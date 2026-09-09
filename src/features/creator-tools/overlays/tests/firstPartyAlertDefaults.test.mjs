@@ -92,6 +92,19 @@ test('shared presentation survives asset failures and plays audio only on explic
   scope.stop()
 })
 
+test('runtime duration fallback preserves legacy fields and Redemption settings', async () => {
+  const source = await read('../../components/overlays/OverlaySceneRenderer.vue')
+  const helper = source.slice(source.indexOf('function resolvedSettings'), source.indexOf('function widgetIsVisible'))
+  const props = { runtimeConfig: { alerts: { follow: { messageTemplate: 'Legacy' }, subscription: { duration: 12, enabled: false }, redemption: { enabled: true } } } }
+  const resolve = runInNewContext(helper + '\nresolvedSettings', { props, normalizeAlertConfiguration })
+  assert.equal(resolve('follow').duration, 20)
+  assert.equal(resolve('follow').messageTemplate, 'Legacy')
+  assert.equal(resolve('follow').enabled, undefined)
+  assert.equal(resolve('subscription').duration, 12)
+  assert.equal(resolve('subscription').enabled, false)
+  assert.equal(resolve('redemption'), props.runtimeConfig.alerts.redemption)
+})
+
 test('both editors expose reset and still render through the shared presentation', async () => {
   for (const path of ['../../components/overlays/OverlayAlertSettings.vue', '../../views/twitch/alerts/TwitchAlerts.vue']) {
     const source = await read(path)

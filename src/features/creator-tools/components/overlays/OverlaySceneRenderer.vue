@@ -74,7 +74,7 @@ function runtimeSettings(widget) {
 }
 function resolvedSettings(kind) {
   const settings = props.runtimeConfig?.alerts?.[kind];
-  return settings ? normalizeAlertConfiguration(settings, kind) : null;
+  return settings && kind !== 'redemption' ? { ...settings, duration: normalizeAlertConfiguration(settings, kind).duration } : settings || null;
 }
 function widgetIsVisible(widget) {
   return widget.enabled && !widget.hidden
