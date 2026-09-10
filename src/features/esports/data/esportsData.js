@@ -203,6 +203,12 @@ export const esportsData = {
 
         year: 2026,
 
+        model:
+            '/esports/jersey/season-zero/jersey.glb',
+
+        poster:
+            '/esports/jersey/season-zero/poster.webp',
+
         description:
             'Our first competitive jersey, designed around Project Respawn rather than sponsors.',
 
@@ -216,6 +222,25 @@ export const esportsData = {
             'Your Past Was The Tutorial collar detail',
             'Season Zero 2026 identity',
         ],
+
+        viewer: {
+            interactive: true,
+
+            allowRotation: true,
+
+            allowZoom: true,
+
+            allowPan: false,
+
+            defaultView: 'front',
+
+            views: [
+                'front',
+                'back',
+                'left',
+                'right',
+            ],
+        },
     },
 
 

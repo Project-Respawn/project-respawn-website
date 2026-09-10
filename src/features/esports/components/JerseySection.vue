@@ -1,6 +1,6 @@
-<!-- src/features/esports/components/JerseySection.vue -->
-
 <script setup>
+import Jersey3DViewer from "./jersey/Jersey3DViewer.vue";
+
 defineProps({
   jersey: {
     type: Object,
@@ -13,7 +13,6 @@ defineProps({
   <section class="panel jersey-panel">
 
     <div class="heading">
-
       <span>
         OUR COLOURS
       </span>
@@ -26,34 +25,26 @@ defineProps({
         The first jersey in Project Respawn esports history.
         Designed around our identity rather than sponsors.
       </p>
-
     </div>
 
-
-    <!-- =====================================================
-         JERSEY IMAGE
-    ====================================================== -->
-
-    <div class="jersey-display">
+    <div class="jersey-experience">
 
       <div class="jersey-glow"></div>
 
-      <img
-        src="@/assets/esports/season-zero-jersey.png"
-        alt="Project Respawn Season Zero esports jersey"
+      <Jersey3DViewer
+        :model-url="jersey.model"
+        :poster="jersey.poster"
       />
 
       <div class="season-badge">
         SEASON ZERO
-        <strong>2026</strong>
+
+        <strong>
+          2026
+        </strong>
       </div>
 
     </div>
-
-
-    <!-- =====================================================
-         DETAILS
-    ====================================================== -->
 
     <div class="jersey-details">
 
@@ -62,7 +53,9 @@ defineProps({
         :key="detail"
         class="jersey-detail"
       >
-        <span>◆</span>
+        <span>
+          ◆
+        </span>
 
         <p>
           {{ detail }}
@@ -70,11 +63,6 @@ defineProps({
       </div>
 
     </div>
-
-
-    <!-- =====================================================
-         COLLAR
-    ====================================================== -->
 
     <div class="jersey-message">
 
@@ -88,14 +76,12 @@ defineProps({
 
     </div>
 
-
     <div class="jersey-footer">
       PROJECT RESPAWN • SEASON ZERO
     </div>
 
   </section>
 </template>
-
 
 <style scoped>
 .panel {
@@ -121,7 +107,6 @@ defineProps({
     blur(12px);
 }
 
-
 .heading span {
   color: #8b5cf6;
 
@@ -131,7 +116,6 @@ defineProps({
   letter-spacing: 0.14em;
 }
 
-
 .heading h2 {
   margin: 5px 0;
 
@@ -139,7 +123,6 @@ defineProps({
 
   text-transform: uppercase;
 }
-
 
 .heading p {
   margin: 0;
@@ -149,66 +132,46 @@ defineProps({
   line-height: 1.55;
 }
 
+.jersey-experience {
+  min-height: 540px;
 
-/* =========================================================
-   JERSEY
-========================================================= */
-
-.jersey-display {
-  min-height: 390px;
+  margin:
+    18px 0 22px;
 
   position: relative;
-
-  display: grid;
-  place-items: center;
 }
 
-
 .jersey-glow {
+  width: 72%;
+  height: 60%;
+
   position: absolute;
 
-  width: 75%;
-  height: 65%;
+  left: 14%;
+  top: 18%;
 
   border-radius: 50%;
 
   background:
     radial-gradient(
       circle,
-      rgba(139, 92, 246, 0.18),
-      transparent 65%
+      rgba(139, 92, 246, 0.16),
+      transparent 66%
     );
-
-  filter: blur(20px);
-}
-
-
-.jersey-display img {
-  width: 100%;
-
-  max-width: 440px;
-  max-height: 370px;
-
-  position: relative;
-  z-index: 2;
-
-  object-fit: contain;
 
   filter:
-    drop-shadow(
-      0 22px 30px
-      rgba(0, 0, 0, 0.55)
-    );
-}
+    blur(24px);
 
+  pointer-events: none;
+}
 
 .season-badge {
   position: absolute;
 
-  right: 0;
-  bottom: 20px;
+  right: 10px;
+  bottom: 12px;
 
-  z-index: 3;
+  z-index: 6;
 
   padding: 9px 12px;
 
@@ -217,7 +180,7 @@ defineProps({
     rgba(139, 92, 246, 0.35);
 
   background:
-    rgba(5, 6, 8, 0.85);
+    rgba(5, 6, 8, 0.86);
 
   color: #8b5cf6;
 
@@ -225,7 +188,6 @@ defineProps({
 
   letter-spacing: 0.1em;
 }
-
 
 .season-badge strong {
   display: block;
@@ -237,11 +199,6 @@ defineProps({
   font-size: 0.8rem;
 }
 
-
-/* =========================================================
-   DETAILS
-========================================================= */
-
 .jersey-details {
   display: grid;
 
@@ -250,7 +207,6 @@ defineProps({
 
   gap: 9px;
 }
-
 
 .jersey-detail {
   display: grid;
@@ -263,13 +219,11 @@ defineProps({
   align-items: start;
 }
 
-
 .jersey-detail span {
   color: #61ff18;
 
   font-size: 0.65rem;
 }
-
 
 .jersey-detail p {
   margin: 0;
@@ -281,11 +235,6 @@ defineProps({
   line-height: 1.4;
 }
 
-
-/* =========================================================
-   MESSAGE
-========================================================= */
-
 .jersey-message {
   margin-top: 22px;
 
@@ -296,12 +245,10 @@ defineProps({
     rgba(255, 255, 255, 0.08);
 }
 
-
 .jersey-message span,
 .jersey-message strong {
   display: block;
 }
-
 
 .jersey-message span {
   margin-bottom: 5px;
@@ -313,13 +260,11 @@ defineProps({
   letter-spacing: 0.12em;
 }
 
-
 .jersey-message strong {
   color: #8b5cf6;
 
   font-size: 0.83rem;
 }
-
 
 .jersey-footer {
   margin-top: 20px;
@@ -333,8 +278,19 @@ defineProps({
   text-align: right;
 }
 
+@media (max-width: 760px) {
+
+  .jersey-experience {
+    min-height: 470px;
+  }
+
+}
 
 @media (max-width: 500px) {
+
+  .panel {
+    padding: 18px;
+  }
 
   .jersey-details {
     grid-template-columns: 1fr;
