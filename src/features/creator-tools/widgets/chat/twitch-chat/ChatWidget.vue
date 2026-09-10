@@ -10,27 +10,28 @@
         <span v-if="chat.content.showTimestamps && chat.layout.timestampPosition==='right'" class="timestamp" :style="supportStyle">{{ message.timestamp }}</span>
       </article>
     </div>
-    <footer v-if="runtimeMode !== 'browser-source'">Canonical Chat preview</footer>
+    <footer v-if="runtimeMode !== 'browser-source'">{{ preview?.status?.value || (messages.length ? 'Local chat preview' : 'No messages yet · Use Test Chat') }}</footer>
   </div>
 </template>
 
 <script setup>
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
-import { useWidgetEvents } from '../../widgetHelpers.js'
+import { computed, inject, onMounted, onBeforeUnmount, ref, watch } from 'vue'
+import { widgetEventBus } from '../../../overlays/widgetEventBus.js'
 import { normalizeCreatorChatConfig } from '../../../views/chat/chat.config.js'
 
 const props = defineProps({ widget:{type:Object,required:true}, runtimeMode:{type:String,default:'editor-preview'}, runtimeConfig:{type:Object,default:null} })
-const previewMessages = [{id:1,platform:'twitch',user:'PixelPioneer',badges:['◆'],text:'gg!',timestamp:'12:45:01'},{id:2,platform:'youtube',user:'NexusKnight',badges:['▶'],text:'that play 🔥',timestamp:'12:45:04'},{id:3,platform:'kick',user:'StreamBel',badges:[],text:'join our Discord!',timestamp:'12:45:07'},{id:4,platform:'twitch',user:'Moonlight',badges:['★'],text:'nice stream!',timestamp:'12:45:10'}]
-const messages = ref(props.runtimeMode==='browser-source'?[]:previewMessages)
+const messages = ref([])
+const preview = inject('overlayChatPreview', null)
+const seen = new Set()
+let unsubscribe
 const paused = ref(false)
 const timers = new Set()
-const event = useWidgetEvents(props.widget, props.runtimeMode === 'browser-source' ? null : { id:'initial', actor:{displayName:''}, payload:{text:''} })
 
 function legacyConfig() {
   const value = props.widget.settings || {}
   return { enabled:true, maxMessages:value.maxMessages, platforms:String(value.platforms||'Twitch,YouTube,Kick,Discord').split(','), content:{ showUsername:value.showUsername, showBadges:value.showBadges, showEmotes:value.showEmotes, hideBotMessages:value.hideBotMessages, hideCommandMessages:value.hideCommands, messageDisplayDuration:value.messageDuration }, behaviour:{ messageDirection:value.direction==='down'?'bottom-to-top':'top-to-bottom', messageAnimation:value.animation }, appearance:{container:{backgroundColor:value.background,opacity:value.backgroundOpacity,borderRadius:value.cornerRadius}}, typography:{messageSize:value.fontSize} }
 }
-const chat = computed(() => normalizeCreatorChatConfig(props.runtimeConfig?.chat || legacyConfig()))
+const chat = computed(() => normalizeCreatorChatConfig(props.runtimeConfig?.chat || preview?.config?.value || legacyConfig()))
 const enabledSources = computed(() => new Set(Object.entries(chat.value.sources).filter(([, source]) => source.enabled).map(([id]) => id)))
 const visible = computed(() => {
   if (chat.value.enabled === false) return []
@@ -41,16 +42,23 @@ const visible = computed(() => {
   return chat.value.behaviour.messageDirection === 'bottom-to-top' ? [...list].reverse() : list
 })
 
-watch(event, (next) => {
+function receiveMessage(next) {
   if (!next || !next.payload?.text) return
+  if (props.widget.enabled === false || props.widget.hidden || (next.targetWidgetId && next.targetWidgetId !== props.widget.id)) return
+  if (next.id && seen.has(next.id)) return
   const blocked = chat.value.blockedTerms || [], text = String(next.payload.text)
   if (blocked.some((term) => text.toLowerCase().includes(String(term).toLowerCase()))) return
   const item = { id:next.id, platform:String(next.payload.platform||'twitch').toLowerCase(), user:next.actor?.displayName||'Viewer', badges:Array.isArray(next.payload.badges)?next.payload.badges:[], text, timestamp:next.payload.timestamp||new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}), isBot:next.payload.isBot===true, isMention:next.payload.isMention===true, isSystem:next.payload.isSystem===true, usernameColor:next.payload.usernameColor }
   messages.value.push(item)
+  if (next.id) seen.add(next.id)
+  if (seen.size > 1000) seen.delete(seen.values().next().value)
+  messages.value = messages.value.slice(-100)
   const timer = setTimeout(() => { if (!paused.value || !chat.value.behaviour.pauseOnHover) messages.value = messages.value.filter((message) => message.id !== item.id); timers.delete(timer) }, chat.value.behaviour.messageLifetime * 1000)
   timers.add(timer)
-}, { deep:true })
-onBeforeUnmount(() => timers.forEach(clearTimeout))
+}
+onMounted(() => { unsubscribe = widgetEventBus.subscribe('chat.message', receiveMessage) })
+watch(() => preview?.context?.value, () => { messages.value = []; seen.clear(); timers.forEach(clearTimeout); timers.clear() })
+onBeforeUnmount(() => { unsubscribe?.(); timers.forEach(clearTimeout) })
 
 const hexAlpha = (hex, alpha) => /^#[0-9a-f]{6}$/i.test(hex||'') ? `${hex}${Math.round(alpha*255).toString(16).padStart(2,'0')}` : hex
 const containerStyle = computed(() => { const c=chat.value.appearance.container,l=chat.value.layout; return { width:l.width==='compact'?'65%':l.width==='medium'?'82%':'100%', marginLeft:l.alignment==='right'?'auto':l.alignment==='center'?'auto':'0', marginRight:l.alignment==='center'?'auto':'0', padding:`${c.padding}px`, borderRadius:`${c.borderRadius}px`, background:c.backgroundType==='none'?'transparent':hexAlpha(c.backgroundColor,c.opacity), border:c.borderEnabled?`1px solid ${c.borderColor}`:'none', backdropFilter:c.backgroundType==='glass'?`blur(${c.blur}px)`:'none', overflow:'hidden' } })

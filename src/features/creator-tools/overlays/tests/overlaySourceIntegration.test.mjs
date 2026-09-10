@@ -15,9 +15,11 @@ test('Overlay Builder exposes one scene publication lifecycle and no per-widget 
   assert.match(service, /overlay\/publications\/active/); assert.match(service, /overlay\/publications\/\$\{encodeURIComponent\(publicationId\)\}\/rotate/);
 });
 
-test('all required Creator Tools test buttons use the shared server event boundary', () => {
+test('Test Chat is local while other Creator Tools tests retain the shared server event boundary', () => {
   for (const type of ['chat.message','stream.follow','stream.subscription','stream.raid','stream.cheer','reward.redeemed','tts.requested']) assert.match(controls, new RegExp(type.replace('.', '\\.')));
-  assert.match(editor, /sendSourceTest\(\$event\.type\)/); assert.match(service, /overlay\/publications\/\$\{encodeURIComponent\(publicationId\)\}\/events/);
+  assert.match(editor, /testOverlayChatOrSource\(\$event\.type\)/);
+  assert.match(editor, /if \(type !== 'chat.message'\) return sendSourceTest\(type\)/);
+  assert.match(service, /overlay\/publications\/\$\{encodeURIComponent\(publicationId\)\}\/events/);
 });
 
 test('Browser Source retrieves server configuration and opens one reconnecting scene connection', () => {

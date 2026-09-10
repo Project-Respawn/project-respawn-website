@@ -17,3 +17,16 @@ test('publisher fails closed for cross-Brand, missing widget, and unsubscribed t
   assert.equal((await publishCanonicalOverlayEvent({ workspaceId: 'workspace-1', brandId: 'brand-1', event: { ...event, type: 'stream.raid' } }, dependencies())).reason, 'TOPIC_NOT_ENABLED');
   assert.equal((await publishCanonicalOverlayEvent({ workspaceId: 'workspace-1', brandId: 'brand-1', event }, dependencies({ getActivePublication: async () => null }))).reason, 'NO_ACTIVE_PUBLICATION');
 });
+
+test('chat-only publications receive chat and reject disabled, removed and cross-tenant destinations', async () => {
+  const chatEvent = { ...event, type: 'chat.message', data: { actor: { displayName: 'Viewer' }, payload: { text: 'Hello', platform: 'twitch' } } };
+  const chatPublication = { ...publication, sceneSnapshot: { widgets: [{ type: 'twitch-chat', enabled: true, dataSource: { topics: ['chat.message'] } }] } };
+  const input = { workspaceId: 'workspace-1', brandId: 'brand-1', event: chatEvent };
+  const deps = dependencies({ getActivePublication: async () => chatPublication });
+  assert.equal((await publishCanonicalOverlayEvent(input, deps)).status, 'DELIVERED');
+  assert.equal((await publishCanonicalOverlayEvent({ ...input, workspaceId: 'other' }, deps)).reason, 'PUBLICATION_IDENTITY_MISMATCH');
+  assert.equal((await publishCanonicalOverlayEvent({ ...input, brandId: 'other' }, deps)).reason, 'PUBLICATION_IDENTITY_MISMATCH');
+  for (const widgets of [[], [{ ...chatPublication.sceneSnapshot.widgets[0], enabled: false }], [{ ...chatPublication.sceneSnapshot.widgets[0], hidden: true }]]) {
+    assert.equal((await publishCanonicalOverlayEvent(input, dependencies({ getActivePublication: async () => ({ ...chatPublication, sceneSnapshot: { widgets } }) }))).reason, 'CHAT_WIDGET_DISABLED');
+  }
+});

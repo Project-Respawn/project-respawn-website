@@ -26,8 +26,12 @@ export async function publishCanonicalOverlayEvent(input: { workspaceId: string;
     if (!publication || !publicationIsActive(publication)) return skip('NO_ACTIVE_PUBLICATION');
     if (publication.workspaceId !== input.workspaceId || publication.brandId !== input.brandId || (input.expectedPublicationId && publication.publicationId !== input.expectedPublicationId)) return skip('PUBLICATION_IDENTITY_MISMATCH');
     const widgets = publication.sceneSnapshot?.widgets || [];
-    if (!hasActiveAlertWidget(widgets)) return skip('ALERTS_WIDGET_DISABLED');
-    if (!activeAlertTopics(widgets).includes(input.event.type)) return skip('TOPIC_NOT_ENABLED');
+    if (input.event.type === 'chat.message') {
+      if (!widgets.some((widget: any) => widget.type === 'twitch-chat' && widget.enabled !== false && widget.hidden !== true && widget.dataSource?.topics?.includes('chat.message'))) return skip('CHAT_WIDGET_DISABLED');
+    } else {
+      if (!hasActiveAlertWidget(widgets)) return skip('ALERTS_WIDGET_DISABLED');
+      if (!activeAlertTopics(widgets).includes(input.event.type)) return skip('TOPIC_NOT_ENABLED');
+    }
     const configRevision = await dependencies.getConfigRevision(input.brandId);
     const message = { ...input.event, configRevision };
     const connections = await dependencies.listConnections(publication.publicationId);

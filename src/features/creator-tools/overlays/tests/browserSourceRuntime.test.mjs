@@ -32,9 +32,9 @@ test('live alert starts neutral while editor preview retains its explicit sample
 });
 
 test('live chat starts empty and hides editor-only preview labeling', () => {
-  assert.match(chat, /runtimeMode==='browser-source'\?\[\]:previewMessages/);
+  assert.match(chat, /const messages = ref\(\[\]\)/);
   assert.match(chat, /v-if="runtimeMode !== 'browser-source'"/);
-  for (const sample of ['PixelPioneer', 'NexusKnight', 'StreamBel', 'Moonlight']) assert.match(chat, new RegExp(sample));
+  assert.match(chat, /No messages yet/);
 });
 
 test('live subscription, raid, and TTS widgets wait for canonical events', () => {
