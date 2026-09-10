@@ -11,19 +11,27 @@ const props = defineProps({
 });
 
 const now = ref(new Date());
+
 let timer = null;
+
 
 /* =========================================================
    OBJECTIVE PROGRESS
 ========================================================= */
 
 const currentValue = computed(() => {
-  return Number(props.objective.currentValue ?? 0);
+  return Number(
+    props.objective.currentValue ?? 0
+  );
 });
 
+
 const targetValue = computed(() => {
-  return Number(props.objective.targetValue ?? 0);
+  return Number(
+    props.objective.targetValue ?? 0
+  );
 });
+
 
 const progressPercent = computed(() => {
   if (!targetValue.value) {
@@ -32,7 +40,10 @@ const progressPercent = computed(() => {
 
   return Math.min(
     Math.max(
-      (currentValue.value / targetValue.value) * 100,
+      (
+        currentValue.value /
+        targetValue.value
+      ) * 100,
       0
     ),
     100
@@ -51,13 +62,17 @@ const isComplete = computed(() => {
   );
 });
 
+
 const endDate = computed(() => {
   if (!props.objective.endDate) {
     return null;
   }
 
-  return new Date(props.objective.endDate);
+  return new Date(
+    props.objective.endDate
+  );
 });
+
 
 const hasExpired = computed(() => {
   if (!endDate.value) {
@@ -65,10 +80,12 @@ const hasExpired = computed(() => {
   }
 
   return (
-    now.value.getTime() > endDate.value.getTime() &&
+    now.value.getTime() >
+      endDate.value.getTime() &&
     !isComplete.value
   );
 });
+
 
 const objectiveState = computed(() => {
   if (isComplete.value) {
@@ -93,33 +110,46 @@ const remainingMilliseconds = computed(() => {
   }
 
   return Math.max(
-    endDate.value.getTime() - now.value.getTime(),
+    endDate.value.getTime() -
+      now.value.getTime(),
     0
   );
 });
 
+
 const timeRemaining = computed(() => {
-  if (remainingMilliseconds.value === null) {
+  if (
+    remainingMilliseconds.value === null
+  ) {
     return null;
   }
 
-  const totalSeconds = Math.floor(
-    remainingMilliseconds.value / 1000
-  );
+  const totalSeconds =
+    Math.floor(
+      remainingMilliseconds.value / 1000
+    );
 
-  const days = Math.floor(
-    totalSeconds / 86400
-  );
+  const days =
+    Math.floor(
+      totalSeconds / 86400
+    );
 
-  const hours = Math.floor(
-    (totalSeconds % 86400) / 3600
-  );
+  const hours =
+    Math.floor(
+      (
+        totalSeconds % 86400
+      ) / 3600
+    );
 
-  const minutes = Math.floor(
-    (totalSeconds % 3600) / 60
-  );
+  const minutes =
+    Math.floor(
+      (
+        totalSeconds % 3600
+      ) / 60
+    );
 
-  const seconds = totalSeconds % 60;
+  const seconds =
+    totalSeconds % 60;
 
   return {
     days,
@@ -135,16 +165,28 @@ const timeRemaining = computed(() => {
 ========================================================= */
 
 const milestones = computed(() => {
-  return props.objective.milestones ?? [];
+  return (
+    props.objective.milestones ?? []
+  );
 });
+
 
 const hasMilestones = computed(() => {
-  return milestones.value.length > 0;
+  return (
+    milestones.value.length > 0
+  );
 });
 
-function milestoneUnlocked(milestone) {
-  return currentValue.value >= milestone.value;
+
+function milestoneUnlocked(
+  milestone
+) {
+  return (
+    currentValue.value >=
+    milestone.value
+  );
 }
+
 
 const nextMilestone = computed(() => {
   if (!hasMilestones.value) {
@@ -153,33 +195,43 @@ const nextMilestone = computed(() => {
 
   return milestones.value.find(
     milestone =>
-      currentValue.value < milestone.value
+      currentValue.value <
+      milestone.value
   );
 });
 
-const amountUntilNextMilestone = computed(() => {
-  if (!nextMilestone.value) {
-    return 0;
-  }
 
-  return Math.max(
-    nextMilestone.value.value - currentValue.value,
-    0
-  );
-});
+const amountUntilNextMilestone =
+  computed(() => {
+    if (!nextMilestone.value) {
+      return 0;
+    }
+
+    return Math.max(
+      nextMilestone.value.value -
+        currentValue.value,
+      0
+    );
+  });
 
 
 /* =========================================================
    DISPLAY HELPERS
 ========================================================= */
 
-const formattedCurrentValue = computed(() => {
-  return currentValue.value.toLocaleString();
-});
+const formattedCurrentValue =
+  computed(() => {
+    return currentValue.value
+      .toLocaleString();
+  });
 
-const formattedTargetValue = computed(() => {
-  return targetValue.value.toLocaleString();
-});
+
+const formattedTargetValue =
+  computed(() => {
+    return targetValue.value
+      .toLocaleString();
+  });
+
 
 const metricLabel = computed(() => {
   return (
@@ -188,17 +240,22 @@ const metricLabel = computed(() => {
   );
 });
 
+
 const statusText = computed(() => {
-  switch (objectiveState.value) {
+  switch (
+    objectiveState.value
+  ) {
     case "complete":
       return (
-        props.objective.completedMessage ||
+        props.objective
+          .completedMessage ||
         "OBJECTIVE COMPLETE"
       );
 
     case "expired":
       return (
-        props.objective.expiredMessage ||
+        props.objective
+          .expiredMessage ||
         "OBJECTIVE ENDED"
       );
 
@@ -213,14 +270,19 @@ const statusText = computed(() => {
 ========================================================= */
 
 onMounted(() => {
-  timer = window.setInterval(() => {
-    now.value = new Date();
-  }, 1000);
+  timer =
+    window.setInterval(() => {
+      now.value =
+        new Date();
+    }, 1000);
 });
+
 
 onBeforeUnmount(() => {
   if (timer) {
-    window.clearInterval(timer);
+    window.clearInterval(
+      timer
+    );
   }
 });
 </script>
@@ -228,6 +290,7 @@ onBeforeUnmount(() => {
 
 <template>
   <section class="objective-wrapper">
+
     <div
       class="objective-card"
       :class="`objective-${objectiveState}`"
@@ -261,6 +324,7 @@ onBeforeUnmount(() => {
       <div class="objective-count">
 
         <div class="count-line">
+
           <strong>
             {{ formattedCurrentValue }}
           </strong>
@@ -269,6 +333,7 @@ onBeforeUnmount(() => {
             /
             {{ formattedTargetValue }}
           </span>
+
         </div>
 
         <small>
@@ -283,42 +348,92 @@ onBeforeUnmount(() => {
       ================================================ -->
 
       <div
-        v-if="timeRemaining && objectiveState === 'active'"
+        v-if="
+          timeRemaining &&
+          objectiveState === 'active'
+        "
         class="objective-timer"
       >
-        <span>TIME REMAINING</span>
+
+        <span>
+          TIME REMAINING
+        </span>
 
         <div class="timer-values">
 
           <div>
+
             <strong>
-              {{ timeRemaining.days }}
+              {{
+                timeRemaining.days
+              }}
             </strong>
-            <small>DAYS</small>
+
+            <small>
+              DAYS
+            </small>
+
           </div>
 
           <div>
+
             <strong>
-              {{ String(timeRemaining.hours).padStart(2, "0") }}
+              {{
+                String(
+                  timeRemaining.hours
+                ).padStart(
+                  2,
+                  "0"
+                )
+              }}
             </strong>
-            <small>HRS</small>
+
+            <small>
+              HRS
+            </small>
+
           </div>
 
           <div>
+
             <strong>
-              {{ String(timeRemaining.minutes).padStart(2, "0") }}
+              {{
+                String(
+                  timeRemaining.minutes
+                ).padStart(
+                  2,
+                  "0"
+                )
+              }}
             </strong>
-            <small>MIN</small>
+
+            <small>
+              MIN
+            </small>
+
           </div>
 
           <div>
+
             <strong>
-              {{ String(timeRemaining.seconds).padStart(2, "0") }}
+              {{
+                String(
+                  timeRemaining.seconds
+                ).padStart(
+                  2,
+                  "0"
+                )
+              }}
             </strong>
-            <small>SEC</small>
+
+            <small>
+              SEC
+            </small>
+
           </div>
 
         </div>
+
       </div>
 
 
@@ -327,26 +442,52 @@ onBeforeUnmount(() => {
       ================================================ -->
 
       <div
-        v-else-if="objectiveState === 'complete'"
-        class="objective-result objective-result-complete"
+        v-else-if="
+          objectiveState ===
+          'complete'
+        "
+        class="
+          objective-result
+          objective-result-complete
+        "
       >
-        <strong>✓</strong>
+
+        <strong>
+          ✓
+        </strong>
 
         <span>
-          {{ objective.completedMessage || "THE COMMUNITY DID IT." }}
+          {{
+            objective.completedMessage ||
+            "THE COMMUNITY DID IT."
+          }}
         </span>
+
       </div>
 
 
       <div
-        v-else-if="objectiveState === 'expired'"
-        class="objective-result objective-result-expired"
+        v-else-if="
+          objectiveState ===
+          'expired'
+        "
+        class="
+          objective-result
+          objective-result-expired
+        "
       >
-        <strong>○</strong>
+
+        <strong>
+          ○
+        </strong>
 
         <span>
-          {{ objective.expiredMessage || "THIS OBJECTIVE HAS ENDED." }}
+          {{
+            objective.expiredMessage ||
+            "THIS OBJECTIVE HAS ENDED."
+          }}
         </span>
+
       </div>
 
 
@@ -355,12 +496,15 @@ onBeforeUnmount(() => {
       ================================================ -->
 
       <div class="progress-track">
+
         <div
           class="progress-fill"
           :style="{
-            width: `${progressPercent}%`
+            width:
+              `${progressPercent}%`
           }"
         ></div>
+
       </div>
 
 
@@ -374,24 +518,36 @@ onBeforeUnmount(() => {
       >
 
         <article
-          v-for="milestone in milestones"
-          :key="`${objective.id}-${milestone.value}`"
+          v-for="
+            milestone in milestones
+          "
+          :key="
+            `${objective.id}-${milestone.value}`
+          "
           class="milestone"
           :class="{
             unlocked:
-              milestoneUnlocked(milestone),
+              milestoneUnlocked(
+                milestone
+              ),
 
             active:
               nextMilestone &&
-              nextMilestone.value === milestone.value
+              nextMilestone.value ===
+                milestone.value
           }"
         >
 
           <div class="milestone-line"></div>
 
           <div class="milestone-icon">
+
             <span
-              v-if="milestoneUnlocked(milestone)"
+              v-if="
+                milestoneUnlocked(
+                  milestone
+                )
+              "
             >
               ✓
             </span>
@@ -399,6 +555,7 @@ onBeforeUnmount(() => {
             <span v-else>
               ◈
             </span>
+
           </div>
 
           <strong class="milestone-value">
@@ -427,7 +584,8 @@ onBeforeUnmount(() => {
 
       <div
         v-if="
-          objectiveState === 'active' &&
+          objectiveState ===
+            'active' &&
           nextMilestone
         "
         class="next-unlock"
@@ -442,8 +600,13 @@ onBeforeUnmount(() => {
         </strong>
 
         <small>
-          {{ amountUntilNextMilestone }}
-          {{ metricLabel.toLowerCase() }}
+          {{
+            amountUntilNextMilestone
+          }}
+          {{
+            metricLabel
+              .toLowerCase()
+          }}
           to go
         </small>
 
@@ -456,24 +619,31 @@ onBeforeUnmount(() => {
 
       <div
         v-else-if="
-          objectiveState === 'active' &&
+          objectiveState ===
+            'active' &&
           !hasMilestones
         "
         class="simple-progress-copy"
       >
+
         <strong>
           {{
             Math.max(
-              targetValue - currentValue,
+              targetValue -
+                currentValue,
               0
             ).toLocaleString()
           }}
         </strong>
 
         <span>
-          {{ metricLabel.toLowerCase() }}
+          {{
+            metricLabel
+              .toLowerCase()
+          }}
           remaining
         </span>
+
       </div>
 
 
@@ -484,48 +654,89 @@ onBeforeUnmount(() => {
       <div
         v-if="
           objective.cta &&
-          objectiveState === 'active'
+          objectiveState ===
+            'active'
         "
         class="objective-actions"
       >
 
         <RouterLink
-          v-if="objective.cta.route"
-          :to="objective.cta.route"
-          class="objective-button objective-button-primary"
+          v-if="
+            objective.cta.route
+          "
+          :to="
+            objective.cta.route
+          "
+          class="
+            objective-button
+            objective-button-primary
+          "
         >
-          {{ objective.cta.label }}
-          <span>→</span>
+
+          {{
+            objective.cta.label
+          }}
+
+          <span>
+            →
+          </span>
+
         </RouterLink>
 
 
         <a
-          v-else-if="objective.cta.url"
-          :href="objective.cta.url"
-          class="objective-button objective-button-primary"
+          v-else-if="
+            objective.cta.url
+          "
+          :href="
+            objective.cta.url
+          "
+          class="
+            objective-button
+            objective-button-primary
+          "
           target="_blank"
           rel="noopener noreferrer"
         >
-          {{ objective.cta.label }}
-          <span>→</span>
+
+          {{
+            objective.cta.label
+          }}
+
+          <span>
+            →
+          </span>
+
         </a>
 
       </div>
 
     </div>
+
   </section>
 </template>
 
 
 <style scoped>
+
 /* =========================================================
    WRAPPER
 ========================================================= */
 
 .objective-wrapper {
-  width: min(1500px, calc(100% - 40px));
-  margin: -12px auto 22px;
+  width:
+    min(
+      1500px,
+      calc(
+        100% - 40px
+      )
+    );
+
+  margin:
+    -12px auto 22px;
+
   position: relative;
+
   z-index: 10;
 }
 
@@ -536,38 +747,80 @@ onBeforeUnmount(() => {
 
 .objective-card {
   position: relative;
+
   overflow: hidden;
 
-  padding: 32px;
+  padding:
+    40px 36px;
 
-  display: grid;
+  display: flex;
 
-  grid-template-columns:
-    minmax(0, 1fr)
-    auto
-    auto;
+  flex-direction: column;
 
-  gap: 26px;
+  align-items: center;
+
+  gap: 28px;
 
   border:
     1px solid
-    rgba(139, 92, 246, 0.32);
+    rgba(
+      139,
+      92,
+      246,
+      0.32
+    );
 
   background:
     radial-gradient(
-      circle at 92% 12%,
-      rgba(110, 40, 255, 0.12),
-      transparent 25%
+      circle at
+        50% 10%,
+      rgba(
+        110,
+        40,
+        255,
+        0.13
+      ),
+      transparent
+        30%
+    ),
+    radial-gradient(
+      circle at
+        85% 90%,
+      rgba(
+        97,
+        255,
+        24,
+        0.045
+      ),
+      transparent
+        27%
     ),
     linear-gradient(
       135deg,
-      rgba(11, 12, 17, 0.99),
-      rgba(5, 6, 9, 0.99)
+      rgba(
+        11,
+        12,
+        17,
+        0.99
+      ),
+      rgba(
+        5,
+        6,
+        9,
+        0.99
+      )
     );
 
   box-shadow:
     0 20px 80px
-    rgba(0, 0, 0, 0.4);
+    rgba(
+      0,
+      0,
+      0,
+      0.4
+    );
+
+  text-align: center;
 }
 
 
@@ -576,19 +829,29 @@ onBeforeUnmount(() => {
 
   position: absolute;
 
-  right: -90px;
-  bottom: -130px;
+  left: 50%;
+  bottom: -170px;
 
-  width: 330px;
+  width: 440px;
   height: 330px;
 
-  border-radius: 50%;
+  transform:
+    translateX(-50%);
+
+  border-radius:
+    50%;
 
   background:
     radial-gradient(
       circle,
-      rgba(97, 255, 24, 0.07),
-      transparent 65%
+      rgba(
+        97,
+        255,
+        24,
+        0.055
+      ),
+      transparent
+        67%
     );
 
   pointer-events: none;
@@ -600,51 +863,80 @@ onBeforeUnmount(() => {
 ========================================================= */
 
 .objective-copy {
+  width:
+    min(
+      100%,
+      760px
+    );
+
   position: relative;
+
   z-index: 2;
+
+  text-align: center;
 }
 
 
 .objective-eyebrow {
   display: block;
 
-  margin-bottom: 8px;
+  margin-bottom:
+    9px;
 
-  color: #a855f7;
+  color:
+    #a855f7;
 
-  font-size: 0.78rem;
-  font-weight: 800;
+  font-size:
+    0.78rem;
 
-  letter-spacing: 0.16em;
+  font-weight:
+    800;
 
-  text-transform: uppercase;
+  letter-spacing:
+    0.16em;
+
+  text-transform:
+    uppercase;
 }
 
 
 .objective-copy h2 {
-  margin: 0 0 10px;
+  margin:
+    0 0 12px;
 
   font-size:
-    clamp(1.7rem, 3vw, 2.7rem);
+    clamp(
+      1.9rem,
+      3vw,
+      3rem
+    );
 
-  line-height: 1;
+  line-height:
+    1;
 
-  text-transform: uppercase;
+  text-transform:
+    uppercase;
 
-  letter-spacing: 0.025em;
+  letter-spacing:
+    0.025em;
 }
 
 
 .objective-copy p {
-  max-width: 650px;
+  max-width:
+    680px;
 
-  margin: 0;
+  margin:
+    0 auto;
 
-  color: #a9acb7;
+  color:
+    #a9acb7;
 
-  font-size: 0.98rem;
+  font-size:
+    0.98rem;
 
-  line-height: 1.65;
+  line-height:
+    1.65;
 }
 
 
@@ -653,57 +945,81 @@ onBeforeUnmount(() => {
 ========================================================= */
 
 .objective-count {
-  min-width: 175px;
+  min-width:
+    175px;
 
-  align-self: center;
+  position: relative;
 
-  text-align: center;
+  z-index: 2;
+
+  text-align:
+    center;
 }
 
 
 .count-line {
   display: flex;
 
-  justify-content: center;
-  align-items: baseline;
+  justify-content:
+    center;
+
+  align-items:
+    baseline;
 
   gap: 8px;
 }
 
 
 .count-line strong {
-  color: #61ff18;
+  color:
+    #61ff18;
 
-  font-size: 3.4rem;
+  font-size:
+    3.5rem;
 
-  line-height: 1;
+  line-height:
+    1;
 
   text-shadow:
     0 0 20px
-    rgba(97, 255, 24, 0.22);
+    rgba(
+      97,
+      255,
+      24,
+      0.22
+    );
 }
 
 
 .count-line span {
-  color: #e5e7eb;
+  color:
+    #e5e7eb;
 
-  font-size: 1.45rem;
+  font-size:
+    1.45rem;
 }
 
 
 .objective-count small {
   display: block;
 
-  margin-top: 8px;
+  margin-top:
+    8px;
 
-  color: #c7c9d0;
+  color:
+    #c7c9d0;
 
-  font-size: 0.72rem;
-  font-weight: 700;
+  font-size:
+    0.72rem;
 
-  letter-spacing: 0.1em;
+  font-weight:
+    700;
 
-  text-transform: uppercase;
+  letter-spacing:
+    0.1em;
+
+  text-transform:
+    uppercase;
 }
 
 
@@ -712,34 +1028,58 @@ onBeforeUnmount(() => {
 ========================================================= */
 
 .objective-timer {
-  min-width: 250px;
+  width:
+    min(
+      100%,
+      420px
+    );
 
-  align-self: center;
+  position: relative;
 
-  padding: 15px 18px;
+  z-index: 2;
+
+  padding:
+    16px 20px;
 
   border:
     1px solid
-    rgba(139, 92, 246, 0.35);
+    rgba(
+      139,
+      92,
+      246,
+      0.35
+    );
 
   background:
-    rgba(7, 8, 11, 0.82);
+    rgba(
+      7,
+      8,
+      11,
+      0.82
+    );
 }
 
 
 .objective-timer > span {
   display: block;
 
-  margin-bottom: 10px;
+  margin-bottom:
+    12px;
 
-  color: #a855f7;
+  color:
+    #a855f7;
 
-  font-size: 0.69rem;
-  font-weight: 800;
+  font-size:
+    0.69rem;
 
-  letter-spacing: 0.13em;
+  font-weight:
+    800;
 
-  text-align: center;
+  letter-spacing:
+    0.13em;
+
+  text-align:
+    center;
 }
 
 
@@ -747,32 +1087,41 @@ onBeforeUnmount(() => {
   display: grid;
 
   grid-template-columns:
-    repeat(4, 1fr);
+    repeat(
+      4,
+      1fr
+    );
 
   gap: 9px;
 }
 
 
 .timer-values div {
-  text-align: center;
+  text-align:
+    center;
 }
 
 
 .timer-values strong {
   display: block;
 
-  color: #ffffff;
+  color:
+    #ffffff;
 
-  font-size: 1.35rem;
+  font-size:
+    1.4rem;
 }
 
 
 .timer-values small {
-  color: #7f828c;
+  color:
+    #7f828c;
 
-  font-size: 0.58rem;
+  font-size:
+    0.58rem;
 
-  letter-spacing: 0.08em;
+  letter-spacing:
+    0.08em;
 }
 
 
@@ -781,48 +1130,75 @@ onBeforeUnmount(() => {
 ========================================================= */
 
 .objective-result {
-  min-width: 220px;
+  width:
+    min(
+      100%,
+      440px
+    );
 
-  align-self: center;
+  position: relative;
 
-  padding: 17px;
+  z-index: 2;
 
-  border: 1px solid;
+  padding:
+    18px;
 
-  text-align: center;
+  border:
+    1px solid;
+
+  text-align:
+    center;
 }
 
 
 .objective-result strong {
   display: block;
 
-  margin-bottom: 6px;
+  margin-bottom:
+    6px;
 
-  font-size: 1.9rem;
+  font-size:
+    1.9rem;
 }
 
 
 .objective-result span {
-  font-size: 0.76rem;
-  font-weight: 800;
+  font-size:
+    0.76rem;
 
-  letter-spacing: 0.08em;
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.08em;
 }
 
 
 .objective-result-complete {
   border-color:
-    rgba(97, 255, 24, 0.4);
+    rgba(
+      97,
+      255,
+      24,
+      0.4
+    );
 
-  color: #61ff18;
+  color:
+    #61ff18;
 }
 
 
 .objective-result-expired {
   border-color:
-    rgba(255, 255, 255, 0.16);
+    rgba(
+      255,
+      255,
+      255,
+      0.16
+    );
 
-  color: #9ca0aa;
+  color:
+    #9ca0aa;
 }
 
 
@@ -831,26 +1207,44 @@ onBeforeUnmount(() => {
 ========================================================= */
 
 .progress-track {
-  grid-column: 1 / -1;
+  width:
+    min(
+      100%,
+      1100px
+    );
 
-  height: 21px;
+  height:
+    21px;
+
+  position: relative;
+
+  z-index: 2;
 
   overflow: hidden;
 
   border:
     1px solid
-    rgba(255, 255, 255, 0.13);
+    rgba(
+      255,
+      255,
+      255,
+      0.13
+    );
 
-  border-radius: 999px;
+  border-radius:
+    999px;
 
-  background: #090a0e;
+  background:
+    #090a0e;
 }
 
 
 .progress-fill {
-  height: 100%;
+  height:
+    100%;
 
-  border-radius: inherit;
+  border-radius:
+    inherit;
 
   background:
     linear-gradient(
@@ -861,10 +1255,16 @@ onBeforeUnmount(() => {
 
   box-shadow:
     0 0 24px
-    rgba(97, 255, 24, 0.28);
+    rgba(
+      97,
+      255,
+      24,
+      0.28
+    );
 
   transition:
-    width 0.6s ease;
+    width
+    0.6s ease;
 }
 
 
@@ -873,30 +1273,46 @@ onBeforeUnmount(() => {
 ========================================================= */
 
 .milestone-grid {
-  grid-column: 1 / -1;
+  width:
+    min(
+      100%,
+      1100px
+    );
+
+  position: relative;
+
+  z-index: 2;
 
   display: grid;
 
   grid-template-columns:
     repeat(
       auto-fit,
-      minmax(120px, 1fr)
+      minmax(
+        120px,
+        1fr
+      )
     );
 
-  margin-top: 6px;
+  margin-top:
+    4px;
 }
 
 
 .milestone {
   position: relative;
 
-  min-width: 0;
+  min-width:
+    0;
 
-  padding: 0 10px 12px;
+  padding:
+    0 10px 12px;
 
-  color: #777a84;
+  color:
+    #777a84;
 
-  text-align: center;
+  text-align:
+    center;
 }
 
 
@@ -906,11 +1322,19 @@ onBeforeUnmount(() => {
   top: 22px;
   left: 0;
 
-  width: 100%;
-  height: 1px;
+  width:
+    100%;
+
+  height:
+    1px;
 
   background:
-    rgba(255, 255, 255, 0.1);
+    rgba(
+      255,
+      255,
+      255,
+      0.1
+    );
 }
 
 
@@ -919,88 +1343,128 @@ onBeforeUnmount(() => {
 
   z-index: 2;
 
-  width: 44px;
-  height: 44px;
+  width:
+    44px;
 
-  margin: 0 auto 10px;
+  height:
+    44px;
+
+  margin:
+    0 auto 10px;
 
   display: grid;
-  place-items: center;
 
-  transform: rotate(45deg);
+  place-items:
+    center;
+
+  transform:
+    rotate(
+      45deg
+    );
 
   border:
-    1px solid #484b55;
+    1px solid
+    #484b55;
 
-  background: #08090c;
+  background:
+    #08090c;
 }
 
 
 .milestone-icon span {
-  transform: rotate(-45deg);
+  transform:
+    rotate(
+      -45deg
+    );
 }
 
 
 .milestone-value {
   display: block;
 
-  margin-bottom: 4px;
+  margin-bottom:
+    4px;
 
-  font-size: 1.55rem;
+  font-size:
+    1.55rem;
 }
 
 
 .milestone-label {
   display: block;
 
-  color: inherit;
+  color:
+    inherit;
 
-  font-size: 0.73rem;
-  font-weight: 800;
+  font-size:
+    0.73rem;
 
-  letter-spacing: 0.04em;
+  font-weight:
+    800;
 
-  text-transform: uppercase;
+  letter-spacing:
+    0.04em;
+
+  text-transform:
+    uppercase;
 }
 
 
 .milestone-subtitle {
   display: block;
 
-  margin-top: 5px;
+  margin-top:
+    5px;
 
-  color: #696c76;
+  color:
+    #696c76;
 
-  font-size: 0.68rem;
+  font-size:
+    0.68rem;
 
-  text-transform: uppercase;
+  text-transform:
+    uppercase;
 }
 
 
 .milestone.unlocked {
-  color: #ffffff;
+  color:
+    #ffffff;
 }
 
 
 .milestone.unlocked
 .milestone-icon {
-  color: #61ff18;
+  color:
+    #61ff18;
 
-  border-color: #61ff18;
+  border-color:
+    #61ff18;
 
   box-shadow:
     0 0 18px
-    rgba(97, 255, 24, 0.26);
+    rgba(
+      97,
+      255,
+      24,
+      0.26
+    );
 }
 
 
 .milestone.active
 .milestone-icon {
-  border-color: #a855f7;
+  border-color:
+    #a855f7;
 
   box-shadow:
     0 0 18px
-    rgba(168, 85, 247, 0.32);
+    rgba(
+      168,
+      85,
+      247,
+      0.32
+    );
 }
 
 
@@ -1009,39 +1473,62 @@ onBeforeUnmount(() => {
 ========================================================= */
 
 .next-unlock {
-  grid-column: 1 / 2;
+  position: relative;
+
+  z-index: 2;
 
   display: flex;
-  align-items: baseline;
-  gap: 10px;
 
-  flex-wrap: wrap;
+  align-items:
+    baseline;
 
-  text-transform: uppercase;
+  justify-content:
+    center;
+
+  gap:
+    10px;
+
+  flex-wrap:
+    wrap;
+
+  text-align:
+    center;
+
+  text-transform:
+    uppercase;
 }
 
 
 .next-label {
-  color: #8f939e;
+  color:
+    #8f939e;
 
-  font-size: 0.68rem;
-  font-weight: 700;
+  font-size:
+    0.68rem;
 
-  letter-spacing: 0.1em;
+  font-weight:
+    700;
+
+  letter-spacing:
+    0.1em;
 }
 
 
 .next-unlock strong {
-  color: #a855f7;
+  color:
+    #a855f7;
 }
 
 
 .next-unlock small {
-  color: #61ff18;
+  color:
+    #61ff18;
 
-  font-size: 0.72rem;
+  font-size:
+    0.72rem;
 
-  letter-spacing: 0.06em;
+  letter-spacing:
+    0.06em;
 }
 
 
@@ -1050,19 +1537,28 @@ onBeforeUnmount(() => {
 ========================================================= */
 
 .simple-progress-copy {
-  grid-column: 1 / 2;
+  position: relative;
+
+  z-index: 2;
 
   display: flex;
-  align-items: baseline;
+
+  align-items:
+    baseline;
+
+  justify-content:
+    center;
 
   gap: 7px;
 
-  color: #a8abb5;
+  color:
+    #a8abb5;
 }
 
 
 .simple-progress-copy strong {
-  color: #61ff18;
+  color:
+    #61ff18;
 }
 
 
@@ -1071,54 +1567,83 @@ onBeforeUnmount(() => {
 ========================================================= */
 
 .objective-actions {
-  grid-column: 3;
+  position: relative;
+
+  z-index: 2;
 
   display: flex;
 
-  justify-content: flex-end;
+  justify-content:
+    center;
 }
 
 
 .objective-button {
-  display: inline-flex;
+  display:
+    inline-flex;
 
-  align-items: center;
+  align-items:
+    center;
 
-  gap: 10px;
+  justify-content:
+    center;
 
-  padding: 13px 20px;
+  gap:
+    10px;
 
-  font-size: 0.78rem;
-  font-weight: 800;
+  padding:
+    13px 20px;
 
-  letter-spacing: 0.04em;
+  font-size:
+    0.78rem;
 
-  text-decoration: none;
+  font-weight:
+    800;
 
-  text-transform: uppercase;
+  letter-spacing:
+    0.04em;
+
+  text-decoration:
+    none;
+
+  text-transform:
+    uppercase;
 
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    transform
+      0.2s ease,
+    box-shadow
+      0.2s ease;
 }
 
 
 .objective-button:hover {
   transform:
-    translateY(-2px);
+    translateY(
+      -2px
+    );
 }
 
 
 .objective-button-primary {
-  color: #061000;
+  color:
+    #061000;
 
-  border: 1px solid #61ff18;
+  border:
+    1px solid
+    #61ff18;
 
-  background: #61ff18;
+  background:
+    #61ff18;
 
   box-shadow:
     0 0 20px
-    rgba(97, 255, 24, 0.14);
+    rgba(
+      97,
+      255,
+      24,
+      0.14
+    );
 }
 
 
@@ -1128,7 +1653,8 @@ onBeforeUnmount(() => {
 
 .objective-complete
 .progress-fill {
-  width: 100% !important;
+  width:
+    100% !important;
 }
 
 
@@ -1136,117 +1662,102 @@ onBeforeUnmount(() => {
    RESPONSIVE
 ========================================================= */
 
-@media (max-width: 1050px) {
-
-  .objective-card {
-    grid-template-columns:
-      1fr 1fr;
-  }
-
-
-  .objective-copy {
-    grid-column: 1 / -1;
-  }
-
-
-  .objective-count {
-    justify-self: start;
-  }
-
-
-  .objective-timer,
-  .objective-result {
-    justify-self: end;
-  }
-
-
-  .objective-actions {
-    grid-column: 2;
-  }
-}
-
-
-@media (max-width: 720px) {
+@media (
+  max-width: 720px
+) {
 
   .objective-wrapper {
     width:
       min(
-        100% - 24px,
+        calc(
+          100% - 24px
+        ),
         1500px
       );
   }
 
 
   .objective-card {
-    padding: 22px;
+    padding:
+      28px 20px;
 
-    grid-template-columns: 1fr;
+    gap:
+      24px;
   }
 
 
-  .objective-copy,
-  .objective-count,
-  .objective-timer,
-  .objective-result,
-  .progress-track,
-  .milestone-grid,
-  .next-unlock,
-  .simple-progress-copy,
-  .objective-actions {
-    grid-column: 1;
+  .objective-copy h2 {
+    font-size:
+      clamp(
+        1.8rem,
+        8vw,
+        2.5rem
+      );
   }
 
 
-  .objective-count,
-  .objective-timer,
-  .objective-result {
-    justify-self: stretch;
-  }
-
-
-  .objective-count {
-    text-align: left;
-  }
-
-
-  .count-line {
-    justify-content: flex-start;
-  }
-
-
-  .objective-count small {
-    text-align: left;
+  .count-line strong {
+    font-size:
+      3rem;
   }
 
 
   .milestone-grid {
     grid-template-columns:
-      repeat(2, 1fr);
+      repeat(
+        2,
+        1fr
+      );
 
-    gap: 16px 0;
-  }
-
-
-  .objective-actions {
-    justify-content: stretch;
+    gap:
+      16px 0;
   }
 
 
   .objective-button {
-    width: 100%;
-
-    justify-content: center;
+    width:
+      min(
+        100%,
+        340px
+      );
   }
+
 }
 
 
-@media (max-width: 440px) {
+@media (
+  max-width: 440px
+) {
+
+  .objective-card {
+    padding:
+      24px 16px;
+  }
+
 
   .timer-values {
     grid-template-columns:
-      repeat(2, 1fr);
+      repeat(
+        2,
+        1fr
+      );
 
-    gap: 14px;
+    gap:
+      14px;
   }
+
+
+  .milestone-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .milestone-line {
+    display:
+      none;
+  }
+
 }
+
 </style>
