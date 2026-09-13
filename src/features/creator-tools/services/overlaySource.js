@@ -34,6 +34,10 @@ export function createOverlayPublication(input, fetchImpl = fetch) {
   return authenticatedRequest('overlay/publications', { method: 'POST', body: JSON.stringify(input) }, fetchImpl);
 }
 
+export function importOverlaySourceUrl(publicationId, browserSourceUrl, fetchImpl = fetch) {
+  return authenticatedRequest(`overlay/publications/${encodeURIComponent(publicationId)}/source-url`, { method: 'POST', body: JSON.stringify({ browserSourceUrl }) }, fetchImpl);
+}
+
 export function getActiveOverlayPublication(workspaceId, brandId, fetchImpl = fetch) {
   const query = new URLSearchParams({ workspaceId, brandId });
   return authenticatedRequest(`overlay/publications/active?${query}`, { method: 'GET' }, fetchImpl);

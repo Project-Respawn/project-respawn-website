@@ -1,6 +1,7 @@
 import { computed, ref } from 'vue'
 import { createTestOverlayEvent } from '../../../overlays/overlayEventContract.js'
 import { createPublicationSceneSnapshot } from '../../../overlays/overlayPublicationSnapshot.js'
+import { importOverlaySourceUrl } from '../../../services/overlaySource.js'
 import { createOverlayPublication, getActiveOverlayPublication, revokeOverlayPublication, rotateOverlayPublicationCredential, sendOverlayTestEvent, updateOverlayPublication } from '../../../services/overlaySource.js'
 
 export function useBrowserSources({ notice, previewMode, project, scene, dirty, revision, workspaceId, brandId, brandContext, saveDraft }) {
@@ -24,6 +25,8 @@ export function useBrowserSources({ notice, previewMode, project, scene, dirty, 
   function applyPublication(value) {
     const publication = value?.publication || value
     if (!publication?.publicationId) { clearPublication(); return }
+    if (publicationId.value !== publication.publicationId) sourceUrl.value = ''
+    if (publication.browserSourceUrl) sourceUrl.value = publication.browserSourceUrl
     publicationId.value = publication.publicationId; sourceRevision.value = Number(publication.revision || 0)
     sourceEditorRevision.value = Number.isInteger(publication.sourceEditorRevision) ? publication.sourceEditorRevision : null
     activeSceneId.value = publication.sceneId || ''; activeSceneName.value = publication.sceneName || ''; lastPublishedAt.value = publication.updatedAt || ''
@@ -34,13 +37,18 @@ export function useBrowserSources({ notice, previewMode, project, scene, dirty, 
     catch (error) { sourceError.value = error?.message || 'Could not load Browser Source status' }
     finally { sourceBusy.value = false }
   }
-  async function ensureSavedDraft() {
-    if (dirty.value || !revision.value) await saveDraft({ rethrow: true })
+  async function ensureSavedDraft(forceSave = false) {
+    if (forceSave || dirty.value || !revision.value) {
+      const saved = await saveDraft({ rethrow: true })
+      if (!saved || dirty.value) throw new Error('Save the overlay draft before updating Live')
+    }
     const savedScene = project.scenes.find((item) => item.id === project.selectedSceneId) || project.scenes[0]
     if (!savedScene || !revision.value) throw new Error('Save the overlay draft before updating Live')
     return savedScene
   }
   async function createBrowserSource() {
+    if (sourceBusy.value) return
+    if (hasActivePublication.value) return saveAndUpdateLive()
     sourceBusy.value = true; sourceError.value = ''
     try {
       const bindings = await resolveBindings(), savedScene = await ensureSavedDraft()
@@ -51,11 +59,11 @@ export function useBrowserSources({ notice, previewMode, project, scene, dirty, 
     finally { sourceBusy.value = false }
   }
   async function saveAndUpdateLive() {
+    if (sourceBusy.value) return
     sourceBusy.value = true; sourceError.value = ''; let draftSaved = false
     try {
       if (!publicationId.value) throw new Error('Create a Browser Source first')
-      const wasDirty = dirty.value || !revision.value
-      const savedScene = await ensureSavedDraft(); draftSaved = wasDirty
+      const savedScene = await ensureSavedDraft(true); draftSaved = true
       const result = await updateOverlayPublication(publicationId.value, savedScene.id, createPublicationSceneSnapshot(savedScene), revision.value)
       applyPublication(result); notice.value = `Live Overlay updated · Publication revision ${sourceRevision.value}`
     } catch (error) {
@@ -64,11 +72,22 @@ export function useBrowserSources({ notice, previewMode, project, scene, dirty, 
     } finally { sourceBusy.value = false }
   }
   async function replaceActiveScene() { await saveAndUpdateLive() }
-  async function copySourceUrl() { if (!sourceUrl.value) return; await navigator.clipboard?.writeText(sourceUrl.value); notice.value = 'Browser Source URL copied' }
+  async function importSourceUrl(url) {
+    if (!publicationId.value || sourceBusy.value) return
+    sourceBusy.value = true; sourceError.value = ''
+    try { const result = await importOverlaySourceUrl(publicationId.value, url); sourceUrl.value = result.browserSourceUrl; notice.value = 'Existing OBS URL restored. Your Browser Source is unchanged.' }
+    catch (error) { sourceError.value = error?.message || 'Could not restore Browser Source URL' }
+    finally { sourceBusy.value = false }
+  }
+  async function copySourceUrl() {
+    if (!sourceUrl.value) return
+    try { if (!navigator.clipboard?.writeText) throw new Error(); await navigator.clipboard.writeText(sourceUrl.value); notice.value = 'Browser Source URL copied' }
+    catch { sourceError.value = 'Could not copy. Show the URL and copy it manually.' }
+  }
   function openSourceUrl() { if (sourceUrl.value) window.open(sourceUrl.value, '_blank', 'noopener,noreferrer') }
   async function revokeBrowserSource() { if (!publicationId.value) return; sourceBusy.value = true; try { await revokeOverlayPublication(publicationId.value); clearPublication(); notice.value = 'Browser Source revoked · Creating again will issue a new URL' } catch (error) { sourceError.value = error?.message || 'Could not revoke Browser Source'; notice.value = sourceError.value } finally { sourceBusy.value = false } }
   async function rotateSourceUrl() { if (!publicationId.value) return; sourceBusy.value = true; sourceError.value = ''; try { const result = await rotateOverlayPublicationCredential(publicationId.value); sourceUrl.value = result.browserSourceUrl; notice.value = 'Browser Source URL rotated · Copy the replacement URL now' } catch (error) { sourceError.value = error?.message || 'Could not rotate Browser Source URL'; notice.value = sourceError.value } finally { sourceBusy.value = false } }
   async function sendSourceTest(type) { if (!publicationId.value) { notice.value = 'Create a Browser Source first'; return false } try { const result = await sendOverlayTestEvent(publicationId.value, createTestOverlayEvent(type)); notice.value = `${type} sent to ${result.delivered} Browser Source connection${result.delivered === 1 ? '' : 's'}`; return true } catch (error) { sourceError.value = error?.message || 'Could not send test event'; notice.value = sourceError.value; return false } }
   function openBrowserSourcePreview() { previewMode.value = true }
-  return { publicationId, sourceUrl, sourceRevision, sourceEditorRevision, activeSceneId, activeSceneName, lastPublishedAt, sourceBusy, sourceError, hasActivePublication, liveStatusUnknown, liveOutOfDate, refreshSourceState, createBrowserSource, saveAndUpdateLive, replaceActiveScene, copySourceUrl, openSourceUrl, rotateSourceUrl, revokeBrowserSource, sendSourceTest, openBrowserSourcePreview }
+  return { publicationId, sourceUrl, sourceRevision, sourceEditorRevision, activeSceneId, activeSceneName, lastPublishedAt, sourceBusy, sourceError, hasActivePublication, liveStatusUnknown, liveOutOfDate, refreshSourceState, createBrowserSource, saveAndUpdateLive, replaceActiveScene, copySourceUrl, openSourceUrl, rotateSourceUrl, revokeBrowserSource, sendSourceTest, openBrowserSourcePreview, importSourceUrl }
 }

@@ -30,6 +30,8 @@ import { themeVariables } from '../../overlays/overlayThemes.js';
 import { widgetEventBus } from '../../overlays/widgetEventBus.js';
 import { createTriggeredWidgetSubscription } from '../../overlays/triggeredWidgetState.js';
 import { widgetDisplayMode } from '../../overlays/overlayPublicationSnapshot.js';
+import { ALERT_WIDGETS } from '../../overlays/alertWidgets.js';
+import { normalizeAlertConfiguration } from '../../overlays/alertPresentation.js';
 
 const props = defineProps({
   scene: { type: Object, required: true },
@@ -66,9 +68,13 @@ function configureTriggers() {
 }
 function runtimeSettings(widget) {
   if (widget.type === 'tts') return props.runtimeConfig?.tts || null;
-  if (widget.type === 'alerts') return (event) => props.runtimeConfig?.alerts?.[({ 'stream.follow': 'follow', 'stream.subscription': 'subscription', 'stream.raid': 'raid', 'stream.cheer': 'cheer', 'reward.redeemed': 'redemption' }[event?.topic])] || null;
-  const kind = widget.type === 'subscription-alert' ? 'subscription' : widget.type === 'raid-alert' ? 'raid' : null;
-  return kind ? props.runtimeConfig?.alerts?.[kind] || null : null;
+  if (widget.type === 'alerts') return (event) => resolvedSettings(({ 'stream.follow': 'follow', 'stream.subscription': 'subscription', 'stream.raid': 'raid', 'stream.cheer': 'cheer', 'reward.redeemed': 'redemption' }[event?.topic]));
+  const kind = ALERT_WIDGETS[widget.type]?.kind;
+  return kind ? resolvedSettings(kind) : null;
+}
+function resolvedSettings(kind) {
+  const settings = props.runtimeConfig?.alerts?.[kind];
+  return settings && kind !== 'redemption' ? { ...settings, duration: normalizeAlertConfiguration(settings, kind).duration } : settings || null;
 }
 function widgetIsVisible(widget) {
   return widget.enabled && !widget.hidden

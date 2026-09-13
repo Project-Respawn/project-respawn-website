@@ -1,3 +1,5 @@
+import { ALERT_WIDGETS } from './alertWidgets.js';
+
 const DEFAULT_TRIGGER_DURATION_MS = 6000;
 
 export function triggerDurationMs(widget, runtimeSettings) {
@@ -17,7 +19,7 @@ export function createTriggeredWidgetSubscription(widget, {
   clearTimer = clearTimeout,
 }) {
   let timer = null; let exitTimer = null;
-  const topics = Array.isArray(widget?.dataSource?.topics) ? widget.dataSource.topics : [];
+  const topics = ALERT_WIDGETS[widget?.type] ? [ALERT_WIDGETS[widget.type].topic] : Array.isArray(widget?.dataSource?.topics) ? widget.dataSource.topics : [];
   const show = (event) => {
     const activeSettings = typeof runtimeSettings === 'function' ? runtimeSettings(event) : runtimeSettings;
     if (activeSettings?.enabled === false) return;

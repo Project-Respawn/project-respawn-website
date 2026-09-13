@@ -8,7 +8,7 @@
       <span class="draft-status" :class="{ dirty }">{{ dirty ? 'Unsaved changes' : 'Draft saved' }}</span>
       <button class="save-draft" :disabled="loading || saving || !dirty" @click="$emit('save')">▣ {{ saving ? 'Saving…' : 'Save Draft' }}</button>
       <button @click="$emit('preview')">▶ Preview</button>
-      <button class="publish" :disabled="loading || saving || liveBusy || liveActionDisabled" @click="$emit('live')">➤ &nbsp; {{ liveActionLabel }}</button>
+      <button class="publish" :disabled="loading || saving || liveBusy" @click="$emit('live')">➤ &nbsp; {{ liveActionLabel }}</button>
     </div>
     <button class="obs-offline" type="button" @click="$emit('settings')">○ {{ obsStatusLabel }}</button>
   </header>
@@ -17,8 +17,7 @@
 import { computed } from 'vue'
 const props = defineProps({name:String,themeId:String,themes:Array,canUndo:Boolean,canRedo:Boolean,loading:Boolean,saving:Boolean,dirty:Boolean,revision:Number,hasActivePublication:Boolean,liveOutOfDate:Boolean,liveBusy:Boolean,obsStatusLabel:{type:String,default:'No OBS connection'}})
 defineEmits(['rename','theme','import','export','undo','redo','save','preview','live','settings'])
-const liveActionLabel = computed(() => !props.hasActivePublication ? 'Create Browser Source' : props.dirty ? 'Save & Update Live' : props.liveOutOfDate ? 'Update Live' : 'Live up to date')
-const liveActionDisabled = computed(() => props.hasActivePublication && !props.dirty && !props.liveOutOfDate)
+const liveActionLabel = computed(() => props.hasActivePublication ? 'Save Changes' : 'Create Browser Source')
 </script>
 
 <style scoped>

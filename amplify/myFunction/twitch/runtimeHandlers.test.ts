@@ -52,7 +52,7 @@ async function runtimeLease() {
   return JSON.parse((await handleTwitchRuntime('/twitch/runtime/lease', 'POST', signedLeaseEvent(), client) as any).body).lease
 }
 
-test('real overlay ingestion revalidates identity, dedupes durably, and cannot choose Brand or publication', async () => {
+for (const eventType of ['stream.follow', 'chat.message']) test(`real ${eventType} ingestion revalidates identity, dedupes durably, and cannot choose Brand or publication`, async () => {
   const records = new Map<string, any>(); let publishes = 0
   const isolatedClient = { models: {
     TwitchIntegration: client.models.TwitchIntegration,
@@ -60,9 +60,9 @@ test('real overlay ingestion revalidates identity, dedupes durably, and cannot c
     Brand: { get: async ({ id }: any) => ({ data: id === 'brand-1' ? { id, workspaceId: 'workspace-1' } : null }) },
   } }
   const dedupe = { claim: async (input: any) => { if (records.has(input.dedupeKey)) return { status: 'DUPLICATE', record: records.get(input.dedupeKey) }; records.set(input.dedupeKey, input); return { status: 'CLAIMED' } }, update: async (key: string, input: any) => { records.set(key, { ...records.get(key), ...input }) } }
-  const lease = await runtimeLease(), event = { version: 1, id: 'message-1', type: 'stream.follow', timestamp: '2026-08-30T12:00:00.000Z', source: 'twitch', data: { actor: { displayName: 'Follower' }, payload: {} } }
+  const lease = await runtimeLease(), event = { version: 1, id: 'message-1', type: eventType, timestamp: '2026-08-30T12:00:00.000Z', source: 'twitch', data: { actor: { displayName: 'Follower' }, payload: {} } }
   const request: any = { headers: { authorization: `Bearer ${lease}` }, body: JSON.stringify({ twitchMessageId: 'message-1', broadcasterId: 'broadcaster-1', brandId: 'attacker-brand', publicationId: 'attacker-publication', event }) }
-  const publisher = { getActivePublication: async () => ({ publicationId: 'publication-1', workspaceId: 'workspace-1', brandId: 'brand-1', status: 'TEST', sceneSnapshot: { widgets: [{ type: 'alerts', enabled: true, dataSource: { topics: ['stream.follow'] } }] } }), getConfigRevision: async () => 4, listConnections: async () => [], send: async () => {}, remove: async () => {} }
+  const publisher = { getActivePublication: async () => ({ publicationId: 'publication-1', workspaceId: 'workspace-1', brandId: 'brand-1', status: 'TEST', sceneSnapshot: { widgets: [{ type: eventType === 'chat.message' ? 'twitch-chat' : 'alerts', enabled: true, dataSource: { topics: [eventType] } }] } }), getConfigRevision: async () => 4, listConnections: async () => [], send: async () => {}, remove: async () => {} }
   const first: any = JSON.parse((await handleTwitchRuntime('/twitch/runtime/overlay-events', 'POST', request, isolatedClient, { ...publisher, listConnections: async () => { publishes += 1; return [] } }, dedupe) as any).body)
   const duplicate: any = JSON.parse((await handleTwitchRuntime('/twitch/runtime/overlay-events', 'POST', request, isolatedClient, publisher, dedupe) as any).body)
   assert.equal(first.status, 'DELIVERED'); assert.equal(first.publicationId, 'publication-1'); assert.equal(first.configRevision, 4); assert.equal(first.legacyDisposition, LEGACY_DISPOSITIONS.suppress); assert.equal(duplicate.status, 'DUPLICATE'); assert.equal(duplicate.priorState, 'DELIVERED'); assert.equal(duplicate.priorOutcome, 'ZERO_CONNECTIONS'); assert.equal(duplicate.legacyDisposition, LEGACY_DISPOSITIONS.suppress); assert.equal(publishes, 1)

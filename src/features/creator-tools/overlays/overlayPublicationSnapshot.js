@@ -1,6 +1,7 @@
 import { cloneSerializableData } from './overlaySnapshots.js';
+import { ALERT_WIDGETS, ALERT_BEHAVIOR_KEYS } from './alertWidgets.js';
 
-const triggeredWidgetTypes = new Set(['alerts', 'subscription-alert', 'raid-alert', 'tts']);
+const triggeredWidgetTypes = new Set(['alerts', ...Object.keys(ALERT_WIDGETS), 'tts']);
 const canonicalTopicsByType = Object.freeze({
   alerts: ['stream.follow', 'stream.subscription', 'stream.cheer', 'stream.raid', 'reward.redeemed'],
   'subscription-alert': ['stream.subscription'],
@@ -13,7 +14,7 @@ const twitchBehaviorKeysByType = Object.freeze({
   'subscription-alert': ['title'], 'raid-alert': ['title'], tts: ['duration'],
   'twitch-chat': ['platforms', 'maxMessages', 'hideBotMessages', 'hideCommands', 'showUsername', 'showBadges', 'showEmotes', 'messageDuration', 'direction', 'fontSize', 'backgroundOpacity', 'animation'],
 });
-function overlayOwnedSettings(widget) { const settings = { ...(widget.settings || {}) }; for (const key of twitchBehaviorKeysByType[widget.type] || []) delete settings[key]; return settings; }
+function overlayOwnedSettings(widget) { const settings = { ...(widget.settings || {}) }; for (const key of ALERT_WIDGETS[widget.type] ? ALERT_BEHAVIOR_KEYS : twitchBehaviorKeysByType[widget.type] || []) delete settings[key]; return settings; }
 
 export function widgetDisplayMode(widget) {
   if (triggeredWidgetTypes.has(widget?.type)) return 'triggered';
@@ -33,7 +34,7 @@ export function createPublicationSceneSnapshot(scene) {
       displayMode: widgetDisplayMode(widget),
       dataSource: {
         ...(widget.dataSource || {}),
-        topics: configuredTopics.length ? configuredTopics : [...(canonicalTopicsByType[widget.type] || [])],
+        topics: ALERT_WIDGETS[widget.type] ? [ALERT_WIDGETS[widget.type].topic] : configuredTopics.length ? configuredTopics : [...(canonicalTopicsByType[widget.type] || [])],
       },
     };
     });

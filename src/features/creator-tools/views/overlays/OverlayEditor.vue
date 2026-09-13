@@ -321,7 +321,11 @@
             @change="changeWidget($event, true)"
             @move="moveSelectedChat"
             @suggestion="applyLocalSuggestion"
-          />
+          >
+            <template #alert-settings>
+              <OverlayAlertSettings :widget-type="selectedWidget?.type" :workspace-id="workspaceId" :brand-id="brandId" />
+            </template>
+          </OverlayBuilderInspector>
         </div>
       </aside>
 
@@ -406,6 +410,8 @@
           @rotate="rotateSourceUrl"
           @revoke="revokeBrowserSource"
           @preview="openBrowserSourcePreview"
+          @import="importSourceUrl"
+          @refresh="refreshSourceState"
         />
       </div>
 
@@ -427,7 +433,7 @@
             selectedWidget?.type === 'twitch-chat'
           "
           :chat-locked="selectedWidget?.locked"
-          @test="sendSourceTest($event.type)"
+          @test="testOverlayChatOrSource($event.type)"
           @demo-chat-move="demoChatMove"
           @pause="
             setProject(
@@ -783,8 +789,12 @@
 
 import {
   onMounted,
+  provide,
   ref,
 } from 'vue'
+import { widgetEventBus } from '../../overlays/widgetEventBus.js'
+import { createTestOverlayEvent, toWidgetEvent } from '../../overlays/overlayEventContract.js'
+import { useOverlayChatPreview } from '../../composables/useOverlayChatPreview.js'
 
 import {
   useRoute,
@@ -810,6 +820,7 @@ import WidgetLayersPanel
 
 import OverlayBuilderInspector
   from '../../components/overlays/OverlayBuilderInspector.vue'
+import OverlayAlertSettings from '../../components/overlays/OverlayAlertSettings.vue'
 
 import RecentActivity
   from '../../components/overlays/RecentActivity.vue'
@@ -1048,6 +1059,7 @@ const {
   liveOutOfDate,
   lastPublishedAt,
   refreshSourceState,
+  importSourceUrl,
   createBrowserSource,
   saveAndUpdateLive,
   replaceActiveScene,
@@ -1072,6 +1084,15 @@ const {
   })
 
 onMounted(refreshSourceState)
+provide('overlayChatPreview', useOverlayChatPreview(workspaceId, brandId, sourceUrl))
+
+function testOverlayChatOrSource(type) {
+  if (type !== 'chat.message') return sendSourceTest(type)
+  const widget = selectedWidget.value?.type === 'twitch-chat' ? selectedWidget.value : scene.value.widgets.find(item => item.type === 'twitch-chat' && item.enabled !== false && !item.hidden)
+  if (!widget || widget.enabled === false || widget.hidden) { notice.value = 'Enable a Twitch Chat widget to test chat'; return }
+  widgetEventBus.publish({ ...toWidgetEvent(createTestOverlayEvent(type)), targetWidgetId: widget.id })
+  notice.value = 'Local test chat sent to Twitch Chat'
+}
 
 function handleToolbarLiveAction() {
   return hasActivePublication.value

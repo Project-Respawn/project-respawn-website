@@ -44,6 +44,7 @@
         </span>
       </template>
     </header>
+    <slot name="alert-settings" />
 
 
     <!-- ======================================================
