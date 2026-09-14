@@ -1,11 +1,8 @@
 import TherapistLayout from "./layouts/TherapistLayout/TherapistLayout.vue";
-
 import TherapistDashboard from "./views/TherapistDashboard/TherapistDashboard.vue";
 import TherapistClients from "./views/Clients/TherapistClients.vue";
-
 import TherapistQuests from "./views/Quests/TherapistQuests.vue";
 import TherapistQuestBuilder from "./views/QuestBuilder/TherapistQuestBuilder.vue";
-
 import TherapistInsights from "./views/Insights/TherapistInsights.vue";
 import TherapistReports from "./views/Reports/TherapistReports.vue";
 import TherapistSettings from "./views/Settings/TherapistSettings.vue";

@@ -4,6 +4,12 @@ import outputs from '../../../../amplify_outputs.json';
 import { fetchProducts, fetchProductById } from '../../Merch/merchService';
 import { refreshAccessContext } from '@/composables/useAccessContext.js';
 import { filterProductsForProductControl, getProductControlCapabilities } from './ProductControl.access.js';
+import { findExistingPrintfulVariant, printfulSyncVariantId } from '@/commerce/printfulVariant.js';
+import {
+  decodeManagedMediaLibrary,
+  normalizeProductControlProduct,
+  normalizeProductControlRecords,
+} from './ProductControl.data.js';
 
 let client = null;
 function getClient() {
@@ -198,7 +204,7 @@ function normalizePrintfulVariant(variant) {
 
   return {
     id: normalizeText(variant?.id),
-    externalVariantId: normalizeText(variant?.id),
+    externalVariantId: printfulSyncVariantId(variant),
     name: firstNonEmpty(variant?.name, variant?.title),
     color: titleCase(firstNonEmpty(variant?.color, variant?.colour)),
     size: firstNonEmpty(variant?.size),
@@ -305,7 +311,7 @@ async function listAllModelRecords(modelName, authMode = 'userPool') {
       throw new Error(listResult.errors[0].message || `Failed to list ${modelName}.`);
     }
 
-    records.push(...(listResult.data || []));
+    records.push(...normalizeProductControlRecords(listResult.data, `${modelName} records`));
     nextToken = listResult.nextToken;
   } while (nextToken);
 
@@ -856,7 +862,8 @@ export default {
             status: 'active',
           };
 
-          const existingVariant = existingVariantByExternalId.get(variant.externalVariantId);
+          if (!variant.externalVariantId) throw new Error(`Printful variant ${variant.name || variantIndex + 1} has no sync variant ID`);
+          const existingVariant = existingVariantByExternalId.get(variant.externalVariantId) || findExistingPrintfulVariant(existingVariantsForProduct, variant);
 
           const variantResult = await getClient().mutations.upsertManagedMerchProductVariant({
             ...(existingVariant ? { variantId: existingVariant.id } : {}),
@@ -883,7 +890,7 @@ export default {
         if (managedMediaResult.errors?.length) {
           throw new Error(managedMediaResult.errors[0].message || 'Failed to load Media Library.');
         }
-        const managedMedia = managedMediaResult.data || { mediaItems: [], collections: [] };
+        const managedMedia = decodeManagedMediaLibrary(managedMediaResult.data);
         const [
           products,
           brands,
@@ -1022,7 +1029,7 @@ export default {
             const sourceType = normalizeText(product.sourceType).toLowerCase() || 'other';
             const status = normalizeText(product.status).toLowerCase() || 'inactive';
 
-            return {
+            return normalizeProductControlProduct({
               ...product,
               title: normalizeText(product.title) || 'Untitled product',
               slug: normalizeText(product.slug),
@@ -1049,7 +1056,7 @@ export default {
               whatsIncluded: normalizeText(product.whatsIncluded),
               careInstructions: normalizeText(product.careInstructions),
               fitNotes: normalizeText(product.fitNotes),
-            };
+            }, variantRecords);
           })
           .sort((a, b) => {
             const aOrder = Number.isFinite(Number(a.sortOrder)) ? Number(a.sortOrder) : 9999;

@@ -17,12 +17,30 @@
           </p>
 
           <div class="hero-actions">
-            <button class="primary-btn" @click="handleTwitchConnect">
-              {{ twitchConnected ? 'Reconnect Twitch' : 'Connect Twitch' }}
+            <button class="primary-btn" type="button" :disabled="connectingTwitch" @click="handleTwitchConnect">
+              {{ connectingTwitch ? 'Opening Twitch…' : (twitchConnected ? 'Reconnect Twitch' : 'Connect Twitch') }}
             </button>
             <button class="secondary-btn" @click="refreshStatus">
               Refresh Status
             </button>
+          </div>
+          <p v-if="oauthError" class="connection-error" role="alert">{{ oauthError }}</p>
+
+          <div v-if="secureFoundationEnabled" class="brand-controls">
+            <label v-if="brands.length">
+              Brand
+              <select v-model="selectedBrandId" @change="refreshStatus({ silent: true })">
+                <option v-for="brand in brands" :key="brand.brandId" :value="brand.brandId">{{ brand.name }}</option>
+              </select>
+            </label>
+            <form v-else-if="workspaces.length" class="brand-create" @submit.prevent="createBrand">
+              <p>A Brand is required before connecting Twitch.</p>
+              <input v-model.trim="newBrandName" required maxlength="80" placeholder="Brand name" aria-label="Brand name">
+              <button class="secondary-btn" type="submit" :disabled="creatingBrand">
+                {{ creatingBrand ? 'Creating…' : 'Create Brand' }}
+              </button>
+            </form>
+            <p v-else class="hero-text">Create a Creator Workspace before connecting Twitch.</p>
           </div>
         </div>
 
@@ -140,6 +158,7 @@
 import { getCurrentUser, fetchAuthSession } from 'aws-amplify/auth';
 import { generateClient } from 'aws-amplify/data';
 import { refreshAccessContext } from '@/composables/useAccessContext.js';
+import { consumeTwitchReturnTarget, getTwitchConnectionStatus, parseTwitchOAuthReturn, startTwitchConnection, twitchReturnPath } from '@/features/creator-tools/services/twitchConnection.js';
 
 const twitchDataClient = generateClient();
 
@@ -157,7 +176,13 @@ export default {
       selectedBrandId: '',
       twitchIntegration: null,
       twitchHealth: null,
-      secureFoundationEnabled: import.meta.env.VITE_TWITCH_SECURE_INTEGRATION === 'true',
+      brands: [],
+      workspaces: [],
+      newBrandName: '',
+      creatingBrand: false,
+      connectingTwitch: false,
+      oauthError: '',
+      secureFoundationEnabled: import.meta.env.VITE_TWITCH_SECURE_INTEGRATION !== 'false',
       twitchPermissions: [
         {
           badge: 'Twitch',
@@ -187,9 +212,17 @@ export default {
 
     await this.loadCurrentUser();
     const access = await refreshAccessContext();
-    this.selectedBrandId = access.brands?.[0]?.brandId || '';
+    this.applyAccessContext(access);
 
-    const callback = this.parseCallbackResult();
+    const callback = parseTwitchOAuthReturn(window.location);
+
+    if (callback.isReturn) {
+      const returnTarget = consumeTwitchReturnTarget();
+      if (returnTarget === 'setup') {
+        await this.$router.replace(twitchReturnPath(returnTarget, callback));
+        return;
+      }
+    }
 
     if (callback.error) {
       this.showToast(`Twitch connection error: ${callback.error}`);
@@ -198,7 +231,7 @@ export default {
       return;
     }
 
-    if (callback.isOAuthReturn) {
+    if (callback.connected) {
       this.showToast('Finalising Twitch connection...');
       await this.refreshStatusWithRetry();
       this.clearOAuthQueryParams();
@@ -215,6 +248,40 @@ export default {
   },
 
   methods: {
+    applyAccessContext(access) {
+      this.brands = Array.isArray(access?.brands) ? access.brands : [];
+      this.workspaces = Array.isArray(access?.workspaces) ? access.workspaces : [];
+      if (!this.brands.some((brand) => brand.brandId === this.selectedBrandId)) {
+        this.selectedBrandId = this.brands[0]?.brandId || '';
+      }
+    },
+    slugifyBrandName(name) {
+      return String(name || '').toLowerCase().trim()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+    },
+    async createBrand() {
+      const workspaceId = this.workspaces[0]?.id;
+      const name = this.newBrandName.trim();
+      const slug = this.slugifyBrandName(name);
+      if (!workspaceId) return this.showToast('No accessible Creator Workspace found');
+      if (!name || !slug) return this.showToast('Enter a valid Brand name');
+      this.creatingBrand = true;
+      try {
+        const response = await twitchDataClient.mutations.createManagedBrand({ name, slug, ownerUserId: this.currentUserId });
+        if (response?.errors?.length || !response?.data?.brandId) throw new Error(response?.errors?.[0]?.message || 'Brand creation failed');
+        const access = await refreshAccessContext({ force: true });
+        this.applyAccessContext(access);
+        this.selectedBrandId = response.data.brandId;
+        this.newBrandName = '';
+        this.showToast('Brand created. You can now connect Twitch.');
+        await this.refreshStatus({ silent: true });
+      } catch (error) {
+        this.showToast(error.message || 'Could not create Brand');
+      } finally {
+        this.creatingBrand = false;
+      }
+    },
     async fetchLegacyConnectionForAuthenticatedUser() {
       for (const userId of this.lookupUserIds) {
         const response = await fetch(`http://localhost:3000/api/twitch/connection-by-user?userId=${encodeURIComponent(userId)}&t=${Date.now()}`, { cache: 'no-store' });
@@ -260,36 +327,6 @@ export default {
       }
     },
 
-    parseCallbackResult() {
-      const searchParams = new URLSearchParams(window.location.search || '');
-      const hashValue = window.location.hash || '';
-      const hashQuery = hashValue.includes('?') ? hashValue.split('?')[1] : '';
-      const hashParams = new URLSearchParams(hashQuery);
-
-      const readParam = (name) => {
-        return searchParams.get(name) || hashParams.get(name) || '';
-      };
-
-      const error = readParam('error');
-      const hasCode = Boolean(readParam('code'));
-      const hasState = Boolean(readParam('state'));
-      const connectedFlag = String(readParam('connected')).toLowerCase();
-      const successFlag = String(readParam('success')).toLowerCase();
-
-      const isOAuthReturn =
-        hasCode ||
-        hasState ||
-        connectedFlag === '1' ||
-        connectedFlag === 'true' ||
-        successFlag === '1' ||
-        successFlag === 'true';
-
-      return {
-        error,
-        isOAuthReturn
-      };
-    },
-
     clearOAuthQueryParams() {
       if (!window.location.search && !window.location.hash.includes('?')) {
         return;
@@ -308,12 +345,11 @@ export default {
           return this.twitchConnected;
         }
         if (!this.selectedBrandId) throw new Error('No accessible Brand selected');
-        const response = await twitchDataClient.queries.getMyTwitchIntegration({ brandId: this.selectedBrandId });
-        if (response?.errors?.length) throw new Error(response.errors[0].message || 'Integration lookup failed');
-        this.twitchIntegration = response?.data?.integration || null;
-        this.twitchHealth = response?.data?.health || null;
-        this.twitchConnected = this.twitchIntegration?.connectionStatus === 'CONNECTED';
-        this.twitchAccountName = this.twitchIntegration?.twitchDisplayName || this.twitchIntegration?.twitchLogin || '';
+        const status = await getTwitchConnectionStatus(twitchDataClient, this.selectedBrandId);
+        this.twitchIntegration = status.integration;
+        this.twitchHealth = status.health;
+        this.twitchConnected = status.connected;
+        this.twitchAccountName = status.accountName;
         return this.twitchConnected;
       } catch (error) {
         console.error('Failed to refresh Twitch status:', error);
@@ -358,22 +394,23 @@ export default {
       }
     },
 
-    handleTwitchConnect() {
-      if (!this.secureFoundationEnabled) {
-        if (!this.currentUserId) return this.showToast('No signed-in user found');
-        window.location.assign(`http://localhost:3000/api/twitch/connect?userId=${encodeURIComponent(this.currentUserId)}`);
-        return;
+    async handleTwitchConnect() {
+      this.connectingTwitch = true;
+      this.oauthError = '';
+      try {
+        await startTwitchConnection({
+          client: twitchDataClient,
+          brandId: this.selectedBrandId,
+          workspaceId: this.workspaces[0]?.id || '',
+          returnTarget: 'integrations',
+          navigate: (url) => window.location.assign(url),
+        });
+      } catch (error) {
+        this.oauthError = error?.message || 'Could not start Twitch connection.';
+        this.showToast(this.oauthError);
+      } finally {
+        this.connectingTwitch = false;
       }
-      if (!this.selectedBrandId) {
-        this.showToast('No accessible Brand selected');
-        return;
-      }
-      twitchDataClient.mutations.startTwitchIntegrationOAuth({ brandId: this.selectedBrandId })
-        .then((response) => {
-          if (response?.errors?.length || !response?.data?.authorizeUrl) throw new Error(response?.errors?.[0]?.message || 'OAuth could not be started');
-          window.location.assign(response.data.authorizeUrl);
-        })
-        .catch((error) => this.showToast(error.message || 'Could not start Twitch connection'));
     }
   }
 };

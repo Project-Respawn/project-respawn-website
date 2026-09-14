@@ -1,7 +1,7 @@
 import { createHmac, timingSafeEqual } from 'node:crypto'
 
 export interface RuntimeRequest { method: string; path: string; timestamp: string; nonce: string; body?: unknown }
-export interface RuntimeLease { integrationId: string; brandId: string; broadcasterId: string; operations: string[]; issuedAt: number; expiresAt: number }
+export interface RuntimeLease { integrationId: string; workspaceId: string; brandId: string; broadcasterId: string; operations: string[]; issuedAt: number; expiresAt: number }
 
 export function runtimeLeaseMetadata(token: string) {
   const [encoded] = String(token || '').split('.')

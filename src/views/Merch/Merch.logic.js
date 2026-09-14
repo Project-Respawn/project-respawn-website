@@ -211,6 +211,7 @@ function normalizeStoredVariant(variant) {
   return {
     id: variant.id,
     externalVariantId: normalizeText(variant.externalVariantId),
+    fulfillmentVariantId: normalizeText(variant.fulfillmentVariantId || variant.externalVariantId),
     sku: normalizeText(variant.sku),
     name: normalizeText(variant.name),
     color: titleCase(variant.color),
@@ -574,7 +575,9 @@ export default {
                 .map((variant) => normalizeStoredVariant(variant))
                 .filter((variant) => {
                   const status = normalizeText(variant.status).toLowerCase();
-                  return !status || status === 'active';
+                  const active = !status || status === 'active';
+                  const printfulReady = normalizeText(product.sourceType).toLowerCase() !== 'printful' || Boolean(variant.fulfillmentVariantId || variant.externalVariantId);
+                  return active && printfulReady;
                 })
                 .sort((a, b) => {
                   if (a.sortOrder !== b.sortOrder) return a.sortOrder - b.sortOrder;

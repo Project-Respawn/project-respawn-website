@@ -149,6 +149,7 @@ const schema = a
 
     AccessibleBrandSummary: a.customType({
       brandId: a.id().required(),
+      workspaceId: a.id(),
       name: a.string().required(),
       ownerUserId: a.string(),
       isOwner: a.boolean().required(),
@@ -827,6 +828,7 @@ const schema = a
 
     TwitchIntegration: a
       .model({
+        workspaceId: a.id(),
         brandId: a.id().required(),
         ownerUserId: a.string().required(),
         provider: a.string().required(),
@@ -860,6 +862,7 @@ const schema = a
 
     TwitchOAuthTransaction: a
       .model({
+        workspaceId: a.id(),
         ownerUserId: a.string().required(),
         brandId: a.id().required(),
         integrationId: a.id().required(),
@@ -1058,6 +1061,106 @@ const schema = a
       .returns(a.ref('ManagedDiscordConfigurationResult').required())
       .authorization((allow) => [allow.authenticated()])
       .handler(a.handler.function(myFunction)),
+
+    Team: a
+      .model({
+        slug: a.string().required(),
+        name: a.string().required(),
+        gameKey: a.string().required(),
+        status: a.string().required(),
+        createdByUserId: a.string().required(),
+        updatedByUserId: a.string().required(),
+        rosterRevision: a.integer().required(),
+        membershipRevision: a.integer().required(),
+        managerMembershipId: a.id(),
+        coachMembershipId: a.id(),
+        teamPlan: a.string(),
+        proGrantedAt: a.datetime(),
+        proGrantedBy: a.string(),
+        proExpiresAt: a.datetime(),
+        planUpdatedAt: a.datetime(),
+        planUpdatedBy: a.string(),
+        logoKey: a.string(),
+        logoUpdatedAt: a.datetime(),
+        logoUpdatedBy: a.string(),
+        settingsRevision: a.integer(),
+      })
+      .secondaryIndexes((index) => [
+        index('slug').queryField('listTeamBySlug'),
+        index('status').queryField('listTeamByStatus'),
+      ])
+      .authorization((allow) => [allow.groups(['SuperAdmin']).to([])]),
+
+    TeamMembership: a
+      .model({
+        teamId: a.id().required(),
+        userId: a.string().required(),
+        displayName: a.string().required(),
+        role: a.string().required(),
+        status: a.string().required(),
+        addedByUserId: a.string().required(),
+        revokedAt: a.datetime(),
+        revokedByUserId: a.string(),
+      })
+      .secondaryIndexes((index) => [
+        index('teamId').queryField('listTeamMembershipByTeamId'),
+        index('userId').queryField('listTeamMembershipByUserId'),
+      ])
+      .authorization((allow) => [allow.groups(['SuperAdmin']).to([])]),
+
+    TeamRosterSlot: a
+      .model({
+        teamId: a.id().required(),
+        membershipId: a.id().required(),
+        playerUserId: a.string().required(),
+        gameRoleKey: a.string().required(),
+        slotType: a.string().required(),
+        status: a.string().required(),
+        assignedByUserId: a.string().required(),
+        deactivatedAt: a.datetime(),
+      })
+      .secondaryIndexes((index) => [
+        index('teamId').queryField('listTeamRosterSlotByTeamId'),
+        index('membershipId').queryField('listTeamRosterSlotByMembershipId'),
+      ])
+      .authorization((allow) => [allow.groups(['SuperAdmin']).to([])]),
+
+    PlayerChampionPoolEntry: a
+      .model({
+        teamId: a.id().required(),
+        membershipId: a.id().required(),
+        playerUserId: a.string().required(),
+        championId: a.string().required(),
+        gameRoleKey: a.string(),
+        comfortLevel: a.string().required(),
+        priority: a.string().required(),
+        competitiveReady: a.boolean().required(),
+        playerNotes: a.string(),
+        coachTier: a.string(),
+        coachAssessment: a.string(),
+        coachRecommendation: a.string(),
+        coachPriorityPractice: a.boolean(),
+        coachUpdatedByUserId: a.string(),
+        coachUpdatedAt: a.datetime(),
+      })
+      .secondaryIndexes((index) => [
+        index('teamId').queryField('listPlayerChampionPoolEntryByTeamId'),
+        index('membershipId').queryField('listPlayerChampionPoolEntryByMembershipId'),
+      ])
+      .authorization((allow) => [allow.groups(['SuperAdmin']).to([])]),
+
+    readTeamHub: a.query().arguments({
+      action: a.string().required(), teamId: a.id(), teamSlug: a.string(), status: a.string(),
+      limit: a.integer(), nextToken: a.string(), query: a.string(),
+      membershipId: a.id(),
+    }).returns(a.json().required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    mutateTeamHub: a.mutation().arguments({
+      action: a.string().required(), teamId: a.id(), slug: a.string(), name: a.string(), gameKey: a.string(), status: a.string(),
+      targetEmail: a.string(), targetMembershipId: a.id(), role: a.string(), membershipId: a.id(),
+      memberAction: a.string(), rosterAction: a.string(), expectedRevision: a.integer(), gameRoleKey: a.string(), slotType: a.string(),
+      championId: a.string(), comfortLevel: a.string(), priority: a.string(), competitiveReady: a.boolean(), playerNotes: a.string(),
+      payload: a.string(),
+    }).returns(a.json().required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
 
     UserProfile: a
       .model({
@@ -1470,6 +1573,7 @@ const schema = a
 
     Brand: a
       .model({
+        workspaceId: a.id(),
         name: a.string().required(),
         slug: a.string().required(),
         description: a.string(),
@@ -1568,7 +1672,7 @@ const schema = a
         paymentDate: a.datetime(),
         paymentAmount: a.float(),
         currency: a.string(),
-        environment: a.string(),
+        environment: a.string().required(),
         overallFulfillmentStatus: a.string().required(),
         customerName: a.string().required(),
         email: a.string().required(),
@@ -1578,8 +1682,8 @@ const schema = a
         providerStatuses: a.json().required(),
         reconciliationError: a.string(),
         auditHistory: a.json().required(),
-        createdAt: a.datetime(),
-        updatedAt: a.datetime(),
+        createdAt: a.datetime().required(),
+        updatedAt: a.datetime().required(),
       })
       .authorization((allow) => [
         allow.groups(['SuperAdmin', 'Admin']).to(['read']),

@@ -14,31 +14,18 @@
         <p class="eyebrow">Stream Tools</p>
         <h1>Text to Speech</h1>
         <p class="intro">
-          Configure your TTS overlay, preview voices, and send a real test
-          message to OBS before going live.
+          Configure canonical Browser Source voice settings and send a test
+          message before going live.
         </p>
       </div>
       <div class="header-actions">
-        <button class="btn btn-ghost" @click="copyOverlayUrl">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="9" y="9" width="13" height="13" rx="2" />
-            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-          </svg>
-          Copy overlay URL
-        </button>
         <button class="btn btn-ghost" @click="runLocalPreview">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polygon points="5 3 19 12 5 21 5 3" />
           </svg>
           Preview voice
         </button>
-        <button class="btn btn-ghost" @click="reconnectSocket">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2" />
-          </svg>
-          Reconnect
-        </button>
-        <button class="btn btn-secondary" @click="saveSettings" :disabled="saving">
+        <button class="btn btn-secondary" @click="saveSettings" :disabled="saving || !workspaceId || !selectedBrandId">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
             <polyline points="17 21 17 13 7 13 7 21" />
@@ -102,44 +89,6 @@
 
     <!-- ========================= Main grid ========================== -->
     <div class="settings-grid">
-      <!-- Overlay panel -->
-      <article class="panel">
-        <header class="panel-header">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="2" y="3" width="20" height="14" rx="2" />
-            <line x1="8" y1="21" x2="16" y2="21" />
-            <line x1="12" y1="17" x2="12" y2="21" />
-          </svg>
-          <h2>Overlay</h2>
-        </header>
-
-        <div class="field">
-          <label class="field-label">Overlay URL</label>
-          <div class="input-with-action">
-            <input :value="overlayUrl" readonly class="field-input" />
-            <button class="btn btn-ghost btn-sm" @click="copyOverlayUrl">Copy</button>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="field-label">Socket URL</label>
-          <input :value="socketUrl" readonly class="field-input" />
-        </div>
-
-        <div class="status-row">
-          <span class="status-dot" :class="connectionClass"></span>
-          <span class="status-label">{{ connectionLabel }}</span>
-        </div>
-
-        <p class="helper-text">
-          Broadcaster: {{ broadcasterName || broadcasterId || 'No connected broadcaster selected' }}
-        </p>
-
-        <p class="helper-text">
-          Add the overlay URL as a browser source in OBS for the broadcaster.
-        </p>
-      </article>
-
       <!-- Speech settings panel -->
       <article class="panel">
         <header class="panel-header">
@@ -242,21 +191,9 @@
                       12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
             />
           </svg>
-          <h2>Reward config</h2>
+          <h2>Message limits</h2>
           <span v-if="settingsChanged" class="unsaved-badge">Unsaved</span>
         </header>
-
-        <div class="field">
-          <label for="rewardTitle" class="field-label">Reward title</label>
-          <input
-            id="rewardTitle"
-            v-model="rewardTitle"
-            @input="markChanged"
-            type="text"
-            placeholder="Text To Speech"
-            class="field-input"
-          />
-        </div>
 
         <div class="field">
           <label for="maxLength" class="field-label">Max message length</label>
@@ -271,9 +208,6 @@
           />
         </div>
 
-        <p class="helper-text">
-          Keep this reward title matched to your Twitch channel point reward name.
-        </p>
       </article>
 
       <!-- Test TTS panel -->

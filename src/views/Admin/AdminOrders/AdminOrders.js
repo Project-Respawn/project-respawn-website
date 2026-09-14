@@ -20,7 +20,19 @@ export function fulfillmentSummary(order) {
 }
 
 export function sortOrdersNewestFirst(orders = []) {
-  return [...orders].sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')))
+  const timestamp = (order) => {
+    const value = Date.parse(String(order?.createdAt || order?.updatedAt || ''))
+    return Number.isFinite(value) ? value : 0
+  }
+  return [...orders].sort((a, b) => timestamp(b) - timestamp(a))
+}
+
+export function parseManagedOrders(value) {
+  let parsed = value
+  for (let attempt = 0; attempt < 2 && typeof parsed === 'string'; attempt += 1) {
+    try { parsed = JSON.parse(parsed) } catch { return [] }
+  }
+  return Array.isArray(parsed) ? parsed.filter((order) => order && typeof order === 'object') : []
 }
 
 export function orderMatchesFilters(order, { search = '', paymentFilter = '', fulfillmentFilter = '' } = {}) {
@@ -61,7 +73,7 @@ export default {
       try {
         const result = await getClient().queries.listManagedOrders()
         if (result.errors?.length) throw new Error(result.errors[0].message || 'Failed to load orders')
-        const orders = result.data?.orders || []
+        const orders = parseManagedOrders(result.data?.orders)
         this.orders = sortOrdersNewestFirst(orders)
         if (this.selectedOrder) this.selectedOrder = this.orders.find((order) => order.id === this.selectedOrder.id) || null
       } catch (error) { this.error = error?.message || 'Failed to load orders' } finally { this.loading = false }

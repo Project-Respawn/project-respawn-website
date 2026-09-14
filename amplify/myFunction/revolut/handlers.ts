@@ -146,6 +146,8 @@ export async function handleRevolutCheckout(body: any) {
   }
 
   try {
+    const { assertPrintfulItemsHaveFulfillmentIds } = await import('../fulfillment')
+    assertPrintfulItemsHaveFulfillmentIds(body?.items)
     const result = await createRevolutMerchantOrder(body)
 
     if (result.statusCode < 200 || result.statusCode >= 300) {

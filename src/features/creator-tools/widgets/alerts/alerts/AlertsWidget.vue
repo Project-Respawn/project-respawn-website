@@ -1,2 +1,11 @@
-<template><div class="demo-widget alert-widget" :style="widgetStyle(widget.settings)"><span class="widget-kicker">SIMULATED ALERT</span><b>{{ headline }}</b><p>{{ detail }}</p></div></template>
-<script setup>import { computed } from 'vue'; import { widgetStyle,useWidgetEvents } from '../../widgetHelpers.js'; const props=defineProps({widget:{type:Object,required:true}}); const event=useWidgetEvents(props.widget,{topic:'stream.follow',actor:{displayName:'NovaRespawn'},payload:{}}); const headline=computed(()=>({ 'stream.follow':'New follower!', 'stream.subscription':'New subscriber!', 'stream.cheer':'Cheer received!', 'stream.raid':'Raid incoming!', 'reward.redeemed':'Reward redeemed!' }[event.value.topic]||'Stream alert')); const detail=computed(()=>`${event.value.actor?.displayName||'A community member'} ${event.value.topic==='stream.raid'?`arrived with ${event.value.payload?.viewers||0} viewers`:'joined the moment'}`)</script>
+<template><AlertPresentation v-if="event && config" :event="event" :configuration="config" :style="widgetStyle(widget.settings)" :play-audio="runtimeMode === 'browser-source'" :exiting="exiting" /></template>
+<script setup>
+import { computed } from 'vue'
+import AlertPresentation from '../../../components/overlays/AlertPresentation.vue'
+import { EVENT_KIND } from '../../../overlays/alertPresentation.js'
+import { widgetStyle, useWidgetEvents } from '../../widgetHelpers.js'
+const props=defineProps({widget:{type:Object,required:true},runtimeMode:{type:String,default:'editor-preview'},runtimeConfig:{type:Object,default:null},exiting:{type:Boolean,default:false}})
+const event=useWidgetEvents(props.widget,props.runtimeMode==='browser-source'?null:{id:'editor-sample',topic:'stream.follow',actor:{displayName:'NovaRespawn'},payload:{}})
+const kind=computed(()=>EVENT_KIND[event.value?.topic])
+const config=computed(()=>props.runtimeConfig?.alerts?.[kind.value]||null)
+</script>

@@ -15,6 +15,7 @@ type Dependencies = {
   fetchOrder?: typeof fetchRevolutMerchantOrder
   signingSecret?: string
   now?: () => number
+  dispatch?: (order: any) => Promise<unknown>
 }
 
 const FIVE_MINUTES_MS = 5 * 60 * 1000
@@ -68,6 +69,11 @@ function amountMatches(storedAmount: unknown, authoritativeMinorUnits: unknown) 
   return Number.isFinite(stored) && Number.isFinite(authoritative) && Math.round(stored * 100) === authoritative
 }
 
+function fulfillmentComplete(order: any) {
+  const statuses = Object.values(order?.providerStatuses || {}) as Array<{ status?: string }>
+  return statuses.length > 0 && statuses.every((provider) => ['fulfilled', 'test_skipped'].includes(String(provider?.status || '')))
+}
+
 export async function handleRevolutWebhook(event: unknown, injected: Dependencies = {}) {
   const apiEvent = event as ApiEvent
   const secret = injected.signingSecret ?? REVOLUT_WEBHOOK_SIGNING_SECRET
@@ -117,15 +123,29 @@ export async function handleRevolutWebhook(event: unknown, injected: Dependencie
     return response(204)
   }
 
-  if (String(order.paymentStatus || '').toLowerCase() === state && !order.reconciliationError) return response(204)
-  const entry = audit('Revolut webhook payment update', state)
-  await client.models.FulfillmentOrder.update({
-    id: order.id,
-    paymentStatus: state,
-    paymentDate: PAID_STATES.has(state) ? order.paymentDate || entry.timestamp : order.paymentDate,
-    reconciliationError: null,
-    auditHistory: JSON.stringify([...(order.auditHistory || []), entry]),
-    updatedAt: entry.timestamp,
-  })
+  let currentOrder = order
+  if (String(order.paymentStatus || '').toLowerCase() !== state || order.reconciliationError) {
+    const entry = audit('Revolut webhook payment update', state)
+    const update = {
+      id: order.id,
+      paymentStatus: state,
+      paymentDate: PAID_STATES.has(state) ? order.paymentDate || entry.timestamp : order.paymentDate,
+      reconciliationError: null,
+      auditHistory: JSON.stringify([...(order.auditHistory || []), entry]),
+      updatedAt: entry.timestamp,
+    }
+    const updated = await client.models.FulfillmentOrder.update(update)
+    currentOrder = decodeFulfillmentOrder(updated?.data || { ...order, ...update })
+  }
+
+  if (PAID_STATES.has(state) && !fulfillmentComplete(currentOrder)) {
+    try {
+      const dispatch = injected.dispatch || (await import('../fulfillment')).dispatchFulfillment
+      await dispatch(currentOrder)
+    } catch (error) {
+      logger.error('Revolut webhook fulfillment dispatch failed', { orderId, message: error instanceof Error ? error.message : 'Unknown error' })
+      return response(503)
+    }
+  }
   return response(204)
 }

@@ -16,7 +16,6 @@ import forumRoutes from './forum.routes.js';
 // ============================================================
 
 import NotFound from '../views/NotFound/NotFound.vue';
-import BrandPermissions from '../views/BrandPermissions/BrandPermissions.vue';
 
 // ============================================================
 // ACCESS CONTROL
@@ -25,6 +24,7 @@ import BrandPermissions from '../views/BrandPermissions/BrandPermissions.vue';
 import { refreshAccessContext } from '../composables/useAccessContext.js';
 import { ensureAuthReady, useAuth } from '../composables/useAuth.js';
 import { refreshInvestorAccess } from '../composables/useInvestorAccess.js';
+import { resolveTeamRouteAccess } from '../features/Team Hub/teamHub.service.js';
 
 // ============================================================
 // ROUTES
@@ -71,11 +71,7 @@ const routes = [
 
     {
         path: '/brand-permissions',
-        name: 'BrandPermissions',
-        component: BrandPermissions,
-        meta: {
-            requiresBrandAccess: true,
-        },
+        redirect: { name: 'BrandPermissions' },
     },
 
     // --------------------------------------------------------
@@ -164,6 +160,13 @@ router.beforeEach(async (to) => {
         (record) => record.meta?.requiresInvestorAccess
     );
 
+    const requiresTeamMembership = to.matched.some(
+        (record) => record.meta?.requiresTeamMembership
+    );
+    const teamRoles = to.matched.flatMap(
+        (record) => record.meta?.teamRoles || []
+    );
+
     // --------------------------------------------------------
     // AUTH-AWARE HOMEPAGE
     //
@@ -202,6 +205,14 @@ router.beforeEach(async (to) => {
                     redirect: to.fullPath,
                 },
             };
+        }
+    }
+
+    if (requiresTeamMembership) {
+        try {
+            await resolveTeamRouteAccess(String(to.params.teamSlug || ''), teamRoles);
+        } catch {
+            return { path: '/team-hub', query: { denied: '1' } };
         }
     }
 

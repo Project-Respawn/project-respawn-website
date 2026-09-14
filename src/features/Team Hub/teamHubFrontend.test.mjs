@@ -1,0 +1,196 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import { canShowAdminControls, clearPrivateTeamState, indexRoleIndependentPool, isTeamHubConflict, isTeamHubDenied, managerAssignmentInput, memberAssignmentInput, revocationInput, teamHubLandingRoute } from './teamHub.viewModel.js';
+import { activeManager, decodeTeamHubPayload, filterAdminTeams, nextAccountSearchIndex, normalizeAdminTeam, normalizeAssignableUser, normalizeTeamSlug, replaceTeamInList } from './teamAdministration.viewModel.js';
+import { buildTeamHubShortcuts } from './teamHubDashboard.js';
+import { validateTeamLogoFile } from './teamBranding.js';
+
+test('runtime view-model: Admin controls are hidden from members and visible to both platform Admin roles', () => {
+  assert.equal(canShowAdminControls({}), false);
+  assert.equal(canShowAdminControls({ isAdmin: true }), true);
+  assert.equal(canShowAdminControls({ isSuperAdmin: true }), true);
+});
+
+test('runtime view-model: role-independent pool preserves stored identity and role metadata', () => {
+  const indexed = indexRoleIndependentPool([{ id: 'pool-1', championId: 'Ahri', gameRoleKey: 'MID', comfortLevel: 'S' }]);
+  assert.deepEqual(indexed.Ahri, { id: 'pool-1', championId: 'Ahri', gameRoleKey: 'MID', comfortLevel: 'S' });
+});
+
+test('runtime view-model: denied/revoked state clears private team and pool data', () => {
+  assert.deepEqual(clearPrivateTeamState({ context: { team: 'secret' }, poolEntries: { Ahri: 'S' }, publicValue: true }), { context: null, poolEntries: {}, publicValue: true });
+});
+
+test('runtime view-model: only the stable stale-revision error triggers conflict refresh UX', () => {
+  assert.equal(isTeamHubConflict(new Error('Team Hub changed; refresh and try again')), true);
+  assert.equal(isTeamHubConflict(new Error('Team Hub request failed')), false);
+  assert.equal(isTeamHubDenied(new Error('Team Hub access denied')), true);
+});
+
+test('static wiring check: operational screens use secured backend services and no generated CRUD or localStorage fallback', async () => {
+  const [player, coach, home, management, service] = await Promise.all([
+    readFile(new URL('./champion-pool/ChampionPool.vue', import.meta.url), 'utf8'),
+    readFile(new URL('./champion-pool/CoachPoolReview.vue', import.meta.url), 'utf8'),
+    readFile(new URL('./TeamHubHome.vue', import.meta.url), 'utf8'),
+    readFile(new URL('./TeamManagement.vue', import.meta.url), 'utf8'),
+    readFile(new URL('./teamHub.service.js', import.meta.url), 'utf8'),
+  ]);
+  const operational = `${player}\n${coach}\n${home}\n${management}`;
+  assert.doesNotMatch(operational, /localStorage/);
+  assert.match(player, /listMyChampionPool/);
+  assert.match(coach, /listTeamChampionPools/);
+  assert.match(home, /listMyTeams/);
+  assert.match(management, /expectedRevision/);
+  assert.doesNotMatch(management, /Cognito user ID|Canonical user ID|targetUserId/);
+  assert.match(management, /type="email"/);
+  assert.match(management, /if \(submitting\.value\) return/);
+  assert.match(management, /managerEmail\.value = ''/);
+  assert.match(management, /selectedAccount\.value = null/);
+  assert.match(management, /searchAssignableUsers\(query, context\.value\.team\.id\)/);
+  assert.match(management, /context\.capabilities\.canAdministerTeam/);
+  assert.match(management, /context\.capabilities\.canManageMembers/);
+  assert.match(service, /queries\.readTeamHub/);
+  assert.match(service, /mutations\.mutateTeamHub/);
+  for (const action of ['LIST_MY_TEAMS', 'GET_TEAM_HUB', 'LIST_MY_CHAMPION_POOL', 'LIST_TEAM_CHAMPION_POOLS', 'CREATE_TEAM', 'UPDATE_TEAM', 'SET_MANAGER', 'MANAGE_MEMBER', 'SET_ROSTER_SLOT', 'UPSERT_MY_CHAMPION', 'DELETE_MY_CHAMPION']) assert.match(service, new RegExp(`['"]${action}['"]`));
+  assert.doesNotMatch(service, /\.(?:queries|mutations)\.(?:listMyTeams|getTeamHub|listMyChampionPool|listTeamChampionPools|createTeamHubTeam|updateTeamHubTeam|setTeamManager|manageTeamMember|setTeamRosterSlot|upsertMyChampionPoolEntry|deleteMyChampionPoolEntry)\s*\(/);
+  assert.doesNotMatch(operational, /(?:LIST_MY_TEAMS|GET_TEAM_HUB|LIST_MY_CHAMPION_POOL|LIST_TEAM_CHAMPION_POOLS|CREATE_TEAM|UPDATE_TEAM|SET_MANAGER|MANAGE_MEMBER|SET_ROSTER_SLOT|UPSERT_MY_CHAMPION|DELETE_MY_CHAMPION)/);
+});
+
+test('runtime view-model: assignment sends normalized exact email without a user ID', () => {
+  const team = { id: 'team:alpha', membershipRevision: 4 };
+  assert.deepEqual(managerAssignmentInput(team, ' ADMIN@Example.COM '), { teamId: 'team:alpha', targetEmail: 'admin@example.com', action: 'ASSIGN', expectedRevision: 4 });
+  assert.deepEqual(memberAssignmentInput(team, ' PLAYER@Example.COM ', 'PLAYER'), { teamId: 'team:alpha', targetEmail: 'player@example.com', role: 'PLAYER', action: 'ASSIGN', expectedRevision: 4 });
+  assert.equal('targetUserId' in memberAssignmentInput(team, 'x@example.com', 'COACH'), false);
+});
+
+test('runtime view-model: revocation uses an existing membership record, never typed identity', () => {
+  assert.deepEqual(revocationInput({ id: 'team:alpha', membershipRevision: 7 }, { id: 'membership-1', role: 'PLAYER' }), { teamId: 'team:alpha', targetMembershipId: 'membership-1', role: 'PLAYER', action: 'REVOKE', expectedRevision: 7 });
+});
+
+test('role-aware landing sends Admin and Manager to management, Coach to review, and Player to their pool', () => {
+  assert.equal(teamHubLandingRoute({ capabilities: { canAdministerTeam: true } }), 'team-hub-manage');
+  assert.equal(teamHubLandingRoute({ capabilities: { canManageMembers: true } }), 'team-hub-manage');
+  assert.equal(teamHubLandingRoute({ capabilities: { canReviewChampionPools: true } }), 'team-hub-coach-review');
+  assert.equal(teamHubLandingRoute({ capabilities: { canEditChampionPool: true } }), 'team-hub-champion-pool');
+  assert.equal(teamHubLandingRoute({ capabilities: {} }), 'team-hub-home');
+});
+
+test('team administration immediately inserts a successful create and selects one active manager', () => {
+  const created = { id: 'team:new-team', slug: 'new-team', name: 'New Team' };
+  assert.deepEqual(replaceTeamInList([{ id: 'team:old' }], created), [created, { id: 'team:old' }]);
+  assert.deepEqual(replaceTeamInList([created], { ...created, name: 'Updated' }), [{ ...created, name: 'Updated' }]);
+  assert.equal(normalizeTeamSlug('  New Team!! '), 'new-team');
+  assert.equal(activeManager({ members: [{ id: 'old', role: 'MANAGER', status: 'INACTIVE' }, { id: 'active', role: 'MANAGER', status: 'ACTIVE' }] }).id, 'active');
+});
+
+test('Team Hub AWSJSON responses decode before pagination instead of becoming an empty list', async () => {
+  const existing = { id: 'team:project-respawn', name: 'Project Respawn', slug: 'project-respawn', gameKey: 'LEAGUE_OF_LEGENDS', status: 'ACTIVE', createdAt: '2026-09-02T18:42:56.028Z' };
+  const decoded = decodeTeamHubPayload(JSON.stringify({ items: [existing], nextToken: null }));
+  assert.deepEqual(decoded.items, [existing]);
+  assert.deepEqual(decodeTeamHubPayload(decoded), decoded);
+  assert.throws(() => decodeTeamHubPayload('{bad json'), /Team Hub request failed/);
+});
+
+test('team administration retains and renders the exact managerless active production-team shape', () => {
+  const existing = normalizeAdminTeam({ id: 'team:project-respawn', name: 'Project Respawn', slug: 'project-respawn', gameKey: 'LEAGUE_OF_LEGENDS', status: 'ACTIVE', createdAt: '2026-09-02T18:42:56.028Z' });
+  assert.equal(activeManager({ team: existing, members: [] }), null);
+  assert.deepEqual(filterAdminTeams([existing]), [existing]);
+  assert.deepEqual(filterAdminTeams([existing], '', 'ACTIVE'), [existing]);
+  assert.deepEqual(filterAdminTeams([existing], 'project respawn'), [existing]);
+  assert.deepEqual(filterAdminTeams([existing], 'project-respawn'), [existing]);
+  assert.deepEqual(filterAdminTeams([existing], '', 'INACTIVE'), []);
+});
+
+test('duplicate team creation remains fail-closed before the create write', async () => {
+  const source = await readFile(new URL('../../../amplify/myFunction/teamHub/index.ts', import.meta.url), 'utf8');
+  const duplicateGuard = source.indexOf("if (await rawTeam(data, id)) fail('Team slug already exists')");
+  const createWrite = source.indexOf('data.models.Team.create', duplicateGuard);
+  assert.ok(duplicateGuard >= 0);
+  assert.ok(createWrite > duplicateGuard);
+});
+
+test('manager account selection preserves canonical identity and keyboard navigation is bounded', () => {
+  const nicholas = normalizeAssignableUser({ username: '209c19dc-e0a1-7090-0b35-879fed200271', displayName: 'Ravens Gamer', email: ' N.Grefsheim@ProjectRespawn.com ', enabled: true, confirmed: true, eligible: true });
+  assert.deepEqual(nicholas, { username: '209c19dc-e0a1-7090-0b35-879fed200271', displayName: 'Ravens Gamer', email: 'n.grefsheim@projectrespawn.com', enabled: true, confirmed: true, eligible: true });
+  assert.equal(nextAccountSearchIndex(-1, 1, 3), 0);
+  assert.equal(nextAccountSearchIndex(0, -1, 3), 2);
+  assert.equal(nextAccountSearchIndex(2, 1, 3), 0);
+  assert.equal(nextAccountSearchIndex(0, 1, 0), -1);
+});
+
+test('admin dashboard routes and presents the existing consolidated Team Hub administration flow', async () => {
+  const [page, routes, layout, service, home] = await Promise.all([
+    readFile(new URL('./TeamAdministration.vue', import.meta.url), 'utf8'),
+    readFile(new URL('../../router/admin.routes.js', import.meta.url), 'utf8'),
+    readFile(new URL('../../views/Admin/AdminLayout/AdminLayout.js', import.meta.url), 'utf8'),
+    readFile(new URL('./teamHub.service.js', import.meta.url), 'utf8'),
+    readFile(new URL('./TeamHubHome.vue', import.meta.url), 'utf8'),
+  ]);
+  assert.match(routes, /path: 'esports\/teams'[\s\S]*requiredPermission: 'teams\.branding\.manage'/);
+  assert.match(layout, /Esports · Team Administration/);
+  assert.match(page, /listAdminTeams/);
+  assert.match(page, /if \(submitting\.value\) return/);
+  assert.match(page, /window\.confirm/);
+  assert.match(page, /managerAssignmentInput/);
+  assert.match(page, /Open operational Team Hub/);
+  assert.match(page, /statusFilter/);
+  assert.match(page, /filterAdminTeams/);
+  assert.match(page, /role="combobox"/);
+  assert.match(page, /role="listbox"/);
+  assert.match(page, /role="option"/);
+  assert.match(page, /Searching accounts/);
+  assert.match(page, /No matching accounts found/);
+  assert.match(page, /managerSearchError/);
+  assert.match(page, /selectedAccount\.value = null/);
+  assert.match(page, /selectedAccount\.value\.email/);
+  assert.match(page, /@keydown\.down/);
+  assert.match(page, /300/);
+  assert.match(service, /SEARCH_TEAM_ASSIGNABLE_USERS/);
+  assert.match(service, /extensions\?\.requestId/);
+  assert.match(service, /message\.match/);
+  assert.match(service, /Team Hub request failed/);
+  assert.match(service, /That account could not be assigned/);
+  assert.match(service, /queries\.readTeamHub/);
+  assert.match(service, /mutations\.mutateTeamHub/);
+  assert.match(home, /errorMessage\.value = ''/);
+  assert.match(home, /selectedTeamId\.value = created\.id/);
+  assert.doesNotMatch(page, /generateClient|localStorage|\.models\./);
+});
+
+test('signed-in dashboard exposes dynamic role-aware Team Hub shortcuts without hard-coded team slugs', async () => {
+  const source = await readFile('src/views/UserHomepage/UserHomepage.js', 'utf8');
+  const shortcuts = await readFile('src/features/Team Hub/teamHubDashboard.js', 'utf8');
+  assert.match(source, /listMyTeams/);
+  assert.match(source, /teamHubMemberships/);
+  assert.match(shortcuts, /Update champion pool/);
+  assert.match(shortcuts, /Review champion pools/);
+  assert.match(shortcuts, /View champion pools/);
+  assert.match(shortcuts, /`\/team-hub\/\$\{slug\}/);
+  assert.doesNotMatch(`${source}${shortcuts}`, /team-hub\/project-respawn/);
+});
+
+test('dashboard shortcuts support multiple memberships and exclude inactive or missing roles', () => {
+  const shortcuts = buildTeamHubShortcuts([
+    { slug: 'alpha', name: 'Alpha', assignedPosition: 'MID', context: { teamRole: 'PLAYER' } },
+    { slug: 'beta', name: 'Beta', context: { teamRole: 'COACH' } },
+    { slug: 'gamma', name: 'Gamma', context: { teamRole: 'MANAGER' } },
+    { slug: 'inactive', name: 'Inactive', context: { teamRole: null } },
+  ]);
+  assert.deepEqual(shortcuts.map((item) => item.to), ['/team-hub/alpha/champion-pool', '/team-hub/beta/coach-review', '/team-hub/gamma/manage', '/team-hub/gamma/coach-review']);
+  assert.equal(shortcuts.some((item) => item.to.includes('inactive')), false);
+});
+
+test('PNG selection rejects spoofed type, signature, size and dimensions before upload', async () => {
+  const file = (bytes, overrides = {}) => ({ name: 'team.png', type: 'image/png', size: bytes.length, slice: () => ({ arrayBuffer: async () => Uint8Array.from(bytes).buffer }), ...overrides });
+  const signature = [137,80,78,71,13,10,26,10,...Array(16).fill(0)];
+  assert.deepEqual(await validateTeamLogoFile(file(signature), async () => ({ width: 256, height: 512 })), { width: 256, height: 512, square: false });
+  await assert.rejects(() => validateTeamLogoFile(file(signature, { name: 'team.jpg' }), async () => ({ width: 256, height: 256 })), /Choose a PNG/);
+  await assert.rejects(() => validateTeamLogoFile(file([255,216,255], { size: 3 }), async () => ({ width: 256, height: 256 })), /genuine PNG/);
+  await assert.rejects(() => validateTeamLogoFile(file(signature), async () => ({ width: 64, height: 64 })), /dimensions/);
+  await assert.rejects(() => validateTeamLogoFile(file(signature), async () => { throw new Error('decode'); }), /corrupt/);
+});
+
+test('Team Home is a real secured page and branding/plan controls remain administrative', async () => {
+  const [routes, home, admin, logo, service] = await Promise.all([readFile(new URL('./team-hub.routes.js', import.meta.url),'utf8'),readFile(new URL('./TeamHome.vue', import.meta.url),'utf8'),readFile(new URL('./TeamAdministration.vue', import.meta.url),'utf8'),readFile(new URL('./TeamLogo.vue', import.meta.url),'utf8'),readFile(new URL('./teamHub.service.js', import.meta.url),'utf8')]);
+  assert.match(routes, /team-hub-team[\s\S]*TeamHome\.vue/); assert.doesNotMatch(routes, /teamHubLandingRoute/); assert.match(home, /Manage team/); assert.match(home, /Review champion pools/); assert.match(home, /Update champion pool/); assert.match(admin, /Team plan/); assert.match(admin, /Team branding/); assert.match(admin, /window\.confirm/); assert.match(logo, /object-fit:contain/); assert.match(service, /REQUEST_TEAM_LOGO_UPLOAD/); assert.match(service, /COMMIT_TEAM_LOGO/); assert.match(service, /SET_TEAM_PLAN/);
+});

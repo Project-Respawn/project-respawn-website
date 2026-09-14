@@ -9,6 +9,7 @@ const EMPTY_ACCESS_CONTEXT = Object.freeze({
   permissions: [],
   isPlatformAdmin: false,
   brands: [],
+  workspaces: [],
 })
 
 const accessContext = ref(EMPTY_ACCESS_CONTEXT)
@@ -40,6 +41,7 @@ function normalizeAccessContext(value) {
     permissions: Array.isArray(value?.permissions) ? value.permissions : [],
     isPlatformAdmin: value?.isPlatformAdmin === true,
     brands: Array.isArray(value?.brands) ? value.brands : [],
+    workspaces: Array.isArray(value?.workspaces) ? value.workspaces : [],
   }
 }
 

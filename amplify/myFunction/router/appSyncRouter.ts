@@ -11,6 +11,7 @@ import { handleCleanupApplicationStorageTestRun, handleCleanupPublicApplicationT
 import { handleAddWorkspaceMember, handleCreateCreatorWorkspace, handleGetCreatorWorkspace, handleGetMyWorkspacePermissions, handleListMyCreatorWorkspaces, handleListWorkspaceMembers, handleRevokeWorkspaceMember, handleSetWorkspaceMemberPermissions } from '../workspaces'
 import { handleGetInvestorDocumentUrl, handleGetMyInvestorAccess } from '../investors'
 import { handleSubmitInvestorAccessRequest } from '../investors/requests'
+import { routeTeamHubMutation, routeTeamHubRead } from '../teamHub/gateway'
 
 export interface AppSyncEvent { arguments?: unknown; info?: { fieldName?: string }; fieldName?: string; identity?: unknown }
 
@@ -40,6 +41,8 @@ export async function routeAppSync(event: AppSyncEvent) {
     case 'seedPermissionCatalog': return handleSeedPermissionCatalog(event)
     case 'replaceGroupPermissions': return handleReplaceGroupPermissions(event)
     case 'getMyAccessContext': return handleGetMyAccessContext(event)
+    case 'readTeamHub': return routeTeamHubRead(event)
+    case 'mutateTeamHub': return routeTeamHubMutation(event)
     case 'createCreatorWorkspace': return handleCreateCreatorWorkspace(event)
     case 'getCreatorWorkspace': return handleGetCreatorWorkspace(event)
     case 'listMyCreatorWorkspaces': return handleListMyCreatorWorkspaces(event)

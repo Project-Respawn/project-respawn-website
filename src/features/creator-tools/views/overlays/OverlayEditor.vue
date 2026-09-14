@@ -18,6 +18,13 @@
       :themes="themes"
       :can-undo="history.canUndo"
       :can-redo="history.canRedo"
+      :loading="loading"
+      :saving="saving"
+      :dirty="dirty"
+      :revision="revision"
+      :has-active-publication="hasActivePublication"
+      :live-out-of-date="liveOutOfDate"
+      :live-busy="sourceBusy"
       :obs-status-label="obsStatusLabel"
       @rename="renameProject"
       @theme="changeTheme"
@@ -27,7 +34,7 @@
       @redo="redo"
       @save="saveDemo"
       @preview="previewMode = true"
-      @publish="openHeaderPanel('publish')"
+      @live="handleToolbarLiveAction"
       @settings="openObsConnection"
     />
 
@@ -314,7 +321,11 @@
             @change="changeWidget($event, true)"
             @move="moveSelectedChat"
             @suggestion="applyLocalSuggestion"
-          />
+          >
+            <template #alert-settings>
+              <OverlayAlertSettings :widget-type="selectedWidget?.type" :workspace-id="workspaceId" :brand-id="brandId" />
+            </template>
+          </OverlayBuilderInspector>
         </div>
       </aside>
 
@@ -377,8 +388,30 @@
           data-overlay-section="10"
           data-overlay-section-name="browser-source-outputs"
           :resolution="scene.resolution"
-          @copy="copyPlaceholder"
+          :source-url="sourceUrl"
+          :publication-id="publicationId"
+          :revision="sourceRevision"
+          :draft-dirty="dirty"
+          :draft-revision="revision"
+          :live-out-of-date="liveOutOfDate"
+          :live-status-unknown="liveStatusUnknown"
+          :last-published-at="lastPublishedAt"
+          :selected-scene-id="scene.id"
+          :selected-scene-name="scene.name"
+          :active-scene-id="activeSceneId"
+          :active-scene-name="activeSceneName"
+          :busy="sourceBusy"
+          :error="sourceError"
+          @create="createBrowserSource"
+          @update="saveAndUpdateLive"
+          @replace="replaceActiveScene"
+          @copy="copySourceUrl"
+          @open="openSourceUrl"
+          @rotate="rotateSourceUrl"
+          @revoke="revokeBrowserSource"
           @preview="openBrowserSourcePreview"
+          @import="importSourceUrl"
+          @refresh="refreshSourceState"
         />
       </div>
 
@@ -400,7 +433,7 @@
             selectedWidget?.type === 'twitch-chat'
           "
           :chat-locked="selectedWidget?.locked"
-          @test="replay"
+          @test="testOverlayChatOrSource($event.type)"
           @demo-chat-move="demoChatMove"
           @pause="
             setProject(
@@ -755,11 +788,17 @@
 // ============================================================
 
 import {
+  onMounted,
+  provide,
   ref,
 } from 'vue'
+import { widgetEventBus } from '../../overlays/widgetEventBus.js'
+import { createTestOverlayEvent, toWidgetEvent } from '../../overlays/overlayEventContract.js'
+import { useOverlayChatPreview } from '../../composables/useOverlayChatPreview.js'
 
 import {
   useRoute,
+  useRouter,
 } from 'vue-router'
 
 
@@ -781,6 +820,7 @@ import WidgetLayersPanel
 
 import OverlayBuilderInspector
   from '../../components/overlays/OverlayBuilderInspector.vue'
+import OverlayAlertSettings from '../../components/overlays/OverlayAlertSettings.vue'
 
 import RecentActivity
   from '../../components/overlays/RecentActivity.vue'
@@ -837,9 +877,11 @@ const inspectorTab =
 
 const route =
   useRoute()
+const router =
+  useRouter()
 
 const core =
-  useOverlayEditorCore(route)
+  useOverlayEditorCore(route, router)
 
 const {
   project,
@@ -854,6 +896,13 @@ const {
   selectWidget,
   changeWidget,
   saveDemo,
+  loading,
+  saving,
+  dirty,
+  revision,
+  workspaceId,
+  brandId,
+  brandContext,
 } = core
 
 
@@ -997,13 +1046,59 @@ const {
 // ============================================================
 
 const {
-  copyPlaceholder,
+  publicationId,
+  sourceUrl,
+  sourceRevision,
+  sourceEditorRevision,
+  activeSceneId,
+  activeSceneName,
+  sourceBusy,
+  sourceError,
+  hasActivePublication,
+  liveStatusUnknown,
+  liveOutOfDate,
+  lastPublishedAt,
+  refreshSourceState,
+  importSourceUrl,
+  createBrowserSource,
+  saveAndUpdateLive,
+  replaceActiveScene,
+  copySourceUrl,
+  openSourceUrl,
+  rotateSourceUrl,
+  revokeBrowserSource,
+  sendSourceTest,
   openBrowserSourcePreview,
 } =
   useBrowserSources({
     notice,
     previewMode,
+    project,
+    scene,
+    dirty,
+    revision,
+    workspaceId,
+    brandId,
+    brandContext,
+    saveDraft: saveDemo,
   })
+
+onMounted(refreshSourceState)
+provide('overlayChatPreview', useOverlayChatPreview(workspaceId, brandId, sourceUrl))
+
+function testOverlayChatOrSource(type) {
+  if (type !== 'chat.message') return sendSourceTest(type)
+  const widget = selectedWidget.value?.type === 'twitch-chat' ? selectedWidget.value : scene.value.widgets.find(item => item.type === 'twitch-chat' && item.enabled !== false && !item.hidden)
+  if (!widget || widget.enabled === false || widget.hidden) { notice.value = 'Enable a Twitch Chat widget to test chat'; return }
+  widgetEventBus.publish({ ...toWidgetEvent(createTestOverlayEvent(type)), targetWidgetId: widget.id })
+  notice.value = 'Local test chat sent to Twitch Chat'
+}
+
+function handleToolbarLiveAction() {
+  return hasActivePublication.value
+    ? saveAndUpdateLive()
+    : createBrowserSource()
+}
 
 
 // ============================================================

@@ -1,6 +1,7 @@
 import { onMounted } from 'vue'
 import { createBuilderProject } from '../../../overlays/overlayBuilderDemoState.js'
-import { chatShowcaseTarget } from '../../../overlays/overlayGeometry.js'
+import { chatShowcaseTarget, nudgeWidgetFrame } from '../../../overlays/overlayGeometry.js'
+import { widgetRegistry } from '../../../widgets/registry/index.js'
 
 export function useTestControls(options) {
   const {
@@ -75,12 +76,18 @@ export function useTestControls(options) {
   }
 
   function keyboard(event) {
-    if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName) || document.activeElement?.isContentEditable) return
+    const target = event.target instanceof Element ? event.target : document.activeElement
+    if (target?.closest?.('input, textarea, select, button, a, [contenteditable="true"], [role="textbox"]')) return
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z') {
       event.preventDefault(); event.shiftKey ? redo() : undo()
     }
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'y') { event.preventDefault(); redo() }
-    if ((event.key === 'Delete' || event.key === 'Backspace') && selectedWidget.value) {
+    const widget = selectedWidget.value
+    if (!previewMode.value && widget && !event.ctrlKey && !event.metaKey && !event.altKey) {
+      const frame = nudgeWidgetFrame(widget, event.key, event.shiftKey, scene.value.resolution, widgetRegistry[widget.type]?.capabilities?.draggable)
+      if (frame) { event.preventDefault(); changeWidget({ ...widget, frame }, true); return }
+    }
+    if (!previewMode.value && (event.key === 'Delete' || event.key === 'Backspace') && widget) {
       event.preventDefault(); toggleWidget(selectedWidget.value.type, false)
     }
   }

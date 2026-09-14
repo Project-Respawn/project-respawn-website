@@ -28,33 +28,35 @@ test('Demo Chat Move chooses the opposite safe side at Fit-scale-independent geo
   assert.equal(target.y, chat.frame.y)
 })
 
-test('canvas uses one frame interaction entry point with capability and locked fallbacks', () => {
+test('canvas separates body movement from explicit resize handles with capability and locked fallbacks', () => {
   const root = fileURLToPath(new URL('../../', import.meta.url))
   const canvas = readFileSync(`${root}components/overlays/OverlayCanvas.vue`, 'utf8')
-  const inspector = readFileSync(`${root}components/overlays/OverlayBuilderInspector.vue`, 'utf8')
   const controls = readFileSync(`${root}components/overlays/OverlayTestControls.vue`, 'utf8')
   assert.doesNotMatch(canvas, /chat-drag-handle|Drag Chat/)
-  assert.match(canvas, /@pointerdown\.stop\.prevent="startInteraction\(\$event,widget\)"/)
-  assert.doesNotMatch(canvas, /resize-handle|startResize|startMove/)
-  assert.match(canvas, /detectResizeDirection\(e\.clientX,e\.clientY,e\.currentTarget\.getBoundingClientRect\(\),9\)/)
-  assert.match(canvas, /if\(handle\)begin\(e,\{kind:'resize',handle/)
-  assert.match(canvas, /else if\(definition\(w\)\.capabilities\.draggable!==false\)begin\(e,\{kind:'move'/)
-  for (const label of ['Move Left', 'Move Right', 'Move Up', 'Move Down', 'Move chat to left', 'Move chat to right']) assert.match(inspector, new RegExp(label))
+  assert.match(canvas, /@pointerdown\.stop="startMove\(\$event, widget\)"/)
+  assert.match(canvas, /class="resize-handle"/)
+  assert.match(canvas, /@pointerdown\.stop="startResize\(\$event, widget, handle\)"/)
+  assert.match(canvas, /widget\.locked \|\| definition\(widget\)\.capabilities\.draggable === false/)
+  assert.match(canvas, /widget\.locked \|\| definition\(widget\)\.capabilities\.resizable === false/)
   assert.match(controls, /Demo Chat Move/)
   assert.match(controls, /browser only/)
 })
 
-test('canvas interaction CSS has no resize controls and keeps a frame-filling renderer', () => {
+test('canvas interaction CSS has eight-handle controls and keeps a non-interactive frame-filling renderer', () => {
   const root = fileURLToPath(new URL('../../', import.meta.url))
   const css = readFileSync(`${root}views/overlays/OverlayEditor.css`, 'utf8')
   assert.match(css, /\.widget-frame\s*> \.widget-renderer[\s\S]*?width:\s*100%;[\s\S]*?height:\s*100%;/)
-  assert.doesNotMatch(css, /resize-handle|chat-drag-handle/)
+  assert.match(css, /\.resize-handle/)
+  assert.match(css, /pointer-events:\s*none;/)
+  assert.doesNotMatch(css, /chat-drag-handle/)
 })
 
-test('resize hover uses physical edge detection and frame capture', () => {
+test('explicit resize handles use pointer capture and standard cursors', () => {
   const root = fileURLToPath(new URL('../../', import.meta.url))
   const canvas = readFileSync(`${root}components/overlays/OverlayCanvas.vue`, 'utf8')
-  assert.match(canvas, /@pointermove="updateHover\(\$event,widget\)"/)
-  assert.match(canvas, /captureTarget=e\.currentTarget/)
-  for (const cursor of ['ns-resize', 'ew-resize', 'nwse-resize', 'nesw-resize', 'grabbing']) assert.match(canvas, new RegExp(cursor))
+  const css = readFileSync(`${root}views/overlays/OverlayEditor.css`, 'utf8')
+  assert.match(canvas, /captureTarget = event\.currentTarget/)
+  assert.match(canvas, /setPointerCapture/)
+  for (const cursor of ['ns-resize', 'ew-resize', 'nwse-resize', 'nesw-resize']) assert.match(css, new RegExp(cursor))
+  assert.match(canvas, /grabbing/)
 })

@@ -6,6 +6,7 @@ import AdminHome from '../views/Admin/AdminHome/AdminHome.vue';
 import AdminUsers from '../views/Admin/AdminUsers/AdminUsers.vue';
 import AdminPermissions from '../views/Admin/AdminPermissions/AdminPermissions.vue';
 import AdminBrands from '../views/Admin/AdminBrands/AdminBrands.vue';
+import BrandPermissions from '../views/BrandPermissions/BrandPermissions.vue';
 import AdminMerchCategories from '../views/Admin/AdminMerchCategories/AdminMerchCategories.vue';
 import AdminForums from '../views/Admin/AdminForums/AdminForums.vue';
 import AdminEvents from '../views/Admin/AdminEvents/AdminEvents.vue';
@@ -22,6 +23,7 @@ import AdminInductions from '../views/Admin/AdminApplications/AdminInductions.vu
 import AdminInductionDetail from '../views/Admin/AdminApplications/AdminInductionDetail.vue';
 import AdminAvailability from '../views/Admin/Bookings/AdminAvailability.vue';
 import AdminInvestors from '../views/Admin/AdminInvestors/AdminInvestors.vue';
+import TeamAdministration from '../features/Team Hub/TeamAdministration.vue';
 
 export default [
 
@@ -54,6 +56,12 @@ export default [
                 name: 'AdminInvestors',
                 component: AdminInvestors,
                 meta: { requiredGroups: ['SuperAdmin', 'Admin'] }
+            },
+            {
+                path: 'esports/teams',
+                name: 'AdminTeamAdministration',
+                component: TeamAdministration,
+                meta: { requiredPermission: 'teams.branding.manage' }
             },
             {
                 path: 'events',
@@ -134,6 +142,12 @@ export default [
                 name: 'AdminBrands',
                 component: AdminBrands,
                 meta: { requiredPermission: 'brands.manage' }
+            },
+            {
+                path: 'brand-permissions',
+                name: 'BrandPermissions',
+                component: BrandPermissions,
+                meta: { requiredGroups: ['SuperAdmin', 'Admin', 'Staff'] }
             },
             {
                 path: 'merch-categories',

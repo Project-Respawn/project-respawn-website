@@ -1,13 +1,7 @@
-export function createDemoEventBus() {
-  const topics = new Map()
-  return {
-    subscribe(topic, handler) { const listeners = topics.get(topic) || new Set(); listeners.add(handler); topics.set(topic, listeners); return () => listeners.delete(handler) },
-    publish(event) { for (const handler of topics.get(event.topic) || []) handler(cloneSerializableData(event)); for (const handler of topics.get('*') || []) handler(cloneSerializableData(event)) },
-    clear() { topics.clear() },
-  }
-}
+import { createWidgetEventBus, widgetEventBus } from './widgetEventBus.js'
 
-export const demoEventBus = createDemoEventBus()
+export const createDemoEventBus = createWidgetEventBus
+export const demoEventBus = widgetEventBus
 const samples = {
   'chat.message': { provider: 'twitch', actor: { providerUserId: 'demo-chat-1', displayName: 'PixelPilot' }, payload: { text: 'This overlay looks brilliant!', badges: ['sub'], isBot: false } },
   'stream.follow': { provider: 'twitch', actor: { providerUserId: 'demo-follow-1', displayName: 'NovaRespawn' }, payload: {} },

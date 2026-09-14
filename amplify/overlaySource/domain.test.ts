@@ -1,0 +1,229 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import {
+  activePublicationLockId, assertPublicationOwner, assertWorkspaceBrandOwner, createActivePublicationLock, createConnectionRecord, createPublicationRecord,
+  credentialMatches, fanOutOverlayEvent, hashOverlayCredential, publicationIsActive,
+  rotatePublicationCredential, updatePublicationRecord, validateOverlayEvent, validateSceneSnapshot,
+  editableOverlayProjectId, twitchOverlayConfigId, validateEditableOverlayProject, validateTwitchOverlayConfig,
+} from './domain';
+
+const now = new Date('2026-08-26T20:00:00.000Z');
+test('new first-party alerts retain empty inherited presentation fields and preserve creator overrides', () => {
+  const defaults = validateTwitchOverlayConfig({});
+  for (const kind of ['follow', 'subscription', 'cheer', 'raid']) {
+    assert.equal(defaults.alerts[kind].enabled, true);
+    assert.equal(defaults.alerts[kind].duration, 20);
+    assert.equal(validateTwitchOverlayConfig({ alerts: { [kind]: { duration: 12 } } }).alerts[kind].duration, 12);
+    for (const field of ['titleTemplate', 'messageTemplate', 'mediaUrl', 'soundUrl'] as const) assert.equal(defaults.alerts[kind][field], '');
+  }
+  const custom = { enabled: false, titleTemplate: 'Custom title', messageTemplate: 'Custom copy', mediaUrl: 'https://creator.example/image.jpg', soundUrl: 'https://creator.example/audio.mp3' };
+  const saved = validateTwitchOverlayConfig({ alerts: { follow: custom } });
+  for (const key of ['enabled', 'titleTemplate', 'messageTemplate', 'mediaUrl', 'soundUrl'] as const) assert.equal(saved.alerts.follow[key], custom[key]);
+  const reset = validateTwitchOverlayConfig({ alerts: { follow: { ...custom, titleTemplate: '', messageTemplate: '', mediaUrl: '', soundUrl: '' } } });
+  assert.equal(reset.alerts.follow.mediaUrl, ''); assert.equal(reset.alerts.follow.messageTemplate, '');
+  assert.equal(reset.alerts.follow.enabled, false);
+  assert.equal(defaults.alerts.redemption.enabled, false);
+  assert.equal(defaults.alerts.redemption.duration, 8);
+  assert.equal(defaults.alerts.redemption.titleTemplate, '{user} redeemed {reward}');
+  assert.equal(defaults.alerts.redemption.messageTemplate, 'Reward: {reward}');
+  assert.equal(defaults.alerts.redemption.mediaUrl, ''); assert.equal(defaults.alerts.redemption.soundUrl, '');
+});
+const scene = { id: 'scene-1', name: 'Main Gameplay', resolution: { width: 1920, height: 1080 }, themeId: 'respawn-dark', widgets: [
+  { id: 'chat', type: 'twitch-chat', enabled: true, frame: { x: 10, y: 20, width: 400, height: 600 }, zIndex: 2, settings: { maxMessages: 6 }, dataSource: { topics: ['chat.message'] } },
+  { id: 'alert', type: 'alerts', enabled: true, displayMode: 'triggered', frame: { x: 500, y: 30, width: 500, height: 200 }, zIndex: 3, settings: {}, dataSource: { topics: ['stream.follow'] } },
+] };
+
+test('publication creation persists a complete scene snapshot and only a credential hash', () => {
+  const record = createPublicationRecord({ workspaceId: 'workspace-1', brandId: 'brand-1', overlayId: 'overlay-1', sceneId: 'scene-1', sceneSnapshot: scene, sourceEditorRevision: 7 }, 'owner-1', hashOverlayCredential('opaque-secret'), now, 'publication-1');
+  assert.equal(record.revision, 1); assert.equal(record.status, 'TEST'); assert.equal(record.sceneSnapshot.widgets.length, 2);
+  assert.equal(record.credentialHash.length, 64); assert.equal(JSON.stringify(record).includes('opaque-secret'), false);
+  assert.equal(credentialMatches(record, 'opaque-secret'), true); assert.equal(credentialMatches(record, 'wrong'), false);
+  assert.equal(record.sourceEditorRevision, 7);
+});
+
+test('legacy publications remain readable and updates add the optional editor relationship', () => {
+  const legacy = createPublicationRecord({ workspaceId: 'workspace-1', brandId: 'brand-1', sceneSnapshot: scene }, 'owner-1', hashOverlayCredential('opaque-secret'), now, 'legacy');
+  assert.equal('sourceEditorRevision' in legacy, false);
+  const updated = updatePublicationRecord(legacy, 'scene-1', scene, new Date('2026-08-26T20:01:00.000Z'), 8);
+  assert.equal(updated.sourceEditorRevision, 8); assert.equal(updated.publicationId, legacy.publicationId); assert.equal(updated.credentialHash, legacy.credentialHash);
+});
+
+test('sanitization forces event-driven widgets to neutral triggered mode', () => {
+  const snapshot = validateSceneSnapshot({ ...scene, widgets: [
+    { ...scene.widgets[1], displayMode: 'always' },
+    { ...scene.widgets[1], id: 'tts', type: 'tts', displayMode: 'always' },
+  ] });
+  assert.deepEqual(snapshot.widgets.map((widget) => widget.displayMode), ['triggered', 'triggered']);
+});
+
+test('publication update replaces snapshot and increments revision', () => {
+  const record = createPublicationRecord({ workspaceId: 'workspace-1', brandId: 'brand-1', sceneId: 'scene-1', sceneSnapshot: scene }, 'owner-1', 'hash', now, 'publication-1');
+  const updated = updatePublicationRecord(record, 'scene-2', { ...scene, id: 'scene-2', widgets: scene.widgets.slice(0, 1) }, new Date(now.getTime() + 1000));
+  assert.equal(updated.revision, 2); assert.equal(updated.sceneSnapshot.widgets.length, 1); assert.equal(updated.publicationId, record.publicationId);
+  assert.equal(updated.sceneId, 'scene-2'); assert.equal(updated.credentialHash, record.credentialHash);
+});
+
+test('one deterministic active lock represents a Brand without changing its opaque publication ID', () => {
+  const record = createPublicationRecord({ workspaceId: 'workspace-1', brandId: 'brand-1', sceneId: 'scene-1', sceneSnapshot: scene }, 'owner-1', 'hash', now, 'random-publication');
+  const lock = createActivePublicationLock(record);
+  assert.equal(activePublicationLockId('brand-1'), 'BRAND_ACTIVE#brand-1');
+  assert.equal(lock.publicationId, 'BRAND_ACTIVE#brand-1'); assert.equal(lock.activePublicationId, 'random-publication');
+  assert.equal(lock.workspaceId, record.workspaceId); assert.equal(lock.ownerUserId, record.ownerUserId);
+});
+
+test('credential rotation changes the hash, accepts only the new credential, and never persists plaintext', () => {
+  const record = createPublicationRecord({ workspaceId: 'workspace-1', brandId: 'brand-1', sceneId: 'scene-1', sceneSnapshot: scene }, 'owner-1', hashOverlayCredential('old-credential'), now, 'publication-1');
+  const rotated = rotatePublicationCredential(record, hashOverlayCredential('new-credential'), new Date(now.getTime() + 1000));
+  assert.notEqual(rotated.credentialHash, record.credentialHash);
+  assert.equal(credentialMatches(rotated, 'old-credential'), false);
+  assert.equal(credentialMatches(rotated, 'new-credential'), true);
+  assert.equal(JSON.stringify(rotated).includes('new-credential'), false);
+});
+
+test('snapshot ignores discarded editor runtime metadata while preserving sanitized persisted fields', () => {
+  const snapshot = validateSceneSnapshot({
+    ...scene,
+    runtime: { credentialStatus: 'not-provisioned', callback: () => {} },
+    editorState: { selection: 'chat' },
+    widgets: [...scene.widgets, { ...scene.widgets[0], id: 'disabled', enabled: false }, { ...scene.widgets[0], id: 'hidden', hidden: true }],
+  });
+  assert.equal('runtime' in snapshot, false);
+  assert.equal('editorState' in snapshot, false);
+  assert.equal(snapshot.widgets.length, 2);
+  assert.deepEqual(snapshot.widgets[0].frame, { x: 10, y: 20, width: 400, height: 600, rotation: 0 });
+  assert.equal(snapshot.widgets[0].type, 'twitch-chat');
+  assert.deepEqual(snapshot.widgets[0].settings, {});
+  assert.equal(snapshot.widgets[0].displayMode, 'always');
+  assert.equal(snapshot.widgets[1].displayMode, 'triggered');
+  const findUndefined = (value: any): boolean => value && typeof value === 'object' && Object.values(value).some((child) => child === undefined || findUndefined(child));
+  assert.equal(findUndefined(snapshot), false, 'sanitized snapshots must be accepted by DynamoDB document marshalling');
+});
+
+test('Brand Twitch configuration is deterministic, renderer-safe, bounded, and independently addressable', () => {
+  const config = validateTwitchOverlayConfig({ alerts: { raid: { enabled: false, duration: 12, template: '{user} brought {viewers}', mediaUrl: 'https://cdn.example/raid.gif', soundUrl: 'https://cdn.example/raid.ogg', volume: .4, entryAnimation: 'scale', exitAnimation: 'fade' } }, tts: { voice: 'UK Voice', rate: 9, pitch: -2, volume: .4, maxLength: 900 }, chat: { maxMessages: 200, platforms: ['Twitch'], blockedTerms: ['Spam'] } });
+  assert.equal(twitchOverlayConfigId('brand-1'), 'TWITCH_CONFIG#brand-1');
+  assert.deepEqual(config.alerts.raid, { enabled: false, duration: 12, titleTemplate: '{user} brought {viewers}', messageTemplate: '', mediaUrl: 'https://cdn.example/raid.gif', soundUrl: 'https://cdn.example/raid.ogg', volume: .4, entryAnimation: 'scale', exitAnimation: 'fade' });
+  assert.deepEqual(config.tts, { enabled: true, voice: 'UK Voice', rate: 2, pitch: 0, volume: .4, maxLength: 500 });
+  assert.equal(config.chat.schemaVersion, 2); assert.equal(config.chat.content.maximumVisibleMessages, 100);
+  assert.equal(config.chat.sources.twitch.enabled, true); assert.deepEqual(config.chat.blockedTerms, ['spam']);
+  assert.equal(JSON.stringify(config).match(/token|secret|credential|oauth/i), null);
+});
+
+test('complete alert config round trips while legacy template migrates to title', () => {
+  const input = { enabled: true, titleTemplate: '{user} followed!', messageTemplate: 'Welcome {user}', mediaUrl: 'https://cdn.example/media', soundUrl: 'https://cdn.example/audio', volume: .25, duration: 9, entryAnimation: 'slide-left', exitAnimation: 'slide-right' };
+  assert.deepEqual(validateTwitchOverlayConfig({ alerts: { follow: input } }).alerts.follow, input);
+  const legacy = validateTwitchOverlayConfig({ alerts: { follow: { template: 'Legacy {user}' } } }).alerts.follow;
+  assert.equal(legacy.titleTemplate, 'Legacy {user}'); assert.equal(legacy.messageTemplate, '');
+});
+
+test('alert validation rejects malformed values and unsafe URLs', () => {
+  for (const follow of [
+    { volume: NaN }, { volume: 2 }, { duration: Infinity }, { duration: 0 },
+    { mediaUrl: 'http://example.com/a.gif' }, { mediaUrl: 'https://user:pass@example.com/a.gif' },
+    { soundUrl: 'javascript:alert(1)' }, { entryAnimation: 'explode' }, { exitAnimation: 'spin' },
+    { titleTemplate: 'x'.repeat(241) }, { messageTemplate: 'x'.repeat(501) },
+  ]) assert.throws(() => validateTwitchOverlayConfig({ alerts: { follow } }), /Alert .* is invalid/);
+});
+
+test('current Chat configuration rejects unsupported values instead of trusting arbitrary JSON', () => {
+  const valid = validateTwitchOverlayConfig({}).chat;
+  assert.throws(() => validateTwitchOverlayConfig({ chat: { ...valid, sources: { ...valid.sources, unknown: { enabled: true } } } }), /Chat configuration is invalid/);
+  assert.throws(() => validateTwitchOverlayConfig({ chat: { ...valid, content: { ...valid.content, maximumVisibleMessages: 101 } } }), /Chat configuration is invalid/);
+  assert.throws(() => validateTwitchOverlayConfig({ chat: { ...valid, typography: { ...valid.typography, messageColor: 'red' } } }), /Chat configuration is invalid/);
+});
+
+test('editable projects preserve all scene geometry while discarding runtime state and Twitch behaviour', () => {
+  const project = validateEditableOverlayProject({ schemaVersion: 1, name: 'Creator Overlay', selectedSceneId: 'scene-1', selectedWidgetId: 'disabled', scenes: [{
+    ...scene, runtime: { credentialStatus: 'not-provisioned' }, preview: { backgroundType: 'reference' },
+    widgets: [{ ...scene.widgets[0], id: 'disabled', enabled: false, locked: true, frame: { x: 44, y: 55, width: 400, height: 600 }, settings: { maxMessages: 20, background: '#123456' } }],
+  }] });
+  assert.equal(editableOverlayProjectId('brand-1'), 'EDITOR_PROJECT#brand-1');
+  assert.equal(project.scenes[0].widgets.length, 1); assert.equal(project.scenes[0].widgets[0].enabled, false);
+  assert.deepEqual(project.scenes[0].widgets[0].frame, { x: 44, y: 55, width: 400, height: 600, rotation: 0 });
+  assert.deepEqual(project.scenes[0].widgets[0].settings, { background: '#123456' });
+  assert.equal('runtime' in project.scenes[0], false);
+  assert.throws(() => validateEditableOverlayProject({ ...project, scenes: [{ ...project.scenes[0], preview: { accessToken: 'forbidden' } }] }), /unsupported data/);
+});
+
+test('future snapshots remove Twitch behaviour while retaining geometry and visual presentation', () => {
+  const snapshot = validateSceneSnapshot({ ...scene, widgets: [{ ...scene.widgets[1], settings: { duration: 12, messageTemplate: '{user}', background: '#123456', animation: 'pop' } }] });
+  assert.deepEqual(snapshot.widgets[0].settings, { background: '#123456', animation: 'pop' });
+  assert.deepEqual(snapshot.widgets[0].frame, { x: 500, y: 30, width: 500, height: 200, rotation: 0 });
+});
+
+test('snapshot still rejects secret-shaped keys in every persisted nested boundary', () => {
+  assert.throws(() => validateSceneSnapshot({ ...scene, theme: { accessToken: 'forbidden' } }), /unsupported data/);
+  assert.throws(() => validateSceneSnapshot({ ...scene, theme: { accessKeyId: 'forbidden' } }), /unsupported data/);
+  assert.throws(() => validateSceneSnapshot({ ...scene, widgets: [{ ...scene.widgets[0], settings: { nested: { credential: 'forbidden' } } }] }), /unsupported data/);
+  assert.throws(() => validateSceneSnapshot({ ...scene, widgets: [{ ...scene.widgets[0], dataSource: { password: 'forbidden' } }] }), /unsupported data/);
+  assert.throws(() => validateSceneSnapshot({ ...scene, widgets: [{ ...scene.widgets[0], animations: { clientSecret: 'forbidden' } }] }), /unsupported data/);
+});
+
+test('snapshot enforces widget-count and serialized-size limits after sanitization', () => {
+  assert.throws(() => validateSceneSnapshot({ ...scene, widgets: Array.from({ length: 101 }, (_, index) => ({ ...scene.widgets[0], id: `widget-${index}` })) }), /unsupported data/);
+  assert.throws(() => validateSceneSnapshot({ ...scene, widgets: [{ ...scene.widgets[0], settings: { safeText: 'x'.repeat(351_000) } }] }), /too large/);
+});
+
+test('workspace, Brand, and publication ownership deny cross-tenant access without SuperAdmin bypass', () => {
+  const workspace = { id: 'workspace-1', ownerUserId: 'owner-1' }, brand = { id: 'brand-1', workspaceId: 'workspace-1', ownerUserId: 'owner-1' };
+  assert.doesNotThrow(() => assertWorkspaceBrandOwner(workspace, brand, 'owner-1', 'workspace-1', 'brand-1'));
+  assert.throws(() => assertWorkspaceBrandOwner(workspace, brand, 'other-owner', 'workspace-1', 'brand-1'), /access is denied/);
+  assert.throws(() => assertWorkspaceBrandOwner(workspace, { ...brand, workspaceId: 'workspace-2' }, 'owner-1', 'workspace-1', 'brand-1'), /access is denied/);
+  assert.throws(() => assertPublicationOwner({ ownerUserId: 'owner-1' }, 'other-owner'), /access is denied/);
+});
+
+test('revoked and expired publications are denied', () => {
+  assert.equal(publicationIsActive({ status: 'TEST', expiresAt: new Date(now.getTime() + 1000).toISOString() }, now.getTime()), true);
+  assert.equal(publicationIsActive({ status: 'REVOKED' }, now.getTime()), false);
+  assert.equal(publicationIsActive({ status: 'TEST', revokedAt: now.toISOString() }, now.getTime()), false);
+  assert.equal(publicationIsActive({ status: 'TEST', expiresAt: new Date(now.getTime() - 1).toISOString() }, now.getTime()), false);
+});
+
+test('event validation accepts all v1 test types and rejects malformed events', () => {
+  for (const type of ['chat.message','stream.follow','stream.subscription','stream.raid','stream.cheer','reward.redeemed','tts.requested']) assert.equal(validateOverlayEvent({ version: 1, id: type, type, timestamp: now.toISOString(), source: 'test', data: {} }).type, type);
+  assert.throws(() => validateOverlayEvent({ version: 1, type: 'unknown', timestamp: now.toISOString(), source: 'test', data: {} }), /invalid/);
+});
+
+test('multiple active clients receive one event while stale and gone connections are cleaned up', async () => {
+  const future = Math.floor(Date.now() / 1000) + 1000, sent: string[] = [], removed: string[] = [];
+  const outcome = await fanOutOverlayEvent([
+    { connectionId: 'a', publicationId: 'publication-1', expiresAtEpoch: future },
+    { connectionId: 'b', publicationId: 'publication-1', expiresAtEpoch: future },
+    { connectionId: 'stale', publicationId: 'publication-1', expiresAtEpoch: 1 },
+    { connectionId: 'gone', publicationId: 'publication-1', expiresAtEpoch: future },
+  ], { type: 'stream.follow' }, async (id) => { if (id === 'gone') throw Object.assign(new Error('gone'), { name: 'GoneException' }); sent.push(id); }, async (id) => { removed.push(id); });
+  assert.deepEqual(outcome, { delivered: 2, staleRemoved: 2, failed: 0 }); assert.deepEqual(sent.sort(), ['a', 'b']); assert.deepEqual(removed.sort(), ['gone', 'stale']);
+});
+
+test('fan-out isolates non-Gone failures and reports every outcome', async () => {
+  const future = Math.floor(Date.now() / 1000) + 1000, removed: string[] = [], failures: string[] = [];
+  const outcome = await fanOutOverlayEvent([
+    { connectionId: 'ok', expiresAtEpoch: future }, { connectionId: 'bad', expiresAtEpoch: future }, { connectionId: 'gone', expiresAtEpoch: future },
+  ], {}, async (id) => { if (id === 'bad') throw new Error('network'); if (id === 'gone') throw Object.assign(new Error('gone'), { $metadata: { httpStatusCode: 410 } }); }, async (id) => { removed.push(id); }, (_error, id) => failures.push(id));
+  assert.deepEqual(outcome, { delivered: 1, staleRemoved: 1, failed: 1 }); assert.deepEqual(removed, ['gone']); assert.deepEqual(failures, ['bad']);
+  assert.deepEqual(await fanOutOverlayEvent([], {}, async () => {}, async () => {}), { delivered: 0, staleRemoved: 0, failed: 0 });
+});
+
+test('fan-out isolates Gone and expired cleanup failures from successful clients', async () => {
+  const future = Math.floor(Date.now() / 1000) + 1000, sent: string[] = [], failures: string[] = [];
+  const outcome = await fanOutOverlayEvent([
+    { connectionId: 'ok', expiresAtEpoch: future }, { connectionId: 'gone-cleanup-fails', expiresAtEpoch: future },
+    { connectionId: 'expired-cleanup-fails', expiresAtEpoch: 1 }, { connectionId: 'expired-cleanup-succeeds', expiresAtEpoch: 1 },
+  ], {}, async (id) => { if (id === 'gone-cleanup-fails') throw Object.assign(new Error('gone'), { name: 'GoneException' }); sent.push(id); },
+  async (id) => { if (id.endsWith('fails')) throw new Error('delete failed'); }, (_error, id) => failures.push(id));
+  assert.deepEqual(outcome, { delivered: 1, staleRemoved: 1, failed: 2 }); assert.deepEqual(sent, ['ok']);
+  assert.deepEqual(failures.sort(), ['expired-cleanup-fails', 'gone-cleanup-fails']);
+});
+
+test('fan-out never rejects when every stale cleanup fails', async () => {
+  const future = Math.floor(Date.now() / 1000) + 1000;
+  const outcome = await fanOutOverlayEvent([
+    { connectionId: 'gone', expiresAtEpoch: future }, { connectionId: 'expired', expiresAtEpoch: 1 },
+  ], {}, async () => { throw Object.assign(new Error('gone'), { $metadata: { httpStatusCode: 410 } }); }, async () => { throw new Error('delete failed'); }, () => { throw new Error('logger failed'); });
+  assert.deepEqual(outcome, { delivered: 0, staleRemoved: 0, failed: 2 });
+});
+
+test('connection records bind one connection to the server-resolved publication with TTL', () => {
+  const record = createConnectionRecord('connection-1', 'publication-1', now.getTime());
+  assert.equal(record.publicationId, 'publication-1'); assert.equal(record.expiresAtEpoch, Math.floor(now.getTime() / 1000) + 86400);
+});

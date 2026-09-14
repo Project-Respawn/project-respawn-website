@@ -1,3 +1,13 @@
+export function assertCartItemsFulfillable(items) {
+  for (const item of items || []) {
+    if (String(item?.fulfillmentProvider || '').toLowerCase() !== 'printful') continue
+    if (!String(item?.fulfillmentVariantId || '').trim()) {
+      throw new Error('A Printful item is missing its fulfilment mapping. Remove it from the cart and select it again.')
+    }
+  }
+  return items
+}
+
 export function normaliseCartItem(item, index) {
   const title = item?.name ?? item?.title ?? item?.productTitle ?? item?.product_name
 
@@ -20,6 +30,10 @@ export function normaliseCartItem(item, index) {
 
 export function buildMerchCartItem({ product, variant, quantity, price, image, selectedColor, selectedSize, fallbackImage }) {
   const isPrintful = String(product?.sourceType || '').trim().toLowerCase() === 'printful'
+  const fulfillmentVariantId = variant?.fulfillmentVariantId || variant?.externalVariantId || ''
+  if (isPrintful && !String(fulfillmentVariantId).trim()) {
+    throw new Error('This Printful variant is not configured for fulfilment')
+  }
   return {
     id: product.id,
     productId: product.id,
@@ -30,9 +44,9 @@ export function buildMerchCartItem({ product, variant, quantity, price, image, s
     productUrl: product.productUrl || '',
     quantity,
     variantId: variant?.id || '',
-    externalVariantId: variant?.externalVariantId || '',
+    externalVariantId: fulfillmentVariantId,
     fulfillmentProvider: isPrintful ? 'printful' : 'manual',
-    fulfillmentVariantId: isPrintful ? variant?.externalVariantId || '' : '',
+    fulfillmentVariantId: isPrintful ? fulfillmentVariantId : '',
     variant: variant?.name || selectedSize || '',
     variantName: variant?.name || '',
     color: variant?.color || selectedColor || '',

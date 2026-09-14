@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { readFileSync } from 'node:fs'
-import { buildMerchCartItem, isSameCartVariant, normaliseCartItem } from '../commerce/cartItem.js'
+import { assertCartItemsFulfillable, buildMerchCartItem, isSameCartVariant, normaliseCartItem } from '../commerce/cartItem.js'
 
 test('checkout retains the exact selected Printful variant attributes', () => {
   const item = normaliseCartItem({
@@ -30,6 +30,14 @@ test('merch uses the Printful external ID for fulfillment and keeps the internal
   assert.notEqual(item.fulfillmentVariantId, item.variantId)
   assert.equal(item.color, 'Black')
   assert.equal(item.size, 'XL')
+})
+
+test('Printful merchandise cannot enter checkout without a sync variant ID', () => {
+  assert.throws(() => buildMerchCartItem({
+    product: { id: 'product-1', title: 'Shirt', sourceType: 'printful' },
+    variant: { id: 'internal', color: 'Blue', size: 'L' }, quantity: 1, price: 20,
+  }), /not configured for fulfilment/)
+  assert.throws(() => assertCartItemsFulfillable([{ fulfillmentProvider: 'printful', fulfillmentVariantId: '' }]), /missing its fulfilment mapping/)
 })
 
 test('same-product colour and size variants remain separate cart entries', () => {

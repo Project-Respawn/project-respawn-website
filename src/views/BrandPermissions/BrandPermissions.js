@@ -1,5 +1,6 @@
 import { generateClient } from 'aws-amplify/data';
-import { refreshAccessContext, useAccessContext } from '@/composables/useAccessContext.js';
+import { refreshAccessContext } from '@/composables/useAccessContext.js';
+import { filterAdminUsers, helperFormForUser } from './brandPermissionUserSearch.js';
 
 let client;
 function getClient() {
@@ -19,6 +20,11 @@ export default {
       error: '',
       message: '',
       currentGroups: [],
+      userSearchQuery: '',
+      userSearchResults: [],
+      searchingUsers: false,
+      userSearchPerformed: false,
+      selectedUser: null,
       helperForm: { userId: '', displayName: '', email: '', permissionKeys: [] },
       ownerUserId: '',
     };
@@ -79,6 +85,37 @@ export default {
       await this.loadDetails();
     },
 
+    async searchUsers() {
+      if (!this.userSearchQuery.trim()) {
+        this.userSearchResults = [];
+        this.userSearchPerformed = false;
+        this.error = 'Enter a username, display name or email.';
+        return;
+      }
+      this.searchingUsers = true;
+      this.userSearchPerformed = false;
+      this.error = '';
+      try {
+        const result = await getClient().queries.listAdminUsers();
+        if (result.errors?.length) throw new Error(result.errors[0].message);
+        this.userSearchResults = filterAdminUsers(result.data, this.userSearchQuery);
+        this.userSearchPerformed = true;
+      } catch (error) {
+        this.userSearchResults = [];
+        this.userSearchPerformed = true;
+        this.error = error?.message || 'Unable to search users.';
+      } finally {
+        this.searchingUsers = false;
+      }
+    },
+
+    selectUser(user) {
+      this.selectedUser = user;
+      this.helperForm = helperFormForUser(user, this.details?.helpers);
+      this.message = '';
+      this.error = '';
+    },
+
     togglePermission(permissionKey) {
       const keys = this.helperForm.permissionKeys;
       this.helperForm.permissionKeys = keys.includes(permissionKey)
@@ -87,6 +124,13 @@ export default {
     },
 
     editHelper(helper) {
+      this.selectedUser = {
+        cognitoSub: helper.userId,
+        username: helper.username || '',
+        displayName: helper.displayName || helper.username || helper.userId,
+        email: helper.email || '',
+        status: '',
+      };
       this.helperForm = {
         userId: helper.userId,
         displayName: helper.displayName || '',
@@ -98,6 +142,7 @@ export default {
 
     resetHelperForm() {
       this.helperForm = { userId: '', displayName: '', email: '', permissionKeys: [] };
+      this.selectedUser = null;
     },
 
     async saveHelper() {

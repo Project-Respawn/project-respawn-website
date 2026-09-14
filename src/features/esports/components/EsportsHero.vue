@@ -1,715 +1,483 @@
-<!-- src/features/esports/components/EsportsHero.vue -->
-
 <script setup>
 defineProps({
-  season: {
-    type: Object,
-    required: true,
-  },
+    season: {
+        type: Object,
+        required: true,
+    },
 });
 
 function scrollToSection(id) {
-  document.getElementById(id)?.scrollIntoView({
-    behavior: "smooth",
-    block: "start",
-  });
+    document
+        .getElementById(id)
+        ?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+        });
 }
 </script>
 
 <template>
-  <section class="esports-hero">
-    <div class="hero-darken"></div>
-    <div class="hero-purple-glow"></div>
-    <div class="hero-green-glow"></div>
+    <section class="esports-hero">
 
-    <div class="hero-shell">
+        <div class="hero-purple-glow"></div>
+        <div class="hero-green-glow"></div>
 
-      <!-- =====================================================
-           LEFT — HERO COPY
-      ====================================================== -->
-      <div class="hero-copy">
+        <div class="hero-content">
 
-        <div class="season-label">
-          <span class="status-dot"></span>
+            <div class="season-label">
+                {{ season.name }} • {{ season.year }}
+            </div>
 
-          {{ season.name }} • {{ season.year }}
-        </div>
+            <h1 class="hero-title">
 
-        <h1>
-          <span class="purple">
-            COMPETE.
-          </span>
+                <span class="purple">
+                    COMPETE.
+                </span>
 
-          <span>
-            CONNECT.
-          </span>
+                <span>
+                    CONNECT.
+                </span>
 
-          <span class="green">
-            RESPAWN.
-          </span>
-        </h1>
+                <span class="green">
+                    RESPAWN.
+                </span>
 
-        <p>
-          We're building competitive teams differently.
-          Our players compete while our community helps
-          build the journey around them.
-        </p>
+            </h1>
 
-        <div class="hero-actions">
+            <p class="hero-copy">
+                We’re building competitive teams differently.
+                Our players compete — our community builds alongside them.
+            </p>
 
-          <button
-            class="hero-button hero-button-primary"
-            @click="scrollToSection('teams')"
-          >
-            Explore Our Teams
-            <span>→</span>
-          </button>
+            <div class="hero-actions">
 
-          <button
-            class="hero-button hero-button-secondary"
-            @click="scrollToSection('tournaments')"
-          >
-            View Tournaments
-          </button>
+                <button
+                    type="button"
+                    class="hero-button hero-button-primary"
+                    @click="scrollToSection('teams')"
+                >
+                    Explore Our Teams
+                </button>
 
-        </div>
+                <button
+                    type="button"
+                    class="hero-button hero-button-secondary"
+                    @click="scrollToSection('tournaments')"
+                >
+                    View Tournaments
+                </button>
 
-      </div>
+            </div>
 
+            <div class="hero-identity">
 
-      <!-- =====================================================
-           CENTRE — SEASON ZERO JERSEY
-      ====================================================== -->
-      <div class="hero-jersey">
+                <div class="identity-mark">
+                    PROJECT
+                    <strong>RESPAWN</strong>
+                    <span>ESPORTS</span>
+                </div>
 
-        <div class="jersey-glow"></div>
+                <p>
+                    Season Zero starts here.
+                </p>
 
-        <img
-          src="@/assets/esports/season-zero-jersey.png"
-          alt="Project Respawn Season Zero esports jersey"
-        />
-
-        <div class="jersey-caption">
-          <span>OFFICIAL</span>
-
-          <strong>
-            SEASON ZERO JERSEY
-          </strong>
-        </div>
-
-      </div>
-
-
-      <!-- =====================================================
-           RIGHT — RESPAWN IDENTITY
-      ====================================================== -->
-      <div class="hero-identity">
-
-        <div class="identity-logo">
-
-          <img
-            src="@/assets/logo.png"
-            alt="Project Respawn"
-          />
+            </div>
 
         </div>
 
-        <div class="identity-copy">
-          <span>PROJECT</span>
-          <strong>RESPAWN</strong>
-          <small>ESPORTS</small>
-        </div>
+        <div class="hero-bottom-line"></div>
 
-        <div class="identity-line"></div>
-
-        <p>
-          Season Zero starts here.
-        </p>
-
-      </div>
-
-    </div>
-
-
-    <!-- =====================================================
-         BOTTOM DETAIL
-    ====================================================== -->
-    <div class="hero-bottom">
-
-      <div>
-        <span>01</span>
-        <strong>FIRST TEAM</strong>
-      </div>
-
-      <div>
-        <span>02</span>
-        <strong>FIRST SEASON</strong>
-      </div>
-
-      <div>
-        <span>03</span>
-        <strong>YOUR COMMUNITY</strong>
-      </div>
-
-    </div>
-
-  </section>
+    </section>
 </template>
-
 
 <style scoped>
 .esports-hero {
-  min-height: 700px;
+    min-height: 680px;
 
-  position: relative;
+    position: relative;
 
-  overflow: hidden;
+    display: flex;
 
-  border-bottom:
-    1px solid rgba(139, 92, 246, 0.25);
+    align-items: center;
+    justify-content: center;
 
-  background:
-    radial-gradient(
-      circle at 72% 30%,
-      rgba(126, 40, 255, 0.28),
-      transparent 28%
-    ),
-    radial-gradient(
-      circle at 87% 67%,
-      rgba(97, 255, 24, 0.09),
-      transparent 25%
-    ),
-    linear-gradient(
-      110deg,
-      rgba(3, 4, 5, 0.98),
-      rgba(8, 7, 18, 0.96) 55%,
-      rgba(9, 3, 15, 0.96)
-    );
-}
+    overflow: hidden;
 
+    padding:
+        110px 32px
+        90px;
 
-.hero-darken {
-  position: absolute;
-  inset: 0;
-
-  background:
-    linear-gradient(
-      to top,
-      #050607 0%,
-      transparent 35%
-    );
+    background:
+        radial-gradient(
+            circle at 20% 45%,
+            rgba(126, 40, 255, 0.15),
+            transparent 34%
+        ),
+        radial-gradient(
+            circle at 82% 48%,
+            rgba(97, 255, 24, 0.07),
+            transparent 32%
+        ),
+        rgba(5, 6, 9, 0.34);
 }
 
 
 .hero-purple-glow {
-  position: absolute;
+    width: 420px;
+    height: 620px;
 
-  width: 600px;
-  height: 600px;
+    position: absolute;
 
-  right: 20%;
-  top: 5%;
+    left: -260px;
+    top: 30px;
 
-  border-radius: 50%;
+    background:
+        rgba(126, 40, 255, 0.22);
 
-  background:
-    rgba(119, 25, 255, 0.08);
+    filter:
+        blur(120px);
 
-  filter: blur(80px);
+    pointer-events: none;
 }
 
 
 .hero-green-glow {
-  position: absolute;
+    width: 380px;
+    height: 580px;
 
-  width: 400px;
-  height: 400px;
+    position: absolute;
 
-  right: 2%;
-  bottom: 0;
+    right: -250px;
+    top: 90px;
 
-  border-radius: 50%;
+    background:
+        rgba(97, 255, 24, 0.10);
 
-  background:
-    rgba(97, 255, 24, 0.05);
+    filter:
+        blur(130px);
 
-  filter: blur(70px);
+    pointer-events: none;
 }
 
 
-.hero-shell {
-  width:
-    min(
-      1500px,
-      calc(100% - 40px)
+.hero-content {
+    width: min(
+        100%,
+        980px
     );
 
-  min-height: 650px;
+    position: relative;
 
-  margin: auto;
+    z-index: 2;
 
-  position: relative;
-  z-index: 2;
+    text-align: center;
 
-  display: grid;
+    display: flex;
 
-  grid-template-columns:
-    1fr
-    0.9fr
-    0.65fr;
+    flex-direction: column;
 
-  gap: 25px;
-
-  align-items: center;
-}
-
-
-/* =========================================================
-   COPY
-========================================================= */
-
-.hero-copy {
-  position: relative;
-  z-index: 4;
+    align-items: center;
 }
 
 
 .season-label {
-  display: flex;
-  align-items: center;
+    margin-bottom: 20px;
 
-  gap: 9px;
+    color: #8b5cf6;
 
-  color: #a855f7;
+    font-size: 0.72rem;
+    font-weight: 800;
 
-  font-size: 0.76rem;
-  font-weight: 800;
+    letter-spacing: 0.18em;
 
-  letter-spacing: 0.16em;
-
-  text-transform: uppercase;
+    text-transform: uppercase;
 }
 
 
-.status-dot {
-  width: 8px;
-  height: 8px;
+.hero-title {
+    margin: 0;
 
-  border-radius: 50%;
+    display: flex;
 
-  background: #61ff18;
+    flex-direction: column;
 
-  box-shadow:
-    0 0 12px #61ff18;
+    align-items: center;
+
+    font-size:
+        clamp(
+            4rem,
+            8vw,
+            7.6rem
+        );
+
+    font-weight: 900;
+
+    line-height: 0.82;
+
+    letter-spacing: -0.055em;
+
+    text-transform: uppercase;
 }
 
 
-.hero-copy h1 {
-  margin: 24px 0;
+.hero-title span {
+    display: block;
 
-  font-size:
-    clamp(
-      3.6rem,
-      6.5vw,
-      7.2rem
-    );
-
-  line-height: 0.84;
-
-  letter-spacing: -0.045em;
+    color: #ffffff;
 }
 
 
-.hero-copy h1 span {
-  display: block;
+.hero-title .purple {
+    color: #8b5cf6;
+
+    text-shadow:
+        0 0 36px
+        rgba(139, 92, 246, 0.22);
 }
 
 
-.purple {
-  color: #9c4dff;
+.hero-title .green {
+    color: #61ff18;
+
+    text-shadow:
+        0 0 36px
+        rgba(97, 255, 24, 0.15);
 }
 
 
-.green {
-  color: #61ff18;
-}
+.hero-copy {
+    max-width: 690px;
 
+    margin:
+        34px auto 0;
 
-.hero-copy p {
-  max-width: 500px;
+    color: #9a9ea8;
 
-  margin: 0;
+    font-size:
+        clamp(
+            0.95rem,
+            1.6vw,
+            1.1rem
+        );
 
-  color: #b0b3bd;
-
-  font-size: 1.05rem;
-
-  line-height: 1.7;
+    line-height: 1.7;
 }
 
 
 .hero-actions {
-  margin-top: 30px;
+    display: flex;
 
-  display: flex;
+    justify-content: center;
 
-  gap: 13px;
+    flex-wrap: wrap;
 
-  flex-wrap: wrap;
+    gap: 12px;
+
+    margin-top: 30px;
 }
 
 
 .hero-button {
-  padding: 14px 22px;
+    min-width: 190px;
 
-  cursor: pointer;
+    padding:
+        14px 22px;
 
-  font-size: 0.76rem;
-  font-weight: 800;
+    border: 1px solid transparent;
 
-  letter-spacing: 0.04em;
+    cursor: pointer;
 
-  text-transform: uppercase;
+    font: inherit;
 
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    font-size: 0.72rem;
+    font-weight: 800;
+
+    letter-spacing: 0.09em;
+
+    text-transform: uppercase;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 
 .hero-button:hover {
-  transform:
-    translateY(-2px);
+    transform:
+        translateY(-2px);
 }
 
 
 .hero-button-primary {
-  border: 1px solid #61ff18;
+    background: #8b5cf6;
 
-  background: #61ff18;
+    border-color:
+        #8b5cf6;
 
-  color: #061000;
+    color: #ffffff;
 
-  box-shadow:
-    0 0 22px rgba(97, 255, 24, 0.15);
+    box-shadow:
+        0 0 28px
+        rgba(139, 92, 246, 0.18);
+}
+
+
+.hero-button-primary:hover {
+    background:
+        #9a6cff;
+
+    box-shadow:
+        0 0 34px
+        rgba(139, 92, 246, 0.28);
 }
 
 
 .hero-button-secondary {
-  border:
-    1px solid #8b5cf6;
+    background:
+        rgba(5, 6, 8, 0.68);
 
-  background:
-    rgba(10, 10, 15, 0.6);
+    border-color:
+        rgba(97, 255, 24, 0.30);
 
-  color: #ffffff;
+    color: #d8dadf;
 }
 
 
-/* =========================================================
-   JERSEY
-========================================================= */
+.hero-button-secondary:hover {
+    border-color:
+        rgba(97, 255, 24, 0.65);
 
-.hero-jersey {
-  height: 620px;
-
-  position: relative;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
+    color: #ffffff;
 }
 
-
-.jersey-glow {
-  position: absolute;
-
-  width: 75%;
-  height: 65%;
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(139, 92, 246, 0.2),
-      transparent 65%
-    );
-
-  filter: blur(25px);
-}
-
-
-.hero-jersey img {
-  width: 100%;
-  max-width: 550px;
-
-  max-height: 600px;
-
-  position: relative;
-  z-index: 2;
-
-  object-fit: contain;
-
-  filter:
-    drop-shadow(
-      0 25px 40px
-      rgba(0, 0, 0, 0.7)
-    );
-}
-
-
-.jersey-caption {
-  position: absolute;
-
-  bottom: 35px;
-  left: 50%;
-
-  z-index: 3;
-
-  transform:
-    translateX(-50%);
-
-  min-width: 200px;
-
-  padding: 9px 15px;
-
-  text-align: center;
-
-  border:
-    1px solid
-    rgba(139, 92, 246, 0.35);
-
-  background:
-    rgba(4, 5, 8, 0.85);
-
-  backdrop-filter: blur(10px);
-}
-
-
-.jersey-caption span,
-.jersey-caption strong {
-  display: block;
-}
-
-
-.jersey-caption span {
-  color: #777b85;
-
-  font-size: 0.57rem;
-
-  letter-spacing: 0.14em;
-}
-
-
-.jersey-caption strong {
-  margin-top: 3px;
-
-  font-size: 0.69rem;
-
-  letter-spacing: 0.06em;
-}
-
-
-/* =========================================================
-   IDENTITY
-========================================================= */
 
 .hero-identity {
-  text-align: center;
+    margin-top: 50px;
+
+    padding-top: 28px;
+
+    border-top:
+        1px solid
+        rgba(255, 255, 255, 0.08);
 }
 
 
-.identity-logo {
-  width: 240px;
-  height: 240px;
+.identity-mark {
+    color: #ffffff;
 
-  margin: auto;
+    font-size: 0.67rem;
+    font-weight: 800;
 
-  display: grid;
-  place-items: center;
+    line-height: 1.05;
 
-  position: relative;
+    letter-spacing: 0.14em;
 }
 
 
-.identity-logo::before {
-  content: "";
+.identity-mark strong {
+    display: block;
 
-  position: absolute;
+    margin:
+        4px 0 2px;
 
-  inset: 15%;
+    font-size: 1.28rem;
 
-  border-radius: 50%;
-
-  background:
-    rgba(126, 40, 255, 0.15);
-
-  filter: blur(35px);
+    letter-spacing: 0.06em;
 }
 
 
-.identity-logo img {
-  width: 100%;
-  height: 100%;
+.identity-mark span {
+    display: block;
 
-  position: relative;
+    color: #61ff18;
 
-  object-fit: contain;
-
-  filter:
-    drop-shadow(
-      0 0 28px
-      rgba(139, 92, 246, 0.35)
-    );
-}
-
-
-.identity-copy span,
-.identity-copy strong,
-.identity-copy small {
-  display: block;
-}
-
-
-.identity-copy span {
-  color: #aaaeb8;
-
-  font-size: 0.7rem;
-
-  letter-spacing: 0.28em;
-}
-
-
-.identity-copy strong {
-  margin: 2px 0;
-
-  font-size: 1.8rem;
-
-  letter-spacing: 0.08em;
-}
-
-
-.identity-copy small {
-  color: #61ff18;
-
-  letter-spacing: 0.3em;
-}
-
-
-.identity-line {
-  width: 70px;
-  height: 1px;
-
-  margin: 18px auto;
-
-  background: #8b5cf6;
+    font-size: 0.72rem;
 }
 
 
 .hero-identity p {
-  color: #777b85;
+    margin:
+        10px 0 0;
 
-  font-size: 0.75rem;
+    color: #656973;
 
-  text-transform: uppercase;
+    font-size: 0.68rem;
 
-  letter-spacing: 0.08em;
+    letter-spacing: 0.08em;
+
+    text-transform: uppercase;
 }
 
 
-/* =========================================================
-   BOTTOM
-========================================================= */
-
-.hero-bottom {
-  width:
-    min(
-      1500px,
-      calc(100% - 40px)
+.hero-bottom-line {
+    width: min(
+        78%,
+        900px
     );
 
-  margin: auto;
+    height: 1px;
 
-  position: relative;
-  z-index: 3;
+    position: absolute;
 
-  display: flex;
+    bottom: 0;
+    left: 50%;
 
-  gap: 40px;
+    transform:
+        translateX(-50%);
 
-  padding-bottom: 22px;
-}
-
-
-.hero-bottom div {
-  display: flex;
-  align-items: center;
-
-  gap: 8px;
-}
-
-
-.hero-bottom span {
-  color: #8b5cf6;
-
-  font-size: 0.63rem;
-}
-
-
-.hero-bottom strong {
-  color: #696d77;
-
-  font-size: 0.63rem;
-
-  letter-spacing: 0.08em;
-}
-
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media (max-width: 1100px) {
-
-  .hero-shell {
-    grid-template-columns:
-      1fr 1fr;
-  }
-
-
-  .hero-identity {
-    display: none;
-  }
-
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(139, 92, 246, 0.55),
+            rgba(97, 255, 24, 0.28),
+            transparent
+        );
 }
 
 
 @media (max-width: 750px) {
 
-  .esports-hero {
-    min-height: auto;
-  }
+    .esports-hero {
+        min-height: 610px;
+
+        padding:
+            90px 20px
+            70px;
+    }
 
 
-  .hero-shell {
-    grid-template-columns: 1fr;
-
-    padding-top: 100px;
-  }
-
-
-  .hero-jersey {
-    height: 480px;
-  }
+    .hero-title {
+        font-size:
+            clamp(
+                3.25rem,
+                17vw,
+                5.2rem
+            );
+    }
 
 
-  .hero-bottom {
-    flex-wrap: wrap;
+    .hero-copy {
+        margin-top: 28px;
+    }
 
-    gap: 16px;
-  }
+
+    .hero-actions {
+        width: 100%;
+    }
+
+
+    .hero-button {
+        width: 100%;
+        max-width: 310px;
+    }
+
+
+    .hero-identity {
+        margin-top: 38px;
+    }
 
 }
 </style>

@@ -583,10 +583,22 @@
 }
 
 .canvas-panel .canvas-scaler {
+  position:
+    relative;
+
   margin: auto;
 }
 
 .canvas-panel .overlay-canvas {
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  overflow:
+    hidden;
+
   background-image:
     url('/images/overlay-previews/fantasy-moba-draft.png')
     !important;
@@ -2283,6 +2295,12 @@
    ============================================================ */
 
 .widget-frame {
+  position:
+    absolute;
+
+  box-sizing:
+    border-box;
+
   cursor:
     grab;
 
@@ -2347,6 +2365,125 @@
 .widget-frame.locked {
   cursor:
     not-allowed;
+}
+
+.resize-handle {
+  --handle-size:
+    calc(12px * var(--editor-inverse-scale, 1));
+
+  position:
+    absolute;
+
+  z-index:
+    10;
+
+  width:
+    var(--handle-size);
+
+  height:
+    var(--handle-size);
+
+  box-sizing:
+    border-box;
+
+  border:
+    calc(2px * var(--editor-inverse-scale, 1)) solid #ffffff;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--overlay-primary, #8b5cf6);
+
+  box-shadow:
+    0 1px calc(4px * var(--editor-inverse-scale, 1)) rgba(0, 0, 0, 0.55);
+
+  touch-action:
+    none;
+}
+
+.resize-handle.n,
+.resize-handle.s {
+  left:
+    50%;
+
+  cursor:
+    ns-resize;
+}
+
+.resize-handle.e,
+.resize-handle.w {
+  top:
+    50%;
+
+  cursor:
+    ew-resize;
+}
+
+.resize-handle.nw,
+.resize-handle.se {
+  cursor:
+    nwse-resize;
+}
+
+.resize-handle.ne,
+.resize-handle.sw {
+  cursor:
+    nesw-resize;
+}
+
+.resize-handle.nw,
+.resize-handle.n,
+.resize-handle.ne {
+  top:
+    calc(var(--handle-size) / -2);
+}
+
+.resize-handle.sw,
+.resize-handle.s,
+.resize-handle.se {
+  bottom:
+    calc(var(--handle-size) / -2);
+}
+
+.resize-handle.nw,
+.resize-handle.w,
+.resize-handle.sw {
+  left:
+    calc(var(--handle-size) / -2);
+}
+
+.resize-handle.ne,
+.resize-handle.e,
+.resize-handle.se {
+  right:
+    calc(var(--handle-size) / -2);
+}
+
+.resize-handle.n,
+.resize-handle.s {
+  transform:
+    translateX(-50%);
+}
+
+.resize-handle.e,
+.resize-handle.w {
+  transform:
+    translateY(-50%);
+}
+
+.resize-handle:hover {
+  background:
+    #ffffff;
+}
+
+.canvas-viewport.preview .widget-frame,
+.canvas-viewport.preview .widget-renderer {
+  cursor:
+    default !important;
+
+  pointer-events:
+    none;
 }
 
 

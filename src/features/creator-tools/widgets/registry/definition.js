@@ -19,10 +19,11 @@ export function defineWidget(definition) {
   const categories = Object.freeze([...(definition.categories || [])])
   const integrations = Object.freeze([...(definition.integrations || [])])
   const topics = Object.freeze([...(definition.topics || [])])
+  const displayMode = definition.displayMode || (categories.includes('alerts') || definition.type === 'tts' ? 'triggered' : 'always')
   const capabilities = Object.freeze({ ...defaultCapabilities, ...definition.capabilities })
   const requirements = Object.freeze({ ...defaultRequirements, ...definition.requirements, integrations: Object.freeze([...(definition.requirements?.integrations || [])]) })
   return Object.freeze({
-    ...definition, defaultSize, minimumSize, defaultSettings, categories, integrations, topics, capabilities, requirements,
+    ...definition, defaultSize, minimumSize, defaultSettings, categories, integrations, topics, displayMode, capabilities, requirements,
     // Compatibility fields consumed by the current editor and persisted demo model.
     category: definition.legacyCategory,
     size: Object.freeze([defaultSize.width, defaultSize.height]),

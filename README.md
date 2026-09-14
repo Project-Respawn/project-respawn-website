@@ -148,6 +148,48 @@ Utility scripts live here.
 - [src/api/products.ts](src/api/products.ts) expects `PRINTFUL_API_KEY` on the backend and returns transformed Printful product data to the frontend.
 - [src/composables/useCheckout.js](src/composables/useCheckout.js) reads the API base URL from [src/config/apiBaseUrl.js](src/config/apiBaseUrl.js), then calls the Revolut checkout route with the current cart and customer details.
 
+## Cognito Integration Architecture
+
+This section is critical for developers working with auth, Twitch integration, and cross-environment deployments.
+
+### User Identity Resolution
+
+The app uses three Cognito identifier fields, each with different guarantees and contexts:
+
+- `sub` — UUID, globally unique, never changes, stable across all contexts
+- `userId` — Optional custom attribute, may vary by environment or migration state
+- `username` — Email address (for email login), changes on user request
+
+When resolving a user for backend lookups (e.g., Twitch broadcaster connection, profile data):
+
+1. Try `sub` first (highest priority, always present)
+2. Fall back to `userId` if `sub` fails
+3. Fall back to `username` if both fail
+
+This pattern is used in [src/views/Bot/Settings/BotSettings.vue](src/views/Bot/Settings/BotSettings.vue) and [src/views/Bot/Twitch/TwitchCommands/TwitchCommands.vue](src/views/Bot/Twitch/TwitchCommands/TwitchCommands.vue) to avoid false "not connected" states when the backend connection was stored under a different identifier.
+
+### Amplify Outputs Configuration
+
+**Critical for CI/CD and hosted deployments:**
+
+The frontend must generate branch-specific `amplify_outputs.json` during the Amplify build process. The Cognito User Pool ID, Identity Pool ID, and AppSync API endpoint differ per branch and must be populated correctly or auth will fail.
+
+In CI/CD pipelines, generate outputs with:
+
+```bash
+npx ampx generate outputs --branch "$AWS_BRANCH" --app-id <app-id> --format json --out-dir .
+```
+
+**Do not**:
+- Manually override `Auth` configuration in `Amplify.configure()` when using `amplify_outputs.json`. This can cause User Pool and Identity Pool mismatch, resulting in Cognito Identity 400 errors on staging or production.
+- Commit `amplify_outputs.json` to version control; regenerate it per branch and environment.
+- Allow staging to inherit the production API URL or Cognito pool IDs.
+
+**Always**:
+- Use `Amplify.configure(outputs)` to keep Cognito resources consistent with deployed backend.
+- Regenerate and validate outputs after sandbox recreation or schema changes.
+- Verify in [src/config/apiBaseUrl.js](src/config/apiBaseUrl.js) that the correct API base URL is loaded for the current environment.
+
 ## Core Features Deep Dive
 
 This section is meant as a handoff reference for developers integrating this app with external systems.
@@ -172,6 +214,26 @@ Current behavior:
 - Suggested commands are pre-seeded in UI logic and can be enabled/edited into streamer-specific commands.
 - The settings page handles Twitch connect/reconnect UX and status refresh.
 - Alerts, moderation, and TTS pages are implemented UI surfaces with active structures for future persistence and runtime linkage.
+
+#### Twitch Connection Status and OAuth Flow
+
+**Connection lookup and reconciliation:**
+
+Connection status is fetched via `GET /api/twitch/connection-by-user` in [src/views/Bot/Settings/BotSettings.vue](src/views/Bot/Settings/BotSettings.vue). The endpoint looks up broadcaster connections using the user's Cognito identifier. To account for identifier variations (see [Cognito Integration Architecture](#cognito-integration-architecture)), the frontend may retry the connection lookup using multiple identifier formats (`sub`, `userId`, `username`) to ensure the most recent connection is returned.
+
+**OAuth callback and re-fetch:**
+
+After an OAuth redirect from Twitch, the callback query/hash is detected in the settings page component. A robust re-fetch with exponential backoff ensures the UI reflects the newly connected state instead of showing a stale "not connected" message. This polling pattern handles:
+
+- Cognito token refresh delays
+- Backend connection record propagation delays
+- Client-side cache invalidation
+
+**Implementation notes:**
+
+- Do not assume connection lookup will succeed immediately after OAuth callback.
+- Always retry with all three Cognito identifier formats in [src/views/Bot/Twitch/TwitchCommands/TwitchCommands.vue](src/views/Bot/Twitch/TwitchCommands/TwitchCommands.vue) and [src/views/Bot/Settings/BotSettings.vue](src/views/Bot/Settings/BotSettings.vue) to avoid false negatives.
+- If an OAuth redirect is detected but the connection still shows as missing after polling, the backend lookup may have failed or the connection record was not created. Check backend logs and Cognito identifier mismatch.
 
 Integration significance:
 
@@ -274,6 +336,39 @@ Current behavior:
 - Use broadcaster/server IDs as secondary mapping keys for platform-specific integrations.
 - Keep feature flags or rollout guards for profile modules and dashboard subtools to avoid blocking release when one integration is incomplete.
 
+## Deployment and Output Management
+
+### Branch-Specific Cognito and AppSync Outputs
+
+Each Amplify branch (development, staging, production) has its own Cognito User Pool, Identity Pool, and AppSync GraphQL endpoint. The `amplify_outputs.json` file is the contract between the deployed backend and the frontend runtime configuration.
+
+**Generation strategy:**
+
+- `amplify_outputs.json` is generated per-deployment via `npx ampx generate outputs --branch <branch> --app-id <app-id> --format json --out-dir .`
+- Never commit `amplify_outputs.json` to version control; treat it as a build artifact
+- CI/CD must regenerate outputs as part of the build process for each branch
+- Local development uses the `Ntgrestage8` sandbox; outputs are generated via `npm run dev:sandbox`
+
+**Integration with frontend build:**
+
+- [scripts/validate-vite-api-base-url.mjs](scripts/validate-vite-api-base-url.mjs) runs before Vite starts and validates that Cognito and AppSync resources match the expected sandbox identifier
+- [src/config/apiBaseUrl.js](src/config/apiBaseUrl.js) consumes `amplify_outputs.json` to derive the API base URL for the current environment
+- The build will fail if outputs are missing, stale, or point to the wrong sandbox or branch
+
+**Gotchas:**
+
+- Stale outputs + Cognito session mismatch = Cognito Identity 400 on staging (incorrect User Pool or Identity Pool ID)
+- Manual `Amplify.configure()` overrides bypass the schema validation, leading to downstream resource conflicts
+- Staging inheritance of production Cognito IDs breaks auth for staging users
+
+### Schema Validation and Custom Operations
+
+After any change to [amplify/data/](amplify/data/) or [amplify/backend.ts](amplify/backend.ts), the frontend custom GraphQL operations must be regenerated and validated.
+
+- [scripts/validate-amplify-contract.mjs](scripts/validate-amplify-contract.mjs) verifies that all custom operations used by the frontend are present in both the current schema and the generated `amplify_outputs.json`
+- If this validation fails, the schema was changed but operations were not regenerated, or the sandbox was not redeployed
+- Always run `npm run dev:sandbox` after backend changes, then re-run validation before starting Vite
+
 ## Running The Project
 
 1. Install dependencies with `npm install`.
@@ -344,6 +439,41 @@ VITE_REVOLUT_PUBLIC_KEY=<sandbox-public-merchant-api-key>
 
 The public Merchant key is browser-safe, but its value should remain in local or branch environment configuration rather than source control. Local sandbox secrets are separate from hosted Amplify branch secrets.
 
+## Sandbox and Environment Isolation Best Practices
+
+### When Sandbox Outputs Become Stale
+
+Several scenarios can cause `amplify_outputs.json` to become inconsistent with the running sandbox:
+
+- Backend schema change without redeployment
+- Sandbox deletion/recreation without new outputs generation
+- Manual changes to Amplify resources outside the CDK definitions
+- Switching between different developer sandboxes without updating outputs
+
+**Recovery:**
+
+1. Stop Vite (`Ctrl+C` in terminal 2)
+2. Run `npm run dev:sandbox` and wait for full deployment (terminal 1)
+3. Verify `amplify_outputs.json` was regenerated (check timestamp)
+4. Restart Vite with `npm run dev` (terminal 2)
+5. Sign out and sign back in to refresh Cognito sessions (old sessions may point to old pool IDs)
+
+**Do not manually edit `amplify_outputs.json`** — it is generated by Amplify and must be byte-for-byte accurate or auth will fail in cryptic ways.
+
+### Protecting the Sandbox
+
+The `Ntgrestage8` sandbox identifier and its generated AWS resources (Cognito User Pool, AppSync, Lambda, S3, etc.) are considered protected local infrastructure. Do **not**:
+
+- Delete it to "fix" issues (deletions are permanent and require full recreation)
+- Recreate it without explicit user authorization
+- Change the sandbox identifier or create a parallel sandbox for the same local developer
+- Manually replace generated Cognito pool IDs or AppSync endpoint IDs
+- Run `npx ampx sandbox delete --identifier Ntgrestage8` unless explicitly instructed and authorized
+
+**Authorized deletion** is destructive and requires re-authentication, user recreation, and group reassignment after the replacement sandbox deploys.
+
+See [docs/local-amplify-development.md](docs/local-amplify-development.md) for all backend modification workflows.
+
 The following destructive command is documented only for an explicitly authorized teardown. Never infer authorization from a general repair or deployment request:
 
 ```bash
@@ -351,6 +481,8 @@ npx ampx sandbox delete --identifier Ntgrestage8
 ```
 
 Deleting recreates resource IDs and requires a fresh sign-in after the replacement sandbox is deployed.
+
+
 
 ## Additional Commands
 
@@ -376,6 +508,54 @@ The backend and utility scripts also use these secrets or environment values:
 - `APP_ENV` is set in the Amplify function environment for the shared backend function.
 
 Use a real API Gateway base URL for `VITE_API_BASE_URL`, including the deployed stage path. Do not use placeholder stage tokens. The build validation script rejects empty, relative, or placeholder values.
+
+## Senior Developer Integration Checklist
+
+Use this checklist when onboarding to the codebase, adding new features, or integrating external systems:
+
+### Before Starting
+
+- [ ] Read [docs/local-amplify-development.md](docs/local-amplify-development.md) for backend modification procedures
+- [ ] Review the [Cognito Integration Architecture](#cognito-integration-architecture) section, especially identifier resolution
+- [ ] Understand the [Deployment and Output Management](#deployment-and-output-management) workflow and when `amplify_outputs.json` becomes stale
+- [ ] Verify your local `Ntgrestage8` sandbox is running and `npm run dev` validates successfully
+
+### When Integrating Third-Party Services
+
+- [ ] Map user identity to Cognito `sub` (primary), fallback to `userId` and `username`
+- [ ] Do not assume immediate consistency after OAuth/callback flows; implement polling with exponential backoff
+- [ ] Backend lookups (broadcaster connection, profile data, etc.) should accept and retry with multiple Cognito identifiers
+- [ ] Store platform-specific IDs (Twitch broadcaster ID, Discord server ID) as separate attributes on the user or connection record, not as primary keys
+
+### When Modifying the Backend
+
+- [ ] After schema changes, run `npm run dev:sandbox` to redeploy and regenerate outputs
+- [ ] Run [scripts/validate-amplify-contract.mjs](scripts/validate-amplify-contract.mjs) to verify custom operations
+- [ ] Commit the change (not the `amplify_outputs.json` artifact)
+- [ ] Document any new custom operations or resolver behavior in `amplify/data/` or `amplify/backend.ts` comments
+
+### When Deploying to Hosted Environments
+
+- [ ] Generate branch-specific `amplify_outputs.json` via CI/CD using `npx ampx generate outputs --branch <branch> ...`
+- [ ] Configure `VITE_API_BASE_URL` to the correct API Gateway endpoint for the branch
+- [ ] Ensure `VITE_REVOLUT_MODE` is `sandbox` for staging and `live` for production
+- [ ] Configure branch-specific Cognito identity pool and User Pool IDs (via `Amplify.configure(outputs)`, not manual overrides)
+- [ ] Run [scripts/validate-vite-api-base-url.mjs](scripts/validate-vite-api-base-url.mjs) in the build pipeline
+
+### When Debugging Auth Issues
+
+- [ ] Check the Cognito User Pool ID and Identity Pool ID in the browser via `fetchAuthSession()` and compare to `amplify_outputs.json`
+- [ ] Verify the current branch-specific outputs were generated (check `amplify_outputs.json` timestamp)
+- [ ] Check for Cognito 400 errors, which typically indicate User Pool / Identity Pool mismatch
+- [ ] If "not connected" appears after OAuth, check that retry polling is working and that backend lookup tried all three identifier formats
+- [ ] Sign out and sign back in to refresh Cognito sessions after sandbox or pool changes
+
+### When Extending the Dashboard
+
+- [ ] Twitch is fully wired (connection lookup, command persistence, OAuth flow); use it as the reference implementation
+- [ ] Discord has UI shell but backend wiring in progress; coordinate with [docs/local-amplify-development.md](docs/local-amplify-development.md) before wiring persistence
+- [ ] All dashboard sub-routes use the shared sidebar navigation and brand store; keep this consistent
+- [ ] Feature-gate new dashboard tools with release flags in [src/composables/useAuth.js](src/composables/useAuth.js) or a dedicated feature-flags composable
 
 ## Dependencies
 

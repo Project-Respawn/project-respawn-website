@@ -68,6 +68,19 @@ export function moveFrame(frame, delta, bounds, others = [], snap = true, option
   return { frame: { ...frame, x: Math.round(x), y: Math.round(y) }, guides }
 }
 
+export function nudgeWidgetFrame(widget, key, shiftKey, bounds, draggable = true) {
+  if (!widget || widget.locked || draggable === false) return null
+  const amount = shiftKey ? 10 : 1
+  const deltas = {
+    ArrowLeft: { x: -amount, y: 0 },
+    ArrowRight: { x: amount, y: 0 },
+    ArrowUp: { x: 0, y: -amount },
+    ArrowDown: { x: 0, y: amount },
+  }
+  const delta = deltas[key]
+  return delta ? moveFrame(widget.frame, delta, bounds, [], false).frame : null
+}
+
 export function resizeFrame(frame, handle, delta, bounds, minimum = { width: 80, height: 50 }) {
   let { x, y, width, height } = frame
   const right = frame.x + frame.width

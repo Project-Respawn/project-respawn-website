@@ -2,4 +2,3 @@ export { handleCreateManagedTwitchCommand, handleDeleteManagedTwitchCommand, han
 export { handleTwitchCommandsLookup, handleTwitchCommandsMe } from './handlers'
 export { handleStartTwitchIntegrationOAuth, handleGetMyTwitchIntegration, handleDisconnectTwitchIntegration } from './integrationHandlers'
 export { handleTwitchOAuthCallback } from './oauthHandlers'
-export { handleTwitchRuntime } from './runtimeHandlers'

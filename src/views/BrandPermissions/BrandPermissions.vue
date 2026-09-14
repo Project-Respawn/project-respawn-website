@@ -33,16 +33,27 @@
       <section v-if="details" class="grid">
         <form class="card" @submit.prevent="saveHelper">
           <h2>{{ helperForm.userId ? 'Update helper' : 'Add helper' }}</h2>
-          <label class="field"><span>Helper Cognito user ID</span><input v-model.trim="helperForm.userId" required :disabled="saving" /></label>
-          <label class="field"><span>Display name (optional)</span><input v-model.trim="helperForm.displayName" :disabled="saving" /></label>
-          <label class="field"><span>Email (optional)</span><input v-model.trim="helperForm.email" type="email" :disabled="saving" /></label>
+          <div class="user-search">
+            <label class="field"><span>Search users</span><input v-model.trim="userSearchQuery" placeholder="Username or email" :disabled="searchingUsers || saving" @keyup.enter.prevent="searchUsers" /></label>
+            <button type="button" class="secondary" :disabled="searchingUsers || saving" @click="searchUsers">{{ searchingUsers ? 'Searching…' : 'Search' }}</button>
+          </div>
+          <p v-if="userSearchPerformed && !searchingUsers && !userSearchResults.length" class="muted">No matching users found.</p>
+          <article v-for="user in userSearchResults" :key="user.cognitoSub" class="user-result">
+            <div><strong>{{ user.displayName }}</strong><small>{{ user.email || user.username }}</small><small>{{ user.status }}{{ user.enabled ? '' : ' · Disabled' }}</small></div>
+            <button type="button" class="secondary" :disabled="saving" @click="selectUser(user)">Select User</button>
+          </article>
+          <div v-if="selectedUser" class="selected-user">
+            <strong>Selected: {{ selectedUser.displayName }}</strong>
+            <small>{{ selectedUser.email || selectedUser.username }}</small>
+          </div>
+          <input v-model="helperForm.userId" type="hidden" />
           <fieldset><legend>Brand permissions</legend>
             <label v-for="permissionKey in details.availablePermissionKeys" :key="permissionKey" class="check">
               <input type="checkbox" :checked="helperForm.permissionKeys.includes(permissionKey)" :disabled="saving" @change="togglePermission(permissionKey)" />
               {{ permissionKey }}
             </label>
           </fieldset>
-          <button :disabled="saving">{{ saving ? 'Saving…' : 'Save helper' }}</button>
+          <button :disabled="saving || !helperForm.userId">{{ saving ? 'Saving…' : 'Save helper' }}</button>
           <button type="button" class="secondary" :disabled="saving" @click="resetHelperForm">Reset</button>
         </form>
 

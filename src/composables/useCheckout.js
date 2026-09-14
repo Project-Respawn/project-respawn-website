@@ -1,7 +1,7 @@
 import { computed, nextTick, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import RevolutCheckout from '@revolut/checkout'
 import { getApiBaseUrl, joinApiUrl } from '../config/apiBaseUrl'
-import { isSameCartVariant, normaliseCartItem } from '../commerce/cartItem.js'
+import { assertCartItemsFulfillable, isSameCartVariant, normaliseCartItem } from '../commerce/cartItem.js'
 
 function getErrorMessage(error, fallback) {
   if (error instanceof Error && error.message) {
@@ -160,6 +160,7 @@ export function useCheckout() {
     }
 
     if (!cartItems.value.length) throw new Error('Your cart is empty')
+    assertCartItemsFulfillable(cartItems.value)
   }
 
   function destroyEmbeddedCheckout() {
@@ -205,6 +206,7 @@ export function useCheckout() {
       throw new Error('Missing API base URL for checkout')
     }
 
+    assertCartItemsFulfillable(cartItems.value)
     const projectOrderId = `PR-${Date.now()}`
     const orderItems = cartItems.value.map((item) => ({
       productId: item.productId,

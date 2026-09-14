@@ -22,3 +22,9 @@ test('registry normalizes interaction capabilities and minimum sizes', () => {
   assert.equal(fixed.capabilities.draggable, false)
   assert.equal(fixed.capabilities.resizable, false)
 })
+
+test('registry assigns safe display modes to event-driven widgets', () => {
+  assert.equal(defineWidget({ type: 'alerts', categories: ['alerts'], defaultSize: {}, defaultSettings: {} }).displayMode, 'triggered')
+  assert.equal(defineWidget({ type: 'tts', categories: ['tts-audio'], defaultSize: {}, defaultSettings: {} }).displayMode, 'triggered')
+  assert.equal(defineWidget({ type: 'twitch-chat', categories: ['chat'], defaultSize: {}, defaultSettings: {} }).displayMode, 'always')
+})

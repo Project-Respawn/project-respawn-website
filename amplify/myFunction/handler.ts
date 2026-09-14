@@ -6,7 +6,7 @@ import { getResolverFieldName, isAppSyncResolverEvent, routeAppSync } from './ro
 import { routeRest } from './router/restRouter'
 
 /** Single Lambda entry point; protocol-specific routing remains isolated. */
-export const handler: Handler = async (event) => {
+export const handler: Handler = async (event, context) => {
   try {
     if (isAppSyncResolverEvent(event)) {
       const response = await routeAppSync(event)
@@ -22,7 +22,7 @@ export const handler: Handler = async (event) => {
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown error'
     logger.error('API request failed', { message })
-    if (isAppSyncResolverEvent(event)) throw new Error(message)
+    if (isAppSyncResolverEvent(event)) throw new Error(`${message}${context?.awsRequestId ? ` (request ${context.awsRequestId})` : ''}`)
     return jsonResponse(500, { error: 'Request failed', message })
   }
 }

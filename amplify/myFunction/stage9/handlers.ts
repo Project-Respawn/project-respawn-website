@@ -2,6 +2,7 @@ import { writePermissionAudit } from '../shared/audit'
 import { requireEffectivePermission } from '../shared/requirePermission'
 import { getIdentityUsername, getResolverIdentity } from '../shared/auth'
 import { decodeFulfillmentOrder } from '../fulfillment/orderJson'
+import { isProvablyMalformedFulfillmentOrder } from '../fulfillment/orderValidation'
 
 async function loadDataClient() { return (await import('../shared/dataClient')).getDataClient() as any }
 
@@ -13,9 +14,21 @@ async function listAll(client: any, modelName: string) {
 function ok(result: any, label: string) { if (result.errors?.length) throw new Error(result.errors[0].message || `${label} failed`); return result.data }
 function mutationResult(id: string, message?: string) { return { success: true, message: message || null, resourceId: id } }
 
+function orderTime(order: any) {
+  const timestamp = Date.parse(String(order?.createdAt || order?.updatedAt || ''))
+  return Number.isFinite(timestamp) ? timestamp : 0
+}
+
+export function prepareManagedOrders(records: any[]) {
+  return records
+    .map(decodeFulfillmentOrder)
+    .filter((order) => order && !isProvablyMalformedFulfillmentOrder(order))
+    .sort((left, right) => orderTime(right) - orderTime(left))
+}
+
 export async function handleListManagedOrders(event: any, injected?: any) {
   const client = injected || await loadDataClient(); await requireEffectivePermission(event, client, 'orders.view')
-  return { orders: (await listAll(client, 'FulfillmentOrder')).map(decodeFulfillmentOrder) }
+  return { orders: prepareManagedOrders(await listAll(client, 'FulfillmentOrder')) }
 }
 export async function handleListManagedProfiles(event: any, injected?: any) {
   const client = injected || await loadDataClient(); await requireEffectivePermission(event, client, 'profiles.staff.view')
@@ -76,7 +89,9 @@ export async function handleImportManagedRevolutOrder(event: any, injected?: any
   if (existing) return mutationResult(existing.id, 'Order already imported')
   const { fetchRevolutMerchantOrder } = await import('../revolut'); const payment = await fetchRevolutMerchantOrder(revolutOrderId); const body = payment.body as any; const state = String(body?.state || '').toLowerCase()
   if (payment.statusCode < 200 || payment.statusCode >= 300 || !['paid', 'completed', 'captured'].includes(state)) throw new Error('Revolut payment is not paid')
-  const created = ok(await client.models.FulfillmentOrder.create({ projectOrderId: body.merchant_order_ext_ref || revolutOrderId, revolutOrderId, paymentStatus: state, paymentDate: new Date().toISOString(), paymentAmount: typeof body.amount === 'number' ? body.amount : null, currency: body.currency || null, overallFulfillmentStatus: 'recovery_required', customerName: '', email: body.email || '', shippingAddress: JSON.stringify({}), items: JSON.stringify([]), providerStatuses: JSON.stringify({}), auditHistory: JSON.stringify([]), createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }), 'Order import')
+  const now = new Date().toISOString()
+  const { createValidatedFulfillmentOrder } = await import('../fulfillment')
+  const created = await createValidatedFulfillmentOrder(client, { projectOrderId: body.merchant_order_ext_ref || revolutOrderId, revolutOrderId, paymentStatus: state, paymentDate: now, paymentAmount: typeof body.amount === 'number' ? body.amount : null, currency: body.currency || null, environment: String(process.env.REVOLUT_MODE || '').toLowerCase() === 'prod' ? 'production' : 'sandbox', overallFulfillmentStatus: 'recovery_required', customerName: '', email: body.email || '', phone: '', shippingAddress: JSON.stringify({}), items: JSON.stringify([]), providerStatuses: JSON.stringify({}), auditHistory: JSON.stringify([{ timestamp: now, action: 'Existing Revolut order imported by admin', result: 'recovery_required', provider: 'revolut' }]), createdAt: now, updatedAt: now })
   await writePermissionAudit(client, actor.actorUserId, 'order.revolut.import', 'FulfillmentOrder', created.id, null, { revolutOrderId, overallFulfillmentStatus: 'recovery_required' })
   return mutationResult(created.id)
 }
