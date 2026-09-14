@@ -1,0 +1,16 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { parse, compileTemplate, compileScript } from '@vue/compiler-sfc';
+import { getTournament, tournamentPath, registrationState } from './tournament.data.js';
+import { tournamentNavigation } from './tournament-navigation.js';
+import routes from './tournament.routes.js';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../../..');
+test('one event is configured without falling back silently in the data adapter',()=>{assert.equal(getTournament('founders-cup').name,'Founders Cup');assert.equal(getTournament('unknown'),null);assert.equal(tournamentPath('founders-cup','matches/m1'),'/tournaments/founders-cup/matches/m1')});
+test('permanent navigation has all nine approved sections',()=>{assert.deepEqual(tournamentNavigation.map(i=>i.label),['Tournament Overview','Teams','Matches','Draft Centre','Respawn Broadcast','Partner Streams','Bracket & Results','News','Tournament Info']);assert.equal(Object.isFrozen(tournamentNavigation),true)});
+test('registration deadlines close at the boundary',()=>{const r={status:'open',opensAt:'2026-10-01T00:00:00Z',closesAt:'2026-11-01T00:00:00Z'};assert.equal(registrationState(r,Date.parse('2026-09-30T23:59:59Z')),'coming-soon');assert.equal(registrationState(r,Date.parse(r.opensAt)),'open');assert.equal(registrationState(r,Date.parse(r.closesAt)),'closed');assert.equal(registrationState({...r,status:'paused'}),'paused')});
+test('fixture links resolve inside the configured event',()=>{const t=getTournament('founders-cup');for(const m of t.matches){assert.ok(t.teams.find(team=>team.id===m.a));assert.ok(t.teams.find(team=>team.id===m.b))}for(const stream of t.streams)assert.ok(t.matches.find(m=>m.id===stream.matchId));for(const round of t.bracket)for(const id of round.matchIds)assert.ok(t.matches.find(m=>m.id===id))});
+test('route-page folders keep separate Vue, JS and CSS files',()=>{assert.equal(routes[1].children.length,13);for(const route of routes[1].children){const rel=String(route.component).match(/import\('([^']+)'\)/)[1];const file=path.resolve(root,'src/features/tournaments',rel);for(const ext of ['vue','js','css'])assert.ok(fs.existsSync(file.replace(/\.vue$/,'.'+ext)),file)}});
+test('all new Vue templates and inline scripts compile',()=>{const dirs=[path.join(root,'src/features/tournaments'),path.join(root,'src/views/Tournaments')];const walk=d=>fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(d,e.name)):[path.join(d,e.name)]);for(const file of dirs.flatMap(walk).filter(f=>f.endsWith('.vue'))){const source=fs.readFileSync(file,'utf8');const parsed=parse(source,{filename:file});assert.deepEqual(parsed.errors,[],file);const result=compileTemplate({source:parsed.descriptor.template.content,filename:file,id:'tournament-test'});assert.deepEqual(result.errors,[],file);if(parsed.descriptor.script&&!parsed.descriptor.script.src)compileScript(parsed.descriptor,{id:'tournament-test'})}});
