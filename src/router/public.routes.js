@@ -18,7 +18,7 @@ import InvestorDataRoom from '../views/Investors/DataRoom/InvestorDataRoom.vue';
 import Careers from '../views/Careers/Careers.vue';
 import Creators from '../views/Creators/Creators.vue';
 import Partners from '../views/Partners/Partners.vue';
-import BeyondBuffBuilder from '../views/SWG Beyond Buff Builder/SWGBeyondBuffBuilder.vue';
+import BeyondBuffBuilder from '../views/SWG Beyond Buff Builder/SwgBeyondBuffBuilder.vue';
 
 export default [
     // =========================================================
