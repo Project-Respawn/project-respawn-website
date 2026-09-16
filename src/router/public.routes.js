@@ -18,6 +18,7 @@ import InvestorDataRoom from '../views/Investors/DataRoom/InvestorDataRoom.vue';
 import Careers from '../views/Careers/Careers.vue';
 import Creators from '../views/Creators/Creators.vue';
 import Partners from '../views/Partners/Partners.vue';
+import BeyondBuffBuilder from '../views/SWG Beyond Buff Builder/SWGBeyondBuffBuilder.vue';
 
 export default [
     // =========================================================
@@ -128,6 +129,16 @@ export default [
         path: '/privacy-policy',
         name: 'LegalCentre',
         component: PrivacyPolicy
+    },
+
+      // =========================================================
+    // Temporary Paths
+    // =========================================================
+
+    {
+        path: '/swg-beyond-buff-builder',
+        name: 'BeyondBuffBuilder',
+        component: BeyondBuffBuilder
     },
 
     // =========================================================
