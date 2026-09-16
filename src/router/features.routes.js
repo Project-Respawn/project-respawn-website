@@ -17,6 +17,7 @@
 // 4. Therapist
 // 5. Esports
 // 6. Team Hub
+// 7. Tournaments
 //
 // ============================================================
 
@@ -31,6 +32,7 @@ import trainerHubRoutes from '../features/trainer-hub/trainer-hub.routes.js';
 import therapistRoutes from '../features/therapist/therapist.routes.js';
 import esportsRoutes from '../features/esports/esports.routes.js';
 import teamHubRoutes from '../features/Team Hub/team-hub.routes.js';
+import tournamentRoutes from '../features/tournaments/tournament.routes.js';
 
 
 // ============================================================
@@ -79,6 +81,12 @@ const featureRoutes = [
     // --------------------------------------------------------
 
     ...teamHubRoutes,
+
+    // --------------------------------------------------------
+    // 7. TOURNAMENTS
+    // --------------------------------------------------------
+
+    ...tournamentRoutes,
 
 ];
 
