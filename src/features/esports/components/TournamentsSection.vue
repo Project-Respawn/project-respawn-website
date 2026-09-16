@@ -103,7 +103,7 @@ defineProps({
 
 
           <RouterLink
-            :to="`/esports/tournaments/${tournament.id}`"
+            :to="tournament.id === 'respawn-community-cup' ? '/tournaments/founders-cup' : `/esports/tournaments/${tournament.id}`"
             class="tournament-link"
           >
             View Tournament
