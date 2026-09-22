@@ -1,36 +1,26 @@
-import { readdirSync, readFileSync } from 'node:fs'
-import { resolve } from 'node:path'
-
-const DEFAULT_TEMPLATE_DIR = '.amplify/artifacts/cdk.out'
-const DEFAULT_MAX_RESOURCES = 480
-
-const templateDir = resolve(process.argv[2] || DEFAULT_TEMPLATE_DIR)
-const maxResources = Number(process.env.AMPLIFY_STACK_RESOURCE_LIMIT || DEFAULT_MAX_RESOURCES)
-
-if (!Number.isInteger(maxResources) || maxResources < 1 || maxResources > 500) {
-  throw new Error('AMPLIFY_STACK_RESOURCE_LIMIT must be an integer between 1 and 500')
+﻿import { readFileSync, writeFileSync } from 'node:fs';
+import { accountAssembly, evaluate, formatReport, baselineDigest } from './lib/cloudformation-accounting.mjs';
+const args = process.argv.slice(2), options = {};
+let directory;
+for (let i = 0; i < args.length; i++) {
+  const arg = args[i];
+  if (!arg.startsWith('--') && !directory) { directory = arg; continue; }
+  if (!['--root', '--baseline', '--exception', '--operation', '--json'].includes(arg) || !args[i + 1] || args[i + 1].startsWith('--')) throw new Error(`Invalid argument: ${arg}`);
+  options[arg.slice(2)] = args[++i];
 }
-
-const templateFiles = readdirSync(templateDir, { recursive: true })
-  .filter((file) => file.endsWith('.template.json'))
-
-if (templateFiles.length === 0) {
-  throw new Error(`No CloudFormation templates found in ${templateDir}. Run Amplify synthesis first.`)
-}
-
-const stacks = templateFiles.map((file) => {
-  const template = JSON.parse(readFileSync(resolve(templateDir, file), 'utf8'))
-  return { file, resources: Object.keys(template.Resources || {}).length }
-}).sort((left, right) => right.resources - left.resources)
-
-for (const stack of stacks.slice(0, 10)) {
-  console.log(`${stack.resources}\t${stack.file}`)
-}
-
-const oversized = stacks.filter((stack) => stack.resources > maxResources)
-if (oversized.length > 0) {
-  console.error(`Amplify stack resource guard failed: ${oversized.length} template(s) exceed ${maxResources} resources.`)
-  process.exitCode = 1
-} else {
-  console.log(`Amplify stack resource guard passed: ${stacks.length} template(s), maximum ${stacks[0].resources}/${maxResources}.`)
+try {
+  const report = accountAssembly(directory || '.amplify/artifacts/cdk.out', options.root);
+  const bytes = options.baseline ? readFileSync(options.baseline) : undefined;
+  const parsed = bytes ? JSON.parse(bytes) : undefined;
+  const baseline = parsed?.report || parsed;
+  const exception = options.exception ? JSON.parse(readFileSync(options.exception, 'utf8')) : undefined;
+  if (exception && (!bytes || baselineDigest(bytes) !== exception.baselineSha256)) throw new Error('Debt allowance baseline SHA256 mismatch');
+  if (baseline && baseline.root !== report.root && !exception?.roots?.includes(report.root)) throw new Error('Baseline root does not match selected root');
+  const result = evaluate(report, { baseline, exception, operation: options.operation || 'create' });
+  console.log(formatReport(report, result));
+  if (options.json) writeFileSync(options.json, JSON.stringify({ report, result }, null, 2) + '\n');
+  if (!result.passed) process.exitCode = 1;
+} catch (error) {
+  console.error(`CloudFormation accounting failed closed: ${error.message}`);
+  process.exitCode = 1;
 }

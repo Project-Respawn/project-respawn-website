@@ -1,0 +1,129 @@
+
+> project-respawn-website@1.0.0 test:master-backend-preview
+> node --test ./scripts/master-backend-preview.test.mjs
+
+TAP version 13
+# Subtest: normalization ignores metadata but preserves meaningful asset and environment changes
+ok 1 - normalization ignores metadata but preserves meaningful asset and environment changes
+  ---
+  duration_ms: 1.382183
+  type: 'test'
+  ...
+# Subtest: Phase 1 allowlist approves only MASTER overlay Lambda Code
+ok 2 - Phase 1 allowlist approves only MASTER overlay Lambda Code
+  ---
+  duration_ms: 0.181368
+  type: 'test'
+  ...
+# Subtest: only the allowlisted code asset produces a safe verdict
+ok 3 - only the allowlisted code asset produces a safe verdict
+  ---
+  duration_ms: 1.219758
+  type: 'test'
+  ...
+# Subtest: environment, IAM, persistent-resource uncertainty, additions and removals block
+ok 4 - environment, IAM, persistent-resource uncertainty, additions and removals block
+  ---
+  duration_ms: 0.585171
+  type: 'test'
+  ...
+# Subtest: Team Hub transaction IAM correction allows only PutItem and UpdateItem on the same three tables
+ok 5 - Team Hub transaction IAM correction allows only PutItem and UpdateItem on the same three tables
+  ---
+  duration_ms: 0.515177
+  type: 'test'
+  ...
+# Subtest: no material change fails closed
+ok 6 - no material change fails closed
+  ---
+  duration_ms: 0.086016
+  type: 'test'
+  ...
+# Subtest: dedicated Twitch runtime template is exact and rejects wildcard IAM
+not ok 7 - dedicated Twitch runtime template is exact and rejects wildcard IAM
+  ---
+  duration_ms: 0.231587
+  type: 'test'
+  location: '/work/scripts/master-backend-preview.test.mjs:61:1'
+  failureType: 'testCodeFailure'
+  error: "ENOENT: no such file or directory, open '.amplify/master-preview/cdk.out/amplifyd2cux232bpa951masterbranch53ef67772afunction92C3F819.nested.template.json'"
+  code: 'ENOENT'
+  stack: |-
+    readFileSync (node:fs:441:20)
+    TestContext.<anonymous> (file:///work/scripts/master-backend-preview.test.mjs:62:31)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: only a bounded AppSync API key expiry extension is expected operational refresh
+ok 8 - only a bounded AppSync API key expiry extension is expected operational refresh
+  ---
+  duration_ms: 0.234908
+  type: 'test'
+  ...
+# Subtest: proven expected categories may pass but unrelated semantic changes still block
+ok 9 - proven expected categories may pass but unrelated semantic changes still block
+  ---
+  duration_ms: 0.291577
+  type: 'test'
+  ...
+# Subtest: Lambda artifact proof ignores only embedded source EOLs
+ok 10 - Lambda artifact proof ignores only embedded source EOLs
+  ---
+  duration_ms: 0.6005
+  type: 'test'
+  ...
+# Subtest: AppSync schema changes and API key removal remain blocked
+ok 11 - AppSync schema changes and API key removal remain blocked
+  ---
+  duration_ms: 0.2464
+  type: 'test'
+  ...
+# Subtest: exact reviewed Phase 2A resource set is accepted and has no replacement risk
+ok 12 - exact reviewed Phase 2A resource set is accepted and has no replacement risk
+  ---
+  duration_ms: 2.581358
+  type: 'test'
+  ...
+# Subtest: dedupe addition validator requires the exact retained minimal table
+ok 13 - dedupe addition validator requires the exact retained minimal table
+  ---
+  duration_ms: 0.934479
+  type: 'test'
+  ...
+# Subtest: runtime IAM accepts only the five reviewed statements and unchanged attachment identity
+ok 14 - runtime IAM accepts only the five reviewed statements and unchanged attachment identity
+  ---
+  duration_ms: 0.855272
+  type: 'test'
+  ...
+# Subtest: environment and cross-stack wiring must be exactly the reviewed sets
+ok 15 - environment and cross-stack wiring must be exactly the reviewed sets
+  ---
+  duration_ms: 2.125136
+  type: 'test'
+  ...
+# Subtest: runtime client identity guard accepts only the exact reviewed MASTER transition
+ok 16 - runtime client identity guard accepts only the exact reviewed MASTER transition
+  ---
+  duration_ms: 1.563801
+  type: 'test'
+  ...
+# Subtest: role, deletion, replacement, unrelated Lambda and API changes remain blocked
+ok 17 - role, deletion, replacement, unrelated Lambda and API changes remain blocked
+  ---
+  duration_ms: 0.396133
+  type: 'test'
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 16
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 728.112829

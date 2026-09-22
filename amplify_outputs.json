@@ -1,9 +1,9 @@
 {
   "auth": {
-    "user_pool_id": "eu-north-1_X5BIIkPZR",
+    "user_pool_id": "eu-north-1_n24iLL7QE",
     "aws_region": "eu-north-1",
-    "user_pool_client_id": "rnlrgrnnpb71fjjapkcnagk0v",
-    "identity_pool_id": "eu-north-1:e6b5be79-b7f5-4abb-8902-f4bf7d122cbc",
+    "user_pool_client_id": "1iq7ovjaf7d16imdvbqgfgvf86",
+    "identity_pool_id": "eu-north-1:a3621b12-4773-4295-b232-b55863c37fd3",
     "mfa_methods": [],
     "standard_required_attributes": [
       "email"
@@ -77,9 +77,9 @@
     "unauthenticated_identities_enabled": true
   },
   "data": {
-    "url": "https://kqkymuc23rax3mcsk77vlbb52e.appsync-api.eu-north-1.amazonaws.com/graphql",
+    "url": "https://ymoeacodczfipbtu67jpg73cp4.appsync-api.eu-north-1.amazonaws.com/graphql",
     "aws_region": "eu-north-1",
-    "api_key": "da2-hfkva3igpnhrvctctarpw7dol4",
+    "api_key": "da2-6e574gn3xnbkbabrvht3yrrciq",
     "default_authorization_type": "AMAZON_COGNITO_USER_POOLS",
     "authorization_types": [
       "API_KEY",
@@ -3423,6 +3423,671 @@
                     "groups": [
                       "SuperAdmin",
                       "Admin"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "Team": {
+          "name": "Team",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "slug": {
+              "name": "slug",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "name": {
+              "name": "name",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "gameKey": {
+              "name": "gameKey",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "status": {
+              "name": "status",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "createdByUserId": {
+              "name": "createdByUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "updatedByUserId": {
+              "name": "updatedByUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "rosterRevision": {
+              "name": "rosterRevision",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": true,
+              "attributes": []
+            },
+            "membershipRevision": {
+              "name": "membershipRevision",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": true,
+              "attributes": []
+            },
+            "managerMembershipId": {
+              "name": "managerMembershipId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false,
+              "attributes": []
+            },
+            "coachMembershipId": {
+              "name": "coachMembershipId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false,
+              "attributes": []
+            },
+            "teamPlan": {
+              "name": "teamPlan",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "proGrantedAt": {
+              "name": "proGrantedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "proGrantedBy": {
+              "name": "proGrantedBy",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "proExpiresAt": {
+              "name": "proExpiresAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "planUpdatedAt": {
+              "name": "planUpdatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "planUpdatedBy": {
+              "name": "planUpdatedBy",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "logoKey": {
+              "name": "logoKey",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "logoUpdatedAt": {
+              "name": "logoUpdatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "logoUpdatedBy": {
+              "name": "logoUpdatedBy",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "settingsRevision": {
+              "name": "settingsRevision",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": false,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "Teams",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "teamsBySlug",
+                "queryField": "listTeamBySlug",
+                "fields": [
+                  "slug"
+                ]
+              }
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "teamsByStatus",
+                "queryField": "listTeamByStatus",
+                "fields": [
+                  "status"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [],
+                    "groups": [
+                      "SuperAdmin"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "TeamMembership": {
+          "name": "TeamMembership",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "teamId": {
+              "name": "teamId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "userId": {
+              "name": "userId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "displayName": {
+              "name": "displayName",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "role": {
+              "name": "role",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "status": {
+              "name": "status",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "addedByUserId": {
+              "name": "addedByUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "revokedAt": {
+              "name": "revokedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "revokedByUserId": {
+              "name": "revokedByUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "TeamMemberships",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "teamMembershipsByTeamId",
+                "queryField": "listTeamMembershipByTeamId",
+                "fields": [
+                  "teamId"
+                ]
+              }
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "teamMembershipsByUserId",
+                "queryField": "listTeamMembershipByUserId",
+                "fields": [
+                  "userId"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [],
+                    "groups": [
+                      "SuperAdmin"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "TeamRosterSlot": {
+          "name": "TeamRosterSlot",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "teamId": {
+              "name": "teamId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "membershipId": {
+              "name": "membershipId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "playerUserId": {
+              "name": "playerUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "gameRoleKey": {
+              "name": "gameRoleKey",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "slotType": {
+              "name": "slotType",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "status": {
+              "name": "status",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "assignedByUserId": {
+              "name": "assignedByUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "deactivatedAt": {
+              "name": "deactivatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "TeamRosterSlots",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "teamRosterSlotsByTeamId",
+                "queryField": "listTeamRosterSlotByTeamId",
+                "fields": [
+                  "teamId"
+                ]
+              }
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "teamRosterSlotsByMembershipId",
+                "queryField": "listTeamRosterSlotByMembershipId",
+                "fields": [
+                  "membershipId"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [],
+                    "groups": [
+                      "SuperAdmin"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
+            "sortKeyFieldNames": []
+          }
+        },
+        "PlayerChampionPoolEntry": {
+          "name": "PlayerChampionPoolEntry",
+          "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "teamId": {
+              "name": "teamId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "membershipId": {
+              "name": "membershipId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
+            "playerUserId": {
+              "name": "playerUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "championId": {
+              "name": "championId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "gameRoleKey": {
+              "name": "gameRoleKey",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "comfortLevel": {
+              "name": "comfortLevel",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "priority": {
+              "name": "priority",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true,
+              "attributes": []
+            },
+            "competitiveReady": {
+              "name": "competitiveReady",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": true,
+              "attributes": []
+            },
+            "playerNotes": {
+              "name": "playerNotes",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "coachTier": {
+              "name": "coachTier",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "coachAssessment": {
+              "name": "coachAssessment",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "coachRecommendation": {
+              "name": "coachRecommendation",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "coachPriorityPractice": {
+              "name": "coachPriorityPractice",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false,
+              "attributes": []
+            },
+            "coachUpdatedByUserId": {
+              "name": "coachUpdatedByUserId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "coachUpdatedAt": {
+              "name": "coachUpdatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "PlayerChampionPoolEntries",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "playerChampionPoolEntriesByTeamId",
+                "queryField": "listPlayerChampionPoolEntryByTeamId",
+                "fields": [
+                  "teamId"
+                ]
+              }
+            },
+            {
+              "type": "key",
+              "properties": {
+                "name": "playerChampionPoolEntriesByMembershipId",
+                "queryField": "listPlayerChampionPoolEntryByMembershipId",
+                "fields": [
+                  "membershipId"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "groupClaim": "cognito:groups",
+                    "provider": "userPools",
+                    "allow": "groups",
+                    "operations": [],
+                    "groups": [
+                      "SuperAdmin"
                     ]
                   }
                 ]
@@ -7499,6 +8164,13 @@
               "isRequired": true,
               "attributes": []
             },
+            "workspaceId": {
+              "name": "workspaceId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false,
+              "attributes": []
+            },
             "name": {
               "name": "name",
               "isArray": false,
@@ -9269,6 +9941,62 @@
               "isArray": false,
               "type": "ID",
               "isRequired": true
+            }
+          }
+        },
+        "readTeamHub": {
+          "name": "readTeamHub",
+          "isArray": false,
+          "type": "AWSJSON",
+          "isRequired": true,
+          "arguments": {
+            "action": {
+              "name": "action",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "teamId": {
+              "name": "teamId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false
+            },
+            "teamSlug": {
+              "name": "teamSlug",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "status": {
+              "name": "status",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "limit": {
+              "name": "limit",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": false
+            },
+            "nextToken": {
+              "name": "nextToken",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "query": {
+              "name": "query",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "membershipId": {
+              "name": "membershipId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false
             }
           }
         }
@@ -11072,6 +11800,140 @@
             }
           }
         },
+        "mutateTeamHub": {
+          "name": "mutateTeamHub",
+          "isArray": false,
+          "type": "AWSJSON",
+          "isRequired": true,
+          "arguments": {
+            "action": {
+              "name": "action",
+              "isArray": false,
+              "type": "String",
+              "isRequired": true
+            },
+            "teamId": {
+              "name": "teamId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false
+            },
+            "slug": {
+              "name": "slug",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "name": {
+              "name": "name",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "gameKey": {
+              "name": "gameKey",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "status": {
+              "name": "status",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "targetEmail": {
+              "name": "targetEmail",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "targetMembershipId": {
+              "name": "targetMembershipId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false
+            },
+            "role": {
+              "name": "role",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "membershipId": {
+              "name": "membershipId",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": false
+            },
+            "memberAction": {
+              "name": "memberAction",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "rosterAction": {
+              "name": "rosterAction",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "expectedRevision": {
+              "name": "expectedRevision",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": false
+            },
+            "gameRoleKey": {
+              "name": "gameRoleKey",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "slotType": {
+              "name": "slotType",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "championId": {
+              "name": "championId",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "comfortLevel": {
+              "name": "comfortLevel",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "priority": {
+              "name": "priority",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "competitiveReady": {
+              "name": "competitiveReady",
+              "isArray": false,
+              "type": "Boolean",
+              "isRequired": false
+            },
+            "playerNotes": {
+              "name": "playerNotes",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            },
+            "payload": {
+              "name": "payload",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false
+            }
+          }
+        },
         "createManagedEvent": {
           "name": "createManagedEvent",
           "isArray": false,
@@ -11835,11 +12697,11 @@
   },
   "storage": {
     "aws_region": "eu-north-1",
-    "bucket_name": "amplify-projectrespawnweb-projectrespawnstoragebuc-a0fnt1vnewlx",
+    "bucket_name": "amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
     "buckets": [
       {
         "name": "projectRespawnStorage",
-        "bucket_name": "amplify-projectrespawnweb-projectrespawnstoragebuc-a0fnt1vnewlx",
+        "bucket_name": "amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
         "aws_region": "eu-north-1",
         "paths": {
           "public/*": {
@@ -11886,14 +12748,14 @@
   "custom": {
     "API": {
       "projectRespawnApi": {
-        "endpoint": "https://9qp7ehd406.execute-api.eu-north-1.amazonaws.com/",
+        "endpoint": "https://jm15a0rmi0.execute-api.eu-north-1.amazonaws.com/",
         "region": "eu-north-1",
         "apiName": "projectRespawnApi"
       }
     },
     "overlaySource": {
-      "httpUrl": "https://qhoqgtqy81.execute-api.eu-north-1.amazonaws.com/",
-      "websocketUrl": "wss://36v41ynbj3.execute-api.eu-north-1.amazonaws.com/live",
+      "httpUrl": "https://f7oxg5hy72.execute-api.eu-north-1.amazonaws.com/",
+      "websocketUrl": "wss://oc7oz18v8k.execute-api.eu-north-1.amazonaws.com/live",
       "region": "eu-north-1"
     }
   }

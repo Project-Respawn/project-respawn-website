@@ -27,7 +27,7 @@ test('operation casing mismatch is rejected', () => {
   assert.equal(hasContractErrors(compareOperations(schema, frontend, outputOperations(fixture))), true)
 })
 
-const sandbox = (suffix) => `amplify-projectrespawnwebsite-Ntgrestage8-sandbox-${suffix}`
+const sandbox = (suffix) => `amplify-projectrespawnwebsite-Ntgre-sandbox-${suffix}`
 const descriptor = (poolStackName = `${EXPECTED_SANDBOX_ROOT}-auth123-A`, apiStackName = `${EXPECTED_SANDBOX_ROOT}-data123-B`, type = 'sandbox') => ({
   outputs: { auth: { user_pool_id: 'fixture' }, data: { url: 'https://fixture/graphql' } },
   poolTags: { 'amplify:deployment-type': type }, apiTags: { 'amplify:deployment-type': type }, poolStackName, apiStackName,
@@ -35,7 +35,7 @@ const descriptor = (poolStackName = `${EXPECTED_SANDBOX_ROOT}-auth123-A`, apiSta
 
 test('matching protected sandbox passes', () => assert.doesNotThrow(() => validateEnvironmentDescriptor(descriptor())))
 test('protected root derivation is exact', () => assert.equal(resolveSandboxRoot(), EXPECTED_SANDBOX_ROOT))
-for (const suffix of ['583d036e70', 'b3e3a9eb96', '8bd9d02332']) {
+for (const suffix of ['583d036e70', 'b3e3a9eb96', '767a43f84e']) {
   test(`forbidden sandbox ${suffix} is rejected`, () => assert.throws(() => assertProtectedSandboxRoot(sandbox(suffix)), /unexpected root/))
 }
 test('omitted protected identifier is rejected', () => assert.throws(() => resolveSandboxRoot('project-respawn-website', ''), /identifier/))
@@ -43,3 +43,5 @@ test('wrong sandbox is rejected', () => assert.throws(() => validateEnvironmentD
 test('staging is rejected', () => assert.throws(() => validateEnvironmentDescriptor(descriptor('amplify-app-staging-auth123-A', 'amplify-app-staging-data123-B', 'branch')), /not an Amplify sandbox/))
 test('production is rejected', () => assert.throws(() => validateEnvironmentDescriptor(descriptor('amplify-app-master-auth123-A', 'amplify-app-master-data123-B', 'branch')), /not an Amplify sandbox/))
 test('mixed deployments are rejected', () => assert.throws(() => validateEnvironmentDescriptor(descriptor(`${sandbox('one')}-auth123-A`, `${sandbox('two')}-data123-B`)), /different sandbox/))
+
+test('deleted Ntgrestage8 target remains rejected', () => assert.throws(() => validateEnvironmentDescriptor(descriptor('amplify-projectrespawnwebsite-Ntgrestage8-sandbox-767a43f84e-auth123-A', 'amplify-projectrespawnwebsite-Ntgrestage8-sandbox-767a43f84e-data123-B')), /does not belong/))

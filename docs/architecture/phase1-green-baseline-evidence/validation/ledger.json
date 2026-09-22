@@ -1,0 +1,32 @@
+[
+  {
+    "name": "npm-ci",
+    "args": [
+      "/usr/local/lib/node_modules/npm/bin/npm-cli.js",
+      "ci"
+    ],
+    "exit": 0,
+    "seconds": 70.771
+  },
+  {
+    "name": "master-synthesis",
+    "args": [
+      "/usr/local/lib/node_modules/npm/bin/npm-cli.js",
+      "run",
+      "synth:master-backend"
+    ],
+    "exit": 0,
+    "seconds": 12.669
+  },
+  {
+    "name": "exact-comparison",
+    "args": [
+      "scripts/compare-handler-consolidation.mjs",
+      "/baseline",
+      ".amplify/master-preview/cdk.out",
+      "/results/comparison"
+    ],
+    "exit": 1,
+    "seconds": 40.707
+  }
+]

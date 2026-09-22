@@ -75,11 +75,11 @@ const schema = a
 
     submitInvestorAccessRequest: a.mutation().arguments({ payload: a.json().required(), requestToken: a.string().required(), website: a.string() })
       .returns(a.ref('InvestorRequestSubmissionResult').required()).authorization((allow) => [allow.publicApiKey()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
     listManagedInvestorAccessRequests: a.query().returns(a.json().required())
-      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function(adminUserManagement)),
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function('FnReviewInvestorAccessRequest')),
     reviewInvestorAccessRequest: a.mutation().arguments({ requestId: a.id().required(), decision: a.string().required(), decisionNotes: a.string(), accountEmail: a.string(), accessLevel: a.string(), ndaStatus: a.string(), expiresAt: a.datetime() })
-      .returns(a.json().required()).authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function(adminUserManagement)),
+      .returns(a.json().required()).authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function('FnReviewInvestorAccessRequest')),
 
     InvestorAccess: a.model({
       // Immutable Cognito subject. Email is display/search metadata only.
@@ -96,23 +96,23 @@ const schema = a
     }).authorization((allow) => [allow.groups(['SuperAdmin', 'Admin']).to(['read'])]),
 
     listInvestorAccess: a.query().returns(a.ref('InvestorAccessSummary').array().required())
-      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function(adminUserManagement)),
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function('FnReviewInvestorAccessRequest')),
     findInvestorAccountByEmail: a.query().arguments({ email: a.string().required() }).returns(a.ref('InvestorAccountLookup'))
-      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function(adminUserManagement)),
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function('FnReviewInvestorAccessRequest')),
     grantInvestorAccess: a.mutation().arguments({
       cognitoSub: a.string().required(), email: a.string().required(), name: a.string().required(), organisation: a.string(),
       accessLevel: a.string().required(), ndaStatus: a.string().required(), expiresAt: a.datetime(),
     }).returns(a.ref('InvestorAccessSummary').required())
-      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function(adminUserManagement)),
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function('FnReviewInvestorAccessRequest')),
     manageInvestorAccess: a.mutation().arguments({
       investorAccessId: a.id().required(), accessLevel: a.string(), ndaStatus: a.string(), isActive: a.boolean(), expiresAt: a.datetime(), clearExpiry: a.boolean(),
     }).returns(a.ref('InvestorAccessSummary').required())
-      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function(adminUserManagement)),
+      .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])]).handler(a.handler.function('FnReviewInvestorAccessRequest')),
     getMyInvestorAccess: a.query().returns(a.ref('InvestorAccessContext').required())
-      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
     getInvestorDocumentUrl: a.query().arguments({ documentKey: a.string().required() })
       .returns(a.ref('InvestorDocumentAccessResult').required())
-      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     PermissionDefinitionSummary: a.customType({
       id: a.id().required(),
@@ -350,48 +350,48 @@ const schema = a
       .arguments({ name: a.string().required() })
       .returns(a.ref('CreatorWorkspaceSummary').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     getCreatorWorkspace: a
       .query()
       .arguments({ workspaceId: a.id().required() })
       .returns(a.ref('CreatorWorkspaceSummary').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     listMyCreatorWorkspaces: a
       .query()
       .returns(a.ref('CreatorWorkspaceSummary').array().required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     addWorkspaceMember: a
       .mutation()
       .arguments({ workspaceId: a.id().required(), targetUserId: a.string().required() })
       .returns(a.ref('WorkspaceMembershipSummary').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     listWorkspaceMembers: a
       .query()
       .arguments({ workspaceId: a.id().required() })
       .returns(a.ref('WorkspaceMembershipListResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     revokeWorkspaceMember: a
       .mutation()
       .arguments({ workspaceId: a.id().required(), targetUserId: a.string().required() })
       .returns(a.ref('WorkspaceMembershipSummary').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     getMyWorkspacePermissions: a
       .query()
       .arguments({ workspaceId: a.id().required() })
       .returns(a.ref('WorkspacePermissionResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     setWorkspaceMemberPermissions: a
       .mutation()
@@ -404,7 +404,7 @@ const schema = a
       })
       .returns(a.ref('WorkspacePermissionResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     ApplicationStorageResult: a.customType({
       applicationId: a.id().required(),
@@ -422,7 +422,7 @@ const schema = a
       .arguments({ payload: a.json().required(), requestToken: a.string().required(), website: a.string() })
       .returns(a.ref('PublicApplicationSubmissionResult').required())
       .authorization((allow) => [allow.publicApiKey()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     AdminApplicationListResult: a.customType({
       items: a.json().required(),
@@ -437,23 +437,23 @@ const schema = a
       .arguments({ command: a.json().required(), idempotencyKey: a.string().required() })
       .returns(a.ref('ApplicationStorageResult').required())
       .authorization((allow) => [allow.groups(['SuperAdmin'])])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     listAdminApplications: a.query().arguments({
       limit: a.integer(), nextToken: a.string(), search: a.string(), status: a.string(),
       pathwayId: a.string(), sortDirection: a.string(),
     }).returns(a.ref('AdminApplicationListResult').required())
-      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     getAdminApplication: a.query().arguments({ applicationId: a.id().required() })
       .returns(a.ref('AdminApplicationDetailResult').required())
-      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     listAdminUsers: a
       .query()
       .returns(a.ref('AdminUser').array().required())
       .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin', 'Staff'])])
-      .handler(a.handler.function(adminUserManagement)),
+      .handler(a.handler.function('FnReviewInvestorAccessRequest')),
 
     updateUserRoles: a
       .mutation()
@@ -463,7 +463,7 @@ const schema = a
       })
       .returns(a.ref('UpdateUserRolesResult').required())
       .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin', 'Staff'])])
-      .handler(a.handler.function(adminUserManagement)),
+      .handler(a.handler.function('FnReviewInvestorAccessRequest')),
 
     PermissionDefinition: a
       .model({
@@ -510,13 +510,13 @@ const schema = a
       .query()
       .returns(a.ref('PermissionCatalogResult').required())
       .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     seedPermissionCatalog: a
       .mutation()
       .returns(a.ref('PermissionMutationResult').required())
       .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     replaceGroupPermissions: a
       .mutation()
@@ -526,63 +526,63 @@ const schema = a
       })
       .returns(a.ref('PermissionMutationResult').required())
       .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     getMyAccessContext: a
       .query()
       .returns(a.ref('AccessContextResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     Stage9MutationResult: a.customType({ success: a.boolean().required(), message: a.string(), resourceId: a.id() }),
     ManagedOrderListResult: a.customType({ orders: a.json().required() }),
     ManagedProfileListResult: a.customType({ profiles: a.json().required() }),
     listManagedOrders: a.query().returns(a.ref('ManagedOrderListResult').required())
-      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
     listManagedProfiles: a.query().returns(a.ref('ManagedProfileListResult').required())
-      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
     recoverManagedOrder: a.mutation().arguments({ orderId: a.id().required() }).returns(a.ref('Stage9MutationResult').required())
-      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
     reconcileManagedOrder: a.mutation().arguments({ orderId: a.id().required() }).returns(a.ref('Stage9MutationResult').required())
-      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
     importManagedRevolutOrder: a.mutation().arguments({ revolutOrderId: a.string().required() }).returns(a.ref('Stage9MutationResult').required())
-      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
     manageMerchCategory: a.mutation().arguments({ action: a.string().required(), resourceId: a.id(), input: a.string() }).returns(a.ref('Stage9MutationResult').required())
-      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
     manageEventTag: a.mutation().arguments({ action: a.string().required(), resourceId: a.id(), input: a.string() }).returns(a.ref('Stage9MutationResult').required())
-      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
     reviewEventSuggestion: a.mutation().arguments({ action: a.string().required(), resourceId: a.id(), input: a.string() }).returns(a.ref('Stage9MutationResult').required())
-      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
     manageForumCategory: a.mutation().arguments({ action: a.string().required(), resourceId: a.id(), input: a.string() }).returns(a.ref('Stage9MutationResult').required())
-      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
     manageForumBoard: a.mutation().arguments({ action: a.string().required(), resourceId: a.id(), input: a.string() }).returns(a.ref('Stage9MutationResult').required())
-      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
     moderateForumThread: a.mutation().arguments({ action: a.string().required(), resourceId: a.id().required(), input: a.string() }).returns(a.ref('Stage9MutationResult').required())
-      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
     moderateForumPost: a.mutation().arguments({ action: a.string().required(), resourceId: a.id().required(), input: a.string() }).returns(a.ref('Stage9MutationResult').required())
-      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     listManagedMediaLibrary: a.query().returns(a.ref('ManagedMediaLibraryResult').required())
-      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+      .authorization((allow) => [allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
     createManagedMediaItem: a.mutation().arguments({
       url: a.string().required(), title: a.string(), altText: a.string(), type: a.string(), tags: a.string().array(),
       color: a.string(), colorHex: a.string(), sourceType: a.string(), externalImageId: a.string(), status: a.string(), collectionId: a.id(),
-    }).returns(a.ref('MediaMutationResult').required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    }).returns(a.ref('MediaMutationResult').required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
     updateManagedMediaItem: a.mutation().arguments({
       mediaItemId: a.id().required(), title: a.string(), altText: a.string(), type: a.string(), tags: a.string().array(),
       color: a.string(), colorHex: a.string(), sourceType: a.string(), externalImageId: a.string(), status: a.string(), collectionId: a.id(),
-    }).returns(a.ref('MediaMutationResult').required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    }).returns(a.ref('MediaMutationResult').required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
     deleteManagedMediaItem: a.mutation().arguments({ mediaItemId: a.id().required() })
-      .returns(a.ref('MediaMutationResult').required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+      .returns(a.ref('MediaMutationResult').required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
     createManagedMediaCollection: a.mutation().arguments({
       name: a.string().required(), slug: a.string().required(), type: a.string(), parentId: a.id(), sortOrder: a.integer(), isActive: a.boolean(),
-    }).returns(a.ref('MediaMutationResult').required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    }).returns(a.ref('MediaMutationResult').required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
     listPublicMerchProductImages: a.query().arguments({ productId: a.id().required() })
       .returns(a.ref('PublicMerchProductImageSummary').array().required())
-      .authorization((allow) => [allow.publicApiKey(), allow.authenticated()]).handler(a.handler.function(myFunction)),
+      .authorization((allow) => [allow.publicApiKey(), allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
     listPublicMerchProducts: a.query()
       .returns(a.ref('PublicMerchProductSummary').array().required())
-      .authorization((allow) => [allow.publicApiKey(), allow.authenticated()]).handler(a.handler.function(myFunction)),
+      .authorization((allow) => [allow.publicApiKey(), allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     createManagedBrand: a
       .mutation()
@@ -596,7 +596,7 @@ const schema = a
       })
       .returns(a.ref('BrandMutationResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     updateManagedBrand: a
       .mutation()
@@ -610,21 +610,21 @@ const schema = a
       })
       .returns(a.ref('BrandMutationResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     setBrandOwner: a
       .mutation()
       .arguments({ brandId: a.id().required(), ownerUserId: a.string().required() })
       .returns(a.ref('BrandMutationResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     getBrandPermissionDetails: a
       .query()
       .arguments({ brandId: a.id().required() })
       .returns(a.ref('BrandPermissionDetailResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     upsertBrandHelper: a
       .mutation()
@@ -638,14 +638,14 @@ const schema = a
       })
       .returns(a.ref('BrandMutationResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     removeBrandHelper: a
       .mutation()
       .arguments({ brandId: a.id().required(), userId: a.string().required() })
       .returns(a.ref('BrandMutationResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     updateManagedMerchProduct: a
       .mutation()
@@ -679,7 +679,7 @@ const schema = a
       })
       .returns(a.ref('MerchProductMutationResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     createManagedMerchProduct: a
       .mutation()
@@ -693,7 +693,7 @@ const schema = a
       })
       .returns(a.ref('MerchProductMutationResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     upsertManagedMerchProductVariant: a
       .mutation()
@@ -705,30 +705,30 @@ const schema = a
       })
       .returns(a.ref('MerchProductVariantMutationResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     upsertManagedMerchProductImage: a.mutation().arguments({
       imageId: a.id(), productId: a.id().required(), mediaItemId: a.id(), sortOrder: a.integer(), isPrimary: a.boolean(),
       isMockup: a.boolean(), isVisible: a.boolean(), isFeatured: a.boolean(), altTextOverride: a.string(),
       colorOverride: a.string(), colorHexOverride: a.string(), status: a.string(),
-    }).returns(a.ref('MerchProductImageMutationResult').required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    }).returns(a.ref('MerchProductImageMutationResult').required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     deleteManagedMerchProductImage: a.mutation().arguments({ imageId: a.id().required() })
-      .returns(a.ref('MerchProductImageMutationResult').required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+      .returns(a.ref('MerchProductImageMutationResult').required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     replaceManagedMerchProductBrands: a
       .mutation()
       .arguments({ productId: a.id().required(), brandIds: a.id().array().required() })
       .returns(a.ref('MerchProductRelationshipMutationResult').required())
       .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin', 'Staff'])])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     replaceManagedMerchProductCategories: a
       .mutation()
       .arguments({ productId: a.id().required(), categoryIds: a.id().array().required() })
       .returns(a.ref('MerchProductRelationshipMutationResult').required())
       .authorization((allow) => [allow.groups(['SuperAdmin', 'Admin', 'Staff'])])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     /*
      * APPLICATION STORAGE PHASE 1
@@ -951,19 +951,19 @@ const schema = a
       .arguments({ brandId: a.id().required() })
       .returns(a.ref('TwitchOAuthStartResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     getMyTwitchIntegration: a.query()
       .arguments({ brandId: a.id().required() })
       .returns(a.ref('SafeTwitchIntegrationResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     disconnectTwitchIntegration: a.mutation()
       .arguments({ brandId: a.id().required(), integrationId: a.id().required() })
       .returns(a.ref('SafeTwitchIntegrationResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     ManagedTwitchCommandMutationResult: a.customType({
       success: a.boolean().required(),
@@ -989,7 +989,7 @@ const schema = a
       .arguments({ brandId: a.id().required(), includeUnscoped: a.boolean() })
       .returns(a.ref('ManagedTwitchCommand').array().required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     createManagedTwitchCommand: a
       .mutation()
@@ -1006,7 +1006,7 @@ const schema = a
       })
       .returns(a.ref('ManagedTwitchCommandMutationResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     updateManagedTwitchCommand: a
       .mutation()
@@ -1024,14 +1024,14 @@ const schema = a
       })
       .returns(a.ref('ManagedTwitchCommandMutationResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     deleteManagedTwitchCommand: a
       .mutation()
       .arguments({ commandId: a.id().required(), brandId: a.id().required() })
       .returns(a.ref('ManagedTwitchCommandMutationResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     DiscordBotConfiguration: a
       .model({
@@ -1053,14 +1053,14 @@ const schema = a
       .arguments({ brandId: a.id().required() })
       .returns(a.ref('ManagedDiscordConfigurationResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     createOrUpdateManagedDiscordConfiguration: a
       .mutation()
       .arguments({ brandId: a.id().required() })
       .returns(a.ref('ManagedDiscordConfigurationResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     Team: a
       .model({
@@ -1153,14 +1153,14 @@ const schema = a
       action: a.string().required(), teamId: a.id(), teamSlug: a.string(), status: a.string(),
       limit: a.integer(), nextToken: a.string(), query: a.string(),
       membershipId: a.id(),
-    }).returns(a.json().required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    }).returns(a.json().required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
     mutateTeamHub: a.mutation().arguments({
       action: a.string().required(), teamId: a.id(), slug: a.string(), name: a.string(), gameKey: a.string(), status: a.string(),
       targetEmail: a.string(), targetMembershipId: a.id(), role: a.string(), membershipId: a.id(),
       memberAction: a.string(), rosterAction: a.string(), expectedRevision: a.integer(), gameRoleKey: a.string(), slotType: a.string(),
       championId: a.string(), comfortLevel: a.string(), priority: a.string(), competitiveReady: a.boolean(), playerNotes: a.string(),
       payload: a.string(),
-    }).returns(a.json().required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function(myFunction)),
+    }).returns(a.json().required()).authorization((allow) => [allow.authenticated()]).handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     UserProfile: a
       .model({
@@ -1322,7 +1322,7 @@ const schema = a
       })
       .returns(a.ref('ManagedEventMutationResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     updateManagedEvent: a
       .mutation()
@@ -1341,7 +1341,7 @@ const schema = a
       })
       .returns(a.ref('ManagedEventMutationResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     cloneEvent: a
       .mutation()
@@ -1353,7 +1353,7 @@ const schema = a
       })
       .returns(a.ref('CloneEventResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     createRecurringEventSeries: a
       .mutation()
@@ -1367,7 +1367,7 @@ const schema = a
       })
       .returns(a.ref('RecurringEventSeriesResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     generateRecurringInstances: a
       .mutation()
@@ -1378,7 +1378,7 @@ const schema = a
       })
       .returns(a.ref('RecurringEventSeriesResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     /*
      * 5. FORUM SYSTEM
@@ -1529,7 +1529,7 @@ const schema = a
       })
       .returns(a.ref('ForumMutationResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     submitForumReply: a
       .mutation()
@@ -1542,7 +1542,7 @@ const schema = a
       })
       .returns(a.ref('ForumMutationResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     recordForumThreadView: a
       .mutation()
@@ -1551,7 +1551,7 @@ const schema = a
       })
       .returns(a.ref('ForumMutationResult').required())
       .authorization((allow) => [allow.publicApiKey(), allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     recordForumActivity: a
       .mutation()
@@ -1562,7 +1562,7 @@ const schema = a
       })
       .returns(a.ref('ForumActivityResult').required())
       .authorization((allow) => [allow.authenticated()])
-      .handler(a.handler.function(myFunction)),
+      .handler(a.handler.function('FnSubmitInvestorAccessRequest')),
 
     /*
      * 6. MERCH SYSTEM
@@ -1837,6 +1837,12 @@ export type Schema = ClientSchema<typeof schema>;
 
 export const data = defineData({
   schema,
+  // Retain the existing invocation/data-source/IAM anchor logical IDs.
+  // Field authorization and resolver identities remain per operation.
+  functions: {
+    FnSubmitInvestorAccessRequest: myFunction,
+    FnReviewInvestorAccessRequest: adminUserManagement,
+  },
   authorizationModes: {
     defaultAuthorizationMode: 'userPool',
     apiKeyAuthorizationMode: {

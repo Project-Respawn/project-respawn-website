@@ -21,6 +21,12 @@ import Partners from '../views/Partners/Partners.vue';
 import BeyondBuffBuilder from '../views/SWG Beyond Buff Builder/SwgBeyondBuffBuilder.vue';
 
 export default [
+    {
+        path: '/SWG-EOF-test',
+        name: 'SwgEofTest',
+        meta: { requiresAuth: true, requiredGroups: ['BetaMember'] },
+        component: () => import('../views/SwgEofTest/SwgEofTest.vue'),
+    },
     // =========================================================
     // BOOKINGS
     // =========================================================

@@ -1,0 +1,158 @@
+
+> project-respawn-website@1.0.0 test:resource-accounting
+> node --test ./scripts/cloudformation-accounting.test.mjs
+
+TAP version 13
+# Subtest: counts nested handles and all descendants; ignores stale unreferenced templates
+ok 1 - counts nested handles and all descendants; ignores stale unreferenced templates
+  ---
+  duration_ms: 7.681876
+  type: 'test'
+  ...
+# Subtest: same template instantiated twice contributes twice
+ok 2 - same template instantiated twice contributes twice
+  ---
+  duration_ms: 1.718296
+  type: 'test'
+  ...
+# Subtest: missing nested metadata fails closed
+ok 3 - missing nested metadata fails closed
+  ---
+  duration_ms: 1.543088
+  type: 'test'
+  ...
+# Subtest: missing nested file fails closed
+ok 4 - missing nested file fails closed
+  ---
+  duration_ms: 1.35557
+  type: 'test'
+  ...
+# Subtest: nested cycles fail closed
+ok 5 - nested cycles fail closed
+  ---
+  duration_ms: 1.94006
+  type: 'test'
+  ...
+# Subtest: multiple roots require explicit selection
+ok 6 - multiple roots require explicit selection
+  ---
+  duration_ms: 1.81839
+  type: 'test'
+  ...
+# Subtest: template threshold 250
+ok 7 - template threshold 250
+  ---
+  duration_ms: 0.220814
+  type: 'test'
+  ...
+# Subtest: template threshold 251
+ok 8 - template threshold 251
+  ---
+  duration_ms: 0.053532
+  type: 'test'
+  ...
+# Subtest: template threshold 350
+ok 9 - template threshold 350
+  ---
+  duration_ms: 0.095144
+  type: 'test'
+  ...
+# Subtest: template threshold 351
+ok 10 - template threshold 351
+  ---
+  duration_ms: 0.258356
+  type: 'test'
+  ...
+# Subtest: template threshold 480
+ok 11 - template threshold 480
+  ---
+  duration_ms: 0.052823
+  type: 'test'
+  ...
+# Subtest: template threshold 481
+ok 12 - template threshold 481
+  ---
+  duration_ms: 0.032534
+  type: 'test'
+  ...
+# Subtest: template threshold 501
+ok 13 - template threshold 501
+  ---
+  duration_ms: 0.028191
+  type: 'test'
+  ...
+# Subtest: hierarchy threshold 1000
+ok 14 - hierarchy threshold 1000
+  ---
+  duration_ms: 0.06039
+  type: 'test'
+  ...
+# Subtest: hierarchy threshold 1001
+ok 15 - hierarchy threshold 1001
+  ---
+  duration_ms: 0.039167
+  type: 'test'
+  ...
+# Subtest: hierarchy threshold 1800
+ok 16 - hierarchy threshold 1800
+  ---
+  duration_ms: 0.043094
+  type: 'test'
+  ...
+# Subtest: hierarchy threshold 1801
+ok 17 - hierarchy threshold 1801
+  ---
+  duration_ms: 0.024628
+  type: 'test'
+  ...
+# Subtest: hierarchy threshold 2500
+ok 18 - hierarchy threshold 2500
+  ---
+  duration_ms: 0.032887
+  type: 'test'
+  ...
+# Subtest: hierarchy threshold 2501
+ok 19 - hierarchy threshold 2501
+  ---
+  duration_ms: 0.042766
+  type: 'test'
+  ...
+# Subtest: small individual templates do not hide root creation failure
+ok 20 - small individual templates do not hide root creation failure
+  ---
+  duration_ms: 5.221201
+  type: 'test'
+  ...
+# Subtest: bounded legacy debt allows only non-growing updates, not creates or new stack contributions
+ok 21 - bounded legacy debt allows only non-growing updates, not creates or new stack contributions
+  ---
+  duration_ms: 5.614673
+  type: 'test'
+  ...
+# Subtest: module deltas expose growth even when total decreases
+ok 22 - module deltas expose growth even when total decreases
+  ---
+  duration_ms: 1.285177
+  type: 'test'
+  ...
+# Subtest: frontend changes do not trigger backend accounting, but backend config changes do
+ok 23 - frontend changes do not trigger backend accounting, but backend config changes do
+  ---
+  duration_ms: 4.725588
+  type: 'test'
+  ...
+# Subtest: nested assets outside the assembly are rejected
+ok 24 - nested assets outside the assembly are rejected
+  ---
+  duration_ms: 2.108358
+  type: 'test'
+  ...
+1..24
+# tests 24
+# suites 0
+# pass 24
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 221.055437

@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { readFile } from 'node:fs/promises';
 import { chooseCreatorBrandId, resolveCreatorBrand } from '../../composables/useCreatorBrandContext.js';
+import { computed, ref } from 'vue';
+import { declaration, evaluate, templateNodes } from '../../../../../scripts/test-support/source-contracts.mjs';
 
 const read = (path) => readFile(new URL(path, import.meta.url), 'utf8');
 const [core, sources, service, handler, context, editor, status] = await Promise.all([
@@ -71,9 +73,27 @@ test('publication metadata is sent on create and update without credential rotat
   assert.doesNotMatch(updateBody, /rotateOverlayPublicationCredential/);
 });
 
-test('legacy live state is unknown and scene changes make Live stale', () => {
-  assert.match(sources, /sourceEditorRevision\.value === null/);
-  assert.match(status, /Status unknown · update recommended/);
-  assert.match(sources, /activeSceneId\.value !== scene\.value\?\.id/);
+test('legacy publication stays published with unknown freshness and scene changes make Live stale', () => {
+  const bindings = { computed, hasActivePublication: ref(true), sourceEditorRevision: ref(null), dirty: ref(false), revision: ref(5), activeSceneId: ref('scene-a'), scene: ref({ id: 'scene-a' }) };
+  bindings.liveStatusUnknown = evaluate(declaration(sources, 'liveStatusUnknown'), bindings);
+  const stale = evaluate(declaration(sources, 'liveOutOfDate'), bindings);
+  assert.equal(bindings.liveStatusUnknown.value, true);
+  assert.equal(stale.value, true);
+  bindings.sourceEditorRevision.value = 5;
+  assert.equal(bindings.liveStatusUnknown.value, false);
+  assert.equal(stale.value, false);
+  bindings.scene.value = { id: 'scene-b' };
+  assert.equal(stale.value, true);
+  bindings.hasActivePublication.value = false;
+  assert.equal(stale.value, false);
+  const labels = templateNodes(status, node => node.type === 5 && node.content.content.includes('liveStatusUnknown'));
+  assert.equal(labels.length, 1);
+  const label = (overrides = {}) => evaluate(labels[0].content.content, { publicationId: 'published-id', busy: false, error: '', liveStatusUnknown: false, liveOutOfDate: false, ...overrides });
+  assert.equal(label({ liveStatusUnknown: true }), 'Published · update recommended');
+  assert.equal(label({ liveOutOfDate: true }), 'Published · Update available');
+  assert.equal(label(), 'Published · Up to date');
+  assert.equal(label({ publicationId: '' }), 'Not published');
+  assert.equal(label({ publicationId: '', busy: true }), 'Checking publication…');
+  assert.equal(label({ publicationId: '', error: 'Failed' }), 'Status unavailable');
   assert.match(editor, /live-status-unknown/); assert.match(editor, /live-out-of-date/);
 });

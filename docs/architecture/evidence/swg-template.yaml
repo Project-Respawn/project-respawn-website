@@ -1,0 +1,239 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Private SWG test host. No SSH, load balancer, NAT gateway or schedules.
+Parameters:
+  ImageId:
+    Type: AWS::EC2::Image::Id
+    Default: ami-06cfeaaa22092f09d
+    Description: Amazon Linux 2023 x86_64, resolved in eu-north-1 on 2026-09-21.
+  TesterCidr:
+    Type: String
+    AllowedPattern: '^(?:[0-9]{1,3}\.){3}[0-9]{1,3}/32$'
+    Description: Owner public IPv4 /32. No all-internet CIDR is accepted.
+  Friend1Cidr:
+    Type: String
+    Default: 127.0.0.1/32
+    AllowedPattern: '^(?:[0-9]{1,3}\.){3}[0-9]{1,3}/32$'
+  Friend2Cidr:
+    Type: String
+    Default: 127.0.0.1/32
+    AllowedPattern: '^(?:[0-9]{1,3}\.){3}[0-9]{1,3}/32$'
+Resources:
+  Vpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.87.0.0/24
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+  Gateway:
+    Type: AWS::EC2::InternetGateway
+  GatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties: {VpcId: !Ref Vpc, InternetGatewayId: !Ref Gateway}
+  Subnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref Vpc
+      CidrBlock: 10.87.0.0/25
+      AvailabilityZone: !Select [0, !GetAZs '']
+  RouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties: {VpcId: !Ref Vpc}
+  Route:
+    Type: AWS::EC2::Route
+    DependsOn: GatewayAttachment
+    Properties:
+      RouteTableId: !Ref RouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref Gateway
+  RouteAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties: {RouteTableId: !Ref RouteTable, SubnetId: !Ref Subnet}
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Only SWG game traffic from three approved IPv4 addresses
+      VpcId: !Ref Vpc
+      SecurityGroupIngress:
+        - {IpProtocol: udp, FromPort: 44453, ToPort: 44453, CidrIp: !Ref TesterCidr}
+        - {IpProtocol: udp, FromPort: 44462, ToPort: 44463, CidrIp: !Ref TesterCidr}
+        - {IpProtocol: udp, FromPort: 44453, ToPort: 44453, CidrIp: !Ref Friend1Cidr}
+        - {IpProtocol: udp, FromPort: 44462, ToPort: 44463, CidrIp: !Ref Friend1Cidr}
+        - {IpProtocol: udp, FromPort: 44453, ToPort: 44453, CidrIp: !Ref Friend2Cidr}
+        - {IpProtocol: udp, FromPort: 44462, ToPort: 44463, CidrIp: !Ref Friend2Cidr}
+  Address:
+    Type: AWS::EC2::EIP
+    Properties: {Domain: vpc}
+  AddressAssociation:
+    Type: AWS::EC2::EIPAssociation
+    Properties: {AllocationId: !GetAtt Address.AllocationId, InstanceId: !Ref Host}
+  DataVolume:
+    Type: AWS::EC2::Volume
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      AvailabilityZone: !GetAtt Subnet.AvailabilityZone
+      Size: 100
+      VolumeType: gp3
+      Encrypted: true
+      Tags:
+        - {Key: Name, Value: swg-test-persistent-data}
+        - {Key: Project, Value: SWG-Beyond-Update}
+        - {Key: Environment, Value: Test}
+        - {Key: Owner, Value: Project-Respawn}
+        - {Key: ManagedBy, Value: InfrastructureAsCode}
+  VolumeAttachment:
+    Type: AWS::EC2::VolumeAttachment
+    Properties: {InstanceId: !Ref Host, VolumeId: !Ref DataVolume, Device: /dev/sdf}
+  ImageRepository:
+    Type: AWS::ECR::Repository
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      ImageTagMutability: IMMUTABLE
+      EncryptionConfiguration: {EncryptionType: AES256}
+      ImageScanningConfiguration: {ScanOnPush: true}
+  TransferBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault: {SSEAlgorithm: AES256}
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      VersioningConfiguration: {Status: Enabled}
+  BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref TransferBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Deny
+            Principal: '*'
+            Action: s3:*
+            Resource: [!GetAtt TransferBucket.Arn, !Sub '${TransferBucket.Arn}/*']
+            Condition: {Bool: {'aws:SecureTransport': 'false'}}
+  Logs:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    Properties:
+      LogGroupName: !Sub '/swg-test/${AWS::StackName}'
+      RetentionInDays: 7
+  Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: {Service: ec2.amazonaws.com}
+            Action: sts:AssumeRole
+      ManagedPolicyArns: [arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore]
+      Policies:
+        - PolicyName: swg-test-artifacts
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - {Effect: Allow, Action: 'ecr:GetAuthorizationToken', Resource: '*'}
+              - Effect: Allow
+                Action: ['ecr:BatchGetImage', 'ecr:GetDownloadUrlForLayer', 'ecr:BatchCheckLayerAvailability']
+                Resource: !GetAtt ImageRepository.Arn
+              - {Effect: Allow, Action: 's3:ListBucket', Resource: !GetAtt TransferBucket.Arn}
+              - Effect: Allow
+                Action: ['s3:GetObject', 's3:PutObject']
+                Resource: !Sub '${TransferBucket.Arn}/*'
+              - Effect: Allow
+                Action: ['logs:CreateLogStream', 'logs:PutLogEvents', 'logs:DescribeLogStreams']
+                Resource: !GetAtt Logs.Arn
+              - Effect: Allow
+                Action: ['ssm:GetParameter', 'ssm:GetParameters']
+                Resource: !Sub 'arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter/swg-test/${AWS::StackName}/*'
+              - Effect: Allow
+                Action: ec2:CreateSnapshot
+                Resource: !Sub 'arn:${AWS::Partition}:ec2:${AWS::Region}:${AWS::AccountId}:volume/${DataVolume}'
+              - Effect: Allow
+                Action: ec2:CreateSnapshot
+                Resource: !Sub 'arn:${AWS::Partition}:ec2:${AWS::Region}::snapshot/*'
+              - Effect: Allow
+                Action: ec2:CreateTags
+                Resource: !Sub 'arn:${AWS::Partition}:ec2:${AWS::Region}::snapshot/*'
+                Condition: {StringEquals: {'ec2:CreateAction': CreateSnapshot}}
+  Profile:
+    Type: AWS::IAM::InstanceProfile
+    Properties: {Roles: [!Ref Role]}
+  Host:
+    Type: AWS::EC2::Instance
+    DependsOn: Route
+    Properties:
+      ImageId: !Ref ImageId
+      InstanceType: m6i.xlarge
+      PropagateTagsToVolumeOnCreation: true
+      IamInstanceProfile: !Ref Profile
+      SubnetId: !Ref Subnet
+      SecurityGroupIds: [!Ref SecurityGroup]
+      MetadataOptions: {HttpTokens: required, HttpEndpoint: enabled}
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs: {VolumeSize: 30, VolumeType: gp3, Encrypted: true, DeleteOnTermination: false}
+      Tags:
+        - {Key: Name, Value: swg-private-test}
+        - {Key: Project, Value: SWG-Beyond-Update}
+        - {Key: Environment, Value: Test}
+        - {Key: Owner, Value: Project-Respawn}
+        - {Key: ManagedBy, Value: InfrastructureAsCode}
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          set -euo pipefail
+          # EIP association and data-volume attachment happen after instance creation.
+          for i in $(seq 1 120); do
+            if curl -fsS --connect-timeout 3 https://aws.amazon.com/ >/dev/null; then break; fi
+            sleep 5
+          done
+          dnf install -y docker
+          command -v aws >/dev/null || dnf install -y awscli
+          serial=$(echo '${DataVolume}' | tr -d '-')
+          device=''
+          for i in $(seq 1 120); do
+            device=$(lsblk -dn -o PATH,SERIAL | awk -v serial="$serial" '$2 == serial {print $1}')
+            test -n "$device" && break
+            sleep 5
+          done
+          test -b "$device"
+          if ! blkid "$device"; then
+            # Only initialize this newly allocated, signature-free EBS volume.
+            test -z "$(wipefs --no-act --noheadings --output TYPE "$device")"
+            mkfs.ext4 "$device"
+          fi
+          test "$(blkid -s TYPE -o value "$device")" = ext4
+          mkdir -p /srv/swg
+          uuid=$(blkid -s UUID -o value "$device")
+          grep -q "$uuid" /etc/fstab || echo "UUID=$uuid /srv/swg ext4 defaults 0 2" >> /etc/fstab
+          mount /srv/swg
+          mkdir -p /etc/docker /srv/swg/docker /srv/swg/app /srv/swg/backups
+          echo '{"data-root":"/srv/swg/docker","log-driver":"json-file","log-opts":{"max-size":"10m","max-file":"3"}}' > /etc/docker/daemon.json
+          mkdir -p /etc/systemd/system/docker.service.d
+          printf '[Unit]\nRequiresMountsFor=/srv/swg\n' > /etc/systemd/system/docker.service.d/storage.conf
+          mkdir -p /usr/local/lib/docker/cli-plugins
+          cd /usr/local/lib/docker/cli-plugins
+          curl -fSL https://github.com/docker/compose/releases/download/v2.39.4/docker-compose-linux-x86_64 -o docker-compose
+          curl -fSL https://github.com/docker/compose/releases/download/v2.39.4/docker-compose-linux-x86_64.sha256 -o docker-compose.sha256
+          sed 's/docker-compose-linux-x86_64/docker-compose/' docker-compose.sha256 | sha256sum -c -
+          chmod 755 docker-compose
+          systemctl daemon-reload
+          systemctl enable --now docker
+          printf 'AWS_REGION=${AWS::Region}\nSWG_DATA_VOLUME=${DataVolume}\nSWG_BUCKET=${TransferBucket}\nSWG_LOG_GROUP=${Logs}\n' > /srv/swg/host.env
+          touch /srv/swg/host-ready
+Outputs:
+  InstanceId: {Value: !Ref Host}
+  Address: {Value: !Ref Address}
+  DataVolumeId: {Value: !Ref DataVolume}
+  RepositoryUri: {Value: !GetAtt ImageRepository.RepositoryUri}
+  TransferBucket: {Value: !Ref TransferBucket}
+  SecurityGroupId: {Value: !Ref SecurityGroup}
+  LogGroup: {Value: !Ref Logs}

@@ -1,0 +1,455 @@
+
+> project-respawn-website@1.0.0 test:team-hub-backend
+> node ./scripts/run-team-hub-backend-tests.mjs
+
+Team Hub settings audit {
+  actorUserId: '00000000-0000-4000-8000-000000000001',
+  teamId: 'team:alpha',
+  action: 'PLAN_PRO',
+  expiresAt: '2027-01-01T00:00:00.000Z',
+  category: 'success',
+  timestamp: '2026-09-22T00:16:11.516Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000001',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:00000000-0000-4000-8000-000000000004',
+  action: 'MANAGER_ASSIGN',
+  category: 'success',
+  timestamp: '2026-09-22T00:16:11.527Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000002',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:00000000-0000-4000-8000-000000000005',
+  action: 'COACH_ASSIGN',
+  category: 'success',
+  timestamp: '2026-09-22T00:16:11.534Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000001',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:00000000-0000-4000-8000-000000000004',
+  action: 'MANAGER_ASSIGN',
+  category: 'success',
+  timestamp: '2026-09-22T00:16:11.541Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000001',
+  teamId: 'team:alpha',
+  action: 'MANAGER_ASSIGN',
+  category: 'transaction_failed',
+  timestamp: '2026-09-22T00:16:11.549Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000002',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:00000000-0000-4000-8000-000000000004',
+  action: 'COACH_ASSIGN',
+  category: 'success',
+  timestamp: '2026-09-22T00:16:11.556Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000002',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:00000000-0000-4000-8000-000000000005',
+  action: 'COACH_ASSIGN',
+  category: 'transaction_failed',
+  timestamp: '2026-09-22T00:16:11.569Z'
+}
+Team Hub membership audit {
+  actorUserId: '209c19dc-e0a1-7090-0b35-879fed200271',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:209c19dc-e0a1-7090-0b35-879fed200271',
+  action: 'MANAGER_ASSIGN',
+  category: 'success',
+  timestamp: '2026-09-22T00:16:11.602Z'
+}
+Team Hub membership audit {
+  actorUserId: '209c19dc-e0a1-7090-0b35-879fed200271',
+  teamId: 'team:alpha',
+  action: 'MANAGER_ASSIGN',
+  category: 'transaction_failed',
+  timestamp: '2026-09-22T00:16:11.616Z'
+}
+Team Hub membership audit {
+  actorUserId: '209c19dc-e0a1-7090-0b35-879fed200271',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:209c19dc-e0a1-7090-0b35-879fed200271',
+  action: 'MANAGER_ASSIGN',
+  category: 'success',
+  timestamp: '2026-09-22T00:16:11.628Z'
+}
+Team Hub membership audit {
+  actorUserId: '209c19dc-e0a1-7090-0b35-879fed200271',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:209c19dc-e0a1-7090-0b35-879fed200271',
+  action: 'MANAGER_ASSIGN',
+  category: 'success',
+  timestamp: '2026-09-22T00:16:11.632Z'
+}
+TAP version 13
+# Subtest: Manager reads complete exact-team pools and plain SuperAdmin cannot read competitive data
+ok 1 - Manager reads complete exact-team pools and plain SuperAdmin cannot read competitive data
+  ---
+  duration_ms: 2.829064
+  type: 'test'
+  ...
+# Subtest: team entitlements default to Free and expire server-side in UTC
+ok 2 - team entitlements default to Free and expire server-side in UTC
+  ---
+  duration_ms: 0.418022
+  type: 'test'
+  ...
+# Subtest: only platform Admin can change plan and the atomic update preserves team data
+ok 3 - only platform Admin can change plan and the atomic update preserves team data
+  ---
+  duration_ms: 6.329792
+  type: 'test'
+  ...
+# Subtest: Coach assessments update only Coach-owned fields while Manager cannot edit them
+ok 4 - Coach assessments update only Coach-owned fields while Manager cannot edit them
+  ---
+  duration_ms: 0.81591
+  type: 'test'
+  ...
+# Subtest: inactive Manager and cross-team competitive requests fail closed
+ok 5 - inactive Manager and cross-team competitive requests fail closed
+  ---
+  duration_ms: 0.400718
+  type: 'test'
+  ...
+# Subtest: roster assignment is one transaction with revision condition and deterministic position/player guards
+ok 6 - roster assignment is one transaction with revision condition and deterministic position/player guards
+  ---
+  duration_ms: 0.608839
+  type: 'test'
+  ...
+# Subtest: stale concurrent roster writes surface a stable conflict and do not retry
+ok 7 - stale concurrent roster writes surface a stable conflict and do not retry
+  ---
+  duration_ms: 0.440859
+  type: 'test'
+  ...
+# Subtest: transaction failure exposes no sequential revision or slot write and later revision cannot interleave
+ok 8 - transaction failure exposes no sequential revision or slot write and later revision cannot interleave
+  ---
+  duration_ms: 0.40647
+  type: 'test'
+  ...
+# Subtest: one player cannot concurrently acquire two roles from the same observed revision
+ok 9 - one player cannot concurrently acquire two roles from the same observed revision
+  ---
+  duration_ms: 0.523222
+  type: 'test'
+  ...
+# Subtest: manager and coach replacement requests atomically update the authority reference and memberships
+ok 10 - manager and coach replacement requests atomically update the authority reference and memberships
+  ---
+  duration_ms: 14.244641
+  type: 'test'
+  ...
+# Subtest: stale concurrent Manager and Coach assignments cannot create two active holders
+ok 11 - stale concurrent Manager and Coach assignments cannot create two active holders
+  ---
+  duration_ms: 50.881362
+  type: 'test'
+  ...
+# Subtest: indexed reads paginate and never call model.list scans
+ok 12 - indexed reads paginate and never call model.list scans
+  ---
+  duration_ms: 5.63631
+  type: 'test'
+  ...
+# Subtest: SuperAdmin lists every team without requiring a TeamMembership record
+ok 13 - SuperAdmin lists every team without requiring a TeamMembership record
+  ---
+  duration_ms: 0.683063
+  type: 'test'
+  ...
+# Subtest: admin account search normalizes email and username queries and returns bounded safe Nicholas account data
+ok 14 - admin account search normalizes email and username queries and returns bounded safe Nicholas account data
+  ---
+  duration_ms: 0.710819
+  type: 'test'
+  ...
+# Subtest: account search rejects unauthorized team access and undersized enumeration, returns at most ten, and creates no membership
+ok 15 - account search rejects unauthorized team access and undersized enumeration, returns at most ten, and creates no membership
+  ---
+  duration_ms: 0.427391
+  type: 'test'
+  ...
+# Subtest: dual SuperAdmin Manager retains platform and team capabilities while plain Admin lacks manager capabilities
+ok 16 - dual SuperAdmin Manager retains platform and team capabilities while plain Admin lacks manager capabilities
+  ---
+  duration_ms: 1.265395
+  type: 'test'
+  ...
+# Subtest: active Manager searches only for their exact team while Coach and cross-team searches fail before Cognito
+ok 17 - active Manager searches only for their exact team while Coach and cross-team searches fail before Cognito
+  ---
+  duration_ms: 0.300764
+  type: 'test'
+  ...
+# Subtest: authorization and strict action, enum, revision, notes and identifier validation fail closed
+ok 18 - authorization and strict action, enum, revision, notes and identifier validation fail closed
+  ---
+  duration_ms: 0.594267
+  type: 'test'
+  ...
+# Subtest: generic member operation cannot alter authoritative Manager
+ok 19 - generic member operation cannot alter authoritative Manager
+  ---
+  duration_ms: 0.158933
+  type: 'test'
+  ...
+# Subtest: exact email resolution normalizes case, limits to two, and returns only canonical identity plus display name
+ok 20 - exact email resolution normalizes case, limits to two, and returns only canonical identity plus display name
+  ---
+  duration_ms: 0.144938
+  type: 'test'
+  ...
+# Subtest: exact deployed Cognito subject shape revalidates and maps username to canonical sub
+ok 21 - exact deployed Cognito subject shape revalidates and maps username to canonical sub
+  ---
+  duration_ms: 0.110483
+  type: 'test'
+  ...
+# Subtest: eligible SuperAdmin self-assignment creates the first manager atomically with canonical keys
+ok 22 - eligible SuperAdmin self-assignment creates the first manager atomically with canonical keys
+  ---
+  duration_ms: 14.359867
+  type: 'test'
+  ...
+# Subtest: failed first-manager transaction creates no partial membership and inactive identity is deterministically reused
+ok 23 - failed first-manager transaction creates no partial membership and inactive identity is deterministically reused
+  ---
+  duration_ms: 16.145385
+  type: 'test'
+  ...
+Team Hub transaction failed AccessDeniedException: denied
+    at Object.transact (/work/amplify/myFunction/teamHub/teamHub.test.ts:333:94)
+    at commitTransaction (/work/amplify/myFunction/teamHub/dynamo.ts:23:23)
+    at <anonymous> (/work/amplify/myFunction/teamHub/teamHub.test.ts:333:30)
+    at waitForActual (node:assert:551:21)
+    at Function.rejects (node:assert:686:31)
+    at TestContext.<anonymous> (/work/amplify/myFunction/teamHub/teamHub.test.ts:333:16)
+    at async Test.run (node:internal/test_runner/test:1054:7)
+    at async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+Team Hub membership audit {
+  actorUserId: '209c19dc-e0a1-7090-0b35-879fed200271',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:209c19dc-e0a1-7090-0b35-879fed200271',
+  action: 'MANAGER_REVOKE',
+  category: 'success',
+  timestamp: '2026-09-22T00:16:12.214Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000002',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:00000000-0000-4000-8000-000000000004',
+  action: 'PLAYER_REVOKE',
+  category: 'success',
+  timestamp: '2026-09-22T00:16:12.228Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000002',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:00000000-0000-4000-8000-000000000004',
+  action: 'COACH_ASSIGN',
+  category: 'success',
+  timestamp: '2026-09-22T00:16:12.238Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000001',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:00000000-0000-4000-8000-000000000002',
+  action: 'MANAGER_REVOKE',
+  category: 'success',
+  timestamp: '2026-09-22T00:16:12.255Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000002',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:00000000-0000-4000-8000-000000000003',
+  action: 'COACH_REVOKE',
+  category: 'success',
+  timestamp: '2026-09-22T00:16:12.266Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000001',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:00000000-0000-4000-8000-000000000004',
+  action: 'MANAGER_ASSIGN',
+  category: 'success',
+  timestamp: '2026-09-22T00:16:12.277Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000002',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:00000000-0000-4000-8000-000000000004',
+  action: 'PLAYER_REVOKE',
+  category: 'success',
+  timestamp: '2026-09-22T00:16:12.291Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000002',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:00000000-0000-4000-8000-000000000005',
+  action: 'PLAYER_ASSIGN',
+  category: 'success',
+  timestamp: '2026-09-22T00:16:12.309Z'
+}
+# Subtest: deployed managerless assignment operation set is completely covered by the exact table IAM grant
+ok 24 - deployed managerless assignment operation set is completely covered by the exact table IAM grant
+  ---
+  duration_ms: 563.585982
+  type: 'test'
+  ...
+# Subtest: conditional and AWS transaction cancellations map safely while access failures stay generic
+ok 25 - conditional and AWS transaction cancellations map safely while access failures stay generic
+  ---
+  duration_ms: 18.278213
+  type: 'test'
+  ...
+# Subtest: deployed Cognito subject can be removed through its canonical membership ID
+ok 26 - deployed Cognito subject can be removed through its canonical membership ID
+  ---
+  duration_ms: 11.753048
+  type: 'test'
+  ...
+# Subtest: account resolution rejects malformed, oversized, missing, ambiguous, disabled, and unconfirmed accounts
+ok 27 - account resolution rejects malformed, oversized, missing, ambiguous, disabled, and unconfirmed accounts
+  ---
+  duration_ms: 0.888806
+  type: 'test'
+  ...
+# Subtest: authorization is established before email lookup for outsider, Coach, Player, and inactive Manager
+ok 28 - authorization is established before email lookup for outsider, Coach, Player, and inactive Manager
+  ---
+  duration_ms: 0.579075
+  type: 'test'
+  ...
+# Subtest: starter replacement and removal include position, old-player guard, and timestamped Team update
+ok 29 - starter replacement and removal include position, old-player guard, and timestamped Team update
+  ---
+  duration_ms: 0.462673
+  type: 'test'
+  ...
+# Subtest: substitute assignment and removal use only the deterministic substitute record
+ok 30 - substitute assignment and removal use only the deterministic substitute record
+  ---
+  duration_ms: 0.246011
+  type: 'test'
+  ...
+# Subtest: Player revocation and Player-to-Coach transition atomically clean every roster record
+ok 31 - Player revocation and Player-to-Coach transition atomically clean every roster record
+  ---
+  duration_ms: 24.271538
+  type: 'test'
+  ...
+# Subtest: Manager revocation and Coach revocation require and clear authoritative references
+ok 32 - Manager revocation and Coach revocation require and clear authoritative references
+  ---
+  duration_ms: 24.154088
+  type: 'test'
+  ...
+# Subtest: Player-to-Manager transition cleans roster state and stores the resolved sub without returning it
+ok 33 - Player-to-Manager transition cleans roster state and stores the resolved sub without returning it
+  ---
+  duration_ms: 13.692045
+  type: 'test'
+  ...
+# Subtest: bounded cleanup reaches the maximum safe request and rejects overflow before transaction execution
+ok 34 - bounded cleanup reaches the maximum safe request and rejects overflow before transaction execution
+  ---
+  duration_ms: 18.307468
+  type: 'test'
+  ...
+# Subtest: missing and conflicting Cognito identities, cross-team access, and inactive teams fail before lookup
+ok 35 - missing and conflicting Cognito identities, cross-team access, and inactive teams fail before lookup
+  ---
+  duration_ms: 0.401079
+  type: 'test'
+  ...
+# Subtest: Manager can assign a Player, while removed Player and Coach lose pool access
+ok 36 - Manager can assign a Player, while removed Player and Coach lose pool access
+  ---
+  duration_ms: 11.869289
+  type: 'test'
+  ...
+# Subtest: Player pool identity is caller-derived and cannot target another Player
+ok 37 - Player pool identity is caller-derived and cannot target another Player
+  ---
+  duration_ms: 0.250334
+  type: 'test'
+  ...
+# Subtest: read gateway exhaustively dispatches each action only to its intended handler
+ok 38 - read gateway exhaustively dispatches each action only to its intended handler
+  ---
+  duration_ms: 0.846085
+  type: 'test'
+  ...
+# Subtest: mutation gateway exhaustively dispatches each action and remaps only bounded command fields
+ok 39 - mutation gateway exhaustively dispatches each action and remaps only bounded command fields
+  ---
+  duration_ms: 0.480503
+  type: 'test'
+  ...
+# Subtest: gateway ignores AppSync null placeholders for unrelated optional fields
+ok 40 - gateway ignores AppSync null placeholders for unrelated optional fields
+  ---
+  duration_ms: 0.170753
+  type: 'test'
+  ...
+# Subtest: gateways reject missing, unknown, cross-protocol and unexpected actions or fields
+ok 41 - gateways reject missing, unknown, cross-protocol and unexpected actions or fields
+  ---
+  duration_ms: 0.266701
+  type: 'test'
+  ...
+# Subtest: gateways reject malformed, nested, primitive, array and oversized inputs
+ok 42 - gateways reject malformed, nested, primitive, array and oversized inputs
+  ---
+  duration_ms: 0.204803
+  type: 'test'
+  ...
+# Subtest: action-specific allowlists reject irrelevant, conflicting and missing fields
+ok 43 - action-specific allowlists reject irrelevant, conflicting and missing fields
+  ---
+  duration_ms: 0.143731
+  type: 'test'
+  ...
+# Subtest: authorization remains inside every selected handler
+ok 44 - authorization remains inside every selected handler
+  ---
+  duration_ms: 0.822323
+  type: 'test'
+  ...
+# Subtest: server accepts a completely decoded valid PNG and reports square presentation
+ok 45 - server accepts a completely decoded valid PNG and reports square presentation
+  ---
+  duration_ms: 2.116207
+  type: 'test'
+  ...
+# Subtest: server rejects spoofed, corrupt, truncated, undersized, oversized and excessive PNGs
+ok 46 - server rejects spoofed, corrupt, truncated, undersized, oversized and excessive PNGs
+  ---
+  duration_ms: 7.465877
+  type: 'test'
+  ...
+# Subtest: only immutable keys beneath the exact team prefix can be attached
+ok 47 - only immutable keys beneath the exact team prefix can be attached
+  ---
+  duration_ms: 0.357594
+  type: 'test'
+  ...
+1..47
+# tests 47
+# suites 0
+# pass 47
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1192.014039

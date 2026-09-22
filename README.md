@@ -342,12 +342,14 @@ Current behavior:
 
 Each Amplify branch (development, staging, production) has its own Cognito User Pool, Identity Pool, and AppSync GraphQL endpoint. The `amplify_outputs.json` file is the contract between the deployed backend and the frontend runtime configuration.
 
+An opt-in shared Cognito implementation is prepared but not deployed. See [shared Cognito migration](docs/shared-cognito-migration.md) before enabling it: existing auth resources need preservation, and the protected local sandbox requires an explicit exception. Branch APIs and data remain separate.
+
 **Generation strategy:**
 
 - `amplify_outputs.json` is generated per-deployment via `npx ampx generate outputs --branch <branch> --app-id <app-id> --format json --out-dir .`
 - Never commit `amplify_outputs.json` to version control; treat it as a build artifact
 - CI/CD must regenerate outputs as part of the build process for each branch
-- Local development uses the `Ntgrestage8` sandbox; outputs are generated via `npm run dev:sandbox`
+- Local development uses the `Ntgre` sandbox; outputs are generated via `npm run dev:sandbox`
 
 **Integration with frontend build:**
 
@@ -381,7 +383,7 @@ The dev server opens on port `5174`.
 
 ## Amplify Sandbox
 
-The canonical local sandbox identifier is `Ntgrestage8`. Localhost must use this sandbox rather than hosted staging, production, or another developer sandbox.
+The canonical local sandbox identifier is `Ntgre`. Localhost must use this sandbox rather than hosted staging, production, or another developer sandbox.
 
 The sandbox is protected infrastructure. Read and follow [docs/local-amplify-development.md](docs/local-amplify-development.md) before changing anything under `amplify/`. Generated AWS IDs are not stable identifiers, and sandbox replacement/deletion requires explicit target-specific authorization.
 
@@ -402,7 +404,7 @@ npm run dev
 `npm run dev` alone is insufficient after backend changes or sandbox recreation. Before Vite starts it runs a read-only validation that checks:
 
 - Cognito and AppSync are tagged as Amplify sandbox resources.
-- Both resources belong to the exact `Ntgrestage8` sandbox deployment.
+- Both resources belong to the exact `Ntgre` sandbox deployment.
 - Cognito and AppSync belong to the same deployment.
 - `amplify_outputs.json` exposes `getMyAccessContext`.
 - Every custom operation used by the frontend exists in both the current schema and generated output metadata.
@@ -462,13 +464,13 @@ Several scenarios can cause `amplify_outputs.json` to become inconsistent with t
 
 ### Protecting the Sandbox
 
-The `Ntgrestage8` sandbox identifier and its generated AWS resources (Cognito User Pool, AppSync, Lambda, S3, etc.) are considered protected local infrastructure. Do **not**:
+The `Ntgre` sandbox identifier and its generated AWS resources (Cognito User Pool, AppSync, Lambda, S3, etc.) are considered protected local infrastructure. Do **not**:
 
 - Delete it to "fix" issues (deletions are permanent and require full recreation)
 - Recreate it without explicit user authorization
 - Change the sandbox identifier or create a parallel sandbox for the same local developer
 - Manually replace generated Cognito pool IDs or AppSync endpoint IDs
-- Run `npx ampx sandbox delete --identifier Ntgrestage8` unless explicitly instructed and authorized
+- Run `npx ampx sandbox delete --identifier Ntgre` unless explicitly instructed and authorized
 
 **Authorized deletion** is destructive and requires re-authentication, user recreation, and group reassignment after the replacement sandbox deploys.
 
@@ -477,7 +479,7 @@ See [docs/local-amplify-development.md](docs/local-amplify-development.md) for a
 The following destructive command is documented only for an explicitly authorized teardown. Never infer authorization from a general repair or deployment request:
 
 ```bash
-npx ampx sandbox delete --identifier Ntgrestage8
+npx ampx sandbox delete --identifier Ntgre
 ```
 
 Deleting recreates resource IDs and requires a fresh sign-in after the replacement sandbox is deployed.
@@ -518,7 +520,7 @@ Use this checklist when onboarding to the codebase, adding new features, or inte
 - [ ] Read [docs/local-amplify-development.md](docs/local-amplify-development.md) for backend modification procedures
 - [ ] Review the [Cognito Integration Architecture](#cognito-integration-architecture) section, especially identifier resolution
 - [ ] Understand the [Deployment and Output Management](#deployment-and-output-management) workflow and when `amplify_outputs.json` becomes stale
-- [ ] Verify your local `Ntgrestage8` sandbox is running and `npm run dev` validates successfully
+- [ ] Verify your local `Ntgre` sandbox is running and `npm run dev` validates successfully
 
 ### When Integrating Third-Party Services
 

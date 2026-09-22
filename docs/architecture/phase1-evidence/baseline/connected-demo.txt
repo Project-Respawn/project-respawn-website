@@ -1,0 +1,631 @@
+
+> project-respawn-website@1.0.0 test:connected-demo
+> node --test ./src/features/creator-tools/connected-demo/*.test.mjs
+
+TAP version 13
+# Subtest: initial connected demo state is deterministic and fictional
+ok 1 - initial connected demo state is deterministic and fictional
+  ---
+  duration_ms: 1.930957
+  type: 'test'
+  ...
+# Subtest: restoration validates version and required deterministic records
+ok 2 - restoration validates version and required deterministic records
+  ---
+  duration_ms: 0.311874
+  type: 'test'
+  ...
+# Subtest: member selection and linked identities remain consistent
+ok 3 - member selection and linked identities remain consistent
+  ---
+  duration_ms: 0.671523
+  type: 'test'
+  ...
+# Subtest: platform filtering changes overlap metrics locally
+ok 4 - platform filtering changes overlap metrics locally
+  ---
+  duration_ms: 0.320231
+  type: 'test'
+  ...
+# Subtest: RSVP, attendance, reward and achievement tell one cross-page story
+ok 5 - RSVP, attendance, reward and achievement tell one cross-page story
+  ---
+  duration_ms: 0.338282
+  type: 'test'
+  ...
+# Subtest: overlay preview, milestone highlight and reset are deterministic
+ok 6 - overlay preview, milestone highlight and reset are deterministic
+  ---
+  duration_ms: 0.335323
+  type: 'test'
+  ...
+# Subtest: five route pages mount shared demo labels and contain no external request code
+ok 7 - five route pages mount shared demo labels and contain no external request code
+  ---
+  duration_ms: 0.894564
+  type: 'test'
+  ...
+# Subtest: existing Creator Tools routes mount all five connected demo pages
+not ok 8 - existing Creator Tools routes mount all five connected demo pages
+  ---
+  duration_ms: 1.149752
+  type: 'test'
+  location: '/work/src/features/creator-tools/connected-demo/connectedDemoState.test.mjs:57:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /path: 'community'.*name: 'CreatorCommunity'/. Input:
+    
+    "import CreatorLayout from './components/CreatorLayout.vue'\r\n" +
+      '\r\n' +
+      "import CreatorDashboard from './views/dashboard/CreatorDashboard.vue'\r\n" +
+      "import CreatorProfile from './views/profile/CreatorProfile.vue'\r\n" +
+      "import CreatorDiscord from './views/discord/CreatorDiscord.vue'\r\n" +
+      "import CreatorCommunity from './views/community/CreatorCommunity.vue'\r\n" +
+      "import CreatorRewards from './views/rewards/CreatorRewards.vue'\r\n" +
+      "import CreatorAchievements from './views/achievements/CreatorAchievements.vue'\r\n" +
+      "import CreatorEvents from './views/events/CreatorEvents.vue'\r\n" +
+      "import CreatorMembers from './views/members/CreatorMembers.vue'\r\n" +
+      "import CreatorAnalytics from './views/analytics/CreatorAnalytics.vue'\r\n" +
+      "import CreatorSetup from './views/setup/CreatorSetup.vue'\r\n" +
+      "import CreatorChat from './views/chat/CreatorChat.vue'\r\n" +
+      '\r\n' +
+      "import BotsOverview from './views/bots/overview/BotsOverview.vue'\r\n" +
+      "import Automation from './views/bots/automation/Automation.vue'\r\n" +
+      '\r\n' +
+      "import TwitchOverview from './views/twitch/overview/TwitchOverview.vue'\r\n" +
+      "import BasicCommands from './views/twitch/commands/basic/BasicCommands.vue'\r\n" +
+      "import TwitchAlerts from './views/twitch/alerts/TwitchAlerts.vue'\r\n" +
+      "import TextToSpeech from './views/twitch/text-to-speech/TextToSpeech.vue'\r\n" +
+      "import TwitchModeration from './views/twitch/moderation/TwitchModeration.vue'\r\n" +
+      '\r\n' +
+      "import Integrations from './views/integrations/Integrations.vue'\r\n" +
+      '\r\n' +
+      "import OverlayManager from './views/overlays/OverlayManager.vue'\r\n" +
+      "import OverlayEditor from './views/overlays/OverlayEditor.vue'\r\n" +
+      "import OverlayEntry from './views/overlays/OverlayEntry.vue'\r\n" +
+      "import OverlayBrowserSource from './views/overlays/OverlayBrowserSource.vue'\r\n" +
+      '\r\n' +
+      "import Overlay from '../../views/Bot/OverlayEngine/Overlay.vue'\r\n" +
+      '\r\n' +
+      '\r\n' +
+      'const protectedCreatorRoute = {\r\n' +
+      '  requiresAuth: true,\r\n' +
+      '  hideLayout: true,\r\n' +
+      '}\r\n' +
+      '\r\n' +
+      '\r\n' +
+      'export default [\r\n' +
+      '  {\r\n' +
+      "    path: '/overlay-source/:credential',\r\n" +
+      "    name: 'OverlayBrowserSource',\r\n" +
+      '    component: OverlayBrowserSource,\r\n' +
+      '    meta: {\r\n' +
+      '      hideLayout: true\r\n' +
+      '    }\r\n' +
+      '  },\r\n' +
+      '\r\n' +
+      '  {\r\n' +
+      "    path: '/creator-tools',\r\n" +
+      '    component: CreatorLayout,\r\n' +
+      '    meta: protectedCreatorRoute,\r\n' +
+      '\r\n' +
+      '    children: [\r\n' +
+      '      {\r\n' +
+      "        path: '',\r\n" +
+      "        name: 'CreatorDashboard',\r\n" +
+      '        component: CreatorDashboard,\r\n' +
+      '        meta: {\r\n' +
+      "          creatorFeature: 'dashboard'\r\n" +
+      '        }\r\n' +
+      '      },\r\n' +
+      '\r\n' +
+      '      {\r\n' +
+      "        path: 'profile',\r\n" +
+      "        name: 'CreatorProfile',\r\n" +
+      '        component: CreatorProfile,\r\n' +
+      '        meta: {\r\n' +
+      "          creatorFeature: 'profile'\r\n" +
+      '        }\r\n' +
+      '      },\r\n' +
+      '\r\n' +
+      '      {\r\n' +
+      "        path: 'twitch',\r\n" +
+      "        name: 'CreatorTwitch',\r\n" +
+      '        component: TwitchOverview,\r\n' +
+      "        alias: '/bot/twitch',\r\n" +
+      '        meta: {\r\n' +
+      "          creatorFeature: 'twitch'\r\n" +
+      '        }\r\n' +
+      '      },\r\n' +
+      '\r\n' +
+      '      {\r\n' +
+      "        path: 'discord',\r\n" +
+      "        name: 'CreatorDiscord',\r\n" +
+      '        component: CreatorDiscord,\r\n' +
+      "        alias: '/bot/discord',\r\n" +
+      '        meta: {\r\n' +
+      "          creatorFeature: 'discord'\r\n" +
+      '        }\r\n' +
+      '      },\r\n' +
+      '\r\n' +
+      '      {\r\n' +
+      "        path: 'bots',\r\n" +
+      "        name: 'CreatorBots',\r\n" +
+      '        component: BotsOverview,\r\n' +
+      "        alias: '/bot',\r\n" +
+      '        meta: {\r\n' +
+      "          creatorFeature: 'bots'\r\n" +
+      '        }\r\n' +
+      '      },\r\n' +
+      '\r\n' +
+      '      {\r\n' +
+      "        path: 'bots/twitch/commands',\r\n" +
+      "        name: 'CreatorTwitchCommands',\r\n" +
+      '        component: BasicCommands,\r\n' +
+      "        alias: '/bot/twitch/commands',\r\n" +
+      '        meta: {\r\n' +
+      "          creatorFeature: 'bots'\r\n" +
+      '        }\r\n' +
+      '      },\r\n' +
+      '\r\n' +
+      '      {\r\n' +
+      "        path: 'bots/twitch/alerts',\r\n" +
+      "        name: 'CreatorTwitchAlerts',\r\n" +
+      '        component: TwitchAlerts,\r\n' +
+      "        alias: '/bot/twitch/alerts',\r\n" +
+      '        meta: {\r\n' +
+      "          creatorFeature: 'bots'\r\n" +
+      '        }\r\n' +
+      '      },\r\n' +
+      '\r\n' +
+      '      {\r\n' +
+      "        path: 'bots/twitch/tts',\r\n" +
+      "        name: 'CreatorTwitchTts',\r\n" +
+      '        component: TextToSpeech,\r\n' +
+      "        alias: '/bot/twitch/tts',\r\n" +
+      '        meta: {\r\n' +
+      "          creatorFeature: 'bots'\r\n" +
+      '        }\r\n' +
+      '      },\r\n' +
+      '\r\n' +
+      '      {\r\n' +
+      "        path: 'bots/moderation',\r\n" +
+      "        name: 'CreatorBotModeration',\r\n" +
+      '        component: TwitchModeration,\r\n' +
+      "        alias: '/bot/twitch/moderation',\r\n" +
+      '        meta: {\r\n' +
+      "          creatorFeature: 'bots'\r\n" +
+      '        }\r\n' +
+      '      },\r\n' +
+      '\r\n' +
+      '      {\r\n' +
+      "        path: 'bots/automation',\r\n" +
+      "        name: 'CreatorBotAutomation',\r\n" +
+      '        component: Automation,\r\n' +
+      "        alias: '/bot/automation',\r\n" +
+      '        meta: {\r\n' +
+      "          creatorFeature: 'bots'\r\n" +
+      '        }\r\n' +
+      '      },\r\n' +
+      '\r\n' +
+      '      {\r\n' +
+      "        path: 'chat',\r\n" +
+      "        name: 'CreatorChat',\r\n" +
+      '        component: CreatorChat,\r\n' +
+      '        meta: {\r\n' +
+      "          creatorFeature: 'chat'\r\n" +
+      '        }\r\n' +
+      '      },\r\n' +
+      '\r\n' +
+      '      {\r\n' +
+      "        path: 'overlays',\r\n" +
+      "        name: 'CreatorOverlays',\r\n" +
+      '        component: OverlayEntry,\r\n' +
+      '        meta: {\r\n' +
+      "          creatorFeature: 'overlays'\r\n" +
+      '        }\r\n' +
+      '      },\r\n' +
+      '\r\n' +
+      '      {\r\n' +
+      "        path: 'overlays/library',\r\n" +
+      "        name: 'CreatorOverlayLibrary',\r\n" +
+      '        component: OverlayManager,\r\n' +
+      '        meta: {\r\n' +
+      "          creatorFeature: 'overlays'\r\n" +
+      '        }\r\n' +
+      '      },\r\n' +
+      '\r\n' +
+      '      {\r\n' +
+      "        path: 'overlays/:overlayId',\r\n" +
+      "        name: 'CreatorOverlayEditor',\r\n" +
+      '        component: OverlayEditor,\r\n' +
+      '        meta: {\r\n' +
+      "          creatorFeature: 'overlays'\r\n" +
+      '        }\r\n' +
+      '      },\r\n' +
+      '\r\n' +
+      '      {\r\n' +
+      "        path: 'community',\r\n" +
+      "        name: 'CreatorCommunity',\r\n" +
+      '        component: CreatorCommunity,\r\n' +
+      '        meta: {\r\n' +
+      "          creatorFeature: 'community'\r\n" +
+      '        }\r\n' +
+      '      },\r\n' +
+      '\r\n' +
+      '      {\r\n' +
+      "        path: 'rewards',\r\n" +
+      "        name: 'CreatorRewards',\r\n" +
+      '        component: CreatorRewards,\r\n' +
+      '        meta: {\r\n' +
+      "          creatorFeature: 'rewards'\r\n" +
+      '        }\r\n' +
+      '      },\r\n' +
+      '\r\n' +
+      '      {\r\n' +
+      "        path: 'achievements',\r\n" +
+      "        name: 'CreatorAchievements',\r\n" +
+      '        component: CreatorAchievements,\r\n' +
+      '        meta: {\r\n' +
+      "          creatorFeature: 'achievements'\r\n" +
+      '        }\r\n' +
+      '      },\r\n' +
+      '\r\n' +
+      '      {\r\n' +
+      "        path: 'events',\r\n" +
+      "        name: 'CreatorEvents',\r\n" +
+      '        component: CreatorEvents,\r\n' +
+      '        meta: {\r\n' +
+      "          creatorFeature: 'events'\r\n" +
+      '        }\r\n' +
+      '      },\r\n' +
+      '\r\n' +
+      '      {\r\n' +
+      "        path: 'members',\r\n" +
+      "        name: 'CreatorMembers',\r\n" +
+      '        component: CreatorMembers,\r\n' +
+      '        meta: {\r\n' +
+      "          creatorFeature: 'members'\r\n" +
+      '        }\r\n' +
+      '      },\r\n' +
+      '\r\n' +
+      '      {\r\n' +
+      "        path: 'analytics',\r\n" +
+      "        name: 'CreatorAnalytics',\r\n" +
+      '        component: CreatorAnalytics,\r\n' +
+      '        meta: {\r\n' +
+      "          creatorFeature: 'analytics'\r\n" +
+      '        }\r\n' +
+      '      },\r\n' +
+      '\r\n' +
+      '      {\r\n' +
+      "        path: 'integrations',\r\n" +
+      "        name: 'CreatorIntegrations',\r\n" +
+      '        component: Integrations,\r\n' +
+      "        alias: '/bot/settings',\r\n" +
+      '        meta: {\r\n' +
+      "          creatorFeature: 'integrations'\r\n" +
+      '        }\r\n' +
+      '      },\r\n' +
+      '\r\n' +
+      '      {\r\n' +
+      "        path: 'setup',\r\n" +
+      "        name: 'CreatorSetup',\r\n" +
+      '        component: CreatorSetup,\r\n' +
+      '        meta: {\r\n' +
+      "          creatorFeature: 'setup'\r\n" +
+      '        }\r\n' +
+      '      }\r\n' +
+      '    ]\r\n' +
+      '  },\r\n' +
+      '\r\n' +
+      '  {\r\n' +
+      "    path: '/tts-overlay',\r\n" +
+      '    component: Overlay,\r\n' +
+      '    meta: {\r\n' +
+      '      hideLayout: true\r\n' +
+      '    }\r\n' +
+      '  }\r\n' +
+      ']'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    import CreatorLayout from './components/CreatorLayout.vue'
+    
+    import CreatorDashboard from './views/dashboard/CreatorDashboard.vue'
+    import CreatorProfile from './views/profile/CreatorProfile.vue'
+    import CreatorDiscord from './views/discord/CreatorDiscord.vue'
+    import CreatorCommunity from './views/community/CreatorCommunity.vue'
+    import CreatorRewards from './views/rewards/CreatorRewards.vue'
+    import CreatorAchievements from './views/achievements/CreatorAchievements.vue'
+    import CreatorEvents from './views/events/CreatorEvents.vue'
+    import CreatorMembers from './views/members/CreatorMembers.vue'
+    import CreatorAnalytics from './views/analytics/CreatorAnalytics.vue'
+    import CreatorSetup from './views/setup/CreatorSetup.vue'
+    import CreatorChat from './views/chat/CreatorChat.vue'
+    
+    import BotsOverview from './views/bots/overview/BotsOverview.vue'
+    import Automation from './views/bots/automation/Automation.vue'
+    
+    import TwitchOverview from './views/twitch/overview/TwitchOverview.vue'
+    import BasicCommands from './views/twitch/commands/basic/BasicCommands.vue'
+    import TwitchAlerts from './views/twitch/alerts/TwitchAlerts.vue'
+    import TextToSpeech from './views/twitch/text-to-speech/TextToSpeech.vue'
+    import TwitchModeration from './views/twitch/moderation/TwitchModeration.vue'
+    
+    import Integrations from './views/integrations/Integrations.vue'
+    
+    import OverlayManager from './views/overlays/OverlayManager.vue'
+    import OverlayEditor from './views/overlays/OverlayEditor.vue'
+    import OverlayEntry from './views/overlays/OverlayEntry.vue'
+    import OverlayBrowserSource from './views/overlays/OverlayBrowserSource.vue'
+    
+    import Overlay from '../../views/Bot/OverlayEngine/Overlay.vue'
+    
+    
+    const protectedCreatorRoute = {
+      requiresAuth: true,
+      hideLayout: true,
+    }
+    
+    
+    export default [
+      {
+        path: '/overlay-source/:credential',
+        name: 'OverlayBrowserSource',
+        component: OverlayBrowserSource,
+        meta: {
+          hideLayout: true
+        }
+      },
+    
+      {
+        path: '/creator-tools',
+        component: CreatorLayout,
+        meta: protectedCreatorRoute,
+    
+        children: [
+          {
+            path: '',
+            name: 'CreatorDashboard',
+            component: CreatorDashboard,
+            meta: {
+              creatorFeature: 'dashboard'
+            }
+          },
+    
+          {
+            path: 'profile',
+            name: 'CreatorProfile',
+            component: CreatorProfile,
+            meta: {
+              creatorFeature: 'profile'
+            }
+          },
+    
+          {
+            path: 'twitch',
+            name: 'CreatorTwitch',
+            component: TwitchOverview,
+            alias: '/bot/twitch',
+            meta: {
+              creatorFeature: 'twitch'
+            }
+          },
+    
+          {
+            path: 'discord',
+            name: 'CreatorDiscord',
+            component: CreatorDiscord,
+            alias: '/bot/discord',
+            meta: {
+              creatorFeature: 'discord'
+            }
+          },
+    
+          {
+            path: 'bots',
+            name: 'CreatorBots',
+            component: BotsOverview,
+            alias: '/bot',
+            meta: {
+              creatorFeature: 'bots'
+            }
+          },
+    
+          {
+            path: 'bots/twitch/commands',
+            name: 'CreatorTwitchCommands',
+            component: BasicCommands,
+            alias: '/bot/twitch/commands',
+            meta: {
+              creatorFeature: 'bots'
+            }
+          },
+    
+          {
+            path: 'bots/twitch/alerts',
+            name: 'CreatorTwitchAlerts',
+            component: TwitchAlerts,
+            alias: '/bot/twitch/alerts',
+            meta: {
+              creatorFeature: 'bots'
+            }
+          },
+    
+          {
+            path: 'bots/twitch/tts',
+            name: 'CreatorTwitchTts',
+            component: TextToSpeech,
+            alias: '/bot/twitch/tts',
+            meta: {
+              creatorFeature: 'bots'
+            }
+          },
+    
+          {
+            path: 'bots/moderation',
+            name: 'CreatorBotModeration',
+            component: TwitchModeration,
+            alias: '/bot/twitch/moderation',
+            meta: {
+              creatorFeature: 'bots'
+            }
+          },
+    
+          {
+            path: 'bots/automation',
+            name: 'CreatorBotAutomation',
+            component: Automation,
+            alias: '/bot/automation',
+            meta: {
+              creatorFeature: 'bots'
+            }
+          },
+    
+          {
+            path: 'chat',
+            name: 'CreatorChat',
+            component: CreatorChat,
+            meta: {
+              creatorFeature: 'chat'
+            }
+          },
+    
+          {
+            path: 'overlays',
+            name: 'CreatorOverlays',
+            component: OverlayEntry,
+            meta: {
+              creatorFeature: 'overlays'
+            }
+          },
+    
+          {
+            path: 'overlays/library',
+            name: 'CreatorOverlayLibrary',
+            component: OverlayManager,
+            meta: {
+              creatorFeature: 'overlays'
+            }
+          },
+    
+          {
+            path: 'overlays/:overlayId',
+            name: 'CreatorOverlayEditor',
+            component: OverlayEditor,
+            meta: {
+              creatorFeature: 'overlays'
+            }
+          },
+    
+          {
+            path: 'community',
+            name: 'CreatorCommunity',
+            component: CreatorCommunity,
+            meta: {
+              creatorFeature: 'community'
+            }
+          },
+    
+          {
+            path: 'rewards',
+            name: 'CreatorRewards',
+            component: CreatorRewards,
+            meta: {
+              creatorFeature: 'rewards'
+            }
+          },
+    
+          {
+            path: 'achievements',
+            name: 'CreatorAchievements',
+            component: CreatorAchievements,
+            meta: {
+              creatorFeature: 'achievements'
+            }
+          },
+    
+          {
+            path: 'events',
+            name: 'CreatorEvents',
+            component: CreatorEvents,
+            meta: {
+              creatorFeature: 'events'
+            }
+          },
+    
+          {
+            path: 'members',
+            name: 'CreatorMembers',
+            component: CreatorMembers,
+            meta: {
+              creatorFeature: 'members'
+            }
+          },
+    
+          {
+            path: 'analytics',
+            name: 'CreatorAnalytics',
+            component: CreatorAnalytics,
+            meta: {
+              creatorFeature: 'analytics'
+            }
+          },
+    
+          {
+            path: 'integrations',
+            name: 'CreatorIntegrations',
+            component: Integrations,
+            alias: '/bot/settings',
+            meta: {
+              creatorFeature: 'integrations'
+            }
+          },
+    
+          {
+            path: 'setup',
+            name: 'CreatorSetup',
+            component: CreatorSetup,
+            meta: {
+              creatorFeature: 'setup'
+            }
+          }
+        ]
+      },
+    
+      {
+        path: '/tts-overlay',
+        component: Overlay,
+        meta: {
+          hideLayout: true
+        }
+      }
+    ]
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///work/src/features/creator-tools/connected-demo/connectedDemoState.test.mjs:60:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: privacy presentation excludes surveillance and sensitive-note concepts
+ok 9 - privacy presentation excludes surveillance and sensitive-note concepts
+  ---
+  duration_ms: 0.373643
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 8
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 539.126763

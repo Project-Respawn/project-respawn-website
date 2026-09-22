@@ -1,10 +1,10 @@
 # Protected Local Amplify Development
 
-`Ntgrestage8` is protected local infrastructure. Generated Cognito, AppSync, identity-pool, table, function, and bucket IDs are not stable identity; resolve them from outputs, tags, and CloudFormation.
+`Ntgre` is protected local infrastructure. Generated Cognito, AppSync, identity-pool, table, function, and bucket IDs are not stable identity; resolve them from outputs, tags, and CloudFormation.
 
 ## Safe startup
 
-Terminal 1: `npm run dev:sandbox`. The preflight must identify the currently generated `Ntgrestage8` root. If `ampx` prints a different root stack, stop immediately. Terminal 2, after deployment/output generation: `npm run dev`. Sign out/in after any Cognito pool change.
+Terminal 1: `npm run dev:sandbox`. The preflight must identify the currently generated `Ntgre` root. If `ampx` prints a different root stack, stop immediately. Terminal 2, after deployment/output generation: `npm run dev`. Sign out/in after any Cognito pool change.
 
 The preflight cannot prove in advance what CDK will replace. It is a target check, not replacement authorization.
 
@@ -12,7 +12,7 @@ The preflight cannot prove in advance what CDK will replace. It is a target chec
 
 For changes to `amplify/data/resource.ts`, `amplify/auth/**`, `amplify/backend.ts`, `amplify/myFunction/**`, or other infrastructure:
 
-1. Inspect the existing `Ntgrestage8` resources and current outputs.
+1. Inspect the existing `Ntgre` resources and current outputs.
 2. Run static tests and `npx tsc --noEmit -p amplify/tsconfig.json`.
 3. Determine whether the change is compatible with an in-place update.
 4. Never recreate a sandbox to solve generated-client metadata drift.
@@ -28,4 +28,4 @@ For changes to `amplify/data/resource.ts`, `amplify/auth/**`, `amplify/backend.t
 
 `ampx sandbox delete`, CloudFormation deletion, Cognito pool deletion/replacement, changing the sandbox identifier, switching outputs to another environment, and manual sandbox replacement require explicit target-specific user authorization. A general repair/debug/deploy request is insufficient.
 
-Never place passwords, tokens, Merchant secrets, or API secrets in tracked files. Local backend secrets use `npx ampx sandbox secret set <NAME> --identifier Ntgrestage8`.
+Never place passwords, tokens, Merchant secrets, or API secrets in tracked files. Local backend secrets use `npx ampx sandbox secret set <NAME> --identifier Ntgre`.

@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises'
 import { createDefaultChatSettings } from '../../views/chat/chat.defaults.js'
 import { normalizeCreatorChatConfig, toCanonicalChatConfig, validateCreatorChatConfig } from '../../views/chat/chat.config.js'
 import { resolveCreatorBrand } from '../../composables/useCreatorBrandContext.js'
+import { widgetChat } from './chatWidgetContract.mjs'
 
 const read = (path) => readFile(new URL(path, import.meta.url), 'utf8')
 
@@ -60,7 +61,13 @@ test('Browser Source forwards refreshed Chat config and twitch-chat prefers cano
   assert.match(source, /runtimeConfig\.value = \{ \.\.\.\(source\.twitchConfig/)
   assert.match(source, /30_000/)
   assert.match(renderer, /:runtime-config="runtimeConfig"/)
-  assert.match(widget, /props\.runtimeConfig\?\.chat \|\| legacyConfig\(\)/)
+  const { chat, props } = widgetChat(widget, { chat: { maxMessages: 12 } }, { maxMessages: 9 })
+  assert.equal(chat.value.content.maximumVisibleMessages, 12)
+  props.runtimeConfig = { chat: { schemaVersion: 2, enabled: false, content: { maximumVisibleMessages: 24 }, blockedTerms: ['refreshed'] } }
+  assert.equal(chat.value.content.maximumVisibleMessages, 24)
+  assert.equal(chat.value.enabled, false, 'canonical disabled state must not fall through to preview or legacy')
+  assert.deepEqual(chat.value.blockedTerms, ['refreshed'])
+  assert.equal(chat.value.schemaVersion, 2)
   assert.match(widget, /normalizeCreatorChatConfig/)
   assert.match(preview, /normalizeCreatorChatConfig/)
   assert.match(widget, /value\.maxMessages/)

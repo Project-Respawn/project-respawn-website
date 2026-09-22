@@ -1,0 +1,44 @@
+[
+  {
+    "name": "verify-input-bytes",
+    "args": [
+      "scripts/snapshot-validation-source.mjs",
+      "verify",
+      "/work"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "npm-ci",
+    "args": [
+      "/usr/local/lib/node_modules/npm/bin/npm-cli.js",
+      "ci"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "verify-installed-source",
+    "args": [
+      "scripts/snapshot-validation-source.mjs",
+      "verify",
+      "/work"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "master-synthesis",
+    "args": [
+      "scripts/synthesize-master-backend.mjs"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "verify-post-synthesis-source",
+    "args": [
+      "scripts/snapshot-validation-source.mjs",
+      "verify",
+      "/work"
+    ],
+    "exit": 0
+  }
+]

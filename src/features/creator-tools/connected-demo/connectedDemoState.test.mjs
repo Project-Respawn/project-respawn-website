@@ -2,6 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
+import { routeRecords } from '../../../../scripts/test-support/source-contracts.mjs'
 import {
   CONNECTED_DEMO_STORAGE_KEY, CONNECTED_DEMO_VERSION, attendFridayGameNight,
   closeOverlayPreview, communityMetrics, connectedDemo, createConnectedDemoState,
@@ -56,8 +57,13 @@ test('five route pages mount shared demo labels and contain no external request 
 })
 test('existing Creator Tools routes mount all five connected demo pages', () => {
   const routes = readFileSync(fileURLToPath(new URL('../creator-tools.routes.js', import.meta.url)), 'utf8')
+  const parent = routeRecords(routes).find(route => route.path === '/creator-tools')
+  assert.equal(parent.meta.requiresAuth, true)
   for (const [path, name] of [['community','CreatorCommunity'],['events','CreatorEvents'],['rewards','CreatorRewards'],['achievements','CreatorAchievements'],['members','CreatorMembers']]) {
-    assert.match(routes, new RegExp(`path: '${path}'.*name: '${name}'`))
+    const matches = parent.children.filter(route => route.path === path)
+    assert.equal(matches.length, 1)
+    assert.equal(matches[0].name, name)
+    assert.equal(matches[0].component, `./views/${path}/${name}.vue`)
   }
 })
 test('privacy presentation excludes surveillance and sensitive-note concepts', () => {

@@ -1,0 +1,28 @@
+[
+  {
+    "name": "verify-source",
+    "args": [
+      "scripts/snapshot-validation-source.mjs",
+      "verify",
+      "/work"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "master-synthesis",
+    "args": [
+      "scripts/synthesize-master-backend.mjs"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "exact-comparison",
+    "args": [
+      "scripts/compare-handler-consolidation.mjs",
+      "/results/baseline-assembly",
+      ".amplify/master-preview/cdk.out",
+      "/results/final-preflight/comparison"
+    ],
+    "exit": 0
+  }
+]

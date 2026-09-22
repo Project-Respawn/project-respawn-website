@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "npm run validate:local-outputs && npm run validate:amplify-contract && vite",
-    "dev:sandbox": "npm run preflight:local-sandbox && ampx sandbox --identifier Ntgrestage8 --outputs-format json --outputs-out-dir .",
+    "dev:sandbox": "npm run preflight:local-sandbox && ampx sandbox --identifier Ntgre --outputs-format json --outputs-out-dir .",
     "preflight:local-sandbox": "node ./scripts/preflight-local-sandbox.mjs",
     "synth:master-backend": "node ./scripts/synthesize-master-backend.mjs",
     "preview:master-backend": "npm run synth:master-backend && node ./scripts/preview-master-backend.mjs",
@@ -30,7 +30,10 @@
     "build": "node ./scripts/validate-vite-api-base-url.mjs && vite build",
     "preview": "vite preview",
     "cleanup:media:dry": "node ./scripts/cleanup-orphaned-media.mjs",
-    "cleanup:media:apply": "node ./scripts/cleanup-orphaned-media.mjs --apply"
+    "cleanup:media:apply": "node ./scripts/cleanup-orphaned-media.mjs --apply",
+    "test:resource-accounting": "node --test ./scripts/cloudformation-accounting.test.mjs",
+    "validate:infrastructure-ci": "node ./scripts/validate-infrastructure-ci.mjs",
+    "test:handler-consolidation": "node --test ./scripts/handler-consolidation.test.mjs"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.20",

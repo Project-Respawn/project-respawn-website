@@ -1,0 +1,6 @@
+import fs from 'node:fs';
+const rows=JSON.parse(fs.readFileSync('/results/comparison/lambda-assets.json')).filter(x=>!x.unchanged);
+const result=[];
+for(const row of rows){const before='/baseline/asset.'+row.beforeKey.replace(/\.zip$/,'');const after='/work/.amplify/master-preview/cdk.out/asset.'+row.afterKey.replace(/\.zip$/,'');
+const files=[];for(const file of fs.readdirSync(before)){const a=fs.readFileSync(before+'/'+file,'utf8'),b=fs.readFileSync(after+'/'+file,'utf8');const item={file,identical:a===b};if(file.endsWith('.map')){const x=JSON.parse(a),y=JSON.parse(b);item.sourcePathsEqual=JSON.stringify(x.sources)===JSON.stringify(y.sources);item.normalizedSourceContentEqual=JSON.stringify(x.sourcesContent.map(s=>s?.replaceAll('\r\n','\n')))===JSON.stringify(y.sourcesContent.map(s=>s?.replaceAll('\r\n','\n')));item.onlySourceContentLineEndings=JSON.stringify({...x,sourcesContent:x.sourcesContent.map(s=>s?.replaceAll('\r\n','\n'))})===JSON.stringify({...y,sourcesContent:y.sourcesContent.map(s=>s?.replaceAll('\r\n','\n'))});}files.push(item);}result.push({logicalId:row.logicalId,files});}
+fs.writeFileSync('/results/asset-diagnostic.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result,null,2));

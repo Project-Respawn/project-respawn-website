@@ -1,8 +1,8 @@
 import { createHash } from 'node:crypto'
 
-export const EXPECTED_SANDBOX_IDENTIFIER = 'Ntgrestage8'
+export const EXPECTED_SANDBOX_IDENTIFIER = 'Ntgre'
 export const EXPECTED_SANDBOX_NAMESPACE = 'project-respawn-website'
-export const EXPECTED_SANDBOX_ROOT = 'amplify-projectrespawnwebsite-Ntgrestage8-sandbox-767a43f84e'
+export const EXPECTED_SANDBOX_ROOT = 'amplify-projectrespawnwebsite-Ntgre-sandbox-8bd9d02332'
 
 export function resolveSandboxRoot(namespace = EXPECTED_SANDBOX_NAMESPACE, identifier = EXPECTED_SANDBOX_IDENTIFIER) {
   if (identifier !== EXPECTED_SANDBOX_IDENTIFIER) throw new Error(`Protected sandbox identifier must be ${EXPECTED_SANDBOX_IDENTIFIER}.`)

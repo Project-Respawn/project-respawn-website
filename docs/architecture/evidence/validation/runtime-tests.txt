@@ -1,0 +1,31 @@
+
+> project-respawn-website@1.0.0 test:runtime-ownership
+> node --test ./scripts/runtime-ownership.test.mjs
+
+✔ Twitch runtime route and overlay grants belong to the dedicated function (0.8023ms)
+✔ Lambda environment bindings never use AWS-invalid underscore-prefixed names (0.2626ms)
+✖ synthesized dependency graph has no data to overlay edge (0.5184ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 2
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 357.2666
+
+✖ failing tests:
+
+test at scripts\runtime-ownership.test.mjs:22:1
+✖ synthesized dependency graph has no data to overlay edge (0.5184ms)
+  TypeError [ERR_INVALID_ARG_TYPE]: The "path" argument must be of type string. Received undefined
+      at join (node:path:513:7)
+      at TestContext.<anonymous> (file:///C:/Users/Ntgre/Ravens%20Community%20gaming/Business%20Development%20-%20Documents/project-respawn-website/scripts/runtime-ownership.test.mjs:25:40)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    code: 'ERR_INVALID_ARG_TYPE'
+  }

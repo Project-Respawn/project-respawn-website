@@ -323,7 +323,8 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
+import { swgSignInDestination } from '../../config/swgEofRelease.js';
 import {
   signUp,
   signIn,
@@ -334,6 +335,7 @@ import {
 import { useAuth, ensureAuthReady, refreshAuth } from "../../composables/useAuth.js";
 
 const router = useRouter();
+const route = useRoute();
 const { isSignedIn, authStatus } = useAuth();
 
 const activeTab = ref("signin");
@@ -422,7 +424,7 @@ async function handleSignIn() {
 
   if (isSignedIn.value) {
     signInForm.value.password = "";
-    await router.push("/home");
+    await router.push(swgSignInDestination(route.query.redirect));
     return;
   }
 
@@ -432,7 +434,7 @@ async function handleSignIn() {
     await signIn({ username: addr, password: signInForm.value.password });
     await refreshAuth();
     signInForm.value.password = "";
-    await router.push("/home");
+    await router.push(swgSignInDestination(route.query.redirect));
   } catch (err) {
     const alreadySignedIn =
       err?.name === "UserAlreadyAuthenticatedException" ||
@@ -444,7 +446,7 @@ async function handleSignIn() {
       await refreshAuth();
       if (isSignedIn.value) {
         signInForm.value.password = "";
-        await router.push("/home");
+        await router.push(swgSignInDestination(route.query.redirect));
         return;
       }
     }

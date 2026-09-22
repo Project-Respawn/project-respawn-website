@@ -11,6 +11,9 @@ import { MASTER } from './lib/master-backend-preview.mjs';
 
 const requested = process.argv[2] || path.join('.amplify', 'master-preview', 'cdk.out');
 const outdir = path.resolve(requested);
+const artifactRoot = path.resolve('.amplify');
+const artifactRelative = path.relative(artifactRoot, outdir);
+if (!artifactRelative || artifactRelative.startsWith('..') || path.isAbsolute(artifactRelative)) throw new Error('Synthesis output must be inside the workspace .amplify directory');
 if (process.env.AWS_BRANCH && process.env.AWS_BRANCH !== MASTER.branch) throw new Error(`Refusing non-MASTER AWS_BRANCH ${process.env.AWS_BRANCH}`);
 if (outdir.toLowerCase().includes('ntgrestage8')) throw new Error('Refusing sandbox-named synthesis output');
 process.env.AWS_BRANCH = MASTER.branch;

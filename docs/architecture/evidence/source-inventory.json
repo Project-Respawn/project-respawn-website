@@ -1,0 +1,2128 @@
+{
+  "capturedAt": "2026-09-21T15:05:28.601Z",
+  "models": [
+    {
+      "name": "InvestorAccessRequest",
+      "line": 67,
+      "relations": [],
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin']).to([])])",
+      "fields": [
+        "name",
+        "investmentContext",
+        "status",
+        "reviewedBy",
+        "auditHistory"
+      ]
+    },
+    {
+      "name": "InvestorAccess",
+      "line": 84,
+      "relations": [],
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin']).to([])])",
+      "fields": [
+        "userId",
+        "name",
+        "ndaStatus",
+        "expiresAt"
+      ]
+    },
+    {
+      "name": "InvestorAccessAuditEvent",
+      "line": 93,
+      "relations": [],
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin', 'Admin']).to(['read'])])",
+      "fields": [
+        "targetUserId",
+        "newValue"
+      ]
+    },
+    {
+      "name": "CreatorWorkspaceRecord",
+      "line": 248,
+      "relations": [],
+      "authorization": ".authorization((allow) => [\r\n        // No direct client model access. Authenticated callers use the\r\n        // owner-checking Lambda operations declared below.\r\n        allow.groups(['SuperAdmin']).to([]),\r\n      ])",
+      "fields": [
+        "ownerUserId",
+        "name"
+      ]
+    },
+    {
+      "name": "WorkspaceMembership",
+      "line": 286,
+      "relations": [],
+      "authorization": ".authorization((allow) => [\r\n        // No direct client model access. Authenticated callers use the\r\n        // owner/member-checking Lambda operations declared below.\r\n        allow.groups(['SuperAdmin']).to([]),\r\n      ])",
+      "fields": [
+        "workspaceId",
+        "userId",
+        "status",
+        "addedByUserId",
+        "revokedAt",
+        "revokedByUserId",
+        "permissionGeneration"
+      ]
+    },
+    {
+      "name": "WorkspaceMembershipPermission",
+      "line": 310,
+      "relations": [],
+      "authorization": ".authorization((allow) => [\r\n        allow.groups(['SuperAdmin']).to([]),\r\n      ])",
+      "fields": [
+        "membershipId",
+        "permissionKey",
+        "assignedByUserId",
+        "assignedAt"
+      ]
+    },
+    {
+      "name": "WorkspaceMembershipPermissionSet",
+      "line": 326,
+      "relations": [],
+      "authorization": ".authorization((allow) => [\r\n        allow.groups(['SuperAdmin']).to([]),\r\n      ])",
+      "fields": [
+        "membershipId",
+        "permissionGeneration",
+        "revision",
+        "permissionKeys",
+        "updatedByUserId",
+        "updatedAt"
+      ]
+    },
+    {
+      "name": "PermissionDefinition",
+      "line": 468,
+      "relations": [],
+      "authorization": ".authorization((allow) => [\r\n        allow.groups(['SuperAdmin', 'Admin']).to(['read']),\r\n      ])",
+      "fields": [
+        "key",
+        "displayName",
+        "description",
+        "domain",
+        "module",
+        "isActive",
+        "sortOrder",
+        "createdBy"
+      ]
+    },
+    {
+      "name": "GroupPermission",
+      "line": 483,
+      "relations": [],
+      "authorization": ".authorization((allow) => [\r\n        allow.groups(['SuperAdmin', 'Admin']).to(['read']),\r\n      ])",
+      "fields": [
+        "groupName",
+        "permissionKey",
+        "enabled",
+        "assignedBy",
+        "changedBy"
+      ]
+    },
+    {
+      "name": "PermissionAuditEvent",
+      "line": 495,
+      "relations": [],
+      "authorization": ".authorization((allow) => [\r\n        allow.groups(['SuperAdmin', 'Admin']).to(['read']),\r\n      ])",
+      "fields": [
+        "actorUserId",
+        "action",
+        "targetType",
+        "targetId",
+        "before",
+        "after",
+        "occurredAt"
+      ]
+    },
+    {
+      "name": "ApplicationSubmission",
+      "line": 737,
+      "relations": [
+        {
+          "kind": "hasMany",
+          "model": "ApplicationAnswer"
+        },
+        {
+          "kind": "hasMany",
+          "model": "ApplicationCreatorProfile"
+        },
+        {
+          "kind": "hasMany",
+          "model": "ApplicationSchedule"
+        },
+        {
+          "kind": "hasMany",
+          "model": "ApplicationAuditEvent"
+        }
+      ],
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin']).to([])])",
+      "fields": [
+        "applicationReference",
+        "pathwayId",
+        "formVersion",
+        "applicantFullName",
+        "creatorDisplayName",
+        "contactEmail",
+        "emailVerificationState",
+        "emailVerificationProvenance",
+        "submissionStatus",
+        "writeState",
+        "submittedAt",
+        "source",
+        "consentVersion",
+        "consentedAt",
+        "currentReviewState",
+        "auditMetadata",
+        "payloadHash",
+        "idempotencyDigest",
+        "testRunId",
+        "answers",
+        "creatorProfiles",
+        "schedules",
+        "auditEvents"
+      ]
+    },
+    {
+      "name": "ApplicationAnswer",
+      "line": 766,
+      "relations": [
+        {
+          "kind": "belongsTo",
+          "model": "ApplicationSubmission"
+        }
+      ],
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin']).to([])])",
+      "fields": [
+        "applicationId",
+        "answerId",
+        "sectionKey",
+        "structuredValue",
+        "formVersion"
+      ]
+    },
+    {
+      "name": "ApplicationCreatorProfile",
+      "line": 775,
+      "relations": [
+        {
+          "kind": "belongsTo",
+          "model": "ApplicationSubmission"
+        }
+      ],
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin']).to([])])",
+      "fields": [
+        "applicationId",
+        "platform",
+        "profileUrl",
+        "isActive",
+        "submittedCreatedAt"
+      ]
+    },
+    {
+      "name": "ApplicationSchedule",
+      "line": 784,
+      "relations": [
+        {
+          "kind": "belongsTo",
+          "model": "ApplicationSubmission"
+        }
+      ],
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin']).to([])])",
+      "fields": [
+        "applicationId",
+        "applicantTimeZone",
+        "dayOfWeek",
+        "contentType",
+        "additionalNotes"
+      ]
+    },
+    {
+      "name": "ApplicationAuditEvent",
+      "line": 793,
+      "relations": [
+        {
+          "kind": "belongsTo",
+          "model": "ApplicationSubmission"
+        }
+      ],
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin']).to([])])",
+      "fields": [
+        "applicationId",
+        "eventType",
+        "safeMetadata"
+      ]
+    },
+    {
+      "name": "ApplicationIdempotency",
+      "line": 800,
+      "relations": [],
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin']).to([])])",
+      "fields": [
+        "payloadHash",
+        "safeResult"
+      ]
+    },
+    {
+      "name": "ApplicationPublicRateLimit",
+      "line": 805,
+      "relations": [],
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin']).to([])])",
+      "fields": [
+        "windowStartedAt"
+      ]
+    },
+    {
+      "name": "TwitchCommand",
+      "line": 815,
+      "relations": [],
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read'])])",
+      "fields": [
+        "brandId",
+        "streamerId",
+        "name",
+        "reply",
+        "enabled",
+        "cooldownSeconds",
+        "isCustom",
+        "category",
+        "permissionLevel"
+      ]
+    },
+    {
+      "name": "TwitchIntegration",
+      "line": 829,
+      "relations": [],
+      "authorization": ".authorization((allow) => [allow.groups(['TwitchBackendService'])])",
+      "fields": [
+        "workspaceId",
+        "brandId",
+        "ownerUserId",
+        "provider",
+        "twitchBroadcasterId",
+        "twitchLogin",
+        "twitchDisplayName",
+        "connectionStatus",
+        "grantedScopes",
+        "capabilities",
+        "tokenExpiresAt",
+        "tokenUpdatedAt",
+        "configurationVersion",
+        "connectedAt",
+        "disconnectedAt",
+        "lastValidatedAt",
+        "lastErrorCode"
+      ]
+    },
+    {
+      "name": "TwitchTokenVault",
+      "line": 851,
+      "relations": [],
+      "authorization": ".authorization((allow) => [allow.groups(['TwitchBackendService'])])",
+      "fields": [
+        "integrationId",
+        "encryptedTokenBundle",
+        "tokenExpiresAt",
+        "scopes",
+        "tokenVersion",
+        "updatedAt"
+      ]
+    },
+    {
+      "name": "TwitchOAuthTransaction",
+      "line": 863,
+      "relations": [],
+      "authorization": ".authorization((allow) => [allow.groups(['TwitchBackendService'])])",
+      "fields": [
+        "workspaceId",
+        "ownerUserId",
+        "brandId",
+        "integrationId",
+        "nonceHash",
+        "expiresAt",
+        "consumedAt"
+      ]
+    },
+    {
+      "name": "TwitchRuntimeHealth",
+      "line": 875,
+      "relations": [],
+      "authorization": ".authorization((allow) => [allow.groups(['TwitchBackendService'])])",
+      "fields": [
+        "integrationId",
+        "botAuthenticated",
+        "botConnected",
+        "eventSubConnected",
+        "chatReadAvailable",
+        "chatWriteAvailable",
+        "lastEventReceivedAt",
+        "lastBotHeartbeatAt",
+        "lastConfigurationSyncAt",
+        "appliedConfigurationVersion",
+        "warnings",
+        "errors"
+      ]
+    },
+    {
+      "name": "RewardRedemptionEvent",
+      "line": 897,
+      "relations": [],
+      "authorization": ".authorization((allow) => [allow.groups(['TwitchBackendService'])])",
+      "fields": [
+        "eventId",
+        "eventVersion",
+        "eventType",
+        "source",
+        "redemptionId",
+        "twitchBroadcasterId",
+        "safeMemberDisplayName",
+        "occurredAt",
+        "expiresAt",
+        "workspaceId",
+        "integrationId",
+        "status",
+        "claimToken",
+        "claimedAt",
+        "resolvedAt",
+        "resolution"
+      ]
+    },
+    {
+      "name": "RewardRedemptionEventClaim",
+      "line": 921,
+      "relations": [],
+      "authorization": ".authorization((allow) => [allow.groups(['TwitchBackendService'])])",
+      "fields": [
+        "eventId",
+        "integrationId",
+        "claimToken",
+        "claimedAt"
+      ]
+    },
+    {
+      "name": "AlphaServiceNonce",
+      "line": 932,
+      "relations": [],
+      "authorization": ".authorization((allow) => [allow.groups(['TwitchBackendService'])])",
+      "fields": [
+        "nonceHash",
+        "expiresAt"
+      ]
+    },
+    {
+      "name": "DiscordBotConfiguration",
+      "line": 1036,
+      "relations": [],
+      "authorization": ".authorization((allow) => [\r\n        allow.groups(['SuperAdmin', 'Admin']).to(['read']),\r\n      ])",
+      "fields": [
+        "brandId"
+      ]
+    },
+    {
+      "name": "Team",
+      "line": 1065,
+      "relations": [],
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin']).to([])])",
+      "fields": [
+        "slug",
+        "name",
+        "gameKey",
+        "status",
+        "createdByUserId",
+        "updatedByUserId",
+        "rosterRevision",
+        "membershipRevision",
+        "managerMembershipId",
+        "coachMembershipId",
+        "teamPlan",
+        "proGrantedAt",
+        "proGrantedBy",
+        "proExpiresAt",
+        "planUpdatedAt",
+        "planUpdatedBy",
+        "logoKey",
+        "logoUpdatedAt",
+        "logoUpdatedBy",
+        "settingsRevision"
+      ]
+    },
+    {
+      "name": "TeamMembership",
+      "line": 1094,
+      "relations": [],
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin']).to([])])",
+      "fields": [
+        "teamId",
+        "userId",
+        "displayName",
+        "role",
+        "status",
+        "addedByUserId",
+        "revokedAt",
+        "revokedByUserId"
+      ]
+    },
+    {
+      "name": "TeamRosterSlot",
+      "line": 1111,
+      "relations": [],
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin']).to([])])",
+      "fields": [
+        "teamId",
+        "membershipId",
+        "playerUserId",
+        "gameRoleKey",
+        "slotType",
+        "status",
+        "assignedByUserId",
+        "deactivatedAt"
+      ]
+    },
+    {
+      "name": "PlayerChampionPoolEntry",
+      "line": 1128,
+      "relations": [],
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin']).to([])])",
+      "fields": [
+        "teamId",
+        "membershipId",
+        "playerUserId",
+        "championId",
+        "gameRoleKey",
+        "comfortLevel",
+        "priority",
+        "competitiveReady",
+        "playerNotes",
+        "coachTier",
+        "coachAssessment",
+        "coachRecommendation",
+        "coachPriorityPractice",
+        "coachUpdatedByUserId",
+        "coachUpdatedAt"
+      ]
+    },
+    {
+      "name": "UserProfile",
+      "line": 1165,
+      "relations": [],
+      "authorization": ".authorization((allow) => [allow.owner().to(['read', 'delete'])]),\r\n        ownerUserId: a.string().required(),\r\n        displayName: a.string().required(),\r\n        bio: a.string(),\r\n        avatarUrl: a.string(),\r\n        canHostEvents: a.boolean(),\r\n        hostTitle: a.string(),\r\n      })\r\n      .authorization((allow) => [\r\n        allow.owner(),\r\n        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),\r\n      ])",
+      "fields": [
+        "ownerUserId",
+        "displayName",
+        "bio",
+        "avatarUrl",
+        "canHostEvents",
+        "hostTitle"
+      ]
+    },
+    {
+      "name": "EventTag",
+      "line": 1216,
+      "relations": [],
+      "authorization": ".authorization((allow) => [\r\n        allow.publicApiKey().to(['read']),\r\n        allow.authenticated().to(['read']),\r\n      ])",
+      "fields": [
+        "name",
+        "slug",
+        "type",
+        "visibleOnEventCard",
+        "isActive"
+      ]
+    },
+    {
+      "name": "Event",
+      "line": 1229,
+      "relations": [],
+      "authorization": ".authorization((allow) => [\r\n        allow.publicApiKey().to(['read']),\r\n        allow.authenticated().to(['read']),\r\n        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),\r\n      ])",
+      "fields": [
+        "title",
+        "slug",
+        "shortDescription",
+        "description",
+        "longDescription",
+        "startAt",
+        "endAt",
+        "locationType",
+        "platform",
+        "category",
+        "categories",
+        "featured",
+        "status",
+        "host",
+        "hostUserId",
+        "hostDisplayName",
+        "brandId",
+        "rewardText",
+        "recapText",
+        "ctaLabel",
+        "ctaUrl",
+        "tagIds",
+        "ticketMode",
+        "ticketTiers",
+        "signupMode",
+        "eventType",
+        "isTemplate",
+        "isRecurring",
+        "seriesId",
+        "parentEventId",
+        "clonedFromEventId",
+        "recurrenceRule",
+        "recurrenceFrequency",
+        "recurrenceInterval",
+        "recurrenceByWeekday",
+        "recurrenceEndsAt",
+        "recurrenceCount",
+        "createdBy",
+        "updatedBy"
+      ]
+    },
+    {
+      "name": "EventSuggestion",
+      "line": 1277,
+      "relations": [],
+      "authorization": ".authorization((allow) => [allow.owner().to(['read', 'delete'])]),\r\n        ownerUserId: a.string(),\r\n        ownerDisplayName: a.string(),\r\n        reviewedBy: a.string(),\r\n      })\r\n      .authorization((allow) => [\r\n        allow.authenticated().to(['create']),\r\n        allow.ownerDefinedIn('owner').to(['read']),\r\n      ])",
+      "fields": [
+        "title",
+        "description",
+        "shortDescription",
+        "longDescription",
+        "startAt",
+        "endAt",
+        "locationType",
+        "platform",
+        "category",
+        "categories",
+        "host",
+        "hostUserId",
+        "hostDisplayName",
+        "rewardText",
+        "notes",
+        "status",
+        "reviewNotes",
+        "ownerUserId",
+        "ownerDisplayName",
+        "reviewedBy"
+      ]
+    },
+    {
+      "name": "ForumCategory",
+      "line": 1406,
+      "relations": [
+        {
+          "kind": "hasMany",
+          "model": "ForumBoard"
+        }
+      ],
+      "authorization": ".authorization((allow) => [\r\n        allow.publicApiKey().to(['read']),\r\n        allow.authenticated().to(['read']),\r\n      ])",
+      "fields": [
+        "name",
+        "slug",
+        "description",
+        "sortOrder",
+        "isActive",
+        "boards"
+      ]
+    },
+    {
+      "name": "ForumBoard",
+      "line": 1420,
+      "relations": [
+        {
+          "kind": "belongsTo",
+          "model": "ForumCategory"
+        },
+        {
+          "kind": "hasMany",
+          "model": "ForumThread"
+        },
+        {
+          "kind": "hasMany",
+          "model": "BoardPermissionRule"
+        }
+      ],
+      "authorization": ".authorization((allow) => [\r\n        allow.publicApiKey().to(['read']),\r\n        allow.authenticated().to(['read']),\r\n      ])",
+      "fields": [
+        "categoryId",
+        "category",
+        "name",
+        "slug",
+        "description",
+        "sortOrder",
+        "isActive",
+        "allowedGroups",
+        "threadCreateGroups",
+        "threads",
+        "permissionRules"
+      ]
+    },
+    {
+      "name": "ForumThread",
+      "line": 1439,
+      "relations": [
+        {
+          "kind": "belongsTo",
+          "model": "ForumBoard"
+        },
+        {
+          "kind": "hasMany",
+          "model": "ForumPost"
+        }
+      ],
+      "authorization": ".authorization((allow) => [allow.owner().to(['read', 'delete'])]),\r\n        authorUserId: a.string().required(),\r\n        authorDisplayName: a.string().required(),\r\n        contentPreview: a.string(),\r\n        isPinned: a.boolean().required(),\r\n        isLocked: a.boolean().required(),\r\n        isFeatured: a.boolean().required(),\r\n        replyCount: a.integer().required(),\r\n        viewCount: a.integer().required(),\r\n        lastReplyAt: a.datetime(),\r\n        posts: a.hasMany('ForumPost', 'threadId'),\r\n      })\r\n      .authorization((allow) => [\r\n        allow.publicApiKey().to(['read']),\r\n        allow.authenticated().to(['read']),\r\n        allow.ownerDefinedIn('owner').to(['read', 'update', 'delete']),\r\n      ])",
+      "fields": [
+        "boardId",
+        "board",
+        "title",
+        "slug",
+        "authorUserId",
+        "authorDisplayName",
+        "contentPreview",
+        "isPinned",
+        "isLocked",
+        "isFeatured",
+        "replyCount",
+        "viewCount",
+        "lastReplyAt",
+        "posts"
+      ]
+    },
+    {
+      "name": "ForumPost",
+      "line": 1465,
+      "relations": [
+        {
+          "kind": "belongsTo",
+          "model": "ForumThread"
+        }
+      ],
+      "authorization": ".authorization((allow) => [allow.owner().to(['read', 'delete'])]),\r\n        authorUserId: a.string().required(),\r\n        authorDisplayName: a.string().required(),\r\n        content: a.string().required(),\r\n        editedAt: a.datetime(),\r\n      })\r\n      .authorization((allow) => [\r\n        allow.publicApiKey().to(['read']),\r\n        allow.authenticated().to(['read', 'create']),\r\n        allow.ownerDefinedIn('owner').to(['read', 'update', 'delete']),\r\n      ])",
+      "fields": [
+        "threadId",
+        "thread",
+        "authorUserId",
+        "authorDisplayName",
+        "content",
+        "editedAt"
+      ]
+    },
+    {
+      "name": "ForumActivity",
+      "line": 1483,
+      "relations": [],
+      "authorization": ".authorization((allow) => [allow.owner().to(['read', 'delete'])]),\r\n        userId: a.string().required(),\r\n        activityType: a.string().required(),\r\n        threadId: a.id(),\r\n        postId: a.id(),\r\n        boardId: a.id(),\r\n        threadTitle: a.string(),\r\n        boardName: a.string(),\r\n        actorUserId: a.string(),\r\n        actorDisplayName: a.string(),\r\n        occurredAt: a.datetime().required(),\r\n      })\r\n      .authorization((allow) => [\r\n        allow.ownerDefinedIn('owner').to(['read']),\r\n      ])",
+      "fields": [
+        "userId",
+        "activityType",
+        "threadId",
+        "postId",
+        "boardId",
+        "threadTitle",
+        "boardName",
+        "actorUserId",
+        "actorDisplayName",
+        "occurredAt"
+      ]
+    },
+    {
+      "name": "BoardPermissionRule",
+      "line": 1503,
+      "relations": [
+        {
+          "kind": "belongsTo",
+          "model": "ForumBoard"
+        }
+      ],
+      "authorization": ".authorization((allow) => [\r\n        allow.groups(['SuperAdmin']).to(['create', 'read', 'update', 'delete']),\r\n      ])",
+      "fields": [
+        "boardId",
+        "board",
+        "subjectType",
+        "subjectKey",
+        "canView",
+        "canCreateThread",
+        "canReply",
+        "canModerate",
+        "canAdmin"
+      ]
+    },
+    {
+      "name": "Brand",
+      "line": 1574,
+      "relations": [
+        {
+          "kind": "hasMany",
+          "model": "MerchProductBrand"
+        },
+        {
+          "kind": "hasMany",
+          "model": "BrandAccess"
+        }
+      ],
+      "authorization": ".authorization((allow) => [\r\n        allow.publicApiKey().to(['read']),\r\n        allow.authenticated().to(['read']),\r\n        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),\r\n      ])",
+      "fields": [
+        "workspaceId",
+        "name",
+        "slug",
+        "description",
+        "sortOrder",
+        "isActive",
+        "ownerUserId",
+        "ownerAssignedBy",
+        "ownerAssignedAt",
+        "productBrandLinks",
+        "brandAccesses"
+      ]
+    },
+    {
+      "name": "MerchCategory",
+      "line": 1594,
+      "relations": [
+        {
+          "kind": "hasMany",
+          "model": "MerchProductCategory"
+        }
+      ],
+      "authorization": ".authorization((allow) => [\r\n        allow.publicApiKey().to(['read']),\r\n        allow.authenticated().to(['read']),\r\n      ])",
+      "fields": [
+        "name",
+        "slug",
+        "description",
+        "sortOrder",
+        "isActive",
+        "productCategoryLinks"
+      ]
+    },
+    {
+      "name": "MerchProduct",
+      "line": 1608,
+      "relations": [
+        {
+          "kind": "hasMany",
+          "model": "MerchProductImage"
+        },
+        {
+          "kind": "hasMany",
+          "model": "MerchProductVariant"
+        },
+        {
+          "kind": "hasMany",
+          "model": "MerchProductBrand"
+        },
+        {
+          "kind": "hasMany",
+          "model": "MerchProductCategory"
+        }
+      ],
+      "authorization": ".authorization((allow) => [\r\n        allow.authenticated().to(['read']),\r\n        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),\r\n      ])",
+      "fields": [
+        "title",
+        "slug",
+        "shortDescription",
+        "description",
+        "thumbnailUrl",
+        "imageUrl",
+        "sourceType",
+        "externalProductId",
+        "externalVariantGroupId",
+        "sku",
+        "displayPrice",
+        "basePrice",
+        "currency",
+        "productUrl",
+        "variantCount",
+        "materials",
+        "sizeGuide",
+        "shippingReturns",
+        "whatsIncluded",
+        "careInstructions",
+        "fitNotes",
+        "status",
+        "isVisible",
+        "sortOrder",
+        "imageRecords",
+        "variants",
+        "brandLinks",
+        "categoryLinks"
+      ]
+    },
+    {
+      "name": "MerchProductVariant",
+      "line": 1644,
+      "relations": [
+        {
+          "kind": "belongsTo",
+          "model": "MerchProduct"
+        }
+      ],
+      "authorization": ".authorization((allow) => [\r\n        allow.publicApiKey().to(['read']),\r\n        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),\r\n      ])",
+      "fields": [
+        "productId",
+        "product",
+        "externalVariantId",
+        "sku",
+        "name",
+        "color",
+        "colorHex",
+        "size",
+        "displayPrice",
+        "retailPrice",
+        "currency",
+        "availabilityStatus",
+        "imageUrl",
+        "sortOrder",
+        "status"
+      ]
+    },
+    {
+      "name": "FulfillmentOrder",
+      "line": 1667,
+      "relations": [],
+      "authorization": ".authorization((allow) => [\r\n        allow.groups(['SuperAdmin', 'Admin']).to(['read']),\r\n      ])",
+      "fields": [
+        "projectOrderId",
+        "revolutOrderId",
+        "paymentStatus",
+        "paymentDate",
+        "paymentAmount",
+        "currency",
+        "environment",
+        "overallFulfillmentStatus",
+        "customerName",
+        "email",
+        "phone",
+        "shippingAddress",
+        "items",
+        "providerStatuses",
+        "reconciliationError",
+        "auditHistory",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    {
+      "name": "MerchProductBrand",
+      "line": 1692,
+      "relations": [
+        {
+          "kind": "belongsTo",
+          "model": "MerchProduct"
+        },
+        {
+          "kind": "belongsTo",
+          "model": "Brand"
+        }
+      ],
+      "authorization": ".authorization((allow) => [\r\n        allow.publicApiKey().to(['read']),\r\n        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),\r\n      ])",
+      "fields": [
+        "productId",
+        "brandId",
+        "product",
+        "brand"
+      ]
+    },
+    {
+      "name": "MerchProductCategory",
+      "line": 1704,
+      "relations": [
+        {
+          "kind": "belongsTo",
+          "model": "MerchProduct"
+        },
+        {
+          "kind": "belongsTo",
+          "model": "MerchCategory"
+        }
+      ],
+      "authorization": ".authorization((allow) => [\r\n        allow.publicApiKey().to(['read']),\r\n        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),\r\n      ])",
+      "fields": [
+        "productId",
+        "categoryId",
+        "product",
+        "category"
+      ]
+    },
+    {
+      "name": "BrandAccess",
+      "line": 1716,
+      "relations": [
+        {
+          "kind": "belongsTo",
+          "model": "Brand"
+        },
+        {
+          "kind": "hasMany",
+          "model": "BrandAccessPermission"
+        }
+      ],
+      "authorization": ".authorization((allow) => [\r\n        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),\r\n      ])",
+      "fields": [
+        "brandId",
+        "brand",
+        "userId",
+        "username",
+        "email",
+        "displayName",
+        "accessLevel",
+        "assignedBy",
+        "assignedAt",
+        "canManageMerch",
+        "canHostEvents",
+        "permissions"
+      ]
+    },
+    {
+      "name": "BrandAccessPermission",
+      "line": 1735,
+      "relations": [
+        {
+          "kind": "belongsTo",
+          "model": "BrandAccess"
+        }
+      ],
+      "authorization": ".authorization((allow) => [\r\n        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),\r\n      ])",
+      "fields": [
+        "brandAccessId",
+        "brandAccess",
+        "permissionKey",
+        "assignedBy",
+        "assignedAt"
+      ]
+    },
+    {
+      "name": "MediaCollection",
+      "line": 1754,
+      "relations": [
+        {
+          "kind": "hasMany",
+          "model": "MediaItem"
+        }
+      ],
+      "authorization": ".authorization((allow) => [\r\n    allow.groups(['SuperAdmin', 'Admin']).to(['read']),\r\n  ])",
+      "fields": [
+        "name",
+        "slug",
+        "type",
+        "parentId",
+        "sortOrder",
+        "isActive",
+        "mediaItems"
+      ]
+    },
+    {
+      "name": "MediaItem",
+      "line": 1769,
+      "relations": [
+        {
+          "kind": "belongsTo",
+          "model": "MediaCollection"
+        },
+        {
+          "kind": "hasMany",
+          "model": "MerchProductImage"
+        }
+      ],
+      "authorization": ".authorization((allow) => [\r\n    allow.groups(['SuperAdmin', 'Admin']).to(['read']),\r\n  ])",
+      "fields": [
+        "collectionId",
+        "collection",
+        "url",
+        "title",
+        "altText",
+        "type",
+        "tags",
+        "color",
+        "colorHex",
+        "sourceType",
+        "externalImageId",
+        "status",
+        "createdBy",
+        "createdAt",
+        "productImageLinks"
+      ]
+    },
+    {
+      "name": "MerchProductImage",
+      "line": 1798,
+      "relations": [
+        {
+          "kind": "belongsTo",
+          "model": "MerchProduct"
+        },
+        {
+          "kind": "belongsTo",
+          "model": "MediaItem"
+        }
+      ],
+      "authorization": ".authorization((allow) => [\r\n        allow.publicApiKey().to(['read']),\r\n        allow.groups(['SuperAdmin', 'Admin', 'Staff']).to(['read']),\r\n      ])",
+      "fields": [
+        "productId",
+        "product",
+        "mediaItemId",
+        "mediaItem",
+        "sortOrder",
+        "isPrimary",
+        "isMockup",
+        "isVisible",
+        "isFeatured",
+        "altTextOverride",
+        "colorOverride",
+        "colorHexOverride",
+        "status"
+      ]
+    }
+  ],
+  "operations": [
+    {
+      "name": "submitInvestorAccessRequest",
+      "line": 76,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.publicApiKey()])\r\n      "
+    },
+    {
+      "name": "listManagedInvestorAccessRequests",
+      "line": 79,
+      "kind": "query",
+      "handler": "adminUserManagement",
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])])"
+    },
+    {
+      "name": "reviewInvestorAccessRequest",
+      "line": 81,
+      "kind": "mutation",
+      "handler": "adminUserManagement",
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])])"
+    },
+    {
+      "name": "listInvestorAccess",
+      "line": 98,
+      "kind": "query",
+      "handler": "adminUserManagement",
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])])"
+    },
+    {
+      "name": "findInvestorAccountByEmail",
+      "line": 100,
+      "kind": "query",
+      "handler": "adminUserManagement",
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])])"
+    },
+    {
+      "name": "grantInvestorAccess",
+      "line": 102,
+      "kind": "mutation",
+      "handler": "adminUserManagement",
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])])"
+    },
+    {
+      "name": "manageInvestorAccess",
+      "line": 107,
+      "kind": "mutation",
+      "handler": "adminUserManagement",
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])])"
+    },
+    {
+      "name": "getMyInvestorAccess",
+      "line": 111,
+      "kind": "query",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])"
+    },
+    {
+      "name": "getInvestorDocumentUrl",
+      "line": 113,
+      "kind": "query",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])"
+    },
+    {
+      "name": "createCreatorWorkspace",
+      "line": 348,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "getCreatorWorkspace",
+      "line": 355,
+      "kind": "query",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "listMyCreatorWorkspaces",
+      "line": 362,
+      "kind": "query",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "addWorkspaceMember",
+      "line": 368,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "listWorkspaceMembers",
+      "line": 375,
+      "kind": "query",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "revokeWorkspaceMember",
+      "line": 382,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "getMyWorkspacePermissions",
+      "line": 389,
+      "kind": "query",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "setWorkspaceMemberPermissions",
+      "line": 396,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "submitPublicApplication",
+      "line": 421,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.publicApiKey()])\r\n      "
+    },
+    {
+      "name": "storeTrustedApplicationSubmission",
+      "line": 436,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin'])])\r\n      "
+    },
+    {
+      "name": "listAdminApplications",
+      "line": 442,
+      "kind": "query",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])"
+    },
+    {
+      "name": "getAdminApplication",
+      "line": 448,
+      "kind": "query",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])"
+    },
+    {
+      "name": "listAdminUsers",
+      "line": 452,
+      "kind": "query",
+      "handler": "adminUserManagement",
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin', 'Admin', 'Staff'])])\r\n      "
+    },
+    {
+      "name": "updateUserRoles",
+      "line": 458,
+      "kind": "mutation",
+      "handler": "adminUserManagement",
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin', 'Admin', 'Staff'])])\r\n      "
+    },
+    {
+      "name": "listPermissionCatalog",
+      "line": 509,
+      "kind": "query",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])])\r\n      "
+    },
+    {
+      "name": "seedPermissionCatalog",
+      "line": 515,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])])\r\n      "
+    },
+    {
+      "name": "replaceGroupPermissions",
+      "line": 521,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin', 'Admin'])])\r\n      "
+    },
+    {
+      "name": "getMyAccessContext",
+      "line": 531,
+      "kind": "query",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "listManagedOrders",
+      "line": 540,
+      "kind": "query",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])"
+    },
+    {
+      "name": "listManagedProfiles",
+      "line": 542,
+      "kind": "query",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])"
+    },
+    {
+      "name": "recoverManagedOrder",
+      "line": 544,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])"
+    },
+    {
+      "name": "reconcileManagedOrder",
+      "line": 546,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])"
+    },
+    {
+      "name": "importManagedRevolutOrder",
+      "line": 548,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])"
+    },
+    {
+      "name": "manageMerchCategory",
+      "line": 550,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])"
+    },
+    {
+      "name": "manageEventTag",
+      "line": 552,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])"
+    },
+    {
+      "name": "reviewEventSuggestion",
+      "line": 554,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])"
+    },
+    {
+      "name": "manageForumCategory",
+      "line": 556,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])"
+    },
+    {
+      "name": "manageForumBoard",
+      "line": 558,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])"
+    },
+    {
+      "name": "moderateForumThread",
+      "line": 560,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])"
+    },
+    {
+      "name": "moderateForumPost",
+      "line": 562,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])"
+    },
+    {
+      "name": "listManagedMediaLibrary",
+      "line": 565,
+      "kind": "query",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])"
+    },
+    {
+      "name": "createManagedMediaItem",
+      "line": 567,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])"
+    },
+    {
+      "name": "updateManagedMediaItem",
+      "line": 571,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])"
+    },
+    {
+      "name": "deleteManagedMediaItem",
+      "line": 575,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])"
+    },
+    {
+      "name": "createManagedMediaCollection",
+      "line": 577,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])"
+    },
+    {
+      "name": "listPublicMerchProductImages",
+      "line": 580,
+      "kind": "query",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.publicApiKey(), allow.authenticated()])"
+    },
+    {
+      "name": "listPublicMerchProducts",
+      "line": 583,
+      "kind": "query",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.publicApiKey(), allow.authenticated()])"
+    },
+    {
+      "name": "createManagedBrand",
+      "line": 587,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "updateManagedBrand",
+      "line": 601,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "setBrandOwner",
+      "line": 615,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "getBrandPermissionDetails",
+      "line": 622,
+      "kind": "query",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "upsertBrandHelper",
+      "line": 629,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "removeBrandHelper",
+      "line": 643,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "updateManagedMerchProduct",
+      "line": 650,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "createManagedMerchProduct",
+      "line": 684,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "upsertManagedMerchProductVariant",
+      "line": 698,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "upsertManagedMerchProductImage",
+      "line": 710,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])"
+    },
+    {
+      "name": "deleteManagedMerchProductImage",
+      "line": 716,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])"
+    },
+    {
+      "name": "replaceManagedMerchProductBrands",
+      "line": 719,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin', 'Admin', 'Staff'])])\r\n      "
+    },
+    {
+      "name": "replaceManagedMerchProductCategories",
+      "line": 726,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.groups(['SuperAdmin', 'Admin', 'Staff'])])\r\n      "
+    },
+    {
+      "name": "startTwitchIntegrationOAuth",
+      "line": 950,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "getMyTwitchIntegration",
+      "line": 956,
+      "kind": "query",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "disconnectTwitchIntegration",
+      "line": 962,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "listManagedTwitchCommands",
+      "line": 987,
+      "kind": "query",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "createManagedTwitchCommand",
+      "line": 994,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "updateManagedTwitchCommand",
+      "line": 1011,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "deleteManagedTwitchCommand",
+      "line": 1029,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "getManagedDiscordConfiguration",
+      "line": 1051,
+      "kind": "query",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "createOrUpdateManagedDiscordConfiguration",
+      "line": 1058,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "readTeamHub",
+      "line": 1152,
+      "kind": "query",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])"
+    },
+    {
+      "name": "mutateTeamHub",
+      "line": 1157,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])"
+    },
+    {
+      "name": "createManagedEvent",
+      "line": 1308,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "updateManagedEvent",
+      "line": 1327,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "cloneEvent",
+      "line": 1346,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "createRecurringEventSeries",
+      "line": 1358,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "generateRecurringInstances",
+      "line": 1372,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "submitForumThread",
+      "line": 1519,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "submitForumReply",
+      "line": 1534,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "recordForumThreadView",
+      "line": 1547,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.publicApiKey(), allow.authenticated()])\r\n      "
+    },
+    {
+      "name": "recordForumActivity",
+      "line": 1556,
+      "kind": "mutation",
+      "handler": "myFunction",
+      "authorization": ".authorization((allow) => [allow.authenticated()])\r\n      "
+    }
+  ],
+  "routes": [
+    {
+      "file": "src/features/creator-tools/creator-tools.routes.js",
+      "staticVueImports": [
+        "./components/CreatorLayout.vue",
+        "./views/dashboard/CreatorDashboard.vue",
+        "./views/profile/CreatorProfile.vue",
+        "./views/discord/CreatorDiscord.vue",
+        "./views/community/CreatorCommunity.vue",
+        "./views/rewards/CreatorRewards.vue",
+        "./views/achievements/CreatorAchievements.vue",
+        "./views/events/CreatorEvents.vue",
+        "./views/members/CreatorMembers.vue",
+        "./views/analytics/CreatorAnalytics.vue",
+        "./views/setup/CreatorSetup.vue",
+        "./views/chat/CreatorChat.vue",
+        "./views/bots/overview/BotsOverview.vue",
+        "./views/bots/automation/Automation.vue",
+        "./views/twitch/overview/TwitchOverview.vue",
+        "./views/twitch/commands/basic/BasicCommands.vue",
+        "./views/twitch/alerts/TwitchAlerts.vue",
+        "./views/twitch/text-to-speech/TextToSpeech.vue",
+        "./views/twitch/moderation/TwitchModeration.vue",
+        "./views/integrations/Integrations.vue",
+        "./views/overlays/OverlayManager.vue",
+        "./views/overlays/OverlayEditor.vue",
+        "./views/overlays/OverlayEntry.vue",
+        "./views/overlays/OverlayBrowserSource.vue",
+        "../../views/Bot/OverlayEngine/Overlay.vue"
+      ],
+      "dynamicImports": [],
+      "paths": [
+        "/overlay-source/:credential",
+        "/creator-tools",
+        "",
+        "profile",
+        "twitch",
+        "discord",
+        "bots",
+        "bots/twitch/commands",
+        "bots/twitch/alerts",
+        "bots/twitch/tts",
+        "bots/moderation",
+        "bots/automation",
+        "chat",
+        "overlays",
+        "overlays/library",
+        "overlays/:overlayId",
+        "community",
+        "rewards",
+        "achievements",
+        "events",
+        "members",
+        "analytics",
+        "integrations",
+        "setup",
+        "/tts-overlay"
+      ]
+    },
+    {
+      "file": "src/features/esports/esports.routes.js",
+      "staticVueImports": [
+        "./views/EsportsHome.vue"
+      ],
+      "dynamicImports": [
+        "./views/LeagueOfLegendsTeam.vue",
+        "./views/TournamentDetail.vue"
+      ],
+      "paths": [
+        "/esports",
+        "/esports/league-of-legends",
+        "/esports/tournaments/:tournamentId"
+      ]
+    },
+    {
+      "file": "src/features/partner-hub/partner-hub.routes.js",
+      "staticVueImports": [
+        "./views/dashboard/PartnerDashboard.vue",
+        "./views/profile/PartnerProfile.vue",
+        "./views/campaigns/PartnerCampaigns.vue",
+        "./views/analytics/PartnerAnalytics.vue",
+        "./views/creator-discovery/CreatorDiscovery.vue"
+      ],
+      "dynamicImports": [],
+      "paths": [
+        "/partner",
+        "/partner/profile",
+        "/partner/campaigns",
+        "/partner/analytics",
+        "/partner/creators"
+      ]
+    },
+    {
+      "file": "src/features/Team Hub/team-hub.routes.js",
+      "staticVueImports": [],
+      "dynamicImports": [
+        "./TeamManagement.vue",
+        "./TeamHubHome.vue",
+        "./TeamHome.vue",
+        "./champion-pool/ChampionPool.vue",
+        "./champion-pool/CoachPoolReview.vue"
+      ],
+      "paths": [
+        "/team-hub/:teamSlug/manage",
+        "/team-hub",
+        "/team-hub/:teamSlug",
+        "/team-hub/:teamSlug/champion-pool",
+        "/team-hub/:teamSlug/coach-review",
+        "/team-hub/:teamSlug/team-pool"
+      ]
+    },
+    {
+      "file": "src/features/therapist/therapist.routes.js",
+      "staticVueImports": [
+        "./layouts/TherapistLayout/TherapistLayout.vue",
+        "./views/TherapistDashboard/TherapistDashboard.vue",
+        "./views/Clients/TherapistClients.vue",
+        "./views/Quests/TherapistQuests.vue",
+        "./views/QuestBuilder/TherapistQuestBuilder.vue",
+        "./views/Insights/TherapistInsights.vue",
+        "./views/Reports/TherapistReports.vue",
+        "./views/Settings/TherapistSettings.vue"
+      ],
+      "dynamicImports": [],
+      "paths": [
+        "/therapist",
+        "",
+        "clients",
+        "clients/:clientId",
+        "quests",
+        "quests/new",
+        "clients/:clientId/quests",
+        "insights",
+        "clients/:clientId/insights",
+        "reports",
+        "clients/:clientId/reports",
+        "settings"
+      ]
+    },
+    {
+      "file": "src/features/tournaments/tournament.routes.js",
+      "staticVueImports": [],
+      "dynamicImports": [
+        "../../views/Tournaments/Overview/TournamentOverview.vue",
+        "../../views/Tournaments/Teams/TournamentTeams.vue",
+        "../../views/Tournaments/Matches/TournamentMatches.vue",
+        "../../views/Tournaments/DraftCentre/TournamentDraftCentre.vue",
+        "../../views/Tournaments/RespawnBroadcast/TournamentRespawnBroadcast.vue",
+        "../../views/Tournaments/PartnerStreams/TournamentPartnerStreams.vue",
+        "../../views/Tournaments/BracketResults/TournamentBracketResults.vue",
+        "../../views/Tournaments/News/TournamentNews.vue",
+        "../../views/Tournaments/Info/TournamentInfo.vue",
+        "../../views/Tournaments/MatchDetail/TournamentMatchDetail.vue",
+        "../../views/Tournaments/DraftSpectator/TournamentDraftSpectator.vue",
+        "../../views/Tournaments/Registration/TournamentRegistration.vue",
+        "../../views/Tournaments/MatchLobby/TournamentMatchLobby.vue",
+        "./shell/TournamentShell.vue"
+      ],
+      "paths": [
+        "",
+        "teams",
+        "matches",
+        "drafts",
+        "broadcast",
+        "partner-streams",
+        "bracket",
+        "news",
+        "info",
+        "matches/:matchId",
+        "drafts/:matchId",
+        "register",
+        "matches/:matchId/lobby",
+        "/tournaments",
+        "/tournaments/:tournamentSlug",
+        "/tournaments/founders-cup"
+      ]
+    },
+    {
+      "file": "src/features/trainer-hub/trainer-hub.routes.js",
+      "staticVueImports": [
+        "./views/dashboard/TrainerDashboard.vue",
+        "./views/clients/TrainerClients.vue",
+        "./views/clients/TrainerClientDetail.vue",
+        "./views/quests/TrainerQuests.vue",
+        "./views/challenges/TrainerChallenges.vue",
+        "./views/engagement/TrainerEngagement.vue"
+      ],
+      "dynamicImports": [],
+      "paths": [
+        "/trainer",
+        "/trainer/clients",
+        "/trainer/clients/:clientId",
+        "/trainer/quests",
+        "/trainer/challenges",
+        "/trainer/engagement"
+      ]
+    },
+    {
+      "file": "src/router/admin.routes.js",
+      "staticVueImports": [
+        "../views/Admin/AdminLayout/AdminLayout.vue",
+        "../views/Admin/AdminHome/AdminHome.vue",
+        "../views/Admin/AdminUsers/AdminUsers.vue",
+        "../views/Admin/AdminPermissions/AdminPermissions.vue",
+        "../views/Admin/AdminBrands/AdminBrands.vue",
+        "../views/BrandPermissions/BrandPermissions.vue",
+        "../views/Admin/AdminMerchCategories/AdminMerchCategories.vue",
+        "../views/Admin/AdminForums/AdminForums.vue",
+        "../views/Admin/AdminEvents/AdminEvents.vue",
+        "../views/Admin/ProductControl/ProductControl.vue",
+        "../views/Admin/MediaLibrary/MediaLibrary.vue",
+        "../views/Admin/AdminOrders/AdminOrders.vue",
+        "../views/Admin/AdminApplications/AdminApplications.vue",
+        "../views/Admin/AdminApplications/AdminApplicationReviews.vue",
+        "../views/Admin/AdminApplications/AdminReviewerPerformance.vue",
+        "../views/Admin/AdminApplications/AdminReviewerDetail.vue",
+        "../views/Admin/AdminApplications/AdminApplicationDetail.vue",
+        "../views/Admin/AdminApplications/AdminApplicationReview.vue",
+        "../views/Admin/AdminApplications/AdminInductions.vue",
+        "../views/Admin/AdminApplications/AdminInductionDetail.vue",
+        "../views/Admin/Bookings/AdminAvailability.vue",
+        "../views/Admin/AdminInvestors/AdminInvestors.vue",
+        "../features/Team Hub/TeamAdministration.vue"
+      ],
+      "dynamicImports": [],
+      "paths": [
+        "/dashboard",
+        "",
+        "users",
+        "permissions",
+        "investors",
+        "esports/teams",
+        "events",
+        "applications",
+        "applications/reviews",
+        "applications/reviewers",
+        "applications/reviewers/:reviewerId",
+        "availability",
+        "applications/availability",
+        "applications/inductions",
+        "applications/inductions/:inductionId",
+        "applications/:applicationId/review",
+        "applications/:applicationId",
+        "forums",
+        "brands",
+        "brand-permissions",
+        "merch-categories",
+        "product-control",
+        "media-library",
+        "orders"
+      ]
+    },
+    {
+      "file": "src/router/features.routes.js",
+      "staticVueImports": [],
+      "dynamicImports": [],
+      "paths": []
+    },
+    {
+      "file": "src/router/forum.routes.js",
+      "staticVueImports": [
+        "../views/Forum/ForumLayout/ForumLayout.vue",
+        "../views/Forum/ForumIndex/ForumIndex.vue",
+        "../views/Forum/ForumBoard/ForumBoard.vue",
+        "../views/Forum/ForumThread/ForumThread.vue"
+      ],
+      "dynamicImports": [],
+      "paths": [
+        "/forum",
+        "",
+        "board/:boardSlug",
+        "thread/:threadSlug"
+      ]
+    },
+    {
+      "file": "src/router/public.routes.js",
+      "staticVueImports": [
+        "../views/Home/Home.vue",
+        "../views/About/About.vue",
+        "../views/Contact/Contact.vue",
+        "../views/PrivacyPolicy/MainPrivacyPolicy.vue",
+        "../views/TeamTryouts/TeamTryouts.vue",
+        "../views/Merch/Merch.vue",
+        "../views/Events/Events.vue",
+        "../views/Checkout/Checkout.vue",
+        "../views/Join/Join.vue",
+        "../views/Account/Account.vue",
+        "../views/UserHomepage/UserHomepage.vue",
+        "../views/Applications/Applications.vue",
+        "../views/Bookings/Bookings.vue",
+        "../views/Investors/Investors.vue",
+        "../views/Investors/DataRoom/InvestorDataRoom.vue",
+        "../views/Careers/Careers.vue",
+        "../views/Creators/Creators.vue",
+        "../views/Partners/Partners.vue",
+        "../views/SWG Beyond Buff Builder/SwgBeyondBuffBuilder.vue"
+      ],
+      "dynamicImports": [],
+      "paths": [
+        "/bookings",
+        "/bookings/invite/:invitationToken",
+        "/bookings/:bookingTypeSlug",
+        "/induction/book/:invitationToken",
+        "/",
+        "/about",
+        "/investors",
+        "/investors/data-room",
+        "/careers",
+        "/creators",
+        "/partners",
+        "/contact",
+        "/privacy-policy",
+        "/swg-beyond-buff-builder",
+        "/join-us",
+        "/team-tryouts",
+        "/join-us",
+        "/merch",
+        "/checkout",
+        "/events",
+        "/join",
+        "/account",
+        "/apply-now",
+        "/applications",
+        "/apply-now",
+        "/apply",
+        "/apply-now",
+        "/home"
+      ]
+    }
+  ],
+  "notableImports": [
+    {
+      "file": "src/composables/useCheckout.js",
+      "specifier": "@revolut/checkout"
+    },
+    {
+      "file": "src/features/creator-tools/views/integrations/Integrations.vue",
+      "specifier": "@/features/creator-tools/services/twitchConnection.js"
+    },
+    {
+      "file": "src/features/creator-tools/views/overlays/logic/shared/editor-core.js",
+      "specifier": "@/features/creator-tools/composables/useCreatorBrandContext.js"
+    },
+    {
+      "file": "src/features/creator-tools/views/overlays/logic/shared/editor-core.js",
+      "specifier": "@/features/creator-tools/services/overlaySource.js"
+    },
+    {
+      "file": "src/features/creator-tools/views/setup/CreatorSetup.vue",
+      "specifier": "@/features/creator-tools/services/twitchConnection.js"
+    },
+    {
+      "file": "src/features/creator-tools/views/twitch/alerts/TwitchAlerts.vue",
+      "specifier": "@/features/creator-tools/components/overlays/AlertPresentation.vue"
+    },
+    {
+      "file": "src/features/creator-tools/views/twitch/alerts/TwitchAlerts.vue",
+      "specifier": "@/features/creator-tools/composables/useCreatorBrandContext.js"
+    },
+    {
+      "file": "src/features/creator-tools/views/twitch/alerts/TwitchAlerts.vue",
+      "specifier": "@/features/creator-tools/overlays/alertPresentation.js"
+    },
+    {
+      "file": "src/features/creator-tools/views/twitch/alerts/TwitchAlerts.vue",
+      "specifier": "@/features/creator-tools/overlays/firstPartyAlertDefaults.js"
+    },
+    {
+      "file": "src/features/creator-tools/views/twitch/alerts/TwitchAlerts.vue",
+      "specifier": "@/features/creator-tools/overlays/overlayEventContract.js"
+    },
+    {
+      "file": "src/features/creator-tools/views/twitch/alerts/TwitchAlerts.vue",
+      "specifier": "@/features/creator-tools/services/overlaySource.js"
+    },
+    {
+      "file": "src/features/creator-tools/views/twitch/moderation/TwitchModeration.js",
+      "specifier": "@/features/creator-tools/services/overlaySource.js"
+    },
+    {
+      "file": "src/features/creator-tools/views/twitch/overview/TwitchOverview.vue",
+      "specifier": "@/features/creator-tools/components/CreatorFeatureIcon.vue"
+    },
+    {
+      "file": "src/features/creator-tools/views/twitch/text-to-speech/TextToSpeech.js",
+      "specifier": "@/features/creator-tools/services/overlaySource.js"
+    },
+    {
+      "file": "src/features/creator-tools/views/twitch/text-to-speech/TextToSpeech.js",
+      "specifier": "@/features/creator-tools/services/twitchConnection.js"
+    },
+    {
+      "file": "src/features/creator-tools/views/twitch/text-to-speech/TextToSpeech.js",
+      "specifier": "@/features/creator-tools/overlays/overlayEventContract.js"
+    },
+    {
+      "file": "src/features/esports/composables/useJersey3D.js",
+      "specifier": "three"
+    },
+    {
+      "file": "src/features/esports/composables/useJersey3D.js",
+      "specifier": "three/examples/jsm/controls/OrbitControls.js"
+    },
+    {
+      "file": "src/features/esports/composables/useJersey3D.js",
+      "specifier": "three/examples/jsm/loaders/GLTFLoader.js"
+    },
+    {
+      "file": "src/router/admin.routes.js",
+      "specifier": "../features/Team Hub/TeamAdministration.vue"
+    },
+    {
+      "file": "src/router/features.routes.js",
+      "specifier": "../features/creator-tools/creator-tools.routes.js"
+    },
+    {
+      "file": "src/router/features.routes.js",
+      "specifier": "../features/partner-hub/partner-hub.routes.js"
+    },
+    {
+      "file": "src/router/features.routes.js",
+      "specifier": "../features/trainer-hub/trainer-hub.routes.js"
+    },
+    {
+      "file": "src/router/features.routes.js",
+      "specifier": "../features/therapist/therapist.routes.js"
+    },
+    {
+      "file": "src/router/features.routes.js",
+      "specifier": "../features/esports/esports.routes.js"
+    },
+    {
+      "file": "src/router/features.routes.js",
+      "specifier": "../features/Team Hub/team-hub.routes.js"
+    },
+    {
+      "file": "src/router/features.routes.js",
+      "specifier": "../features/tournaments/tournament.routes.js"
+    },
+    {
+      "file": "src/router/index.js",
+      "specifier": "../features/Team Hub/teamHub.service.js"
+    },
+    {
+      "file": "src/views/Tournaments/BracketResults/TournamentBracketResults.js",
+      "specifier": "../../../features/tournaments/shared/TournamentPageContent.vue"
+    },
+    {
+      "file": "src/views/Tournaments/DraftCentre/TournamentDraftCentre.js",
+      "specifier": "../../../features/tournaments/shared/TournamentPageContent.vue"
+    },
+    {
+      "file": "src/views/Tournaments/DraftSpectator/TournamentDraftSpectator.js",
+      "specifier": "../../../features/tournaments/shared/TournamentPageContent.vue"
+    },
+    {
+      "file": "src/views/Tournaments/Info/TournamentInfo.js",
+      "specifier": "../../../features/tournaments/shared/TournamentPageContent.vue"
+    },
+    {
+      "file": "src/views/Tournaments/MatchDetail/TournamentMatchDetail.js",
+      "specifier": "../../../features/tournaments/shared/TournamentPageContent.vue"
+    },
+    {
+      "file": "src/views/Tournaments/Matches/TournamentMatches.js",
+      "specifier": "../../../features/tournaments/shared/TournamentPageContent.vue"
+    },
+    {
+      "file": "src/views/Tournaments/MatchLobby/TournamentMatchLobby.js",
+      "specifier": "../../../features/tournaments/shared/TournamentPageContent.vue"
+    },
+    {
+      "file": "src/views/Tournaments/News/TournamentNews.js",
+      "specifier": "../../../features/tournaments/shared/TournamentPageContent.vue"
+    },
+    {
+      "file": "src/views/Tournaments/Overview/TournamentOverview.js",
+      "specifier": "../../../features/tournaments/shared/TournamentPageContent.vue"
+    },
+    {
+      "file": "src/views/Tournaments/PartnerStreams/TournamentPartnerStreams.js",
+      "specifier": "../../../features/tournaments/shared/TournamentPageContent.vue"
+    },
+    {
+      "file": "src/views/Tournaments/Registration/TournamentRegistration.js",
+      "specifier": "../../../features/tournaments/shared/TournamentPageContent.vue"
+    },
+    {
+      "file": "src/views/Tournaments/RespawnBroadcast/TournamentRespawnBroadcast.js",
+      "specifier": "../../../features/tournaments/shared/TournamentPageContent.vue"
+    },
+    {
+      "file": "src/views/Tournaments/Teams/TournamentTeams.js",
+      "specifier": "../../../features/tournaments/shared/TournamentPageContent.vue"
+    },
+    {
+      "file": "src/views/UserHomepage/UserHomepage.js",
+      "specifier": "../../features/Team Hub/teamHub.service.js"
+    },
+    {
+      "file": "src/views/UserHomepage/UserHomepage.js",
+      "specifier": "../../features/Team Hub/teamHubDashboard.js"
+    }
+  ]
+}

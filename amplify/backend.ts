@@ -1,4 +1,5 @@
 import { defineBackend } from '@aws-amplify/backend';
+import type { BackendAuth } from '@aws-amplify/backend-auth';
 import { Aspects, CfnResource, IAspect, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { IConstruct } from 'constructs';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
@@ -38,10 +39,14 @@ const backend = defineBackend({
 
 // Explicitly pin Identity Pool role attachments so branch environments
 // cannot drift into an invalid role mapping state.
-backend.auth.resources.cfnResources.cfnIdentityPoolRoleAttachment.roles = {
-  authenticated: backend.auth.resources.authenticatedUserIamRole.roleArn,
-  unauthenticated: backend.auth.resources.unauthenticatedUserIamRole.roleArn,
-};
+// Referenced auth is owned by master; consumer branches must not change its mapping.
+if ('cfnResources' in backend.auth.resources) {
+  const managedAuth = backend.auth as BackendAuth;
+  managedAuth.resources.cfnResources.cfnIdentityPoolRoleAttachment.roles = {
+    authenticated: backend.auth.resources.authenticatedUserIamRole.roleArn,
+    unauthenticated: backend.auth.resources.unauthenticatedUserIamRole.roleArn,
+  };
+}
 
 // =============================================================================
 // IAM permissions

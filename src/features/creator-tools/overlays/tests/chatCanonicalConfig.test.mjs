@@ -3,6 +3,7 @@ import test from 'node:test'
 import { readFile } from 'node:fs/promises'
 import { creatorChatSettings, normalizeCreatorChatConfig, toCanonicalChatConfig } from '../../views/chat/chat.config.js'
 import { resolveCreatorBrand } from '../../composables/useCreatorBrandContext.js'
+import { widgetChat } from './chatWidgetContract.mjs'
 
 test('legacy Chat fields normalize into canonical v2 without losing moderation terms', () => {
   const chat = normalizeCreatorChatConfig({ enabled:false, maxMessages:23, platforms:['Twitch','Kick'], blockedTerms:['Spam'] })
@@ -42,7 +43,17 @@ test('Creator Chat save preserves sibling config and only clears dirty state aft
 
 test('runtime widget prefers canonical Chat v2 and keeps legacy fallback', async () => {
   const widget = await read('../../widgets/chat/twitch-chat/ChatWidget.vue')
-  assert.match(widget, /runtimeConfig\?\.chat \|\| legacyConfig\(\)/)
+  const { chat, props, preview } = widgetChat(widget,
+    { chat: { maxMessages: 11, blockedTerms: ['runtime-only'] } },
+    { maxMessages: 22, blockedTerms: ['preview-only'] }, { maxMessages: 33 })
+  assert.equal(chat.value.content.maximumVisibleMessages, 11)
+  assert.deepEqual(chat.value.blockedTerms, ['runtime-only'])
+  props.runtimeConfig = null
+  assert.equal(chat.value.content.maximumVisibleMessages, 22)
+  assert.deepEqual(chat.value.blockedTerms, ['preview-only'])
+  preview.config.value = null
+  assert.equal(chat.value.content.maximumVisibleMessages, 33)
+  assert.equal(chat.value.schemaVersion, 2)
   for (const section of ['sources','content','appearance','behaviour','layout','typography']) assert.match(widget, new RegExp(`chat(?:\\.value)?\\.${section}`))
 })
 

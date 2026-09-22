@@ -9,7 +9,7 @@ const awsCommand = process.platform === 'win32' ? 'aws.exe' : 'aws'
 function fail(message) {
   throw new Error(
     `Local Amplify output validation failed: ${message}\n`
-    + 'Do not recreate or switch sandboxes. Inspect the protected Ntgrestage8 deployment and run the preflight before any in-place update.'
+    + 'Do not recreate or switch sandboxes. Inspect the protected Ntgre deployment and run the preflight before any in-place update.'
   )
 }
 

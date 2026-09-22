@@ -1,0 +1,218 @@
+
+> project-respawn-website@1.0.0 test:team-hub-backend
+> node ./scripts/run-team-hub-backend-tests.mjs
+
+Team Hub settings audit {
+  actorUserId: '00000000-0000-4000-8000-000000000001',
+  teamId: 'team:alpha',
+  action: 'PLAN_PRO',
+  expiresAt: '2027-01-01T00:00:00.000Z',
+  category: 'success',
+  timestamp: '2026-09-21T15:04:17.624Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000001',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:00000000-0000-4000-8000-000000000004',
+  action: 'MANAGER_ASSIGN',
+  category: 'success',
+  timestamp: '2026-09-21T15:04:17.633Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000002',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:00000000-0000-4000-8000-000000000005',
+  action: 'COACH_ASSIGN',
+  category: 'success',
+  timestamp: '2026-09-21T15:04:17.634Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000001',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:00000000-0000-4000-8000-000000000004',
+  action: 'MANAGER_ASSIGN',
+  category: 'success',
+  timestamp: '2026-09-21T15:04:17.635Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000001',
+  teamId: 'team:alpha',
+  action: 'MANAGER_ASSIGN',
+  category: 'transaction_failed',
+  timestamp: '2026-09-21T15:04:17.635Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000002',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:00000000-0000-4000-8000-000000000004',
+  action: 'COACH_ASSIGN',
+  category: 'success',
+  timestamp: '2026-09-21T15:04:17.636Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000002',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:00000000-0000-4000-8000-000000000005',
+  action: 'COACH_ASSIGN',
+  category: 'transaction_failed',
+  timestamp: '2026-09-21T15:04:17.636Z'
+}
+Team Hub membership audit {
+  actorUserId: '209c19dc-e0a1-7090-0b35-879fed200271',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:209c19dc-e0a1-7090-0b35-879fed200271',
+  action: 'MANAGER_ASSIGN',
+  category: 'success',
+  timestamp: '2026-09-21T15:04:17.648Z'
+}
+Team Hub membership audit {
+  actorUserId: '209c19dc-e0a1-7090-0b35-879fed200271',
+  teamId: 'team:alpha',
+  action: 'MANAGER_ASSIGN',
+  category: 'transaction_failed',
+  timestamp: '2026-09-21T15:04:17.649Z'
+}
+Team Hub membership audit {
+  actorUserId: '209c19dc-e0a1-7090-0b35-879fed200271',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:209c19dc-e0a1-7090-0b35-879fed200271',
+  action: 'MANAGER_ASSIGN',
+  category: 'success',
+  timestamp: '2026-09-21T15:04:17.650Z'
+}
+Team Hub membership audit {
+  actorUserId: '209c19dc-e0a1-7090-0b35-879fed200271',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:209c19dc-e0a1-7090-0b35-879fed200271',
+  action: 'MANAGER_ASSIGN',
+  category: 'success',
+  timestamp: '2026-09-21T15:04:17.650Z'
+}
+✔ Manager reads complete exact-team pools and plain SuperAdmin cannot read competitive data (21.0343ms)
+✔ team entitlements default to Free and expire server-side in UTC (0.6585ms)
+✔ only platform Admin can change plan and the atomic update preserves team data (3.1439ms)
+✔ Coach assessments update only Coach-owned fields while Manager cannot edit them (1.1638ms)
+✔ inactive Manager and cross-team competitive requests fail closed (0.5096ms)
+✔ roster assignment is one transaction with revision condition and deterministic position/player guards (1.0728ms)
+✔ stale concurrent roster writes surface a stable conflict and do not retry (0.9429ms)
+✔ transaction failure exposes no sequential revision or slot write and later revision cannot interleave (0.6743ms)
+✔ one player cannot concurrently acquire two roles from the same observed revision (0.6585ms)
+✔ manager and coach replacement requests atomically update the authority reference and memberships (2.4832ms)
+✔ stale concurrent Manager and Coach assignments cannot create two active holders (1.2627ms)
+✔ indexed reads paginate and never call model.list scans (5.7372ms)
+✔ SuperAdmin lists every team without requiring a TeamMembership record (0.8131ms)
+✔ admin account search normalizes email and username queries and returns bounded safe Nicholas account data (0.8437ms)
+✔ account search rejects unauthorized team access and undersized enumeration, returns at most ten, and creates no membership (0.4089ms)
+✔ dual SuperAdmin Manager retains platform and team capabilities while plain Admin lacks manager capabilities (1.9018ms)
+✔ active Manager searches only for their exact team while Coach and cross-team searches fail before Cognito (0.6919ms)
+✔ authorization and strict action, enum, revision, notes and identifier validation fail closed (0.7957ms)
+✔ generic member operation cannot alter authoritative Manager (0.2649ms)
+✔ exact email resolution normalizes case, limits to two, and returns only canonical identity plus display name (0.2326ms)
+✔ exact deployed Cognito subject shape revalidates and maps username to canonical sub (0.1857ms)
+✔ eligible SuperAdmin self-assignment creates the first manager atomically with canonical keys (0.6213ms)
+✔ failed first-manager transaction creates no partial membership and inactive identity is deterministically reused (1.2843ms)
+Team Hub transaction failed AccessDeniedException: denied
+    at Object.transact (C:\Users\Ntgre\Ravens Community gaming\Business Development - Documents\project-respawn-website\amplify\myFunction\teamHub\teamHub.test.ts:333:94)
+    at commitTransaction (C:\Users\Ntgre\Ravens Community gaming\Business Development - Documents\project-respawn-website\amplify\myFunction\teamHub\dynamo.ts:23:23)
+    at <anonymous> (C:\Users\Ntgre\Ravens Community gaming\Business Development - Documents\project-respawn-website\amplify\myFunction\teamHub\teamHub.test.ts:333:30)
+    at waitForActual (node:assert:632:21)
+    at strict.rejects (node:assert:769:31)
+    at TestContext.<anonymous> (C:\Users\Ntgre\Ravens Community gaming\Business Development - Documents\project-respawn-website\amplify\myFunction\teamHub\teamHub.test.ts:333:16)
+    at async Test.run (node:internal/test_runner/test:1125:7)
+    at async Test.processPendingSubtests (node:internal/test_runner/test:787:7)
+Team Hub membership audit {
+  actorUserId: '209c19dc-e0a1-7090-0b35-879fed200271',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:209c19dc-e0a1-7090-0b35-879fed200271',
+  action: 'MANAGER_REVOKE',
+  category: 'success',
+  timestamp: '2026-09-21T15:04:17.667Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000002',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:00000000-0000-4000-8000-000000000004',
+  action: 'PLAYER_REVOKE',
+  category: 'success',
+  timestamp: '2026-09-21T15:04:17.670Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000002',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:00000000-0000-4000-8000-000000000004',
+  action: 'COACH_ASSIGN',
+  category: 'success',
+  timestamp: '2026-09-21T15:04:17.670Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000001',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:00000000-0000-4000-8000-000000000002',
+  action: 'MANAGER_REVOKE',
+  category: 'success',
+  timestamp: '2026-09-21T15:04:17.671Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000002',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:00000000-0000-4000-8000-000000000003',
+  action: 'COACH_REVOKE',
+  category: 'success',
+  timestamp: '2026-09-21T15:04:17.671Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000001',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:00000000-0000-4000-8000-000000000004',
+  action: 'MANAGER_ASSIGN',
+  category: 'success',
+  timestamp: '2026-09-21T15:04:17.672Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000002',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:00000000-0000-4000-8000-000000000004',
+  action: 'PLAYER_REVOKE',
+  category: 'success',
+  timestamp: '2026-09-21T15:04:17.673Z'
+}
+Team Hub membership audit {
+  actorUserId: '00000000-0000-4000-8000-000000000002',
+  teamId: 'team:alpha',
+  membershipId: 'team-membership:team:alpha:00000000-0000-4000-8000-000000000005',
+  action: 'PLAYER_ASSIGN',
+  category: 'success',
+  timestamp: '2026-09-21T15:04:17.674Z'
+}
+✔ deployed managerless assignment operation set is completely covered by the exact table IAM grant (12.7243ms)
+✔ conditional and AWS transaction cancellations map safely while access failures stay generic (3.8015ms)
+✔ deployed Cognito subject can be removed through its canonical membership ID (0.541ms)
+✔ account resolution rejects malformed, oversized, missing, ambiguous, disabled, and unconfirmed accounts (0.528ms)
+✔ authorization is established before email lookup for outsider, Coach, Player, and inactive Manager (0.4015ms)
+✔ starter replacement and removal include position, old-player guard, and timestamped Team update (0.6614ms)
+✔ substitute assignment and removal use only the deterministic substitute record (0.38ms)
+✔ Player revocation and Player-to-Coach transition atomically clean every roster record (1.0372ms)
+✔ Manager revocation and Coach revocation require and clear authoritative references (0.7097ms)
+✔ Player-to-Manager transition cleans roster state and stores the resolved sub without returning it (0.5961ms)
+✔ bounded cleanup reaches the maximum safe request and rejects overflow before transaction execution (0.6402ms)
+✔ missing and conflicting Cognito identities, cross-team access, and inactive teams fail before lookup (0.3816ms)
+✔ Manager can assign a Player, while removed Player and Coach lose pool access (0.435ms)
+✔ Player pool identity is caller-derived and cannot target another Player (0.2046ms)
+✔ read gateway exhaustively dispatches each action only to its intended handler (0.5932ms)
+✔ mutation gateway exhaustively dispatches each action and remaps only bounded command fields (0.3921ms)
+✔ gateway ignores AppSync null placeholders for unrelated optional fields (0.1786ms)
+✔ gateways reject missing, unknown, cross-protocol and unexpected actions or fields (0.3114ms)
+✔ gateways reject malformed, nested, primitive, array and oversized inputs (0.2362ms)
+✔ action-specific allowlists reject irrelevant, conflicting and missing fields (0.2129ms)
+✔ authorization remains inside every selected handler (0.8846ms)
+✔ server accepts a completely decoded valid PNG and reports square presentation (3.263ms)
+✔ server rejects spoofed, corrupt, truncated, undersized, oversized and excessive PNGs (9.5205ms)
+✔ only immutable keys beneath the exact team prefix can be attached (0.4926ms)
+ℹ tests 47
+ℹ suites 0
+ℹ pass 47
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 129.5876

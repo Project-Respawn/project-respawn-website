@@ -3,7 +3,10 @@ import fs from 'node:fs'
 
 const schema = fs.readFileSync(new URL('./resource.ts', import.meta.url), 'utf8')
 const router = fs.readFileSync(new URL('../myFunction/router/appSyncRouter.ts', import.meta.url), 'utf8')
-const section = schema.slice(schema.indexOf('ApplicationSubmission: a.model'), schema.indexOf('/*\n     * 3. TWITCH'))
+const sectionStart = schema.indexOf('ApplicationSubmission: a.model')
+const sectionEnd = schema.search(/\/\*\s*\* 3\. TWITCH/)
+assert.ok(sectionStart >= 0 && sectionEnd > sectionStart, 'application storage boundaries must be found')
+const section = schema.slice(sectionStart, sectionEnd)
 
 for (const model of ['ApplicationSubmission', 'ApplicationAnswer', 'ApplicationCreatorProfile', 'ApplicationSchedule', 'ApplicationAuditEvent', 'ApplicationIdempotency', 'ApplicationPublicRateLimit']) {
   assert.match(section, new RegExp(`${model}: a\\.model`), `${model} model exists`)

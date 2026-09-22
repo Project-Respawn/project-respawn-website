@@ -1,0 +1,419 @@
+{
+  "node": "22.18.0",
+  "npm": "10.9.3",
+  "platform": "Linux",
+  "commands": [
+    {
+      "name": "typescript",
+      "args": [
+        "node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "-p",
+        "amplify/tsconfig.json"
+      ],
+      "exit": 0,
+      "seconds": 8.769,
+      "totals": {}
+    },
+    {
+      "name": "contracts",
+      "args": [
+        "/usr/local/lib/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "validate:amplify-contract"
+      ],
+      "exit": 0,
+      "seconds": 0.396,
+      "totals": {}
+    },
+    {
+      "name": "guards",
+      "args": [
+        "/usr/local/lib/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test:amplify-guards"
+      ],
+      "exit": 0,
+      "seconds": 0.697,
+      "totals": {
+        "tests": 16,
+        "pass": 16,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      }
+    },
+    {
+      "name": "teamhub-backend",
+      "args": [
+        "/usr/local/lib/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test:team-hub-backend"
+      ],
+      "exit": 0,
+      "seconds": 1.742,
+      "totals": {
+        "tests": 47,
+        "pass": 47,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      }
+    },
+    {
+      "name": "overlays",
+      "args": [
+        "/usr/local/lib/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test:overlays"
+      ],
+      "exit": 0,
+      "seconds": 3.892,
+      "totals": {
+        "tests": 142,
+        "pass": 142,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      }
+    },
+    {
+      "name": "connected-demo",
+      "args": [
+        "/usr/local/lib/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test:connected-demo"
+      ],
+      "exit": 0,
+      "seconds": 0.715,
+      "totals": {
+        "tests": 9,
+        "pass": 9,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      }
+    },
+    {
+      "name": "master-preview",
+      "args": [
+        "/usr/local/lib/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test:master-backend-preview"
+      ],
+      "exit": 0,
+      "seconds": 0.254,
+      "totals": {
+        "tests": 17,
+        "pass": 17,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      }
+    },
+    {
+      "name": "runtime-ownership",
+      "args": [
+        "/usr/local/lib/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test:runtime-ownership"
+      ],
+      "exit": 0,
+      "seconds": 0.55,
+      "totals": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      }
+    },
+    {
+      "name": "infrastructure-accounting",
+      "args": [
+        "/usr/local/lib/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test:resource-accounting"
+      ],
+      "exit": 0,
+      "seconds": 0.413,
+      "totals": {
+        "tests": 24,
+        "pass": 24,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      }
+    },
+    {
+      "name": "handler-consolidation",
+      "args": [
+        "/usr/local/lib/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test:handler-consolidation"
+      ],
+      "exit": 0,
+      "seconds": 0.215,
+      "totals": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      }
+    },
+    {
+      "name": "teamhub-frontend",
+      "args": [
+        "--test",
+        "src/features/Team Hub/teamHubFrontend.test.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.178,
+      "totals": {
+        "tests": 18,
+        "pass": 18,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      }
+    },
+    {
+      "name": "tournaments",
+      "args": [
+        "--test",
+        "src/features/tournaments/tournament.test.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.335,
+      "totals": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      }
+    },
+    {
+      "name": "accounting-update-gate",
+      "args": [
+        "scripts/validate-amplify-stack-size.mjs",
+        ".amplify/master-preview/cdk.out",
+        "--baseline",
+        "scripts/config/legacy-resource-baseline.json",
+        "--exception",
+        "scripts/config/legacy-resource-debt.json",
+        "--operation",
+        "update",
+        "--json",
+        "/results/update-gate.json"
+      ],
+      "exit": 0,
+      "seconds": 0.075,
+      "totals": {}
+    },
+    {
+      "name": "ci-accounting",
+      "args": [
+        "/usr/local/lib/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "validate:infrastructure-ci"
+      ],
+      "exit": 0,
+      "seconds": 14.229,
+      "totals": {}
+    },
+    {
+      "name": "full-suite",
+      "args": [
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=2",
+        "src/commerce/printfulVariant.test.mjs",
+        "src/components/TimezoneSelector/timezones.test.mjs",
+        "src/composables/useCheckout.test.mjs",
+        "src/features/Team Hub/teamHubFrontend.test.mjs",
+        "src/features/creator-tools/connected-demo/connectedDemoState.test.mjs",
+        "src/features/creator-tools/overlays/tests/alertPresentation.test.mjs",
+        "src/features/creator-tools/overlays/tests/browserSourceRuntime.test.mjs",
+        "src/features/creator-tools/overlays/tests/browserSourceWorkflow.test.mjs",
+        "src/features/creator-tools/overlays/tests/chatCanonicalConfig.test.mjs",
+        "src/features/creator-tools/overlays/tests/creatorChatConfig.test.mjs",
+        "src/features/creator-tools/overlays/tests/dedicatedAlerts.test.mjs",
+        "src/features/creator-tools/overlays/tests/demoEventBus.test.mjs",
+        "src/features/creator-tools/overlays/tests/firstPartyAlertDefaults.test.mjs",
+        "src/features/creator-tools/overlays/tests/overlayBuilder.test.mjs",
+        "src/features/creator-tools/overlays/tests/overlayCanvas.test.mjs",
+        "src/features/creator-tools/overlays/tests/overlayDraftLive.test.mjs",
+        "src/features/creator-tools/overlays/tests/overlayEditorPersistence.test.mjs",
+        "src/features/creator-tools/overlays/tests/overlayEntry.test.mjs",
+        "src/features/creator-tools/overlays/tests/overlayEventContract.test.mjs",
+        "src/features/creator-tools/overlays/tests/overlayGeometry.test.mjs",
+        "src/features/creator-tools/overlays/tests/overlayHistory.test.mjs",
+        "src/features/creator-tools/overlays/tests/overlayPersistence.test.mjs",
+        "src/features/creator-tools/overlays/tests/overlayPublicationSnapshot.test.mjs",
+        "src/features/creator-tools/overlays/tests/overlaySceneRenderer.test.mjs",
+        "src/features/creator-tools/overlays/tests/overlaySourceIntegration.test.mjs",
+        "src/features/creator-tools/overlays/tests/overlayStage.test.mjs",
+        "src/features/creator-tools/overlays/tests/overlayStore.test.mjs",
+        "src/features/creator-tools/overlays/tests/runtimeSerialization.test.mjs",
+        "src/features/creator-tools/overlays/tests/triggeredWidgetState.test.mjs",
+        "src/features/creator-tools/overlays/tests/twitchAlertsSendTest.test.mjs",
+        "src/features/creator-tools/overlays/tests/twitchChatRuntime.test.mjs",
+        "src/features/creator-tools/overlays/tests/twitchOverlayConfig.test.mjs",
+        "src/features/creator-tools/overlays/tests/unifiedChatMovement.test.mjs",
+        "src/features/creator-tools/overlays/tests/widgetRegistry.test.mjs",
+        "src/features/creator-tools/services/twitchConnection.test.mjs",
+        "src/features/creator-tools/tests/creatorBrandStage1.test.mjs",
+        "src/features/creator-tools/views/analytics/creatorAnalyticsDemoState.test.mjs",
+        "src/features/creator-tools/views/dashboard/creatorDashboardDemoState.test.mjs",
+        "src/features/creator-tools/views/discord/discordDemoState.test.mjs",
+        "src/features/creator-tools/views/setup/CreatorSetup.test.mjs",
+        "src/features/creator-tools/views/twitch/commands/basic/BasicCommands.access.test.mjs",
+        "src/features/tournaments/tournament.test.mjs",
+        "src/views/Admin/AdminApplications/applicationAdminData.test.mjs",
+        "src/views/Admin/AdminApplications/inductionAvailabilityData.test.mjs",
+        "src/views/Admin/AdminApplications/reviewerPerformanceData.test.mjs",
+        "src/views/Admin/AdminBrands/AdminBrands.results.test.mjs",
+        "src/views/Admin/AdminEvents/AdminEvents.access.test.mjs",
+        "src/views/Admin/AdminOrders/AdminOrders.test.mjs",
+        "src/views/Admin/Bookings/bookingAvailabilityData.test.mjs",
+        "src/views/Admin/Bookings/demoSuperAdminInvitation.test.mjs",
+        "src/views/Admin/ProductControl/ProductControl.access.test.mjs",
+        "src/views/Admin/ProductControl/ProductControl.data.test.mjs",
+        "src/views/Applications/applicationPathwayAvailability.test.mjs",
+        "src/views/Applications/applicationSubmission.test.mjs",
+        "src/views/Applications/applicationValidation.test.mjs",
+        "src/views/BrandPermissions/BrandPermissions.test.mjs",
+        "src/views/UserHomepage/UserHomepage.test.mjs",
+        "amplify/auth/mode.test.ts",
+        "amplify/data/application-storage-boundary.test.ts",
+        "amplify/data/media-storage-boundary.test.ts",
+        "amplify/data/product-event-write-boundary.test.ts",
+        "amplify/data/stage9-boundaries.test.ts",
+        "amplify/functions/admin-user-management/authorization.test.ts",
+        "amplify/functions/admin-user-management/investorRequests.test.ts",
+        "amplify/functions/admin-user-management/rolePolicy.test.ts",
+        "amplify/myFunction/applications/public-submission.test.ts",
+        "amplify/myFunction/applications/storage.test.ts",
+        "amplify/myFunction/applications/validation.test.ts",
+        "amplify/myFunction/brands/handlers.test.ts",
+        "amplify/myFunction/brands/policy.test.ts",
+        "amplify/myFunction/discord/handlers.test.ts",
+        "amplify/myFunction/discord/policy.test.ts",
+        "amplify/myFunction/events/legacyHandlers.test.ts",
+        "amplify/myFunction/events/managedHandlers.test.ts",
+        "amplify/myFunction/events/managedPolicy.test.ts",
+        "amplify/myFunction/fulfillment/environmentBoundary.test.ts",
+        "amplify/myFunction/fulfillment/orderPersistence.test.ts",
+        "amplify/myFunction/investors/policy.test.ts",
+        "amplify/myFunction/investors/requests.test.ts",
+        "amplify/myFunction/media/handlers.test.ts",
+        "amplify/myFunction/merch/handlers.test.ts",
+        "amplify/myFunction/merch/policy.test.ts",
+        "amplify/myFunction/merch/productImagePolicy.test.ts",
+        "amplify/myFunction/merch/publicProducts.test.ts",
+        "amplify/myFunction/merch/relationships.test.ts",
+        "amplify/myFunction/permissions/accessContext.test.ts",
+        "amplify/myFunction/permissions/index.test.ts",
+        "amplify/myFunction/permissions/workspaceAccessContext.test.ts",
+        "amplify/myFunction/revolut/webhook.test.ts",
+        "amplify/myFunction/router/restRouter.twitch.test.ts",
+        "amplify/myFunction/shared/audit.test.ts",
+        "amplify/myFunction/shared/auth.test.ts",
+        "amplify/myFunction/shared/authoritativePermissions.test.ts",
+        "amplify/myFunction/shared/effectivePermissions.test.ts",
+        "amplify/myFunction/stage9/handlers.test.ts",
+        "amplify/myFunction/stage9/orderReconciliation.test.ts",
+        "amplify/myFunction/teamHub/branding.test.ts",
+        "amplify/myFunction/teamHub/gateway.test.ts",
+        "amplify/myFunction/teamHub/teamHub.test.ts",
+        "amplify/myFunction/twitch/awsJson.test.ts",
+        "amplify/myFunction/twitch/capabilities.test.ts",
+        "amplify/myFunction/twitch/health.test.ts",
+        "amplify/myFunction/twitch/integrationHandlers.test.ts",
+        "amplify/myFunction/twitch/managedHandlers.test.ts",
+        "amplify/myFunction/twitch/managedPolicy.test.ts",
+        "amplify/myFunction/twitch/oauthHandlers.test.ts",
+        "amplify/myFunction/twitch/oauthState.test.ts",
+        "amplify/myFunction/twitch/rewardEventHandlers.test.ts",
+        "amplify/myFunction/twitch/runtimeAuth.test.ts",
+        "amplify/myFunction/twitch/runtimeHandlers.test.ts",
+        "amplify/myFunction/workspaces/access.test.ts",
+        "amplify/myFunction/workspaces/index.test.ts",
+        "amplify/overlaySource/canonicalPublisher.test.ts",
+        "amplify/overlaySource/composition.test.ts",
+        "amplify/overlaySource/credentialVault.test.mjs",
+        "amplify/overlaySource/domain.test.ts",
+        "amplify/overlaySource/handler.test.ts",
+        "amplify/overlaySource/infrastructure.test.ts",
+        "amplify/overlaySource/runtimeLambdaMutationTarget.test.ts",
+        "amplify/overlaySource/twitchEventDedupe.test.ts",
+        "infrastructure/twitch-runtime/twitch-runtime-production-stack.test.ts",
+        "scripts/cloudformation-accounting.test.mjs",
+        "scripts/handler-consolidation.test.mjs",
+        "scripts/master-backend-preview.test.mjs",
+        "scripts/runtime-ownership.test.mjs",
+        "scripts/validate-amplify-guards.test.mjs",
+        "scripts/validate-master-twitch-environment.test.mjs"
+      ],
+      "exit": 0,
+      "seconds": 22.024,
+      "totals": {
+        "tests": 653,
+        "pass": 653,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      }
+    },
+    {
+      "name": "production-build",
+      "args": [
+        "/usr/local/lib/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "build",
+        "--",
+        "--outDir",
+        ".amplify/green-build",
+        "--manifest"
+      ],
+      "exit": 0,
+      "seconds": 2.761,
+      "totals": {}
+    },
+    {
+      "name": "verify-final-source",
+      "args": [
+        "scripts/snapshot-validation-source.mjs",
+        "verify",
+        "/work"
+      ],
+      "exit": 0,
+      "seconds": 0.186,
+      "totals": {}
+    },
+    {
+      "name": "final-exact-comparison",
+      "args": [
+        "scripts/compare-handler-consolidation.mjs",
+        "/results/baseline-assembly",
+        ".amplify/master-preview/cdk.out",
+        "/results/final-comparison"
+      ],
+      "exit": 0,
+      "seconds": 4.384,
+      "totals": {}
+    }
+  ],
+  "fullSuite": {
+    "tests": 653,
+    "pass": 653,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  "allCommandsPass": true,
+  "note": "Named test groups overlap the full suite; do not sum them. Initial failed helper run retained separately."
+}

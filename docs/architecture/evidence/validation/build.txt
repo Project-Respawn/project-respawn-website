@@ -1,0 +1,18 @@
+
+> project-respawn-website@1.0.0 build
+> node ./scripts/validate-vite-api-base-url.mjs && vite build --outDir .amplify/architecture-build --manifest
+
+file:///C:/Users/Ntgre/Ravens%20Community%20gaming/Business%20Development%20-%20Documents/project-respawn-website/scripts/validate-vite-api-base-url.mjs:109
+  throw new Error(
+        ^
+
+Error: Build failed: VITE_API_BASE_URL does not match the API generated for this Amplify branch.
+Configure a branch-specific VITE_API_BASE_URL using the projectRespawnApi endpoint from this branch output.
+This guard prevents staging from calling the production API (and production from calling staging).
+    at file:///C:/Users/Ntgre/Ravens%20Community%20gaming/Business%20Development%20-%20Documents/project-respawn-website/scripts/validate-vite-api-base-url.mjs:109:9
+    at ModuleJob.run (node:internal/modules/esm/module_job:430:25)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:661:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v24.14.1

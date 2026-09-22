@@ -3,7 +3,7 @@ import fs from 'node:fs'
 
 const schema = fs.readFileSync(new URL('./resource.ts', import.meta.url), 'utf8')
 const source = fs.readFileSync(new URL('../../src/views/Admin/AdminMerchCategories/AdminMerchCategories.js', import.meta.url), 'utf8')
-const events = fs.readFileSync(new URL('../../src/views/Admin/Adminevents/AdminEvents.js', import.meta.url), 'utf8')
+const events = fs.readFileSync(new URL('../../src/views/Admin/AdminEvents/AdminEvents.js', import.meta.url), 'utf8')
 const orders = fs.readFileSync(new URL('../../src/views/Admin/AdminOrders/AdminOrders.js', import.meta.url), 'utf8')
 const restRouter = fs.readFileSync(new URL('../myFunction/router/restRouter.ts', import.meta.url), 'utf8')
 
