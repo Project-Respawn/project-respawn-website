@@ -42,3 +42,15 @@ test('admin status alone does not bypass explicit beta membership', async () => 
 test('access service failure denies entry', async () => {
   assert.equal((await guardFor({ groups: ['BetaMember'], fail: true })()).path, '/')
 })
+
+const { swgSignInDestination } = await import('../src/config/swgEofRelease.js')
+test('sign-in preserves the beta installer approval link', () => {
+  const target = '/SWG-EOF-test?device=' + 'a'.repeat(32)
+  assert.equal(swgSignInDestination(target), target)
+  assert.equal(swgSignInDestination('/SWG-EOF-test'), '/SWG-EOF-test')
+})
+test('sign-in redirect rejects external and unrelated destinations', () => {
+  for (const target of ['https://evil.example', '//evil.example', '/admin', '/SWG-EOF-test?device=bad', ['/SWG-EOF-test'], undefined]) {
+    assert.equal(swgSignInDestination(target), '/home')
+  }
+})

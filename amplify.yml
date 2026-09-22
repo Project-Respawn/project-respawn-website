@@ -11,7 +11,7 @@ backend:
             changed_files=$(git diff --name-only "$SWG_FRONTEND_BASE" HEAD) || exit 1
             printf '%s\n' "$changed_files" | while IFS= read -r changed; do
               case "$changed" in
-                amplify.yml|src/router/public.routes.js|src/views/SwgEofTest/SwgEofTest.vue|src/config/swgEofRelease.js|src/api/swgDownloads.js|scripts/swg-eof-access.test.mjs|docs/swg-eof-test-page.md) ;;
+                amplify.yml|src/router/public.routes.js|src/views/Join/Join.vue|src/views/SwgEofTest/SwgEofTest.vue|src/config/swgEofRelease.js|src/api/swgDownloads.js|scripts/swg-eof-access.test.mjs|docs/swg-eof-test-page.md) ;;
                 *) echo "Unreviewed file in frontend-only release: $changed"; exit 1 ;;
               esac
             done || exit 1
