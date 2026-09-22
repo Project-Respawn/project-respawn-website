@@ -5,7 +5,20 @@ backend:
     build:
       commands:
         - npm install
-        - npx ampx pipeline-deploy --branch "$AWS_BRANCH" --app-id d2cux232bpa951
+        - |
+          if [ "$SWG_FRONTEND_ONLY" = "1" ]; then
+            test -n "$SWG_FRONTEND_BASE" || (echo "Missing reviewed frontend base" && exit 1)
+            changed_files=$(git diff --name-only "$SWG_FRONTEND_BASE" HEAD) || exit 1
+            printf '%s\n' "$changed_files" | while IFS= read -r changed; do
+              case "$changed" in
+                amplify.yml|src/router/public.routes.js|src/views/SwgEofTest/SwgEofTest.vue|src/config/swgEofRelease.js|src/api/swgDownloads.js|scripts/swg-eof-access.test.mjs|docs/swg-eof-test-page.md) ;;
+                *) echo "Unreviewed file in frontend-only release: $changed"; exit 1 ;;
+              esac
+            done || exit 1
+            npx ampx generate outputs --branch "$AWS_BRANCH" --app-id d2cux232bpa951 --format json --out-dir .
+          else
+            npx ampx pipeline-deploy --branch "$AWS_BRANCH" --app-id d2cux232bpa951
+          fi
 
 frontend:
   phases:
