@@ -86,13 +86,13 @@ onUnmounted(() => { document.title = previousTitle })
         <ol class="eof-steps">
           <li><span class="eof-number">01</span><h3>Get Setup</h3><p>Download the Windows installer from this page and run it.</p></li>
           <li><span class="eof-number">02</span><h3>Let it install</h3><p>Choose your dedicated folder. Setup handles the client files and bundled runtimes automatically.</p></li>
-          <li><span class="eof-number">03</span><h3>Join the test</h3><p>Open the launcher and use the test account provided by your organiser when access opens.</p></li>
+          <li><span class="eof-number">03</span><h3>Join the test</h3><p>Open the launcher, approve its website sign-in code, and use your automatically assigned test account.</p></li>
         </ol>
       </section>
 
       <section class="eof-scope" aria-labelledby="scope-title">
         <div><p class="eof-kicker">A focused first step</p><h2 id="scope-title">Small test.<br>Useful feedback.</h2></div>
-        <div><p>This first release focuses on the Stage 1 Solo Big Battle lifecycle: enter the test, complete an objective, reset and replay.</p><p>It is an early development playtest. Later battle systems and the full city experience are not part of this test. Your organiser will provide the test instructions and access details.</p></div>
+        <div><p>This first release focuses on the Stage 1 Solo Big Battle lifecycle: enter the test, complete an objective, reset and replay.</p><p>It is an early development playtest. A stock-asset city prototype is included inside the instance. Later battle systems are not part of this test. Your organiser will provide the test instructions and access details.</p></div>
       </section>
 
       <section class="eof-section eof-faq" aria-labelledby="faq-title">
@@ -100,7 +100,7 @@ onUnmounted(() => { document.title = previousTitle })
         <details><summary>Do I need another copy of SWG installed?</summary><p>No. This package includes its own complete client and installs into a dedicated Project Respawn directory.</p></details>
         <details><summary>Do I need to extract a large archive?</summary><p>No. Download and run Setup.exe. It handles the client packages, verification and installation for you.</p></details>
         <details><summary>What if my download stops?</summary><p>Run Setup again with the same install directory. It reuses verified downloads and resumes partial chunks where the download host supports it.</p></details>
-        <details><summary>Can anyone join the server?</summary><p>This area requires the Beta Member role on your Project Respawn account. Your organiser assigns that role. Website access does not yet grant a game account or API access.</p></details>
+        <details><summary>Can anyone join the server?</summary><p>This area requires the Beta Member role on your Project Respawn account. Your organiser assigns that role. Approving the launcher assigns one of eight available game accounts. One Solo Big Battle encounter is available at a time.</p></details>
         <details><summary>Will this replace my existing SWG installation?</summary><p>No. Choose a dedicated Project Respawn folder. The installer does not import or depend on another SWG installation.</p></details>
         <details v-if="ready"><summary>Release details and installer checksum</summary><p>Version {{ release.version }}</p><p class="eof-small">Installer SHA-256</p><code>{{ release.sha256 }}</code></details>
       </section>
