@@ -45,3 +45,8 @@ Validated: five route tests, updated Vue compilation, 13 download-service tests,
 Private download service deployed: https://7sqhe1oq7f.execute-api.eu-north-1.amazonaws.com/ . Release storage is private and separate from the SWG backup bucket. Setup is 53,760 bytes; SHA-256 d695c09f54226f52ec30aabbf57cb1594b9cc6e2288cb0cc961d687f185e7135. The page is being released as an **installer preview**, not a claim that game-server authentication/start integration is complete. First Beta Member assignment and signed-in clean-Windows installer acceptance remain with the owner.
 
 Live anonymous/invalid-token/pending-installer denials, private S3 denial, actual blob SHA-256 and byte-range checks passed. Production build passed using generated master outputs in an isolated checkout; the original local sandbox configuration was preserved. Only this page's seven release files are committed. Production CI has an opt-in SWG_FRONTEND_ONLY mode with an explicit reviewed base and file allowlist; it generates existing outputs instead of deploying the backend. The temporary branch setting is restored after deployment. The default pipeline behavior is unchanged when the flag is absent.
+
+
+## Launcher/city preview update
+
+Release 0.2.0-city-preview.1 adds desktop browser approval, assigned game accounts, server start/readiness controls and in-place updater handoff. Install over the existing dedicated client folder; do not uninstall. The current patch is required for the supported launcher Play flow. The city is an isolated Solo prototype; simultaneous Big Battle encounters are not included. Native bypass-proof patch enforcement is not claimed.

@@ -39,13 +39,13 @@ onUnmounted(() => { document.title = previousTitle })
   <div v-if="isBetaTester" class="eof-page">
     <div class="eof-shell">
       <section v-if="deviceId" class="eof-section" aria-labelledby="installer-approval">
-        <h2 id="installer-approval">Authorise your installer</h2>
-        <p>Only approve this if you just opened Project Respawn Setup on your own computer. Enter the eight-character code displayed in Setup.</p>
-        <p v-if="approved" role="status">Installer authorised. Return to Setup to continue downloading.</p>
+        <h2 id="installer-approval">Authorise your launcher or installer</h2>
+        <p>Only approve this if you just opened Project Respawn Setup or the test launcher on your own computer. Enter the eight-character code displayed there.</p>
+        <p v-if="approved" role="status">Access authorised. Return to your launcher or Setup to continue.</p>
         <form v-else @submit.prevent="approveInstaller">
-          <label for="installer-code">Code shown in Setup</label>
+          <label for="installer-code">Code shown in your launcher or Setup</label>
           <input id="installer-code" v-model="installerCode" class="form-control my-3" autocomplete="off" maxlength="8" pattern="[A-Fa-f0-9]{8}" required />
-          <button class="btn btn-primary" :disabled="downloadBusy || !release.downloadApiBase">{{ downloadBusy ? 'Checking…' : 'Authorise this installer' }}</button>
+          <button class="btn btn-primary" :disabled="downloadBusy || !release.downloadApiBase">{{ downloadBusy ? 'Checking…' : 'Authorise access' }}</button>
         </form>
       </section>
       <p v-if="downloadError" role="alert" class="pt-3">{{ downloadError }}</p>
@@ -63,10 +63,10 @@ onUnmounted(() => { document.title = previousTitle })
           <p class="eof-kicker">Your way into the playtest</p>
           <h2 id="download-title">One download.<br>Setup does the rest.</h2>
           <p>Run the small installer and choose your install folder. Setup downloads, verifies and installs the complete client, then opens the Project Respawn launcher.</p>
-          <p class="eof-status"><span aria-hidden="true">●</span> {{ ready ? 'Installer preview available' : 'Private release being prepared' }}</p>
+          <p class="eof-status"><span aria-hidden="true">●</span> {{ ready ? 'Launcher and city preview available' : 'Private release being prepared' }}</p>
           <button v-if="ready" type="button" :disabled="downloadBusy" class="btn btn-primary eof-cta" @click="getInstaller">{{ downloadBusy ? 'Preparing secure download…' : 'Download Windows Setup' }} <span aria-hidden="true">↓</span></button>
           <button v-else type="button" class="btn btn-primary eof-cta" disabled aria-describedby="release-status">Download coming soon</button>
-          <p id="release-status" class="eof-small">{{ ready ? 'Installer testing is open to Beta Members. Game-server sign-in and automatic start are still being connected.' : 'The installer is built. Downloads will open here once hosting and tester access are ready.' }}</p>
+          <p id="release-status" class="eof-small">{{ ready ? 'Sign in from the desktop launcher using website approval. Your test account is assigned automatically. Start the server, wait for Ready, then select Play.' : 'The installer is built. Downloads will open here once hosting and tester access are ready.' }}</p>
           <p class="eof-small">Setup: {{ (release.installerBytes / 1024).toFixed(1) }} KiB · Client download: 8.18 GB · Allow 24 GiB free space</p>
         </div>
         <aside class="eof-checklist" aria-label="What is included">
