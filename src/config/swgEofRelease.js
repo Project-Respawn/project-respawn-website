@@ -3,10 +3,10 @@ export const swgEofRelease = Object.freeze({
   published: true,
   installerUrl: '', // No public static URL: request an authenticated ticket.
   downloadApiBase: 'https://7sqhe1oq7f.execute-api.eu-north-1.amazonaws.com/', // Filled from reviewed download stack outputs after deployment.
-  version: '0.2.0-city-preview.2',
+  version: '0.2.0-city-preview.3',
   installerBytes: 61440,
-  payloadBytes: 8177228758,
-  sha256: '5f4d906db50fbb3d82a973bddcbbecfb10c84dcb919e56ed98219abe85cf6539',
+  payloadBytes: 8177434892,
+  sha256: 'e352b07d6f49c887fce61f076793277010e3127cf28c883e02fa24ec0074db68',
 })
 
 export function canDownload(release) {
