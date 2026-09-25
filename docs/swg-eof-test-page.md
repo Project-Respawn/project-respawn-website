@@ -50,3 +50,8 @@ Live anonymous/invalid-token/pending-installer denials, private S3 denial, actua
 ## Launcher/city preview update
 
 Release 0.2.0-city-preview.1 adds desktop browser approval, assigned game accounts, server start/readiness controls and in-place updater handoff. Install over the existing dedicated client folder; do not uninstall. The current patch is required for the supported launcher Play flow. The city is an isolated Solo prototype; simultaneous Big Battle encounters are not included. Native bypass-proof patch enforcement is not claimed.
+
+
+## Code-free release 0.2.0-city-preview.2
+
+0.2.0-city-preview.2 removes installer approval entirely. The beta page still requires Cognito BetaMember; a copied installer can install the client, but native game admission requires a fresh single-use ticket tied to a currently enabled BetaMember identity. Launcher browser sign-in uses Continue to launcher, with no manual code. Existing eight account mappings/characters remain. Static native passwords, including legacy development accounts, are no longer accepted after the coordinated server upgrade.

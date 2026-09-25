@@ -3,10 +3,10 @@ export const swgEofRelease = Object.freeze({
   published: true,
   installerUrl: '', // No public static URL: request an authenticated ticket.
   downloadApiBase: 'https://7sqhe1oq7f.execute-api.eu-north-1.amazonaws.com/', // Filled from reviewed download stack outputs after deployment.
-  version: '0.2.0-city-preview.1',
+  version: '0.2.0-city-preview.2',
   installerBytes: 61440,
   payloadBytes: 8177228758,
-  sha256: 'be7adc32c998812b4a75409ec66de873e5a3705a3cf4e5c82326623e225265d4',
+  sha256: '5f4d906db50fbb3d82a973bddcbbecfb10c84dcb919e56ed98219abe85cf6539',
 })
 
 export function canDownload(release) {
@@ -20,6 +20,6 @@ export function canDownload(release) {
 
 // Only the beta route may override the existing post-sign-in destination.
 export function swgSignInDestination(value) {
-  return typeof value === 'string' && /^\/SWG-EOF-test(?:\?device=[a-f0-9]{32})?$/i.test(value)
+  return typeof value === 'string' && /^\/SWG-EOF-test(?:\?device=[a-f0-9]{32}(?:#launcher=[a-f0-9]{64})?)?$/i.test(value)
     ? value : '/home'
 }

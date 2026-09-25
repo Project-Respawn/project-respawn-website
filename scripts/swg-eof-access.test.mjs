@@ -54,3 +54,10 @@ test('sign-in redirect rejects external and unrelated destinations', () => {
     assert.equal(swgSignInDestination(target), '/home')
   }
 })
+
+
+test("sign-in preserves only a well-formed code-less launcher link", () => {
+ const target="/SWG-EOF-test?device="+"a".repeat(32)+"#launcher="+"b".repeat(64)
+ assert.equal(swgSignInDestination(target),target)
+ assert.equal(swgSignInDestination(target+"&redirect=https://evil.example"),"/home")
+})

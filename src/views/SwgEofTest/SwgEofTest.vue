@@ -10,6 +10,7 @@ const isBetaTester = computed(() => accessContext.value.groups.includes('BetaMem
 const ready = canDownload(release)
 const route = useRoute()
 const deviceId = computed(() => typeof route.query.device === 'string' && /^[a-f0-9]{32}$/.test(route.query.device) ? route.query.device : '')
+const launcherToken = computed(() => /^#launcher=[a-f0-9]{64}$/.test(route.hash) ? route.hash.slice(10) : '')
 const installerCode = ref('')
 const downloadBusy = ref(false)
 const downloadError = ref('')
@@ -22,7 +23,7 @@ async function getInstaller() {
 async function approveInstaller() {
   downloadBusy.value = true; downloadError.value = ''
   try {
-    await downloadRequest('devices/approve', { deviceId: deviceId.value, code: installerCode.value.trim().toUpperCase() })
+    await downloadRequest('devices/approve', launcherToken.value ? { deviceId: deviceId.value, approvalToken: launcherToken.value } : { deviceId: deviceId.value, code: installerCode.value.trim().toUpperCase() })
     approved.value = true
   } catch (error) { downloadError.value = error.message }
   finally { downloadBusy.value = false }
@@ -39,13 +40,14 @@ onUnmounted(() => { document.title = previousTitle })
   <div v-if="isBetaTester" class="eof-page">
     <div class="eof-shell">
       <section v-if="deviceId" class="eof-section" aria-labelledby="installer-approval">
-        <h2 id="installer-approval">Authorise your launcher or installer</h2>
-        <p>Only approve this if you just opened Project Respawn Setup or the test launcher on your own computer. Enter the eight-character code displayed there.</p>
+        <h2 id="installer-approval">Sign in to your test launcher</h2>
+        <p v-if="launcherToken">Continue only if you just selected Sign in on website in your desktop launcher. Your Project Respawn account and current Beta Member access will be checked. No code is needed.</p>
+        <p v-else>This is an older sign-in request. The latest installer and launcher do not require a code.</p>
         <p v-if="approved" role="status">Access authorised. Return to your launcher or Setup to continue.</p>
         <form v-else @submit.prevent="approveInstaller">
-          <label for="installer-code">Code shown in your launcher or Setup</label>
-          <input id="installer-code" v-model="installerCode" class="form-control my-3" autocomplete="off" maxlength="8" pattern="[A-Fa-f0-9]{8}" required />
-          <button class="btn btn-primary" :disabled="downloadBusy || !release.downloadApiBase">{{ downloadBusy ? 'Checking…' : 'Authorise access' }}</button>
+          <label v-if="!launcherToken" for="installer-code">Code shown in your launcher or Setup</label>
+          <input v-if="!launcherToken" id="installer-code" v-model="installerCode" class="form-control my-3" autocomplete="off" maxlength="8" pattern="[A-Fa-f0-9]{8}" required />
+          <button class="btn btn-primary" :disabled="downloadBusy || !release.downloadApiBase">{{ downloadBusy ? 'Checking…' : launcherToken ? 'Continue to launcher' : 'Authorise access' }}</button>
         </form>
       </section>
       <p v-if="downloadError" role="alert" class="pt-3">{{ downloadError }}</p>
@@ -66,7 +68,7 @@ onUnmounted(() => { document.title = previousTitle })
           <p class="eof-status"><span aria-hidden="true">●</span> {{ ready ? 'Launcher and city preview available' : 'Private release being prepared' }}</p>
           <button v-if="ready" type="button" :disabled="downloadBusy" class="btn btn-primary eof-cta" @click="getInstaller">{{ downloadBusy ? 'Preparing secure download…' : 'Download Windows Setup' }} <span aria-hidden="true">↓</span></button>
           <button v-else type="button" class="btn btn-primary eof-cta" disabled aria-describedby="release-status">Download coming soon</button>
-          <p id="release-status" class="eof-small">{{ ready ? 'Sign in from the desktop launcher using website approval. Your test account is assigned automatically. Start the server, wait for Ready, then select Play.' : 'The installer is built. Downloads will open here once hosting and tester access are ready.' }}</p>
+          <p id="release-status" class="eof-small">{{ ready ? 'Install without a code, then sign in from the desktop launcher with your Project Respawn account. Your test account is assigned automatically. Start the server, wait for Ready, then select Play.' : 'The installer is built. Downloads will open here once hosting and tester access are ready.' }}</p>
           <p class="eof-small">Setup: {{ (release.installerBytes / 1024).toFixed(1) }} KiB · Client download: 8.18 GB · Allow 24 GiB free space</p>
         </div>
         <aside class="eof-checklist" aria-label="What is included">
@@ -86,7 +88,7 @@ onUnmounted(() => { document.title = previousTitle })
         <ol class="eof-steps">
           <li><span class="eof-number">01</span><h3>Get Setup</h3><p>Download the Windows installer from this page and run it.</p></li>
           <li><span class="eof-number">02</span><h3>Let it install</h3><p>Choose your dedicated folder. Setup handles the client files and bundled runtimes automatically.</p></li>
-          <li><span class="eof-number">03</span><h3>Join the test</h3><p>Open the launcher, approve its website sign-in code, and use your automatically assigned test account.</p></li>
+          <li><span class="eof-number">03</span><h3>Join the test</h3><p>Open the launcher, select Continue to launcher after signing in, and use your automatically assigned test account.</p></li>
         </ol>
       </section>
 
