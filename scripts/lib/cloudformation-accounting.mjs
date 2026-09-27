@@ -79,6 +79,7 @@ export function evaluate(report, { baseline, exception, operation = 'create', no
   const reasons = [], warnings = [], delta = baseline ? compareCounts(baseline, report) : undefined;
   let allowance = false;
   if (exception) {
+    if (exception.kind === 'pinned-phase1-update') reasons.push('Pinned update allowance requires validate-ntgre-phase1-allowance.mjs artifact verification');
     if (!baseline) reasons.push('Debt allowance requires its pinned baseline');
     if (!exception.roots?.includes(report.root)) reasons.push('Debt allowance does not cover selected root');
     if (!(new Date(exception.expiresAt).getTime() > now.getTime())) reasons.push('Debt allowance has expired');

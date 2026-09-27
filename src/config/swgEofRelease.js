@@ -20,6 +20,6 @@ export function canDownload(release) {
 
 // Only the beta route may override the existing post-sign-in destination.
 export function swgSignInDestination(value) {
-  return typeof value === 'string' && /^\/SWG-EOF-test(?:\?device=[a-f0-9]{32})?$/i.test(value)
+  return typeof value === 'string' && /^\/SWG-EOF-test(?:\?(?:device|launcher)=[a-f0-9]{32})?$/i.test(value)
     ? value : '/home'
 }

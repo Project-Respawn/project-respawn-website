@@ -1,145 +1,288 @@
-# Phase 1 — existing Ntgre deployment preflight
+# Approved allowance follow-up — 2026-09-23
 
-2026-09-22. **NO-GO.** The exact validated source was reconstructed successfully, and consolidation passes the local Ntgre-context comparison. However, comparison against the deployed templates proposes **five unexpected application Lambda code-reference modifications**. Preparation stopped at that safeguard. No AWS assets were uploaded, no change set was created, and no deployment or AWS mutation was executed.
+**BLOCKED — AWS credentials unavailable.** The user-approved temporary Ntgre-specific allowance is implemented and locally tested. The exact archived candidate now returns **PASS WITH APPROVED EXISTING DEBT**, hierarchy 2,621, FunctionDirectiveStack 167, fresh creation BLOCKED, with all 1,128 candidate hashes verified. Expiry: October 7, 2026 at 00:00 UTC. Global budgets and hosted allowances remain unchanged. No deployment authorization is implied.
 
-This is a failed live-equivalence preflight, **not evidence that the application has regressed**. Build-context differences are established; exact equivalence to the deployed Lambda packages is not. The prior green validation report remains valid for its recorded snapshot.
+See [allowance implementation, scope, tests and remaining checks](phase1-ntgre-debt-allowance.md). All 41 accounting/boundary tests passed. Infrastructure CI was attempted but failed before synthesis with `uv_os_get_passwd returned ENOMEM`; no CI pass is claimed. Fresh AWS identity/drift checks and subsequent pre-deployment checks remain unperformed because AWS CLI returned NoCredentials and no profiles. Recovery findings remain unchanged. The older accounting NO-GO below is retained as historical evidence and superseded only for local policy evaluation of the exact pinned candidate.
 
-## A. Target confirmation
+# Continuation decision — 2026-09-23 (before allowance authorization)
 
-| Field | Confirmed value |
+**NO-GO — Phase 1 must not be deployed.** Completed evidence already resolves the Lambda discrepancies and build reproduction. This continuation verified it without repeating completed builds. The unchanged accounting gate still rejects Ntgre. Fresh AWS confirmation is also unavailable: scoped identity/stack queries returned `NoCredentials`, and `aws configure list-profiles` returned no profiles. AWS findings below refer to the September 22 capture, not a successful current refresh. No AWS mutation was attempted.
+
+## A. Live Lambda equivalence
+
+SHA values below are AWS CodeSha256 (base64). Baseline and candidate have the same complete ZIP digest, including maps and metadata. All 15 archived ZIPs were rehashed this continuation.
+
+| Function | Deployed code SHA | Local baseline | Phase 1 candidate | Equivalent? |
+| --- | --- | --- | --- | --- |
+| post-confirmation | `6sGwH4C8Jhg8LYK0UdfDdSYsl0aVJiy7h8ryM3sAn/w=` | Same | Same | YES, entire ZIP |
+| admin-user-management | `7uvEQ6FDsvAbs8gHRU6WWZZJ+CHB4kxMqvdHfmpTTHI=` | Same | Same | YES, entire ZIP |
+| myFunction | `8bcpmI6i73K9N9nUPXkfg27rE3BCCjIbFYuYsU4YCis=` | Same | Same | YES, entire ZIP |
+| twitch-runtime | `4NH+0eVEqcjmg/YtV0xWNMD0qpJGP1yp095KMvZp5E8=` | Same | Same | YES, entire ZIP |
+| OverlaySource | `U/cAL1CAnNBh5VxdBa28I1yvT8Qo6O84izOX1jdCBC4=` | Same | Same | YES, entire ZIP |
+
+Original differences: BUILD PATH / SOURCE MAP and TOOLCHAIN. Corrected package differences: zero APPLICATION CODE, SOURCE MAP, BUILD PATH, TOOLCHAIN, PACKAGING, METADATA or UNKNOWN. Physical names, ARNs, hex hashes, inventories and asset references remain in the prior investigation's linked evidence. Current AWS identity of these packages awaits credentials.
+
+## B. Live build reproduction
+
+Sufficient for the captured deployment: Windows Node 24.14.1, CDK 2.260.0, pinned lockfile/Amplify dependencies, correct directory depth and Ntgre context reproduced exact ZIPs in independent baseline/candidate installs. Historical npm provenance and the complete historical environment remain unknown. No installs or builds were repeated.
+
+## C. Live to candidate changes
+
+**ADD 0 / MODIFY IN PLACE 81 / DELETE 308 / REPLACE 0 / UNKNOWN 0**, against captured templates using static property/provider replacement analysis. Meaningful changes: 77 resolver updates, 308 obsolete-chain deletions and one generated codegen asset update; two nested template references carry the changes. One API-key expiry update is synthesis-time churn, with real in-place expiry effect. CDK metadata differences: zero. These are not newly certified current-live counts or an AWS execution plan.
+
+## D. Protected resources
+
+PASS against captured definitions/artifacts for each category: Cognito; DynamoDB; S3; KMS; AppSync API/schema; Lambda definitions/permissions/layers; actual five Lambda ZIPs; Team Hub; Creator/Twitch/OverlaySource; payments/webhooks; HTTP API wiring; retained IAM/auth; generated output snapshot. External services have no proposed action and were not separately audited. No current drift scan is claimed.
+
+## E. Recovery readiness
+
+Recorded state: PITR on two of 55 tables; no listed table backups or AWS Backup recovery points; three buckets without enabled versioning/Object Lock; inactive Cognito deletion protection; two enabled retained KMS keys. Eight configured secret names are absent at both inspected SSM paths. No restore drill proves data/user/secret recovery. These are existing recovery/integration-test limitations, not identified stateful mutations in this consolidation. They are not comprehensive recovery assurance. Current protections were not refreshed.
+
+## F. Dependency/order proof
+
+All 79 operations preserve authorization functions: 77 transition to already-existing unchanged anchors; two already use retained anchors. The recorded 735 graph/protected checks pass. No retained resource references deleted chains. CloudFormation defers nested cleanup until nested stacks have updated or rolled back, supporting resolver repointing before obsolete-chain removal. This is static graph evidence plus documented semantics, not a guaranteed AWS event schedule. [AWS cleanup guidance](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/troubleshooting.html).
+
+## G. Rollback strategy
+
+Before submission: STOP, no recovery needed. Resolver update failure before cleanup: normal CloudFormation ROLLBACK. Obsolete-chain deletion failure: prefer ROLL-FORWARD through cleanup repair when stack status permits. Rollback failure: stop and diagnose, with separately authorized recovery execution. Regression after completion: prefer a narrowly reviewed ROLL-FORWARD; restoration of the old layout requires expansion review.
+
+The old directive template's 475 resources are technically restorable under AWS's 500-resource template limit, with 25 slots remaining. Reverse changes restore 308 resources and approximately 81 other records. Fresh conservative accounting counts every resource in the three changed baseline templates: **root 7 + data 86 + directive 475 = 568**, below the 2,500-resource nested-operation limit. Unmodified nested templates are not updated under [AWS nested-stack semantics](https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-cloudformation-stack.html). This supports feasibility for the captured scope; it does not certify current service quotas, physical-name availability or an AWS operation plan.
+
+The full 2,929-resource hierarchy is not an update/rollback operation-size count. Fresh recreation would exceed 2,500 and is prohibited. No AWS count violation is identified for this scoped reverse update; service quotas, drift, IAM propagation, unavailable assets or cleanup failures can still prevent rollback. Repository policy separately blocks ordinary baseline expansion: 475 exceeds its template action threshold and Ntgre lacks a hierarchy allowance. AWS automatic rollback does not run that local evaluator. [AWS resource and operation quotas](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html).
+
+## H. Candidate integrity
+
+Fresh verification: **1,128/1,128 raw file hashes match**. Manifest SHA256: `91e0242ed9998d7b7fa422b27a6711f33240eda45afc50066b11cc0eafc0a8d7`. No application/backend source, lockfile, budgets or allowances were changed; unrelated SWG work remains excluded.
+
+## I. Checks actually performed in this continuation
+
+- Verified every previously pinned evidence file and report digest: zero mismatches before documentation edits.
+- Verified all 1,128 candidate hashes and manifest digest.
+- Rehashed five downloaded ZIPs plus ten reproduced archives, including AWS base64 conversion: all exact.
+- Recomputed assembly totals and reran the unchanged accounting evaluator with/without existing allowance: FAIL, hierarchy 2,621 and Ntgre outside allowance scope.
+- Computed the 568-resource total across changed baseline templates and checked AWS limits/cleanup documentation.
+- Attempted read-only AWS identity/stack refresh: unavailable, NoCredentials; no CLI profiles.
+
+No application tests, npm ci, synthesis, contract checks or build were rerun this continuation. The earlier 89 targeted tests and build remain prior evidence, and 653/653 remains tied to the accepted source snapshot. Fresh results and verification code are in `phase1-ntgre-artifact-evidence/continuation-verification.json` and `verify-continuation.mjs` relative to the main report.
+
+## J. FINAL DECISION
+
+**NO-GO — Phase 1 must not be deployed.**
+
+Exact blockers: the unchanged accounting gate rejects the 2,621-resource Ntgre hierarchy, with its allowance covering only master/staging; fresh AWS identity/templates/packages/protection confirmation is unavailable without credentials. A reviewed Ntgre-specific debt decision and working read-only AWS credentials are needed to resolve these blockers. Neither authorizes deployment. No deployment command is proposed. Work stops at this report.
+
+
+---
+
+# Prior completed investigation — 2026-09-22
+
+# Ntgre Phase 1 preflight — artifact reproduction and final review
+
+**2026-09-22 — NO-GO for deployment: the unchanged resource-accounting gate does not authorize the Ntgre root.** The previous Lambda artifact STOP is resolved. All five actual deployed ZIPs reproduce exactly from both the baseline and the unchanged candidate. No AWS mutation, deployment, change set, upload, watcher, Cognito change or protection-setting change was performed.
+
+This report supersedes the [previous NO-GO report](phase1-ntgre-artifact-evidence/previous-preflight-report.md). Its historical evidence remains intact. New [evidence and reproduction tools](phase1-ntgre-artifact-evidence/README.md) are separate from the accepted application snapshot.
+
+Target: account `058264289478`, region `eu-north-1`, existing root `amplify-projectrespawnwebsite-Ntgre-sandbox-8bd9d02332`, stack UUID `8b2122c0-b5c7-11f1-b780-0aadaa40eeed`. The final recovery inspection still reported `UPDATE_COMPLETE`, last updated `2026-09-21T14:32:51.577Z`, matching the captured live templates.
+
+## A. Live build recipe
+
+| Input | Finding and confidence |
 | --- | --- |
-| AWS account | `058264289478` |
-| Region | `eu-north-1` |
-| Environment / identifier | Existing sandbox `Ntgre` |
-| Amplify namespace | `project-respawn-website` |
-| Root name | `amplify-projectrespawnwebsite-Ntgre-sandbox-8bd9d02332` |
-| Root ARN | `arn:aws:cloudformation:eu-north-1:058264289478:stack/amplify-projectrespawnwebsite-Ntgre-sandbox-8bd9d02332/8b2122c0-b5c7-11f1-b780-0aadaa40eeed` |
-| Status at capture | `UPDATE_COMPLETE` |
-| Last root update | `2026-09-21T14:32:51.577Z` |
+| Build Node | **PROVEN:** live CDK metadata reports 24.14.1; reproduction used v24.14.1. This is separate from the unchanged Lambda runtime, nodejs22.x. |
+| npm | **PROVEN for reproduction:** 11.11.0, with two independent successful `npm ci` runs. **UNKNOWN:** npm version used for the original deployment. Exact reproduction establishes that this npm/dependency installation works; it does not establish historical npm provenance. |
+| CDK | **PROVEN:** aws-cdk-lib 2.260.0; reproduction CLI 2.1137.0, toolkit-lib 1.32.0. Live metadata and reproduced metadata now agree. |
+| Amplify | **PROVEN installed versions:** backend 1.24.0, backend-cli 1.9.0, backend-function 1.18.2, backend-auth 1.9.4, auth-construct 1.11.2, backend-storage 1.5.0. The live auth description's 1.11.2 identifies auth-construct, not backend-auth. |
+| esbuild / tsx | **PROVEN installed:** esbuild 0.28.1, tsx 4.22.4. Historical executable provenance is not separately recorded; their output exactly reproduces deployed bytes. |
+| Dependencies | **PROVEN:** unchanged lockfile SHA256 `535fffd7f459486823f30f3f78705ccfaff8d573cee5746aa1a00c7819a04674`; fresh Windows installs in independent baseline/candidate directories. No package upgrade or lockfile edit. |
+| Platform | **PROVEN:** live metadata identifies Windows; Windows reproduction matches generated env-stub CRLF bytes and all archive metadata. Linux LF stubs caused embedded source-map content differences. Original Windows version is **UNKNOWN**. |
+| Layout | **PROVEN necessary relative layout:** `.amplify/ntgre-preview/cdk.out/asset.<hash>/`; source maps naturally resolve through `../../../../`. Previous shallow `.amplify/ntgre-preview/asset.<hash>/` produced `../../../`. No maps were edited or normalized. |
+| Working directory | **PROVEN reproduction:** two project roots under `<local-phase1-reproduction>`, named `baseline` and `candidate`. Original absolute build directory is **UNKNOWN**; both different local roots reproduce identical ZIPs. |
+| Context | **PROVEN matching target:** namespace `project-respawn-website`, backend name `Ntgre`, deployment type `sandbox`; account/region above. `AWS_BRANCH` unset and managed auth retained. Shared-auth synthesis rejected by the helper. |
+| Environment | Helper sets `CDK_DEFAULT_ACCOUNT=058264289478`, `CDK_DEFAULT_REGION=eu-north-1`, `AWS_EC2_METADATA_DISABLED=true`; synthesis uses Amplify context through `MemoryContext`. The complete historical process environment is **UNKNOWN**. No secret values were retrieved or injected. |
+| Bundling | Unchanged Amplify factory: ESM, minification, source maps, AWS SDK bundled, `.node` file loader. OverlaySource uses unchanged CDK NodejsFunction defaults with minification/source maps, Node 22 target and ARM64 Lambda architecture; other four functions are x86_64. |
+| ZIP packaging | Installed CDK `zipDirectory`, using its standard fixed DOS timestamp, file modes, compression and file enumeration. No manual timestamp or mode adjustments. |
 
-Proof chain: AWS STS identified the account; the pool referenced by current outputs has `amplify:deployment-type=sandbox` and an AWS-owned CloudFormation auth-stack tag; describing that stack resolved the root ARN above. Its sandbox tags, root name, pool/client/API relationships and root outputs agree. This does not select master, staging, Demo, Daniel, legacy Ntgrestage8, the failed development root, external Twitch staging or SWG infrastructure. No automatic `ampx sandbox` watcher was running, and none was started.
+The [corrected synthesis helper](phase1-ntgre-artifact-evidence/synthesize-ntgre-live-context.mjs) is the canonical investigation entry point; the old shallow helper is historical evidence. Copy it into `.amplify/synthesize-ntgre-live-context.mjs` in each freshly materialized project root. Preserve exact raw source bytes using the existing snapshot workflow and manifest; reconstruct the baseline with its recorded pre-consolidation schema override. Do not use the concurrent working tree as the candidate.
 
-All **1,128 manifest files** were copied byte-for-byte into `.amplify/ntgre-preflight/candidate` from the preserved snapshot and verified against the recorded candidate manifest. The retained isolated Linux candidate also passed its exact source verifier. Current outputs match the snapshot. Unrelated SWG work was neither included nor edited. [Reconstruction receipt](phase1-ntgre-preflight-evidence/reconstruction.json).
+From each isolated root, with the relevant label, the reproduction commands were:
 
-## B. Live baseline
+```powershell
+npm.cmd ci
+# Create .amplify/ntgre-preview first; cdk.out must not already exist.
+node .amplify/synthesize-ntgre-live-context.mjs baseline
+# In the separate candidate root:
+node .amplify/synthesize-ntgre-live-context.mjs candidate
+```
 
-Captured the root plus 61 nested stacks: **62 templates / 2,929 resource declarations**, including **475 FunctionDirectiveStack resources**. All physical IDs, template definitions and current stack outputs were captured locally. This is a deployed-template inventory, not an exhaustive service-level out-of-band drift scan.
+The helper calls `Toolkit.synth` only. Local archive comparison calls CDK `zipDirectory` only. Neither publishes assets. [Versions](phase1-ntgre-artifact-evidence/toolchain-versions.json), [workspace paths](phase1-ntgre-artifact-evidence/windows-workspaces.json), install and synthesis logs are preserved.
 
-| Identity | Live value |
-| --- | --- |
-| Cognito pool | `eu-north-1_n24iLL7QE` |
-| Cognito client | `1iq7ovjaf7d16imdvbqgfgvf86` |
-| Identity pool | `eu-north-1:a3621b12-4773-4295-b232-b55863c37fd3` |
-| AppSync API | `dxb2tdlulrch7hj2pts2mfijia` |
-| GraphQL endpoint | `https://ymoeacodczfipbtu67jpg73cp4.appsync-api.eu-north-1.amazonaws.com/graphql` |
-| Application bucket | `amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw` |
+## B. Actual Lambda package comparison
 
-Inventory includes **52 custom-managed model tables, three native tables, three S3 buckets, two KMS keys, 10 Lambda functions and 10 Cognito groups**. Every recorded table, Lambda, KMS, HTTP API, endpoint-resource and IAM physical identity is available in the [physical inventory](phase1-ntgre-preflight-evidence/physical-resources.json). The API-key resource identifier is intentionally omitted from that publishable list; it remains counted. Raw templates/outputs are retained in ignored `.amplify/ntgre-preflight/live`, rather than publishing API-key-bearing outputs.
+Read-only `lambda get-function` supplied authorized download URLs. Actual ZIP bytes were downloaded locally; every package hash was checked against Lambda's base64 `CodeSha256`. URLs were not persisted. Downloaded code was never substituted into a synthesized asset.
 
-## C. Drift / reproducibility analysis
+| Function | ZIP bytes | Baseline vs actual ZIP | Candidate vs actual ZIP |
+| --- | ---: | --- | --- |
+| post-confirmation | 545,963 | EXACT | EXACT |
+| admin-user-management | 1,989,980 | EXACT | EXACT |
+| myFunction | 2,442,063 | EXACT | EXACT |
+| twitch-runtime | 2,200,618 | EXACT | EXACT |
+| OverlaySource | 37,264 | EXACT | EXACT |
 
-The structural pre-consolidation architecture matches: same stack paths, resource counts, stateful logical identities and FunctionDirectiveStack layout. **Exact deployed-artifact equivalence does not pass.** Even the reconstructed pre-consolidation baseline differs from live in 129 resource definitions:
+All ten complete-ZIP comparisons pass. This covers executable bytes, source-map bytes, `sourcesContent`, relative source paths, file names, sizes, compression, timestamps, modes, extra fields and archive structure. All five synthesized CloudFormation S3 keys also equal live keys. Archive SHA256 and CDK asset keys are different identifiers; both are recorded and checked independently.
 
-| Difference against local pre-consolidation baseline | Count |
-| --- | ---: |
-| Nested-stack template references | 61 |
-| CDK metadata analytics | 62 |
-| Application Lambda code references | 5 |
-| API-key expiry | 1 |
+[Function ARNs, CodeSha256, package SHA256 and live keys](phase1-ntgre-artifact-evidence/deployed-packages.json), [complete ZIP hashes](phase1-ntgre-artifact-evidence/complete-zip-comparison.json), [file inventories and archive metadata](phase1-ntgre-artifact-evidence/deployed-package-inventory.json), [source-map checks](phase1-ntgre-artifact-evidence/windows-package-comparison.json).
 
-Seven template descriptions also differ (`createdOn: Windows` versus `Linux`), outside the resource-action counts. Decoding CDK metadata proves **live Node 24.14.1 versus local Node 22.18.0**, with CDK **2.260.0** on both sides. These metadata differences propagate into nested-template hashes. They must not be silently excluded to claim the reviewed action count.
+Classification of the original discrepancy: **BUILD PATH / SOURCE MAP ONLY** for incorrect relative paths; **TOOLCHAIN / SOURCE MAP ONLY** for platform-generated env-stub newlines; **TOOLCHAIN** for Node/platform CDK metadata. Original executable JS already matched all five deployed packages. Final **APPLICATION CODE differences: 0; SOURCE MAP differences: 0; PACKAGING METADATA differences: 0; UNKNOWN package differences: 0**. [Initial diagnosis](phase1-ntgre-artifact-evidence/initial-artifact-diagnosis.json).
 
-Affected Lambda physical names and full live/proposed S3 asset keys are recorded in [Lambda code references](phase1-ntgre-preflight-evidence/lambda-code-references.json):
+## C. Reconstructed baseline vs live
 
-- `amplify-projectrespawnweb-postconfirmationlambda19-Wy2H39UMXn5K`
-- `amplify-projectrespawnweb-adminusermanagementlambd-pQxwX6AKOxBE`
-- `amplify-projectrespawnweb-myFunctionrebuildlambdaF-LwVW5TljICgV`
-- `amplify-projectrespawnweb-twitchruntimelambdaE27C0-gJY54R6xgECA`
-- `amplify-projectrespawnweb-OverlaySourceOverlaySour-2kKQMxNdJ0Qr`
+**ADD 0 / MODIFY 2 / DELETE 0**, with zero template-envelope differences.
 
-There is also a concrete **preflight-tooling reproducibility issue**: my Ntgre synthesis helper used `.amplify/ntgre-preview`, one directory level shallower than the prior `.amplify/master-preview/cdk.out`. Against the cached OverlaySource artifact with the same key as the live template, executable JS and embedded source contents are identical, but source-map paths change from `../../../../amplify/...` to `../../../amplify/...`. All other map fields match. This explains that local map mismatch; it does **not** establish equivalence of all actual deployed ZIPs. No live package was downloaded after the stop, and no corrective re-synthesis was performed.
+1. `amplifyDataGraphQLAPIDefaultApiKey1C8ED374`: only `Properties.Expires`, live `1792592350` to reconstructed `1792674026`. This is synthesis-time expiry calculation, not API or key replacement.
+2. Root `data7552DF31`: only nested `TemplateURL`, because its template contains that expiry.
 
-The remaining investigation must reproduce the deployed build context/output depth from the unchanged source, then verify actual live package bytes. It must not alter the accepted source, substitute live assets without verification, or weaken the comparator.
+The previous 62 CDK metadata changes and five Lambda changes are completely gone. Of 61 nested-template changes, 60 disappear; the one remaining data reference is fully explained by expiry. No metadata difference is suppressed. [Exact baseline diff](phase1-ntgre-artifact-evidence/live-to-baseline.json).
 
-## D. Proposed resource counts
+## D. Live ? candidate action summary
 
-| Metric | Current live Ntgre | Local baseline | Local candidate |
-| --- | ---: | ---: | ---: |
-| Hierarchy resources | 2,929 | 2,929 | 2,621 |
-| FunctionDirectiveStack | 475 | 475 | 167 |
-| Template instances | 62 | 62 | 62 |
-
-The exact **local baseline-to-candidate** comparison passes **0 additions / 81 updates / 308 deletions**, with **1,234/1,234 checks passing**, including exact local Lambda asset bytes. Ntgre has seven fewer resources than master; the master 2,628 candidate total was not transplanted into this preflight.
-
-The accounting report is included in the [local comparison](phase1-ntgre-preflight-evidence/local-comparison-summary.json). The hierarchy remains above the 2,500 fresh-create threshold. Existing pinned debt authorization covers the reviewed branch roots, not a blanket Ntgre waiver; target-specific accounting/update-operation readiness still requires review. No baseline receipt, budget or exception was changed.
-
-## E. Exact action summary — static template diff, not an AWS change set
-
-| Action | Live → local candidate |
+| Action | Count |
 | --- | ---: |
 | ADD | 0 |
-| MODIFY | 207 |
+| MODIFY | 81 |
 | DELETE | 308 |
-| REPLACE | Not authoritatively assessed; no explicit replacement detected in the static identity comparison |
+| REPLACE / conditional replacement identified by property/provider analysis | 0 |
 
-**207 modifications:** 77 AppSync resolvers, 61 nested-stack references, 62 CDK metadata resources, five Lambda code references, one API-key expiry and one codegen bucket-deployment asset reference.
+The 81 modifications are 77 resolver `PipelineConfig` updates, two nested `TemplateURL` updates, one API-key expiry and one codegen bucket-deployment `SourceObjectKeys` update. The 308 deletions are exactly 77 each of redundant invocation functions, AppSync data sources, IAM roles and IAM policies, all inside FunctionDirectiveStack. There are no Lambda, CDK metadata or template-envelope changes. Every action is listed in the [candidate diff](phase1-ntgre-artifact-evidence/live-to-candidate.json), with API-key physical identifiers redacted.
 
-**308 deletions:** 77 redundant invocation functions, 77 AppSync data sources, 77 IAM roles and 77 IAM policies, all in FunctionDirectiveStack.
+Replacement analysis uses the strongest non-mutating evidence available:
 
-Every action is enumerated in [action-summary.json](phase1-ntgre-preflight-evidence/action-summary.json). There are no added/deleted stateful logical resources. Nevertheless, these are template-level findings; no CloudFormation replacement/conditional-replacement plan has been generated or approved. The unexpected protected Lambda modifications triggered STOP before creating a change set or publishing templates/assets.
+- Resolver identity properties (`ApiId`, `TypeName`, `FieldName`) are unchanged. AWS documents `PipelineConfig` updates as no interruption. [Resolver semantics](https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-appsync-resolver.html).
+- API-key `ApiId` is unchanged; `Expires` supports no-interruption updates. [API-key semantics](https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-appsync-apikey.html).
+- Nested stacks retain logical identity, parameters and dependencies; only template references change. `TemplateURL` is an in-place update property. [Nested-stack semantics](https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-cloudformation-stack.html).
+- The unchanged installed CDK bucket-deployment provider preserves the supplied physical ID on Update. Only `SourceObjectKeys` changes; service token and destination remain identical. Its `Prune=true` sync affects the generated codegen bucket, not user uploads. The regenerated bundle contains `model-schema.graphql`. Model-introspection deployment is unchanged.
 
-## F. Protected resources
+This is a static, property-level replacement classification, **not an AWS-created change set or a guarantee against operational failure**. No change set was created. All stateful/protected resource definitions are identical, with replacement **NONE**. Provider behavior was read in installed `aws-cdk-lib/custom-resource-handlers/dist/aws-s3-deployment/bucket-deployment-handler/index.py`, particularly physical-ID handling and Update response.
 
-“PASS” below means identical captured deployed-template definitions/identities, not an execution guarantee or a service-level drift scan.
+### Accounting result — remaining blocker
 
-| Category | Result |
+| Metric | Live / reconstructed baseline | Candidate |
+| --- | ---: | ---: |
+| Hierarchy resources | 2,929 | 2,621 |
+| FunctionDirectiveStack | 475 | 167 |
+| Template instances | 62 | 62 |
+| Largest candidate template | — | 167 |
+
+The exact local comparison reports **0 adds / 80 updates / 308 deletes**, **1,233 checks passed**. Both Windows syntheses happened within the same expiry calculation interval, so their API-key expiry is equal. Live-to-candidate has the additional expiry update, producing 81. This explains the difference from the earlier local 81-update / 1,234-check run without weakening the comparator.
+
+The unchanged accounting evaluator fails for Ntgre:
+
+```text
+Hierarchy 2621 exceeds action threshold 1800; fresh-create AWS ceiling is 2500
+Debt allowance does not cover selected root
+```
+
+The first message occurs with the actual Ntgre baseline and no new exception. Applying the existing pinned exception also produces the scope error; its receipt digest still matches. The allowance does not cover this sandbox. Counts and accounting tests passing are distinct from **accounting policy approval**, which fails. [Full gate evidence](phase1-ntgre-artifact-evidence/accounting-gate.json).
+
+There are 389 explicit changed resource records, concentrated in root/data/FunctionDirectiveStack. That is not an AWS-certified operation-size plan. The hierarchy total alone also does not establish the number touched by an update. No budget, receipt or exception was changed or bypassed. Fresh recreation is not an approved alternative.
+
+## E. Protected resources
+
+PASS means exact captured live-template definitions plus the applicable artifact checks; it does not claim a comprehensive AWS drift scan.
+
+| Category | Result | Replacement |
+| --- | --- | --- |
+| Cognito pool, client, identity pool, role attachment and ten groups | PASS | NONE |
+| 52 model tables and three native DynamoDB tables | PASS | NONE |
+| Three buckets and bucket policies; two KMS keys | PASS | NONE |
+| AppSync API and deployed GraphQL schema | PASS | NONE |
+| All ten Lambda definitions, permissions and two layers | PASS | NONE |
+| Five previously affected actual Lambda ZIPs | PASS, exact bytes | NONE |
+| All ten baseline/candidate Lambda resources | PASS, exact local asset comparison | NONE |
+| Team Hub gateways, authorization and state | PASS | NONE |
+| Creator/Twitch and OverlaySource infrastructure | PASS | NONE |
+| Payment/webhook infrastructure and shared-handler artifact | PASS | NONE |
+| Three HTTP APIs, 36 routes, four integrations, three stages, authorizer | PASS | NONE |
+| Retained IAM/auth wiring and generated output snapshot | PASS | NONE |
+| External stacks/services | No proposed action; not separately audited | No proposed replacement |
+
+[175 protected resource records and dependency checks](phase1-ntgre-artifact-evidence/dependency-protected-analysis.json), [all local comparison checks](phase1-ntgre-artifact-evidence/local-comparison-checks.json).
+
+Existing Ntgre still uses pool `eu-north-1_n24iLL7QE`, client `1iq7ovjaf7d16imdvbqgfgvf86`, identity pool `eu-north-1:a3621b12-4773-4295-b232-b55863c37fd3`, AppSync `dxb2tdlulrch7hj2pts2mfijia`. This candidate **does not implement the requested master-pool linkage to `eu-north-1_Uufjxul58`**. That remains separate work; Cognito changes were expressly excluded here.
+
+## F. Recovery readiness
+
+259 scoped read-only API calls completed. Six returned expected absent S3 configuration errors; none returned AccessDenied. [Per-resource results](phase1-ntgre-artifact-evidence/recovery-readiness.json) include every table, bucket, key and secret-path metadata lookup. No secret values, user records or tokens were retrieved.
+
+| Resource class | Actual observed status |
 | --- | --- |
-| Cognito pool/client/identity pool/groups | PASS — unchanged |
-| 52 model tables and three native tables | PASS — unchanged |
-| Three S3 buckets / two KMS keys | PASS — unchanged |
-| AppSync API/schema identity | PASS — unchanged |
-| Application Lambda definitions | **FAIL** — five Code.S3Key / asset-path changes |
-| Actual live Lambda package equivalence | **NOT PROVEN — blocking** |
-| Team Hub state resources | PASS — unchanged |
-| Creator/Twitch state resources | PASS — unchanged; runtime Lambda package verification blocked |
-| Payment/webhook infrastructure | PASS for routes/integrations/permissions; shared-handler package verification blocked |
-| Three HTTP APIs, 36 routes, four integrations, three stages, 37 Lambda permissions | PASS — unchanged |
-| Generated outputs | PASS — snapshot bytes preserved and core identities match live outputs |
-| External runtime resources | No proposed external resource action; external stacks were not inspected |
+| 55 DynamoDB tables | All ACTIVE, deletion protection false. PITR disabled on 53; enabled with 35-day recovery periods on OverlayPublication and TwitchEventDeliveryDedupe. Earliest/latest restorable times are recorded. |
+| DynamoDB backups | `list-backups` returned no backups for each table. AWS Backup returned no recovery points for all 55 tables. PITR recovery is separate from those empty backup listings. |
+| Three S3 buckets | Versioning returned `{}` for each; Object Lock and lifecycle configuration absent. AWS Backup returned no recovery points. These are codegen, model-introspection and application-upload buckets. |
+| Cognito | Deletion protection INACTIVE; estimated user count 0. Estimate is not permission to delete, and no user export/restore exercise occurred. |
+| KMS | Both customer-managed keys Enabled, no deletion scheduled. IDs `8656fcfe-9dfc-4cdf-b345-12665950f337` and `76bd4f9a-72aa-4bb4-82b3-05a4fbc16673`. Template policies Retain/Retain. |
+| Template retention | Pool/client/identity pool, all table declarations and buckets retain their existing Delete/Delete policies. These are existing recovery risks, not proposed deletions. |
+| SSM metadata | Five generated resource-reference parameters exist. Sandbox PRINTFUL_API_KEY exists as SecureString; its shared fallback is absent. Both sandbox and shared fallback paths are absent for eight other configured secrets listed below. |
 
-See [per-category verification](phase1-ntgre-preflight-evidence/protected-resources.json).
+Absent secret names: `REVOLUT_API_KEY`, `REVOLUT_API_SECRET`, `REVOLUT_WEBHOOK_SIGNING_SECRET`, `TWITCH_CLIENT_ID`, `TWITCH_CLIENT_SECRET`, `TWITCH_OAUTH_STATE_SECRET`, `ALPHA_REWARD_EVENT_AUTH_SECRET`, `TWITCH_RUNTIME_AUTH_SECRET`. [Function/path dependency mapping](phase1-ntgre-artifact-evidence/secret-recovery-dependencies.json). This is a finding about configured SSM paths, not proof that no equivalent secret exists anywhere else. Functional smoke tests involving those integrations require resolving their existing configuration gaps separately.
 
-## G. IAM / authorization wiring
+Recovery limitations: no restore drill; no independent password/user recovery verification; no external/off-account backup search; no export of encrypted token data. Token-vault and overlay credentials require both their stored ciphertext and the original usable KMS keys/permissions. A source/template backup cannot replace missing data, user passwords or secret material. The lack of backups/protection is documented, not silently accepted as restored readiness or authorization to change settings. No stateful mutation is proposed by this consolidation, so these gaps do not explain the resource-accounting failure.
 
-Live FunctionDirectiveStack has the pre-consolidation layout. Its meaningful resource definitions match the reconstructed baseline; its metadata differs. Local exact comparison verifies all 79 field operations, authorization stages, retained handler anchors, invocation semantics and retained IAM definitions. The proposed 77-role/77-policy removals correspond to the reviewed redundant directive resources. Shared/admin handlers, readTeamHub, mutateTeamHub, investor and creator/workspace operations retain their reviewed local wiring.
+## G. Dependency/update ordering
 
-No authorization implementation or existing broad IAM was redesigned. However, **the complete live deployment dependency/wiring review is not signed off**, because the protected-code stop occurred first. Actual live IAM policy state beyond captured templates was not separately fetched.
+**PASS for the static transition graph and documented CloudFormation semantics**, subject to the accounting NO-GO and the execution limits below. The graph analysis passed **735 checks**:
 
-Critical isolated checks completed before the stop: manifest verification, Amplify contracts, **16 guard tests**, **two handler tests**, and **47 Team Hub backend tests**, all PASS. The prior complete 653-test result was not misrepresented as a new full-suite run. [Critical ledger](phase1-ntgre-preflight-evidence/critical-test-ledger.json).
+1. Each of 77 changed resolvers changes only its second pipeline function to an already-existing, unchanged retained anchor. All 79 authorization functions and resolver context/stash behavior remain intact; exact comparator checks also verify Lambda target and invocation mapping equivalence.
+2. Every obsolete invocation function depends on its obsolete data source; each data source references its service role. Each obsolete IAM policy references that role. The only old consumers of each four-resource chain are its resolver and chain members.
+3. Every one of the 308 deleted resources belongs to those 77 chains. No candidate resource, output or parameter reference points to a deleted logical ID. All 62 candidate dependency graphs are acyclic and have no dangling references.
+4. All template parameters, outputs and other envelope fields are identical. Nested handles keep their parameters and dependencies; no cross-stack contract is removed. Only the root/data and data/directive template references change.
 
-## H. Recovery readiness
+AWS documents intrinsic-reference dependency ordering and dependent-before-dependency deletion. Its update cleanup state removes old resources after successful updates. Applied to the verified graph, the supported sequence is resolver repointing first, then obsolete invocation ? data-source deletion, with data source and policy removed before their role. There is **no explicit policy-versus-data-source edge**; they can be removed in parallel during cleanup because no retained resolver uses that chain. Retained anchor policies and roles already exist unchanged. [Dependency rules](https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-attribute-dependson.html), [update/cleanup states](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/view-stack-events.html).
 
-**Not established; no backup or protection setting was modified.** Observations already available at the stop:
+This sequencing conclusion is an inference from the exact graph and published semantics, not a captured AWS execution schedule. IAM propagation, service failures and out-of-band drift are not eliminated by template analysis. No service-level drift detection or deployment was run. Future execution must observe actual resolver update and cleanup events; it must not manually delete chains ahead of CloudFormation.
 
-- Application bucket `GetBucketVersioning` returned `{}`; no enabled versioning was reported. `GetObjectLockConfiguration` reported no configuration.
-- Cognito reports deletion protection `INACTIVE`.
-- Captured templates specify `Delete/Delete` deletion/update-replace policies for the pool, client, identity pool, all 55 table declarations and three buckets. This describes policy configuration, not a proposed deletion of those resources.
-- Both KMS keys have `Retain/Retain` template policies. Their current key states and independent recovery arrangements were not inspected.
-- Two native-table templates explicitly configure PITR. Actual PITR status, existing backups and restore readiness for all tables remain unverified; absence of a inspected setting is not evidence that no backup exists.
-- Current outputs, schema/template configuration and physical identities were captured. Secret/token recovery and relevant external recovery dependencies were not assessed; no secret values were requested.
+## H. Rollback strategy
 
-Before any execution decision, finish read-only backup/PITR/restore-readiness and retention assessment, establish Cognito/user preservation and secret/token/key recovery arrangements, and determine which protection changes are actually necessary for this update. Any backup/protection mutation would require separate authorization. [Recovery observations](phase1-ntgre-preflight-evidence/recovery-readiness.json).
+| Failure point | Recommendation |
+| --- | --- |
+| Before submission or during local synthesis/asset preparation | STOP. Existing environment remains authoritative; no rollback is needed for a change never submitted. |
+| Resolver update fails before cleanup completes | Prefer CloudFormation's normal **ROLLBACK** to its existing template and resolver references. Do not manually remove obsolete chains or start another update mid-rollback. |
+| Obsolete-resource deletion fails during cleanup | Inspect actual events/status and the affected IAM/AppSync resources. Prefer resolving cleanup and **ROLL-FORWARD** to the validated consolidated state once CloudFormation permits it; do not blindly submit the baseline. |
+| UPDATE_ROLLBACK_FAILED | Stop new deployments; inspect and repair the specific rollback failure through a separately authorized recovery action. Do not delete/recreate the sandbox or skip protected resources as a shortcut. |
+| UPDATE_COMPLETE but functional regression | Prefer a narrowly reviewed **ROLL-FORWARD** preserving retained chains if the fault can be corrected safely. If restoration of old wiring is necessary, treat a baseline update as a separate expansion requiring fresh accounting/permission review. |
 
-## I. Deployment ordering
+Restoring the old layout adds 308 resources and restores FunctionDirectiveStack from 167 to 475 and the hierarchy from 2,621 to 2,929. The directive template is below AWS's 500-resource limit and the repository's hard gate of 481, but above its action threshold and close to the ceiling. Missing roles/functions may require recreation; their physical identifiers need not remain the same. Live dependencies supply the creation order: role/policy availability, data source, invocation function, then resolver repointing. The baseline lacks an explicit data-source-to-policy dependency, so IAM propagation and policy availability must be watched rather than assumed instantaneous.
 
-**Not approved or completed after the stop.** The intended logical transition is to repoint resolvers to retained invocation/data-source/role chains before obsolete chains disappear. A local field-equivalence check does not prove CloudFormation will execute that transition safely.
+Captured live templates and exact packages preserve infrastructure/code evidence, not database or upload recovery. A codegen deployment rollback may resync generated schema assets; original asset availability and stack status must be rechecked before recovery. No rollback or roll-forward was executed.
 
-The remaining review must explicitly establish resolver-update/deletion dependencies, absence of dangling references/cycles, IAM/data-source final-use ordering and the actual update plan. Rollback could restore approximately 308 resources and the 475-resource FunctionDirectiveStack; its feasibility must be established rather than assumed. No rollback-versus-roll-forward recommendation is signed off for an unverified code-changing plan, and neither was executed.
+## I. Candidate integrity and validation
 
-## J. Final go / no-go
+The isolated candidate matches all **1,128 exact raw file hashes** before and after validation against `docs/architecture/phase1-reproducibility-evidence/candidate-manifest.json`. Manifest SHA256: `91e0242ed9998d7b7fa422b27a6711f33240eda45afc50066b11cc0eafc0a8d7`. Concurrent SWG frontend work is excluded. No application source, comparator, authorization, receipt, budget, Cognito or package version was changed. [Integrity record](phase1-ntgre-artifact-evidence/candidate-integrity.json).
 
-**NO-GO: the exact validated Phase 1 candidate has not yet been proven safe to deploy to existing Ntgre.** The live plan includes five unexpected protected Lambda code-reference changes plus build metadata/template churn. Actual live package equivalence, full recovery readiness, authoritative change-plan replacement analysis and execution ordering remain unverified.
+| Fresh validation | Result |
+| --- | --- |
+| Independent baseline/candidate npm ci | PASS / PASS |
+| Correct-layout Windows synthesis | PASS / PASS |
+| Baseline/candidate infrastructure and protected comparison | 1,233 checks PASS; 10 Lambda resources verified |
+| Actual live ZIP comparison | 10/10 exact, five functions × two builds |
+| Dependency/protected analysis | 735 checks PASS |
+| Handler consolidation tests | 2 passed |
+| Amplify guards | 16 passed |
+| Team Hub backend tests | 47 passed |
+| Resource-accounting tests | 24 passed |
+| Amplify contracts | PASS |
+| Backend TypeScript check | PASS |
+| Production build | PASS; existing chunk-size/plugin-timing warnings |
+| Manifest before / after | PASS / PASS |
+| Ntgre accounting policy gate | **FAIL — unapproved root scope / hierarchy debt** |
 
-Resolve build-context/artifact reproducibility against live Ntgre without changing the validated source or relaxing safeguards; then rerun the live comparison and complete the stopped review stages. No deployment command is proposed for execution in this NO-GO report. The two local validation containers were stopped after evidence capture. No sandbox watcher, change set, asset publishing, CloudFormation update, deployment, DNS change or data migration was performed.
+Fresh targeted tests total **89 passed, 0 failed, 0 skipped**. These are not a rerun of the prior 653-test suite. The prior 653/653 result remains tied to its recorded snapshot. Build-only environment used the isolated snapshot's API endpoint and `VITE_REVOLUT_MODE=sandbox`, `VITE_REVOLUT_PUBLIC_KEY=validation-only`; it performed no payment or backend runtime smoke test. [Validation ledger](phase1-ntgre-artifact-evidence/validation-ledger.json) and individual logs preserve commands/results.
 
-All new repository files for this task are this report and its [evidence directory](phase1-ntgre-preflight-evidence/README.md). Investigation tools, raw captures and isolated source/build copies remain under ignored `.amplify/ntgre-preflight`. Accepted Phase 1 source/configuration and concurrent SWG work are untouched.
+## J. Final decision
+
+**NO-GO to deployment of this candidate to existing Ntgre.**
+
+The artifact mismatch is fully resolved, protected resources are unchanged, no stateful replacement is identified, and the static dependency transition passes. The exact candidate and recovery risks are documented. The remaining concrete blocker is the **unchanged accounting gate**: Ntgre is outside the existing pinned debt allowance and its 2,621-resource hierarchy fails without a valid target-specific allowance.
+
+Resolving that blocker requires an explicit reviewed decision for the exact Ntgre update and its resource debt, without pretending that the current master/staging allowance already covers it. This task forbids changing budgets or accepted receipts, so none was extended. Any later decision must recheck target identity, live templates, package hashes, candidate integrity, recovery findings and gate scope before execution. Shared master Cognito linkage is still a separate change.
+
+No deployment command is proposed as executable under this NO-GO. Work stops at this report as requested. All changes from this investigation are documentation/evidence and local preflight tooling. AWS infrastructure, assets, users, data and protections remain untouched by this task.

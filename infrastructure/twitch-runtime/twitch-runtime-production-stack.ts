@@ -55,6 +55,7 @@ export class TwitchRuntimeProductionStack extends Stack {
           { name: 'RESPAWN_SECURE_RUNTIME_ENABLED', value: 'true' }, { name: 'RESPAWN_RUNTIME_API_BASE', value: PRODUCTION_RUNTIME.apiBase },
           { name: 'RESPAWN_RUNTIME_CLIENT_ID', value: 'respawn-twitch-bot-production' }, { name: 'RESPAWN_TWITCH_INTEGRATION_ID', value: integrationId.valueAsString },
           { name: 'RESPAWN_CANONICAL_ALERT_DELIVERY_ENABLED', value: 'false' }, { name: 'TWITCH_CLIENT_ID', value: twitchClientId.valueAsString },
+          { name: 'RESPAWN_CANONICAL_TTS_DELIVERY_ENABLED', value: 'true' },
           { name: 'TWITCH_ENABLE_HYPE_TRAIN', value: 'false' },
         ],
         secrets: [secret('RESPAWN_RUNTIME_SHARED_SECRET'), secret('TWITCH_CLIENT_SECRET'), secret('TWITCH_BOT_USERNAME'), secret('TWITCH_BOT_USER_ID'), secret('TWITCH_BOT_ACCESS_TOKEN'), secret('TWITCH_BOT_REFRESH_TOKEN'), secret('TWITCH_BOT_TOKEN_EXPIRES_AT')],

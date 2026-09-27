@@ -1,0 +1,77 @@
+{
+  "checkedAt": "2026-09-23T09:24:11.029Z",
+  "manifestSha256": "91e0242ed9998d7b7fa422b27a6711f33240eda45afc50066b11cc0eafc0a8d7",
+  "files": 1128,
+  "mismatches": [],
+  "packages": [
+    {
+      "logicalId": "postconfirmationlambda195D98D2",
+      "deployed": "eac1b01f80bc26183c2d82b451d7c375262c974695262cbb87caf2337b009ffc",
+      "baseline": "eac1b01f80bc26183c2d82b451d7c375262c974695262cbb87caf2337b009ffc",
+      "candidate": "eac1b01f80bc26183c2d82b451d7c375262c974695262cbb87caf2337b009ffc",
+      "pass": true
+    },
+    {
+      "logicalId": "adminusermanagementlambdaB07E6EFC",
+      "deployed": "eeebc443a143b2f01bb3c807454e96599649f821c1e24c4caaf7477e6a534c72",
+      "baseline": "eeebc443a143b2f01bb3c807454e96599649f821c1e24c4caaf7477e6a534c72",
+      "candidate": "eeebc443a143b2f01bb3c807454e96599649f821c1e24c4caaf7477e6a534c72",
+      "pass": true
+    },
+    {
+      "logicalId": "myFunctionrebuildlambdaFBFF6F05",
+      "deployed": "f1b729988ea2ef72bd37d9d43d791f836eeb1370420a321b158b98b14e180a2b",
+      "baseline": "f1b729988ea2ef72bd37d9d43d791f836eeb1370420a321b158b98b14e180a2b",
+      "candidate": "f1b729988ea2ef72bd37d9d43d791f836eeb1370420a321b158b98b14e180a2b",
+      "pass": true
+    },
+    {
+      "logicalId": "twitchruntimelambdaE27C0484",
+      "deployed": "e0d1fed1e544a9c8e683f62d574c5634c0f4aa92463f5ca9d3de4a32f669e44f",
+      "baseline": "e0d1fed1e544a9c8e683f62d574c5634c0f4aa92463f5ca9d3de4a32f669e44f",
+      "candidate": "e0d1fed1e544a9c8e683f62d574c5634c0f4aa92463f5ca9d3de4a32f669e44f",
+      "pass": true
+    },
+    {
+      "logicalId": "OverlaySourceOverlaySourceFunctionC8484D26",
+      "deployed": "53f7002f50809cd061e55c5d05adbc235caf4fc428e8ef388b3397d63742042e",
+      "baseline": "53f7002f50809cd061e55c5d05adbc235caf4fc428e8ef388b3397d63742042e",
+      "candidate": "53f7002f50809cd061e55c5d05adbc235caf4fc428e8ef388b3397d63742042e",
+      "pass": true
+    }
+  ],
+  "totals": {
+    "baseline": 2929,
+    "candidate": 2621
+  },
+  "gate": {
+    "passed": false,
+    "reasons": [
+      "Hierarchy 2621 exceeds action threshold 1800; fresh-create AWS ceiling is 2500"
+    ]
+  },
+  "scopedGate": {
+    "passed": false,
+    "reasons": [
+      "Debt allowance does not cover selected root",
+      "Hierarchy 2621 exceeds action threshold 1800; fresh-create AWS ceiling is 2500"
+    ]
+  },
+  "affectedTemplates": [
+    {
+      "path": "$root",
+      "resources": 7
+    },
+    {
+      "path": "$root/data7552DF31",
+      "resources": 86
+    },
+    {
+      "path": "$root/data7552DF31/amplifyDataFunctionDirectiveStackNestedStackFunctionDirectiveStackNestedStackResource1246A302",
+      "resources": 475
+    }
+  ],
+  "affectedTemplateResourceTotal": 568,
+  "liveRefresh": "Unavailable: AWS CLI NoCredentials; list-profiles returned no profiles",
+  "rerunBuildOrTests": false
+}

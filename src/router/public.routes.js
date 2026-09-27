@@ -1,5 +1,3 @@
-// src/router/public.routes.js
-
 import Home from '../views/Home/Home.vue';
 import About from '../views/About/About.vue';
 import Contact from '../views/Contact/Contact.vue';
@@ -18,15 +16,32 @@ import InvestorDataRoom from '../views/Investors/DataRoom/InvestorDataRoom.vue';
 import Careers from '../views/Careers/Careers.vue';
 import Creators from '../views/Creators/Creators.vue';
 import Partners from '../views/Partners/Partners.vue';
-import BeyondBuffBuilder from '../views/SWG Beyond Buff Builder/SwgBeyondBuffBuilder.vue';
 
 export default [
+    // =========================================================
+    // SWG TEST / TOOLS
+    // =========================================================
+
     {
         path: '/SWG-EOF-test',
         name: 'SwgEofTest',
-        meta: { requiresAuth: true, requiredGroups: ['BetaMember'] },
-        component: () => import('../views/SwgEofTest/SwgEofTest.vue'),
+        meta: {
+            requiresAuth: true,
+            requiredGroups: ['BetaMember']
+        },
+        component: () =>
+            import('../views/SwgEofTest/SwgEofTest.vue')
     },
+
+    {
+        path: '/swg-beyond-buff-builder',
+        name: 'BeyondBuffBuilder',
+        component: () =>
+            import(
+                '../views/SWG Beyond Buff Builder/SwgBeyondBuffBuilder.vue'
+            )
+    },
+
     // =========================================================
     // BOOKINGS
     // =========================================================
@@ -135,16 +150,6 @@ export default [
         path: '/privacy-policy',
         name: 'LegalCentre',
         component: PrivacyPolicy
-    },
-
-      // =========================================================
-    // Temporary Paths
-    // =========================================================
-
-    {
-        path: '/swg-beyond-buff-builder',
-        name: 'BeyondBuffBuilder',
-        component: BeyondBuffBuilder
     },
 
     // =========================================================

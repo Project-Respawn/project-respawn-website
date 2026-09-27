@@ -6,6 +6,22 @@ const event = { version: 1, id: 'message-1', type: 'stream.follow', timestamp: '
 const publication = { publicationId: 'publication-1', workspaceId: 'workspace-1', brandId: 'brand-1', status: 'TEST', sceneSnapshot: { widgets: [{ type: 'alerts', enabled: true, dataSource: { topics: ['stream.follow'] } }] } };
 function dependencies(overrides: any = {}) { return { getActivePublication: async () => publication, getConfigRevision: async () => 9, listConnections: async () => [{ connectionId: 'a', expiresAtEpoch: Math.floor(Date.now() / 1000) + 100 }], send: async () => {}, remove: async () => {}, ...overrides }; }
 
+test('TTS-only scenes deliver speech independently of alert widgets and honor disabled configuration', async () => {
+  const tts = { type: 'tts', enabled: true, dataSource: { topics: ['tts.requested'] } };
+  const input = { workspaceId: 'workspace-1', brandId: 'brand-1', event: { ...event, type: 'tts.requested', data: { payload: { text: 'Hello' } } } };
+  const sent: any[] = [];
+  const deps = dependencies({ getActivePublication: async () => ({ ...publication, sceneSnapshot: { widgets: [tts] } }), send: async (_id: string, message: any) => { sent.push(message); } });
+  const result = await publishCanonicalOverlayEvent(input, deps);
+  assert.equal(result.delivered, 1); assert.equal(sent[0].type, 'tts.requested'); assert.equal(sent[0].data.payload.text, 'Hello');
+  for (const widget of [{ ...tts, enabled: false }, { ...tts, hidden: true }, { ...tts, dataSource: { topics: [] } }]) {
+    assert.equal((await publishCanonicalOverlayEvent(input, { ...deps, getActivePublication: async () => ({ ...publication, sceneSnapshot: { widgets: [widget] } }) })).reason, 'TTS_WIDGET_DISABLED');
+  }
+  assert.equal((await publishCanonicalOverlayEvent(input, { ...deps, getTtsConfig: async () => ({ enabled: false }) })).reason, 'TTS_DISABLED');
+  assert.equal((await publishCanonicalOverlayEvent({ ...input, brandId: 'other' }, deps)).reason, 'PUBLICATION_IDENTITY_MISMATCH');
+  assert.equal((await publishCanonicalOverlayEvent({ ...input, event: { ...input.event, data: { payload: { text: ' ' } } } }, deps)).reason, 'TTS_TEXT_EMPTY');
+  assert.equal(sent.length, 1);
+});
+
 test('publisher resolves the Brand publication, attaches current revision, and fans out', async () => {
   const result: any = await publishCanonicalOverlayEvent({ workspaceId: 'workspace-1', brandId: 'brand-1', event }, dependencies());
   assert.equal(result.status, 'DELIVERED'); assert.equal(result.publicationId, 'publication-1'); assert.equal(result.configRevision, 9); assert.equal(result.event.configRevision, 9); assert.equal(result.delivered, 1);

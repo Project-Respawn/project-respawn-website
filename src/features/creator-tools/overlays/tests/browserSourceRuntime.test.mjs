@@ -9,13 +9,14 @@ import { createPublicationSceneSnapshot } from '../overlayPublicationSnapshot.js
 import { createWidgetEventBus } from '../widgetEventBus.js';
 
 const read = (path) => readFile(new URL(path, import.meta.url), 'utf8');
-const [source, renderer, alert, chat, tts, universal] = await Promise.all([
+const [source, renderer, alert, chat, tts, universal, speechQueue] = await Promise.all([
   read('../../views/overlays/OverlayBrowserSource.vue'),
   read('../../components/overlays/OverlaySceneRenderer.vue'),
   read('../../widgets/alerts/alerts/AlertsWidget.vue'),
   read('../../widgets/chat/twitch-chat/ChatWidget.vue'),
   read('../../widgets/tts-audio/tts/TtsWidget.vue'),
   read('../../widgets/utility/universal-demo/UniversalDemoWidget.vue'),
+  read('../ttsSpeechQueue.js'),
 ]);
 
 test('public Browser Source explicitly selects non-demo runtime mode', () => {
@@ -40,8 +41,9 @@ test('live chat starts empty and hides editor-only preview labeling', () => {
 test('live subscription, raid, and TTS widgets wait for canonical events', () => {
   assert.match(universal, /runtimeMode==='browser-source'.*\?null/);
   assert.match(tts, /runtimeMode==='browser-source'\?null/);
-  assert.match(tts, /speechSynthesis\.speak/);
-  assert.match(tts, /SpeechSynthesisUtterance/);
+  assert.match(tts, /browserTtsQueue\.enqueue/);
+  assert.match(speechQueue, /engine\.speak/);
+  assert.match(speechQueue, /SpeechSynthesisUtterance/);
 });
 
 test('Browser Source owns a fixed transparent viewport and widgets fill outer frames', () => {
@@ -57,7 +59,7 @@ function runtime() {
   const credentials = [], bus = createWidgetEventBus();
   const script = parse(source).descriptor.scriptSetup.content;
   const state = runInNewContext(script.replace(/^import .*$/gm, '') + '\n({ scene, loadedRevision, runtimeConfig, refreshRuntimeConfig })', {
-    computed, ref, createPublicationSceneSnapshot, widgetEventBus: bus,
+    computed, ref, createPublicationSceneSnapshot, widgetEventBus: bus, browserTtsQueue: { stop() {} },
     useRoute: () => ({ params: { credential: 'unchanged-test-credential' } }),
     fetchOverlaySource: async credential => { credentials.push(credential); return remote; },
     createOverlaySourceConnection(options) { connections++; connectionOptions = options; return { close() { closes++; } }; },

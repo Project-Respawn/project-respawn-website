@@ -86,7 +86,10 @@ export async function handleTwitchRuntime(path: string, method: string, event: a
       client.models.Brand.get({ id: record.brandId }),
     ])
     if (!workspace.data || !brand.data || brand.data.workspaceId !== record.workspaceId) throw new Error('Runtime Workspace and Brand binding is invalid')
-    const dedupeKey = createHash('sha256').update(`${record.id}\0${twitchMessageId}`).digest('hex'), expiresAt = Math.floor(Date.now() / 1000) + 86400
+    // A redemption may independently produce a reward alert and speech. Preserve
+    // existing alert keys/claims; only speech gets a separate derived-output key.
+    const outputKey = canonicalEvent.type === 'tts.requested' ? '\0tts.requested' : ''
+    const dedupeKey = createHash('sha256').update(`${record.id}\0${twitchMessageId}${outputKey}`).digest('hex'), expiresAt = Math.floor(Date.now() / 1000) + 86400
     const dedupe = injectedDedupe || createTwitchEventDedupeStore()
     let claim
     try {

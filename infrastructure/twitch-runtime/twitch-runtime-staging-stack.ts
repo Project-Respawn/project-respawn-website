@@ -141,6 +141,7 @@ export class TwitchRuntimeStagingStack extends Stack {
           { name: 'NODE_ENV', value: 'production' },
           { name: 'PORT', value: '3000' },
           { name: 'RESPAWN_SECURE_RUNTIME_ENABLED', value: 'true' },
+          { name: 'RESPAWN_CANONICAL_TTS_DELIVERY_ENABLED', value: 'true' },
           { name: 'RESPAWN_RUNTIME_API_BASE', value: 'https://9qp7ehd406.execute-api.eu-north-1.amazonaws.com' },
           { name: 'RESPAWN_RUNTIME_CLIENT_ID', value: 'respawn-twitch-bot' },
           { name: 'RESPAWN_TWITCH_INTEGRATION_ID', value: '8e548416-206d-44ea-a42a-5353c2fac86c' },

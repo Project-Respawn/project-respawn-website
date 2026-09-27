@@ -1,0 +1,1164 @@
+{
+  "summary": {
+    "liveTotal": 2929,
+    "proposedTotal": 2929,
+    "liveFunctionDirectiveStack": 475,
+    "proposedFunctionDirectiveStack": 475,
+    "actions": {
+      "ADD": 0,
+      "MODIFY": 2,
+      "DELETE": 0
+    },
+    "changedTypes": {
+      "AWS::CloudFormation::Stack": 1,
+      "AWS::AppSync::ApiKey": 1
+    },
+    "envelopeChanges": 0
+  },
+  "changes": [
+    {
+      "stack": "$root",
+      "logicalId": "data7552DF31",
+      "type": "AWS::CloudFormation::Stack",
+      "physicalId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/amplify-projectrespawnwebsite-Ntgre-sandbox-8bd9d02332-data7552DF31-1IT8L0URMILU/c71111a0-b5c7-11f1-a25d-0ae865ce8eff",
+      "action": "MODIFY",
+      "properties": [
+        {
+          "property": "Properties.TemplateURL.Fn::Join",
+          "before": [
+            "",
+            [
+              "https://s3.",
+              {
+                "Ref": "AWS::Region"
+              },
+              ".",
+              {
+                "Ref": "AWS::URLSuffix"
+              },
+              "/",
+              {
+                "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+              },
+              "/45dfcd19cf6cb10cab789b65d661601c992d7a0d86d9f0a9c5add341330225d4.json"
+            ]
+          ],
+          "after": [
+            "",
+            [
+              "https://s3.",
+              {
+                "Ref": "AWS::Region"
+              },
+              ".",
+              {
+                "Ref": "AWS::URLSuffix"
+              },
+              "/",
+              {
+                "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+              },
+              "/da1c65ebe83a3ed72a520f426387891b10a64d9f8685704c2a729df9ceae3a1a.json"
+            ]
+          ]
+        }
+      ],
+      "replacement": "NONE (property/provider semantics)"
+    },
+    {
+      "stack": "$root/data7552DF31",
+      "logicalId": "amplifyDataGraphQLAPIDefaultApiKey1C8ED374",
+      "type": "AWS::AppSync::ApiKey",
+      "physicalId": "[API key physical ID redacted]",
+      "action": "MODIFY",
+      "properties": [
+        {
+          "property": "Properties.Expires",
+          "before": 1792592350,
+          "after": 1792674026
+        }
+      ],
+      "replacement": "NONE (property/provider semantics)"
+    }
+  ],
+  "envelopes": [],
+  "accounting": {
+    "version": 1,
+    "root": "amplify-projectrespawnwebsite-Ntgre-sandbox-8bd9d02332",
+    "environment": "aws://unknown-account/unknown-region",
+    "tags": {
+      "amplify:deployment-type": "sandbox",
+      "created-by": "amplify"
+    },
+    "label": "LegacyPlatform",
+    "total": 2929,
+    "largest": 475,
+    "templateInstances": 62,
+    "rootResources": 7,
+    "nestedResources": 2922,
+    "nestedStackHandles": 61,
+    "types": {
+      "AWS::CloudFormation::Stack": 61,
+      "AWS::CDK::Metadata": 62,
+      "AWS::Cognito::UserPool": 1,
+      "AWS::Lambda::Permission": 37,
+      "AWS::Cognito::UserPoolClient": 1,
+      "AWS::Cognito::IdentityPool": 1,
+      "AWS::IAM::Role": 154,
+      "AWS::Cognito::IdentityPoolRoleAttachment": 1,
+      "AWS::Cognito::UserPoolGroup": 10,
+      "AWS::IAM::Policy": 96,
+      "AWS::Lambda::Function": 10,
+      "AWS::SSM::Parameter": 6,
+      "AWS::AppSync::GraphQLApi": 1,
+      "AWS::AppSync::GraphQLSchema": 1,
+      "AWS::AppSync::ApiKey": 1,
+      "AWS::AppSync::DataSource": 132,
+      "AWS::S3::Bucket": 3,
+      "AWS::S3::BucketPolicy": 3,
+      "Custom::S3AutoDeleteObjects": 3,
+      "AWS::Lambda::LayerVersion": 2,
+      "Custom::CDKBucketDeployment": 2,
+      "AWS::KMS::Key": 2,
+      "AWS::KMS::Alias": 1,
+      "AWS::StepFunctions::StateMachine": 1,
+      "Custom::AmplifyDynamoDBTable": 52,
+      "AWS::AppSync::FunctionConfiguration": 1678,
+      "AWS::AppSync::Resolver": 557,
+      "AWS::ApiGatewayV2::Api": 3,
+      "AWS::ApiGatewayV2::Stage": 3,
+      "AWS::ApiGatewayV2::Integration": 4,
+      "AWS::ApiGatewayV2::Route": 36,
+      "AWS::DynamoDB::Table": 3,
+      "AWS::ApiGatewayV2::Authorizer": 1
+    },
+    "contributors": {
+      "Other platform resources": 356,
+      "Model-generated": 2098,
+      "FunctionDirectiveStack": 475
+    },
+    "modules": {
+      "Shared / generated infrastructure": 831,
+      "Operations / Investors": 126,
+      "Creators / Workspaces": 164,
+      "Core": 345,
+      "Operations / Applications": 294,
+      "Creators / Twitch": 329,
+      "Creators / Discord": 38,
+      "Esports / Team Hub": 184,
+      "Events": 116,
+      "Community / Forums": 236,
+      "Commerce": 266
+    },
+    "hierarchyState": "HARD LIMIT / BLOCKED",
+    "stacks": [
+      {
+        "path": "$root",
+        "file": "amplify-projectrespawnwebsite-Ntgre-sandbox-8bd9d02332.template.json",
+        "resources": 7,
+        "types": {
+          "AWS::CloudFormation::Stack": 6,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Other platform resources",
+        "owner": "Shared / generated infrastructure",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/auth179371D7",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332authB42A3281.nested.template.json",
+        "resources": 37,
+        "types": {
+          "AWS::Cognito::UserPool": 1,
+          "AWS::Lambda::Permission": 1,
+          "AWS::Cognito::UserPoolClient": 1,
+          "AWS::Cognito::IdentityPool": 1,
+          "AWS::IAM::Role": 14,
+          "AWS::Cognito::IdentityPoolRoleAttachment": 1,
+          "AWS::Cognito::UserPoolGroup": 10,
+          "AWS::IAM::Policy": 4,
+          "AWS::Lambda::Function": 2,
+          "AWS::SSM::Parameter": 1,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Other platform resources",
+        "owner": "Shared / generated infrastructure",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataF256FBF3.nested.template.json",
+        "resources": 86,
+        "types": {
+          "AWS::IAM::Role": 3,
+          "AWS::IAM::Policy": 4,
+          "AWS::Lambda::Function": 3,
+          "AWS::AppSync::GraphQLApi": 1,
+          "AWS::AppSync::GraphQLSchema": 1,
+          "AWS::AppSync::ApiKey": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::CloudFormation::Stack": 55,
+          "AWS::S3::Bucket": 2,
+          "AWS::S3::BucketPolicy": 2,
+          "Custom::S3AutoDeleteObjects": 2,
+          "AWS::Lambda::LayerVersion": 2,
+          "Custom::CDKBucketDeployment": 2,
+          "AWS::SSM::Parameter": 4,
+          "AWS::KMS::Key": 1,
+          "AWS::KMS::Alias": 1,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Other platform resources",
+        "owner": "Shared / generated infrastructure",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource86290833",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataAmplifyTableManager72462279.nested.template.json",
+        "resources": 9,
+        "types": {
+          "AWS::IAM::Role": 3,
+          "AWS::IAM::Policy": 2,
+          "AWS::Lambda::Function": 2,
+          "AWS::StepFunctions::StateMachine": 1,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Other platform resources",
+        "owner": "Shared / generated infrastructure",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataInvestorAccessRequestNestedStackInvestorAccessRequestNestedStackResource0C037478",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataInvestorAccessRequestFC0F6436.nested.template.json",
+        "resources": 46,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 32,
+          "AWS::AppSync::Resolver": 10,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Operations / Investors",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataInvestorAccessNestedStackInvestorAccessNestedStackResourceB96F13A0",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataInvestorAccess069678E9.nested.template.json",
+        "resources": 42,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 29,
+          "AWS::AppSync::Resolver": 9,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Operations / Investors",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataInvestorAccessAuditEventNestedStackInvestorAccessAuditEventNestedStackResource3F48FE30",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataInvestorAccessAuditEvent83D20A8D.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Operations / Investors",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataCreatorWorkspaceRecordNestedStackCreatorWorkspaceRecordNestedStackResource32B99DC0",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataCreatorWorkspaceRecord2ABB32A3.nested.template.json",
+        "resources": 42,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 29,
+          "AWS::AppSync::Resolver": 9,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Creators / Workspaces",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataWorkspaceMembershipNestedStackWorkspaceMembershipNestedStackResourceCC8EF6D6",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataWorkspaceMembership2C38267B.nested.template.json",
+        "resources": 42,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 29,
+          "AWS::AppSync::Resolver": 9,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Creators / Workspaces",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataWorkspaceMembershipPermissionNestedStackWorkspaceMembershipPermissionNestedStackResource1A635925",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataWorkspaceMembershipPermission97A7E0C3.nested.template.json",
+        "resources": 42,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 29,
+          "AWS::AppSync::Resolver": 9,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Creators / Workspaces",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataWorkspaceMembershipPermissionSetNestedStackWorkspaceMembershipPermissionSetNestedStackResource79CD1E49",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataWorkspaceMembershipPermissionSetEA83AA99.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Creators / Workspaces",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataPermissionDefinitionNestedStackPermissionDefinitionNestedStackResourceDB792995",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataPermissionDefinitionD9942C5B.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Core",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataGroupPermissionNestedStackGroupPermissionNestedStackResourceFA5EA89F",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataGroupPermission5C0494FB.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Core",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataPermissionAuditEventNestedStackPermissionAuditEventNestedStackResource1BF3571F",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataPermissionAuditEvent62234134.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Core",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataApplicationSubmissionNestedStackApplicationSubmissionNestedStackResource7743A990",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataApplicationSubmissionA829F607.nested.template.json",
+        "resources": 50,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 35,
+          "AWS::AppSync::Resolver": 11,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Operations / Applications",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataApplicationAnswerNestedStackApplicationAnswerNestedStackResource36A0B66A",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataApplicationAnswer1FABE7D6.nested.template.json",
+        "resources": 42,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 29,
+          "AWS::AppSync::Resolver": 9,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Operations / Applications",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataApplicationCreatorProfileNestedStackApplicationCreatorProfileNestedStackResource67B02F34",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataApplicationCreatorProfileF741443B.nested.template.json",
+        "resources": 42,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 29,
+          "AWS::AppSync::Resolver": 9,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Operations / Applications",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataApplicationScheduleNestedStackApplicationScheduleNestedStackResourceDC7ED730",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataApplicationScheduleBBE343A4.nested.template.json",
+        "resources": 42,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 29,
+          "AWS::AppSync::Resolver": 9,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Operations / Applications",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataApplicationAuditEventNestedStackApplicationAuditEventNestedStackResourceFF387CED",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataApplicationAuditEvent57074EF3.nested.template.json",
+        "resources": 42,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 29,
+          "AWS::AppSync::Resolver": 9,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Operations / Applications",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataApplicationIdempotencyNestedStackApplicationIdempotencyNestedStackResourceABBAB995",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataApplicationIdempotency46F30B0B.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Operations / Applications",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataApplicationPublicRateLimitNestedStackApplicationPublicRateLimitNestedStackResource4633227E",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataApplicationPublicRateLimitFA82262C.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Operations / Applications",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataTwitchCommandNestedStackTwitchCommandNestedStackResource51865799",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataTwitchCommand9481E5BA.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Creators / Twitch",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataTwitchIntegrationNestedStackTwitchIntegrationNestedStackResource81D1AEE4",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataTwitchIntegrationA056AAF6.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Creators / Twitch",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataTwitchTokenVaultNestedStackTwitchTokenVaultNestedStackResource62D49F73",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataTwitchTokenVault2665E364.nested.template.json",
+        "resources": 43,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 31,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Creators / Twitch",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataTwitchOAuthTransactionNestedStackTwitchOAuthTransactionNestedStackResource59E6EA92",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataTwitchOAuthTransactionD499B801.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Creators / Twitch",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataTwitchRuntimeHealthNestedStackTwitchRuntimeHealthNestedStackResource5D0B5019",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataTwitchRuntimeHealthB3295D4F.nested.template.json",
+        "resources": 43,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 31,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Creators / Twitch",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataRewardRedemptionEventNestedStackRewardRedemptionEventNestedStackResourceB8C65A4E",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataRewardRedemptionEvent5670D266.nested.template.json",
+        "resources": 43,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 31,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Creators / Twitch",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataRewardRedemptionEventClaimNestedStackRewardRedemptionEventClaimNestedStackResource140C0572",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataRewardRedemptionEventClaim22A27EC0.nested.template.json",
+        "resources": 43,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 31,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Creators / Twitch",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataAlphaServiceNonceNestedStackAlphaServiceNonceNestedStackResource05B15E0B",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataAlphaServiceNonce68528277.nested.template.json",
+        "resources": 43,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 31,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Creators / Twitch",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataDiscordBotConfigurationNestedStackDiscordBotConfigurationNestedStackResourceA4EDF041",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataDiscordBotConfiguration8B3D998C.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Creators / Discord",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataTeamNestedStackTeamNestedStackResource39C028EF",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataTeamA1D15283.nested.template.json",
+        "resources": 46,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 32,
+          "AWS::AppSync::Resolver": 10,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Esports / Team Hub",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataTeamMembershipNestedStackTeamMembershipNestedStackResource7B5D8A56",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataTeamMembership975C7C13.nested.template.json",
+        "resources": 46,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 32,
+          "AWS::AppSync::Resolver": 10,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Esports / Team Hub",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataTeamRosterSlotNestedStackTeamRosterSlotNestedStackResourceAD18E533",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataTeamRosterSlot2766067B.nested.template.json",
+        "resources": 46,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 32,
+          "AWS::AppSync::Resolver": 10,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Esports / Team Hub",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataPlayerChampionPoolEntryNestedStackPlayerChampionPoolEntryNestedStackResource808D3522",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataPlayerChampionPoolEntry1F65A6F4.nested.template.json",
+        "resources": 46,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 32,
+          "AWS::AppSync::Resolver": 10,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Esports / Team Hub",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataUserProfileNestedStackUserProfileNestedStackResource1B3713C5",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataUserProfileFAA82920.nested.template.json",
+        "resources": 41,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 28,
+          "AWS::AppSync::Resolver": 9,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Core",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataEventTagNestedStackEventTagNestedStackResource572D9CC4",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataEventTagA5DDF262.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Events",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataEventNestedStackEventNestedStackResourceE9D0FB99",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataEventC9C266FB.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Events",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataEventSuggestionNestedStackEventSuggestionNestedStackResourceCDAD2481",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataEventSuggestionC9817E1D.nested.template.json",
+        "resources": 40,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 27,
+          "AWS::AppSync::Resolver": 9,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Events",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataForumCategoryNestedStackForumCategoryNestedStackResource23069036",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataForumCategory06E4B792.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Community / Forums",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataForumBoardNestedStackForumBoardNestedStackResource0695ED13",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataForumBoardFFE9C026.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Community / Forums",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataForumThreadNestedStackForumThreadNestedStackResource9800EE00",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataForumThread8BA97772.nested.template.json",
+        "resources": 41,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 28,
+          "AWS::AppSync::Resolver": 9,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Community / Forums",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataForumPostNestedStackForumPostNestedStackResource4D15F7D4",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataForumPost6B721717.nested.template.json",
+        "resources": 41,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 28,
+          "AWS::AppSync::Resolver": 9,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Community / Forums",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataForumActivityNestedStackForumActivityNestedStackResource907FCFAB",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataForumActivityA5F2AFD7.nested.template.json",
+        "resources": 40,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 27,
+          "AWS::AppSync::Resolver": 9,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Community / Forums",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataBoardPermissionRuleNestedStackBoardPermissionRuleNestedStackResourceC42031BE",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataBoardPermissionRule5E626251.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Community / Forums",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataBrandNestedStackBrandNestedStackResource8795145F",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataBrand175E7EAC.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Core",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataMerchCategoryNestedStackMerchCategoryNestedStackResource0833DCB2",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataMerchCategory7B84BF32.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Commerce",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataMerchProductNestedStackMerchProductNestedStackResource981A7144",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataMerchProduct38B5C5C8.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Commerce",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataMerchProductVariantNestedStackMerchProductVariantNestedStackResource94895D8E",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataMerchProductVariantEAA5D35E.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Commerce",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataFulfillmentOrderNestedStackFulfillmentOrderNestedStackResource35BA3F47",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataFulfillmentOrder49539C14.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Commerce",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataMerchProductBrandNestedStackMerchProductBrandNestedStackResource5BA0730E",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataMerchProductBrandA7C47840.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Commerce",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataMerchProductCategoryNestedStackMerchProductCategoryNestedStackResource4EF03E35",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataMerchProductCategoryAD1FC65A.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Commerce",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataBrandAccessNestedStackBrandAccessNestedStackResource15DC44C2",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataBrandAccessF79B141F.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Core",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataBrandAccessPermissionNestedStackBrandAccessPermissionNestedStackResource1C0F3CB0",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataBrandAccessPermission12CDD8F4.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Core",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataMediaCollectionNestedStackMediaCollectionNestedStackResourceF3C050B8",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataMediaCollectionC5E05CA2.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Core",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataMediaItemNestedStackMediaItemNestedStackResourceB727B133",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataMediaItemC203DB14.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Core",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataMerchProductImageNestedStackMerchProductImageNestedStackResource18E71F91",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataMerchProductImageA46D5E94.nested.template.json",
+        "resources": 38,
+        "types": {
+          "Custom::AmplifyDynamoDBTable": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::AppSync::DataSource": 1,
+          "AWS::AppSync::FunctionConfiguration": 26,
+          "AWS::AppSync::Resolver": 8,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Model-generated",
+        "owner": "Commerce",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataFunctionDirectiveStackNestedStackFunctionDirectiveStackNestedStackResource1246A302",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataFunctionDirectiveStack70D8D731.nested.template.json",
+        "resources": 475,
+        "types": {
+          "AWS::IAM::Role": 79,
+          "AWS::IAM::Policy": 79,
+          "AWS::AppSync::DataSource": 79,
+          "AWS::AppSync::FunctionConfiguration": 158,
+          "AWS::AppSync::Resolver": 79,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "FunctionDirectiveStack",
+        "owner": "Shared / generated infrastructure",
+        "state": "ACTION REQUIRED"
+      },
+      {
+        "path": "$root/data7552DF31/amplifyDataConnectionStackNestedStackConnectionStackNestedStackResourceAB0F312B",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataConnectionStack7D8D2449.nested.template.json",
+        "resources": 109,
+        "types": {
+          "AWS::AppSync::FunctionConfiguration": 72,
+          "AWS::AppSync::Resolver": 36,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Other platform resources",
+        "owner": "Shared / generated infrastructure",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/storage0EC3F24A",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332storage861892E8.nested.template.json",
+        "resources": 12,
+        "types": {
+          "AWS::S3::Bucket": 1,
+          "AWS::S3::BucketPolicy": 1,
+          "Custom::S3AutoDeleteObjects": 1,
+          "AWS::IAM::Role": 1,
+          "AWS::Lambda::Function": 1,
+          "AWS::SSM::Parameter": 1,
+          "AWS::IAM::Policy": 5,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Other platform resources",
+        "owner": "Shared / generated infrastructure",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/function1351588B",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332functionF9C81EAA.nested.template.json",
+        "resources": 4,
+        "types": {
+          "AWS::IAM::Role": 1,
+          "AWS::IAM::Policy": 1,
+          "AWS::Lambda::Function": 1,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Other platform resources",
+        "owner": "Shared / generated infrastructure",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/apistack7B433BC7",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332apistack3D3B5334.nested.template.json",
+        "resources": 49,
+        "types": {
+          "AWS::ApiGatewayV2::Api": 1,
+          "AWS::ApiGatewayV2::Stage": 1,
+          "AWS::ApiGatewayV2::Integration": 2,
+          "AWS::Lambda::Permission": 23,
+          "AWS::ApiGatewayV2::Route": 21,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Other platform resources",
+        "owner": "Shared / generated infrastructure",
+        "state": "NORMAL"
+      },
+      {
+        "path": "$root/overlaysourcestackF7F134D8",
+        "file": "amplifyprojectrespawnwebsiteNtgresandbox8bd9d02332overlaysourcestackE393FBBB.nested.template.json",
+        "resources": 43,
+        "types": {
+          "AWS::DynamoDB::Table": 3,
+          "AWS::IAM::Role": 1,
+          "AWS::IAM::Policy": 1,
+          "AWS::Lambda::Function": 1,
+          "AWS::KMS::Key": 1,
+          "AWS::ApiGatewayV2::Api": 2,
+          "AWS::ApiGatewayV2::Stage": 2,
+          "AWS::ApiGatewayV2::Integration": 2,
+          "AWS::Lambda::Permission": 13,
+          "AWS::ApiGatewayV2::Route": 15,
+          "AWS::ApiGatewayV2::Authorizer": 1,
+          "AWS::CDK::Metadata": 1
+        },
+        "contributor": "Other platform resources",
+        "owner": "Shared / generated infrastructure",
+        "state": "NORMAL"
+      }
+    ],
+    "operationSize": "UNKNOWN: hierarchy total is a conservative fresh-create count, not resources touched by an update."
+  }
+}

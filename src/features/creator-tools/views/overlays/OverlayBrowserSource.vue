@@ -11,6 +11,7 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import OverlaySceneRenderer from '../../components/overlays/OverlaySceneRenderer.vue';
 import { widgetEventBus } from '../../overlays/widgetEventBus.js';
+import { browserTtsQueue } from '../../overlays/ttsSpeechQueue.js';
 import { calculateOverlayStage } from '../../overlays/overlayStage.js';
 import { createPublicationSceneSnapshot } from '../../overlays/overlayPublicationSnapshot.js';
 import { createOverlaySourceConnection, fetchOverlaySource } from '../../services/overlaySource.js';
@@ -36,6 +37,7 @@ function applySource(source) {
     loadedRevision.value = Number(source.revision);
   }
   runtimeConfig.value = { ...(source.twitchConfig || {}), revision: Number(source.twitchConfigRevision || 0) };
+  if (runtimeConfig.value.tts?.enabled === false) browserTtsQueue.stop();
 }
 async function load() {
   const source = await fetchOverlaySource(credential.value);
@@ -44,6 +46,7 @@ async function load() {
   connection = createOverlaySourceConnection({
     websocketUrl: source.websocketUrl, credential: credential.value,
     onEvent: async (event) => {
+      if (event.topic === 'tts.requested') console.info('[TTS playback]', { stage: 'client_received', eventId: event.id });
       if (Number(event.configRevision || 0) > Number(runtimeConfig.value?.revision || 0)) await refreshRuntimeConfig();
       widgetEventBus.publish(event);
     },
@@ -67,6 +70,7 @@ onBeforeUnmount(() => {
   resizeObserver?.disconnect();
   connection?.close();
   window.clearInterval(configRefreshTimer);
+  browserTtsQueue.stop();
 });
 </script>
 

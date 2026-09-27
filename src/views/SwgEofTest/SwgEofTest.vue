@@ -3,13 +3,17 @@ import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { downloadRequest, downloadInstaller } from '../../api/swgDownloads.js'
 import { useAccessContext } from '../../composables/useAccessContext.js'
+import { useAuth } from '../../composables/useAuth.js'
 import { swgEofRelease as release, canDownload } from '../../config/swgEofRelease.js'
 
 const { accessContext } = useAccessContext()
+const { email } = useAuth()
 const isBetaTester = computed(() => accessContext.value.groups.includes('BetaMember'))
 const ready = canDownload(release)
 const route = useRoute()
 const deviceId = computed(() => typeof route.query.device === 'string' && /^[a-f0-9]{32}$/.test(route.query.device) ? route.query.device : '')
+const launcherId = computed(() => typeof route.query.launcher === 'string' && /^[a-f0-9]{32}$/.test(route.query.launcher) ? route.query.launcher : '')
+const launcherApproved = ref(false)
 const installerCode = ref('')
 const downloadBusy = ref(false)
 const downloadError = ref('')
@@ -27,6 +31,15 @@ async function approveInstaller() {
   } catch (error) { downloadError.value = error.message }
   finally { downloadBusy.value = false }
 }
+async function signInLauncher() {
+  if (!launcherId.value || downloadBusy.value) return
+  downloadBusy.value = true; downloadError.value = ''
+  try {
+    await downloadRequest('launcher/approve', { deviceId: launcherId.value })
+    launcherApproved.value = true
+  } catch (error) { downloadError.value = error.message }
+  finally { downloadBusy.value = false }
+}
 let previousTitle
 onMounted(() => {
   previousTitle = document.title
@@ -38,6 +51,16 @@ onUnmounted(() => { document.title = previousTitle })
 <template>
   <div v-if="isBetaTester" class="eof-page">
     <div class="eof-shell">
+      <section v-if="launcherId" class="eof-section" aria-labelledby="launcher-signin">
+        <h2 id="launcher-signin">Sign in to your launcher</h2>
+        <p>Use your Project Respawn account{{ email ? ` (${email})` : '' }} to play. Beta Member access is required.</p>
+        <p v-if="launcherApproved" role="status">You’re signed in. Return to the launcher and press Play when the server is ready.</p>
+        <template v-else>
+          <p>Continue only if you just selected Sign in in the Project Respawn launcher on your computer.</p>
+          <button class="btn btn-primary" :disabled="downloadBusy || !release.downloadApiBase" @click="signInLauncher">{{ downloadBusy ? 'Signing in…' : 'Continue to launcher' }}</button>
+          <p class="eof-small">No verification code is needed. If this sign-in has expired, select Sign in again in the launcher.</p>
+        </template>
+      </section>
       <section v-if="deviceId" class="eof-section" aria-labelledby="installer-approval">
         <h2 id="installer-approval">Authorise your installer</h2>
         <p>Only approve this if you just opened Project Respawn Setup on your own computer. Enter the eight-character code displayed in Setup.</p>

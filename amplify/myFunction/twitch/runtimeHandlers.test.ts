@@ -52,6 +52,26 @@ async function runtimeLease() {
   return JSON.parse((await handleTwitchRuntime('/twitch/runtime/lease', 'POST', signedLeaseEvent(), client) as any).body).lease
 }
 
+test('one redemption delivers reward and TTS independently and retries neither output twice', async () => {
+  const records = new Map<string, any>(), sent: string[] = [];
+  const isolatedClient = { models: { TwitchIntegration: client.models.TwitchIntegration,
+    CreatorWorkspaceRecord: { get: async () => ({ data: { id: 'workspace-1' } }) },
+    Brand: { get: async () => ({ data: { id: 'brand-1', workspaceId: 'workspace-1' } }) } } };
+  const dedupe = { claim: async (input: any) => { if (records.has(input.dedupeKey)) return { status: 'DUPLICATE', record: records.get(input.dedupeKey) }; records.set(input.dedupeKey, input); return { status: 'CLAIMED' }; },
+    update: async (key: string, values: any) => { records.set(key, { ...records.get(key), ...values }); } };
+  const publisher = { getActivePublication: async () => ({ publicationId: 'p', workspaceId: 'workspace-1', brandId: 'brand-1', sceneSnapshot: { widgets: [
+    { type: 'tts', dataSource: { topics: ['tts.requested'] } }, { type: 'redemption-alert' },
+  ] } }), getConfigRevision: async () => 1, listConnections: async () => [{ connectionId: 'c', expiresAtEpoch: Math.floor(Date.now() / 1000) + 100 }],
+    send: async (_id: string, event: any) => { sent.push(event.type); }, remove: async () => {} };
+  const lease = await runtimeLease();
+  for (const type of ['reward.redeemed', 'tts.requested', 'reward.redeemed', 'tts.requested']) {
+    const event = { version: 1, id: 'same-redemption', type, timestamp: new Date().toISOString(), source: 'twitch', data: { payload: { text: 'Hello' } } };
+    const result: any = await handleTwitchRuntime('/twitch/runtime/overlay-events', 'POST', { headers: { authorization: `Bearer ${lease}` }, body: JSON.stringify({ twitchMessageId: event.id, broadcasterId: 'broadcaster-1', event }) }, isolatedClient, publisher, dedupe);
+    assert.equal(JSON.parse(result.body).legacyDisposition, LEGACY_DISPOSITIONS.suppress);
+  }
+  assert.deepEqual(sent, ['reward.redeemed', 'tts.requested']); assert.equal(records.size, 2);
+});
+
 for (const eventType of ['stream.follow', 'chat.message']) test(`real ${eventType} ingestion revalidates identity, dedupes durably, and cannot choose Brand or publication`, async () => {
   const records = new Map<string, any>(); let publishes = 0
   const isolatedClient = { models: {

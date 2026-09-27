@@ -11,6 +11,7 @@ export function createAwsCanonicalPublisherDependencies(environment: NodeJS.Proc
   const db = DynamoDBDocumentClient.from(new DynamoDBClient({}));
   const gateway = new ApiGatewayManagementApiClient({ endpoint: environment.OVERLAY_WEBSOCKET_MANAGEMENT_URL || required('WEBSOCKET_MANAGEMENT_URL') });
   return {
+    async getTtsConfig(brandId) { const item = (await db.send(new GetCommand({ TableName: publicationTable, Key: { publicationId: twitchOverlayConfigId(brandId) }, ConsistentRead: true }))).Item; return item?.config?.tts || {}; },
     async getActivePublication(brandId) { const lock = (await db.send(new GetCommand({ TableName: publicationTable, Key: { publicationId: activePublicationLockId(brandId) }, ConsistentRead: true }))).Item; if (!lock?.activePublicationId) return null; return (await db.send(new GetCommand({ TableName: publicationTable, Key: { publicationId: lock.activePublicationId }, ConsistentRead: true }))).Item || null; },
     async getConfigRevision(brandId) { const item = (await db.send(new GetCommand({ TableName: publicationTable, Key: { publicationId: twitchOverlayConfigId(brandId) }, ConsistentRead: true }))).Item; return Number(item?.revision || 1); },
     async listConnections(publicationId) { return (await db.send(new QueryCommand({ TableName: connectionTable, IndexName: 'publicationId-index', KeyConditionExpression: 'publicationId = :publicationId', ExpressionAttributeValues: { ':publicationId': publicationId } }))).Items || []; },

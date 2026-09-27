@@ -12,7 +12,7 @@ export async function downloadRequest(path, body) {
     body: JSON.stringify(body), redirect: 'error', signal: AbortSignal.timeout(25000),
   })
   if (!result.ok) throw new Error(result.status === 403 || result.status === 401
-    ? 'Beta access could not be verified. Check your account or installer code.'
+    ? 'Sign-in could not be completed. Check your Beta Member access, then start sign-in again from the launcher.'
     : 'The download service is unavailable. Please try again.')
   return result.json()
 }

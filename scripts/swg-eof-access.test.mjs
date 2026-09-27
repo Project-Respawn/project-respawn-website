@@ -2,11 +2,11 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import vm from 'node:vm'
+import { routeRecords } from './test-support/source-contracts.mjs'
 
 const routes = fs.readFileSync(new URL('../src/router/public.routes.js', import.meta.url), 'utf8')
-const routeText = routes.match(/\{\s*path: '\/SWG-EOF-test',[\s\S]*?component:[^\n]+\s*\}/)?.[0]
-assert.ok(routeText, 'SWG route exists')
-const route = vm.runInNewContext('(' + routeText + ')')
+const route = routeRecords(routes).find(record => record.path === '/SWG-EOF-test')
+assert.ok(route, 'SWG route exists')
 const source = fs.readFileSync(new URL('../src/router/index.js', import.meta.url), 'utf8')
 const guardSource = source.slice(source.indexOf('router.beforeEach('), source.indexOf('export default router;'))
 
@@ -48,6 +48,14 @@ test('sign-in preserves the beta installer approval link', () => {
   const target = '/SWG-EOF-test?device=' + 'a'.repeat(32)
   assert.equal(swgSignInDestination(target), target)
   assert.equal(swgSignInDestination('/SWG-EOF-test'), '/SWG-EOF-test')
+})
+
+test('sign-in preserves a valid launcher approval link without accepting extra parameters', () => {
+  const target = '/SWG-EOF-test?launcher=' + 'b'.repeat(32)
+  assert.equal(swgSignInDestination(target), target)
+  for (const invalid of [target + '&redirect=https://example.com', '/SWG-EOF-test?launcher=bad']) {
+    assert.equal(swgSignInDestination(invalid), '/home')
+  }
 })
 test('sign-in redirect rejects external and unrelated destinations', () => {
   for (const target of ['https://evil.example', '//evil.example', '/admin', '/SWG-EOF-test?device=bad', ['/SWG-EOF-test'], undefined]) {

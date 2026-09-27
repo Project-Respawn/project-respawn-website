@@ -3,6 +3,7 @@ import { fanOutOverlayEvent, publicationIsActive, activeAlertTopics, hasActiveAl
 export interface CanonicalPublisherDependencies {
   getActivePublication(brandId: string): Promise<any | null>;
   getConfigRevision(brandId: string): Promise<number>;
+  getTtsConfig?(brandId: string): Promise<{ enabled?: boolean }>;
   listConnections(publicationId: string): Promise<any[]>;
   send(connectionId: string, event: any): Promise<void>;
   remove(connectionId: string): Promise<void>;
@@ -28,6 +29,10 @@ export async function publishCanonicalOverlayEvent(input: { workspaceId: string;
     const widgets = publication.sceneSnapshot?.widgets || [];
     if (input.event.type === 'chat.message') {
       if (!widgets.some((widget: any) => widget.type === 'twitch-chat' && widget.enabled !== false && widget.hidden !== true && widget.dataSource?.topics?.includes('chat.message'))) return skip('CHAT_WIDGET_DISABLED');
+    } else if (input.event.type === 'tts.requested') {
+      if (!widgets.some((widget: any) => widget.type === 'tts' && widget.enabled !== false && widget.hidden !== true && widget.dataSource?.topics?.includes('tts.requested'))) return skip('TTS_WIDGET_DISABLED');
+      if ((await dependencies.getTtsConfig?.(input.brandId))?.enabled === false) return skip('TTS_DISABLED');
+      if (!String(input.event.data?.payload?.text || '').trim()) return skip('TTS_TEXT_EMPTY');
     } else {
       if (!hasActiveAlertWidget(widgets)) return skip('ALERTS_WIDGET_DISABLED');
       if (!activeAlertTopics(widgets).includes(input.event.type)) return skip('TOPIC_NOT_ENABLED');

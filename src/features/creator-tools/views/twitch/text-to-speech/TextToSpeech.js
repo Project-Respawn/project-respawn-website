@@ -4,6 +4,7 @@ import { refreshAccessContext } from '@/composables/useAccessContext.js';
 import { getActiveOverlayPublication, getTwitchOverlayConfig, sendOverlayTestEvent, updateTwitchOverlayConfig } from '@/features/creator-tools/services/overlaySource.js';
 import { decodeTwitchJson } from '@/features/creator-tools/services/twitchConnection.js';
 import { createTestOverlayEvent } from '@/features/creator-tools/overlays/overlayEventContract.js';
+import { ttsDeliveryStatus } from '@/features/creator-tools/overlays/ttsDeliveryStatus.js';
 
 const twitchDataClient = generateClient();
 
@@ -20,6 +21,7 @@ export default {
       selectedBrandId: '',
       workspaceId: '',
       canonicalConfig: null,
+      ttsEnabled: true,
       integrationId: '',
       maxLength: 200,
 
@@ -117,6 +119,7 @@ export default {
         if (!this.selectedBrandId || !this.workspaceId) return;
         const result = await getTwitchOverlayConfig(this.workspaceId, this.selectedBrandId); this.canonicalConfig = result.config;
         const saved = { selectedVoiceName: result.config?.tts?.voice, ...result.config?.tts };
+        this.ttsEnabled = saved.enabled !== false;
         if (saved.selectedVoiceName !== undefined) this.selectedVoiceName = saved.selectedVoiceName;
         if (saved.rate !== undefined) this.rate = saved.rate;
         if (saved.pitch !== undefined) this.pitch = saved.pitch;
@@ -139,7 +142,7 @@ export default {
           maxLength: this.maxLength,
         };
         if (!this.workspaceId || !this.selectedBrandId || !this.canonicalConfig) throw new Error('TTS settings are still loading');
-        const result = await updateTwitchOverlayConfig(this.workspaceId, this.selectedBrandId, { ...this.canonicalConfig, tts: { enabled: this.canonicalConfig.tts?.enabled !== false, voice: payload.selectedVoiceName, rate: payload.rate, pitch: payload.pitch, volume: payload.volume, maxLength: payload.maxLength } });
+        const result = await updateTwitchOverlayConfig(this.workspaceId, this.selectedBrandId, { ...this.canonicalConfig, tts: { enabled: this.ttsEnabled, voice: payload.selectedVoiceName, rate: payload.rate, pitch: payload.pitch, volume: payload.volume, maxLength: payload.maxLength } });
         this.canonicalConfig = result.config;
         this.settingsChanged = false;
         this.showStatus('Settings saved', 'success');
@@ -352,8 +355,9 @@ export default {
         const active = await getActiveOverlayPublication(this.workspaceId, this.selectedBrandId); const publicationId = active.publication?.publicationId;
         if (!publicationId) throw new Error('Create a Browser Source before sending a TTS test');
         const event = createTestOverlayEvent('tts.requested'); event.data.actor.displayName = this.testUsername || 'Test User'; event.data.payload.text = this.testMessage || 'Project Respawn text to speech test';
-        await sendOverlayTestEvent(publicationId, event);
-        this.showStatus('Test TTS sent successfully', 'success');
+        const result = await sendOverlayTestEvent(publicationId, event);
+        const status = ttsDeliveryStatus(result);
+        this.showStatus(status.message, status.type);
       } catch (error) {
         console.error('Failed to send test TTS', error);
         this.showStatus(error.message || 'Failed to send test TTS', 'error');

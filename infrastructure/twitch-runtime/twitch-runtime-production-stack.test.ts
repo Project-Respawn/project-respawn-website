@@ -30,6 +30,7 @@ test('production task uses only MASTER configuration and starts canonical delive
   const env = Object.fromEntries(container.Environment.map((entry: { Name: string; Value: unknown }) => [entry.Name, entry.Value]));
   assert.equal(env.RESPAWN_RUNTIME_API_BASE, PRODUCTION_RUNTIME.apiBase);
   assert.equal(env.RESPAWN_CANONICAL_ALERT_DELIVERY_ENABLED, 'false');
+  assert.equal(env.RESPAWN_CANONICAL_TTS_DELIVERY_ENABLED, 'true');
   assert.equal(env.RESPAWN_SECURE_RUNTIME_ENABLED, 'true');
   assert.ok(env.RESPAWN_TWITCH_INTEGRATION_ID.Ref);
   assert.deepEqual(container.PortMappings, []);

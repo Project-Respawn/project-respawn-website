@@ -17,6 +17,8 @@
           Configure canonical Browser Source voice settings and send a test
           message before going live.
         </p>
+        <p class="helper-text">Add a Text to Speech widget in <RouterLink :to="{ name: 'CreatorOverlays' }">Overlays</RouterLink> and use its published Browser Source URL in OBS. The old /tts-overlay URL is unsupported.</p>
+        <label><input v-model="ttsEnabled" type="checkbox" @change="markChanged" /> Enable speech in the Browser Source</label>
       </div>
       <div class="header-actions">
         <button class="btn btn-ghost" @click="runLocalPreview">
@@ -286,7 +288,7 @@
               d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
             />
           </svg>
-          <h2>Recent TTS events</h2>
+          <h2>Recent local voice previews</h2>
           <button class="btn btn-ghost btn-sm ml-auto" @click="clearEvents">Clear</button>
         </header>
 
@@ -306,8 +308,8 @@
               d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
             />
           </svg>
-          <p>No TTS events received yet.</p>
-          <span>Events will appear here when viewers redeem your channel point reward.</span>
+          <p>No local previews yet.</p>
+          <span>Live redemptions play in your published Overlay Browser Source. This list shows previews played on this page.</span>
         </div>
       </article>
     </div>
