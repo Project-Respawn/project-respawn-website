@@ -1,0 +1,9 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#", "$id": "urn:project-respawn:tournament-preview:v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["contractVersion", "environment", "preview", "nonProduction", "registrationEnabled", "revision", "tournaments"],
+  "properties": {
+    "contractVersion": {"const": "tournament-preview.v1"}, "environment": {"const": "Ntgre"}, "preview": {"const": true}, "nonProduction": {"const": true}, "registrationEnabled": {"const": false}, "revision": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "tournaments": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["id", "name", "game", "format", "status", "registrationEnabled"], "properties": {"id": {"type": "string", "pattern": "^fixture-"}, "name": {"type": "string", "minLength": 1}, "game": {"type": "string", "minLength": 1}, "format": {"type": "string", "minLength": 1}, "status": {"const": "preview"}, "registrationEnabled": {"const": false}}}}
+  }
+}

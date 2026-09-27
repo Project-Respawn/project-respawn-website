@@ -1,0 +1,48 @@
+{
+  "revision": "b75a91494c03606d825e234a65d295c184067820cd77dfc84e11a2c83484ae2f",
+  "templateSha256": "b9be81faba86a3a8e1949cca1c802720a7bf557cc74cd6cb7f5ee17423c35705",
+  "oldResources": 12,
+  "newResources": 11,
+  "differences": [
+    {
+      "path": "/Resources/AccessLogs",
+      "before": {
+        "Type": "AWS::Logs::LogGroup",
+        "Properties": {
+          "LogGroupName": "/project-respawn/Ntgre/tournaments/http",
+          "RetentionInDays": 14
+        }
+      }
+    },
+    {
+      "path": "/Resources/PreviewFunction/Properties/Environment/Variables/BUILD_REVISION",
+      "before": "33b22ca602a238e2ca4fb98b87c016e8da3e058d202f66297e3cd13cae734761",
+      "after": "b75a91494c03606d825e234a65d295c184067820cd77dfc84e11a2c83484ae2f"
+    },
+    {
+      "path": "/Resources/DefaultStage/Properties/AccessLogSettings",
+      "before": {
+        "DestinationArn": {
+          "Fn::GetAtt": [
+            "AccessLogs",
+            "Arn"
+          ]
+        },
+        "Format": "{\"requestId\":\"$context.requestId\",\"routeKey\":\"$context.routeKey\",\"status\":\"$context.status\",\"responseLength\":\"$context.responseLength\"}"
+      }
+    },
+    {
+      "path": "/Outputs/DeploymentRevision/Value",
+      "before": "33b22ca602a238e2ca4fb98b87c016e8da3e058d202f66297e3cd13cae734761",
+      "after": "b75a91494c03606d825e234a65d295c184067820cd77dfc84e11a2c83484ae2f"
+    }
+  ],
+  "sourceChanges": [
+    "infrastructure/domains/tournaments/README.md",
+    "infrastructure/domains/tournaments/stack.ts",
+    "scripts/domains/plan.mjs",
+    "scripts/domains/tests/proof.test.mjs"
+  ],
+  "runtimeBundleUnchanged": true,
+  "coreIdentityUnchanged": true
+}

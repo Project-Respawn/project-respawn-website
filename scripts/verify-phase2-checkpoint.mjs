@@ -1,0 +1,26 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import {fileURLToPath} from 'node:url';
+import {execFileSync} from 'node:child_process';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const staged=process.argv.includes('--staged');
+const bytes=p=>staged?execFileSync('git',['-c','core.longpaths=true','show',`:${p}`],{cwd:root,maxBuffer:20e6,windowsHide:true}):fs.readFileSync(path.join(root,p));
+const read=p=>JSON.parse(bytes(p).toString('utf8').replace(/^\uFEFF/,''));
+const hash=p=>crypto.createHash('sha256').update(bytes(p)).digest('hex');
+const evidence='docs/architecture/phase2a-tournament-boundary-final-evidence-2026-09-26';
+const manifest=read(`${evidence}/preservation-manifest.json`);
+const revision='b75a91494c03606d825e234a65d295c184067820cd77dfc84e11a2c83484ae2f';
+if(manifest.revision!==revision)throw Error('Unexpected approved candidate');
+let sources=0;
+for(const f of manifest.files.filter(x=>x.path.startsWith('source-snapshot/'))){const source=f.path.slice('source-snapshot/'.length);if(hash(source)!==f.sha256||hash(`${evidence}/${f.path}`)!==f.sha256)throw Error(`Candidate bytes changed: ${source}`);sources++;}
+const receipt=read(`${evidence}/pinned-build/isolation-receipt.json`);
+if(crypto.createHash('sha256').update(JSON.stringify(receipt.sourceInputs)).digest('hex')!==revision)throw Error('Source manifest revision mismatch');
+for(const f of receipt.sourceInputs)if(hash(f.path)!==f.sha256)throw Error('Receipt source mismatch '+f.path);
+const security=read(`${evidence}/security-package-manifest.json`);
+for(const f of security.files)if(hash(f.path)!==f.sha256)throw Error('Security bytes changed '+f.path);
+const templatePath=`${evidence}/pinned-build/assembly/ProjectRespawn-Tournaments-Ntgre.template.json`;
+if(hash(templatePath)!=='b9be81faba86a3a8e1949cca1c802720a7bf557cc74cd6cb7f5ee17423c35705'||Object.keys(read(templatePath).Resources).length!==11)throw Error('Product template mismatch');
+const bootstrap=read('infrastructure/security/tournaments-Ntgre-final/bootstrap.template.json');
+if(Object.keys(bootstrap.Resources).length!==5)throw Error('Security resource mismatch');
+console.log(JSON.stringify({mode:staged?'Git index':'working files',revision,sources,securityFiles:security.files.length,productResources:11,securityResources:5,allExact:true,awsCalls:0},null,2));

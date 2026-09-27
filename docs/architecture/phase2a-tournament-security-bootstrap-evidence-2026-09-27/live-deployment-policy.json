@@ -1,0 +1,220 @@
+{
+  "meta": {
+    "Policy": {
+      "PolicyName": "ProjectRespawn-Tournaments-Ntgre-DeployBoundary",
+      "PolicyId": "ANPAQ3EGSQDDJJ3YFV5P4",
+      "Arn": "arn:aws:iam::058264289478:policy/ProjectRespawn-Tournaments-Ntgre-DeployBoundary",
+      "Path": "/",
+      "DefaultVersionId": "v1",
+      "AttachmentCount": 1,
+      "PermissionsBoundaryUsageCount": 1,
+      "IsAttachable": true,
+      "CreateDate": "2026-09-27T16:24:44+00:00",
+      "UpdateDate": "2026-09-27T16:24:44+00:00",
+      "Tags": []
+    }
+  },
+  "version": {
+    "PolicyVersion": {
+      "Document": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Resource": "*",
+            "Effect": "Deny",
+            "NotAction": [
+              "cloudformation:DescribeStacks",
+              "cloudformation:DescribeStackEvents",
+              "cloudformation:DescribeStackResources",
+              "cloudformation:ListStackResources",
+              "cloudformation:GetTemplate",
+              "cloudformation:GetTemplateSummary",
+              "cloudformation:DescribeChangeSet",
+              "cloudformation:ListChangeSets",
+              "cloudformation:CreateChangeSet",
+              "cloudformation:ExecuteChangeSet",
+              "cloudformation:DeleteChangeSet",
+              "iam:PassRole",
+              "sts:GetCallerIdentity",
+              "s3:GetObject",
+              "s3:GetObjectVersion",
+              "ssm:GetParameter",
+              "ssm:GetParameters"
+            ],
+            "Sid": "OnlyReviewedOperations"
+          },
+          {
+            "Action": "cloudformation:*",
+            "Effect": "Deny",
+            "Sid": "DenyEveryOtherStack",
+            "NotResource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Tournaments-Ntgre/*"
+          },
+          {
+            "Condition": {
+              "StringNotEquals": {
+                "aws:RequestedRegion": "eu-north-1"
+              }
+            },
+            "Action": "cloudformation:*",
+            "Resource": "*",
+            "Effect": "Deny",
+            "Sid": "DenyWrongCfnRegion"
+          },
+          {
+            "Action": [
+              "cloudformation:DescribeStacks",
+              "cloudformation:DescribeStackEvents",
+              "cloudformation:DescribeStackResources",
+              "cloudformation:ListStackResources",
+              "cloudformation:GetTemplate",
+              "cloudformation:GetTemplateSummary",
+              "cloudformation:DescribeChangeSet",
+              "cloudformation:ListChangeSets"
+            ],
+            "Resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Tournaments-Ntgre/*",
+            "Effect": "Allow",
+            "Sid": "InspectOnlyTournament"
+          },
+          {
+            "Condition": {
+              "StringEquals": {
+                "cloudformation:TemplateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/b9be81faba86a3a8e1949cca1c802720a7bf557cc74cd6cb7f5ee17423c35705.json"
+              },
+              "StringLike": {
+                "cloudformation:ChangeSetName": "ntgre-tournaments-*"
+              },
+              "ArnEquals": {
+                "cloudformation:RoleArn": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-CfnExecution"
+              }
+            },
+            "Action": "cloudformation:CreateChangeSet",
+            "Resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Tournaments-Ntgre/*",
+            "Effect": "Allow",
+            "Sid": "PrepareOnlyReviewedTemplate"
+          },
+          {
+            "Condition": {
+              "StringLike": {
+                "cloudformation:ChangeSetName": "ntgre-tournaments-*"
+              }
+            },
+            "Action": [
+              "cloudformation:ExecuteChangeSet",
+              "cloudformation:DeleteChangeSet"
+            ],
+            "Resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Tournaments-Ntgre/*",
+            "Effect": "Allow",
+            "Sid": "ManageOnlyTournamentChangeSets"
+          },
+          {
+            "Action": "iam:PassRole",
+            "Effect": "Deny",
+            "Sid": "DenyPassingOtherRoles",
+            "NotResource": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-CfnExecution"
+          },
+          {
+            "Condition": {
+              "StringNotEquals": {
+                "iam:PassedToService": "cloudformation.amazonaws.com"
+              }
+            },
+            "Action": "iam:PassRole",
+            "Resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-CfnExecution",
+            "Effect": "Deny",
+            "Sid": "DenyPassingToOtherServices"
+          },
+          {
+            "Condition": {
+              "StringEquals": {
+                "iam:PassedToService": "cloudformation.amazonaws.com"
+              }
+            },
+            "Action": "iam:PassRole",
+            "Resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-CfnExecution",
+            "Effect": "Allow",
+            "Sid": "PassOnlyTournamentExecution"
+          },
+          {
+            "Action": [
+              "s3:GetObject",
+              "s3:GetObjectVersion"
+            ],
+            "Resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/b9be81faba86a3a8e1949cca1c802720a7bf557cc74cd6cb7f5ee17423c35705.json",
+            "Effect": "Allow",
+            "Sid": "ReadOnlyApprovedTemplate"
+          },
+          {
+            "Action": "s3:*",
+            "Effect": "Deny",
+            "Sid": "DenyOtherArtifactReads",
+            "NotResource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/b9be81faba86a3a8e1949cca1c802720a7bf557cc74cd6cb7f5ee17423c35705.json"
+          },
+          {
+            "Action": [
+              "ssm:GetParameter",
+              "ssm:GetParameters"
+            ],
+            "Resource": "arn:aws:ssm:eu-north-1:058264289478:parameter/cdk-bootstrap/hnb659fds/version",
+            "Effect": "Allow",
+            "Sid": "ReadBootstrapVersion"
+          },
+          {
+            "Action": "sts:GetCallerIdentity",
+            "Resource": "*",
+            "Effect": "Allow",
+            "Sid": "CallerIdentity"
+          },
+          {
+            "Action": [
+              "cognito-idp:*",
+              "cognito-identity:*",
+              "appsync:*",
+              "dynamodb:*",
+              "kms:*",
+              "secretsmanager:*",
+              "ecs:*",
+              "ec2:*",
+              "events:*",
+              "firehose:*"
+            ],
+            "Resource": "*",
+            "Effect": "Deny"
+          },
+          {
+            "Action": [
+              "logs:PutResourcePolicy",
+              "logs:DeleteResourcePolicy",
+              "logs:CreateLogDelivery",
+              "logs:UpdateLogDelivery",
+              "logs:DeleteLogDelivery"
+            ],
+            "Resource": "*",
+            "Effect": "Deny"
+          }
+        ]
+      },
+      "VersionId": "v1",
+      "IsDefaultVersion": true,
+      "CreateDate": "2026-09-27T16:24:44+00:00"
+    }
+  },
+  "versions": {
+    "Versions": [
+      {
+        "VersionId": "v1",
+        "IsDefaultVersion": true,
+        "CreateDate": "2026-09-27T16:24:44+00:00"
+      }
+    ]
+  },
+  "entities": {
+    "PolicyGroups": [],
+    "PolicyUsers": [],
+    "PolicyRoles": [
+      {
+        "RoleName": "ProjectRespawn-Tournaments-Ntgre-Deploy",
+        "RoleId": "AROAQ3EGSQDDLREZF3UFG"
+      }
+    ]
+  }
+}

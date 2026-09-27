@@ -1,0 +1,24 @@
+{
+    "version":  1,
+    "domain":  "tournaments",
+    "environment":  "Ntgre",
+    "stackName":  "ProjectRespawn-Tournaments-Ntgre",
+    "coreSha256":  "9bea68ab5781eeb7265c363fd6baac78d1e3e032196f9aa209bc3780644a6b9e",
+    "owned":  [
+                  "infrastructure/domains/tournaments/",
+                  "domains/tournaments/",
+                  "scripts/domains/",
+                  "scripts/config/domain-build-inputs.json",
+                  "config/environments/Ntgre.core.json"
+              ],
+    "sharedContracts":  [
+                            "contracts/environment-v1.schema.json",
+                            "contracts/tournament-preview-v1.schema.json"
+                        ],
+    "excluded":  [
+                     "amplify/",
+                     "src/",
+                     "infrastructure/twitch-runtime/"
+                 ],
+    "authorization":  "LOCAL_IMPLEMENTATION_ONLY"
+}

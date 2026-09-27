@@ -1,0 +1,25 @@
+{
+  "name": "@project-respawn/tournaments-infrastructure",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "node --test ../../../scripts/domains/tests/*.test.mjs",
+    "domain:plan": "node ../../../scripts/domains/plan.mjs",
+    "domain:deploy": "node ../../../scripts/domains/deploy.mjs",
+    "domain:select": "node ../../../scripts/domains/select.mjs",
+    "domain:compose-config": "node ../../../scripts/domains/compose-config.mjs"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "2.260.0",
+    "constructs": "10.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "25.9.1",
+    "ajv": "8.17.1",
+    "aws-cdk": "2.1143.0",
+    "esbuild": "0.28.0",
+    "typescript": "6.0.3"
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "at": "2026-09-27T16:21:31.204Z",
+  "results": [
+    {
+      "args": [
+        "iam",
+        "get-role",
+        "--role-name",
+        "ProjectRespawn-Tournaments-Ntgre-Deploy"
+      ],
+      "absent": true,
+      "message": "\r\naws: [ERROR]: An error occurred (NoSuchEntity) when calling the GetRole operation: The role with name ProjectRespawn-Tournaments-Ntgre-Deploy cannot be found.\r\n"
+    },
+    {
+      "args": [
+        "iam",
+        "get-role",
+        "--role-name",
+        "ProjectRespawn-Tournaments-Ntgre-CfnExecution"
+      ],
+      "absent": true,
+      "message": "\r\naws: [ERROR]: An error occurred (NoSuchEntity) when calling the GetRole operation: The role with name ProjectRespawn-Tournaments-Ntgre-CfnExecution cannot be found.\r\n"
+    },
+    {
+      "args": [
+        "iam",
+        "get-policy",
+        "--policy-arn",
+        "arn:aws:iam::058264289478:policy/ProjectRespawn-Tournaments-Ntgre-DeployBoundary"
+      ],
+      "absent": true,
+      "message": "\r\naws: [ERROR]: An error occurred (NoSuchEntity) when calling the GetPolicy operation: Policy arn:aws:iam::058264289478:policy/ProjectRespawn-Tournaments-Ntgre-DeployBoundary was not found.\r\n"
+    },
+    {
+      "args": [
+        "iam",
+        "get-policy",
+        "--policy-arn",
+        "arn:aws:iam::058264289478:policy/ProjectRespawn-Tournaments-Ntgre-ExecutionBoundary"
+      ],
+      "absent": true,
+      "message": "\r\naws: [ERROR]: An error occurred (NoSuchEntity) when calling the GetPolicy operation: Policy arn:aws:iam::058264289478:policy/ProjectRespawn-Tournaments-Ntgre-ExecutionBoundary was not found.\r\n"
+    },
+    {
+      "args": [
+        "iam",
+        "get-policy",
+        "--policy-arn",
+        "arn:aws:iam::058264289478:policy/ProjectRespawn-Tournaments-Ntgre-RuntimeBoundary"
+      ],
+      "absent": true,
+      "message": "\r\naws: [ERROR]: An error occurred (NoSuchEntity) when calling the GetPolicy operation: Policy arn:aws:iam::058264289478:policy/ProjectRespawn-Tournaments-Ntgre-RuntimeBoundary was not found.\r\n"
+    },
+    {
+      "args": [
+        "cloudformation",
+        "describe-stacks",
+        "--stack-name",
+        "ProjectRespawn-Tournaments-Ntgre"
+      ],
+      "absent": true,
+      "message": "\r\naws: [ERROR]: An error occurred (ValidationError) when calling the DescribeStacks operation: Stack with id ProjectRespawn-Tournaments-Ntgre does not exist\r\n"
+    },
+    {
+      "args": [
+        "cloudformation",
+        "describe-stacks",
+        "--stack-name",
+        "ProjectRespawn-Tournaments-Ntgre-SecurityBootstrap"
+      ],
+      "absent": true,
+      "message": "\r\naws: [ERROR]: An error occurred (ValidationError) when calling the DescribeStacks operation: Stack with id ProjectRespawn-Tournaments-Ntgre-SecurityBootstrap does not exist\r\n"
+    }
+  ],
+  "allAbsent": true,
+  "awsWrites": 0
+}

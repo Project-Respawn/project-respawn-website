@@ -1,0 +1,10 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#", "$id": "urn:project-respawn:environment:v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["contractVersion", "environment", "account", "region", "poolId", "clientId", "issuer", "provenance"],
+  "properties": {
+    "contractVersion": {"const": "environment.v1"}, "environment": {"const": "Ntgre"}, "account": {"const": "058264289478"}, "region": {"const": "eu-north-1"},
+    "poolId": {"type": "string", "pattern": "^eu-north-1_[a-zA-Z0-9]+$"}, "clientId": {"type": "string", "pattern": "^[a-z0-9]{26}$"}, "issuer": {"type": "string", "pattern": "^https://cognito-idp\\.eu-north-1\\.amazonaws\\.com/eu-north-1_[a-zA-Z0-9]+$"},
+    "provenance": {"type": "object", "additionalProperties": false, "required": ["source", "sourceSha256", "legacyRootArn", "authStackArn", "verifiedAt", "verifiedBy"], "properties": {"source": {"const": "amplify_outputs.json"}, "sourceSha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}, "legacyRootArn": {"type": "string"}, "authStackArn": {"type": "string"}, "verifiedAt": {"type": "string"}, "verifiedBy": {"type": "string"}}}
+  }
+}
