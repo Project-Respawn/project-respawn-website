@@ -1,0 +1,45 @@
+[
+  {
+    "eventTime": "2026-10-04T13:13:27Z",
+    "eventID": "ad694414-ca4a-494b-9f51-1d3abb408a2e",
+    "eventName": "DescribeKey",
+    "eventSource": "kms.amazonaws.com",
+    "requestID": "8e1250a8-a53d-49fa-83ea-d1f3f1ca9302",
+    "awsRegion": "eu-north-1",
+    "principal": {
+      "type": "IAMUser",
+      "arn": "arn:aws:iam::058264289478:user/RavenTest"
+    },
+    "userAgent": "aws-cli/2.34.51 md/awscrt#0.32.2 ua/2.1 os/windows#11 md/arch#amd64 lang/python#3.14.4 md/pyimpl#CPython m/Z,E,n,b cfg/retry-mode#standard md/installer#exe md/prompt#off md/command#kms.describe-key",
+    "sourceIPAddress": "[REDACTED_IP]",
+    "request": {
+      "keyId": "13ae83f9-bc5f-4486-a013-e07b9d7d52e7"
+    },
+    "resources": [
+      {
+        "accountId": "058264289478",
+        "type": "AWS::KMS::Key",
+        "ARN": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7"
+      }
+    ]
+  },
+  {
+    "eventTime": "2026-10-04T13:11:58Z",
+    "eventID": "599bd918-52d6-4d33-a561-a4b57fc21c04",
+    "eventName": "Encrypt",
+    "eventSource": "kms.amazonaws.com",
+    "requestID": "6b430ae3-8eeb-4828-b360-b62b03eedd9c",
+    "awsRegion": "eu-north-1",
+    "principal": {
+      "type": "AssumedRole",
+      "arn": "arn:aws:sts::058264289478:assumed-role/ProjectRespawn-Tournaments-Ntgre-CfnExecution/AWSCloudFormation",
+      "invokedBy": "cloudformation.amazonaws.com",
+      "issuer": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-CfnExecution"
+    },
+    "userAgent": "cloudformation.amazonaws.com",
+    "sourceIPAddress": "cloudformation.amazonaws.com",
+    "errorCode": "AccessDenied",
+    "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-Tournaments-Ntgre-CfnExecution/AWSCloudFormation is not authorized to perform: kms:Encrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy: arn:aws:iam::058264289478:policy/ProjectRespawn-Tournaments-Ntgre-ExecutionBoundary",
+    "request": {}
+  }
+]

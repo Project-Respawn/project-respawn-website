@@ -1,0 +1,36 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Resource": "*",
+      "Effect": "Deny",
+      "NotAction": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "kms:Decrypt"
+      ],
+      "Sid": "DenyEverythingExceptLoggingAndDefaultDecrypt"
+    },
+    {
+      "Action": "logs:*",
+      "Effect": "Deny",
+      "Sid": "DenyOtherLogs",
+      "NotResource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/tournaments/preview:*"
+    },
+    {
+      "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/tournaments/preview:*",
+      "Effect": "Allow",
+      "Sid": "OnlyPreviewLogs"
+    },
+    {
+      "Sid": "DenyDecryptExceptExactLambdaServiceKey",
+      "Effect": "Deny",
+      "Action": "kms:Decrypt",
+      "NotResource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7"
+    }
+  ]
+}

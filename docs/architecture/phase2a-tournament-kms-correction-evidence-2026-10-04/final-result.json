@@ -1,0 +1,76 @@
+{
+  "at": "2026-10-04T13:43:43.657Z",
+  "result": "PHASE 2A RELEASE 1 FAILED",
+  "scope": "Runtime acceptance incomplete; CloudFormation succeeded",
+  "executionPolicy": "v8",
+  "executionCorrection": "Remove only blanket kms:* Deny",
+  "kmsAllowsAdded": 0,
+  "runtimeBoundaryChanged": false,
+  "runtimeBlocker": [
+    {
+      "at": "2026-10-04T13:35:13Z",
+      "operation": "Decrypt",
+      "requestId": "67538f28-978f-4030-ae4b-5103fa9e66a5",
+      "principal": "arn:aws:sts::058264289478:assumed-role/ProjectRespawn-Tournaments-Ntgre-PreviewRole-o0HtDJVosSDO/awslambda_849_20261004133513647",
+      "error": "AccessDenied",
+      "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-Tournaments-Ntgre-PreviewRole-o0HtDJVosSDO/awslambda_849_20261004133513647 is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in a permissions boundary: arn:aws:iam::058264289478:policy/ProjectRespawn-Tournaments-Ntgre-RuntimeBoundary"
+    }
+  ],
+  "stack": "ProjectRespawn-Tournaments-Ntgre",
+  "status": "UPDATE_COMPLETE",
+  "resources": 11,
+  "apiId": "msipnwy39j",
+  "lambdaAndStageCreated": true,
+  "rollbackEnabled": true,
+  "rollbackOccurred": false,
+  "policyPatchedAfterRuntimeFailure": false,
+  "retry": false,
+  "auth": {
+    "at": "2026-10-04T13:40:29.603Z",
+    "endpoint": "https://msipnwy39j.execute-api.eu-north-1.amazonaws.com/v1/tournaments/preview",
+    "results": [
+      {
+        "name": "noToken",
+        "status": 401,
+        "denied": true
+      },
+      {
+        "name": "invalidToken",
+        "status": 401,
+        "denied": true
+      }
+    ],
+    "validIdentity": "NOT_VERIFIED",
+    "wrongIssuerClient": "NOT_TESTED_LIVE",
+    "runtimeBlocker": true
+  },
+  "observability": {
+    "logsObserved": false,
+    "lambdaMetricsObserved": false,
+    "apiMetricsObserved": true,
+    "alarms": [
+      {
+        "name": "ProjectRespawn-Tournaments-Ntgre-HttpErrors-NLywnrF34Zb4",
+        "state": "OK"
+      },
+      {
+        "name": "ProjectRespawn-Tournaments-Ntgre-PreviewErrors-tVGBWEop0yku",
+        "state": "OK"
+      }
+    ]
+  },
+  "legacy": {
+    "before": 2621,
+    "after": 2621,
+    "directiveBefore": 167,
+    "directiveAfter": 167,
+    "identical": true
+  },
+  "productionModified": false,
+  "activeManifestPublished": false,
+  "frontendCutover": false,
+  "credentialScan": {
+    "jsonFiles": 39,
+    "findings": 0
+  }
+}

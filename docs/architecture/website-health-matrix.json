@@ -1,0 +1,4720 @@
+{
+  "scope": "Source evidence plus separately recorded local diagnostics; UNKNOWN is not a pass",
+  "rows": [
+    {
+      "routeId": 1,
+      "route": "/SWG-EOF-test",
+      "page": "src/views/SwgEofTest/SwgEofTest.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/views/SwgEofTest/SwgEofTest.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "Independent SWG download service",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission"
+      ],
+      "currentCloudFormationOwner": "External SWG distribution root: UNRESOLVED",
+      "futureDomain": "Games / SWG",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 2,
+      "route": "/swg-beyond-buff-builder",
+      "page": "src/views/SWG Beyond Buff Builder/SwgBeyondBuffBuilder.vue",
+      "status": "WORKING",
+      "evidence": [
+        "Local calculator renders; frontend-only buff data, no backend required",
+        "Source: src/views/SWG Beyond Buff Builder/SwgBeyondBuffBuilder.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend-only",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Games / SWG",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/swg-beyond-buff-builder",
+        "headings": [
+          "SWG Beyond Buff Builder",
+          "ATTRIBUTES",
+          "MISCELLANEOUS",
+          "COMBAT",
+          "RESISTANCES",
+          "TRADE",
+          "No buffs selected yet"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 3,
+      "route": "/bookings",
+      "page": "src/views/Bookings/Bookings.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Bookings.vue explicitly labels frontend-only Bookings demo",
+        "Source: src/views/Bookings/Bookings.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [
+        "PermissionDefinition",
+        "GroupPermission",
+        "ApplicationSubmission"
+      ],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Applications / Bookings",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/bookings",
+        "headings": [
+          "Bookings",
+          "Induction"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 4,
+      "route": "/bookings/invite/:invitationToken",
+      "page": "src/views/Bookings/Bookings.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Invitation data and induction booking are frontend demo",
+        "Source: src/views/Bookings/Bookings.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [
+        "PermissionDefinition",
+        "GroupPermission",
+        "ApplicationSubmission"
+      ],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Applications / Bookings",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/bookings/invite/audit-fixture",
+        "headings": [
+          "Bookings",
+          "Book your induction",
+          "Invitation unavailable"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 5,
+      "route": "/bookings/:bookingTypeSlug",
+      "page": "src/views/Bookings/Bookings.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Booking type availability is local demo",
+        "Source: src/views/Bookings/Bookings.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [
+        "PermissionDefinition",
+        "GroupPermission",
+        "ApplicationSubmission"
+      ],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Applications / Bookings",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/bookings/audit-fixture",
+        "headings": [
+          "Bookings",
+          "Booking type unavailable"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 6,
+      "route": "/induction/book/:invitationToken",
+      "page": null,
+      "status": "WORKING",
+      "evidence": [
+        "Redirect declaration exists; static target resolution pending runtime smoke",
+        "Source: null",
+        "Browser: guard/redirect destination /bookings/invite/audit-fixture"
+      ],
+      "backend": "redirect target",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Applications / Bookings",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/bookings/invite/audit-fixture",
+        "headings": [
+          "Bookings",
+          "Book your induction",
+          "Invitation unavailable"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 7,
+      "route": "/",
+      "page": "src/views/Home/Home.vue",
+      "status": "WORKING",
+      "evidence": [
+        "Anonymous landing page renders; static content and local animation",
+        "Source: src/views/Home/Home.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend-only",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Website / Content",
+      "requiresCognito": false,
+      "shouldLazyLoad": false,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/",
+        "headings": [
+          "Your past is just the tutorial.\nYour real game starts now.",
+          "A BETTER WAY TO BUILD CONFIDENCE"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 8,
+      "route": "/about",
+      "page": "src/views/About/About.vue",
+      "status": "WORKING",
+      "evidence": [
+        "Longer browser follow-up confirms /about renders; initial 400ms sample was too early",
+        "Source: src/views/About/About.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend-only",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Website / Content",
+      "requiresCognito": false,
+      "shouldLazyLoad": false,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/about",
+        "headings": [
+          "Your past is just the tutorial.\nYour real game starts now.",
+          "Gaming can be more than entertainment.",
+          "Being connected all the time has not made connection easy for everyone.",
+          "Start with what people already care about.",
+          "Project Respawn is bigger than one app or one audience.",
+          "Starting again is part of the design.",
+          "Use Project Respawn, build with it or help shape what comes next."
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 9,
+      "route": "/investors",
+      "page": "src/views/Investors/Investors.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/views/Investors/Investors.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "InvestorAccessRequest"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Investor Access",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/investors",
+        "headings": [
+          "Building the creator ecosystem around human connection.",
+          "One creator. One community. One ecosystem.",
+          "CREATORS BUILD COMMUNITIES ACROSS FRAGMENTED SYSTEMS.",
+          "PROJECT RESPAWN CONNECTS THE CREATOR AND COMMUNITY JOURNEY.",
+          "Our first distribution wedge is useful infrastructure.",
+          "FOLLOWERS MEASURE AUDIENCE SIZE. RESPAWN WANTS TO UNDERSTAND COMMUNITY STRENGTH.",
+          "CREATORS ARE THE FIRST DISTRIBUTION CHANNEL. EVENTS MAKE THE NETWORK VISIBLE.",
+          "FROM CREATOR TOOL TO SUSTAINABLE CREATOR CAREER."
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 10,
+      "route": "/investors/data-room",
+      "page": "src/views/Investors/DataRoom/InvestorDataRoom.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/views/Investors/DataRoom/InvestorDataRoom.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "InvestorAccess",
+        "InvestorAccessAuditEvent"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Investor Access",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 11,
+      "route": "/careers",
+      "page": "src/views/Careers/Careers.vue",
+      "status": "WORKING",
+      "evidence": [
+        "Marketing page renders; expression-of-interest action uses mailto, not a submission backend",
+        "Source: src/views/Careers/Careers.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend-only",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Website / Content",
+      "requiresCognito": false,
+      "shouldLazyLoad": false,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/careers",
+        "headings": [
+          "Want to help build Project Respawn?",
+          "Not a traditional jobs board.",
+          "There is more than one way to get involved.",
+          "Skills matter. How you want to use them matters too.",
+          "You do not need to wait for the perfect vacancy."
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 12,
+      "route": "/creators",
+      "page": "src/views/Creators/Creators.vue",
+      "status": "PLACEHOLDER",
+      "evidence": [
+        "Creators.js has empty local creators array; founding creators coming soon",
+        "Source: src/views/Creators/Creators.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Website / Content",
+      "requiresCognito": false,
+      "shouldLazyLoad": false,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/creators",
+        "headings": [
+          "Meet the creators building with Project Respawn.",
+          "Founding creators coming soon.",
+          "Want your community to help shape Project Respawn?"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 13,
+      "route": "/partners",
+      "page": "src/views/Partners/Partners.vue",
+      "status": "PLACEHOLDER",
+      "evidence": [
+        "Partners.js has empty local partners array; directory not populated",
+        "Source: src/views/Partners/Partners.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Website / Content",
+      "requiresCognito": false,
+      "shouldLazyLoad": false,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/partners",
+        "headings": [
+          "The organisations helping Project Respawn grow.",
+          "Our partner network is being built.",
+          "Partnership means more than a logo."
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 14,
+      "route": "/contact",
+      "page": "src/views/Contact/Contact.vue",
+      "status": "WORKING",
+      "evidence": [
+        "Static contact information renders; external/contact actions not submitted",
+        "Source: src/views/Contact/Contact.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend-only",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Website / Content",
+      "requiresCognito": false,
+      "shouldLazyLoad": false,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/contact",
+        "headings": [
+          "Get In Touch",
+          "Ways to Connect"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 15,
+      "route": "/privacy-policy",
+      "page": "src/views/PrivacyPolicy/MainPrivacyPolicy.vue",
+      "status": "WORKING",
+      "evidence": [
+        "Static legal centre renders",
+        "Source: src/views/PrivacyPolicy/MainPrivacyPolicy.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend-only",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Website / Content",
+      "requiresCognito": false,
+      "shouldLazyLoad": false,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/privacy-policy",
+        "headings": [
+          "Legal & Privacy Centre",
+          "Your community is not our product",
+          "Project Respawn App",
+          "Project Respawn Privacy Policy"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 16,
+      "route": "/join-us",
+      "page": "src/views/TeamTryouts/TeamTryouts.vue",
+      "status": "WORKING",
+      "evidence": [
+        "Public programme marketing page renders; professional pathways explicitly coming soon",
+        "Source: src/views/TeamTryouts/TeamTryouts.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend-only",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Applications / Bookings",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join-us",
+        "headings": [
+          "Turn your stream into a community that grows beyond the broadcast.",
+          "Streamers can shape confidence at community scale.",
+          "A confidence-focused quest and level system.",
+          "Built for professionals who work with confidence too.",
+          "Three connected layers working together.",
+          "One place to manage Twitch and Discord together.",
+          "Shape the experience around your audience.",
+          "How the system works"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 17,
+      "route": "/team-tryouts",
+      "page": null,
+      "status": "WORKING",
+      "evidence": [
+        "Redirect declaration exists; static target resolution pending runtime smoke",
+        "Source: null",
+        "Browser: guard/redirect destination /join-us"
+      ],
+      "backend": "redirect target",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Applications / Bookings",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join-us",
+        "headings": [
+          "Turn your stream into a community that grows beyond the broadcast.",
+          "Streamers can shape confidence at community scale.",
+          "A confidence-focused quest and level system.",
+          "Built for professionals who work with confidence too.",
+          "Three connected layers working together.",
+          "One place to manage Twitch and Discord together.",
+          "Shape the experience around your audience.",
+          "How the system works"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 18,
+      "route": "/merch",
+      "page": "src/views/Merch/Merch.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/views/Merch/Merch.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "MerchProduct",
+        "Brand",
+        "MerchCategory",
+        "MerchProductBrand",
+        "MerchProductCategory",
+        "MerchProductVariant",
+        "MediaItem",
+        "MerchProductImage"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Commerce",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/merch",
+        "headings": [
+          "Merch Store"
+        ],
+        "exceptions": [
+          "CONSOLE: Merch page load error: Error: A network error has occurred.\n    at Proxy.loadProducts (http://127.0.0.1:18474/assets/main-DBiFS2Ht.js:9:31051)\n    at async Proxy.mounted (http://127.0.0.1:18474/assets/main-DBiFS2Ht.js:9:30575)"
+        ],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 19,
+      "route": "/checkout",
+      "page": "src/views/Checkout/Checkout.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/views/Checkout/Checkout.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Commerce",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/checkout",
+        "headings": [
+          "Checkout",
+          "Delivery address",
+          "Payment method",
+          "Order Summary"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 20,
+      "route": "/events",
+      "page": "src/views/Events/Events.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/views/Events/Events.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "Event",
+        "EventSuggestion"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Community / Events",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/events",
+        "headings": [
+          "Events hub",
+          "No event planned",
+          "0",
+          "0",
+          "0",
+          "Join next",
+          "Refine view",
+          "This week"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 21,
+      "route": "/join",
+      "page": "src/views/Join/Join.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Sign-in/registration UI renders; no real account authentication or password reset executed",
+        "Source: src/views/Join/Join.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend-only",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Core / Account",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 22,
+      "route": "/account",
+      "page": "src/views/Account/Account.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Component-level signed-out gate renders; UserProfile + forum activity require live account",
+        "Source: src/views/Account/Account.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "UserProfile",
+        "ForumCategory",
+        "ForumBoard",
+        "ForumThread",
+        "ForumPost",
+        "ForumActivity",
+        "PermissionDefinition",
+        "GroupPermission",
+        "PermissionAuditEvent",
+        "EventTag",
+        "EventSuggestion",
+        "MerchCategory"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Core / Account",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/account",
+        "headings": [
+          "Sign in to view your profile"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 23,
+      "route": "/apply-now",
+      "page": "src/views/Applications/Applications.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/views/Applications/Applications.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "ApplicationSubmission",
+        "ApplicationAnswer",
+        "ApplicationCreatorProfile",
+        "ApplicationSchedule",
+        "ApplicationAuditEvent",
+        "ApplicationIdempotency",
+        "ApplicationPublicRateLimit"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Applications / Bookings",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/apply-now",
+        "headings": [
+          "Apply to join the mission.",
+          "What are you applying to do?"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 24,
+      "route": "/applications",
+      "page": null,
+      "status": "WORKING",
+      "evidence": [
+        "Redirect declaration exists; static target resolution pending runtime smoke",
+        "Source: null",
+        "Browser: guard/redirect destination /apply-now"
+      ],
+      "backend": "redirect target",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Applications / Bookings",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/apply-now",
+        "headings": [
+          "Apply to join the mission.",
+          "What are you applying to do?"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 25,
+      "route": "/apply",
+      "page": null,
+      "status": "WORKING",
+      "evidence": [
+        "Redirect declaration exists; static target resolution pending runtime smoke",
+        "Source: null",
+        "Browser: guard/redirect destination /apply-now"
+      ],
+      "backend": "redirect target",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Applications / Bookings",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/apply-now",
+        "headings": [
+          "Apply to join the mission.",
+          "What are you applying to do?"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 26,
+      "route": "/home",
+      "page": "src/views/UserHomepage/UserHomepage.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/views/UserHomepage/UserHomepage.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Core / Account",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 27,
+      "route": "/overlay-source/:credential",
+      "page": "src/features/creator-tools/views/overlays/OverlayBrowserSource.vue",
+      "status": "PARTIALLY_WORKING",
+      "evidence": [
+        "Actual browser-source adapter exists; blocked-network load() rejection is unhandled and leaves blank source; live success unverified",
+        "Source: src/features/creator-tools/views/overlays/OverlayBrowserSource.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "OverlayPublication",
+        "OverlaySourceConnection",
+        "TwitchEventDeliveryDedupe"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Creator Platform",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/overlay-source/audit-fixture",
+        "headings": [],
+        "exceptions": [
+          "TypeError: Failed to fetch\n    at s4 (http://127.0.0.1:18474/assets/main-DBiFS2Ht.js:39:172558)\n    at p (http://127.0.0.1:18474/assets/main-DBiFS2Ht.js:67:53548)\n    at http://127.0.0.1:18474/assets/main-DBiFS2Ht.js:67:54114\n    at http://127.0.0.1:18474/assets/main-DBiFS2Ht.js:4:272292\n    at rl (http://127.0.0.1:18474/assets/main-DBiFS2Ht.js:4:260071)\n    at il (http://127.0.0.1:18474/assets/main-DBiFS2Ht.js:4:260140)\n    at t.__weh (http://127.0.0.1:18474/assets/main-DBiFS2Ht.js:4:272175)\n    at bl (http://127.0.0.1:18474/assets/main-DBiFS2Ht.js:4:261596)\n    at Sl (http://127.0.0.1:18474/assets/main-DBiFS2Ht.js:4:261899)"
+        ],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 28,
+      "route": "/creator-tools",
+      "page": "src/features/creator-tools/components/CreatorLayout.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Creator layout authenticated; successful authenticated page rendering unverified",
+        "Source: src/features/creator-tools/components/CreatorLayout.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Creator Platform",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 29,
+      "route": "/creator-tools",
+      "page": "src/features/creator-tools/views/dashboard/CreatorDashboard.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "CreatorDashboard.vue explicitly states simulated Creator Tools, no real connections",
+        "Source: src/features/creator-tools/views/dashboard/CreatorDashboard.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission"
+      ],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Creator Platform",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 30,
+      "route": "/creator-tools/profile",
+      "page": "src/features/creator-tools/views/profile/CreatorProfile.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "CreatorProfile.js stores project-respawn-creator-profile-demo-v1 locally; no public directory backend write",
+        "Source: src/features/creator-tools/views/profile/CreatorProfile.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission"
+      ],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Creator Platform",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 31,
+      "route": "/creator-tools/twitch",
+      "page": "src/features/creator-tools/views/twitch/overview/TwitchOverview.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "TwitchOverview.vue hard-codes connectedChannel and botStatus; links to real tools coexist with static status",
+        "Source: src/features/creator-tools/views/twitch/overview/TwitchOverview.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission"
+      ],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Creator Platform",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 32,
+      "route": "/creator-tools/discord",
+      "page": "src/features/creator-tools/views/discord/CreatorDiscord.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "CreatorDiscord.vue explicitly says no Discord bot connected; demonstration only",
+        "Source: src/features/creator-tools/views/discord/CreatorDiscord.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission"
+      ],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Creator Platform",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 33,
+      "route": "/creator-tools/bots",
+      "page": "src/features/creator-tools/views/bots/overview/BotsOverview.vue",
+      "status": "PARTIALLY_WORKING",
+      "evidence": [
+        "Navigation to implemented Twitch tools and an automation placeholder; not a bot lifecycle implementation",
+        "Source: src/features/creator-tools/views/bots/overview/BotsOverview.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Creator Platform",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 34,
+      "route": "/creator-tools/bots/twitch/commands",
+      "page": "src/features/creator-tools/views/twitch/commands/basic/BasicCommands.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/features/creator-tools/views/twitch/commands/basic/BasicCommands.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "PermissionAuditEvent",
+        "TwitchCommand",
+        "TwitchIntegration",
+        "TwitchRuntimeHealth"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Creator Platform",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 35,
+      "route": "/creator-tools/bots/twitch/alerts",
+      "page": "src/features/creator-tools/views/twitch/alerts/TwitchAlerts.vue",
+      "status": "PARTIALLY_WORKING",
+      "evidence": [
+        "Canonical overlay API persistence exists; requires workspace/brand/JWT and live backend validation",
+        "Source: src/features/creator-tools/views/twitch/alerts/TwitchAlerts.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "OverlayPublication",
+        "OverlaySourceConnection",
+        "TwitchEventDeliveryDedupe"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Creator Platform",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 36,
+      "route": "/creator-tools/bots/twitch/tts",
+      "page": "src/features/creator-tools/views/twitch/text-to-speech/TextToSpeech.vue",
+      "status": "PARTIALLY_WORKING",
+      "evidence": [
+        "TTS settings/test delivery wired to canonical API; delivery runtime not tested here",
+        "Source: src/features/creator-tools/views/twitch/text-to-speech/TextToSpeech.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "TwitchIntegration",
+        "TwitchOAuthTransaction",
+        "TwitchRuntimeHealth",
+        "OverlayPublication",
+        "OverlaySourceConnection",
+        "TwitchEventDeliveryDedupe"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Creator Platform",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 37,
+      "route": "/creator-tools/bots/moderation",
+      "page": "src/features/creator-tools/views/twitch/moderation/TwitchModeration.vue",
+      "status": "PARTIALLY_WORKING",
+      "evidence": [
+        "Only selected canonical chat fields persist; saveSettings displays success even without workspace/brand",
+        "Source: src/features/creator-tools/views/twitch/moderation/TwitchModeration.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "OverlayPublication",
+        "OverlaySourceConnection",
+        "TwitchEventDeliveryDedupe"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Creator Platform",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 38,
+      "route": "/creator-tools/bots/automation",
+      "page": "src/features/creator-tools/views/bots/automation/Automation.vue",
+      "status": "PLACEHOLDER",
+      "evidence": [
+        "Automation.vue is a FeatureTeaser with roadmap text only",
+        "Source: src/features/creator-tools/views/bots/automation/Automation.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission"
+      ],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Creator Platform",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 39,
+      "route": "/creator-tools/chat",
+      "page": "src/features/creator-tools/views/chat/CreatorChat.vue",
+      "status": "PARTIALLY_WORKING",
+      "evidence": [
+        "Creator chat configuration uses canonical overlay API; platform/runtime behavior not verified",
+        "Source: src/features/creator-tools/views/chat/CreatorChat.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "OverlayPublication",
+        "OverlaySourceConnection",
+        "TwitchEventDeliveryDedupe"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Creator Platform",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 40,
+      "route": "/creator-tools/overlays",
+      "page": "src/features/creator-tools/views/overlays/OverlayEntry.vue",
+      "status": "PARTIALLY_WORKING",
+      "evidence": [
+        "Overlay entry selects local library/editor; canonical publishing is separate",
+        "Source: src/features/creator-tools/views/overlays/OverlayEntry.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Creator Platform",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 41,
+      "route": "/creator-tools/overlays/library",
+      "page": "src/features/creator-tools/views/overlays/OverlayManager.vue",
+      "status": "PARTIALLY_WORKING",
+      "evidence": [
+        "Local demo overlays plus publication workflow; not all editor state is authoritative server state",
+        "Source: src/features/creator-tools/views/overlays/OverlayManager.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Creator Platform",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 42,
+      "route": "/creator-tools/overlays/:overlayId",
+      "page": "src/features/creator-tools/views/overlays/OverlayEditor.vue",
+      "status": "PARTIALLY_WORKING",
+      "evidence": [
+        "Demo/editor state and canonical publication paths coexist",
+        "Source: src/features/creator-tools/views/overlays/OverlayEditor.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "TwitchIntegration",
+        "TwitchOAuthTransaction",
+        "TwitchRuntimeHealth",
+        "OverlayPublication",
+        "OverlaySourceConnection",
+        "TwitchEventDeliveryDedupe"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Creator Platform",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 43,
+      "route": "/creator-tools/community",
+      "page": "src/features/creator-tools/views/community/CreatorCommunity.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Connected community uses connected-demo state",
+        "Source: src/features/creator-tools/views/community/CreatorCommunity.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission"
+      ],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Creator Platform",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 44,
+      "route": "/creator-tools/rewards",
+      "page": "src/features/creator-tools/views/rewards/CreatorRewards.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Rewards use connected-demo state; not evidence of actual payment/reward fulfilment",
+        "Source: src/features/creator-tools/views/rewards/CreatorRewards.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission"
+      ],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Creator Platform",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 45,
+      "route": "/creator-tools/achievements",
+      "page": "src/features/creator-tools/views/achievements/CreatorAchievements.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Achievements use connected-demo state",
+        "Source: src/features/creator-tools/views/achievements/CreatorAchievements.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission"
+      ],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Creator Platform",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 46,
+      "route": "/creator-tools/events",
+      "page": "src/features/creator-tools/views/events/CreatorEvents.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Creator events/RSVPs use connected-demo state, separate from general Event backend",
+        "Source: src/features/creator-tools/views/events/CreatorEvents.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission"
+      ],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Creator Platform",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 47,
+      "route": "/creator-tools/members",
+      "page": "src/features/creator-tools/views/members/CreatorMembers.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Members use connected-demo state",
+        "Source: src/features/creator-tools/views/members/CreatorMembers.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission"
+      ],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Creator Platform",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 48,
+      "route": "/creator-tools/analytics",
+      "page": "src/features/creator-tools/views/analytics/CreatorAnalytics.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Analytics footer explicitly says all values are simulated",
+        "Source: src/features/creator-tools/views/analytics/CreatorAnalytics.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission"
+      ],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Creator Platform",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 49,
+      "route": "/creator-tools/integrations",
+      "page": "src/features/creator-tools/views/integrations/Integrations.vue",
+      "status": "PARTIALLY_WORKING",
+      "evidence": [
+        "Twitch OAuth/brand flow exists; other integrations marked coming soon",
+        "Source: src/features/creator-tools/views/integrations/Integrations.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "TwitchIntegration",
+        "TwitchOAuthTransaction",
+        "TwitchRuntimeHealth",
+        "PermissionAuditEvent"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Creator Platform",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 50,
+      "route": "/creator-tools/setup",
+      "page": "src/features/creator-tools/views/setup/CreatorSetup.vue",
+      "status": "PARTIALLY_WORKING",
+      "evidence": [
+        "Workspace + brand + Twitch setup is implemented; guarded live journey unverified",
+        "Source: src/features/creator-tools/views/setup/CreatorSetup.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "TwitchIntegration",
+        "TwitchOAuthTransaction",
+        "TwitchRuntimeHealth",
+        "PermissionAuditEvent"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Creator Platform",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 51,
+      "route": "/tts-overlay",
+      "page": "src/views/Bot/OverlayEngine/Overlay.vue",
+      "status": "DEAD_LEGACY",
+      "evidence": [
+        "Still ACTIVE /tts-overlay route; adapter hard-codes ws://localhost:3000/events-ws; legacy retirement candidate, not safe to delete",
+        "Source: src/views/Bot/OverlayEngine/Overlay.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Local legacy WebSocket service",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Creator Platform",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/tts-overlay",
+        "headings": [],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 52,
+      "route": "/partner",
+      "page": "src/features/partner-hub/views/dashboard/PartnerDashboard.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/partner-hub/views/dashboard/PartnerDashboard.vue:20 } from '../../data/partnerDemoData.js';",
+        "src/features/partner-hub/components/PartnerSidebar.vue:126 CREATOR DISCOVERY — COMING SOON",
+        "src/features/partner-hub/components/PartnerSidebar.vue:138 Coming Soon",
+        "Source: src/features/partner-hub/views/dashboard/PartnerDashboard.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Partner Hub",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 53,
+      "route": "/partner/profile",
+      "page": "src/features/partner-hub/views/profile/PartnerProfile.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/partner-hub/views/profile/PartnerProfile.vue:5 import { partner } from '../../data/partnerDemoData.js';",
+        "src/features/partner-hub/views/profile/PartnerProfile.vue:11 // DEMO STATE",
+        "src/features/partner-hub/views/profile/PartnerProfile.vue:45 // MAIN PARTNER DEMO SLOTS",
+        "Source: src/features/partner-hub/views/profile/PartnerProfile.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Partner Hub",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 54,
+      "route": "/partner/campaigns",
+      "page": "src/features/partner-hub/views/campaigns/PartnerCampaigns.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/partner-hub/components/PartnerSidebar.vue:126 CREATOR DISCOVERY — COMING SOON",
+        "src/features/partner-hub/components/PartnerSidebar.vue:138 Coming Soon",
+        "Source: src/features/partner-hub/views/campaigns/PartnerCampaigns.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Partner Hub",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 55,
+      "route": "/partner/analytics",
+      "page": "src/features/partner-hub/views/analytics/PartnerAnalytics.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/partner-hub/views/analytics/PartnerAnalytics.vue:10 // PROJECT RESPAWN — PARTNER ANALYTICS DEMO",
+        "src/features/partner-hub/views/analytics/PartnerAnalytics.vue:381 // Demo only.",
+        "src/features/partner-hub/views/analytics/PartnerAnalytics.vue:384 'Demo partnership request submitted to Project Respawn.'",
+        "Source: src/features/partner-hub/views/analytics/PartnerAnalytics.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Partner Hub",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 56,
+      "route": "/partner/creators",
+      "page": "src/features/partner-hub/views/creator-discovery/CreatorDiscovery.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/partner-hub/views/creator-discovery/CreatorDiscovery.vue:2 <main class=\"partner-placeholder\">",
+        "src/features/partner-hub/views/creator-discovery/CreatorDiscovery.vue:6 </template><!-- Partner Hub placeholder -->",
+        "Source: src/features/partner-hub/views/creator-discovery/CreatorDiscovery.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Partner Hub",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 57,
+      "route": "/trainer",
+      "page": "src/features/trainer-hub/views/dashboard/TrainerDashboard.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/trainer-hub/views/dashboard/TrainerDashboard.vue:8 // PROJECT RESPAWN — TRAINER HUB DASHBOARD DEMO",
+        "src/features/trainer-hub/views/dashboard/TrainerDashboard.vue:677 <!-- Pet illustration placeholder -->",
+        "src/features/trainer-hub/components/TrainerSidebar.vue:168 <!-- Messages — Coming Soon -->",
+        "Source: src/features/trainer-hub/views/dashboard/TrainerDashboard.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Trainer Hub",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 58,
+      "route": "/trainer/clients",
+      "page": "src/features/trainer-hub/views/clients/TrainerClients.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/trainer-hub/views/clients/TrainerClients.vue:10 // PROJECT RESPAWN — TRAINER CLIENTS DEMO",
+        "src/features/trainer-hub/views/clients/TrainerClients.vue:211 // COMPANION DEMO",
+        "src/features/trainer-hub/views/clients/TrainerClients.vue:214 const companionDemoOpen = ref(false);",
+        "Source: src/features/trainer-hub/views/clients/TrainerClients.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Trainer Hub",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 59,
+      "route": "/trainer/clients/:clientId",
+      "page": "src/features/trainer-hub/views/clients/TrainerClientDetail.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/trainer-hub/views/clients/TrainerClientDetail.vue:19 // DEMO CLIENT",
+        "src/features/trainer-hub/views/clients/TrainerClientDetail.vue:25 // For now this page demonstrates the complete trainer",
+        "src/features/trainer-hub/views/clients/TrainerClientDetail.vue:349 \"Demo: Alex's companion would now receive a trainer encouragement request.\"",
+        "Source: src/features/trainer-hub/views/clients/TrainerClientDetail.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Trainer Hub",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 60,
+      "route": "/trainer/quests",
+      "page": "src/features/trainer-hub/views/quests/TrainerQuests.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/trainer-hub/views/quests/TrainerQuests.vue:862 ? `Demo: \"${creatorForm.value.name}\" assigned to ${selectedCreatorClient.value.name}.`",
+        "src/features/trainer-hub/views/quests/TrainerQuests.vue:863 : `Demo: \"${creatorForm.value.name}\" published to ${selectedCommunityClients.value.length} selected clients.`",
+        "src/features/trainer-hub/views/quests/TrainerQuests.vue:913 function demoAction(message) {",
+        "Source: src/features/trainer-hub/views/quests/TrainerQuests.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Trainer Hub",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 61,
+      "route": "/trainer/challenges",
+      "page": "src/features/trainer-hub/views/challenges/TrainerChallenges.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/trainer-hub/views/challenges/TrainerChallenges.vue:315 // SECTION 6 — DEMO UI STATE",
+        "src/features/trainer-hub/views/challenges/TrainerChallenges.vue:348 `Demo: Open detailed challenge view for \"${challenge.title}\".`",
+        "src/features/trainer-hub/views/challenges/TrainerChallenges.vue:356 `Demo: ${client.name}'s companion would receive a trainer encouragement request.`",
+        "Source: src/features/trainer-hub/views/challenges/TrainerChallenges.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Trainer Hub",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 62,
+      "route": "/trainer/engagement",
+      "page": "src/features/trainer-hub/views/engagement/TrainerEngagement.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/trainer-hub/views/engagement/TrainerEngagement.vue:868 function demoAction(message) {",
+        "src/features/trainer-hub/views/engagement/TrainerEngagement.vue:870 `Demo: ${message}`",
+        "src/features/trainer-hub/views/engagement/TrainerEngagement.vue:1015 demoAction(",
+        "Source: src/features/trainer-hub/views/engagement/TrainerEngagement.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Trainer Hub",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 63,
+      "route": "/therapist",
+      "page": "src/features/therapist/layouts/TherapistLayout/TherapistLayout.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/therapist/components/navigation/TherapistSidebar.js:1 import { therapistDemoAccount } from \"../../data/therapistDemoAccount.js\";",
+        "src/features/therapist/components/navigation/TherapistSidebar.js:8 account: therapistDemoAccount,",
+        "src/features/therapist/data/therapistDemoAccount.js:1 export const therapistDemoAccount = {",
+        "Source: src/features/therapist/layouts/TherapistLayout/TherapistLayout.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Therapist",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/therapist",
+        "headings": [
+          "Good morning, Dr. Morgan",
+          "QUICK ACTIONS",
+          "TODAY’S SESSIONS",
+          "NEEDS ATTENTION",
+          "RECENT QUEST ACTIVITY",
+          "CLIENT PROGRESS SNAPSHOT",
+          "BETWEEN SESSION INSIGHTS"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 64,
+      "route": "/therapist",
+      "page": "src/features/therapist/views/TherapistDashboard/TherapistDashboard.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "Source: src/features/therapist/views/TherapistDashboard/TherapistDashboard.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Therapist",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/therapist",
+        "headings": [
+          "Good morning, Dr. Morgan",
+          "QUICK ACTIONS",
+          "TODAY’S SESSIONS",
+          "NEEDS ATTENTION",
+          "RECENT QUEST ACTIVITY",
+          "CLIENT PROGRESS SNAPSHOT",
+          "BETWEEN SESSION INSIGHTS"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 65,
+      "route": "/therapist/clients",
+      "page": "src/features/therapist/views/Clients/TherapistClients.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/therapist/views/Clients/TherapistClients.vue:69 placeholder=\"Search clients...\"",
+        "src/features/therapist/views/Clients/TherapistClients.js:1 import { therapistDemoAccount } from \"../../data/therapistDemoAccount.js\";",
+        "src/features/therapist/views/Clients/TherapistClients.js:2 import { therapistDemoClients } from \"../../data/therapistDemoClients.js\";",
+        "Source: src/features/therapist/views/Clients/TherapistClients.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Therapist",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/therapist/clients",
+        "headings": [
+          "Clients"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 66,
+      "route": "/therapist/clients/:clientId",
+      "page": "src/features/therapist/views/Quests/TherapistQuests.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/therapist/views/Quests/TherapistQuests.vue:10 DEMO NOTICE",
+        "src/features/therapist/views/Quests/TherapistQuests.vue:407 PLACEHOLDER READY FOR BUILD",
+        "src/features/therapist/views/Quests/TherapistQuests.vue:413 class=\"therapist-workspace-placeholder\"",
+        "Source: src/features/therapist/views/Quests/TherapistQuests.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Therapist",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/therapist/clients/audit-fixture",
+        "headings": [
+          "Alex Morgan",
+          "Alex Morgan",
+          "Quests",
+          "Attend a larger group activity"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 67,
+      "route": "/therapist/quests",
+      "page": "src/features/therapist/views/Quests/TherapistQuests.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/therapist/views/Quests/TherapistQuests.vue:10 DEMO NOTICE",
+        "src/features/therapist/views/Quests/TherapistQuests.vue:407 PLACEHOLDER READY FOR BUILD",
+        "src/features/therapist/views/Quests/TherapistQuests.vue:413 class=\"therapist-workspace-placeholder\"",
+        "Source: src/features/therapist/views/Quests/TherapistQuests.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Therapist",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/therapist/quests",
+        "headings": [
+          "Alex Morgan",
+          "Alex Morgan",
+          "Quests",
+          "Attend a larger group activity"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 68,
+      "route": "/therapist/quests/new",
+      "page": "src/features/therapist/views/QuestBuilder/TherapistQuestBuilder.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "Source: src/features/therapist/views/QuestBuilder/TherapistQuestBuilder.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Therapist",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/therapist/quests/new",
+        "headings": [
+          "Create Quest"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 69,
+      "route": "/therapist/clients/:clientId/quests",
+      "page": "src/features/therapist/views/Quests/TherapistQuests.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/therapist/views/Quests/TherapistQuests.vue:10 DEMO NOTICE",
+        "src/features/therapist/views/Quests/TherapistQuests.vue:407 PLACEHOLDER READY FOR BUILD",
+        "src/features/therapist/views/Quests/TherapistQuests.vue:413 class=\"therapist-workspace-placeholder\"",
+        "Source: src/features/therapist/views/Quests/TherapistQuests.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Therapist",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/therapist/clients/audit-fixture/quests",
+        "headings": [
+          "Alex Morgan",
+          "Alex Morgan",
+          "Quests",
+          "Attend a larger group activity"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 70,
+      "route": "/therapist/insights",
+      "page": "src/features/therapist/views/Insights/TherapistInsights.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/therapist/views/Insights/TherapistInsights.vue:67 <section v-else class=\"therapist-workspace-placeholder\">",
+        "src/features/therapist/views/Insights/TherapistInsights.vue:68 <div class=\"therapist-workspace-placeholder__icon\">✧</div>",
+        "src/features/therapist/views/Insights/TherapistInsights.vue:69 <span class=\"therapist-workspace-placeholder__premium\">THERAPIST PREMIUM</span>",
+        "Source: src/features/therapist/views/Insights/TherapistInsights.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Therapist",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/therapist/insights",
+        "headings": [
+          "Between Session Insights"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 71,
+      "route": "/therapist/clients/:clientId/insights",
+      "page": "src/features/therapist/views/Insights/TherapistInsights.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/therapist/views/Insights/TherapistInsights.vue:67 <section v-else class=\"therapist-workspace-placeholder\">",
+        "src/features/therapist/views/Insights/TherapistInsights.vue:68 <div class=\"therapist-workspace-placeholder__icon\">✧</div>",
+        "src/features/therapist/views/Insights/TherapistInsights.vue:69 <span class=\"therapist-workspace-placeholder__premium\">THERAPIST PREMIUM</span>",
+        "Source: src/features/therapist/views/Insights/TherapistInsights.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Therapist",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/therapist/clients/audit-fixture/insights",
+        "headings": [
+          "Between Session Insights"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 72,
+      "route": "/therapist/reports",
+      "page": "src/features/therapist/views/Reports/TherapistReports.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "Source: src/features/therapist/views/Reports/TherapistReports.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Therapist",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/therapist/reports",
+        "headings": [
+          "Reports"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 73,
+      "route": "/therapist/clients/:clientId/reports",
+      "page": "src/features/therapist/views/Reports/TherapistReports.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "Source: src/features/therapist/views/Reports/TherapistReports.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Therapist",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/therapist/clients/audit-fixture/reports",
+        "headings": [
+          "Reports"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 74,
+      "route": "/therapist/settings",
+      "page": "src/features/therapist/views/Settings/TherapistSettings.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "Source: src/features/therapist/views/Settings/TherapistSettings.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Therapist",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/therapist/settings",
+        "headings": [
+          "Settings"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 75,
+      "route": "/esports",
+      "page": "src/features/esports/views/EsportsHome.vue",
+      "status": "PARTIALLY_WORKING",
+      "evidence": [
+        "Static public esports content; roster/fixtures and product calls-to-action not a Team Hub data projection",
+        "Source: src/features/esports/views/EsportsHome.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend-only",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Esports",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/esports",
+        "headings": [
+          "COMPETE.\nCONNECT.\nRESPAWN.",
+          "HEAD COACH",
+          "UNLOCK OUR FIRST ROSTER",
+          "OUR TEAMS",
+          "OUR JOURNEY",
+          "SEASON ZERO JERSEY",
+          "PROJECT RESPAWN TOURNAMENTS",
+          "THE SIXTH PLAYER"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 76,
+      "route": "/esports/league-of-legends",
+      "page": "src/features/esports/views/LeagueOfLegendsTeam.vue",
+      "status": "PARTIALLY_WORKING",
+      "evidence": [
+        "Public team content renders; roster unlock/fixtures remain presentation content",
+        "Source: src/features/esports/views/LeagueOfLegendsTeam.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend-only",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Esports",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/esports/league-of-legends",
+        "headings": [
+          "LEAGUE OF\nLEGENDS",
+          "THIS IS WHERE IT BEGINS.",
+          "UNLOCK THE ROSTER.",
+          "SEASON ZERO ROSTER.",
+          "MEET THE COACH.",
+          "FIXTURES & RESULTS.",
+          "YOU'RE HERE AT THE BEGINNING.",
+          "THE TEAM HAS FIVE. WE NEED YOU."
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 77,
+      "route": "/esports/tournaments/:tournamentId",
+      "page": "src/features/esports/views/TournamentDetail.vue",
+      "status": "PLACEHOLDER",
+      "evidence": [
+        "Old esports TournamentDetail maps two IDs to names; generic tournament presentation, separate from Founder Cup modules",
+        "Source: src/features/esports/views/TournamentDetail.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Esports",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/esports/tournaments/audit-fixture",
+        "headings": [
+          "PROJECT RESPAWN TOURNAMENT"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 78,
+      "route": "/team-hub/:teamSlug/manage",
+      "page": "src/features/Team Hub/TeamManagement.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/features/Team Hub/TeamManagement.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "Team",
+        "TeamMembership",
+        "TeamRosterSlot",
+        "PlayerChampionPoolEntry"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Team Hub",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 79,
+      "route": "/team-hub",
+      "page": "src/features/Team Hub/TeamHubHome.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/features/Team Hub/TeamHubHome.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "Team",
+        "TeamMembership",
+        "TeamRosterSlot",
+        "PlayerChampionPoolEntry"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Team Hub",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 80,
+      "route": "/team-hub/:teamSlug",
+      "page": "src/features/Team Hub/TeamHome.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/features/Team Hub/TeamHome.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "Team",
+        "TeamMembership",
+        "TeamRosterSlot",
+        "PlayerChampionPoolEntry"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Team Hub",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 81,
+      "route": "/team-hub/:teamSlug/champion-pool",
+      "page": "src/features/Team Hub/champion-pool/ChampionPool.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/features/Team Hub/champion-pool/ChampionPool.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "Team",
+        "TeamMembership",
+        "TeamRosterSlot",
+        "PlayerChampionPoolEntry"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Team Hub",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 82,
+      "route": "/team-hub/:teamSlug/coach-review",
+      "page": "src/features/Team Hub/champion-pool/CoachPoolReview.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/features/Team Hub/champion-pool/CoachPoolReview.vue",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "Team",
+        "TeamMembership",
+        "TeamRosterSlot",
+        "PlayerChampionPoolEntry"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Team Hub",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 83,
+      "route": "/team-hub/:teamSlug/team-pool",
+      "page": null,
+      "status": "WORKING",
+      "evidence": [
+        "Redirect declaration exists; static target resolution pending runtime smoke",
+        "Source: null",
+        "Browser: guard/redirect destination /join"
+      ],
+      "backend": "redirect target",
+      "data": [
+        "Team",
+        "TeamMembership",
+        "TeamRosterSlot",
+        "PlayerChampionPoolEntry"
+      ],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Team Hub",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/join",
+        "headings": [
+          "Join Project Respawn"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 84,
+      "route": "/tournaments",
+      "page": null,
+      "status": "WORKING",
+      "evidence": [
+        "Redirect declaration exists; static target resolution pending runtime smoke",
+        "Source: null",
+        "Browser: guard/redirect destination /tournaments/founders-cup"
+      ],
+      "backend": "redirect target",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Tournaments",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/tournaments/founders-cup",
+        "headings": [
+          "Founders Cup",
+          "TOURNAMENT OVERVIEW",
+          "TEAM REGISTRATION OPENS SOON",
+          "Live now",
+          "Respawn Broadcast",
+          "Coming up",
+          "Latest results",
+          "Partner coverage"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 85,
+      "route": "/tournaments/:tournamentSlug",
+      "page": "src/features/tournaments/shell/TournamentShell.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/tournaments/tournament.data.js:1 // Frontend-only fixture adapter. Replace this adapter, not the route pages,",
+        "src/features/tournaments/tournament.data.js:5 game: 'League of Legends', server: 'EUW', entry: 'Free entry', demo: true,",
+        "src/features/tournaments/tournament.data.js:28 { id:'m4',a:'pr',b:'ef',status:'Upcoming',score:'—',game:1,round:'Upper final · Example fixture',coverage:'Coverage to be confirmed',time:'Date to be confirmed' },",
+        "Source: src/features/tournaments/shell/TournamentShell.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Tournaments",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/tournaments/founders-cup",
+        "headings": [
+          "Founders Cup",
+          "TOURNAMENT OVERVIEW",
+          "TEAM REGISTRATION OPENS SOON",
+          "Live now",
+          "Respawn Broadcast",
+          "Coming up",
+          "Latest results",
+          "Partner coverage"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 86,
+      "route": "/tournaments/:tournamentSlug",
+      "page": "src/views/Tournaments/Overview/TournamentOverview.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/tournaments/shared/TournamentPageContent.vue:11 <template v-else-if=\"page==='teams'\"><div class=\"t-toolbar\"><input v-model=\"search\" aria-label=\"Search teams\" placeholder=\"Search teams or creators\"></div><div class=\"t-grid three\"><article v-for=\"team in filteredTeams\" :key=\"team",
+        "src/features/tournaments/shared/TournamentPageContent.vue:14 <template v-else-if=\"page==='broadcast'\"><div class=\"t-split\"><section><div class=\"t-player large\"><span class=\"t-eyebrow\">Official Project Respawn broadcast</span><strong>{{tournament.name}}</strong><button @click=\"notice='Demo p",
+        "src/features/tournaments/shared/TournamentPageContent.vue:21 <template v-else-if=\"page==='registration'\"><p class=\"t-callout\">Form preview only. Applications are not open and nothing is saved or submitted.</p><form class=\"t-card t-form\" @submit.prevent=\"notice='Demo application complete. No",
+        "Source: src/views/Tournaments/Overview/TournamentOverview.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Tournaments",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/tournaments/founders-cup",
+        "headings": [
+          "Founders Cup",
+          "TOURNAMENT OVERVIEW",
+          "TEAM REGISTRATION OPENS SOON",
+          "Live now",
+          "Respawn Broadcast",
+          "Coming up",
+          "Latest results",
+          "Partner coverage"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 87,
+      "route": "/tournaments/:tournamentSlug/teams",
+      "page": "src/views/Tournaments/Teams/TournamentTeams.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/tournaments/shared/TournamentPageContent.vue:11 <template v-else-if=\"page==='teams'\"><div class=\"t-toolbar\"><input v-model=\"search\" aria-label=\"Search teams\" placeholder=\"Search teams or creators\"></div><div class=\"t-grid three\"><article v-for=\"team in filteredTeams\" :key=\"team",
+        "src/features/tournaments/shared/TournamentPageContent.vue:14 <template v-else-if=\"page==='broadcast'\"><div class=\"t-split\"><section><div class=\"t-player large\"><span class=\"t-eyebrow\">Official Project Respawn broadcast</span><strong>{{tournament.name}}</strong><button @click=\"notice='Demo p",
+        "src/features/tournaments/shared/TournamentPageContent.vue:21 <template v-else-if=\"page==='registration'\"><p class=\"t-callout\">Form preview only. Applications are not open and nothing is saved or submitted.</p><form class=\"t-card t-form\" @submit.prevent=\"notice='Demo application complete. No",
+        "Source: src/views/Tournaments/Teams/TournamentTeams.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Tournaments",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/tournaments/founders-cup/teams",
+        "headings": [
+          "Founders Cup",
+          "TEAMS"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 88,
+      "route": "/tournaments/:tournamentSlug/matches",
+      "page": "src/views/Tournaments/Matches/TournamentMatches.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/tournaments/shared/TournamentPageContent.vue:11 <template v-else-if=\"page==='teams'\"><div class=\"t-toolbar\"><input v-model=\"search\" aria-label=\"Search teams\" placeholder=\"Search teams or creators\"></div><div class=\"t-grid three\"><article v-for=\"team in filteredTeams\" :key=\"team",
+        "src/features/tournaments/shared/TournamentPageContent.vue:14 <template v-else-if=\"page==='broadcast'\"><div class=\"t-split\"><section><div class=\"t-player large\"><span class=\"t-eyebrow\">Official Project Respawn broadcast</span><strong>{{tournament.name}}</strong><button @click=\"notice='Demo p",
+        "src/features/tournaments/shared/TournamentPageContent.vue:21 <template v-else-if=\"page==='registration'\"><p class=\"t-callout\">Form preview only. Applications are not open and nothing is saved or submitted.</p><form class=\"t-card t-form\" @submit.prevent=\"notice='Demo application complete. No",
+        "Source: src/views/Tournaments/Matches/TournamentMatches.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Tournaments",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/tournaments/founders-cup/matches",
+        "headings": [
+          "Founders Cup",
+          "MATCHES"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 89,
+      "route": "/tournaments/:tournamentSlug/drafts",
+      "page": "src/views/Tournaments/DraftCentre/TournamentDraftCentre.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/tournaments/shared/TournamentPageContent.vue:11 <template v-else-if=\"page==='teams'\"><div class=\"t-toolbar\"><input v-model=\"search\" aria-label=\"Search teams\" placeholder=\"Search teams or creators\"></div><div class=\"t-grid three\"><article v-for=\"team in filteredTeams\" :key=\"team",
+        "src/features/tournaments/shared/TournamentPageContent.vue:14 <template v-else-if=\"page==='broadcast'\"><div class=\"t-split\"><section><div class=\"t-player large\"><span class=\"t-eyebrow\">Official Project Respawn broadcast</span><strong>{{tournament.name}}</strong><button @click=\"notice='Demo p",
+        "src/features/tournaments/shared/TournamentPageContent.vue:21 <template v-else-if=\"page==='registration'\"><p class=\"t-callout\">Form preview only. Applications are not open and nothing is saved or submitted.</p><form class=\"t-card t-form\" @submit.prevent=\"notice='Demo application complete. No",
+        "Source: src/views/Tournaments/DraftCentre/TournamentDraftCentre.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Tournaments",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/tournaments/founders-cup/drafts",
+        "headings": [
+          "Founders Cup",
+          "DRAFT CENTRE"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 90,
+      "route": "/tournaments/:tournamentSlug/broadcast",
+      "page": "src/views/Tournaments/RespawnBroadcast/TournamentRespawnBroadcast.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/tournaments/shared/TournamentPageContent.vue:11 <template v-else-if=\"page==='teams'\"><div class=\"t-toolbar\"><input v-model=\"search\" aria-label=\"Search teams\" placeholder=\"Search teams or creators\"></div><div class=\"t-grid three\"><article v-for=\"team in filteredTeams\" :key=\"team",
+        "src/features/tournaments/shared/TournamentPageContent.vue:14 <template v-else-if=\"page==='broadcast'\"><div class=\"t-split\"><section><div class=\"t-player large\"><span class=\"t-eyebrow\">Official Project Respawn broadcast</span><strong>{{tournament.name}}</strong><button @click=\"notice='Demo p",
+        "src/features/tournaments/shared/TournamentPageContent.vue:21 <template v-else-if=\"page==='registration'\"><p class=\"t-callout\">Form preview only. Applications are not open and nothing is saved or submitted.</p><form class=\"t-card t-form\" @submit.prevent=\"notice='Demo application complete. No",
+        "Source: src/views/Tournaments/RespawnBroadcast/TournamentRespawnBroadcast.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Tournaments",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/tournaments/founders-cup/broadcast",
+        "headings": [
+          "Founders Cup",
+          "RESPAWN BROADCAST",
+          "On the desk",
+          "Running order"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 91,
+      "route": "/tournaments/:tournamentSlug/partner-streams",
+      "page": "src/views/Tournaments/PartnerStreams/TournamentPartnerStreams.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/tournaments/shared/TournamentPageContent.vue:11 <template v-else-if=\"page==='teams'\"><div class=\"t-toolbar\"><input v-model=\"search\" aria-label=\"Search teams\" placeholder=\"Search teams or creators\"></div><div class=\"t-grid three\"><article v-for=\"team in filteredTeams\" :key=\"team",
+        "src/features/tournaments/shared/TournamentPageContent.vue:14 <template v-else-if=\"page==='broadcast'\"><div class=\"t-split\"><section><div class=\"t-player large\"><span class=\"t-eyebrow\">Official Project Respawn broadcast</span><strong>{{tournament.name}}</strong><button @click=\"notice='Demo p",
+        "src/features/tournaments/shared/TournamentPageContent.vue:21 <template v-else-if=\"page==='registration'\"><p class=\"t-callout\">Form preview only. Applications are not open and nothing is saved or submitted.</p><form class=\"t-card t-form\" @submit.prevent=\"notice='Demo application complete. No",
+        "Source: src/views/Tournaments/PartnerStreams/TournamentPartnerStreams.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Tournaments",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/tournaments/founders-cup/partner-streams",
+        "headings": [
+          "Founders Cup",
+          "PARTNER STREAMS"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 92,
+      "route": "/tournaments/:tournamentSlug/bracket",
+      "page": "src/views/Tournaments/BracketResults/TournamentBracketResults.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/tournaments/shared/TournamentPageContent.vue:11 <template v-else-if=\"page==='teams'\"><div class=\"t-toolbar\"><input v-model=\"search\" aria-label=\"Search teams\" placeholder=\"Search teams or creators\"></div><div class=\"t-grid three\"><article v-for=\"team in filteredTeams\" :key=\"team",
+        "src/features/tournaments/shared/TournamentPageContent.vue:14 <template v-else-if=\"page==='broadcast'\"><div class=\"t-split\"><section><div class=\"t-player large\"><span class=\"t-eyebrow\">Official Project Respawn broadcast</span><strong>{{tournament.name}}</strong><button @click=\"notice='Demo p",
+        "src/features/tournaments/shared/TournamentPageContent.vue:21 <template v-else-if=\"page==='registration'\"><p class=\"t-callout\">Form preview only. Applications are not open and nothing is saved or submitted.</p><form class=\"t-card t-form\" @submit.prevent=\"notice='Demo application complete. No",
+        "Source: src/views/Tournaments/BracketResults/TournamentBracketResults.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Tournaments",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/tournaments/founders-cup/bracket",
+        "headings": [
+          "Founders Cup",
+          "BRACKET & RESULTS",
+          "Upper bracket",
+          "Lower bracket"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 93,
+      "route": "/tournaments/:tournamentSlug/news",
+      "page": "src/views/Tournaments/News/TournamentNews.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/tournaments/shared/TournamentPageContent.vue:11 <template v-else-if=\"page==='teams'\"><div class=\"t-toolbar\"><input v-model=\"search\" aria-label=\"Search teams\" placeholder=\"Search teams or creators\"></div><div class=\"t-grid three\"><article v-for=\"team in filteredTeams\" :key=\"team",
+        "src/features/tournaments/shared/TournamentPageContent.vue:14 <template v-else-if=\"page==='broadcast'\"><div class=\"t-split\"><section><div class=\"t-player large\"><span class=\"t-eyebrow\">Official Project Respawn broadcast</span><strong>{{tournament.name}}</strong><button @click=\"notice='Demo p",
+        "src/features/tournaments/shared/TournamentPageContent.vue:21 <template v-else-if=\"page==='registration'\"><p class=\"t-callout\">Form preview only. Applications are not open and nothing is saved or submitted.</p><form class=\"t-card t-form\" @submit.prevent=\"notice='Demo application complete. No",
+        "Source: src/views/Tournaments/News/TournamentNews.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Tournaments",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/tournaments/founders-cup/news",
+        "headings": [
+          "Founders Cup",
+          "NEWS"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 94,
+      "route": "/tournaments/:tournamentSlug/info",
+      "page": "src/views/Tournaments/Info/TournamentInfo.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/tournaments/shared/TournamentPageContent.vue:11 <template v-else-if=\"page==='teams'\"><div class=\"t-toolbar\"><input v-model=\"search\" aria-label=\"Search teams\" placeholder=\"Search teams or creators\"></div><div class=\"t-grid three\"><article v-for=\"team in filteredTeams\" :key=\"team",
+        "src/features/tournaments/shared/TournamentPageContent.vue:14 <template v-else-if=\"page==='broadcast'\"><div class=\"t-split\"><section><div class=\"t-player large\"><span class=\"t-eyebrow\">Official Project Respawn broadcast</span><strong>{{tournament.name}}</strong><button @click=\"notice='Demo p",
+        "src/features/tournaments/shared/TournamentPageContent.vue:21 <template v-else-if=\"page==='registration'\"><p class=\"t-callout\">Form preview only. Applications are not open and nothing is saved or submitted.</p><form class=\"t-card t-form\" @submit.prevent=\"notice='Demo application complete. No",
+        "Source: src/views/Tournaments/Info/TournamentInfo.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Tournaments",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/tournaments/founders-cup/info",
+        "headings": [
+          "Founders Cup",
+          "TOURNAMENT INFO",
+          "Tournament handbook"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 95,
+      "route": "/tournaments/:tournamentSlug/matches/:matchId",
+      "page": "src/views/Tournaments/MatchDetail/TournamentMatchDetail.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/tournaments/shared/TournamentPageContent.vue:11 <template v-else-if=\"page==='teams'\"><div class=\"t-toolbar\"><input v-model=\"search\" aria-label=\"Search teams\" placeholder=\"Search teams or creators\"></div><div class=\"t-grid three\"><article v-for=\"team in filteredTeams\" :key=\"team",
+        "src/features/tournaments/shared/TournamentPageContent.vue:14 <template v-else-if=\"page==='broadcast'\"><div class=\"t-split\"><section><div class=\"t-player large\"><span class=\"t-eyebrow\">Official Project Respawn broadcast</span><strong>{{tournament.name}}</strong><button @click=\"notice='Demo p",
+        "src/features/tournaments/shared/TournamentPageContent.vue:21 <template v-else-if=\"page==='registration'\"><p class=\"t-callout\">Form preview only. Applications are not open and nothing is saved or submitted.</p><form class=\"t-card t-form\" @submit.prevent=\"notice='Demo application complete. No",
+        "Source: src/views/Tournaments/MatchDetail/TournamentMatchDetail.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Tournaments",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/tournaments/founders-cup/matches/m1",
+        "headings": [
+          "Founders Cup",
+          "MATCH CENTRE",
+          "Game-by-game record"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 96,
+      "route": "/tournaments/:tournamentSlug/drafts/:matchId",
+      "page": "src/views/Tournaments/DraftSpectator/TournamentDraftSpectator.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/tournaments/shared/TournamentPageContent.vue:11 <template v-else-if=\"page==='teams'\"><div class=\"t-toolbar\"><input v-model=\"search\" aria-label=\"Search teams\" placeholder=\"Search teams or creators\"></div><div class=\"t-grid three\"><article v-for=\"team in filteredTeams\" :key=\"team",
+        "src/features/tournaments/shared/TournamentPageContent.vue:14 <template v-else-if=\"page==='broadcast'\"><div class=\"t-split\"><section><div class=\"t-player large\"><span class=\"t-eyebrow\">Official Project Respawn broadcast</span><strong>{{tournament.name}}</strong><button @click=\"notice='Demo p",
+        "src/features/tournaments/shared/TournamentPageContent.vue:21 <template v-else-if=\"page==='registration'\"><p class=\"t-callout\">Form preview only. Applications are not open and nothing is saved or submitted.</p><form class=\"t-card t-form\" @submit.prevent=\"notice='Demo application complete. No",
+        "Source: src/views/Tournaments/DraftSpectator/TournamentDraftSpectator.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Tournaments",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/tournaments/founders-cup/drafts/m1",
+        "headings": [
+          "Founders Cup",
+          "SPECTATOR DRAFT"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 97,
+      "route": "/tournaments/:tournamentSlug/register",
+      "page": "src/views/Tournaments/Registration/TournamentRegistration.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/tournaments/shared/TournamentPageContent.vue:11 <template v-else-if=\"page==='teams'\"><div class=\"t-toolbar\"><input v-model=\"search\" aria-label=\"Search teams\" placeholder=\"Search teams or creators\"></div><div class=\"t-grid three\"><article v-for=\"team in filteredTeams\" :key=\"team",
+        "src/features/tournaments/shared/TournamentPageContent.vue:14 <template v-else-if=\"page==='broadcast'\"><div class=\"t-split\"><section><div class=\"t-player large\"><span class=\"t-eyebrow\">Official Project Respawn broadcast</span><strong>{{tournament.name}}</strong><button @click=\"notice='Demo p",
+        "src/features/tournaments/shared/TournamentPageContent.vue:21 <template v-else-if=\"page==='registration'\"><p class=\"t-callout\">Form preview only. Applications are not open and nothing is saved or submitted.</p><form class=\"t-card t-form\" @submit.prevent=\"notice='Demo application complete. No",
+        "Source: src/views/Tournaments/Registration/TournamentRegistration.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Tournaments",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/tournaments/founders-cup/register",
+        "headings": [
+          "Founders Cup",
+          "REGISTRATION PREVIEW"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 98,
+      "route": "/tournaments/:tournamentSlug/matches/:matchId/lobby",
+      "page": "src/views/Tournaments/MatchLobby/TournamentMatchLobby.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Local demo/fixture data; no established product backend",
+        "src/features/tournaments/shared/TournamentPageContent.vue:11 <template v-else-if=\"page==='teams'\"><div class=\"t-toolbar\"><input v-model=\"search\" aria-label=\"Search teams\" placeholder=\"Search teams or creators\"></div><div class=\"t-grid three\"><article v-for=\"team in filteredTeams\" :key=\"team",
+        "src/features/tournaments/shared/TournamentPageContent.vue:14 <template v-else-if=\"page==='broadcast'\"><div class=\"t-split\"><section><div class=\"t-player large\"><span class=\"t-eyebrow\">Official Project Respawn broadcast</span><strong>{{tournament.name}}</strong><button @click=\"notice='Demo p",
+        "src/features/tournaments/shared/TournamentPageContent.vue:21 <template v-else-if=\"page==='registration'\"><p class=\"t-callout\">Form preview only. Applications are not open and nothing is saved or submitted.</p><form class=\"t-card t-form\" @submit.prevent=\"notice='Demo application complete. No",
+        "Source: src/views/Tournaments/MatchLobby/TournamentMatchLobby.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend fixtures/content",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Tournaments",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/tournaments/founders-cup/matches/m1/lobby",
+        "headings": [
+          "Founders Cup",
+          "MATCH LOBBY PREVIEW"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 99,
+      "route": "/dashboard",
+      "page": "src/views/Admin/AdminLayout/AdminLayout.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/views/Admin/AdminLayout/AdminLayout.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Core / Admin",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/dashboard",
+        "headings": [],
+        "exceptions": [
+          "CONSOLE: initAuth failed: UserUnAuthenticatedException: User needs to be authenticated to call this API.\n    at Sn (http://127.0.0.1:18474/assets/main-DBiFS2Ht.js:2:32987)\n    at Mn (http://127.0.0.1:18474/assets/main-DBiFS2Ht.js:4:865)\n    at async Proxy.initAuth (http://127.0.0.1:18474/assets/main-DBiFS2Ht.js:67:349370)\n    at async Proxy.mounted (http://127.0.0.1:18474/assets/main-DBiFS2Ht.js:67:349272)"
+        ],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 100,
+      "route": "/dashboard",
+      "page": "src/views/Admin/AdminHome/AdminHome.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/views/Admin/AdminHome/AdminHome.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Core / Admin",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/dashboard",
+        "headings": [],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 101,
+      "route": "/dashboard/users",
+      "page": "src/views/Admin/AdminUsers/AdminUsers.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/views/Admin/AdminUsers/AdminUsers.vue",
+        "Browser: guard/redirect destination /"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Core / Admin",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/",
+        "headings": [
+          "Your past is just the tutorial.\nYour real game starts now.",
+          "A BETTER WAY TO BUILD CONFIDENCE"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 102,
+      "route": "/dashboard/permissions",
+      "page": "src/views/Admin/AdminPermissions/AdminPermissions.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/views/Admin/AdminPermissions/AdminPermissions.vue",
+        "Browser: guard/redirect destination /"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "PermissionAuditEvent"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Core / Admin",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/",
+        "headings": [
+          "Your past is just the tutorial.\nYour real game starts now.",
+          "A BETTER WAY TO BUILD CONFIDENCE"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 103,
+      "route": "/dashboard/investors",
+      "page": "src/views/Admin/AdminInvestors/AdminInvestors.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/views/Admin/AdminInvestors/AdminInvestors.vue",
+        "Browser: guard/redirect destination /"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "InvestorAccessRequest",
+        "InvestorAccess",
+        "InvestorAccessAuditEvent"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Investor Access",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/",
+        "headings": [
+          "Your past is just the tutorial.\nYour real game starts now.",
+          "A BETTER WAY TO BUILD CONFIDENCE"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 104,
+      "route": "/dashboard/esports/teams",
+      "page": "src/features/Team Hub/TeamAdministration.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/features/Team Hub/TeamAdministration.vue",
+        "Browser: guard/redirect destination /"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "Team",
+        "TeamMembership",
+        "TeamRosterSlot",
+        "PlayerChampionPoolEntry"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Team Hub",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/",
+        "headings": [
+          "Your past is just the tutorial.\nYour real game starts now.",
+          "A BETTER WAY TO BUILD CONFIDENCE"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 105,
+      "route": "/dashboard/events",
+      "page": "src/views/Admin/AdminEvents/AdminEvents.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/views/Admin/AdminEvents/AdminEvents.vue",
+        "Browser: guard/redirect destination /"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Community / Events",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/",
+        "headings": [
+          "Your past is just the tutorial.\nYour real game starts now.",
+          "A BETTER WAY TO BUILD CONFIDENCE"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 106,
+      "route": "/dashboard/applications",
+      "page": "src/views/Admin/AdminApplications/AdminApplications.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/views/Admin/AdminApplications/AdminApplications.vue",
+        "Browser: guard/redirect destination /"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "ApplicationSubmission"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Applications / Bookings",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/",
+        "headings": [
+          "Your past is just the tutorial.\nYour real game starts now.",
+          "A BETTER WAY TO BUILD CONFIDENCE"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 107,
+      "route": "/dashboard/applications/reviews",
+      "page": "src/views/Admin/AdminApplications/AdminApplicationReviews.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Review-progress workflow uses demo reviewer/application state",
+        "Source: src/views/Admin/AdminApplications/AdminApplicationReviews.vue",
+        "Browser: guard/redirect destination /"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "ApplicationSubmission"
+      ],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Applications / Bookings",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/",
+        "headings": [
+          "Your past is just the tutorial.\nYour real game starts now.",
+          "A BETTER WAY TO BUILD CONFIDENCE"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 108,
+      "route": "/dashboard/applications/reviewers",
+      "page": "src/views/Admin/AdminApplications/AdminReviewerPerformance.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Reviewer performance is fixture-backed",
+        "Source: src/views/Admin/AdminApplications/AdminReviewerPerformance.vue",
+        "Browser: guard/redirect destination /"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "ApplicationSubmission"
+      ],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Applications / Bookings",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/",
+        "headings": [
+          "Your past is just the tutorial.\nYour real game starts now.",
+          "A BETTER WAY TO BUILD CONFIDENCE"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 109,
+      "route": "/dashboard/applications/reviewers/:reviewerId",
+      "page": "src/views/Admin/AdminApplications/AdminReviewerDetail.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Reviewer detail is fixture-backed",
+        "Source: src/views/Admin/AdminApplications/AdminReviewerDetail.vue",
+        "Browser: guard/redirect destination /"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "ApplicationSubmission"
+      ],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Applications / Bookings",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/",
+        "headings": [
+          "Your past is just the tutorial.\nYour real game starts now.",
+          "A BETTER WAY TO BUILD CONFIDENCE"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 110,
+      "route": "/dashboard/availability",
+      "page": "src/views/Admin/Bookings/AdminAvailability.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Availability/booking types use local bookingAvailabilityData",
+        "Source: src/views/Admin/Bookings/AdminAvailability.vue",
+        "Browser: guard/redirect destination /"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "ApplicationSubmission"
+      ],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Applications / Bookings",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/",
+        "headings": [
+          "Your past is just the tutorial.\nYour real game starts now.",
+          "A BETTER WAY TO BUILD CONFIDENCE"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 111,
+      "route": "/dashboard/applications/availability",
+      "page": null,
+      "status": "WORKING",
+      "evidence": [
+        "Redirect declaration exists; static target resolution pending runtime smoke",
+        "Source: null",
+        "Browser: guard/redirect destination /"
+      ],
+      "backend": "redirect target",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission"
+      ],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Applications / Bookings",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/",
+        "headings": [
+          "Your past is just the tutorial.\nYour real game starts now.",
+          "A BETTER WAY TO BUILD CONFIDENCE"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 112,
+      "route": "/dashboard/applications/inductions",
+      "page": "src/views/Admin/AdminApplications/AdminInductions.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Induction scheduling workflow is demo-backed",
+        "Source: src/views/Admin/AdminApplications/AdminInductions.vue",
+        "Browser: guard/redirect destination /"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "ApplicationSubmission"
+      ],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Applications / Bookings",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/",
+        "headings": [
+          "Your past is just the tutorial.\nYour real game starts now.",
+          "A BETTER WAY TO BUILD CONFIDENCE"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 113,
+      "route": "/dashboard/applications/inductions/:inductionId",
+      "page": "src/views/Admin/AdminApplications/AdminInductionDetail.vue",
+      "status": "FIXTURE_DEMO",
+      "evidence": [
+        "Induction detail/demo booking state, no live scheduling backend proven",
+        "Source: src/views/Admin/AdminApplications/AdminInductionDetail.vue",
+        "Browser: guard/redirect destination /"
+      ],
+      "backend": "Frontend fixtures/content; Core auth/access guard",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "ApplicationSubmission"
+      ],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Applications / Bookings",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/",
+        "headings": [
+          "Your past is just the tutorial.\nYour real game starts now.",
+          "A BETTER WAY TO BUILD CONFIDENCE"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 114,
+      "route": "/dashboard/applications/:applicationId/review",
+      "page": "src/views/Admin/AdminApplications/AdminApplicationReview.vue",
+      "status": "PARTIALLY_WORKING",
+      "evidence": [
+        "Can read stored application; review claim/scoring/submission mutate local demoWorkflow",
+        "Source: src/views/Admin/AdminApplications/AdminApplicationReview.vue",
+        "Browser: guard/redirect destination /"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "ApplicationSubmission"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Applications / Bookings",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/",
+        "headings": [
+          "Your past is just the tutorial.\nYour real game starts now.",
+          "A BETTER WAY TO BUILD CONFIDENCE"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 115,
+      "route": "/dashboard/applications/:applicationId",
+      "page": "src/views/Admin/AdminApplications/AdminApplicationDetail.vue",
+      "status": "PARTIALLY_WORKING",
+      "evidence": [
+        "Stored application detail read exists; review/decision lifecycle contains demo actions",
+        "Source: src/views/Admin/AdminApplications/AdminApplicationDetail.vue",
+        "Browser: guard/redirect destination /"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "ApplicationSubmission"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Applications / Bookings",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/",
+        "headings": [
+          "Your past is just the tutorial.\nYour real game starts now.",
+          "A BETTER WAY TO BUILD CONFIDENCE"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 116,
+      "route": "/dashboard/forums",
+      "page": "src/views/Admin/AdminForums/AdminForums.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/views/Admin/AdminForums/AdminForums.vue",
+        "Browser: guard/redirect destination /"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "ForumCategory",
+        "ForumBoard",
+        "ForumThread",
+        "PermissionAuditEvent",
+        "EventTag",
+        "EventSuggestion",
+        "ForumPost",
+        "MerchCategory"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Community / Events",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/",
+        "headings": [
+          "Your past is just the tutorial.\nYour real game starts now.",
+          "A BETTER WAY TO BUILD CONFIDENCE"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 117,
+      "route": "/dashboard/brands",
+      "page": "src/views/Admin/AdminBrands/AdminBrands.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/views/Admin/AdminBrands/AdminBrands.vue",
+        "Browser: guard/redirect destination /"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "PermissionAuditEvent"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Core / Admin",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/",
+        "headings": [
+          "Your past is just the tutorial.\nYour real game starts now.",
+          "A BETTER WAY TO BUILD CONFIDENCE"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 118,
+      "route": "/dashboard/brand-permissions",
+      "page": "src/views/BrandPermissions/BrandPermissions.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/views/BrandPermissions/BrandPermissions.vue",
+        "Browser: guard/redirect destination /"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "PermissionAuditEvent"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Core / Admin",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/",
+        "headings": [
+          "Your past is just the tutorial.\nYour real game starts now.",
+          "A BETTER WAY TO BUILD CONFIDENCE"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 119,
+      "route": "/dashboard/merch-categories",
+      "page": "src/views/Admin/AdminMerchCategories/AdminMerchCategories.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/views/Admin/AdminMerchCategories/AdminMerchCategories.vue",
+        "Browser: guard/redirect destination /"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "MerchCategory",
+        "PermissionAuditEvent",
+        "EventTag",
+        "EventSuggestion",
+        "ForumCategory",
+        "ForumBoard",
+        "ForumThread",
+        "ForumPost"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Commerce",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/",
+        "headings": [
+          "Your past is just the tutorial.\nYour real game starts now.",
+          "A BETTER WAY TO BUILD CONFIDENCE"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 120,
+      "route": "/dashboard/product-control",
+      "page": "src/views/Admin/ProductControl/ProductControl.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/views/Admin/ProductControl/ProductControl.vue",
+        "Browser: guard/redirect destination /"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "PermissionAuditEvent",
+        "MerchProduct",
+        "MerchProductBrand",
+        "MerchProductVariant",
+        "MediaCollection",
+        "MediaItem",
+        "MerchCategory",
+        "MerchProductCategory",
+        "MerchProductImage"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Commerce",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/",
+        "headings": [
+          "Your past is just the tutorial.\nYour real game starts now.",
+          "A BETTER WAY TO BUILD CONFIDENCE"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 121,
+      "route": "/dashboard/media-library",
+      "page": "src/views/Admin/MediaLibrary/MediaLibrary.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/views/Admin/MediaLibrary/MediaLibrary.vue",
+        "Browser: guard/redirect destination /"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "PermissionAuditEvent",
+        "MediaCollection",
+        "MediaItem",
+        "MerchProductImage"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Content / Media",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/",
+        "headings": [
+          "Your past is just the tutorial.\nYour real game starts now.",
+          "A BETTER WAY TO BUILD CONFIDENCE"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 122,
+      "route": "/dashboard/orders",
+      "page": "src/views/Admin/AdminOrders/AdminOrders.vue",
+      "status": "UNKNOWN",
+      "evidence": [
+        "Static imports inspected; authenticated/backend workflow not executed",
+        "Source: src/views/Admin/AdminOrders/AdminOrders.vue",
+        "Browser: guard/redirect destination /"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "CreatorWorkspaceRecord",
+        "WorkspaceMembership",
+        "WorkspaceMembershipPermissionSet",
+        "PermissionDefinition",
+        "GroupPermission",
+        "Brand",
+        "BrandAccess",
+        "BrandAccessPermission",
+        "FulfillmentOrder",
+        "PermissionAuditEvent"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Commerce",
+      "requiresCognito": true,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/",
+        "headings": [
+          "Your past is just the tutorial.\nYour real game starts now.",
+          "A BETTER WAY TO BUILD CONFIDENCE"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 123,
+      "route": "/forum",
+      "page": "src/views/Forum/ForumLayout/ForumLayout.vue",
+      "status": "PARTIALLY_WORKING",
+      "evidence": [
+        "Real forum queries coexist with static sidebar/friends-online fixtures; blocked-network smoke remains loading",
+        "Source: src/views/Forum/ForumLayout/ForumLayout.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "ForumCategory",
+        "ForumBoard",
+        "ForumThread",
+        "ForumPost",
+        "UserProfile",
+        "ForumActivity",
+        "PermissionDefinition",
+        "GroupPermission",
+        "PermissionAuditEvent",
+        "EventTag",
+        "EventSuggestion",
+        "MerchCategory"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Community / Events",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/forum",
+        "headings": [
+          "Forums",
+          "Forum Overview",
+          "Forums",
+          "Loading forum structure"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 124,
+      "route": "/forum",
+      "page": "src/views/Forum/ForumIndex/ForumIndex.vue",
+      "status": "PARTIALLY_WORKING",
+      "evidence": [
+        "Real forum queries coexist with static sidebar/friends-online fixtures",
+        "Source: src/views/Forum/ForumIndex/ForumIndex.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "ForumCategory",
+        "ForumBoard",
+        "ForumThread",
+        "ForumPost",
+        "UserProfile",
+        "ForumActivity",
+        "PermissionDefinition",
+        "GroupPermission",
+        "PermissionAuditEvent",
+        "EventTag",
+        "EventSuggestion",
+        "MerchCategory"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Community / Events",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/forum",
+        "headings": [
+          "Forums",
+          "Forum Overview",
+          "Forums",
+          "Loading forum structure"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 125,
+      "route": "/forum/board/:boardSlug",
+      "page": "src/views/Forum/ForumBoard/ForumBoard.vue",
+      "status": "PARTIALLY_WORKING",
+      "evidence": [
+        "Forum board API exists; unknown slug/live data not validated; fixture sidebar inherited",
+        "Source: src/views/Forum/ForumBoard/ForumBoard.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "ForumCategory",
+        "ForumBoard",
+        "ForumThread",
+        "ForumPost",
+        "UserProfile",
+        "ForumActivity",
+        "PermissionDefinition",
+        "GroupPermission",
+        "PermissionAuditEvent",
+        "EventTag",
+        "EventSuggestion",
+        "MerchCategory"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Community / Events",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/forum/board/audit-fixture",
+        "headings": [
+          "Forums",
+          "Board View",
+          "Loading board"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 126,
+      "route": "/forum/thread/:threadSlug",
+      "page": "src/views/Forum/ForumThread/ForumThread.vue",
+      "status": "PARTIALLY_WORKING",
+      "evidence": [
+        "Forum thread/reply API exists; authenticated writing untested; fixture sidebar inherited",
+        "Source: src/views/Forum/ForumThread/ForumThread.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "LegacyPlatform",
+      "data": [
+        "ForumCategory",
+        "ForumBoard",
+        "ForumThread",
+        "ForumPost",
+        "UserProfile",
+        "ForumActivity",
+        "PermissionDefinition",
+        "GroupPermission",
+        "PermissionAuditEvent",
+        "EventTag",
+        "EventSuggestion",
+        "MerchCategory"
+      ],
+      "currentCloudFormationOwner": "LegacyPlatform (nested owners in call/model maps)",
+      "futureDomain": "Community / Events",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "HIGH if moving state; frontend boundary refactor LOW/MEDIUM",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/forum/thread/audit-fixture",
+        "headings": [
+          "Forums",
+          "Thread Discussion",
+          "Loading thread"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 127,
+      "route": "/brand-permissions",
+      "page": null,
+      "status": "WORKING",
+      "evidence": [
+        "Redirect declaration exists; static target resolution pending runtime smoke",
+        "Source: null",
+        "Browser: guard/redirect destination /"
+      ],
+      "backend": "redirect target",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Core / Account",
+      "requiresCognito": false,
+      "shouldLazyLoad": true,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/",
+        "headings": [
+          "Your past is just the tutorial.\nYour real game starts now.",
+          "A BETTER WAY TO BUILD CONFIDENCE"
+        ],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    },
+    {
+      "routeId": 128,
+      "route": "/:pathMatch(.*)",
+      "page": "src/views/NotFound/NotFound.vue",
+      "status": "WORKING",
+      "evidence": [
+        "Unknown path renders 404 message and Home link",
+        "Source: src/views/NotFound/NotFound.vue",
+        "Browser: destination rendered or attempted"
+      ],
+      "backend": "Frontend-only",
+      "data": [],
+      "currentCloudFormationOwner": null,
+      "futureDomain": "Website / Content",
+      "requiresCognito": false,
+      "shouldLazyLoad": false,
+      "migrationRisk": "LOW frontend; new backend authorization separate",
+      "browser": {
+        "mode": "Anonymous production-build smoke; external requests blocked",
+        "rendered": true,
+        "resolvedPath": "/audit-missing-page",
+        "headings": [],
+        "exceptions": [],
+        "liveBackendVerified": false,
+        "authenticatedContentVerified": false
+      }
+    }
+  ],
+  "summary": {
+    "totalRouteRecords": 128,
+    "pageRecords": 115,
+    "layoutRecords": 5,
+    "redirectRecords": 8,
+    "uniqueCanonicalPathPatterns": 123,
+    "aliasPaths": 9,
+    "statusCounts": {
+      "WORKING": 16,
+      "PARTIALLY_WORKING": 19,
+      "FIXTURE_DEMO": 56,
+      "PLACEHOLDER": 4,
+      "BROKEN": 0,
+      "DEAD_LEGACY": 1,
+      "UNKNOWN": 32
+    },
+    "accessCounts": {
+      "public": 61,
+      "authenticated": 43,
+      "admin": 24,
+      "restricted": 0
+    },
+    "backendCounts": {
+      "LegacyPlatform": 47,
+      "independentBackend": 1,
+      "frontendOnlyOrFixtures": 71,
+      "redirects": 8,
+      "localLegacyService": 1
+    },
+    "browser": {
+      "routeRecords": 128,
+      "aliases": 9,
+      "invalidSlugCheck": 1,
+      "liveBackendVerified": false
+    },
+    "testCoverage": {
+      "frontend": {
+        "files": 58,
+        "passed": 307,
+        "failed": 0
+      },
+      "backendBroad": {
+        "files": 63,
+        "passed": 276,
+        "failed": 9
+      },
+      "teamHub": {
+        "passed": 47,
+        "failed": 0
+      },
+      "resourceAccounting": {
+        "passed": 41,
+        "failed": 0
+      },
+      "amplifyGuards": {
+        "passed": 16,
+        "failed": 0
+      },
+      "routeContracts": {
+        "passed": 16,
+        "failed": 0
+      },
+      "note": "Suites overlap; do not sum as unique assertions. Backend failures include diagnostic runner/asset bundling issues.",
+      "backendConfiguredFollowup": {
+        "files": 2,
+        "passed": 3,
+        "failed": 0,
+        "note": "Both original generated-module failures pass with TSX_TSCONFIG_PATH=amplify/tsconfig.json; seven asset-bundling failures remain uncorrected"
+      }
+    }
+  },
+  "classificationDefinitions": {
+    "WORKING": "Observed narrow frontend rendering/navigation/local tool capability; not a full business acceptance test",
+    "PARTIALLY_WORKING": "Implemented capabilities with evidenced demo gaps, incomplete/error paths or mixed workflows",
+    "FIXTURE_DEMO": "Primary page workflow is local simulated data regardless of shared login",
+    "PLACEHOLDER": "Reserved feature/directory not yet populated or implemented",
+    "BROKEN": "Confirmed primary route failure; none established independent of intentionally blocked backend",
+    "DEAD_LEGACY": "Routed legacy implementation, retirement candidate; not automatically unused",
+    "UNKNOWN": "Live/authenticated functionality not verified; source/build success is insufficient"
+  },
+  "completion": "INCOMPLETE: authenticated end-to-end health, live cloud verification and external resource ownership remain unresolved"
+}

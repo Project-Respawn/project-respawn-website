@@ -1,0 +1,177 @@
+[
+  {
+    "ChangeSetName": "ntgre-tournaments-release1-practical-20261004",
+    "ChangeSetId": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/ntgre-tournaments-release1-practical-20261004/bf3b3cd2-e132-4fe6-bd99-ecfdb0344526",
+    "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Tournaments-Ntgre/0bbf8810-bb52-11f1-8464-0ad1b20dfcbd",
+    "StackName": "ProjectRespawn-Tournaments-Ntgre",
+    "Description": "Approved practical execution policy; preserved candidate; original API plus ten preview resources; rollback required",
+    "Parameters": [
+      {
+        "ParameterKey": "BootstrapVersion",
+        "ParameterValue": "/cdk-bootstrap/hnb659fds/version",
+        "ResolvedValue": "30"
+      }
+    ],
+    "CreationTime": "2026-10-04T13:09:22.406000+00:00",
+    "ExecutionStatus": "AVAILABLE",
+    "Status": "CREATE_COMPLETE",
+    "NotificationARNs": [],
+    "RollbackConfiguration": {},
+    "Capabilities": [
+      "CAPABILITY_NAMED_IAM"
+    ],
+    "Changes": [
+      {
+        "Type": "Resource",
+        "ResourceChange": {
+          "Action": "Add",
+          "LogicalResourceId": "DefaultStage",
+          "ResourceType": "AWS::ApiGatewayV2::Stage",
+          "Scope": [],
+          "Details": [],
+          "AfterContext": "{\"Properties\":{\"AutoDeploy\":\"true\",\"StageName\":\"$default\",\"ApiId\":\"msipnwy39j\",\"DefaultRouteSettings\":{\"ThrottlingBurstLimit\":\"20\",\"ThrottlingRateLimit\":\"10\"}}}"
+        }
+      },
+      {
+        "Type": "Resource",
+        "ResourceChange": {
+          "Action": "Modify",
+          "LogicalResourceId": "HttpApi",
+          "PhysicalResourceId": "msipnwy39j",
+          "ResourceType": "AWS::ApiGatewayV2::Api",
+          "Replacement": "False",
+          "Scope": [
+            "DeletionPolicy",
+            "UpdateReplacePolicy"
+          ],
+          "Details": [
+            {
+              "Target": {
+                "Attribute": "UpdateReplacePolicy",
+                "RequiresRecreation": "Never",
+                "Path": "/UpdateReplacePolicy",
+                "BeforeValue": "Delete",
+                "AttributeChangeType": "Remove"
+              },
+              "Evaluation": "Static",
+              "ChangeSource": "DirectModification"
+            },
+            {
+              "Target": {
+                "Attribute": "DeletionPolicy",
+                "RequiresRecreation": "Never",
+                "Path": "/DeletionPolicy",
+                "BeforeValue": "Delete",
+                "AttributeChangeType": "Remove"
+              },
+              "Evaluation": "Static",
+              "ChangeSource": "DirectModification"
+            }
+          ],
+          "BeforeContext": "{\"Properties\":{\"CorsConfiguration\":{\"AllowOrigins\":[\"http://localhost:5174\"],\"AllowHeaders\":[\"authorization\"],\"MaxAge\":\"300\",\"AllowMethods\":[\"GET\"]},\"ProtocolType\":\"HTTP\",\"Tags\":{\"Project\":\"ProjectRespawn\",\"Environment\":\"Ntgre\",\"Domain\":\"Tournaments\"},\"Name\":\"ProjectRespawn-Tournaments-Ntgre\"},\"UpdateReplacePolicy\":\"Delete\",\"DeletionPolicy\":\"Delete\"}",
+          "AfterContext": "{\"Properties\":{\"CorsConfiguration\":{\"AllowOrigins\":[\"http://localhost:5174\"],\"AllowHeaders\":[\"authorization\"],\"MaxAge\":\"300\",\"AllowMethods\":[\"GET\"]},\"ProtocolType\":\"HTTP\",\"Tags\":{\"Project\":\"ProjectRespawn\",\"Environment\":\"Ntgre\",\"Domain\":\"Tournaments\"},\"Name\":\"ProjectRespawn-Tournaments-Ntgre\"}}"
+        }
+      },
+      {
+        "Type": "Resource",
+        "ResourceChange": {
+          "Action": "Add",
+          "LogicalResourceId": "HttpErrors",
+          "ResourceType": "AWS::CloudWatch::Alarm",
+          "Scope": [],
+          "Details": [],
+          "AfterContext": "{\"Properties\":{\"MetricName\":\"5xx\",\"ComparisonOperator\":\"GreaterThanOrEqualToThreshold\",\"TreatMissingData\":\"notBreaching\",\"Statistic\":\"Sum\",\"Dimensions\":[{\"Value\":\"msipnwy39j\",\"Name\":\"ApiId\"}],\"Period\":\"60\",\"EvaluationPeriods\":\"1\",\"Namespace\":\"AWS/ApiGateway\",\"Threshold\":\"1\"}}"
+        }
+      },
+      {
+        "Type": "Resource",
+        "ResourceChange": {
+          "Action": "Add",
+          "LogicalResourceId": "HttpInvoke",
+          "ResourceType": "AWS::Lambda::Permission",
+          "Scope": [],
+          "Details": [],
+          "AfterContext": "{\"Properties\":{\"FunctionName\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"Action\":\"lambda:InvokeFunction\",\"SourceArn\":\"arn:aws:execute-api:eu-north-1:058264289478:msipnwy39j/*/GET/v1/tournaments/preview\",\"Principal\":\"apigateway.amazonaws.com\",\"SourceAccount\":\"058264289478\"}}"
+        }
+      },
+      {
+        "Type": "Resource",
+        "ResourceChange": {
+          "Action": "Add",
+          "LogicalResourceId": "JwtAuthorizer",
+          "ResourceType": "AWS::ApiGatewayV2::Authorizer",
+          "Scope": [],
+          "Details": [],
+          "AfterContext": "{\"Properties\":{\"IdentitySource\":[\"$request.header.Authorization\"],\"AuthorizerType\":\"JWT\",\"JwtConfiguration\":{\"Audience\":[\"1iq7ovjaf7d16imdvbqgfgvf86\"],\"Issuer\":\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\"},\"ApiId\":\"msipnwy39j\",\"Name\":\"ExistingNtgreIdentity\"}}"
+        }
+      },
+      {
+        "Type": "Resource",
+        "ResourceChange": {
+          "Action": "Add",
+          "LogicalResourceId": "PreviewErrors",
+          "ResourceType": "AWS::CloudWatch::Alarm",
+          "Scope": [],
+          "Details": [],
+          "AfterContext": "{\"Properties\":{\"MetricName\":\"Errors\",\"ComparisonOperator\":\"GreaterThanOrEqualToThreshold\",\"TreatMissingData\":\"notBreaching\",\"Statistic\":\"Sum\",\"Dimensions\":[{\"Value\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"Name\":\"FunctionName\"}],\"Period\":\"60\",\"EvaluationPeriods\":\"1\",\"Namespace\":\"AWS/Lambda\",\"Threshold\":\"1\"}}"
+        }
+      },
+      {
+        "Type": "Resource",
+        "ResourceChange": {
+          "Action": "Add",
+          "LogicalResourceId": "PreviewFunction",
+          "ResourceType": "AWS::Lambda::Function",
+          "Scope": [],
+          "Details": [],
+          "AfterContext": "{\"Properties\":{\"Role\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"MemorySize\":\"128\",\"Runtime\":\"nodejs22.x\",\"Timeout\":\"5\",\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"LogGroup\":\"{{changeSet:KNOWN_AFTER_APPLY}}\"},\"Environment\":{\"Variables\":{\"BUILD_REVISION\":\"b75a91494c03606d825e234a65d295c184067820cd77dfc84e11a2c83484ae2f\",\"EXPECTED_ISSUER\":\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\",\"EXPECTED_API_ID\":\"msipnwy39j\",\"DOMAIN_ENV\":\"Ntgre\",\"EXPECTED_CLIENT_ID\":\"1iq7ovjaf7d16imdvbqgfgvf86\"}},\"Handler\":\"index.handler\",\"Code\":{\"S3Bucket\":\"cdk-hnb659fds-assets-058264289478-eu-north-1\",\"S3Key\":\"004def9c2189ea71a43cc3a05a796073327c0a084a7d896d0d6ee19aa8e54199.zip\"},\"Architectures\":[\"arm64\"]}}"
+        }
+      },
+      {
+        "Type": "Resource",
+        "ResourceChange": {
+          "Action": "Add",
+          "LogicalResourceId": "PreviewIntegration",
+          "ResourceType": "AWS::ApiGatewayV2::Integration",
+          "Scope": [],
+          "Details": [],
+          "AfterContext": "{\"Properties\":{\"TimeoutInMillis\":\"6000\",\"IntegrationUri\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"PayloadFormatVersion\":\"2.0\",\"ApiId\":\"msipnwy39j\",\"IntegrationType\":\"AWS_PROXY\"}}"
+        }
+      },
+      {
+        "Type": "Resource",
+        "ResourceChange": {
+          "Action": "Add",
+          "LogicalResourceId": "PreviewLogs",
+          "ResourceType": "AWS::Logs::LogGroup",
+          "Scope": [],
+          "Details": [],
+          "AfterContext": "{\"Properties\":{\"RetentionInDays\":\"14\",\"LogGroupName\":\"/project-respawn/Ntgre/tournaments/preview\"}}"
+        }
+      },
+      {
+        "Type": "Resource",
+        "ResourceChange": {
+          "Action": "Add",
+          "LogicalResourceId": "PreviewRole",
+          "ResourceType": "AWS::IAM::Role",
+          "Scope": [],
+          "Details": [],
+          "AfterContext": "{\"Properties\":{\"AssumeRolePolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"}}]},\"Policies\":[{\"PolicyName\":\"PreviewLogsOnly\",\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Resource\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"Effect\":\"Allow\"}]}}],\"PermissionsBoundary\":\"arn:aws:iam::058264289478:policy/ProjectRespawn-Tournaments-Ntgre-RuntimeBoundary\"}}"
+        }
+      },
+      {
+        "Type": "Resource",
+        "ResourceChange": {
+          "Action": "Add",
+          "LogicalResourceId": "PreviewRoute",
+          "ResourceType": "AWS::ApiGatewayV2::Route",
+          "Scope": [],
+          "Details": [],
+          "AfterContext": "{\"Properties\":{\"Target\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"RouteKey\":\"GET /v1/tournaments/preview\",\"AuthorizationType\":\"JWT\",\"AuthorizerId\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"ApiId\":\"msipnwy39j\"}}"
+        }
+      }
+    ],
+    "IncludeNestedStacks": false
+  }
+]

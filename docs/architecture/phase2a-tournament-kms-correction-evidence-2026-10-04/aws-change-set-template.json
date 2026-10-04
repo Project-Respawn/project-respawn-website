@@ -1,0 +1,338 @@
+{
+  "TemplateBody": {
+    "Description": "Independent Ntgre Tournament fixture proof; no business state",
+    "Resources": {
+      "PreviewLogs": {
+        "Type": "AWS::Logs::LogGroup",
+        "Properties": {
+          "LogGroupName": "/project-respawn/Ntgre/tournaments/preview",
+          "RetentionInDays": 14
+        }
+      },
+      "PreviewRole": {
+        "Type": "AWS::IAM::Role",
+        "Properties": {
+          "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Principal": {
+                  "Service": "lambda.amazonaws.com"
+                },
+                "Action": "sts:AssumeRole"
+              }
+            ]
+          },
+          "PermissionsBoundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-Tournaments-Ntgre-RuntimeBoundary",
+          "Policies": [
+            {
+              "PolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Action": [
+                      "logs:CreateLogStream",
+                      "logs:PutLogEvents"
+                    ],
+                    "Resource": {
+                      "Fn::GetAtt": [
+                        "PreviewLogs",
+                        "Arn"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "PolicyName": "PreviewLogsOnly"
+            }
+          ]
+        }
+      },
+      "HttpApi": {
+        "Type": "AWS::ApiGatewayV2::Api",
+        "Properties": {
+          "CorsConfiguration": {
+            "AllowHeaders": [
+              "authorization"
+            ],
+            "AllowMethods": [
+              "GET"
+            ],
+            "AllowOrigins": [
+              "http://localhost:5174"
+            ],
+            "MaxAge": 300
+          },
+          "Name": "ProjectRespawn-Tournaments-Ntgre",
+          "ProtocolType": "HTTP",
+          "Tags": {
+            "Domain": "Tournaments",
+            "Environment": "Ntgre",
+            "Project": "ProjectRespawn"
+          }
+        }
+      },
+      "PreviewFunction": {
+        "Type": "AWS::Lambda::Function",
+        "Properties": {
+          "Architectures": [
+            "arm64"
+          ],
+          "Code": {
+            "S3Bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+            "S3Key": "004def9c2189ea71a43cc3a05a796073327c0a084a7d896d0d6ee19aa8e54199.zip"
+          },
+          "Environment": {
+            "Variables": {
+              "DOMAIN_ENV": "Ntgre",
+              "EXPECTED_ISSUER": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE",
+              "EXPECTED_CLIENT_ID": "1iq7ovjaf7d16imdvbqgfgvf86",
+              "EXPECTED_API_ID": {
+                "Ref": "HttpApi"
+              },
+              "BUILD_REVISION": "b75a91494c03606d825e234a65d295c184067820cd77dfc84e11a2c83484ae2f"
+            }
+          },
+          "Handler": "index.handler",
+          "LoggingConfig": {
+            "LogFormat": "JSON",
+            "LogGroup": {
+              "Ref": "PreviewLogs"
+            }
+          },
+          "MemorySize": 128,
+          "Role": {
+            "Fn::GetAtt": [
+              "PreviewRole",
+              "Arn"
+            ]
+          },
+          "Runtime": "nodejs22.x",
+          "Timeout": 5
+        }
+      },
+      "JwtAuthorizer": {
+        "Type": "AWS::ApiGatewayV2::Authorizer",
+        "Properties": {
+          "ApiId": {
+            "Ref": "HttpApi"
+          },
+          "AuthorizerType": "JWT",
+          "IdentitySource": [
+            "$request.header.Authorization"
+          ],
+          "JwtConfiguration": {
+            "Audience": [
+              "1iq7ovjaf7d16imdvbqgfgvf86"
+            ],
+            "Issuer": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE"
+          },
+          "Name": "ExistingNtgreIdentity"
+        }
+      },
+      "PreviewIntegration": {
+        "Type": "AWS::ApiGatewayV2::Integration",
+        "Properties": {
+          "ApiId": {
+            "Ref": "HttpApi"
+          },
+          "IntegrationType": "AWS_PROXY",
+          "IntegrationUri": {
+            "Fn::GetAtt": [
+              "PreviewFunction",
+              "Arn"
+            ]
+          },
+          "PayloadFormatVersion": "2.0",
+          "TimeoutInMillis": 6000
+        }
+      },
+      "PreviewRoute": {
+        "Type": "AWS::ApiGatewayV2::Route",
+        "Properties": {
+          "ApiId": {
+            "Ref": "HttpApi"
+          },
+          "AuthorizationType": "JWT",
+          "AuthorizerId": {
+            "Ref": "JwtAuthorizer"
+          },
+          "RouteKey": "GET /v1/tournaments/preview",
+          "Target": {
+            "Fn::Join": [
+              "",
+              [
+                "integrations/",
+                {
+                  "Ref": "PreviewIntegration"
+                }
+              ]
+            ]
+          }
+        }
+      },
+      "HttpInvoke": {
+        "Type": "AWS::Lambda::Permission",
+        "Properties": {
+          "Action": "lambda:InvokeFunction",
+          "FunctionName": {
+            "Fn::GetAtt": [
+              "PreviewFunction",
+              "Arn"
+            ]
+          },
+          "Principal": "apigateway.amazonaws.com",
+          "SourceAccount": "058264289478",
+          "SourceArn": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:execute-api:eu-north-1:058264289478:",
+                {
+                  "Ref": "HttpApi"
+                },
+                "/*/GET/v1/tournaments/preview"
+              ]
+            ]
+          }
+        }
+      },
+      "DefaultStage": {
+        "Type": "AWS::ApiGatewayV2::Stage",
+        "Properties": {
+          "ApiId": {
+            "Ref": "HttpApi"
+          },
+          "AutoDeploy": true,
+          "DefaultRouteSettings": {
+            "ThrottlingBurstLimit": 20,
+            "ThrottlingRateLimit": 10
+          },
+          "StageName": "$default"
+        },
+        "DependsOn": [
+          "HttpInvoke",
+          "PreviewRoute"
+        ]
+      },
+      "PreviewErrors": {
+        "Type": "AWS::CloudWatch::Alarm",
+        "Properties": {
+          "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+          "Dimensions": [
+            {
+              "Name": "FunctionName",
+              "Value": {
+                "Ref": "PreviewFunction"
+              }
+            }
+          ],
+          "EvaluationPeriods": 1,
+          "MetricName": "Errors",
+          "Namespace": "AWS/Lambda",
+          "Period": 60,
+          "Statistic": "Sum",
+          "Threshold": 1,
+          "TreatMissingData": "notBreaching"
+        }
+      },
+      "HttpErrors": {
+        "Type": "AWS::CloudWatch::Alarm",
+        "Properties": {
+          "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+          "Dimensions": [
+            {
+              "Name": "ApiId",
+              "Value": {
+                "Ref": "HttpApi"
+              }
+            }
+          ],
+          "EvaluationPeriods": 1,
+          "MetricName": "5xx",
+          "Namespace": "AWS/ApiGateway",
+          "Period": 60,
+          "Statistic": "Sum",
+          "Threshold": 1,
+          "TreatMissingData": "notBreaching"
+        }
+      }
+    },
+    "Outputs": {
+      "DomainOwner": {
+        "Value": "Tournaments"
+      },
+      "Environment": {
+        "Value": "Ntgre"
+      },
+      "Account": {
+        "Value": "058264289478"
+      },
+      "Region": {
+        "Value": "eu-north-1"
+      },
+      "Endpoint": {
+        "Value": {
+          "Fn::GetAtt": [
+            "HttpApi",
+            "ApiEndpoint"
+          ]
+        }
+      },
+      "ApiId": {
+        "Value": {
+          "Ref": "HttpApi"
+        }
+      },
+      "ContractVersion": {
+        "Value": "tournament-preview.v1"
+      },
+      "DeploymentRevision": {
+        "Value": "b75a91494c03606d825e234a65d295c184067820cd77dfc84e11a2c83484ae2f"
+      },
+      "CoreIdentitySha256": {
+        "Value": "9bea68ab5781eeb7265c363fd6baac78d1e3e032196f9aa209bc3780644a6b9e"
+      }
+    },
+    "Parameters": {
+      "BootstrapVersion": {
+        "Type": "AWS::SSM::Parameter::Value<String>",
+        "Default": "/cdk-bootstrap/hnb659fds/version",
+        "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+      }
+    },
+    "Rules": {
+      "CheckBootstrapVersion": {
+        "Assertions": [
+          {
+            "Assert": {
+              "Fn::Not": [
+                {
+                  "Fn::Contains": [
+                    [
+                      "1",
+                      "2",
+                      "3",
+                      "4",
+                      "5"
+                    ],
+                    {
+                      "Ref": "BootstrapVersion"
+                    }
+                  ]
+                }
+              ]
+            },
+            "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+          }
+        ]
+      }
+    }
+  },
+  "StagesAvailable": [
+    "Original",
+    "Processed"
+  ]
+}

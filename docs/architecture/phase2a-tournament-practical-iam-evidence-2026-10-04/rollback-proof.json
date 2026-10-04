@@ -1,0 +1,111 @@
+{
+  "at": "2026-10-04T13:14:58.097Z",
+  "stack": {
+    "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Tournaments-Ntgre/0bbf8810-bb52-11f1-8464-0ad1b20dfcbd",
+    "StackName": "ProjectRespawn-Tournaments-Ntgre",
+    "Description": "Ntgre Tournament API-only resource import; stateless Phase 2A proof",
+    "CreationTime": "2026-09-28T16:03:47.557000+00:00",
+    "LastUpdatedTime": "2026-10-04T13:11:20.311000+00:00",
+    "RollbackConfiguration": {},
+    "StackStatus": "UPDATE_ROLLBACK_COMPLETE",
+    "DisableRollback": false,
+    "NotificationARNs": [],
+    "RoleARN": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-CfnExecution",
+    "Tags": [],
+    "EnableTerminationProtection": false,
+    "DriftInformation": {
+      "StackDriftStatus": "NOT_CHECKED"
+    },
+    "LastOperations": [
+      {
+        "OperationType": "ROLLBACK",
+        "OperationId": "0c03dfb0-2b7a-4bf9-91ae-9f73f6c4b5ae"
+      },
+      {
+        "OperationType": "UPDATE_STACK",
+        "OperationId": "74aeff8f-b427-4672-a2b5-3dfac857e56f"
+      }
+    ]
+  },
+  "resources": [
+    {
+      "LogicalResourceId": "HttpApi",
+      "PhysicalResourceId": "msipnwy39j",
+      "ResourceType": "AWS::ApiGatewayV2::Api",
+      "LastUpdatedTimestamp": "2026-09-28T16:06:03.172000+00:00",
+      "ResourceStatus": "UPDATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "IN_SYNC"
+      }
+    }
+  ],
+  "api": {
+    "at": "2026-10-04T13:14:24.844Z",
+    "api": {
+      "ApiEndpoint": "https://msipnwy39j.execute-api.eu-north-1.amazonaws.com",
+      "ApiId": "msipnwy39j",
+      "ApiKeySelectionExpression": "$request.header.x-api-key",
+      "CorsConfiguration": {
+        "AllowHeaders": [
+          "authorization"
+        ],
+        "AllowMethods": [
+          "GET"
+        ],
+        "AllowOrigins": [
+          "http://localhost:5174"
+        ],
+        "MaxAge": 300
+      },
+      "CreatedDate": "2026-09-28T15:28:51+00:00",
+      "DisableExecuteApiEndpoint": false,
+      "IpAddressType": "ipv4",
+      "Name": "ProjectRespawn-Tournaments-Ntgre",
+      "ProtocolType": "HTTP",
+      "RouteSelectionExpression": "$request.method $request.path",
+      "Tags": {
+        "Domain": "Tournaments",
+        "Project": "ProjectRespawn",
+        "Environment": "Ntgre"
+      }
+    },
+    "arn": "arn:aws:apigateway:eu-north-1::/apis/msipnwy39j",
+    "children": {
+      "stages": [],
+      "routes": [],
+      "integrations": [],
+      "authorizers": [],
+      "deployments": [],
+      "mappings": []
+    },
+    "businessState": false
+  },
+  "products": {
+    "lambdas": [],
+    "roles": [],
+    "logs": [],
+    "alarms": {
+      "MetricAlarms": [],
+      "CompositeAlarms": []
+    }
+  },
+  "drift": {
+    "StackResourceDrift": {
+      "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Tournaments-Ntgre/0bbf8810-bb52-11f1-8464-0ad1b20dfcbd",
+      "LogicalResourceId": "HttpApi",
+      "PhysicalResourceId": "msipnwy39j",
+      "ResourceType": "AWS::ApiGatewayV2::Api",
+      "ExpectedProperties": "{\"CorsConfiguration\":{\"AllowOrigins\":[\"http://localhost:5174\"],\"AllowHeaders\":[\"authorization\"],\"MaxAge\":300,\"AllowMethods\":[\"GET\"]},\"ProtocolType\":\"HTTP\",\"Tags\":{\"Project\":\"ProjectRespawn\",\"Environment\":\"Ntgre\",\"Domain\":\"Tournaments\"},\"Name\":\"ProjectRespawn-Tournaments-Ntgre\"}",
+      "ActualProperties": "{\"CorsConfiguration\":{\"AllowOrigins\":[\"http://localhost:5174\"],\"AllowHeaders\":[\"authorization\"],\"MaxAge\":300,\"AllowMethods\":[\"GET\"]},\"ProtocolType\":\"HTTP\",\"Tags\":{\"Project\":\"ProjectRespawn\",\"Environment\":\"Ntgre\",\"Domain\":\"Tournaments\"},\"Name\":\"ProjectRespawn-Tournaments-Ntgre\"}",
+      "PropertyDifferences": [],
+      "StackResourceDriftStatus": "IN_SYNC",
+      "Timestamp": "2026-10-04T13:14:38.728000+00:00"
+    }
+  },
+  "templateRestored": true,
+  "executionPolicyVersion": "v7",
+  "runtimeAndDeployBoundariesUnchanged": true,
+  "policyPatchedAfterFailure": false,
+  "deploymentRetried": false,
+  "apiAccessLogging": false
+}

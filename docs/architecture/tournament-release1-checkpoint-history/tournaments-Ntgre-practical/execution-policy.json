@@ -1,0 +1,243 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "lambda:CreateFunction",
+        "lambda:GetFunction",
+        "lambda:GetFunctionConfiguration",
+        "lambda:UpdateFunctionCode",
+        "lambda:UpdateFunctionConfiguration",
+        "lambda:DeleteFunction",
+        "lambda:ListTags",
+        "lambda:TagResource",
+        "lambda:UntagResource",
+        "lambda:GetPolicy",
+        "lambda:AddPermission",
+        "lambda:RemovePermission",
+        "lambda:GetRuntimeManagementConfig",
+        "lambda:GetFunctionRecursionConfig"
+      ],
+      "Resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre-PreviewFunction-*",
+      "Effect": "Allow"
+    },
+    {
+      "Action": [
+        "cloudwatch:PutMetricAlarm",
+        "cloudwatch:DeleteAlarms",
+        "cloudwatch:DescribeAlarms",
+        "cloudwatch:TagResource",
+        "cloudwatch:UntagResource",
+        "cloudwatch:ListTagsForResource"
+      ],
+      "Resource": [
+        "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-Tournaments-Ntgre-PreviewErrors-*",
+        "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-Tournaments-Ntgre-HttpErrors-*"
+      ],
+      "Effect": "Allow"
+    },
+    {
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:DeleteLogGroup",
+        "logs:PutRetentionPolicy",
+        "logs:DeleteRetentionPolicy",
+        "logs:TagResource",
+        "logs:UntagResource",
+        "logs:ListTagsForResource",
+        "logs:DescribeLogStreams",
+        "logs:GetDataProtectionPolicy"
+      ],
+      "Resource": [
+        "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/tournaments/preview",
+        "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/tournaments/preview:*"
+      ],
+      "Effect": "Allow"
+    },
+    {
+      "Action": "logs:DescribeLogGroups",
+      "Resource": "*",
+      "Effect": "Allow"
+    },
+    {
+      "Condition": {
+        "ArnEquals": {
+          "iam:PermissionsBoundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-Tournaments-Ntgre-RuntimeBoundary"
+        }
+      },
+      "Action": [
+        "iam:CreateRole",
+        "iam:PutRolePolicy"
+      ],
+      "Resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-PreviewRole-*",
+      "Effect": "Allow"
+    },
+    {
+      "Action": [
+        "iam:GetRole",
+        "iam:GetRolePolicy",
+        "iam:ListRolePolicies",
+        "iam:ListAttachedRolePolicies",
+        "iam:DeleteRole",
+        "iam:DeleteRolePolicy",
+        "iam:UpdateRole",
+        "iam:UpdateRoleDescription",
+        "iam:UpdateAssumeRolePolicy",
+        "iam:TagRole",
+        "iam:UntagRole",
+        "iam:ListRoleTags"
+      ],
+      "Resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-PreviewRole-*",
+      "Effect": "Allow"
+    },
+    {
+      "Condition": {
+        "StringEquals": {
+          "iam:PassedToService": "lambda.amazonaws.com"
+        }
+      },
+      "Action": "iam:PassRole",
+      "Resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-PreviewRole-*",
+      "Effect": "Allow"
+    },
+    {
+      "Action": [
+        "s3:GetObject",
+        "s3:GetObjectVersion"
+      ],
+      "Resource": [
+        "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/b9be81faba86a3a8e1949cca1c802720a7bf557cc74cd6cb7f5ee17423c35705.json",
+        "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/004def9c2189ea71a43cc3a05a796073327c0a084a7d896d0d6ee19aa8e54199.zip"
+      ],
+      "Effect": "Allow"
+    },
+    {
+      "Action": [
+        "ssm:GetParameter",
+        "ssm:GetParameters"
+      ],
+      "Resource": "arn:aws:ssm:eu-north-1:058264289478:parameter/cdk-bootstrap/hnb659fds/version",
+      "Effect": "Allow"
+    },
+    {
+      "Condition": {
+        "StringNotEquals": {
+          "aws:RequestedRegion": "eu-north-1"
+        }
+      },
+      "Action": [
+        "apigateway:*",
+        "lambda:*",
+        "logs:*",
+        "cloudwatch:*"
+      ],
+      "Resource": "*",
+      "Effect": "Deny"
+    },
+    {
+      "Action": [
+        "logs:PutResourcePolicy",
+        "logs:DeleteResourcePolicy",
+        "logs:CreateLogDelivery",
+        "logs:UpdateLogDelivery",
+        "logs:DeleteLogDelivery"
+      ],
+      "Resource": "*",
+      "Effect": "Deny"
+    },
+    {
+      "Effect": "Allow",
+      "Action": "apigateway:*",
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:RequestedRegion": "eu-north-1"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": "apigateway:*",
+      "Resource": [
+        "arn:aws:apigateway:eu-north-1::/restapis*",
+        "arn:aws:apigateway:eu-north-1::*7sqhe1oq7f*",
+        "arn:aws:apigateway:eu-north-1::*96iei1y9x4*",
+        "arn:aws:apigateway:eu-north-1::*f7oxg5hy72*",
+        "arn:aws:apigateway:eu-north-1::*g9eoo6e1h2*",
+        "arn:aws:apigateway:eu-north-1::*jm15a0rmi0*",
+        "arn:aws:apigateway:eu-north-1::*mt6ctit5rf*",
+        "arn:aws:apigateway:eu-north-1::*n4yh7awecc*",
+        "arn:aws:apigateway:eu-north-1::*oc7oz18v8k*",
+        "arn:aws:apigateway:eu-north-1::*openg7joy6*",
+        "arn:aws:apigateway:eu-north-1::*pbbz0ux4ta*",
+        "arn:aws:apigateway:eu-north-1::*rwfv75jx2b*",
+        "arn:aws:apigateway:eu-north-1::*w0xfyjn6v7*",
+        "arn:aws:apigateway:eu-north-1::*ztevn4upnk*"
+      ]
+    },
+    {
+      "Effect": "Deny",
+      "Action": [
+        "cognito-idp:*",
+        "cognito-identity:*",
+        "appsync:*",
+        "dynamodb:*",
+        "kms:*",
+        "secretsmanager:*",
+        "cloudformation:*",
+        "ecs:*",
+        "ec2:*",
+        "events:*",
+        "firehose:*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Deny",
+      "Action": "s3:*",
+      "NotResource": [
+        "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/b9be81faba86a3a8e1949cca1c802720a7bf557cc74cd6cb7f5ee17423c35705.json",
+        "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/004def9c2189ea71a43cc3a05a796073327c0a084a7d896d0d6ee19aa8e54199.zip"
+      ]
+    },
+    {
+      "Effect": "Deny",
+      "Action": "iam:PassRole",
+      "NotResource": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-PreviewRole-*"
+    },
+    {
+      "Effect": "Deny",
+      "Action": "iam:PassRole",
+      "Resource": "*",
+      "Condition": {
+        "StringNotEquals": {
+          "iam:PassedToService": "lambda.amazonaws.com"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": [
+        "iam:DeleteRolePermissionsBoundary",
+        "iam:PutRolePermissionsBoundary",
+        "iam:CreatePolicyVersion",
+        "iam:SetDefaultPolicyVersion",
+        "iam:AttachRolePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Deny",
+      "Action": [
+        "iam:CreateRole",
+        "iam:PutRolePolicy"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "ArnNotEquals": {
+          "iam:PermissionsBoundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-Tournaments-Ntgre-RuntimeBoundary"
+        }
+      }
+    }
+  ]
+}

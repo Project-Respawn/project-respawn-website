@@ -1,5 +1,7 @@
 # Project Respawn Phase 2 domain decomposition plan
 
+**Security standard update — 4 October 2026:** [Deployment versus runtime security](domain-deployment-runtime-security.md) separates strict runtime/data isolation from practical service-level CloudFormation execution permissions. Mandatory LegacyPlatform/production protections, shared identity ownership and independent roots remain. This approved decision supersedes earlier per-path execution-role isolation requirements; it does not authorize other-domain migration or runtime privilege expansion.
+
 Date: 26 September 2026. **Analysis and proposal only. Phase 2A is not implemented or authorized for execution by this document.**
 
 ## Decision

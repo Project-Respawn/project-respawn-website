@@ -1,0 +1,187 @@
+{
+  "at": "2026-10-04T13:40:57.178Z",
+  "stack": {
+    "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Tournaments-Ntgre/0bbf8810-bb52-11f1-8464-0ad1b20dfcbd",
+    "StackName": "ProjectRespawn-Tournaments-Ntgre",
+    "ChangeSetId": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/ntgre-tournaments-release1-kms-corrected-20261004/3e48f322-a2f0-4c65-b5a4-34e974db9996",
+    "Description": "Independent Ntgre Tournament fixture proof; no business state",
+    "Parameters": [
+      {
+        "ParameterKey": "BootstrapVersion",
+        "ParameterValue": "/cdk-bootstrap/hnb659fds/version",
+        "ResolvedValue": "30"
+      }
+    ],
+    "CreationTime": "2026-09-28T16:03:47.557000+00:00",
+    "LastUpdatedTime": "2026-10-04T13:34:34.859000+00:00",
+    "RollbackConfiguration": {},
+    "StackStatus": "UPDATE_COMPLETE",
+    "DisableRollback": false,
+    "NotificationARNs": [],
+    "Capabilities": [
+      "CAPABILITY_NAMED_IAM"
+    ],
+    "Outputs": [
+      {
+        "OutputKey": "Account",
+        "OutputValue": "058264289478"
+      },
+      {
+        "OutputKey": "Endpoint",
+        "OutputValue": "https://msipnwy39j.execute-api.eu-north-1.amazonaws.com"
+      },
+      {
+        "OutputKey": "Environment",
+        "OutputValue": "Ntgre"
+      },
+      {
+        "OutputKey": "Region",
+        "OutputValue": "eu-north-1"
+      },
+      {
+        "OutputKey": "CoreIdentitySha256",
+        "OutputValue": "9bea68ab5781eeb7265c363fd6baac78d1e3e032196f9aa209bc3780644a6b9e"
+      },
+      {
+        "OutputKey": "DeploymentRevision",
+        "OutputValue": "b75a91494c03606d825e234a65d295c184067820cd77dfc84e11a2c83484ae2f"
+      },
+      {
+        "OutputKey": "ApiId",
+        "OutputValue": "msipnwy39j"
+      },
+      {
+        "OutputKey": "ContractVersion",
+        "OutputValue": "tournament-preview.v1"
+      },
+      {
+        "OutputKey": "DomainOwner",
+        "OutputValue": "Tournaments"
+      }
+    ],
+    "RoleARN": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-CfnExecution",
+    "Tags": [],
+    "EnableTerminationProtection": false,
+    "DriftInformation": {
+      "StackDriftStatus": "NOT_CHECKED"
+    },
+    "LastOperations": [
+      {
+        "OperationType": "UPDATE_STACK",
+        "OperationId": "b730b1a9-1d0a-4524-9ddb-7fa307d67aa8"
+      }
+    ]
+  },
+  "resources": [
+    {
+      "LogicalResourceId": "DefaultStage",
+      "PhysicalResourceId": "$default",
+      "ResourceType": "AWS::ApiGatewayV2::Stage",
+      "LastUpdatedTimestamp": "2026-10-04T13:35:27.966000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "HttpApi",
+      "PhysicalResourceId": "msipnwy39j",
+      "ResourceType": "AWS::ApiGatewayV2::Api",
+      "LastUpdatedTimestamp": "2026-09-28T16:06:03.172000+00:00",
+      "ResourceStatus": "UPDATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "IN_SYNC"
+      }
+    },
+    {
+      "LogicalResourceId": "HttpErrors",
+      "PhysicalResourceId": "ProjectRespawn-Tournaments-Ntgre-HttpErrors-NLywnrF34Zb4",
+      "ResourceType": "AWS::CloudWatch::Alarm",
+      "LastUpdatedTimestamp": "2026-10-04T13:34:42.237000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "HttpInvoke",
+      "PhysicalResourceId": "ProjectRespawn-Tournaments-Ntgre-HttpInvoke-DTm4dxJNE81S",
+      "ResourceType": "AWS::Lambda::Permission",
+      "LastUpdatedTimestamp": "2026-10-04T13:35:24.081000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "JwtAuthorizer",
+      "PhysicalResourceId": "v78ib2",
+      "ResourceType": "AWS::ApiGatewayV2::Authorizer",
+      "LastUpdatedTimestamp": "2026-10-04T13:34:39.146000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "PreviewErrors",
+      "PhysicalResourceId": "ProjectRespawn-Tournaments-Ntgre-PreviewErrors-tVGBWEop0yku",
+      "ResourceType": "AWS::CloudWatch::Alarm",
+      "LastUpdatedTimestamp": "2026-10-04T13:35:26.454000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "PreviewFunction",
+      "PhysicalResourceId": "ProjectRespawn-Tournaments-Ntgre-PreviewFunction-Ao4o6udMacJV",
+      "ResourceType": "AWS::Lambda::Function",
+      "LastUpdatedTimestamp": "2026-10-04T13:35:22.382000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "PreviewIntegration",
+      "PhysicalResourceId": "xeys56k",
+      "ResourceType": "AWS::ApiGatewayV2::Integration",
+      "LastUpdatedTimestamp": "2026-10-04T13:35:24.223000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "PreviewLogs",
+      "PhysicalResourceId": "/project-respawn/Ntgre/tournaments/preview",
+      "ResourceType": "AWS::Logs::LogGroup",
+      "LastUpdatedTimestamp": "2026-10-04T13:34:51.761000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "PreviewRole",
+      "PhysicalResourceId": "ProjectRespawn-Tournaments-Ntgre-PreviewRole-o0HtDJVosSDO",
+      "ResourceType": "AWS::IAM::Role",
+      "LastUpdatedTimestamp": "2026-10-04T13:35:11.375000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "PreviewRoute",
+      "PhysicalResourceId": "0txbv4p",
+      "ResourceType": "AWS::ApiGatewayV2::Route",
+      "LastUpdatedTimestamp": "2026-10-04T13:35:26.025000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    }
+  ]
+}
