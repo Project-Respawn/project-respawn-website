@@ -1,0 +1,74 @@
+{
+  "at": "2026-10-04T13:40:29.240Z",
+  "observed": [
+    {
+      "at": "2026-10-04T13:35:13Z",
+      "operation": "Decrypt",
+      "requestId": "67538f28-978f-4030-ae4b-5103fa9e66a5",
+      "principal": "arn:aws:sts::058264289478:assumed-role/ProjectRespawn-Tournaments-Ntgre-PreviewRole-o0HtDJVosSDO/awslambda_849_20261004133513647",
+      "error": "AccessDenied",
+      "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-Tournaments-Ntgre-PreviewRole-o0HtDJVosSDO/awslambda_849_20261004133513647 is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in a permissions boundary: arn:aws:iam::058264289478:policy/ProjectRespawn-Tournaments-Ntgre-RuntimeBoundary"
+    }
+  ],
+  "role": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-PreviewRole-o0HtDJVosSDO",
+  "key": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+  "simulation": {
+    "EvaluationResults": [
+      {
+        "EvalActionName": "kms:Decrypt",
+        "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+        "EvalDecision": "explicitDeny",
+        "MatchedStatements": [
+          {
+            "SourcePolicyId": "ProjectRespawn-Tournaments-Ntgre-RuntimeBoundary",
+            "SourcePolicyType": "Permissions Boundary Policy",
+            "StartPosition": {
+              "Line": 1,
+              "Column": 38
+            },
+            "EndPosition": {
+              "Line": 1,
+              "Column": 163
+            }
+          }
+        ],
+        "MissingContextValues": [],
+        "OrganizationsDecisionDetail": {
+          "AllowedByOrganizations": true
+        },
+        "PermissionsBoundaryDecisionDetail": {
+          "AllowedByPermissionsBoundary": false
+        },
+        "EvalDecisionDetails": {},
+        "ResourceSpecificResults": [
+          {
+            "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+            "EvalResourceDecision": "explicitDeny",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "ProjectRespawn-Tournaments-Ntgre-RuntimeBoundary",
+                "SourcePolicyType": "Permissions Boundary Policy",
+                "StartPosition": {
+                  "Line": 1,
+                  "Column": 38
+                },
+                "EndPosition": {
+                  "Line": 1,
+                  "Column": 163
+                }
+              }
+            ],
+            "PermissionsBoundaryDecisionDetail": {
+              "AllowedByPermissionsBoundary": false
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "boundaryChanged": false,
+  "stackStatus": "UPDATE_COMPLETE",
+  "automaticRollback": false,
+  "reason": "CloudFormation succeeded; runtime encryption denial discovered during acceptance evidence collection",
+  "retry": false
+}

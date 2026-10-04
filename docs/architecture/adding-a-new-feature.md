@@ -1,5 +1,7 @@
 # Architecture rule: adding a substantial feature
 
+The mandatory site-wide [domain architecture standard](project-respawn-domain-architecture-standard.md), [current classification](project-respawn-domain-classification.md), [new-domain checklist](new-domain-checklist.md) and [migration roadmap](domain-migration-roadmap.md) govern substantial new sections and extractions. Apply them alongside this assessment. They distinguish target ownership from current physical deployment and do not authorize AWS changes or resume paused releases.
+
 ## LegacyPlatform rule (approved)
 
 The existing Amplify Gen 2 backend is LegacyPlatform and retains existing physical resources until safely migrated. Do not add substantial new product domains there by default. Before a significant backend feature, record: (1) owning domain, (2) whether it is frontend-only, (3) whether an existing independent service fits, (4) whether a new independent root is justified, (5) shared Core contracts, (6) effective CloudFormation cost, (7) new stateful resources, and (8) whether unrelated domains must redeploy.

@@ -1,0 +1,115 @@
+{
+  "at": "2026-09-26T12:44:23.572Z",
+  "mode": "Isolated browser; all remote requests mocked; no real credentials or data writes",
+  "unauthenticated": [
+    {
+      "path": "/team-hub",
+      "redirect": "/join",
+      "passed": true
+    },
+    {
+      "path": "/team-hub/fixture/champion-pool",
+      "redirect": "/join",
+      "passed": true
+    },
+    {
+      "path": "/team-hub/fixture/coach-review",
+      "redirect": "/join",
+      "passed": true
+    }
+  ],
+  "authenticated": [
+    {
+      "path": "/team-hub",
+      "url": "/team-hub",
+      "headings": [
+        "Team Hub"
+      ],
+      "body": "COMPETITIVE WORKSPACE\nTeam Hub\n\nManage your teams, competitions and competitive history.\n\nJoin with Invitation\n\nNo Team Hub access is currently assigned to this account."
+    },
+    {
+      "path": "/team-hub/fixture/champion-pool",
+      "url": "/team-hub/fixture/champion-pool",
+      "headings": [
+        "My Champion Pool"
+      ],
+      "body": "←\nAll teams\nTEAM WORKSPACE\nProject Respawn\nLeague of Legends\nPLAYER TOOLS\nCP\nMy Champion Pool\nRate your champions\nCOACHING\nCR\nCoach Review\nReview player submissions\nTP\nTeam Pool\nBuild team compositions\nPRO\nPC\nPremium Coaching\nAdvanced coaching tools\nSoon\nTEAM MANAGEMENT\nRS\nRoster\nPlayers and roles\nSoon\nST\nSettings\nAccess and team details\nSoon\nCurrent plan\nTeam Hub Pro\nPRO\nLast submitted: Never\nDraft\nSave Draft\nSubmit\nRF\nLEAGUE OF LEGENDS\nMy Champion Pool\n\nYou · Unassigned · Patch 16.1.1\n\nUNASSIGNED POOL\nCHOOSE UNASSIGNED CHAMPIONS\nSearch champions\nUnrated only\n1 available\n0 rated\nAhri\nSELF ASSESSMENT\nMY RATINGS\n0 rated\nS\nSignature\nDrag champions here\nA\nMatch Ready\nDrag champions here\nB\nComfortable\nDrag champions here\nC\nPractising\nDrag champions here\nD\nNot Ready\nDrag champions here"
+    },
+    {
+      "path": "/team-hub/fixture/coach-review",
+      "url": "/team-hub/fixture/coach-review",
+      "headings": [
+        "Coach Review"
+      ],
+      "body": "←\nAll teams\nTEAM WORKSPACE\nProject Respawn\nLeague of Legends\nPLAYER TOOLS\nCP\nMy Champion Pool\nRate your champions\nCOACHING\nCR\nCoach Review\nReview player submissions\nTP\nTeam Pool\nBuild team compositions\nPRO\nPC\nPremium Coaching\nAdvanced coaching tools\nSoon\nTEAM MANAGEMENT\nRS\nRoster\nPlayers and roles\nSoon\nST\nSettings\nAccess and team details\nSoon\nCurrent plan\nTeam Hub Pro\nPRO\nRF\nLEAGUE OF LEGENDS\nCoach Review\n\nReview Player-authored pools and save independent Coach assessments.\n\nPlayer\nFixture Player — Unassigned\nPatch\n16.1.1\nActive\nSubmitted: Missing submission\nPLAYER SUBMISSION\nFIXTURE PLAYER’S CHAMPION POOL\nRead only\nS\nSignature\nNo champions\nA\nMatch Ready\nNo champions\nB\nComfortable\nNo champions\nC\nPractising\nNo champions\nD\nNot Ready\nNo champions\nMANUAL FEEDBACK\nCOACH REVIEW\nSelect a champion from the player’s pool.\nCoach ranking\nNot ranked\nS — Signature\nA — Match Ready\nB — Comfortable\nC — Practising\nD — Not Ready\nCoach assessment\nSelect assessment\nMatch approved\nScrims only\nMore practice required\nNot currently approved\nImprovement suggestion\n0/500\nPrivate note\n0/300\nSave Champion Note\nTEAM COVERAGE\nCURRENT FLEX PICKS\n\nNo current flex-pick overlaps were found.\n\nPLAYER DEVELOPMENT\nRECOMMEND CHAMPIONS FOR FIXTURE PLAYER — UNASSIGNED\nUnrated only\nAhri\n+\n\nSelect a champion to recommend.\n\nReason for recommendation\nPriority\nHigh\nNormal\nOptional\nSuggested target\nBegin practising\nBecome comfortable\nWork towards match ready\nRecommend Champion\nCurrent recommendations\n\nNo recommendations have been sent."
+    }
+  ],
+  "requests": [
+    {
+      "field": "readTeamHub",
+      "action": "LIST_MY_TEAMS",
+      "variables": {
+        "action": "LIST_MY_TEAMS",
+        "status": "ACTIVE",
+        "limit": 50
+      }
+    },
+    {
+      "field": "readTeamHub",
+      "action": "GET_TEAM_HUB",
+      "variables": {
+        "action": "GET_TEAM_HUB",
+        "teamSlug": "fixture"
+      }
+    },
+    {
+      "field": "readTeamHub",
+      "action": "LIST_MY_CHAMPION_POOL",
+      "variables": {
+        "action": "LIST_MY_CHAMPION_POOL",
+        "teamId": "fixture-team",
+        "limit": 50
+      }
+    },
+    {
+      "field": "readTeamHub",
+      "action": "GET_TEAM_HUB",
+      "variables": {
+        "action": "GET_TEAM_HUB",
+        "teamSlug": "fixture"
+      }
+    },
+    {
+      "field": "readTeamHub",
+      "action": "GET_TEAM_HUB",
+      "variables": {
+        "action": "GET_TEAM_HUB",
+        "teamSlug": "fixture"
+      }
+    },
+    {
+      "field": "readTeamHub",
+      "action": "LIST_TEAM_CHAMPION_POOLS",
+      "variables": {
+        "action": "LIST_TEAM_CHAMPION_POOLS",
+        "teamId": "fixture-team",
+        "limit": 50
+      }
+    },
+    {
+      "field": "mutateTeamHub",
+      "action": "UPSERT_MY_CHAMPION",
+      "variables": {
+        "action": "UPSERT_MY_CHAMPION",
+        "teamId": "fixture-team",
+        "championId": "Ahri",
+        "comfortLevel": "COMFORTABLE",
+        "priority": "MEDIUM",
+        "competitiveReady": false
+      }
+    }
+  ],
+  "errors": [],
+  "mutationConstructionPassed": true,
+  "passed": true
+}

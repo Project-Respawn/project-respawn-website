@@ -1,0 +1,180 @@
+{
+  "at": "2026-10-04T15:22:55.799Z",
+  "runtime": {
+    "role": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-PreviewRole-o0HtDJVosSDO",
+    "boundary": {
+      "PermissionsBoundaryType": "Policy",
+      "PermissionsBoundaryArn": "arn:aws:iam::058264289478:policy/ProjectRespawn-Tournaments-Ntgre-RuntimeBoundary"
+    },
+    "policy": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Action": [
+            "logs:CreateLogStream",
+            "logs:PutLogEvents"
+          ],
+          "Resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/tournaments/preview:*",
+          "Effect": "Allow"
+        }
+      ]
+    },
+    "trust": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "lambda.amazonaws.com"
+          },
+          "Action": "sts:AssumeRole"
+        }
+      ]
+    },
+    "attached": [],
+    "inline": [
+      "PreviewLogsOnly"
+    ]
+  },
+  "events": [
+    {
+      "timestamp": 1791127306019,
+      "type": "platform.initStart",
+      "stream": "2026/10/04/ProjectRespawn-Tournaments-Ntgre-PreviewFunction-Ao4o6udMacJV[$LATEST]afdf41947fb9400abddc8ff1219662fd"
+    },
+    {
+      "timestamp": 1791127306127,
+      "type": "platform.start",
+      "stream": "2026/10/04/ProjectRespawn-Tournaments-Ntgre-PreviewFunction-Ao4o6udMacJV[$LATEST]afdf41947fb9400abddc8ff1219662fd"
+    },
+    {
+      "timestamp": 1791127306161,
+      "type": "platform.report",
+      "stream": "2026/10/04/ProjectRespawn-Tournaments-Ntgre-PreviewFunction-Ao4o6udMacJV[$LATEST]afdf41947fb9400abddc8ff1219662fd"
+    }
+  ],
+  "metrics": [
+    {
+      "namespace": "AWS/Lambda",
+      "metric": "Invocations",
+      "Label": "Invocations",
+      "Datapoints": [
+        {
+          "Timestamp": "2026-10-04T16:21:00+01:00",
+          "Sum": 1,
+          "Unit": "Count"
+        }
+      ]
+    },
+    {
+      "namespace": "AWS/Lambda",
+      "metric": "Errors",
+      "Label": "Errors",
+      "Datapoints": [
+        {
+          "Timestamp": "2026-10-04T16:21:00+01:00",
+          "Sum": 0,
+          "Unit": "Count"
+        }
+      ]
+    },
+    {
+      "namespace": "AWS/ApiGateway",
+      "metric": "Count",
+      "Label": "Count",
+      "Datapoints": [
+        {
+          "Timestamp": "2026-10-04T16:21:00+01:00",
+          "Sum": 2,
+          "Unit": "None"
+        }
+      ]
+    },
+    {
+      "namespace": "AWS/ApiGateway",
+      "metric": "4xx",
+      "Label": "4xx",
+      "Datapoints": [
+        {
+          "Timestamp": "2026-10-04T16:21:00+01:00",
+          "Sum": 0,
+          "Unit": "None"
+        }
+      ]
+    },
+    {
+      "namespace": "AWS/ApiGateway",
+      "metric": "5xx",
+      "Label": "5xx",
+      "Datapoints": [
+        {
+          "Timestamp": "2026-10-04T16:21:00+01:00",
+          "Sum": 0,
+          "Unit": "None"
+        }
+      ]
+    }
+  ],
+  "alarms": [
+    {
+      "AlarmName": "ProjectRespawn-Tournaments-Ntgre-HttpErrors-NLywnrF34Zb4",
+      "AlarmArn": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-Tournaments-Ntgre-HttpErrors-NLywnrF34Zb4",
+      "AlarmConfigurationUpdatedTimestamp": "2026-10-04T14:34:41.357000+01:00",
+      "ActionsEnabled": true,
+      "OKActions": [],
+      "AlarmActions": [],
+      "InsufficientDataActions": [],
+      "StateValue": "OK",
+      "StateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+      "StateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-04T13:36:04.867+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":1.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-04T13:35:00.000+0000\"}]}",
+      "StateUpdatedTimestamp": "2026-10-04T14:36:04.870000+01:00",
+      "MetricName": "5xx",
+      "Namespace": "AWS/ApiGateway",
+      "Statistic": "Sum",
+      "Dimensions": [
+        {
+          "Name": "ApiId",
+          "Value": "msipnwy39j"
+        }
+      ],
+      "Period": 60,
+      "EvaluationPeriods": 1,
+      "Threshold": 1,
+      "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+      "TreatMissingData": "notBreaching",
+      "StateTransitionedTimestamp": "2026-10-04T14:36:04.870000+01:00"
+    },
+    {
+      "AlarmName": "ProjectRespawn-Tournaments-Ntgre-PreviewErrors-tVGBWEop0yku",
+      "AlarmArn": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-Tournaments-Ntgre-PreviewErrors-tVGBWEop0yku",
+      "AlarmConfigurationUpdatedTimestamp": "2026-10-04T14:35:25.567000+01:00",
+      "ActionsEnabled": true,
+      "OKActions": [],
+      "AlarmActions": [],
+      "InsufficientDataActions": [],
+      "StateValue": "OK",
+      "StateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+      "StateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-04T13:36:17.340+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":1.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-04T13:35:00.000+0000\"}]}",
+      "StateUpdatedTimestamp": "2026-10-04T14:36:17.342000+01:00",
+      "MetricName": "Errors",
+      "Namespace": "AWS/Lambda",
+      "Statistic": "Sum",
+      "Dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-Tournaments-Ntgre-PreviewFunction-Ao4o6udMacJV"
+        }
+      ],
+      "Period": 60,
+      "EvaluationPeriods": 1,
+      "Threshold": 1,
+      "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+      "TreatMissingData": "notBreaching",
+      "StateTransitionedTimestamp": "2026-10-04T14:36:17.342000+01:00"
+    }
+  ],
+  "apiAccessLogging": false,
+  "logsObserved": true,
+  "lambdaMetricsObserved": true,
+  "apiMetricsObserved": true
+}

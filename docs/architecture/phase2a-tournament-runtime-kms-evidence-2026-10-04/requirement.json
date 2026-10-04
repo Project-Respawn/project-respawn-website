@@ -1,0 +1,142 @@
+{
+  "at": "2026-10-04T13:51:15.367Z",
+  "metadata": {
+    "KeyMetadata": {
+      "AWSAccountId": "058264289478",
+      "KeyId": "13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "Arn": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "CreationDate": "2026-03-31T13:31:31.492000+01:00",
+      "Enabled": true,
+      "Description": "Default key that protects my Lambda functions when no other key is defined",
+      "KeyUsage": "ENCRYPT_DECRYPT",
+      "KeyState": "Enabled",
+      "Origin": "AWS_KMS",
+      "KeyManager": "AWS",
+      "CustomerMasterKeySpec": "SYMMETRIC_DEFAULT",
+      "KeySpec": "SYMMETRIC_DEFAULT",
+      "EncryptionAlgorithms": [
+        "SYMMETRIC_DEFAULT"
+      ],
+      "MultiRegion": false,
+      "CurrentKeyMaterialId": "930f1e3a8e20fe3ba32201a4a74e99d141cfead7c144753fce47eb96352d7366"
+    }
+  },
+  "aliases": {
+    "Aliases": [
+      {
+        "AliasName": "alias/aws/lambda",
+        "AliasArn": "arn:aws:kms:eu-north-1:058264289478:alias/aws/lambda",
+        "TargetKeyId": "13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+        "CreationDate": "2026-03-31T13:31:31.581000+01:00",
+        "LastUpdatedDate": "2026-03-31T13:31:31.581000+01:00"
+      }
+    ]
+  },
+  "keyPolicy": {
+    "Version": "2012-10-17",
+    "Id": "auto-awslambda-3",
+    "Statement": [
+      {
+        "Sid": "Allow access through AWS Lambda for all principals in the account that are authorized to use AWS Lambda",
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": "*"
+        },
+        "Action": [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:CreateGrant",
+          "kms:DescribeKey"
+        ],
+        "Resource": "*",
+        "Condition": {
+          "StringEquals": {
+            "kms:CallerAccount": "058264289478",
+            "kms:ViaService": "lambda.eu-north-1.amazonaws.com"
+          }
+        }
+      },
+      {
+        "Sid": "Allow all principals in the account to decrypt ciphertexts for Lambda functions in the account",
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": "*"
+        },
+        "Action": "kms:Decrypt",
+        "Resource": "*",
+        "Condition": {
+          "StringEquals": {
+            "kms:CallerAccount": "058264289478"
+          },
+          "ArnLike": {
+            "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:*:lambda:eu-north-1:058264289478:function:*"
+          }
+        }
+      },
+      {
+        "Sid": "Allow Lambda service access",
+        "Effect": "Allow",
+        "Principal": {
+          "Service": [
+            "lambda.eu-north-1.amazonaws.com",
+            "lambda.amazonaws.com"
+          ]
+        },
+        "Action": "kms:GenerateDataKey",
+        "Resource": "*",
+        "Condition": {
+          "ArnLike": {
+            "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:*:lambda:eu-north-1:058264289478:function:*"
+          }
+        }
+      },
+      {
+        "Sid": "Allow Lambda to directly describe the key and list its grants",
+        "Effect": "Allow",
+        "Principal": {
+          "Service": [
+            "lambda.eu-north-1.amazonaws.com",
+            "lambda.amazonaws.com"
+          ]
+        },
+        "Action": [
+          "kms:Describe*",
+          "kms:Get*",
+          "kms:List*"
+        ],
+        "Resource": "*"
+      },
+      {
+        "Sid": "Allow direct access to key metadata to the account",
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": "arn:aws:iam::058264289478:root"
+        },
+        "Action": [
+          "kms:Describe*",
+          "kms:Get*",
+          "kms:List*",
+          "kms:RevokeGrant"
+        ],
+        "Resource": "*"
+      }
+    ]
+  },
+  "lambda": {
+    "arn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre-PreviewFunction-Ao4o6udMacJV",
+    "role": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-PreviewRole-o0HtDJVosSDO",
+    "codeSha256": "gTyfw4C6qweqYPT0x4LbmVW7ZpQy1g2OwPc1p56Dkpo=",
+    "state": "Active",
+    "kmsKeyArn": null
+  },
+  "failure": {
+    "eventTime": "2026-10-04T13:35:13Z",
+    "eventName": "Decrypt",
+    "requestID": "67538f28-978f-4030-ae4b-5103fa9e66a5",
+    "principal": "arn:aws:sts::058264289478:assumed-role/ProjectRespawn-Tournaments-Ntgre-PreviewRole-o0HtDJVosSDO/awslambda_849_20261004133513647",
+    "errorCode": "AccessDenied",
+    "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-Tournaments-Ntgre-PreviewRole-o0HtDJVosSDO/awslambda_849_20261004133513647 is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in a permissions boundary: arn:aws:iam::058264289478:policy/ProjectRespawn-Tournaments-Ntgre-RuntimeBoundary"
+  }
+}

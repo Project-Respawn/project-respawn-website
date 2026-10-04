@@ -1,0 +1,5 @@
+// Safe deployment checkpoint descriptor. No AWS calls, upload, synthesis or execution.
+import {verify,verifyFiles,read,P} from './verify-tournament-release1.mjs';
+if(process.argv.length!==2)throw Error('This review accepts no target overrides or execute flags');
+const state=verify();verifyFiles();
+console.log(JSON.stringify({status:'ACCEPTED_RELEASE_1_REFERENCE_ONLY',...state,stack:'ProjectRespawn-Tournaments-Ntgre',environment:'Ntgre',region:'eu-north-1',account:'058264289478',securityPackage:P,endpointManifest:'config/domains/tournaments/domain-endpoints.Ntgre.json',runtimeBoundaryVersion:read(P+'/package-status.json').runtimeBoundaryVersion,rollbackEnabledForFutureExecution:true,awsWrites:0,executionEnabled:false,nextGate:['Separate authorization for Release 2 and rollback proof','Preserve accepted Release 1 template, code, config and effective IAM baseline','Build/review only the authorized Tournament revision','Inspect the complete change set and unrelated-resource baseline','Execute only if separately authorized; retain rollback-enabled behavior']},null,2));

@@ -1,0 +1,56 @@
+{
+  "at": "2026-09-26T12:45:42.640Z",
+  "passed": true,
+  "results": [
+    {
+      "name": "Checkout rejects missing amount before any transaction",
+      "status": 400,
+      "expectedStatus": 400,
+      "expectedBody": "Missing amount",
+      "match": true,
+      "requestId": "ETqyKi2jAi0EPUw=",
+      "responseSummary": "{\"error\":\"Missing amount\"}"
+    },
+    {
+      "name": "Webhook rejects unsigned body before data access",
+      "status": 401,
+      "expectedStatus": 401,
+      "match": true,
+      "requestId": "ETqyOj4rAi0EQ6w=",
+      "responseSummary": ""
+    },
+    {
+      "name": "Twitch GET reaches Lambda and rejects missing lease",
+      "status": 500,
+      "expectedStatus": 500,
+      "expectedBody": "Malformed runtime lease",
+      "match": true,
+      "requestId": "ETqyPj5Bgi0EQ6w=",
+      "responseSummary": "{\"error\":\"Request failed\",\"message\":\"Malformed runtime lease\"}"
+    },
+    {
+      "name": "Twitch POST reaches Lambda and rejects unauthorized runtime client",
+      "status": 500,
+      "expectedStatus": 500,
+      "expectedBody": "Runtime client is not authorized",
+      "match": true,
+      "requestId": "ETqyfh-ygi0EPVg=",
+      "responseSummary": "{\"error\":\"Request failed\",\"message\":\"Runtime client is not authorized\"}"
+    },
+    {
+      "name": "JWT authorizer rejects unauthenticated request",
+      "status": 401,
+      "expectedStatus": 401,
+      "match": true,
+      "requestId": "ETqyhhhGAi0EMkg=",
+      "responseSummary": "{\"message\":\"Unauthorized\"}"
+    },
+    {
+      "name": "Public AppSync query through consolidated pipeline",
+      "status": 200,
+      "match": true,
+      "itemCount": 0
+    }
+  ],
+  "limitations": "Live HTTP tests are non-mutating validation/authentication rejection checks and one public read query. Twitch auth errors are existing handler HTTP 500 responses, not proof of a successful authenticated session. No payment, valid webhook event, user login or Twitch event was submitted."
+}
