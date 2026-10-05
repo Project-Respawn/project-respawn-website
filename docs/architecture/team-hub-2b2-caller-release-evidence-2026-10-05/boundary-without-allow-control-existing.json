@@ -1,0 +1,49 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "OnlyLoggingAndServiceDecrypt",
+      "Effect": "Deny",
+      "NotAction": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Deny",
+      "Action": "logs:*",
+      "NotResource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/preview:*"
+    },
+    {
+      "Effect": "Deny",
+      "Action": "kms:Decrypt",
+      "NotResource": "arn:aws:kms:eu-north-1:058264289478:key/*"
+    },
+    {
+      "Effect": "Deny",
+      "Action": "kms:Decrypt",
+      "Resource": "*",
+      "Condition": {
+        "ForAllValues:StringNotEquals": {
+          "kms:ResourceAliases": [
+            "alias/aws/lambda"
+          ]
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": "kms:Decrypt",
+      "Resource": "arn:aws:kms:eu-north-1:058264289478:key/*",
+      "Condition": {
+        "ForAnyValue:StringEquals": {
+          "kms:ResourceAliases": [
+            "alias/aws/lambda"
+          ]
+        }
+      }
+    }
+  ]
+}

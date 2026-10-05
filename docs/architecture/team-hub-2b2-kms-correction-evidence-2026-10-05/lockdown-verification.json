@@ -1,0 +1,27 @@
+{
+  "at": "2026-10-05T14:31:56.691Z",
+  "fixtureOnly": true,
+  "liveApiExists": false,
+  "originalBinderUnchanged": true,
+  "additionalReadbackGate": "Require exact CloudFormation system tags and all eleven logical IDs/types/statuses before using the pinned binder",
+  "positiveBinding": 1,
+  "rejectedBadReadbacks": 5,
+  "modifiedSecurityResources": [
+    "ExecutionBoundary",
+    "ExecutionRole"
+  ],
+  "productResourcesModified": 0,
+  "installPerformed": false,
+  "requiredFutureSequence": [
+    "Read actual API ID and stack-owned resources",
+    "Verify account/region/template, eleven identities and CloudFormation system tags",
+    "Bind exact API ID without using a protected or fixture ID",
+    "Revalidate concrete policy and inspect security-only two-resource update",
+    "Separately authorized security custodian installs with rollback enabled",
+    "Read back BOTH inline execution policy and boundary; repeat exact-ID negatives",
+    "Confirm no other broad policy/grant remains; remove or expire superseded authority",
+    "Only then continue runtime acceptance"
+  ],
+  "readyAsProcedure": true,
+  "awsWrites": 0
+}

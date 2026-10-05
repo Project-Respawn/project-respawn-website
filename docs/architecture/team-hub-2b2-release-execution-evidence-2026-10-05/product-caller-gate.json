@@ -1,0 +1,32 @@
+{
+  "at": "2026-10-05T14:41:55.099Z",
+  "ready": false,
+  "time": {
+    "at": "2026-10-05T14:41:55.100Z",
+    "expiresAt": "2026-10-06T13:51:32.179Z",
+    "hoursRemaining": 23.160299722222224,
+    "minimumHours": 6
+  },
+  "policyArn": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofPreparation",
+  "identityAttachments": {
+    "PolicyGroups": [],
+    "PolicyUsers": [],
+    "PolicyRoles": []
+  },
+  "boundaryAttachments": {
+    "PolicyGroups": [],
+    "PolicyUsers": [],
+    "PolicyRoles": []
+  },
+  "teamRoles": [
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution"
+    }
+  ],
+  "productStackAbsent": true,
+  "productChangeSetPrepared": false,
+  "reason": "Reviewed dedicated restricted caller not installed. Preparation managed policy has no identity or boundary attachment. The four-resource template intentionally leaves this prerequisite outside its scope. Do not substitute bootstrap RavenTest or execution role.",
+  "requiredNextReview": "Prepare a dedicated caller principal/trust and effective identity/boundary installation proposal using the unchanged PreparationCaller ceiling; separately review added IAM resource/attachment scope before applying.",
+  "templatePublicationNote": "Product template was published at its preserved CDK asset-manifest key. The caller ceiling requires team-hub/read-proof/0796ee8170bd0417fca6b2806e58e48c18278b4e6c32999824f55ac65898e7ee.template.json; publish the identical bytes at that exact reviewed URL before future preparation. Do not alter the caller policy URL."
+}

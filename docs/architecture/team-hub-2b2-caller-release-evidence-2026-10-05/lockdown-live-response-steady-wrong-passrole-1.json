@@ -1,0 +1,111 @@
+{
+  "EvaluationResults": [
+    {
+      "EvalActionName": "iam:PassRole",
+      "EvalResourceName": "arn:aws:iam::${Account}:${ResourceType}/${ResourceName}",
+      "EvalDecision": "explicitDeny",
+      "MatchedStatements": [
+        {
+          "SourcePolicyId": "role_ProjectRespawn-TeamHub-Ntgre-ReadProofExecution_ReadProofLifecycle",
+          "SourcePolicyType": "IAM Policy",
+          "StartPosition": {
+            "Line": 1,
+            "Column": 5352
+          },
+          "EndPosition": {
+            "Line": 1,
+            "Column": 5482
+          }
+        },
+        {
+          "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-ReadProofExecutionBoundary",
+          "SourcePolicyType": "Permissions Boundary Policy",
+          "StartPosition": {
+            "Line": 1,
+            "Column": 5352
+          },
+          "EndPosition": {
+            "Line": 1,
+            "Column": 5482
+          }
+        }
+      ],
+      "MissingContextValues": [],
+      "OrganizationsDecisionDetail": {
+        "AllowedByOrganizations": true
+      },
+      "PermissionsBoundaryDecisionDetail": {
+        "AllowedByPermissionsBoundary": false
+      },
+      "EvalDecisionDetails": {},
+      "ResourceSpecificResults": [
+        {
+          "EvalResourceName": "arn:aws:iam::058264289478:role/OtherDomain",
+          "EvalResourceDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-ReadProofExecutionBoundary",
+              "SourcePolicyType": "Permissions Boundary Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 5352
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 5482
+              }
+            },
+            {
+              "SourcePolicyId": "role_ProjectRespawn-TeamHub-Ntgre-ReadProofExecution_ReadProofLifecycle",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 5352
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 5482
+              }
+            }
+          ],
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": false
+          }
+        },
+        {
+          "EvalResourceName": "arn:aws:iam::999999999999:role/ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "EvalResourceDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-ReadProofExecutionBoundary",
+              "SourcePolicyType": "Permissions Boundary Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 5352
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 5482
+              }
+            },
+            {
+              "SourcePolicyId": "role_ProjectRespawn-TeamHub-Ntgre-ReadProofExecution_ReadProofLifecycle",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 5352
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 5482
+              }
+            }
+          ],
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": false
+          }
+        }
+      ]
+    }
+  ]
+}

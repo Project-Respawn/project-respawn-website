@@ -1,0 +1,56 @@
+{
+  "ActionNames": [
+    "cloudformation:CreateChangeSet",
+    "cloudformation:DescribeChangeSet",
+    "cloudformation:ExecuteChangeSet",
+    "cloudformation:DescribeStacks",
+    "cloudformation:DescribeStackEvents",
+    "cloudformation:GetTemplate",
+    "cloudformation:ListStackResources",
+    "cloudformation:DescribeStackResource",
+    "cloudformation:ListChangeSets",
+    "cloudformation:DeleteChangeSet",
+    "cloudformation:CreateStack",
+    "cloudformation:UpdateStack",
+    "cloudformation:DeleteStack"
+  ],
+  "ResourceArns": [
+    "arn:aws:cloudformation:eu-north-1:058264289478:stack/amplify-projectrespawnwebsite-Ntgre-sandbox-8bd9d02332/*"
+  ],
+  "ContextEntries": [
+    {
+      "ContextKeyName": "aws:RequestedRegion",
+      "ContextKeyType": "string",
+      "ContextKeyValues": [
+        "eu-north-1"
+      ]
+    },
+    {
+      "ContextKeyName": "iam:PassedToService",
+      "ContextKeyType": "string",
+      "ContextKeyValues": [
+        "cloudformation.amazonaws.com"
+      ]
+    },
+    {
+      "ContextKeyName": "cloudformation:RoleArn",
+      "ContextKeyType": "string",
+      "ContextKeyValues": [
+        "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution"
+      ]
+    },
+    {
+      "ContextKeyName": "cloudformation:TemplateUrl",
+      "ContextKeyType": "string",
+      "ContextKeyValues": [
+        "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/team-hub/read-proof/0796ee8170bd0417fca6b2806e58e48c18278b4e6c32999824f55ac65898e7ee.template.json"
+      ]
+    }
+  ],
+  "PolicyInputList": [
+    "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Deny\",\"NotAction\":[\"cloudformation:DescribeChangeSet\",\"cloudformation:DeleteChangeSet\",\"cloudformation:DescribeStacks\",\"cloudformation:DescribeStackEvents\",\"cloudformation:GetTemplate\",\"cloudformation:CreateChangeSet\",\"cloudformation:ExecuteChangeSet\",\"iam:PassRole\",\"cloudformation:ListStackResources\",\"cloudformation:DescribeStackResource\",\"cloudformation:ListChangeSets\",\"s3:GetObject\",\"s3:GetObjectVersion\"],\"Resource\":\"*\"},{\"Effect\":\"Allow\",\"Action\":[\"cloudformation:DescribeChangeSet\",\"cloudformation:DeleteChangeSet\",\"cloudformation:DescribeStacks\",\"cloudformation:DescribeStackEvents\",\"cloudformation:GetTemplate\",\"cloudformation:ListStackResources\",\"cloudformation:DescribeStackResource\",\"cloudformation:ListChangeSets\"],\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\"},{\"Effect\":\"Allow\",\"Action\":\"cloudformation:CreateChangeSet\",\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\",\"Condition\":{\"StringEquals\":{\"cloudformation:RoleArn\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\",\"cloudformation:TemplateUrl\":\"https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/team-hub/read-proof/0796ee8170bd0417fca6b2806e58e48c18278b4e6c32999824f55ac65898e7ee.template.json\"}}},{\"Effect\":\"Allow\",\"Action\":\"cloudformation:ExecuteChangeSet\",\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\"},{\"Effect\":\"Deny\",\"Action\":\"cloudformation:*\",\"NotResource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\"},{\"Effect\":\"Deny\",\"Action\":\"cloudformation:*\",\"Resource\":\"*\",\"Condition\":{\"StringNotEquals\":{\"aws:RequestedRegion\":\"eu-north-1\"}}},{\"Effect\":\"Allow\",\"Action\":\"iam:PassRole\",\"Resource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\",\"Condition\":{\"StringEquals\":{\"iam:PassedToService\":\"cloudformation.amazonaws.com\"}}},{\"Effect\":\"Deny\",\"Action\":\"iam:PassRole\",\"NotResource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\"},{\"Effect\":\"Deny\",\"Action\":\"iam:PassRole\",\"Resource\":\"*\",\"Condition\":{\"StringNotEquals\":{\"iam:PassedToService\":\"cloudformation.amazonaws.com\"}}},{\"Effect\":\"Allow\",\"Action\":[\"s3:GetObject\",\"s3:GetObjectVersion\"],\"Resource\":[\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/read-proof/0796ee8170bd0417fca6b2806e58e48c18278b4e6c32999824f55ac65898e7ee.template.json\",\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/da4d9e570523cbbdcff21572d059f18227d03c12482620e916752f2863b87da1.zip\"]},{\"Effect\":\"Deny\",\"Action\":\"s3:*\",\"NotResource\":[\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/read-proof/0796ee8170bd0417fca6b2806e58e48c18278b4e6c32999824f55ac65898e7ee.template.json\",\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/da4d9e570523cbbdcff21572d059f18227d03c12482620e916752f2863b87da1.zip\"]}]}"
+  ],
+  "PermissionsBoundaryPolicyInputList": [
+    "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Deny\",\"NotAction\":[\"cloudformation:DescribeChangeSet\",\"cloudformation:DeleteChangeSet\",\"cloudformation:DescribeStacks\",\"cloudformation:DescribeStackEvents\",\"cloudformation:GetTemplate\",\"cloudformation:CreateChangeSet\",\"cloudformation:ExecuteChangeSet\",\"iam:PassRole\",\"cloudformation:ListStackResources\",\"cloudformation:DescribeStackResource\",\"cloudformation:ListChangeSets\",\"s3:GetObject\",\"s3:GetObjectVersion\"],\"Resource\":\"*\"},{\"Effect\":\"Allow\",\"Action\":[\"cloudformation:DescribeChangeSet\",\"cloudformation:DeleteChangeSet\",\"cloudformation:DescribeStacks\",\"cloudformation:DescribeStackEvents\",\"cloudformation:GetTemplate\",\"cloudformation:ListStackResources\",\"cloudformation:DescribeStackResource\",\"cloudformation:ListChangeSets\"],\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\"},{\"Effect\":\"Allow\",\"Action\":\"cloudformation:CreateChangeSet\",\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\",\"Condition\":{\"StringEquals\":{\"cloudformation:RoleArn\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\",\"cloudformation:TemplateUrl\":\"https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/team-hub/read-proof/0796ee8170bd0417fca6b2806e58e48c18278b4e6c32999824f55ac65898e7ee.template.json\"}}},{\"Effect\":\"Allow\",\"Action\":\"cloudformation:ExecuteChangeSet\",\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\"},{\"Effect\":\"Deny\",\"Action\":\"cloudformation:*\",\"NotResource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\"},{\"Effect\":\"Deny\",\"Action\":\"cloudformation:*\",\"Resource\":\"*\",\"Condition\":{\"StringNotEquals\":{\"aws:RequestedRegion\":\"eu-north-1\"}}},{\"Effect\":\"Allow\",\"Action\":\"iam:PassRole\",\"Resource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\",\"Condition\":{\"StringEquals\":{\"iam:PassedToService\":\"cloudformation.amazonaws.com\"}}},{\"Effect\":\"Deny\",\"Action\":\"iam:PassRole\",\"NotResource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\"},{\"Effect\":\"Deny\",\"Action\":\"iam:PassRole\",\"Resource\":\"*\",\"Condition\":{\"StringNotEquals\":{\"iam:PassedToService\":\"cloudformation.amazonaws.com\"}}},{\"Effect\":\"Allow\",\"Action\":[\"s3:GetObject\",\"s3:GetObjectVersion\"],\"Resource\":[\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/read-proof/0796ee8170bd0417fca6b2806e58e48c18278b4e6c32999824f55ac65898e7ee.template.json\",\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/da4d9e570523cbbdcff21572d059f18227d03c12482620e916752f2863b87da1.zip\"]},{\"Effect\":\"Deny\",\"Action\":\"s3:*\",\"NotResource\":[\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/read-proof/0796ee8170bd0417fca6b2806e58e48c18278b4e6c32999824f55ac65898e7ee.template.json\",\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/da4d9e570523cbbdcff21572d059f18227d03c12482620e916752f2863b87da1.zip\"]}]}"
+  ]
+}

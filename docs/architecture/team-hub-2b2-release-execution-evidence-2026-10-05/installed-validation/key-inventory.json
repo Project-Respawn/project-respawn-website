@@ -1,0 +1,827 @@
+{
+  "at": "2026-10-05T14:22:32.724Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "region": "eu-north-1",
+  "keys": [
+    {
+      "id": "13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "arn": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "manager": "AWS",
+      "state": "Enabled",
+      "aliases": [
+        "alias/aws/lambda"
+      ],
+      "tags": [],
+      "classification": "AWS_MANAGED_LAMBDA_KEY",
+      "policy": {
+        "Version": "2012-10-17",
+        "Id": "auto-awslambda-3",
+        "Statement": [
+          {
+            "Sid": "Allow access through AWS Lambda for all principals in the account that are authorized to use AWS Lambda",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "*"
+            },
+            "Action": [
+              "kms:Encrypt",
+              "kms:Decrypt",
+              "kms:ReEncrypt*",
+              "kms:GenerateDataKey*",
+              "kms:CreateGrant",
+              "kms:DescribeKey"
+            ],
+            "Resource": "*",
+            "Condition": {
+              "StringEquals": {
+                "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+                "kms:CallerAccount": "058264289478"
+              }
+            }
+          },
+          {
+            "Sid": "Allow all principals in the account to decrypt ciphertexts for Lambda functions in the account",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "*"
+            },
+            "Action": "kms:Decrypt",
+            "Resource": "*",
+            "Condition": {
+              "StringEquals": {
+                "kms:CallerAccount": "058264289478"
+              },
+              "ArnLike": {
+                "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:*:lambda:eu-north-1:058264289478:function:*"
+              }
+            }
+          },
+          {
+            "Sid": "Allow Lambda service access",
+            "Effect": "Allow",
+            "Principal": {
+              "Service": [
+                "lambda.eu-north-1.amazonaws.com",
+                "lambda.amazonaws.com"
+              ]
+            },
+            "Action": "kms:GenerateDataKey",
+            "Resource": "*",
+            "Condition": {
+              "ArnLike": {
+                "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:*:lambda:eu-north-1:058264289478:function:*"
+              }
+            }
+          },
+          {
+            "Sid": "Allow Lambda to directly describe the key and list its grants",
+            "Effect": "Allow",
+            "Principal": {
+              "Service": [
+                "lambda.eu-north-1.amazonaws.com",
+                "lambda.amazonaws.com"
+              ]
+            },
+            "Action": [
+              "kms:Describe*",
+              "kms:Get*",
+              "kms:List*"
+            ],
+            "Resource": "*"
+          },
+          {
+            "Sid": "Allow direct access to key metadata to the account",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": [
+              "kms:Describe*",
+              "kms:Get*",
+              "kms:List*",
+              "kms:RevokeGrant"
+            ],
+            "Resource": "*"
+          }
+        ]
+      },
+      "grants": null,
+      "grantsInspected": false
+    },
+    {
+      "id": "1abbfb00-51fa-4a9d-857a-5388223873fa",
+      "arn": "arn:aws:kms:eu-north-1:058264289478:key/1abbfb00-51fa-4a9d-857a-5388223873fa",
+      "manager": "CUSTOMER",
+      "state": "Enabled",
+      "aliases": [],
+      "tags": [
+        {
+          "TagKey": "amplify:app-id",
+          "TagValue": "d2cux232bpa951"
+        },
+        {
+          "TagKey": "amplify:branch-name",
+          "TagValue": "staging"
+        },
+        {
+          "TagKey": "amplify:deployment-type",
+          "TagValue": "branch"
+        },
+        {
+          "TagKey": "created-by",
+          "TagValue": "amplify"
+        }
+      ],
+      "classification": "PROJECT_RESPAWN_BUSINESS_KEY",
+      "policy": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": "kms:*",
+            "Resource": "*"
+          }
+        ]
+      },
+      "grants": [],
+      "grantsInspected": true,
+      "ownership": {
+        "at": "2026-10-05T14:24:52.662Z",
+        "stackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/amplify-d2cux232bpa951-staging-branch-8b38605406-overlaysourcestackF7F134D8-ZY8BE9BMLIOR/69249170-b081-11f1-9d16-06a2d9cd7f09",
+        "logicalId": "OverlaySourceOverlayCredentialKey67E3466D",
+        "physicalId": "1abbfb00-51fa-4a9d-857a-5388223873fa",
+        "status": "CREATE_COMPLETE"
+      }
+    },
+    {
+      "id": "241c8882-ea21-4f96-80e1-9848879bc8b0",
+      "arn": "arn:aws:kms:eu-north-1:058264289478:key/241c8882-ea21-4f96-80e1-9848879bc8b0",
+      "manager": "CUSTOMER",
+      "state": "Enabled",
+      "aliases": [],
+      "tags": [
+        {
+          "TagKey": "amplify:deployment-type",
+          "TagValue": "sandbox"
+        },
+        {
+          "TagKey": "created-by",
+          "TagValue": "amplify"
+        }
+      ],
+      "classification": "UNKNOWN_CUSTOMER_MANAGED_KEY",
+      "policy": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": "kms:*",
+            "Resource": "*"
+          }
+        ]
+      },
+      "grants": [],
+      "grantsInspected": true
+    },
+    {
+      "id": "6d740e4d-cce6-4ef9-9b98-039a181f197c",
+      "arn": "arn:aws:kms:eu-north-1:058264289478:key/6d740e4d-cce6-4ef9-9b98-039a181f197c",
+      "manager": "CUSTOMER",
+      "state": "Enabled",
+      "aliases": [
+        "alias/project-respawn-twitch-token-vault-staging"
+      ],
+      "tags": [
+        {
+          "TagKey": "amplify:app-id",
+          "TagValue": "d2cux232bpa951"
+        },
+        {
+          "TagKey": "amplify:branch-name",
+          "TagValue": "staging"
+        },
+        {
+          "TagKey": "amplify:deployment-type",
+          "TagValue": "branch"
+        },
+        {
+          "TagKey": "created-by",
+          "TagValue": "amplify"
+        }
+      ],
+      "classification": "PROJECT_RESPAWN_BUSINESS_KEY",
+      "policy": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": "kms:*",
+            "Resource": "*"
+          }
+        ]
+      },
+      "grants": [],
+      "grantsInspected": true
+    },
+    {
+      "id": "76bd4f9a-72aa-4bb4-82b3-05a4fbc16673",
+      "arn": "arn:aws:kms:eu-north-1:058264289478:key/76bd4f9a-72aa-4bb4-82b3-05a4fbc16673",
+      "manager": "CUSTOMER",
+      "state": "Enabled",
+      "aliases": [],
+      "tags": [
+        {
+          "TagKey": "amplify:deployment-type",
+          "TagValue": "sandbox"
+        },
+        {
+          "TagKey": "created-by",
+          "TagValue": "amplify"
+        }
+      ],
+      "classification": "PROJECT_RESPAWN_BUSINESS_KEY",
+      "policy": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": "kms:*",
+            "Resource": "*"
+          }
+        ]
+      },
+      "grants": [],
+      "grantsInspected": true,
+      "ownership": {
+        "at": "2026-10-05T14:24:53.960Z",
+        "stackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/amplify-projectrespawnwebsite-Ntgre-sandbox-8bd9d02332-overlaysourcestackF7F134D8-11RZN039WXJHB/9010cc70-b5c9-11f1-aba2-0efff33f2321",
+        "logicalId": "OverlaySourceOverlayCredentialKey67E3466D",
+        "physicalId": "76bd4f9a-72aa-4bb4-82b3-05a4fbc16673",
+        "status": "CREATE_COMPLETE"
+      }
+    },
+    {
+      "id": "819371f0-e874-4aec-b055-4291faefffa6",
+      "arn": "arn:aws:kms:eu-north-1:058264289478:key/819371f0-e874-4aec-b055-4291faefffa6",
+      "manager": "CUSTOMER",
+      "state": "Enabled",
+      "aliases": [],
+      "tags": [
+        {
+          "TagKey": "amplify:deployment-type",
+          "TagValue": "sandbox"
+        },
+        {
+          "TagKey": "created-by",
+          "TagValue": "amplify"
+        }
+      ],
+      "classification": "UNKNOWN_CUSTOMER_MANAGED_KEY",
+      "policy": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": "kms:*",
+            "Resource": "*"
+          }
+        ]
+      },
+      "grants": [],
+      "grantsInspected": true
+    },
+    {
+      "id": "8656fcfe-9dfc-4cdf-b345-12665950f337",
+      "arn": "arn:aws:kms:eu-north-1:058264289478:key/8656fcfe-9dfc-4cdf-b345-12665950f337",
+      "manager": "CUSTOMER",
+      "state": "Enabled",
+      "aliases": [
+        "alias/project-respawn-twitch-token-vault-Ntgre"
+      ],
+      "tags": [
+        {
+          "TagKey": "amplify:deployment-type",
+          "TagValue": "sandbox"
+        },
+        {
+          "TagKey": "created-by",
+          "TagValue": "amplify"
+        }
+      ],
+      "classification": "PROJECT_RESPAWN_BUSINESS_KEY",
+      "policy": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": "kms:*",
+            "Resource": "*"
+          }
+        ]
+      },
+      "grants": [],
+      "grantsInspected": true
+    },
+    {
+      "id": "8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "arn": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "manager": "AWS",
+      "state": "Enabled",
+      "aliases": [
+        "alias/aws/secretsmanager"
+      ],
+      "tags": [],
+      "classification": "AWS_MANAGED_SERVICE_KEY",
+      "policy": {
+        "Version": "2012-10-17",
+        "Id": "auto-secretsmanager-2",
+        "Statement": [
+          {
+            "Sid": "Allow access through AWS Secrets Manager for all principals in the account that are authorized to use AWS Secrets Manager",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "*"
+            },
+            "Action": [
+              "kms:Encrypt",
+              "kms:Decrypt",
+              "kms:ReEncrypt*",
+              "kms:CreateGrant",
+              "kms:DescribeKey"
+            ],
+            "Resource": "*",
+            "Condition": {
+              "StringEquals": {
+                "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+                "kms:CallerAccount": "058264289478"
+              }
+            }
+          },
+          {
+            "Sid": "Allow access through AWS Secrets Manager for all principals in the account that are authorized to use AWS Secrets Manager",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "*"
+            },
+            "Action": "kms:GenerateDataKey*",
+            "Resource": "*",
+            "Condition": {
+              "StringEquals": {
+                "kms:CallerAccount": "058264289478"
+              },
+              "StringLike": {
+                "kms:ViaService": "secretsmanager.*.amazonaws.com"
+              }
+            }
+          },
+          {
+            "Sid": "Allow direct access to key metadata to the account",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": [
+              "kms:Describe*",
+              "kms:Get*",
+              "kms:List*",
+              "kms:RevokeGrant"
+            ],
+            "Resource": "*"
+          }
+        ]
+      },
+      "grants": null,
+      "grantsInspected": false
+    },
+    {
+      "id": "9124aca5-bdb3-4b5c-a87b-78b332432b96",
+      "arn": "arn:aws:kms:eu-north-1:058264289478:key/9124aca5-bdb3-4b5c-a87b-78b332432b96",
+      "manager": "CUSTOMER",
+      "state": "Enabled",
+      "aliases": [
+        "alias/project-respawn-twitch-token-vault-Daniel"
+      ],
+      "tags": [
+        {
+          "TagKey": "amplify:deployment-type",
+          "TagValue": "sandbox"
+        },
+        {
+          "TagKey": "created-by",
+          "TagValue": "amplify"
+        }
+      ],
+      "classification": "PROJECT_RESPAWN_BUSINESS_KEY",
+      "policy": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": "kms:*",
+            "Resource": "*"
+          }
+        ]
+      },
+      "grants": [],
+      "grantsInspected": true
+    },
+    {
+      "id": "a2ed44fc-ac6a-4398-ad3a-79b7def8d945",
+      "arn": "arn:aws:kms:eu-north-1:058264289478:key/a2ed44fc-ac6a-4398-ad3a-79b7def8d945",
+      "manager": "AWS",
+      "state": "Enabled",
+      "aliases": [
+        "alias/aws/ebs"
+      ],
+      "tags": [],
+      "classification": "AWS_MANAGED_SERVICE_KEY",
+      "policy": {
+        "Version": "2012-10-17",
+        "Id": "auto-ebs-2",
+        "Statement": [
+          {
+            "Sid": "Allow access through EBS for all principals in the account that are authorized to use EBS",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "*"
+            },
+            "Action": [
+              "kms:Encrypt",
+              "kms:Decrypt",
+              "kms:ReEncrypt*",
+              "kms:GenerateDataKey*",
+              "kms:CreateGrant",
+              "kms:DescribeKey"
+            ],
+            "Resource": "*",
+            "Condition": {
+              "StringEquals": {
+                "kms:ViaService": "ec2.eu-north-1.amazonaws.com",
+                "kms:CallerAccount": "058264289478"
+              }
+            }
+          },
+          {
+            "Sid": "Allow direct access to key metadata to the account",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": [
+              "kms:Describe*",
+              "kms:Get*",
+              "kms:List*",
+              "kms:RevokeGrant"
+            ],
+            "Resource": "*"
+          }
+        ]
+      },
+      "grants": null,
+      "grantsInspected": false
+    },
+    {
+      "id": "a3d638ca-2aad-4e6f-9b66-a4f0f9c30bb5",
+      "arn": "arn:aws:kms:eu-north-1:058264289478:key/a3d638ca-2aad-4e6f-9b66-a4f0f9c30bb5",
+      "manager": "CUSTOMER",
+      "state": "Enabled",
+      "aliases": [
+        "alias/project-respawn-twitch-token-vault-production"
+      ],
+      "tags": [
+        {
+          "TagKey": "amplify:app-id",
+          "TagValue": "d2cux232bpa951"
+        },
+        {
+          "TagKey": "amplify:branch-name",
+          "TagValue": "master"
+        },
+        {
+          "TagKey": "amplify:deployment-type",
+          "TagValue": "branch"
+        },
+        {
+          "TagKey": "created-by",
+          "TagValue": "amplify"
+        }
+      ],
+      "classification": "PROJECT_RESPAWN_BUSINESS_KEY",
+      "policy": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": "kms:*",
+            "Resource": "*"
+          }
+        ]
+      },
+      "grants": [],
+      "grantsInspected": true
+    },
+    {
+      "id": "bc8428bb-7e3e-4a60-a17c-1b0eef6cc40f",
+      "arn": "arn:aws:kms:eu-north-1:058264289478:key/bc8428bb-7e3e-4a60-a17c-1b0eef6cc40f",
+      "manager": "AWS",
+      "state": "Enabled",
+      "aliases": [
+        "alias/aws/ssm"
+      ],
+      "tags": [],
+      "classification": "AWS_MANAGED_SERVICE_KEY",
+      "policy": {
+        "Version": "2012-10-17",
+        "Id": "auto-ssm-1",
+        "Statement": [
+          {
+            "Sid": "Allow access through SSM for all principals in the account that are authorized to use SSM",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "*"
+            },
+            "Action": [
+              "kms:Encrypt",
+              "kms:Decrypt",
+              "kms:ReEncrypt*",
+              "kms:GenerateDataKey*",
+              "kms:DescribeKey"
+            ],
+            "Resource": "*",
+            "Condition": {
+              "StringEquals": {
+                "kms:CallerAccount": "058264289478",
+                "kms:ViaService": "ssm.eu-north-1.amazonaws.com"
+              }
+            }
+          },
+          {
+            "Sid": "Allow direct access to key metadata to the account",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": [
+              "kms:Describe*",
+              "kms:Get*",
+              "kms:List*"
+            ],
+            "Resource": "*"
+          }
+        ]
+      },
+      "grants": null,
+      "grantsInspected": false
+    },
+    {
+      "id": "bce0b7bc-54ec-451c-882c-6b312981d127",
+      "arn": "arn:aws:kms:eu-north-1:058264289478:key/bce0b7bc-54ec-451c-882c-6b312981d127",
+      "manager": "AWS",
+      "state": "Enabled",
+      "aliases": [
+        "alias/aws/s3"
+      ],
+      "tags": [],
+      "classification": "AWS_MANAGED_SERVICE_KEY",
+      "policy": {
+        "Version": "2012-10-17",
+        "Id": "auto-s3-2",
+        "Statement": [
+          {
+            "Sid": "Allow access through S3 for all principals in the account that are authorized to use S3",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "*"
+            },
+            "Action": [
+              "kms:Encrypt",
+              "kms:Decrypt",
+              "kms:ReEncrypt*",
+              "kms:GenerateDataKey*",
+              "kms:DescribeKey"
+            ],
+            "Resource": "*",
+            "Condition": {
+              "StringEquals": {
+                "kms:CallerAccount": "058264289478",
+                "kms:ViaService": "s3.eu-north-1.amazonaws.com"
+              }
+            }
+          },
+          {
+            "Sid": "Allow direct access to key metadata to the account",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": [
+              "kms:Describe*",
+              "kms:Get*",
+              "kms:List*"
+            ],
+            "Resource": "*"
+          }
+        ]
+      },
+      "grants": null,
+      "grantsInspected": false
+    },
+    {
+      "id": "cb74cb10-751e-40d3-968d-116aee041530",
+      "arn": "arn:aws:kms:eu-north-1:058264289478:key/cb74cb10-751e-40d3-968d-116aee041530",
+      "manager": "CUSTOMER",
+      "state": "Enabled",
+      "aliases": [],
+      "tags": [
+        {
+          "TagKey": "amplify:app-id",
+          "TagValue": "d2cux232bpa951"
+        },
+        {
+          "TagKey": "amplify:branch-name",
+          "TagValue": "master"
+        },
+        {
+          "TagKey": "amplify:deployment-type",
+          "TagValue": "branch"
+        },
+        {
+          "TagKey": "created-by",
+          "TagValue": "amplify"
+        }
+      ],
+      "classification": "PROJECT_RESPAWN_BUSINESS_KEY",
+      "policy": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": "kms:*",
+            "Resource": "*"
+          }
+        ]
+      },
+      "grants": [],
+      "grantsInspected": true,
+      "ownership": {
+        "at": "2026-10-05T14:24:55.243Z",
+        "stackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/amplify-d2cux232bpa951-master-branch-53ef67772a-overlaysourcestackF7F134D8-1013ERNKC34AE/74cfab20-a192-11f1-92f6-06e8ee2e80bf",
+        "logicalId": "OverlaySourceOverlayCredentialKey67E3466D",
+        "physicalId": "cb74cb10-751e-40d3-968d-116aee041530",
+        "status": "CREATE_COMPLETE"
+      }
+    },
+    {
+      "id": "cbd4dae3-0f60-49a6-bbed-5e55a9e61139",
+      "arn": "arn:aws:kms:eu-north-1:058264289478:key/cbd4dae3-0f60-49a6-bbed-5e55a9e61139",
+      "manager": "AWS",
+      "state": "Enabled",
+      "aliases": [
+        "alias/aws/dynamodb"
+      ],
+      "tags": [],
+      "classification": "AWS_MANAGED_SERVICE_KEY",
+      "policy": {
+        "Version": "2012-10-17",
+        "Id": "auto-dynamodb-3",
+        "Statement": [
+          {
+            "Sid": "Allow access through Amazon DynamoDB for all principals in the account that are authorized to use Amazon DynamoDB",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "*"
+            },
+            "Action": [
+              "kms:Encrypt",
+              "kms:Decrypt",
+              "kms:ReEncrypt*",
+              "kms:GenerateDataKey*",
+              "kms:CreateGrant",
+              "kms:DescribeKey"
+            ],
+            "Resource": "*",
+            "Condition": {
+              "StringEquals": {
+                "kms:CallerAccount": "058264289478"
+              },
+              "StringLike": {
+                "kms:ViaService": "dynamodb.*.amazonaws.com"
+              }
+            }
+          },
+          {
+            "Sid": "Allow direct access to key metadata to the account",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": [
+              "kms:Describe*",
+              "kms:Get*",
+              "kms:List*",
+              "kms:RevokeGrant"
+            ],
+            "Resource": "*"
+          },
+          {
+            "Sid": "Allow DynamoDB to directly describe the key",
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "dynamodb.amazonaws.com"
+            },
+            "Action": [
+              "kms:Describe*",
+              "kms:Get*",
+              "kms:List*"
+            ],
+            "Resource": "*"
+          }
+        ]
+      },
+      "grants": null,
+      "grantsInspected": false
+    },
+    {
+      "id": "fdbb4fed-0e60-4df2-bb3c-0d42dac75c55",
+      "arn": "arn:aws:kms:eu-north-1:058264289478:key/fdbb4fed-0e60-4df2-bb3c-0d42dac75c55",
+      "manager": "CUSTOMER",
+      "state": "Enabled",
+      "aliases": [
+        "alias/project-respawn-twitch-token-vault-Demo"
+      ],
+      "tags": [
+        {
+          "TagKey": "amplify:app-id",
+          "TagValue": "d2cux232bpa951"
+        },
+        {
+          "TagKey": "amplify:branch-name",
+          "TagValue": "Demo"
+        },
+        {
+          "TagKey": "amplify:deployment-type",
+          "TagValue": "branch"
+        },
+        {
+          "TagKey": "created-by",
+          "TagValue": "amplify"
+        }
+      ],
+      "classification": "PROJECT_RESPAWN_BUSINESS_KEY",
+      "policy": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": "kms:*",
+            "Resource": "*"
+          }
+        ]
+      },
+      "grants": [],
+      "grantsInspected": true
+    }
+  ],
+  "lambdaKeyArn": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+  "counts": {
+    "AWS_MANAGED_LAMBDA_KEY": 1,
+    "PROJECT_RESPAWN_BUSINESS_KEY": 8,
+    "UNKNOWN_CUSTOMER_MANAGED_KEY": 2,
+    "AWS_MANAGED_SERVICE_KEY": 5
+  },
+  "awsWrites": 0
+}

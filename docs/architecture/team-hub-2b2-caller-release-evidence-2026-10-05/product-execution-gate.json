@@ -1,0 +1,75 @@
+{
+  "at": "2026-10-05T15:03:49.911Z",
+  "ready": true,
+  "identity": {
+    "UserId": "AROAQ3EGSQDDFHIFTLFXI:TeamHubReviewedRelease1",
+    "Account": "058264289478",
+    "Arn": "arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-Deploy/TeamHubReviewedRelease1"
+  },
+  "execution": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+  "product": "d458da9a7a8d1d519aaab05418fda95097a26256da0a297b71c95a5aaef5085f",
+  "templateSha": "0796ee8170bd0417fca6b2806e58e48c18278b4e6c32999824f55ac65898e7ee",
+  "lambdaSha": "0e3fde08f1dbf3c1803ff1daac65e902117d757c76506d478112d5291814e7b3",
+  "stack": "ProjectRespawn-TeamHub-Ntgre",
+  "changeSet": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/team-hub-read-proof-release1-20261005/f626093b-8842-4d54-8e55-ad0e21fe7e82",
+  "time": {
+    "at": "2026-10-05T15:03:49.911Z",
+    "expiresAt": "2026-10-06T13:51:32.179Z",
+    "hoursRemaining": 22.795074444444445,
+    "minimumHours": 6
+  },
+  "additions": 11,
+  "modifications": 0,
+  "deletions": 0,
+  "replacements": 0,
+  "unexpected": 0,
+  "rollbackEnabled": true,
+  "resources": [
+    {
+      "id": "ReadLogs",
+      "type": "AWS::Logs::LogGroup"
+    },
+    {
+      "id": "ReadRole",
+      "type": "AWS::IAM::Role"
+    },
+    {
+      "id": "ReadFunction",
+      "type": "AWS::Lambda::Function"
+    },
+    {
+      "id": "HttpApi",
+      "type": "AWS::ApiGatewayV2::Api"
+    },
+    {
+      "id": "JwtAuthorizer",
+      "type": "AWS::ApiGatewayV2::Authorizer"
+    },
+    {
+      "id": "ReadIntegration",
+      "type": "AWS::ApiGatewayV2::Integration"
+    },
+    {
+      "id": "PreviewRoute",
+      "type": "AWS::ApiGatewayV2::Route"
+    },
+    {
+      "id": "ApiInvoke",
+      "type": "AWS::Lambda::Permission"
+    },
+    {
+      "id": "Stage",
+      "type": "AWS::ApiGatewayV2::Stage"
+    },
+    {
+      "id": "ReadErrors",
+      "type": "AWS::CloudWatch::Alarm"
+    },
+    {
+      "id": "ApiErrors",
+      "type": "AWS::CloudWatch::Alarm"
+    }
+  ],
+  "legacyVerified": true,
+  "tournamentVerified": true
+}

@@ -1,0 +1,100 @@
+{
+  "equivalentCreate": [
+    {
+      "eventId": "DefaultStage-CREATE_COMPLETE-2026-10-04T13:35:27.966Z",
+      "logicalId": "DefaultStage",
+      "type": "AWS::ApiGatewayV2::Stage",
+      "status": "CREATE_COMPLETE",
+      "at": "2026-10-04T13:35:27.966000+00:00",
+      "evidence": "docs/architecture/phase2a-tournament-kms-correction-evidence-2026-10-04/successful-deployment-events.json"
+    },
+    {
+      "eventId": "PreviewRoute-CREATE_COMPLETE-2026-10-04T13:35:26.025Z",
+      "logicalId": "PreviewRoute",
+      "type": "AWS::ApiGatewayV2::Route",
+      "status": "CREATE_COMPLETE",
+      "at": "2026-10-04T13:35:26.025000+00:00",
+      "evidence": "docs/architecture/phase2a-tournament-kms-correction-evidence-2026-10-04/successful-deployment-events.json"
+    },
+    {
+      "eventId": "PreviewIntegration-CREATE_COMPLETE-2026-10-04T13:35:24.223Z",
+      "logicalId": "PreviewIntegration",
+      "type": "AWS::ApiGatewayV2::Integration",
+      "status": "CREATE_COMPLETE",
+      "at": "2026-10-04T13:35:24.223000+00:00",
+      "evidence": "docs/architecture/phase2a-tournament-kms-correction-evidence-2026-10-04/successful-deployment-events.json"
+    },
+    {
+      "eventId": "JwtAuthorizer-CREATE_COMPLETE-2026-10-04T13:34:39.146Z",
+      "logicalId": "JwtAuthorizer",
+      "type": "AWS::ApiGatewayV2::Authorizer",
+      "status": "CREATE_COMPLETE",
+      "at": "2026-10-04T13:34:39.146000+00:00",
+      "evidence": "docs/architecture/phase2a-tournament-kms-correction-evidence-2026-10-04/successful-deployment-events.json"
+    }
+  ],
+  "equivalentCleanup": [
+    {
+      "eventId": "JwtAuthorizer-90b7eed4-3e64-4e4f-b03a-730ed667dbe3",
+      "logicalId": "JwtAuthorizer",
+      "type": "AWS::ApiGatewayV2::Authorizer",
+      "status": "DELETE_COMPLETE",
+      "at": "2026-10-04T13:12:03.830000+00:00",
+      "evidence": "docs/architecture/phase2a-tournament-practical-iam-evidence-2026-10-04/events.json"
+    },
+    {
+      "eventId": "JwtAuthorizer-ef3a9a53-41ec-44f0-afb4-2acb08f67fe5",
+      "logicalId": "JwtAuthorizer",
+      "type": "AWS::ApiGatewayV2::Authorizer",
+      "status": "DELETE_COMPLETE",
+      "at": "2026-09-29T15:53:36.428000+00:00",
+      "evidence": "docs/architecture/phase2a-tournament-practical-iam-evidence-2026-10-04/events.json"
+    },
+    {
+      "eventId": "PreviewIntegration-1cebc780-5537-499f-bd6d-81b01e1a4d3d",
+      "logicalId": "PreviewIntegration",
+      "type": "AWS::ApiGatewayV2::Integration",
+      "status": "DELETE_COMPLETE",
+      "at": "2026-09-29T15:53:36.150000+00:00",
+      "evidence": "docs/architecture/phase2a-tournament-practical-iam-evidence-2026-10-04/events.json"
+    },
+    {
+      "eventId": "PreviewRoute-52b86b15-95d2-4b7a-9f09-4d4d44b822fc",
+      "logicalId": "PreviewRoute",
+      "type": "AWS::ApiGatewayV2::Route",
+      "status": "DELETE_COMPLETE",
+      "at": "2026-09-29T15:53:34.874000+00:00",
+      "evidence": "docs/architecture/phase2a-tournament-practical-iam-evidence-2026-10-04/events.json"
+    },
+    {
+      "eventId": "DefaultStage-973f58f6-d2cd-404e-8fe4-f26aea61ede2",
+      "logicalId": "DefaultStage",
+      "type": "AWS::ApiGatewayV2::Stage",
+      "status": "DELETE_COMPLETE",
+      "at": "2026-09-29T15:53:33.560000+00:00",
+      "evidence": "docs/architecture/phase2a-tournament-practical-iam-evidence-2026-10-04/events.json"
+    }
+  ],
+  "taggingFailureThenSuccess": [
+    {
+      "eventId": "DefaultStage-CREATE_FAILED-2026-09-29T15:53:29.153Z",
+      "logicalId": "DefaultStage",
+      "type": "AWS::ApiGatewayV2::Stage",
+      "status": "CREATE_FAILED",
+      "at": "2026-09-29T15:53:29.153000+00:00",
+      "reason": "Resource handler returned message: \"User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-Tournaments-Ntgre-CfnExecution/AWSCloudFormation is not authorized to perform: apigateway:TagResource on resource: arn:aws:apigateway:eu-north-1::/apis/msipnwy39j/stages because no identity-based policy allows the apigateway:TagResource action (Service: ApiGatewayV2, Status Code: 403, Request ID: cf82a6ef-9081-4cd0-89b5-607e5161b896) (SDK Attempt Count: 1)\" (RequestToken: 070705ba-adcb-d364-5be5-70e21d0424cc, HandlerErrorCode: AccessDenied)",
+      "evidence": "docs/architecture/phase2a-tournament-practical-iam-evidence-2026-10-04/events.json"
+    }
+  ],
+  "nonEquivalent": [
+    "Tournament HttpApi already existed and was imported; accepted October 4 deployment does not prove fresh CloudFormation CreateApi",
+    "Exact HTTP paths, API IDs, policies, names and Team JWT route differ",
+    "No individual successful TagResource/UntagResource CloudTrail event is inferred from resource completion; successful Stage create demonstrates the integrated lifecycle",
+    "Neither template uses REST APIs, custom API credentials roles or imported OpenAPI S3 bodies"
+  ],
+  "apiCreateEvidence": [
+    "Current AWS::ApiGatewayV2::Api provider create permissions",
+    "Supported first-create POST /apis simulator allow",
+    "Regional apigateway:* Allow document semantics before expiry"
+  ]
+}

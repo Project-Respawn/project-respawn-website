@@ -1,0 +1,917 @@
+{
+  "resources": 11,
+  "resourceTypes": 10,
+  "apiGatewayTypes": 5,
+  "knownDefaultKmsBlocker": true,
+  "unknownCleanupOperations": 0,
+  "resourcesMapped": [
+    {
+      "logicalId": "ReadLogs",
+      "type": "AWS::Logs::LogGroup",
+      "propertiesPresent": [
+        "LogGroupName",
+        "RetentionInDays"
+      ],
+      "providerHandlers": {
+        "create": {
+          "permissions": [
+            "logs:DescribeLogGroups",
+            "logs:CreateLogGroup",
+            "logs:PutRetentionPolicy",
+            "logs:TagResource",
+            "logs:GetDataProtectionPolicy",
+            "logs:PutDataProtectionPolicy",
+            "logs:CreateLogDelivery",
+            "s3:REST.PUT.OBJECT",
+            "firehose:TagDeliveryStream",
+            "logs:PutResourcePolicy",
+            "logs:DescribeResourcePolicies",
+            "logs:PutIndexPolicy",
+            "logs:DescribeIndexPolicies",
+            "logs:PutBearerTokenAuthentication"
+          ]
+        },
+        "read": {
+          "permissions": [
+            "logs:DescribeLogGroups",
+            "logs:ListTagsForResource",
+            "logs:GetDataProtectionPolicy",
+            "logs:DescribeIndexPolicies",
+            "logs:DescribeResourcePolicies"
+          ]
+        },
+        "update": {
+          "permissions": [
+            "logs:DescribeLogGroups",
+            "logs:AssociateKmsKey",
+            "logs:DisassociateKmsKey",
+            "logs:PutRetentionPolicy",
+            "logs:DeleteRetentionPolicy",
+            "logs:TagResource",
+            "logs:UntagResource",
+            "logs:ListTagsForResource",
+            "logs:GetDataProtectionPolicy",
+            "logs:PutDataProtectionPolicy",
+            "logs:CreateLogDelivery",
+            "s3:REST.PUT.OBJECT",
+            "firehose:TagDeliveryStream",
+            "logs:PutIndexPolicy",
+            "logs:DeleteIndexPolicy",
+            "logs:PutResourcePolicy",
+            "logs:DescribeResourcePolicies",
+            "logs:DeleteResourcePolicy",
+            "logs:PutLogGroupDeletionProtection",
+            "logs:PutBearerTokenAuthentication"
+          ]
+        },
+        "delete": {
+          "permissions": [
+            "logs:DescribeLogGroups",
+            "logs:DeleteLogGroup",
+            "logs:DeleteDataProtectionPolicy"
+          ]
+        },
+        "list": {
+          "permissions": [
+            "logs:DescribeLogGroups",
+            "logs:ListTagsForResource"
+          ],
+          "handlerSchema": {
+            "properties": {
+              "LogGroupName": {
+                "$ref": "resource-schema.json#/properties/LogGroupName"
+              }
+            },
+            "required": []
+          }
+        }
+      },
+      "providerTagging": {
+        "taggable": true,
+        "tagOnCreate": true,
+        "tagUpdatable": true,
+        "cloudFormationSystemTags": true,
+        "tagProperty": "/properties/Tags",
+        "permissions": [
+          "logs:TagResource",
+          "logs:UntagResource",
+          "logs:ListTagsForResource"
+        ]
+      },
+      "createAndRead": "COVERED_FOR_PINNED_PROPERTIES",
+      "update": "Provider operations recorded; no product update authorized",
+      "tag": "Service tag lifecycle included",
+      "untag": "Maintenance path; not separate first-create rollback cleanup",
+      "rollbackOperations": [
+        "DescribeLogGroups",
+        "DeleteLogGroup"
+      ],
+      "rollbackStatus": "COVERED",
+      "unknownCleanup": 0,
+      "notes": [
+        "No DataProtectionPolicy, KmsKeyId, FieldIndexPolicies, ResourcePolicyDocument or log delivery configuration. Optional policy/delivery cleanup not part of this template.",
+        "Provider schema includes s3:REST.PUT.OBJECT annotation; do not add this as an IAM action or grant unrelated delivery rights."
+      ],
+      "schemaEvidence": "schema-AWS-Logs-LogGroup.json"
+    },
+    {
+      "logicalId": "ReadRole",
+      "type": "AWS::IAM::Role",
+      "propertiesPresent": [
+        "AssumeRolePolicyDocument",
+        "PermissionsBoundary",
+        "Policies",
+        "RoleName"
+      ],
+      "providerHandlers": {
+        "create": {
+          "permissions": [
+            "iam:CreateRole",
+            "iam:PutRolePolicy",
+            "iam:AttachRolePolicy",
+            "iam:GetRolePolicy",
+            "iam:TagRole",
+            "iam:UntagRole",
+            "iam:GetRole"
+          ]
+        },
+        "read": {
+          "permissions": [
+            "iam:GetRole",
+            "iam:ListAttachedRolePolicies",
+            "iam:ListRolePolicies",
+            "iam:GetRolePolicy"
+          ]
+        },
+        "update": {
+          "permissions": [
+            "iam:UpdateRole",
+            "iam:UpdateRoleDescription",
+            "iam:UpdateAssumeRolePolicy",
+            "iam:DetachRolePolicy",
+            "iam:AttachRolePolicy",
+            "iam:DeleteRolePermissionsBoundary",
+            "iam:PutRolePermissionsBoundary",
+            "iam:DeleteRolePolicy",
+            "iam:PutRolePolicy",
+            "iam:TagRole",
+            "iam:UntagRole"
+          ]
+        },
+        "delete": {
+          "permissions": [
+            "iam:DeleteRole",
+            "iam:DetachRolePolicy",
+            "iam:DeleteRolePolicy",
+            "iam:GetRole",
+            "iam:ListAttachedRolePolicies",
+            "iam:ListRolePolicies",
+            "iam:TagRole",
+            "iam:UntagRole"
+          ]
+        },
+        "list": {
+          "permissions": [
+            "iam:ListRoles"
+          ]
+        }
+      },
+      "providerTagging": {
+        "taggable": true,
+        "tagOnCreate": true,
+        "tagUpdatable": true,
+        "cloudFormationSystemTags": false,
+        "tagProperty": "/properties/Tags",
+        "permissions": [
+          "iam:TagRole",
+          "iam:UntagRole",
+          "iam:ListRoleTags"
+        ]
+      },
+      "createAndRead": "COVERED_FOR_PINNED_PROPERTIES",
+      "update": "Provider operations recorded; no product update authorized",
+      "tag": "Service tag lifecycle included",
+      "untag": "Maintenance path; not separate first-create rollback cleanup",
+      "rollbackOperations": [
+        "GetRole",
+        "ListRolePolicies",
+        "ListAttachedRolePolicies",
+        "DeleteRolePolicy",
+        "DeleteRole"
+      ],
+      "rollbackStatus": "COVERED",
+      "unknownCleanup": 0,
+      "notes": [
+        "No ManagedPolicyArns, so AttachRolePolicy/DetachRolePolicy not required. Boundary is supplied in CreateRole; standalone boundary alteration remains denied. Inline OwnLogsOnly policy requires DeleteRolePolicy before DeleteRole."
+      ],
+      "schemaEvidence": "schema-AWS-IAM-Role.json"
+    },
+    {
+      "logicalId": "ReadFunction",
+      "type": "AWS::Lambda::Function",
+      "propertiesPresent": [
+        "Architectures",
+        "Code",
+        "Environment",
+        "FunctionName",
+        "Handler",
+        "LoggingConfig",
+        "MemorySize",
+        "Role",
+        "Runtime",
+        "Timeout"
+      ],
+      "providerHandlers": {
+        "read": {
+          "permissions": [
+            "lambda:GetFunction",
+            "kms:Decrypt",
+            "lambda:GetFunctionCodeSigningConfig",
+            "lambda:GetFunctionRecursionConfig",
+            "lambda:GetRuntimeManagementConfig",
+            "lambda:GetFunctionScalingConfig"
+          ]
+        },
+        "create": {
+          "permissions": [
+            "lambda:CreateFunction",
+            "lambda:GetFunction",
+            "lambda:PutFunctionConcurrency",
+            "iam:PassRole",
+            "s3:GetObject",
+            "s3:GetObjectVersion",
+            "ec2:DescribeSecurityGroups",
+            "ec2:DescribeSubnets",
+            "ec2:DescribeVpcs",
+            "elasticfilesystem:DescribeMountTargets",
+            "s3files:ListMountTargets",
+            "kms:CreateGrant",
+            "kms:Decrypt",
+            "kms:DescribeKey",
+            "kms:Encrypt",
+            "kms:GenerateDataKey",
+            "lambda:GetCodeSigningConfig",
+            "lambda:GetFunctionCodeSigningConfig",
+            "lambda:GetLayerVersion",
+            "lambda:GetRuntimeManagementConfig",
+            "lambda:PutRuntimeManagementConfig",
+            "lambda:TagResource",
+            "lambda:PutFunctionRecursionConfig",
+            "lambda:GetFunctionRecursionConfig",
+            "lambda:PutFunctionScalingConfig",
+            "lambda:PassCapacityProvider"
+          ]
+        },
+        "update": {
+          "permissions": [
+            "lambda:DeleteFunctionConcurrency",
+            "lambda:GetFunction",
+            "lambda:PutFunctionConcurrency",
+            "lambda:TagResource",
+            "lambda:UntagResource",
+            "lambda:UpdateFunctionConfiguration",
+            "lambda:UpdateFunctionCode",
+            "iam:PassRole",
+            "s3:GetObject",
+            "s3:GetObjectVersion",
+            "ec2:DescribeSecurityGroups",
+            "ec2:DescribeSubnets",
+            "ec2:DescribeVpcs",
+            "elasticfilesystem:DescribeMountTargets",
+            "s3files:ListMountTargets",
+            "kms:CreateGrant",
+            "kms:Decrypt",
+            "kms:DescribeKey",
+            "kms:GenerateDataKey",
+            "lambda:GetRuntimeManagementConfig",
+            "lambda:PutRuntimeManagementConfig",
+            "lambda:PutFunctionCodeSigningConfig",
+            "lambda:DeleteFunctionCodeSigningConfig",
+            "lambda:GetCodeSigningConfig",
+            "lambda:GetFunctionCodeSigningConfig",
+            "lambda:PutFunctionRecursionConfig",
+            "lambda:GetFunctionRecursionConfig",
+            "lambda:PutFunctionScalingConfig",
+            "lambda:PublishVersion",
+            "lambda:PassCapacityProvider"
+          ]
+        },
+        "list": {
+          "permissions": [
+            "lambda:ListFunctions"
+          ]
+        },
+        "delete": {
+          "permissions": [
+            "lambda:DeleteFunction",
+            "lambda:GetFunction",
+            "ec2:DescribeNetworkInterfaces"
+          ]
+        }
+      },
+      "providerTagging": {
+        "permissions": [
+          "lambda:ListTags",
+          "lambda:TagResource",
+          "lambda:UntagResource"
+        ],
+        "taggable": true,
+        "tagOnCreate": true,
+        "tagUpdatable": true,
+        "tagProperty": "/properties/Tags",
+        "cloudFormationSystemTags": true
+      },
+      "createAndRead": "KNOWN_BLOCKER_DEFAULT_KMS_DENY",
+      "update": "Provider operations recorded; no product update authorized",
+      "tag": "Service tag lifecycle included",
+      "untag": "Maintenance path; not separate first-create rollback cleanup",
+      "rollbackOperations": [
+        "GetFunction",
+        "DeleteFunction",
+        "KMS Decrypt during environment-aware read/stabilization"
+      ],
+      "rollbackStatus": "DELETE_ALLOWED_BUT_ENVIRONMENT_READ_DEPENDENCY_BLOCKED",
+      "unknownCleanup": 0,
+      "notes": [
+        "ZIP from exact existing S3 object; no VPC, EFS, layers, signing, provisioned capacity or concurrency configuration. Broad provider optional-feature permissions do not authorize those features.",
+        "Default encryption is not disabled by absence of KmsKeyArn. Tournament CloudTrail proves execution-principal Encrypt/Decrypt dependencies; both are explicitly denied in Team execution identity/boundary."
+      ],
+      "schemaEvidence": "schema-AWS-Lambda-Function.json"
+    },
+    {
+      "logicalId": "HttpApi",
+      "type": "AWS::ApiGatewayV2::Api",
+      "propertiesPresent": [
+        "CorsConfiguration",
+        "Name",
+        "ProtocolType"
+      ],
+      "providerHandlers": {
+        "create": {
+          "permissions": [
+            "apigateway:POST",
+            "apigateway:PUT",
+            "s3:getObject"
+          ]
+        },
+        "update": {
+          "permissions": [
+            "apigateway:PATCH",
+            "apigateway:GET",
+            "apigateway:PUT",
+            "apigateway:POST",
+            "apigateway:DELETE",
+            "s3:getObject"
+          ]
+        },
+        "read": {
+          "permissions": [
+            "apigateway:GET",
+            "s3:getObject"
+          ]
+        },
+        "delete": {
+          "permissions": [
+            "apigateway:GET",
+            "apigateway:DELETE",
+            "s3:getObject"
+          ]
+        },
+        "list": {
+          "permissions": [
+            "apigateway:GET",
+            "s3:getObject"
+          ]
+        }
+      },
+      "providerTagging": {
+        "taggable": true,
+        "tagOnCreate": true,
+        "tagUpdatable": true,
+        "cloudFormationSystemTags": true,
+        "tagProperty": "/properties/Tags",
+        "permissions": [
+          "apigateway:GET",
+          "apigateway:PUT",
+          "apigateway:PATCH",
+          "apigateway:DELETE"
+        ]
+      },
+      "createAndRead": "COVERED_FOR_PINNED_PROPERTIES",
+      "update": "Provider operations recorded; no product update authorized",
+      "tag": "Service tag lifecycle included",
+      "untag": "Maintenance path; not separate first-create rollback cleanup",
+      "rollbackOperations": [
+        "GetApi",
+        "DeleteApi"
+      ],
+      "rollbackStatus": "COVERED",
+      "unknownCleanup": 0,
+      "notes": [
+        "s3:GetObject is conditional on BodyS3Location; absent in this template. Inline import Body also absent.",
+        "GET/POST/PUT/PATCH/DELETE covered by first-create apigateway:*; API/Stage tagging and system tags are included."
+      ],
+      "schemaEvidence": "schema-AWS-ApiGatewayV2-Api.json"
+    },
+    {
+      "logicalId": "JwtAuthorizer",
+      "type": "AWS::ApiGatewayV2::Authorizer",
+      "propertiesPresent": [
+        "ApiId",
+        "AuthorizerType",
+        "IdentitySource",
+        "JwtConfiguration",
+        "Name"
+      ],
+      "providerHandlers": {
+        "create": {
+          "permissions": [
+            "apigateway:POST",
+            "iam:PassRole"
+          ]
+        },
+        "update": {
+          "permissions": [
+            "apigateway:PATCH",
+            "apigateway:GET",
+            "apigateway:PUT",
+            "iam:PassRole"
+          ]
+        },
+        "read": {
+          "permissions": [
+            "apigateway:GET"
+          ]
+        },
+        "delete": {
+          "permissions": [
+            "apigateway:GET",
+            "apigateway:DELETE"
+          ]
+        },
+        "list": {
+          "handlerSchema": {
+            "properties": {
+              "ApiId": {
+                "$ref": "resource-schema.json#/properties/ApiId"
+              }
+            },
+            "required": [
+              "ApiId"
+            ]
+          },
+          "permissions": [
+            "apigateway:GET"
+          ]
+        }
+      },
+      "providerTagging": {
+        "taggable": false,
+        "tagOnCreate": false,
+        "tagUpdatable": false,
+        "cloudFormationSystemTags": false
+      },
+      "createAndRead": "COVERED_FOR_PINNED_PROPERTIES",
+      "update": "Provider operations recorded; no product update authorized",
+      "tag": "Not taggable",
+      "untag": "Not taggable",
+      "rollbackOperations": [
+        "GetAuthorizer",
+        "DeleteAuthorizer"
+      ],
+      "rollbackStatus": "COVERED",
+      "unknownCleanup": 0,
+      "notes": [
+        "iam:PassRole is conditional on AuthorizerCredentialsArn; absent for this JWT authorizer."
+      ],
+      "schemaEvidence": "schema-AWS-ApiGatewayV2-Authorizer.json"
+    },
+    {
+      "logicalId": "ReadIntegration",
+      "type": "AWS::ApiGatewayV2::Integration",
+      "propertiesPresent": [
+        "ApiId",
+        "IntegrationType",
+        "IntegrationUri",
+        "PayloadFormatVersion",
+        "TimeoutInMillis"
+      ],
+      "providerHandlers": {
+        "create": {
+          "permissions": [
+            "apigateway:POST",
+            "iam:PassRole"
+          ]
+        },
+        "update": {
+          "permissions": [
+            "apigateway:PATCH",
+            "apigateway:GET",
+            "apigateway:PUT",
+            "iam:PassRole"
+          ]
+        },
+        "read": {
+          "permissions": [
+            "apigateway:GET"
+          ]
+        },
+        "delete": {
+          "permissions": [
+            "apigateway:GET",
+            "apigateway:DELETE"
+          ]
+        },
+        "list": {
+          "handlerSchema": {
+            "properties": {
+              "ApiId": {
+                "$ref": "resource-schema.json#/properties/ApiId"
+              }
+            },
+            "required": [
+              "ApiId"
+            ]
+          },
+          "permissions": [
+            "apigateway:GET"
+          ]
+        }
+      },
+      "providerTagging": {
+        "taggable": false
+      },
+      "createAndRead": "COVERED_FOR_PINNED_PROPERTIES",
+      "update": "Provider operations recorded; no product update authorized",
+      "tag": "Not taggable",
+      "untag": "Not taggable",
+      "rollbackOperations": [
+        "GetIntegration",
+        "DeleteIntegration"
+      ],
+      "rollbackStatus": "COVERED",
+      "unknownCleanup": 0,
+      "notes": [
+        "iam:PassRole is conditional on CredentialsArn; absent. Lambda uses resource-based invocation permission."
+      ],
+      "schemaEvidence": "schema-AWS-ApiGatewayV2-Integration.json"
+    },
+    {
+      "logicalId": "PreviewRoute",
+      "type": "AWS::ApiGatewayV2::Route",
+      "propertiesPresent": [
+        "ApiId",
+        "AuthorizationType",
+        "AuthorizerId",
+        "RouteKey",
+        "Target"
+      ],
+      "providerHandlers": {
+        "create": {
+          "permissions": [
+            "apigateway:POST"
+          ]
+        },
+        "update": {
+          "permissions": [
+            "apigateway:PATCH",
+            "apigateway:GET",
+            "apigateway:PUT"
+          ]
+        },
+        "read": {
+          "permissions": [
+            "apigateway:GET"
+          ]
+        },
+        "delete": {
+          "permissions": [
+            "apigateway:GET",
+            "apigateway:DELETE"
+          ]
+        },
+        "list": {
+          "handlerSchema": {
+            "properties": {
+              "ApiId": {
+                "$ref": "resource-schema.json#/properties/ApiId"
+              }
+            },
+            "required": [
+              "ApiId"
+            ]
+          },
+          "permissions": [
+            "apigateway:GET"
+          ]
+        }
+      },
+      "providerTagging": {
+        "taggable": false
+      },
+      "createAndRead": "COVERED_FOR_PINNED_PROPERTIES",
+      "update": "Provider operations recorded; no product update authorized",
+      "tag": "Not taggable",
+      "untag": "Not taggable",
+      "rollbackOperations": [
+        "GetRoute",
+        "DeleteRoute"
+      ],
+      "rollbackStatus": "COVERED",
+      "unknownCleanup": 0,
+      "notes": [],
+      "schemaEvidence": "schema-AWS-ApiGatewayV2-Route.json"
+    },
+    {
+      "logicalId": "ApiInvoke",
+      "type": "AWS::Lambda::Permission",
+      "propertiesPresent": [
+        "Action",
+        "FunctionName",
+        "Principal",
+        "SourceAccount",
+        "SourceArn"
+      ],
+      "providerHandlers": {
+        "create": {
+          "permissions": [
+            "lambda:AddPermission"
+          ]
+        },
+        "read": {
+          "permissions": [
+            "lambda:GetPolicy"
+          ]
+        },
+        "delete": {
+          "permissions": [
+            "lambda:RemovePermission"
+          ]
+        },
+        "list": {
+          "handlerSchema": {
+            "properties": {
+              "FunctionName": {
+                "description": "The name of the Lambda function, version, or alias.",
+                "type": "string",
+                "pattern": "^(arn:(aws[a-zA-Z-]*)?:lambda:)?((eusc-)?[a-z]{2}((-gov)|(-iso([a-z]?)))?-[a-z]+-\\d{1}:)?(\\d{12}:)?(function:)?([a-zA-Z0-9-_]+)(:(\\$LATEST|[a-zA-Z0-9-_]+))?$",
+                "minLength": 1,
+                "maxLength": 140
+              }
+            },
+            "required": [
+              "FunctionName"
+            ]
+          },
+          "permissions": [
+            "lambda:GetPolicy"
+          ]
+        }
+      },
+      "providerTagging": {
+        "taggable": false,
+        "tagOnCreate": false,
+        "tagUpdatable": false,
+        "cloudFormationSystemTags": false
+      },
+      "createAndRead": "COVERED_FOR_PINNED_PROPERTIES",
+      "update": "Provider operations recorded; no product update authorized",
+      "tag": "Not taggable",
+      "untag": "Not taggable",
+      "rollbackOperations": [
+        "GetPolicy",
+        "RemovePermission"
+      ],
+      "rollbackStatus": "COVERED",
+      "unknownCleanup": 0,
+      "notes": [],
+      "schemaEvidence": "schema-AWS-Lambda-Permission.json"
+    },
+    {
+      "logicalId": "Stage",
+      "type": "AWS::ApiGatewayV2::Stage",
+      "propertiesPresent": [
+        "ApiId",
+        "AutoDeploy",
+        "DefaultRouteSettings",
+        "StageName"
+      ],
+      "providerHandlers": {
+        "read": {
+          "permissions": [
+            "apigateway:GET"
+          ]
+        },
+        "create": {
+          "permissions": [
+            "apigateway:POST",
+            "apigateway:TagResource"
+          ]
+        },
+        "update": {
+          "permissions": [
+            "apigateway:PATCH",
+            "apigateway:POST",
+            "apigateway:DELETE",
+            "apigateway:TagResource",
+            "apigateway:UntagResource"
+          ]
+        },
+        "list": {
+          "permissions": [
+            "apigateway:GET"
+          ],
+          "handlerSchema": {
+            "properties": {
+              "ApiId": {
+                "$ref": "resource-schema.json#/properties/ApiId"
+              }
+            },
+            "required": [
+              "ApiId"
+            ]
+          }
+        },
+        "delete": {
+          "permissions": [
+            "apigateway:DELETE"
+          ]
+        }
+      },
+      "providerTagging": {
+        "permissions": [
+          "apigateway:POST",
+          "apigateway:TagResource",
+          "apigateway:UntagResource"
+        ],
+        "taggable": true,
+        "tagOnCreate": true,
+        "tagUpdatable": true,
+        "tagProperty": "/properties/Tags",
+        "cloudFormationSystemTags": true
+      },
+      "createAndRead": "COVERED_FOR_PINNED_PROPERTIES",
+      "update": "Provider operations recorded; no product update authorized",
+      "tag": "Service tag lifecycle included",
+      "untag": "Maintenance path; not separate first-create rollback cleanup",
+      "rollbackOperations": [
+        "GetStage",
+        "DeleteStage"
+      ],
+      "rollbackStatus": "COVERED",
+      "unknownCleanup": 0,
+      "notes": [
+        "Schema names TagResource/UntagResource: record as provider operation annotations, NOT newly valid IAM actions. Translate via AWS service authorization verbs; existing apigateway:* covers the service lifecycle."
+      ],
+      "schemaEvidence": "schema-AWS-ApiGatewayV2-Stage.json"
+    },
+    {
+      "logicalId": "ReadErrors",
+      "type": "AWS::CloudWatch::Alarm",
+      "propertiesPresent": [
+        "AlarmName",
+        "ComparisonOperator",
+        "Dimensions",
+        "EvaluationPeriods",
+        "MetricName",
+        "Namespace",
+        "Period",
+        "Statistic",
+        "Threshold",
+        "TreatMissingData"
+      ],
+      "providerHandlers": {
+        "read": {
+          "permissions": [
+            "cloudwatch:DescribeAlarms",
+            "cloudwatch:ListTagsForResource"
+          ]
+        },
+        "create": {
+          "permissions": [
+            "cloudwatch:PutMetricAlarm",
+            "cloudwatch:DescribeAlarms",
+            "cloudwatch:TagResource"
+          ]
+        },
+        "update": {
+          "permissions": [
+            "cloudwatch:PutMetricAlarm",
+            "cloudwatch:DescribeAlarms",
+            "cloudwatch:TagResource",
+            "cloudwatch:UntagResource"
+          ]
+        },
+        "list": {
+          "permissions": [
+            "cloudwatch:DescribeAlarms"
+          ]
+        },
+        "delete": {
+          "permissions": [
+            "cloudwatch:DeleteAlarms",
+            "cloudwatch:DescribeAlarms"
+          ]
+        }
+      },
+      "providerTagging": {
+        "permissions": [
+          "cloudwatch:TagResource",
+          "cloudwatch:UntagResource",
+          "cloudwatch:ListTagsForResource"
+        ],
+        "taggable": true,
+        "tagOnCreate": true,
+        "tagUpdatable": true,
+        "tagProperty": "/properties/Tags",
+        "cloudFormationSystemTags": true
+      },
+      "createAndRead": "COVERED_FOR_PINNED_PROPERTIES",
+      "update": "Provider operations recorded; no product update authorized",
+      "tag": "Service tag lifecycle included",
+      "untag": "Maintenance path; not separate first-create rollback cleanup",
+      "rollbackOperations": [
+        "DescribeAlarms",
+        "DeleteAlarms"
+      ],
+      "rollbackStatus": "COVERED",
+      "unknownCleanup": 0,
+      "notes": [],
+      "schemaEvidence": "schema-AWS-CloudWatch-Alarm.json"
+    },
+    {
+      "logicalId": "ApiErrors",
+      "type": "AWS::CloudWatch::Alarm",
+      "propertiesPresent": [
+        "AlarmName",
+        "ComparisonOperator",
+        "Dimensions",
+        "EvaluationPeriods",
+        "MetricName",
+        "Namespace",
+        "Period",
+        "Statistic",
+        "Threshold",
+        "TreatMissingData"
+      ],
+      "providerHandlers": {
+        "read": {
+          "permissions": [
+            "cloudwatch:DescribeAlarms",
+            "cloudwatch:ListTagsForResource"
+          ]
+        },
+        "create": {
+          "permissions": [
+            "cloudwatch:PutMetricAlarm",
+            "cloudwatch:DescribeAlarms",
+            "cloudwatch:TagResource"
+          ]
+        },
+        "update": {
+          "permissions": [
+            "cloudwatch:PutMetricAlarm",
+            "cloudwatch:DescribeAlarms",
+            "cloudwatch:TagResource",
+            "cloudwatch:UntagResource"
+          ]
+        },
+        "list": {
+          "permissions": [
+            "cloudwatch:DescribeAlarms"
+          ]
+        },
+        "delete": {
+          "permissions": [
+            "cloudwatch:DeleteAlarms",
+            "cloudwatch:DescribeAlarms"
+          ]
+        }
+      },
+      "providerTagging": {
+        "permissions": [
+          "cloudwatch:TagResource",
+          "cloudwatch:UntagResource",
+          "cloudwatch:ListTagsForResource"
+        ],
+        "taggable": true,
+        "tagOnCreate": true,
+        "tagUpdatable": true,
+        "tagProperty": "/properties/Tags",
+        "cloudFormationSystemTags": true
+      },
+      "createAndRead": "COVERED_FOR_PINNED_PROPERTIES",
+      "update": "Provider operations recorded; no product update authorized",
+      "tag": "Service tag lifecycle included",
+      "untag": "Maintenance path; not separate first-create rollback cleanup",
+      "rollbackOperations": [
+        "DescribeAlarms",
+        "DeleteAlarms"
+      ],
+      "rollbackStatus": "COVERED",
+      "unknownCleanup": 0,
+      "notes": [],
+      "schemaEvidence": "schema-AWS-CloudWatch-Alarm.json"
+    }
+  ]
+}

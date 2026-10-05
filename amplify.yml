@@ -5,9 +5,9 @@ backend:
     build:
       commands:
         - npm ci --no-audit --no-fund
-        # Local synthesis/accounting only; unchanged frontend inputs skip synthesis.
-        - npm run validate:infrastructure-ci
-        - npx ampx pipeline-deploy --branch "$AWS_BRANCH" --app-id d2cux232bpa951
+        # Explicit domain/environment/mode required. Independent domains never fall back to Amplify.
+        - node scripts/deployment/hosted.mjs check
+        - node scripts/deployment/hosted.mjs deploy
 
 frontend:
   phases:

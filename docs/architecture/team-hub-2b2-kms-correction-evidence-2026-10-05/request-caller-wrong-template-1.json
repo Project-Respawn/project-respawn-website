@@ -1,0 +1,58 @@
+{
+  "PolicyInputList": [
+    "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Deny\",\"NotAction\":[\"cloudformation:DescribeChangeSet\",\"cloudformation:DeleteChangeSet\",\"cloudformation:DescribeStacks\",\"cloudformation:DescribeStackEvents\",\"cloudformation:GetTemplate\",\"cloudformation:CreateChangeSet\",\"cloudformation:ExecuteChangeSet\",\"iam:PassRole\"],\"Resource\":\"*\"},{\"Effect\":\"Allow\",\"Action\":[\"cloudformation:DescribeChangeSet\",\"cloudformation:DeleteChangeSet\",\"cloudformation:DescribeStacks\",\"cloudformation:DescribeStackEvents\",\"cloudformation:GetTemplate\"],\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\"},{\"Effect\":\"Allow\",\"Action\":\"cloudformation:CreateChangeSet\",\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\",\"Condition\":{\"StringEquals\":{\"cloudformation:RoleArn\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\",\"cloudformation:TemplateUrl\":\"https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/team-hub/read-proof/0796ee8170bd0417fca6b2806e58e48c18278b4e6c32999824f55ac65898e7ee.template.json\"}}},{\"Effect\":\"Allow\",\"Action\":\"cloudformation:ExecuteChangeSet\",\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\"},{\"Effect\":\"Deny\",\"Action\":\"cloudformation:*\",\"NotResource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\"},{\"Effect\":\"Deny\",\"Action\":\"cloudformation:*\",\"Resource\":\"*\",\"Condition\":{\"StringNotEquals\":{\"aws:RequestedRegion\":\"eu-north-1\"}}},{\"Effect\":\"Allow\",\"Action\":\"iam:PassRole\",\"Resource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\",\"Condition\":{\"StringEquals\":{\"iam:PassedToService\":\"cloudformation.amazonaws.com\"}}},{\"Effect\":\"Deny\",\"Action\":\"iam:PassRole\",\"NotResource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\"},{\"Effect\":\"Deny\",\"Action\":\"iam:PassRole\",\"Resource\":\"*\",\"Condition\":{\"StringNotEquals\":{\"iam:PassedToService\":\"cloudformation.amazonaws.com\"}}}]}"
+  ],
+  "PermissionsBoundaryPolicyInputList": [
+    "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Deny\",\"NotAction\":[\"cloudformation:DescribeChangeSet\",\"cloudformation:DeleteChangeSet\",\"cloudformation:DescribeStacks\",\"cloudformation:DescribeStackEvents\",\"cloudformation:GetTemplate\",\"cloudformation:CreateChangeSet\",\"cloudformation:ExecuteChangeSet\",\"iam:PassRole\"],\"Resource\":\"*\"},{\"Effect\":\"Allow\",\"Action\":[\"cloudformation:DescribeChangeSet\",\"cloudformation:DeleteChangeSet\",\"cloudformation:DescribeStacks\",\"cloudformation:DescribeStackEvents\",\"cloudformation:GetTemplate\"],\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\"},{\"Effect\":\"Allow\",\"Action\":\"cloudformation:CreateChangeSet\",\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\",\"Condition\":{\"StringEquals\":{\"cloudformation:RoleArn\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\",\"cloudformation:TemplateUrl\":\"https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/team-hub/read-proof/0796ee8170bd0417fca6b2806e58e48c18278b4e6c32999824f55ac65898e7ee.template.json\"}}},{\"Effect\":\"Allow\",\"Action\":\"cloudformation:ExecuteChangeSet\",\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\"},{\"Effect\":\"Deny\",\"Action\":\"cloudformation:*\",\"NotResource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\"},{\"Effect\":\"Deny\",\"Action\":\"cloudformation:*\",\"Resource\":\"*\",\"Condition\":{\"StringNotEquals\":{\"aws:RequestedRegion\":\"eu-north-1\"}}},{\"Effect\":\"Allow\",\"Action\":\"iam:PassRole\",\"Resource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\",\"Condition\":{\"StringEquals\":{\"iam:PassedToService\":\"cloudformation.amazonaws.com\"}}},{\"Effect\":\"Deny\",\"Action\":\"iam:PassRole\",\"NotResource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\"},{\"Effect\":\"Deny\",\"Action\":\"iam:PassRole\",\"Resource\":\"*\",\"Condition\":{\"StringNotEquals\":{\"iam:PassedToService\":\"cloudformation.amazonaws.com\"}}}]}"
+  ],
+  "ActionNames": [
+    "cloudformation:CreateChangeSet"
+  ],
+  "ResourceArns": [
+    "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/proof"
+  ],
+  "ContextEntries": [
+    {
+      "ContextKeyName": "aws:RequestedRegion",
+      "ContextKeyValues": [
+        "eu-north-1"
+      ],
+      "ContextKeyType": "string"
+    },
+    {
+      "ContextKeyName": "aws:CurrentTime",
+      "ContextKeyValues": [
+        "2026-10-05T14:29:12.588Z"
+      ],
+      "ContextKeyType": "date"
+    },
+    {
+      "ContextKeyName": "cloudformation:RoleArn",
+      "ContextKeyValues": [
+        "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution"
+      ],
+      "ContextKeyType": "string"
+    },
+    {
+      "ContextKeyName": "cloudformation:TemplateUrl",
+      "ContextKeyValues": [
+        "https://wrong.example/template.json"
+      ],
+      "ContextKeyType": "string"
+    },
+    {
+      "ContextKeyName": "iam:PassedToService",
+      "ContextKeyValues": [
+        "cloudformation.amazonaws.com"
+      ],
+      "ContextKeyType": "string"
+    },
+    {
+      "ContextKeyName": "iam:PermissionsBoundary",
+      "ContextKeyValues": [
+        "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-PreviewBoundary"
+      ],
+      "ContextKeyType": "string"
+    }
+  ]
+}

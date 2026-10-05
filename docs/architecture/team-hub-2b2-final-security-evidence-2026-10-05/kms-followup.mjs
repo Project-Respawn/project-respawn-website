@@ -1,0 +1,4 @@
+import {aws,read,save,dir} from './read-aws.mjs';
+const request=read(dir+'/lifecycle-request-default-lambda-kms.json');request.ActionNames=['kms:Encrypt','kms:Decrypt','kms:DescribeKey','kms:CreateGrant'];save('lifecycle-request-default-lambda-kms',request);
+const response=await aws('iam','simulate-custom-policy','--cli-input-json','file://'+dir+'/lifecycle-request-default-lambda-kms.json');save('lifecycle-response-default-lambda-kms',response);
+const result=read(dir+'/lifecycle-simulations.json');const rows=response.EvaluationResults.map(r=>({action:r.EvalActionName,resource:r.EvalResourceName,decision:r.EvalDecision,missing:r.MissingContextValues??[]}));result.results.find(j=>j.name==='default-lambda-kms').rows=rows;result.failures=result.results.flatMap(j=>j.rows.filter(r=>r.decision!=='allowed'||r.missing.length).map(r=>({job:j.name,...r})));result.at=new Date().toISOString();save('lifecycle-simulations',result);console.log(JSON.stringify(rows));

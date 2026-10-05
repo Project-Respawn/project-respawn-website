@@ -1,0 +1,488 @@
+{
+  "at": "2026-10-05T15:05:46.732Z",
+  "identity": {
+    "UserId": "AROAQ3EGSQDDFHIFTLFXI:TeamHubReviewedRelease1",
+    "Account": "058264289478",
+    "Arn": "arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-Deploy/TeamHubReviewedRelease1"
+  },
+  "region": "eu-north-1",
+  "stack": {
+    "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/b66ad780-c0cd-11f1-91ba-0effc0d85417",
+    "StackName": "ProjectRespawn-TeamHub-Ntgre",
+    "ChangeSetId": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/team-hub-read-proof-release1-20261005/f626093b-8842-4d54-8e55-ad0e21fe7e82",
+    "Description": "Team Hub READ_PROOF: authenticated synthetic response; no business state",
+    "Parameters": [
+      {
+        "ParameterKey": "BootstrapVersion",
+        "ParameterValue": "/cdk-bootstrap/hnb659fds/version",
+        "ResolvedValue": "30"
+      }
+    ],
+    "CreationTime": "2026-10-05T15:01:58.836000+00:00",
+    "LastUpdatedTime": "2026-10-05T15:03:51.170000+00:00",
+    "RollbackConfiguration": {},
+    "StackStatus": "CREATE_COMPLETE",
+    "DisableRollback": false,
+    "NotificationARNs": [],
+    "Capabilities": [
+      "CAPABILITY_NAMED_IAM"
+    ],
+    "RoleARN": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+    "Tags": [
+      {
+        "Key": "Project",
+        "Value": "ProjectRespawn"
+      },
+      {
+        "Key": "Environment",
+        "Value": "Ntgre"
+      },
+      {
+        "Key": "Domain",
+        "Value": "TeamHub"
+      }
+    ],
+    "EnableTerminationProtection": false,
+    "DriftInformation": {
+      "StackDriftStatus": "NOT_CHECKED"
+    },
+    "LastOperations": [
+      {
+        "OperationType": "CREATE_STACK",
+        "OperationId": "864ac7de-33d3-47a5-b536-40e0b3f9cef1"
+      }
+    ]
+  },
+  "resources": [
+    {
+      "LogicalResourceId": "ApiErrors",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-ReadProof-ApiErrors",
+      "ResourceType": "AWS::CloudWatch::Alarm",
+      "LastUpdatedTimestamp": "2026-10-05T15:04:00.873000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ApiInvoke",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-ApiInvoke-udDZcwx2P70z",
+      "ResourceType": "AWS::Lambda::Permission",
+      "LastUpdatedTimestamp": "2026-10-05T15:04:31.694000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "HttpApi",
+      "PhysicalResourceId": "t54b88casf",
+      "ResourceType": "AWS::ApiGatewayV2::Api",
+      "LastUpdatedTimestamp": "2026-10-05T15:03:55.662000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "JwtAuthorizer",
+      "PhysicalResourceId": "nvebda",
+      "ResourceType": "AWS::ApiGatewayV2::Authorizer",
+      "LastUpdatedTimestamp": "2026-10-05T15:03:57.773000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "PreviewRoute",
+      "PhysicalResourceId": "thj3tql",
+      "ResourceType": "AWS::ApiGatewayV2::Route",
+      "LastUpdatedTimestamp": "2026-10-05T15:04:33.803000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ReadErrors",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-ReadProof-ReadErrors",
+      "ResourceType": "AWS::CloudWatch::Alarm",
+      "LastUpdatedTimestamp": "2026-10-05T15:04:35.154000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ReadFunction",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+      "ResourceType": "AWS::Lambda::Function",
+      "LastUpdatedTimestamp": "2026-10-05T15:04:30.021000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ReadIntegration",
+      "PhysicalResourceId": "pb3fp80",
+      "ResourceType": "AWS::ApiGatewayV2::Integration",
+      "LastUpdatedTimestamp": "2026-10-05T15:04:31.868000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ReadLogs",
+      "PhysicalResourceId": "/project-respawn/Ntgre/team-hub/preview",
+      "ResourceType": "AWS::Logs::LogGroup",
+      "LastUpdatedTimestamp": "2026-10-05T15:04:05.972000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ReadRole",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+      "ResourceType": "AWS::IAM::Role",
+      "LastUpdatedTimestamp": "2026-10-05T15:04:15.997000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "Stage",
+      "PhysicalResourceId": "$default",
+      "ResourceType": "AWS::ApiGatewayV2::Stage",
+      "LastUpdatedTimestamp": "2026-10-05T15:04:35.770000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    }
+  ],
+  "api": {
+    "ApiEndpoint": "https://t54b88casf.execute-api.eu-north-1.amazonaws.com",
+    "ApiId": "t54b88casf",
+    "ApiKeySelectionExpression": "$request.header.x-api-key",
+    "CorsConfiguration": {
+      "AllowHeaders": [
+        "authorization"
+      ],
+      "AllowMethods": [
+        "GET"
+      ],
+      "AllowOrigins": [
+        "http://localhost:5174"
+      ]
+    },
+    "CreatedDate": "2026-10-05T15:03:54+00:00",
+    "DisableExecuteApiEndpoint": false,
+    "IpAddressType": "ipv4",
+    "Name": "ProjectRespawn-TeamHub-Ntgre",
+    "ProtocolType": "HTTP",
+    "RouteSelectionExpression": "$request.method $request.path",
+    "Tags": {
+      "Project": "ProjectRespawn",
+      "aws:cloudformation:stack-name": "ProjectRespawn-TeamHub-Ntgre",
+      "Environment": "Ntgre",
+      "aws:cloudformation:logical-id": "HttpApi",
+      "aws:cloudformation:stack-id": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/b66ad780-c0cd-11f1-91ba-0effc0d85417",
+      "Domain": "TeamHub"
+    }
+  },
+  "productTemplate": {
+    "Description": "Team Hub READ_PROOF: authenticated synthetic response; no business state",
+    "Metadata": {
+      "Mode": "READ_PROOF",
+      "DataAuthority": "SYNTHETIC",
+      "DeploymentAuthorized": false
+    },
+    "Resources": {
+      "ReadLogs": {
+        "Type": "AWS::Logs::LogGroup",
+        "Properties": {
+          "LogGroupName": "/project-respawn/Ntgre/team-hub/preview",
+          "RetentionInDays": 14
+        }
+      },
+      "ReadRole": {
+        "Type": "AWS::IAM::Role",
+        "Properties": {
+          "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Principal": {
+                  "Service": "lambda.amazonaws.com"
+                },
+                "Action": "sts:AssumeRole"
+              }
+            ]
+          },
+          "PermissionsBoundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+          "Policies": [
+            {
+              "PolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Action": [
+                      "logs:CreateLogStream",
+                      "logs:PutLogEvents"
+                    ],
+                    "Resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/preview:*"
+                  }
+                ]
+              },
+              "PolicyName": "OwnLogsOnly"
+            }
+          ],
+          "RoleName": "ProjectRespawn-TeamHub-Ntgre-PreviewRead"
+        }
+      },
+      "ReadFunction": {
+        "Type": "AWS::Lambda::Function",
+        "Properties": {
+          "Architectures": [
+            "arm64"
+          ],
+          "Code": {
+            "S3Bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+            "S3Key": "da4d9e570523cbbdcff21572d059f18227d03c12482620e916752f2863b87da1.zip"
+          },
+          "Environment": {
+            "Variables": {
+              "DOMAIN_ENV": "Ntgre",
+              "DOMAIN_ACCOUNT": "058264289478",
+              "DOMAIN_REGION": "eu-north-1",
+              "EXPECTED_ISSUER": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE",
+              "EXPECTED_POOL_ID": "eu-north-1_n24iLL7QE",
+              "EXPECTED_CLIENT_ID": "1iq7ovjaf7d16imdvbqgfgvf86"
+            }
+          },
+          "FunctionName": "ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "Handler": "index.handler",
+          "LoggingConfig": {
+            "LogFormat": "JSON",
+            "LogGroup": {
+              "Ref": "ReadLogs"
+            }
+          },
+          "MemorySize": 128,
+          "Role": {
+            "Fn::GetAtt": [
+              "ReadRole",
+              "Arn"
+            ]
+          },
+          "Runtime": "nodejs22.x",
+          "Timeout": 5
+        }
+      },
+      "HttpApi": {
+        "Type": "AWS::ApiGatewayV2::Api",
+        "Properties": {
+          "CorsConfiguration": {
+            "AllowHeaders": [
+              "authorization"
+            ],
+            "AllowMethods": [
+              "GET"
+            ],
+            "AllowOrigins": [
+              "http://localhost:5174"
+            ]
+          },
+          "Name": "ProjectRespawn-TeamHub-Ntgre",
+          "ProtocolType": "HTTP"
+        }
+      },
+      "JwtAuthorizer": {
+        "Type": "AWS::ApiGatewayV2::Authorizer",
+        "Properties": {
+          "ApiId": {
+            "Ref": "HttpApi"
+          },
+          "AuthorizerType": "JWT",
+          "IdentitySource": [
+            "$request.header.Authorization"
+          ],
+          "JwtConfiguration": {
+            "Audience": [
+              "1iq7ovjaf7d16imdvbqgfgvf86"
+            ],
+            "Issuer": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE"
+          },
+          "Name": "ExistingNtgreIdentity"
+        }
+      },
+      "ReadIntegration": {
+        "Type": "AWS::ApiGatewayV2::Integration",
+        "Properties": {
+          "ApiId": {
+            "Ref": "HttpApi"
+          },
+          "IntegrationType": "AWS_PROXY",
+          "IntegrationUri": {
+            "Fn::GetAtt": [
+              "ReadFunction",
+              "Arn"
+            ]
+          },
+          "PayloadFormatVersion": "2.0",
+          "TimeoutInMillis": 6000
+        }
+      },
+      "PreviewRoute": {
+        "Type": "AWS::ApiGatewayV2::Route",
+        "Properties": {
+          "ApiId": {
+            "Ref": "HttpApi"
+          },
+          "AuthorizationType": "JWT",
+          "AuthorizerId": {
+            "Ref": "JwtAuthorizer"
+          },
+          "RouteKey": "GET /v1/team-hub/preview",
+          "Target": {
+            "Fn::Join": [
+              "",
+              [
+                "integrations/",
+                {
+                  "Ref": "ReadIntegration"
+                }
+              ]
+            ]
+          }
+        }
+      },
+      "ApiInvoke": {
+        "Type": "AWS::Lambda::Permission",
+        "Properties": {
+          "Action": "lambda:InvokeFunction",
+          "FunctionName": {
+            "Ref": "ReadFunction"
+          },
+          "Principal": "apigateway.amazonaws.com",
+          "SourceAccount": "058264289478",
+          "SourceArn": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:execute-api:eu-north-1:058264289478:",
+                {
+                  "Ref": "HttpApi"
+                },
+                "/*/GET/v1/team-hub/preview"
+              ]
+            ]
+          }
+        }
+      },
+      "Stage": {
+        "Type": "AWS::ApiGatewayV2::Stage",
+        "Properties": {
+          "ApiId": {
+            "Ref": "HttpApi"
+          },
+          "AutoDeploy": true,
+          "DefaultRouteSettings": {
+            "ThrottlingBurstLimit": 20,
+            "ThrottlingRateLimit": 10
+          },
+          "StageName": "$default"
+        },
+        "DependsOn": [
+          "ApiInvoke",
+          "PreviewRoute"
+        ]
+      },
+      "ReadErrors": {
+        "Type": "AWS::CloudWatch::Alarm",
+        "Properties": {
+          "AlarmName": "ProjectRespawn-TeamHub-Ntgre-ReadProof-ReadErrors",
+          "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+          "Dimensions": [
+            {
+              "Name": "FunctionName",
+              "Value": {
+                "Ref": "ReadFunction"
+              }
+            }
+          ],
+          "EvaluationPeriods": 1,
+          "MetricName": "Errors",
+          "Namespace": "AWS/Lambda",
+          "Period": 60,
+          "Statistic": "Sum",
+          "Threshold": 1,
+          "TreatMissingData": "notBreaching"
+        }
+      },
+      "ApiErrors": {
+        "Type": "AWS::CloudWatch::Alarm",
+        "Properties": {
+          "AlarmName": "ProjectRespawn-TeamHub-Ntgre-ReadProof-ApiErrors",
+          "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+          "Dimensions": [
+            {
+              "Name": "ApiId",
+              "Value": {
+                "Ref": "HttpApi"
+              }
+            }
+          ],
+          "EvaluationPeriods": 1,
+          "MetricName": "5xx",
+          "Namespace": "AWS/ApiGateway",
+          "Period": 60,
+          "Statistic": "Sum",
+          "Threshold": 1,
+          "TreatMissingData": "notBreaching"
+        }
+      }
+    },
+    "Parameters": {
+      "BootstrapVersion": {
+        "Type": "AWS::SSM::Parameter::Value<String>",
+        "Default": "/cdk-bootstrap/hnb659fds/version",
+        "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+      }
+    },
+    "Rules": {
+      "CheckBootstrapVersion": {
+        "Assertions": [
+          {
+            "Assert": {
+              "Fn::Not": [
+                {
+                  "Fn::Contains": [
+                    [
+                      "1",
+                      "2",
+                      "3",
+                      "4",
+                      "5"
+                    ],
+                    {
+                      "Ref": "BootstrapVersion"
+                    }
+                  ]
+                }
+              ]
+            },
+            "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+          }
+        ]
+      }
+    }
+  }
+}

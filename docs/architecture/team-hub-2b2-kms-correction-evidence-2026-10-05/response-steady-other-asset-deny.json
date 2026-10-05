@@ -1,0 +1,75 @@
+{
+  "EvaluationResults": [
+    {
+      "EvalActionName": "s3:GetObject",
+      "EvalResourceName": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/unrelated.zip",
+      "EvalDecision": "explicitDeny",
+      "MatchedStatements": [
+        {
+          "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+          "SourcePolicyType": "Permissions Boundary Policy",
+          "StartPosition": {
+            "Line": 1,
+            "Column": 5175
+          },
+          "EndPosition": {
+            "Line": 1,
+            "Column": 5352
+          }
+        },
+        {
+          "SourcePolicyId": "PolicyInputList.1",
+          "SourcePolicyType": "IAM Policy",
+          "StartPosition": {
+            "Line": 1,
+            "Column": 5175
+          },
+          "EndPosition": {
+            "Line": 1,
+            "Column": 5352
+          }
+        }
+      ],
+      "MissingContextValues": [],
+      "PermissionsBoundaryDecisionDetail": {
+        "AllowedByPermissionsBoundary": false
+      },
+      "EvalDecisionDetails": {},
+      "ResourceSpecificResults": [
+        {
+          "EvalResourceName": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/unrelated.zip",
+          "EvalResourceDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+              "SourcePolicyType": "Permissions Boundary Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 5175
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 5352
+              }
+            },
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 5175
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 5352
+              }
+            }
+          ],
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": false
+          }
+        }
+      ]
+    }
+  ]
+}

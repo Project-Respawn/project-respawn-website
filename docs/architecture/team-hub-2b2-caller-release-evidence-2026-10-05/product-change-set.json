@@ -1,0 +1,167 @@
+{
+  "Changes": [
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ApiErrors",
+        "ResourceType": "AWS::CloudWatch::Alarm",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"MetricName\":\"5xx\",\"ComparisonOperator\":\"GreaterThanOrEqualToThreshold\",\"TreatMissingData\":\"notBreaching\",\"AlarmName\":\"ProjectRespawn-TeamHub-Ntgre-ReadProof-ApiErrors\",\"Statistic\":\"Sum\",\"Dimensions\":[{\"Value\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"Name\":\"ApiId\"}],\"Period\":\"60\",\"EvaluationPeriods\":\"1\",\"Namespace\":\"AWS/ApiGateway\",\"Threshold\":\"1\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ApiInvoke",
+        "ResourceType": "AWS::Lambda::Permission",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"FunctionName\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"Action\":\"lambda:InvokeFunction\",\"SourceArn\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"Principal\":\"apigateway.amazonaws.com\",\"SourceAccount\":\"058264289478\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "HttpApi",
+        "ResourceType": "AWS::ApiGatewayV2::Api",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"CorsConfiguration\":{\"AllowOrigins\":[\"http://localhost:5174\"],\"AllowHeaders\":[\"authorization\"],\"AllowMethods\":[\"GET\"]},\"ProtocolType\":\"HTTP\",\"Name\":\"ProjectRespawn-TeamHub-Ntgre\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "JwtAuthorizer",
+        "ResourceType": "AWS::ApiGatewayV2::Authorizer",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"IdentitySource\":[\"$request.header.Authorization\"],\"AuthorizerType\":\"JWT\",\"JwtConfiguration\":{\"Audience\":[\"1iq7ovjaf7d16imdvbqgfgvf86\"],\"Issuer\":\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\"},\"ApiId\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"Name\":\"ExistingNtgreIdentity\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "PreviewRoute",
+        "ResourceType": "AWS::ApiGatewayV2::Route",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"Target\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"RouteKey\":\"GET /v1/team-hub/preview\",\"AuthorizationType\":\"JWT\",\"AuthorizerId\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"ApiId\":\"{{changeSet:KNOWN_AFTER_APPLY}}\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ReadErrors",
+        "ResourceType": "AWS::CloudWatch::Alarm",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"MetricName\":\"Errors\",\"ComparisonOperator\":\"GreaterThanOrEqualToThreshold\",\"TreatMissingData\":\"notBreaching\",\"AlarmName\":\"ProjectRespawn-TeamHub-Ntgre-ReadProof-ReadErrors\",\"Statistic\":\"Sum\",\"Dimensions\":[{\"Value\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"Name\":\"FunctionName\"}],\"Period\":\"60\",\"EvaluationPeriods\":\"1\",\"Namespace\":\"AWS/Lambda\",\"Threshold\":\"1\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ReadFunction",
+        "ResourceType": "AWS::Lambda::Function",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"Role\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"FunctionName\":\"ProjectRespawn-TeamHub-Ntgre-PreviewRead\",\"MemorySize\":\"128\",\"Runtime\":\"nodejs22.x\",\"Timeout\":\"5\",\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"LogGroup\":\"{{changeSet:KNOWN_AFTER_APPLY}}\"},\"Environment\":{\"Variables\":{\"DOMAIN_ACCOUNT\":\"058264289478\",\"EXPECTED_ISSUER\":\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\",\"DOMAIN_REGION\":\"eu-north-1\",\"EXPECTED_POOL_ID\":\"eu-north-1_n24iLL7QE\",\"DOMAIN_ENV\":\"Ntgre\",\"EXPECTED_CLIENT_ID\":\"1iq7ovjaf7d16imdvbqgfgvf86\"}},\"Handler\":\"index.handler\",\"Code\":{\"S3Bucket\":\"cdk-hnb659fds-assets-058264289478-eu-north-1\",\"S3Key\":\"da4d9e570523cbbdcff21572d059f18227d03c12482620e916752f2863b87da1.zip\"},\"Architectures\":[\"arm64\"]}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ReadIntegration",
+        "ResourceType": "AWS::ApiGatewayV2::Integration",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"TimeoutInMillis\":\"6000\",\"IntegrationUri\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"PayloadFormatVersion\":\"2.0\",\"ApiId\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"IntegrationType\":\"AWS_PROXY\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ReadLogs",
+        "ResourceType": "AWS::Logs::LogGroup",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"RetentionInDays\":\"14\",\"LogGroupName\":\"/project-respawn/Ntgre/team-hub/preview\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ReadRole",
+        "ResourceType": "AWS::IAM::Role",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"RoleName\":\"ProjectRespawn-TeamHub-Ntgre-PreviewRead\",\"Policies\":[{\"PolicyName\":\"OwnLogsOnly\",\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Resource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/preview:*\",\"Effect\":\"Allow\"}]}}],\"AssumeRolePolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"}}]},\"PermissionsBoundary\":\"arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-PreviewBoundary\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "Stage",
+        "ResourceType": "AWS::ApiGatewayV2::Stage",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"AutoDeploy\":\"true\",\"StageName\":\"$default\",\"ApiId\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"DefaultRouteSettings\":{\"ThrottlingBurstLimit\":\"20\",\"ThrottlingRateLimit\":\"10\"}}}"
+      }
+    }
+  ],
+  "ChangeSetName": "team-hub-read-proof-release1-20261005",
+  "ChangeSetId": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/team-hub-read-proof-release1-20261005/f626093b-8842-4d54-8e55-ad0e21fe7e82",
+  "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/b66ad780-c0cd-11f1-91ba-0effc0d85417",
+  "StackName": "ProjectRespawn-TeamHub-Ntgre",
+  "Description": "Preserved Team Hub product d458da9a7a8d1d519aaab05418fda95097a26256da0a297b71c95a5aaef5085f",
+  "Parameters": [
+    {
+      "ParameterKey": "BootstrapVersion",
+      "ParameterValue": "/cdk-bootstrap/hnb659fds/version",
+      "ResolvedValue": "30"
+    }
+  ],
+  "CreationTime": "2026-10-05T15:01:58.836000+00:00",
+  "ExecutionStatus": "AVAILABLE",
+  "Status": "CREATE_COMPLETE",
+  "StatusReason": null,
+  "NotificationARNs": [],
+  "RollbackConfiguration": {},
+  "Capabilities": [
+    "CAPABILITY_NAMED_IAM"
+  ],
+  "Tags": [
+    {
+      "Key": "Project",
+      "Value": "ProjectRespawn"
+    },
+    {
+      "Key": "Environment",
+      "Value": "Ntgre"
+    },
+    {
+      "Key": "Domain",
+      "Value": "TeamHub"
+    }
+  ],
+  "ParentChangeSetId": null,
+  "IncludeNestedStacks": false,
+  "RootChangeSetId": null,
+  "OnStackFailure": null,
+  "ImportExistingResources": null,
+  "StackDriftStatus": null,
+  "DeploymentMode": null
+}

@@ -1,0 +1,106 @@
+{
+  "Changes": [
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Modify",
+        "LogicalResourceId": "ExecutionBoundary",
+        "PhysicalResourceId": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofExecutionBoundary",
+        "ResourceType": "AWS::IAM::ManagedPolicy",
+        "Replacement": "False",
+        "Scope": [
+          "Properties"
+        ],
+        "Details": [
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "PolicyDocument",
+              "RequiresRecreation": "Never",
+              "Path": "/Properties/PolicyDocument",
+              "BeforeValue": "(Truncated-Signature):da8b6486929885dbc118a2e73e0228973a137427d7d5864cf0146d07a945c06f",
+              "AfterValue": "(Truncated-Signature):a46bfd3dab1ca05ae35d10d93c8eb2700368464e5160b3b784ad9f779b5d7a52",
+              "AttributeChangeType": "Modify"
+            },
+            "Evaluation": "Static",
+            "ChangeSource": "DirectModification"
+          }
+        ],
+        "BeforeContext": "{\"Properties\":{\"ManagedPolicyName\":\"ProjectRespawn-TeamHub-Ntgre-ReadProofExecutionBoundary\",\"PolicyDocument\":\"(Truncated-Signature):da8b6486929885dbc118a2e73e0228973a137427d7d5864cf0146d07a945c06f\"}}",
+        "AfterContext": "{\"Properties\":{\"ManagedPolicyName\":\"ProjectRespawn-TeamHub-Ntgre-ReadProofExecutionBoundary\",\"PolicyDocument\":\"(Truncated-Signature):a46bfd3dab1ca05ae35d10d93c8eb2700368464e5160b3b784ad9f779b5d7a52\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Modify",
+        "LogicalResourceId": "ExecutionRole",
+        "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+        "ResourceType": "AWS::IAM::Role",
+        "Replacement": "False",
+        "Scope": [
+          "Properties"
+        ],
+        "Details": [
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "Policies",
+              "RequiresRecreation": "Never",
+              "Path": "/Properties/Policies",
+              "BeforeValue": "(Truncated-Signature):d0057ea92993da7c2fe07edbf01f5ede843fb3ac7cea99481f79bb3dfcad58bc",
+              "AfterValue": "(Truncated-Signature):e078717fd9cb62f318c7918fe944aa5972588825fb14a9b7765c46431964c440",
+              "AttributeChangeType": "Modify"
+            },
+            "Evaluation": "Static",
+            "ChangeSource": "DirectModification"
+          }
+        ],
+        "BeforeContext": "{\"Properties\":{\"RoleName\":\"ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\",\"Policies\":\"(Truncated-Signature):d0057ea92993da7c2fe07edbf01f5ede843fb3ac7cea99481f79bb3dfcad58bc\",\"AssumeRolePolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"cloudformation.amazonaws.com\"}}]},\"PermissionsBoundary\":\"arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofExecutionBoundary\"}}",
+        "AfterContext": "{\"Properties\":{\"RoleName\":\"ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\",\"Policies\":\"(Truncated-Signature):e078717fd9cb62f318c7918fe944aa5972588825fb14a9b7765c46431964c440\",\"AssumeRolePolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"cloudformation.amazonaws.com\"}}]},\"PermissionsBoundary\":\"arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofExecutionBoundary\"}}"
+      }
+    }
+  ],
+  "ChangeSetName": "team-hub-exact-api-lockdown-20261005",
+  "ChangeSetId": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/team-hub-exact-api-lockdown-20261005/f99d4760-d7b3-4d22-820f-49db36a1eb2b",
+  "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-ReadProofSecurity/4a82aa00-c0ca-11f1-88d3-0efff9541601",
+  "StackName": "ProjectRespawn-TeamHub-Ntgre-ReadProofSecurity",
+  "Description": "Exact Team Hub API t54b88casf; execution identity/boundary only; caller/runtime unchanged",
+  "Parameters": [
+    {
+      "ParameterKey": "BootstrapVersion",
+      "ParameterValue": "/cdk-bootstrap/hnb659fds/version",
+      "ResolvedValue": "30"
+    }
+  ],
+  "CreationTime": "2026-10-05T15:08:49.644000+00:00",
+  "ExecutionStatus": "AVAILABLE",
+  "Status": "CREATE_COMPLETE",
+  "StatusReason": null,
+  "NotificationARNs": [],
+  "RollbackConfiguration": {},
+  "Capabilities": [
+    "CAPABILITY_NAMED_IAM"
+  ],
+  "Tags": [
+    {
+      "Key": "Project",
+      "Value": "ProjectRespawn"
+    },
+    {
+      "Key": "Environment",
+      "Value": "Ntgre"
+    },
+    {
+      "Key": "Domain",
+      "Value": "TeamHub"
+    }
+  ],
+  "ParentChangeSetId": null,
+  "IncludeNestedStacks": false,
+  "RootChangeSetId": null,
+  "OnStackFailure": null,
+  "ImportExistingResources": null,
+  "StackDriftStatus": null,
+  "DeploymentMode": null
+}

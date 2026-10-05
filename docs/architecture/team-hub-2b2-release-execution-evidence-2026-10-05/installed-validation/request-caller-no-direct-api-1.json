@@ -1,0 +1,54 @@
+{
+  "PolicyInputList": [
+    "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Resource\":\"*\",\"Effect\":\"Deny\",\"NotAction\":[\"cloudformation:DescribeChangeSet\",\"cloudformation:DeleteChangeSet\",\"cloudformation:DescribeStacks\",\"cloudformation:DescribeStackEvents\",\"cloudformation:GetTemplate\",\"cloudformation:CreateChangeSet\",\"cloudformation:ExecuteChangeSet\",\"iam:PassRole\"]},{\"Action\":[\"cloudformation:DescribeChangeSet\",\"cloudformation:DeleteChangeSet\",\"cloudformation:DescribeStacks\",\"cloudformation:DescribeStackEvents\",\"cloudformation:GetTemplate\"],\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\",\"Effect\":\"Allow\"},{\"Condition\":{\"StringEquals\":{\"cloudformation:TemplateUrl\":\"https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/team-hub/read-proof/0796ee8170bd0417fca6b2806e58e48c18278b4e6c32999824f55ac65898e7ee.template.json\",\"cloudformation:RoleArn\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\"}},\"Action\":\"cloudformation:CreateChangeSet\",\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\",\"Effect\":\"Allow\"},{\"Action\":\"cloudformation:ExecuteChangeSet\",\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\",\"Effect\":\"Allow\"},{\"Action\":\"cloudformation:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\"},{\"Condition\":{\"StringNotEquals\":{\"aws:RequestedRegion\":\"eu-north-1\"}},\"Action\":\"cloudformation:*\",\"Resource\":\"*\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringEquals\":{\"iam:PassedToService\":\"cloudformation.amazonaws.com\"}},\"Action\":\"iam:PassRole\",\"Resource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\",\"Effect\":\"Allow\"},{\"Action\":\"iam:PassRole\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\"},{\"Condition\":{\"StringNotEquals\":{\"iam:PassedToService\":\"cloudformation.amazonaws.com\"}},\"Action\":\"iam:PassRole\",\"Resource\":\"*\",\"Effect\":\"Deny\"}]}"
+  ],
+  "PermissionsBoundaryPolicyInputList": [
+    "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Resource\":\"*\",\"Effect\":\"Deny\",\"NotAction\":[\"cloudformation:DescribeChangeSet\",\"cloudformation:DeleteChangeSet\",\"cloudformation:DescribeStacks\",\"cloudformation:DescribeStackEvents\",\"cloudformation:GetTemplate\",\"cloudformation:CreateChangeSet\",\"cloudformation:ExecuteChangeSet\",\"iam:PassRole\"]},{\"Action\":[\"cloudformation:DescribeChangeSet\",\"cloudformation:DeleteChangeSet\",\"cloudformation:DescribeStacks\",\"cloudformation:DescribeStackEvents\",\"cloudformation:GetTemplate\"],\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\",\"Effect\":\"Allow\"},{\"Condition\":{\"StringEquals\":{\"cloudformation:TemplateUrl\":\"https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/team-hub/read-proof/0796ee8170bd0417fca6b2806e58e48c18278b4e6c32999824f55ac65898e7ee.template.json\",\"cloudformation:RoleArn\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\"}},\"Action\":\"cloudformation:CreateChangeSet\",\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\",\"Effect\":\"Allow\"},{\"Action\":\"cloudformation:ExecuteChangeSet\",\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\",\"Effect\":\"Allow\"},{\"Action\":\"cloudformation:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\"},{\"Condition\":{\"StringNotEquals\":{\"aws:RequestedRegion\":\"eu-north-1\"}},\"Action\":\"cloudformation:*\",\"Resource\":\"*\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringEquals\":{\"iam:PassedToService\":\"cloudformation.amazonaws.com\"}},\"Action\":\"iam:PassRole\",\"Resource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\",\"Effect\":\"Allow\"},{\"Action\":\"iam:PassRole\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\"},{\"Condition\":{\"StringNotEquals\":{\"iam:PassedToService\":\"cloudformation.amazonaws.com\"}},\"Action\":\"iam:PassRole\",\"Resource\":\"*\",\"Effect\":\"Deny\"}]}"
+  ],
+  "ActionNames": [
+    "apigateway:POST",
+    "apigateway:PUT"
+  ],
+  "ResourceArns": [
+    "arn:aws:apigateway:eu-north-1::/apis/thproof123",
+    "arn:aws:apigateway:eu-north-1::/apis/thproof123/routes",
+    "arn:aws:apigateway:eu-north-1::/apis/thproof123/routes/proof",
+    "arn:aws:apigateway:eu-north-1::/apis/thproof123/integrations/proof",
+    "arn:aws:apigateway:eu-north-1::/apis/thproof123/authorizers/proof",
+    "arn:aws:apigateway:eu-north-1::/apis/thproof123/stages/$default",
+    "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/thproof123",
+    "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fthproof123",
+    "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fthproof123%2Fstages%2F%24default",
+    "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fthproof123"
+  ],
+  "ContextEntries": [
+    {
+      "ContextKeyName": "aws:RequestedRegion",
+      "ContextKeyValues": [
+        "eu-north-1"
+      ],
+      "ContextKeyType": "string"
+    },
+    {
+      "ContextKeyName": "aws:CurrentTime",
+      "ContextKeyValues": [
+        "2026-10-05T14:40:09.038Z"
+      ],
+      "ContextKeyType": "date"
+    },
+    {
+      "ContextKeyName": "iam:PermissionsBoundary",
+      "ContextKeyValues": [
+        "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-PreviewBoundary"
+      ],
+      "ContextKeyType": "string"
+    },
+    {
+      "ContextKeyName": "iam:PassedToService",
+      "ContextKeyValues": [
+        "lambda.amazonaws.com"
+      ],
+      "ContextKeyType": "string"
+    }
+  ]
+}

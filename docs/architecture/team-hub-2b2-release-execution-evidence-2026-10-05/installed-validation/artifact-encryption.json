@@ -1,0 +1,54 @@
+{
+  "at": "2026-10-05T14:22:09.168Z",
+  "bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+  "key": "da4d9e570523cbbdcff21572d059f18227d03c12482620e916752f2863b87da1.zip",
+  "bucketEncryption": {
+    "ServerSideEncryptionConfiguration": {
+      "Rules": [
+        {
+          "ApplyServerSideEncryptionByDefault": {
+            "SSEAlgorithm": "aws:kms"
+          },
+          "BucketKeyEnabled": false,
+          "BlockedEncryptionTypes": {
+            "EncryptionType": [
+              "SSE-C"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "bucketPolicy": {
+    "Version": "2012-10-17",
+    "Id": "AccessControl",
+    "Statement": [
+      {
+        "Sid": "AllowSSLRequestsOnly",
+        "Effect": "Deny",
+        "Principal": "*",
+        "Action": "s3:*",
+        "Resource": [
+          "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1",
+          "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/*"
+        ],
+        "Condition": {
+          "Bool": {
+            "aws:SecureTransport": "false"
+          }
+        }
+      }
+    ]
+  },
+  "object": {
+    "exists": false,
+    "status": "404",
+    "published": false
+  },
+  "publicationPerformed": false,
+  "plannedPublicationEncryption": "AES256 (SSE-S3), explicitly required; verify final object headers before execution",
+  "lambdaKmsKeyArn": null,
+  "customerManagedLambdaKeyConfigured": false,
+  "bucketDefaultKmsDependency": "arn:aws:kms:eu-north-1:058264289478:key/bce0b7bc-54ec-451c-882c-6b312981d127",
+  "teamPublishedObjectKmsDependency": null
+}

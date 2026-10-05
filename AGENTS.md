@@ -1,5 +1,7 @@
 # Repository Agent Instructions
 
+For Phase 2 domain/cloud migration tasks, read [docs/architecture/README-PHASE2-MIGRATION.md](docs/architecture/README-PHASE2-MIGRATION.md) before making changes.
+
 ## ARCHITECTURE ASSESSMENT FOR SUBSTANTIAL FEATURES
 
 The existing Amplify Gen 2 backend is **LegacyPlatform**. Preserve its existing resources, but do not add substantial new product domains there by default. Follow the LegacyPlatform decision checklist in the linked feature rule. Logical ownership does not imply physical stack ownership. `backend.createStack()` and nested stacks are not independent deployment units; justified future domains use sibling roots. Do not create one root per small feature. Phase 1 safeguards and consolidation preparation are approved; deployment and subsequent migration phases require separate authorization.

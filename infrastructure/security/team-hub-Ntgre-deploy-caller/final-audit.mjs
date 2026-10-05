@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import {read,save,verify,dir,hash} from './common.mjs';
+verify();const accepted=read(dir+'/accepted-state.json');for(const f of accepted.files)assert.equal(hash(f.path),f.sha256);
+const documents=['docs/architecture/team-hub-2b2-read-path-release1-2026-10-05.md','docs/architecture/independent-domain-deployment-callers.md','infrastructure/security/team-hub-Ntgre-deploy-caller/README.md'];let links=0;for(const file of documents){const body=fs.readFileSync(file,'utf8');for(const match of body.matchAll(/\]\(([^)]+)\)/g)){if(/^(https?:|#)/.test(match[1]))continue;assert.ok(fs.existsSync(path.resolve(path.dirname(file),match[1].split('#')[0])),file+' -> '+match[1]);links++;}}
+const walk=p=>fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(p,e.name)):[path.join(p,e.name)]);const files=[...walk(dir),...walk('infrastructure/security/team-hub-Ntgre-deploy-caller'),...documents,'config/domains/team-hub/domain-endpoints.Ntgre.json'];
+for(const file of files){const body=fs.readFileSync(file,'utf8');assert.ok(!/\b(?:AKIA|ASIA)[A-Z0-9]{16}\b/.test(body),'Access key pattern '+file);assert.ok(!/eyJ[A-Za-z0-9_-]{12,}\.[A-Za-z0-9_-]{12,}\.[A-Za-z0-9_-]{12,}/.test(body),'JWT pattern '+file);assert.ok(!/"(?:SecretAccessKey|SessionToken|AccessKeyId)"\s*:\s*"[^"]{12,}"/.test(body),'Credential value pattern '+file);}
+assert.ok(!fs.existsSync('public/__teamhub_acceptance_20261005.html'));
+const obs=read(dir+'/observability.json');save('final-audit',{at:new Date().toISOString(),preservedPinsVerified:true,acceptedFilesVerified:true,documentationLinks:links,secretPatternFiles:files.length,secretPatternMatches:0,temporaryBrowserPageAbsent:true});console.log(JSON.stringify({links,filesScanned:files.length,secretMatches:0,api:accepted.apiId,stage:obs.api.stages[0].StageName,authorizer:obs.api.authorizers[0].AuthorizerId,route:obs.api.routes[0].RouteKey,lambda:obs.lambda.name}));

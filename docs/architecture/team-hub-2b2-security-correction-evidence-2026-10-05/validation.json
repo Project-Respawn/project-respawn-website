@@ -1,0 +1,2246 @@
+{
+  "at": "2026-10-05T13:58:55.331Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "jobs": 64,
+  "assertions": 1494,
+  "positive": 90,
+  "negative": 1124,
+  "unresolved": 280,
+  "failures": [],
+  "analyzerFindings": [],
+  "results": [
+    {
+      "name": "bootstrap-appsync",
+      "expected": "explicitDeny",
+      "count": 2,
+      "proven": 2,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-cloudformation",
+      "expected": "explicitDeny",
+      "count": 16,
+      "proven": 16,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-cognito",
+      "expected": "explicitDeny",
+      "count": 2,
+      "proven": 2,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-create",
+      "expected": "allowed",
+      "count": 1,
+      "proven": 1,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-dynamodb",
+      "expected": "explicitDeny",
+      "count": 2,
+      "proven": 2,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-expired",
+      "expected": "explicitDeny",
+      "count": 44,
+      "proven": 36,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/thproof123",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fthproof123",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fthproof123%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fthproof123",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/thproof123",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fthproof123",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fthproof123%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fthproof123",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-kms",
+      "expected": "explicitDeny",
+      "count": 2,
+      "proven": 2,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-lifecycle",
+      "expected": "allowed",
+      "count": 50,
+      "proven": 42,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/thproof123",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fthproof123",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fthproof123%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fthproof123",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/thproof123",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fthproof123",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fthproof123%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fthproof123",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-protected-7sqhe1oq7f",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/7sqhe1oq7f",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2F7sqhe1oq7f",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2F7sqhe1oq7f%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2f7sqhe1oq7f",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/7sqhe1oq7f",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2F7sqhe1oq7f",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2F7sqhe1oq7f%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2f7sqhe1oq7f",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-protected-96iei1y9x4",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/96iei1y9x4",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2F96iei1y9x4",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2F96iei1y9x4%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2f96iei1y9x4",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/96iei1y9x4",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2F96iei1y9x4",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2F96iei1y9x4%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2f96iei1y9x4",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-protected-f7oxg5hy72",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/f7oxg5hy72",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Ff7oxg5hy72",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Ff7oxg5hy72%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2ff7oxg5hy72",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/f7oxg5hy72",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Ff7oxg5hy72",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Ff7oxg5hy72%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2ff7oxg5hy72",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-protected-g9eoo6e1h2",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/g9eoo6e1h2",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fg9eoo6e1h2",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fg9eoo6e1h2%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fg9eoo6e1h2",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/g9eoo6e1h2",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fg9eoo6e1h2",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fg9eoo6e1h2%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fg9eoo6e1h2",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-protected-jm15a0rmi0",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/jm15a0rmi0",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fjm15a0rmi0",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fjm15a0rmi0%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fjm15a0rmi0",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/jm15a0rmi0",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fjm15a0rmi0",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fjm15a0rmi0%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fjm15a0rmi0",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-protected-msipnwy39j",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/msipnwy39j",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fmsipnwy39j",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fmsipnwy39j%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fmsipnwy39j",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/msipnwy39j",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fmsipnwy39j",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fmsipnwy39j%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fmsipnwy39j",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-protected-mt6ctit5rf",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/mt6ctit5rf",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fmt6ctit5rf",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fmt6ctit5rf%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fmt6ctit5rf",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/mt6ctit5rf",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fmt6ctit5rf",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fmt6ctit5rf%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fmt6ctit5rf",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-protected-n4yh7awecc",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/n4yh7awecc",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fn4yh7awecc",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fn4yh7awecc%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fn4yh7awecc",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/n4yh7awecc",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fn4yh7awecc",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fn4yh7awecc%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fn4yh7awecc",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-protected-oc7oz18v8k",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/oc7oz18v8k",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Foc7oz18v8k",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Foc7oz18v8k%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2foc7oz18v8k",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/oc7oz18v8k",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Foc7oz18v8k",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Foc7oz18v8k%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2foc7oz18v8k",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-protected-openg7joy6",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/openg7joy6",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fopeng7joy6",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fopeng7joy6%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fopeng7joy6",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/openg7joy6",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fopeng7joy6",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fopeng7joy6%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fopeng7joy6",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-protected-pbbz0ux4ta",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/pbbz0ux4ta",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fpbbz0ux4ta",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fpbbz0ux4ta%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fpbbz0ux4ta",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/pbbz0ux4ta",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fpbbz0ux4ta",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fpbbz0ux4ta%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fpbbz0ux4ta",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-protected-rwfv75jx2b",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/rwfv75jx2b",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Frwfv75jx2b",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Frwfv75jx2b%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2frwfv75jx2b",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/rwfv75jx2b",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Frwfv75jx2b",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Frwfv75jx2b%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2frwfv75jx2b",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-protected-w0xfyjn6v7",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/w0xfyjn6v7",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fw0xfyjn6v7",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fw0xfyjn6v7%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fw0xfyjn6v7",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/w0xfyjn6v7",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fw0xfyjn6v7",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fw0xfyjn6v7%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fw0xfyjn6v7",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-protected-ztevn4upnk",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/ztevn4upnk",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fztevn4upnk",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fztevn4upnk%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fztevn4upnk",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/ztevn4upnk",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fztevn4upnk",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fztevn4upnk%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fztevn4upnk",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-rest",
+      "expected": "explicitDeny",
+      "count": 8,
+      "proven": 4,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/restapis/fakerest12",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/restapis/fakerest12/resources",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/restapis/fakerest12",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/restapis/fakerest12/resources",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-right-passrole",
+      "expected": "allowed",
+      "count": 1,
+      "proven": 1,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-s3",
+      "expected": "explicitDeny",
+      "count": 2,
+      "proven": 2,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-wrong-passrole",
+      "expected": "explicitDeny",
+      "count": 2,
+      "proven": 2,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "bootstrap-wrong-region",
+      "expected": "explicitDeny",
+      "count": 4,
+      "proven": 4,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "caller-execute-reviewed",
+      "expected": "allowed",
+      "count": 1,
+      "proven": 1,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "caller-foreign-stacks",
+      "expected": "explicitDeny",
+      "count": 16,
+      "proven": 16,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "caller-no-direct-api",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/thproof123",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fthproof123",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fthproof123%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fthproof123",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/thproof123",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fthproof123",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fthproof123%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fthproof123",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "caller-prepare",
+      "expected": "allowed",
+      "count": 1,
+      "proven": 1,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "caller-right-passrole",
+      "expected": "allowed",
+      "count": 1,
+      "proven": 1,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "caller-wrong-passrole",
+      "expected": "explicitDeny",
+      "count": 1,
+      "proven": 1,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "caller-wrong-passservice",
+      "expected": "explicitDeny",
+      "count": 1,
+      "proven": 1,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "caller-wrong-role",
+      "expected": "denied",
+      "count": 1,
+      "proven": 1,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "caller-wrong-template",
+      "expected": "denied",
+      "count": 1,
+      "proven": 1,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "steady-appsync",
+      "expected": "explicitDeny",
+      "count": 2,
+      "proven": 2,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "steady-cloudformation",
+      "expected": "explicitDeny",
+      "count": 16,
+      "proven": 16,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "steady-cognito",
+      "expected": "explicitDeny",
+      "count": 2,
+      "proven": 2,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "steady-dynamodb",
+      "expected": "explicitDeny",
+      "count": 2,
+      "proven": 2,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "steady-kms",
+      "expected": "explicitDeny",
+      "count": 2,
+      "proven": 2,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "steady-lifecycle",
+      "expected": "allowed",
+      "count": 50,
+      "proven": 42,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/thproof123",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fthproof123",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fthproof123%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fthproof123",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/thproof123",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fthproof123",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fthproof123%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fthproof123",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "steady-new-id-othernew12",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/othernew12",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fothernew12",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fothernew12%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fothernew12",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/othernew12",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fothernew12",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fothernew12%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fothernew12",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "steady-new-id-thproof123x",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/thproof123x",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fthproof123x",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fthproof123x%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fthproof123x",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/thproof123x",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fthproof123x",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fthproof123x%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fthproof123x",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "steady-no-create",
+      "expected": "explicitDeny",
+      "count": 4,
+      "proven": 4,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "steady-protected-7sqhe1oq7f",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/7sqhe1oq7f",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2F7sqhe1oq7f",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2F7sqhe1oq7f%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2f7sqhe1oq7f",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/7sqhe1oq7f",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2F7sqhe1oq7f",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2F7sqhe1oq7f%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2f7sqhe1oq7f",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "steady-protected-96iei1y9x4",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/96iei1y9x4",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2F96iei1y9x4",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2F96iei1y9x4%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2f96iei1y9x4",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/96iei1y9x4",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2F96iei1y9x4",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2F96iei1y9x4%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2f96iei1y9x4",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "steady-protected-f7oxg5hy72",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/f7oxg5hy72",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Ff7oxg5hy72",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Ff7oxg5hy72%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2ff7oxg5hy72",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/f7oxg5hy72",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Ff7oxg5hy72",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Ff7oxg5hy72%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2ff7oxg5hy72",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "steady-protected-g9eoo6e1h2",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/g9eoo6e1h2",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fg9eoo6e1h2",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fg9eoo6e1h2%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fg9eoo6e1h2",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/g9eoo6e1h2",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fg9eoo6e1h2",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fg9eoo6e1h2%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fg9eoo6e1h2",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "steady-protected-jm15a0rmi0",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/jm15a0rmi0",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fjm15a0rmi0",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fjm15a0rmi0%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fjm15a0rmi0",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/jm15a0rmi0",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fjm15a0rmi0",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fjm15a0rmi0%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fjm15a0rmi0",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "steady-protected-msipnwy39j",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/msipnwy39j",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fmsipnwy39j",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fmsipnwy39j%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fmsipnwy39j",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/msipnwy39j",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fmsipnwy39j",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fmsipnwy39j%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fmsipnwy39j",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "steady-protected-mt6ctit5rf",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/mt6ctit5rf",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fmt6ctit5rf",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fmt6ctit5rf%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fmt6ctit5rf",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/mt6ctit5rf",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fmt6ctit5rf",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fmt6ctit5rf%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fmt6ctit5rf",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "steady-protected-n4yh7awecc",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/n4yh7awecc",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fn4yh7awecc",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fn4yh7awecc%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fn4yh7awecc",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/n4yh7awecc",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fn4yh7awecc",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fn4yh7awecc%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fn4yh7awecc",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "steady-protected-oc7oz18v8k",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/oc7oz18v8k",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Foc7oz18v8k",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Foc7oz18v8k%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2foc7oz18v8k",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/oc7oz18v8k",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Foc7oz18v8k",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Foc7oz18v8k%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2foc7oz18v8k",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "steady-protected-openg7joy6",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/openg7joy6",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fopeng7joy6",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fopeng7joy6%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fopeng7joy6",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/openg7joy6",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fopeng7joy6",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fopeng7joy6%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fopeng7joy6",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "steady-protected-pbbz0ux4ta",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/pbbz0ux4ta",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fpbbz0ux4ta",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fpbbz0ux4ta%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fpbbz0ux4ta",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/pbbz0ux4ta",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fpbbz0ux4ta",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fpbbz0ux4ta%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fpbbz0ux4ta",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "steady-protected-rwfv75jx2b",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/rwfv75jx2b",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Frwfv75jx2b",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Frwfv75jx2b%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2frwfv75jx2b",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/rwfv75jx2b",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Frwfv75jx2b",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Frwfv75jx2b%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2frwfv75jx2b",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "steady-protected-w0xfyjn6v7",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/w0xfyjn6v7",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fw0xfyjn6v7",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fw0xfyjn6v7%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fw0xfyjn6v7",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/w0xfyjn6v7",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fw0xfyjn6v7",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fw0xfyjn6v7%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fw0xfyjn6v7",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "steady-protected-ztevn4upnk",
+      "expected": "explicitDeny",
+      "count": 40,
+      "proven": 32,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/ztevn4upnk",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fztevn4upnk",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fztevn4upnk%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fztevn4upnk",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn:aws:apigateway:eu-north-1::/apis/ztevn4upnk",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fztevn4upnk",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3Aaws%3Aapigateway%3Aeu-north-1%3A%3A%2Fapis%2Fztevn4upnk%2Fstages%2F%24default",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/tags/arn%3aaws%3aapigateway%3aeu-north-1%3a%3a%2fapis%2fztevn4upnk",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "steady-rest",
+      "expected": "explicitDeny",
+      "count": 8,
+      "proven": 4,
+      "unresolved": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/restapis/fakerest12",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/restapis/fakerest12/resources",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/restapis/fakerest12",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/restapis/fakerest12/resources",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "steady-right-passrole",
+      "expected": "allowed",
+      "count": 1,
+      "proven": 1,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "steady-s3",
+      "expected": "explicitDeny",
+      "count": 2,
+      "proven": 2,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "steady-wrong-passrole",
+      "expected": "explicitDeny",
+      "count": 2,
+      "proven": 2,
+      "unresolved": [],
+      "failures": []
+    },
+    {
+      "name": "steady-wrong-region",
+      "expected": "explicitDeny",
+      "count": 4,
+      "proven": 4,
+      "unresolved": [],
+      "failures": []
+    }
+  ],
+  "awsWrites": 0
+}

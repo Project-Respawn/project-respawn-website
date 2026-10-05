@@ -1,0 +1,108 @@
+{
+  "EvaluationResults": [
+    {
+      "EvalActionName": "iam:PassRole",
+      "EvalResourceName": "arn:aws:iam::${Account}:${ResourceType}/${ResourceName}",
+      "EvalDecision": "explicitDeny",
+      "MatchedStatements": [
+        {
+          "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+          "SourcePolicyType": "Permissions Boundary Policy",
+          "StartPosition": {
+            "Line": 1,
+            "Column": 4120
+          },
+          "EndPosition": {
+            "Line": 1,
+            "Column": 4250
+          }
+        },
+        {
+          "SourcePolicyId": "PolicyInputList.1",
+          "SourcePolicyType": "IAM Policy",
+          "StartPosition": {
+            "Line": 1,
+            "Column": 4120
+          },
+          "EndPosition": {
+            "Line": 1,
+            "Column": 4250
+          }
+        }
+      ],
+      "MissingContextValues": [],
+      "PermissionsBoundaryDecisionDetail": {
+        "AllowedByPermissionsBoundary": false
+      },
+      "EvalDecisionDetails": {},
+      "ResourceSpecificResults": [
+        {
+          "EvalResourceName": "arn:aws:iam::058264289478:role/OtherDomain",
+          "EvalResourceDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+              "SourcePolicyType": "Permissions Boundary Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 4120
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 4250
+              }
+            },
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 4120
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 4250
+              }
+            }
+          ],
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": false
+          }
+        },
+        {
+          "EvalResourceName": "arn:aws:iam::999999999999:role/ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "EvalResourceDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+              "SourcePolicyType": "Permissions Boundary Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 4120
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 4250
+              }
+            },
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 4120
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 4250
+              }
+            }
+          ],
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": false
+          }
+        }
+      ]
+    }
+  ]
+}

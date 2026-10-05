@@ -1,5 +1,7 @@
 # Project Respawn Website
 
+**Phase 2 architecture/migration work → [START HERE](docs/architecture/README-PHASE2-MIGRATION.md).**
+
 Project Respawn Website is the web app for the Project Respawn community. It is built with Vue 3, Vue Router, Bootstrap 5, Vite, and AWS Amplify, and it covers the public site, authenticated user areas, admin tooling, forum pages, merch checkout, and Twitch-related dashboard workflows.
 
 ## Root

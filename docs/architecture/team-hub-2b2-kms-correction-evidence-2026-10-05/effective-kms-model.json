@@ -1,0 +1,19 @@
+{
+  "at": "2026-10-05T14:31:56.605Z",
+  "lambdaKey": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+  "explicitExecutionKmsDeny": false,
+  "kmsIdentityAllows": 0,
+  "servicePathSupported": true,
+  "basis": [
+    "Current AWS-managed Lambda key policy permits Lambda ViaService/account encryption and grants",
+    "Accepted Tournament correction demonstrated the same zero-new-KMS-Allow model in this account/region",
+    "Customer keys separately verified as account-root delegation only with zero grants"
+  ],
+  "limitation": "IAM-only implicitDeny does not evaluate the Lambda managed-key resource-policy path. No live Team Hub Lambda creation or cryptographic test was performed. AWS-managed Lambda resource-policy context grants are not claimed to be universally denied.",
+  "artifactRequirement": "Future authorized publication must explicitly use AES256 and verify HeadObject; object currently absent",
+  "managedPolicyCharacters": {
+    "first-create-policy": 4615,
+    "steady-state-fixture-policy": 5847
+  },
+  "awsWrites": 0
+}

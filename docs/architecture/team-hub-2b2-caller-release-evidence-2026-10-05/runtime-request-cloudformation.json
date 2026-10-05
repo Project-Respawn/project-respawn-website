@@ -1,0 +1,21 @@
+{
+  "PolicySourceArn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+  "ActionNames": [
+    "cloudformation:CreateStack",
+    "cloudformation:UpdateStack",
+    "cloudformation:ExecuteChangeSet",
+    "cloudformation:DeleteStack"
+  ],
+  "ResourceArns": [
+    "*"
+  ],
+  "ContextEntries": [
+    {
+      "ContextKeyName": "kms:ResourceAliases",
+      "ContextKeyType": "stringList",
+      "ContextKeyValues": [
+        "alias/aws/lambda"
+      ]
+    }
+  ]
+}

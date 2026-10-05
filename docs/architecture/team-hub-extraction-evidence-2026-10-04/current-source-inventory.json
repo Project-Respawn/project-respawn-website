@@ -1,0 +1,2052 @@
+{
+  "head": "96b100072f96d03be13e4bb73f5e9518b76a4ebb",
+  "scope": "design only",
+  "routes": [
+    {
+      "route": "/team-hub/:teamSlug/manage",
+      "name": "team-hub-manage",
+      "source": "src/features/Team Hub/TeamManagement.vue",
+      "loading": "lazy",
+      "authentication": "required by route/guard or AdminLayout",
+      "roles": "ADMIN or MANAGER",
+      "status": "UNKNOWN",
+      "statusScope": "source + offline tests; no authenticated live business acceptance",
+      "serviceImports": [
+        {
+          "specifier": "./teamHub.service.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/teamHub.service.js"
+        }
+      ],
+      "backendDependencies": [
+        "Legacy AppSync",
+        "myFunction-rebuild",
+        "Team Hub models"
+      ],
+      "fixtures": "no operational fixture fallback"
+    },
+    {
+      "route": "/team-hub",
+      "name": "team-hub-home",
+      "source": "src/features/Team Hub/TeamHubHome.vue",
+      "loading": "lazy",
+      "authentication": "required by route/guard or AdminLayout",
+      "roles": "authenticated; Admin/SuperAdmin create",
+      "status": "PARTIAL",
+      "statusScope": "source + offline tests; no authenticated live business acceptance",
+      "serviceImports": [
+        {
+          "specifier": "./teamHub.service.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/teamHub.service.js"
+        }
+      ],
+      "backendDependencies": [
+        "Legacy AppSync",
+        "myFunction-rebuild",
+        "Team Hub models"
+      ],
+      "fixtures": "history empty; tournament null"
+    },
+    {
+      "route": "/team-hub/:teamSlug",
+      "name": "team-hub-team",
+      "source": "src/features/Team Hub/TeamHome.vue",
+      "loading": "lazy",
+      "authentication": "required by route/guard or AdminLayout",
+      "roles": "server membership/admin/branding checks",
+      "status": "UNKNOWN",
+      "statusScope": "source + offline tests; no authenticated live business acceptance",
+      "serviceImports": [
+        {
+          "specifier": "./teamHub.service.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/teamHub.service.js"
+        }
+      ],
+      "backendDependencies": [
+        "Legacy AppSync",
+        "myFunction-rebuild",
+        "Team Hub models"
+      ],
+      "fixtures": "no operational fixture fallback"
+    },
+    {
+      "route": "/team-hub/:teamSlug/champion-pool",
+      "name": "team-hub-champion-pool",
+      "source": "src/features/Team Hub/champion-pool/ChampionPool.vue",
+      "loading": "lazy",
+      "authentication": "required by route/guard or AdminLayout",
+      "roles": "PLAYER for own pool operations",
+      "status": "UNKNOWN",
+      "statusScope": "source + offline tests; no authenticated live business acceptance",
+      "serviceImports": [
+        {
+          "specifier": "./dataDragon.service.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/champion-pool/dataDragon.service.js"
+        },
+        {
+          "specifier": "../teamHub.service.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/teamHub.service.js"
+        }
+      ],
+      "backendDependencies": [
+        "Legacy AppSync",
+        "myFunction-rebuild",
+        "Team Hub models"
+      ],
+      "fixtures": "no operational fixture fallback"
+    },
+    {
+      "route": "/team-hub/:teamSlug/coach-review",
+      "name": "team-hub-coach-review",
+      "source": "src/features/Team Hub/champion-pool/CoachPoolReview.vue",
+      "loading": "lazy",
+      "authentication": "required by route/guard or AdminLayout",
+      "roles": "COACH or MANAGER; writes COACH",
+      "status": "PARTIAL",
+      "statusScope": "source + offline tests; no authenticated live business acceptance",
+      "serviceImports": [
+        {
+          "specifier": "./dataDragon.service.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/champion-pool/dataDragon.service.js"
+        },
+        {
+          "specifier": "../teamHub.service.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/teamHub.service.js"
+        }
+      ],
+      "backendDependencies": [
+        "Legacy AppSync",
+        "myFunction-rebuild",
+        "Team Hub models"
+      ],
+      "fixtures": "assessment persisted; approval/flex/recommendations partly local"
+    },
+    {
+      "route": "/team-hub/:teamSlug/team-pool",
+      "name": "team-hub-team-pool",
+      "source": "src/features/Team Hub/team-hub.routes.js",
+      "loading": "redirect",
+      "authentication": "required by route/guard or AdminLayout",
+      "roles": "COACH or MANAGER",
+      "status": "WORKING",
+      "statusScope": "source + offline tests; no authenticated live business acceptance",
+      "serviceImports": [],
+      "backendDependencies": [
+        "Legacy AppSync",
+        "myFunction-rebuild",
+        "Team Hub models"
+      ],
+      "fixtures": "no operational fixture fallback"
+    },
+    {
+      "route": "/dashboard/esports/teams",
+      "name": "AdminTeamAdministration",
+      "source": "src/features/Team Hub/TeamAdministration.vue",
+      "loading": "eager",
+      "authentication": "required by route/guard or AdminLayout",
+      "roles": "AdminLayout SuperAdmin/Admin/Staff plus teams.branding.manage; server action-specific",
+      "status": "UNKNOWN",
+      "statusScope": "source + offline tests; no authenticated live business acceptance",
+      "serviceImports": [
+        {
+          "specifier": "./teamHub.service.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/teamHub.service.js"
+        }
+      ],
+      "backendDependencies": [
+        "Legacy AppSync",
+        "myFunction-rebuild",
+        "Team Hub models"
+      ],
+      "fixtures": "no operational fixture fallback"
+    }
+  ],
+  "frontendClosure": [
+    {
+      "path": "src/features/Team Hub/champion-pool/championPool.constants.js",
+      "classification": "TEAM_HUB_SPECIFIC",
+      "imports": []
+    },
+    {
+      "path": "src/features/Team Hub/champion-pool/ChampionPool.js",
+      "classification": "TEAM_HUB_SPECIFIC",
+      "imports": [
+        {
+          "specifier": "../TeamHubSidebar.vue",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/TeamHubSidebar.vue"
+        }
+      ]
+    },
+    {
+      "path": "src/features/Team Hub/champion-pool/ChampionPool.vue",
+      "classification": "TEAM_HUB_SPECIFIC",
+      "imports": [
+        {
+          "specifier": "vue",
+          "kind": "static",
+          "external": true
+        },
+        {
+          "specifier": "vue-router",
+          "kind": "static",
+          "external": true
+        },
+        {
+          "specifier": "../TeamHubSidebar.vue",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/TeamHubSidebar.vue"
+        },
+        {
+          "specifier": "../TeamLogo.vue",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/TeamLogo.vue"
+        },
+        {
+          "specifier": "./dataDragon.service.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/champion-pool/dataDragon.service.js"
+        },
+        {
+          "specifier": "../teamHub.service.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/teamHub.service.js"
+        },
+        {
+          "specifier": "../teamHub.viewModel.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/teamHub.viewModel.js"
+        }
+      ]
+    },
+    {
+      "path": "src/features/Team Hub/champion-pool/CoachPoolReview.vue",
+      "classification": "TEAM_HUB_SPECIFIC",
+      "imports": [
+        {
+          "specifier": "vue",
+          "kind": "static",
+          "external": true
+        },
+        {
+          "specifier": "vue-router",
+          "kind": "static",
+          "external": true
+        },
+        {
+          "specifier": "../TeamHubSidebar.vue",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/TeamHubSidebar.vue"
+        },
+        {
+          "specifier": "../TeamLogo.vue",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/TeamLogo.vue"
+        },
+        {
+          "specifier": "./dataDragon.service.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/champion-pool/dataDragon.service.js"
+        },
+        {
+          "specifier": "../teamHub.service.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/teamHub.service.js"
+        }
+      ]
+    },
+    {
+      "path": "src/features/Team Hub/champion-pool/dataDragon.service.js",
+      "classification": "TEAM_HUB_SPECIFIC",
+      "imports": []
+    },
+    {
+      "path": "src/features/Team Hub/champion-pool/TeamPool.vue",
+      "classification": "TEAM_HUB_SPECIFIC",
+      "imports": [
+        {
+          "specifier": "vue",
+          "kind": "static",
+          "external": true
+        },
+        {
+          "specifier": "vue-router",
+          "kind": "static",
+          "external": true
+        },
+        {
+          "specifier": "../TeamHubSidebar.vue",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/TeamHubSidebar.vue"
+        },
+        {
+          "specifier": "./dataDragon.service.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/champion-pool/dataDragon.service.js"
+        }
+      ]
+    },
+    {
+      "path": "src/features/Team Hub/team-hub.routes.js",
+      "classification": "TEAM_HUB_SPECIFIC",
+      "imports": [
+        {
+          "specifier": "./teamHub.service.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/teamHub.service.js"
+        },
+        {
+          "specifier": "./TeamManagement.vue",
+          "kind": "dynamic",
+          "resolved": "src/features/Team Hub/TeamManagement.vue"
+        },
+        {
+          "specifier": "./TeamHubHome.vue",
+          "kind": "dynamic",
+          "resolved": "src/features/Team Hub/TeamHubHome.vue"
+        },
+        {
+          "specifier": "./TeamHome.vue",
+          "kind": "dynamic",
+          "resolved": "src/features/Team Hub/TeamHome.vue"
+        },
+        {
+          "specifier": "./champion-pool/ChampionPool.vue",
+          "kind": "dynamic",
+          "resolved": "src/features/Team Hub/champion-pool/ChampionPool.vue"
+        },
+        {
+          "specifier": "./champion-pool/CoachPoolReview.vue",
+          "kind": "dynamic",
+          "resolved": "src/features/Team Hub/champion-pool/CoachPoolReview.vue"
+        }
+      ]
+    },
+    {
+      "path": "src/features/Team Hub/teamAdministration.viewModel.js",
+      "classification": "TEAM_HUB_SPECIFIC",
+      "imports": []
+    },
+    {
+      "path": "src/features/Team Hub/TeamAdministration.vue",
+      "classification": "TEAM_HUB_SPECIFIC",
+      "imports": [
+        {
+          "specifier": "vue",
+          "kind": "static",
+          "external": true
+        },
+        {
+          "specifier": "./teamHub.service.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/teamHub.service.js"
+        },
+        {
+          "specifier": "./TeamLogo.vue",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/TeamLogo.vue"
+        },
+        {
+          "specifier": "./teamBranding.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/teamBranding.js"
+        },
+        {
+          "specifier": "../../composables/useAuth.js",
+          "kind": "static",
+          "resolved": "src/composables/useAuth.js"
+        },
+        {
+          "specifier": "./teamAdministration.viewModel.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/teamAdministration.viewModel.js"
+        },
+        {
+          "specifier": "./teamHub.viewModel.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/teamHub.viewModel.js"
+        }
+      ]
+    },
+    {
+      "path": "src/features/Team Hub/teamBranding.js",
+      "classification": "TEAM_HUB_SPECIFIC",
+      "imports": []
+    },
+    {
+      "path": "src/features/Team Hub/TeamHome.vue",
+      "classification": "TEAM_HUB_SPECIFIC",
+      "imports": [
+        {
+          "specifier": "vue",
+          "kind": "static",
+          "external": true
+        },
+        {
+          "specifier": "vue-router",
+          "kind": "static",
+          "external": true
+        },
+        {
+          "specifier": "./TeamLogo.vue",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/TeamLogo.vue"
+        },
+        {
+          "specifier": "./teamHub.service.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/teamHub.service.js"
+        }
+      ]
+    },
+    {
+      "path": "src/features/Team Hub/teamHub.service.js",
+      "classification": "TEAM_HUB_SPECIFIC",
+      "imports": [
+        {
+          "specifier": "aws-amplify/data",
+          "kind": "static",
+          "external": true
+        },
+        {
+          "specifier": "./teamAdministration.viewModel.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/teamAdministration.viewModel.js"
+        }
+      ]
+    },
+    {
+      "path": "src/features/Team Hub/teamHub.viewModel.js",
+      "classification": "TEAM_HUB_SPECIFIC",
+      "imports": []
+    },
+    {
+      "path": "src/features/Team Hub/teamHubDashboard.js",
+      "classification": "TEAM_HUB_SPECIFIC",
+      "imports": []
+    },
+    {
+      "path": "src/features/Team Hub/TeamHubHome.vue",
+      "classification": "TEAM_HUB_SPECIFIC",
+      "imports": [
+        {
+          "specifier": "vue",
+          "kind": "static",
+          "external": true
+        },
+        {
+          "specifier": "vue-router",
+          "kind": "static",
+          "external": true
+        },
+        {
+          "specifier": "./TeamLogo.vue",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/TeamLogo.vue"
+        },
+        {
+          "specifier": "../../composables/useAuth.js",
+          "kind": "static",
+          "resolved": "src/composables/useAuth.js"
+        },
+        {
+          "specifier": "./teamHub.service.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/teamHub.service.js"
+        },
+        {
+          "specifier": "./teamHub.viewModel.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/teamHub.viewModel.js"
+        }
+      ]
+    },
+    {
+      "path": "src/features/Team Hub/TeamHubSidebar.vue",
+      "classification": "TEAM_HUB_SPECIFIC",
+      "imports": [
+        {
+          "specifier": "vue",
+          "kind": "static",
+          "external": true
+        },
+        {
+          "specifier": "vue-router",
+          "kind": "static",
+          "external": true
+        },
+        {
+          "specifier": "../../assets/logo.png",
+          "kind": "static",
+          "resolved": "src/assets/logo.png"
+        }
+      ]
+    },
+    {
+      "path": "src/features/Team Hub/TeamLogo.vue",
+      "classification": "TEAM_HUB_SPECIFIC",
+      "imports": [
+        {
+          "specifier": "vue",
+          "kind": "static",
+          "external": true
+        }
+      ]
+    },
+    {
+      "path": "src/features/Team Hub/TeamManagement.vue",
+      "classification": "TEAM_HUB_SPECIFIC",
+      "imports": [
+        {
+          "specifier": "vue",
+          "kind": "static",
+          "external": true
+        },
+        {
+          "specifier": "vue-router",
+          "kind": "static",
+          "external": true
+        },
+        {
+          "specifier": "./teamHub.service.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/teamHub.service.js"
+        },
+        {
+          "specifier": "./teamHub.viewModel.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/teamHub.viewModel.js"
+        },
+        {
+          "specifier": "./teamAdministration.viewModel.js",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/teamAdministration.viewModel.js"
+        },
+        {
+          "specifier": "./TeamLogo.vue",
+          "kind": "static",
+          "resolved": "src/features/Team Hub/TeamLogo.vue"
+        }
+      ]
+    },
+    {
+      "path": "src/composables/useAuth.js",
+      "classification": "SHARED_IDENTITY",
+      "imports": [
+        {
+          "specifier": "vue",
+          "kind": "static",
+          "external": true
+        },
+        {
+          "specifier": "aws-amplify/auth",
+          "kind": "static",
+          "external": true
+        },
+        {
+          "specifier": "aws-amplify/utils",
+          "kind": "static",
+          "external": true
+        }
+      ]
+    },
+    {
+      "path": "src/assets/logo.png",
+      "classification": "SHARED_UI",
+      "imports": []
+    }
+  ],
+  "closureLimits": "Local literal import graph; external package internals not traversed; dynamic runtime behavior not inferred. Global router/shell coupling documented separately.",
+  "actions": [
+    {
+      "action": "LIST_MY_TEAMS",
+      "type": "query",
+      "operation": "readTeamHub",
+      "handler": "handleListMyTeams",
+      "allowedArguments": [
+        "status",
+        "limit",
+        "nextToken"
+      ],
+      "definition": "LIST_MY_TEAMS: { handler: handleListMyTeams, allowed: ['status', 'limit', 'nextToken'] },",
+      "handlerSource": "amplify/myFunction/teamHub/index.ts",
+      "frontendExported": true
+    },
+    {
+      "action": "GET_TEAM_HUB",
+      "type": "query",
+      "operation": "readTeamHub",
+      "handler": "handleGetTeamHub",
+      "allowedArguments": [
+        "teamId",
+        "teamSlug"
+      ],
+      "definition": "GET_TEAM_HUB: { handler: handleGetTeamHub, allowed: ['teamId', 'teamSlug'], validate: exactlyOne('teamId', 'teamSlug') },",
+      "handlerSource": "amplify/myFunction/teamHub/index.ts",
+      "frontendExported": true
+    },
+    {
+      "action": "LIST_MY_CHAMPION_POOL",
+      "type": "query",
+      "operation": "readTeamHub",
+      "handler": "handleListMyChampionPool",
+      "allowedArguments": [
+        "teamId",
+        "limit",
+        "nextToken"
+      ],
+      "definition": "LIST_MY_CHAMPION_POOL: { handler: handleListMyChampionPool, allowed: ['teamId', 'limit', 'nextToken'], required: ['teamId'] },",
+      "handlerSource": "amplify/myFunction/teamHub/index.ts",
+      "frontendExported": true
+    },
+    {
+      "action": "LIST_TEAM_CHAMPION_POOLS",
+      "type": "query",
+      "operation": "readTeamHub",
+      "handler": "handleListTeamChampionPools",
+      "allowedArguments": [
+        "teamId",
+        "limit",
+        "nextToken"
+      ],
+      "definition": "LIST_TEAM_CHAMPION_POOLS: { handler: handleListTeamChampionPools, allowed: ['teamId', 'limit', 'nextToken'], required: ['teamId'] },",
+      "handlerSource": "amplify/myFunction/teamHub/index.ts",
+      "frontendExported": true
+    },
+    {
+      "action": "GET_PLAYER_COMPETITIVE_DETAIL",
+      "type": "query",
+      "operation": "readTeamHub",
+      "handler": "handleGetPlayerCompetitiveDetail",
+      "allowedArguments": [
+        "teamId",
+        "membershipId"
+      ],
+      "definition": "GET_PLAYER_COMPETITIVE_DETAIL: { handler: handleGetPlayerCompetitiveDetail, allowed: ['teamId', 'membershipId'], required: ['teamId', 'membershipId'] },",
+      "handlerSource": "amplify/myFunction/teamHub/index.ts",
+      "frontendExported": true
+    },
+    {
+      "action": "SEARCH_TEAM_ASSIGNABLE_USERS",
+      "type": "query",
+      "operation": "readTeamHub",
+      "handler": "handleSearchTeamAssignableUsers",
+      "allowedArguments": [
+        "query",
+        "teamId"
+      ],
+      "definition": "SEARCH_TEAM_ASSIGNABLE_USERS: { handler: handleSearchTeamAssignableUsers, allowed: ['query', 'teamId'], required: ['query'] },",
+      "handlerSource": "amplify/myFunction/teamHub/index.ts",
+      "frontendExported": true
+    },
+    {
+      "action": "CREATE_TEAM",
+      "type": "mutation",
+      "operation": "mutateTeamHub",
+      "handler": "handleCreateTeamHubTeam",
+      "allowedArguments": [
+        "slug",
+        "name",
+        "gameKey"
+      ],
+      "definition": "CREATE_TEAM: { handler: handleCreateTeamHubTeam, allowed: ['slug', 'name', 'gameKey'], required: ['slug', 'name', 'gameKey'] },",
+      "handlerSource": "amplify/myFunction/teamHub/index.ts",
+      "frontendExported": true
+    },
+    {
+      "action": "UPDATE_TEAM",
+      "type": "mutation",
+      "operation": "mutateTeamHub",
+      "handler": "handleUpdateTeamHubTeam",
+      "allowedArguments": [
+        "teamId",
+        "name",
+        "status"
+      ],
+      "definition": "UPDATE_TEAM: { handler: handleUpdateTeamHubTeam, allowed: ['teamId', 'name', 'status'], required: ['teamId'], validate: atLeastOne('name', 'status') },",
+      "handlerSource": "amplify/myFunction/teamHub/index.ts",
+      "frontendExported": true
+    },
+    {
+      "action": "SET_MANAGER",
+      "type": "mutation",
+      "operation": "mutateTeamHub",
+      "handler": "handleSetTeamManager",
+      "allowedArguments": [
+        "teamId",
+        "targetEmail",
+        "targetMembershipId",
+        "memberAction",
+        "expectedRevision"
+      ],
+      "definition": "SET_MANAGER: { handler: handleSetTeamManager, allowed: ['teamId', 'targetEmail', 'targetMembershipId', 'memberAction', 'expectedRevision'], required: ['teamId', 'memberAction', 'expectedRevision'], remap: { memberAction: 'action' } },",
+      "handlerSource": "amplify/myFunction/teamHub/index.ts",
+      "frontendExported": true
+    },
+    {
+      "action": "MANAGE_MEMBER",
+      "type": "mutation",
+      "operation": "mutateTeamHub",
+      "handler": "handleManageTeamMember",
+      "allowedArguments": [
+        "teamId",
+        "targetEmail",
+        "targetMembershipId",
+        "role",
+        "memberAction",
+        "expectedRevision"
+      ],
+      "definition": "MANAGE_MEMBER: { handler: handleManageTeamMember, allowed: ['teamId', 'targetEmail', 'targetMembershipId', 'role', 'memberAction', 'expectedRevision'], required: ['teamId', 'role', 'memberAction', 'expectedRevision'], remap: { memberAction: 'action' } },",
+      "handlerSource": "amplify/myFunction/teamHub/index.ts",
+      "frontendExported": true
+    },
+    {
+      "action": "SET_ROSTER_SLOT",
+      "type": "mutation",
+      "operation": "mutateTeamHub",
+      "handler": "handleSetTeamRosterSlot",
+      "allowedArguments": [
+        "teamId",
+        "membershipId",
+        "gameRoleKey",
+        "slotType",
+        "rosterAction",
+        "expectedRevision"
+      ],
+      "definition": "SET_ROSTER_SLOT: { handler: handleSetTeamRosterSlot, allowed: ['teamId', 'membershipId', 'gameRoleKey', 'slotType', 'rosterAction', 'expectedRevision'], required: ['teamId', 'membershipId', 'gameRoleKey', 'slotType', 'rosterAction', 'expectedRevision'], remap: { rosterAction: 'action' } },",
+      "handlerSource": "amplify/myFunction/teamHub/index.ts",
+      "frontendExported": true
+    },
+    {
+      "action": "UPSERT_MY_CHAMPION",
+      "type": "mutation",
+      "operation": "mutateTeamHub",
+      "handler": "handleUpsertMyChampionPoolEntry",
+      "allowedArguments": [
+        "teamId",
+        "championId",
+        "gameRoleKey",
+        "comfortLevel",
+        "priority",
+        "competitiveReady",
+        "playerNotes"
+      ],
+      "definition": "UPSERT_MY_CHAMPION: { handler: handleUpsertMyChampionPoolEntry, allowed: ['teamId', 'championId', 'gameRoleKey', 'comfortLevel', 'priority', 'competitiveReady', 'playerNotes'], required: ['teamId', 'championId', 'comfortLevel', 'priority', 'competitiveReady'] },",
+      "handlerSource": "amplify/myFunction/teamHub/index.ts",
+      "frontendExported": true
+    },
+    {
+      "action": "DELETE_MY_CHAMPION",
+      "type": "mutation",
+      "operation": "mutateTeamHub",
+      "handler": "handleDeleteMyChampionPoolEntry",
+      "allowedArguments": [
+        "teamId",
+        "championId",
+        "gameRoleKey"
+      ],
+      "definition": "DELETE_MY_CHAMPION: { handler: handleDeleteMyChampionPoolEntry, allowed: ['teamId', 'championId', 'gameRoleKey'], required: ['teamId', 'championId'] },",
+      "handlerSource": "amplify/myFunction/teamHub/index.ts",
+      "frontendExported": true
+    },
+    {
+      "action": "UPSERT_COACH_ASSESSMENT",
+      "type": "mutation",
+      "operation": "mutateTeamHub",
+      "handler": "handleUpsertCoachAssessment",
+      "allowedArguments": [
+        "teamId",
+        "membershipId",
+        "championId",
+        "payload"
+      ],
+      "definition": "UPSERT_COACH_ASSESSMENT: { handler: handleUpsertCoachAssessment, allowed: ['teamId', 'membershipId', 'championId', 'payload'], required: ['teamId', 'membershipId', 'championId', 'payload'] },",
+      "handlerSource": "amplify/myFunction/teamHub/index.ts",
+      "frontendExported": true
+    },
+    {
+      "action": "SET_TEAM_PLAN",
+      "type": "mutation",
+      "operation": "mutateTeamHub",
+      "handler": "handleSetTeamPlan",
+      "allowedArguments": [
+        "teamId",
+        "payload"
+      ],
+      "definition": "SET_TEAM_PLAN: { handler: handleSetTeamPlan, allowed: ['teamId', 'payload'], required: ['teamId', 'payload'] },",
+      "handlerSource": "amplify/myFunction/teamHub/index.ts",
+      "frontendExported": true
+    },
+    {
+      "action": "REQUEST_TEAM_LOGO_UPLOAD",
+      "type": "mutation",
+      "operation": "mutateTeamHub",
+      "handler": "handleRequestTeamLogoUpload",
+      "allowedArguments": [
+        "teamId",
+        "payload"
+      ],
+      "definition": "REQUEST_TEAM_LOGO_UPLOAD: { handler: handleRequestTeamLogoUpload, allowed: ['teamId', 'payload'], required: ['teamId', 'payload'] },",
+      "handlerSource": "amplify/myFunction/teamHub/index.ts",
+      "frontendExported": true
+    },
+    {
+      "action": "COMMIT_TEAM_LOGO",
+      "type": "mutation",
+      "operation": "mutateTeamHub",
+      "handler": "handleCommitTeamLogo",
+      "allowedArguments": [
+        "teamId",
+        "payload"
+      ],
+      "definition": "COMMIT_TEAM_LOGO: { handler: handleCommitTeamLogo, allowed: ['teamId', 'payload'], required: ['teamId', 'payload'] },",
+      "handlerSource": "amplify/myFunction/teamHub/index.ts",
+      "frontendExported": true
+    },
+    {
+      "action": "REMOVE_TEAM_LOGO",
+      "type": "mutation",
+      "operation": "mutateTeamHub",
+      "handler": "handleRemoveTeamLogo",
+      "allowedArguments": [
+        "teamId",
+        "payload"
+      ],
+      "definition": "REMOVE_TEAM_LOGO: { handler: handleRemoveTeamLogo, allowed: ['teamId', 'payload'], required: ['teamId', 'payload'] },",
+      "handlerSource": "amplify/myFunction/teamHub/index.ts",
+      "frontendExported": true
+    }
+  ],
+  "models": [
+    {
+      "model": "Team",
+      "classification": "TEAM_HUB_OWNED",
+      "environment": "Ntgre",
+      "physicalOwner": "arn:aws:cloudformation:eu-north-1:058264289478:stack/amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataTeamNestedStackTeamNestedStackR-1JDKU82MS8003/f2133360-b5c7-11f1-b24b-06e73c31677d",
+      "table": "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "primaryKey": [
+        {
+          "AttributeName": "id",
+          "KeyType": "HASH"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "teamsBySlug",
+          "keys": [
+            {
+              "AttributeName": "slug",
+              "KeyType": "HASH"
+            }
+          ],
+          "projection": {
+            "ProjectionType": "ALL"
+          }
+        },
+        {
+          "name": "teamsByStatus",
+          "keys": [
+            {
+              "AttributeName": "status",
+              "KeyType": "HASH"
+            }
+          ],
+          "projection": {
+            "ProjectionType": "ALL"
+          }
+        }
+      ],
+      "stateful": true,
+      "sensitive": "membership, identity references, private roster/configuration",
+      "approximateItemCount": 0,
+      "exactRecordCount": null,
+      "schemaSource": "amplify/data/resource.ts",
+      "schemaBlock": "    Team: a\r\n      .model({\r\n        slug: a.string().required(),\r\n        name: a.string().required(),\r\n        gameKey: a.string().required(),\r\n        status: a.string().required(),\r\n        createdByUserId: a.string().required(),\r\n        updatedByUserId: a.string().required(),\r\n        rosterRevision: a.integer().required(),\r\n        membershipRevision: a.integer().required(),\r\n        managerMembershipId: a.id(),\r\n        coachMembershipId: a.id(),\r\n        teamPlan: a.string(),\r\n        proGrantedAt: a.datetime(),\r\n        proGrantedBy: a.string(),\r\n        proExpiresAt: a.datetime(),\r\n        planUpdatedAt: a.datetime(),\r\n        planUpdatedBy: a.string(),\r\n        logoKey: a.string(),\r\n        logoUpdatedAt: a.datetime(),\r\n        logoUpdatedBy: a.string(),\r\n        settingsRevision: a.integer(),\r\n      })\r\n      .secondaryIndexes((index) => [\r\n        index('slug').queryField('listTeamBySlug'),\r\n        index('status').queryField('listTeamByStatus'),\r\n      ])\r\n      .authorization((allow) => [allow.groups(['SuperAdmin']).to([])]),",
+      "generatedOperations": [
+        {
+          "type": "Query",
+          "field": "getTeam"
+        },
+        {
+          "type": "Query",
+          "field": "listTeams"
+        },
+        {
+          "type": "Mutation",
+          "field": "createTeam"
+        },
+        {
+          "type": "Mutation",
+          "field": "updateTeam"
+        },
+        {
+          "type": "Mutation",
+          "field": "deleteTeam"
+        },
+        {
+          "type": "Subscription",
+          "field": "onCreateTeam"
+        },
+        {
+          "type": "Subscription",
+          "field": "onUpdateTeam"
+        },
+        {
+          "type": "Subscription",
+          "field": "onDeleteTeam"
+        },
+        {
+          "type": "Query",
+          "field": "listTeamBySlug"
+        },
+        {
+          "type": "Query",
+          "field": "listTeamByStatus"
+        }
+      ],
+      "retirementRisk": "HIGH: custom provider, Delete/replace settings; no authorization to remove",
+      "generatedModelMetadata": {
+        "name": "Team",
+        "fields": {
+          "id": {
+            "name": "id",
+            "isArray": false,
+            "type": "ID",
+            "isRequired": true,
+            "attributes": []
+          },
+          "slug": {
+            "name": "slug",
+            "isArray": false,
+            "type": "String",
+            "isRequired": true,
+            "attributes": []
+          },
+          "name": {
+            "name": "name",
+            "isArray": false,
+            "type": "String",
+            "isRequired": true,
+            "attributes": []
+          },
+          "gameKey": {
+            "name": "gameKey",
+            "isArray": false,
+            "type": "String",
+            "isRequired": true,
+            "attributes": []
+          },
+          "status": {
+            "name": "status",
+            "isArray": false,
+            "type": "String",
+            "isRequired": true,
+            "attributes": []
+          },
+          "createdByUserId": {
+            "name": "createdByUserId",
+            "isArray": false,
+            "type": "String",
+            "isRequired": true,
+            "attributes": []
+          },
+          "updatedByUserId": {
+            "name": "updatedByUserId",
+            "isArray": false,
+            "type": "String",
+            "isRequired": true,
+            "attributes": []
+          },
+          "rosterRevision": {
+            "name": "rosterRevision",
+            "isArray": false,
+            "type": "Int",
+            "isRequired": true,
+            "attributes": []
+          },
+          "membershipRevision": {
+            "name": "membershipRevision",
+            "isArray": false,
+            "type": "Int",
+            "isRequired": true,
+            "attributes": []
+          },
+          "managerMembershipId": {
+            "name": "managerMembershipId",
+            "isArray": false,
+            "type": "ID",
+            "isRequired": false,
+            "attributes": []
+          },
+          "coachMembershipId": {
+            "name": "coachMembershipId",
+            "isArray": false,
+            "type": "ID",
+            "isRequired": false,
+            "attributes": []
+          },
+          "teamPlan": {
+            "name": "teamPlan",
+            "isArray": false,
+            "type": "String",
+            "isRequired": false,
+            "attributes": []
+          },
+          "proGrantedAt": {
+            "name": "proGrantedAt",
+            "isArray": false,
+            "type": "AWSDateTime",
+            "isRequired": false,
+            "attributes": []
+          },
+          "proGrantedBy": {
+            "name": "proGrantedBy",
+            "isArray": false,
+            "type": "String",
+            "isRequired": false,
+            "attributes": []
+          },
+          "proExpiresAt": {
+            "name": "proExpiresAt",
+            "isArray": false,
+            "type": "AWSDateTime",
+            "isRequired": false,
+            "attributes": []
+          },
+          "planUpdatedAt": {
+            "name": "planUpdatedAt",
+            "isArray": false,
+            "type": "AWSDateTime",
+            "isRequired": false,
+            "attributes": []
+          },
+          "planUpdatedBy": {
+            "name": "planUpdatedBy",
+            "isArray": false,
+            "type": "String",
+            "isRequired": false,
+            "attributes": []
+          },
+          "logoKey": {
+            "name": "logoKey",
+            "isArray": false,
+            "type": "String",
+            "isRequired": false,
+            "attributes": []
+          },
+          "logoUpdatedAt": {
+            "name": "logoUpdatedAt",
+            "isArray": false,
+            "type": "AWSDateTime",
+            "isRequired": false,
+            "attributes": []
+          },
+          "logoUpdatedBy": {
+            "name": "logoUpdatedBy",
+            "isArray": false,
+            "type": "String",
+            "isRequired": false,
+            "attributes": []
+          },
+          "settingsRevision": {
+            "name": "settingsRevision",
+            "isArray": false,
+            "type": "Int",
+            "isRequired": false,
+            "attributes": []
+          },
+          "createdAt": {
+            "name": "createdAt",
+            "isArray": false,
+            "type": "AWSDateTime",
+            "isRequired": false,
+            "attributes": [],
+            "isReadOnly": true
+          },
+          "updatedAt": {
+            "name": "updatedAt",
+            "isArray": false,
+            "type": "AWSDateTime",
+            "isRequired": false,
+            "attributes": [],
+            "isReadOnly": true
+          }
+        },
+        "syncable": true,
+        "pluralName": "Teams",
+        "attributes": [
+          {
+            "type": "model",
+            "properties": {}
+          },
+          {
+            "type": "key",
+            "properties": {
+              "name": "teamsBySlug",
+              "queryField": "listTeamBySlug",
+              "fields": [
+                "slug"
+              ]
+            }
+          },
+          {
+            "type": "key",
+            "properties": {
+              "name": "teamsByStatus",
+              "queryField": "listTeamByStatus",
+              "fields": [
+                "status"
+              ]
+            }
+          },
+          {
+            "type": "auth",
+            "properties": {
+              "rules": [
+                {
+                  "groupClaim": "cognito:groups",
+                  "provider": "userPools",
+                  "allow": "groups",
+                  "operations": [],
+                  "groups": [
+                    "SuperAdmin"
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "primaryKeyInfo": {
+          "isCustomPrimaryKey": false,
+          "primaryKeyFieldName": "id",
+          "sortKeyFieldNames": []
+        }
+      }
+    },
+    {
+      "model": "TeamMembership",
+      "classification": "TEAM_HUB_OWNED",
+      "environment": "Ntgre",
+      "physicalOwner": "arn:aws:cloudformation:eu-north-1:058264289478:stack/amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataTeamMembershipNestedStackTeamMe-WCZXVS62U7CN/f21a8660-b5c7-11f1-ab49-0e259bcc21f3",
+      "table": "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "primaryKey": [
+        {
+          "AttributeName": "id",
+          "KeyType": "HASH"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "teamMembershipsByTeamId",
+          "keys": [
+            {
+              "AttributeName": "teamId",
+              "KeyType": "HASH"
+            }
+          ],
+          "projection": {
+            "ProjectionType": "ALL"
+          }
+        },
+        {
+          "name": "teamMembershipsByUserId",
+          "keys": [
+            {
+              "AttributeName": "userId",
+              "KeyType": "HASH"
+            }
+          ],
+          "projection": {
+            "ProjectionType": "ALL"
+          }
+        }
+      ],
+      "stateful": true,
+      "sensitive": "membership, identity references, private roster/configuration",
+      "approximateItemCount": 0,
+      "exactRecordCount": null,
+      "schemaSource": "amplify/data/resource.ts",
+      "schemaBlock": "    TeamMembership: a\r\n      .model({\r\n        teamId: a.id().required(),\r\n        userId: a.string().required(),\r\n        displayName: a.string().required(),\r\n        role: a.string().required(),\r\n        status: a.string().required(),\r\n        addedByUserId: a.string().required(),\r\n        revokedAt: a.datetime(),\r\n        revokedByUserId: a.string(),\r\n      })\r\n      .secondaryIndexes((index) => [\r\n        index('teamId').queryField('listTeamMembershipByTeamId'),\r\n        index('userId').queryField('listTeamMembershipByUserId'),\r\n      ])\r\n      .authorization((allow) => [allow.groups(['SuperAdmin']).to([])]),",
+      "generatedOperations": [
+        {
+          "type": "Query",
+          "field": "getTeamMembership"
+        },
+        {
+          "type": "Query",
+          "field": "listTeamMemberships"
+        },
+        {
+          "type": "Mutation",
+          "field": "createTeamMembership"
+        },
+        {
+          "type": "Mutation",
+          "field": "updateTeamMembership"
+        },
+        {
+          "type": "Mutation",
+          "field": "deleteTeamMembership"
+        },
+        {
+          "type": "Subscription",
+          "field": "onCreateTeamMembership"
+        },
+        {
+          "type": "Subscription",
+          "field": "onUpdateTeamMembership"
+        },
+        {
+          "type": "Subscription",
+          "field": "onDeleteTeamMembership"
+        },
+        {
+          "type": "Query",
+          "field": "listTeamMembershipByTeamId"
+        },
+        {
+          "type": "Query",
+          "field": "listTeamMembershipByUserId"
+        }
+      ],
+      "retirementRisk": "HIGH: custom provider, Delete/replace settings; no authorization to remove",
+      "generatedModelMetadata": {
+        "name": "TeamMembership",
+        "fields": {
+          "id": {
+            "name": "id",
+            "isArray": false,
+            "type": "ID",
+            "isRequired": true,
+            "attributes": []
+          },
+          "teamId": {
+            "name": "teamId",
+            "isArray": false,
+            "type": "ID",
+            "isRequired": true,
+            "attributes": []
+          },
+          "userId": {
+            "name": "userId",
+            "isArray": false,
+            "type": "String",
+            "isRequired": true,
+            "attributes": []
+          },
+          "displayName": {
+            "name": "displayName",
+            "isArray": false,
+            "type": "String",
+            "isRequired": true,
+            "attributes": []
+          },
+          "role": {
+            "name": "role",
+            "isArray": false,
+            "type": "String",
+            "isRequired": true,
+            "attributes": []
+          },
+          "status": {
+            "name": "status",
+            "isArray": false,
+            "type": "String",
+            "isRequired": true,
+            "attributes": []
+          },
+          "addedByUserId": {
+            "name": "addedByUserId",
+            "isArray": false,
+            "type": "String",
+            "isRequired": true,
+            "attributes": []
+          },
+          "revokedAt": {
+            "name": "revokedAt",
+            "isArray": false,
+            "type": "AWSDateTime",
+            "isRequired": false,
+            "attributes": []
+          },
+          "revokedByUserId": {
+            "name": "revokedByUserId",
+            "isArray": false,
+            "type": "String",
+            "isRequired": false,
+            "attributes": []
+          },
+          "createdAt": {
+            "name": "createdAt",
+            "isArray": false,
+            "type": "AWSDateTime",
+            "isRequired": false,
+            "attributes": [],
+            "isReadOnly": true
+          },
+          "updatedAt": {
+            "name": "updatedAt",
+            "isArray": false,
+            "type": "AWSDateTime",
+            "isRequired": false,
+            "attributes": [],
+            "isReadOnly": true
+          }
+        },
+        "syncable": true,
+        "pluralName": "TeamMemberships",
+        "attributes": [
+          {
+            "type": "model",
+            "properties": {}
+          },
+          {
+            "type": "key",
+            "properties": {
+              "name": "teamMembershipsByTeamId",
+              "queryField": "listTeamMembershipByTeamId",
+              "fields": [
+                "teamId"
+              ]
+            }
+          },
+          {
+            "type": "key",
+            "properties": {
+              "name": "teamMembershipsByUserId",
+              "queryField": "listTeamMembershipByUserId",
+              "fields": [
+                "userId"
+              ]
+            }
+          },
+          {
+            "type": "auth",
+            "properties": {
+              "rules": [
+                {
+                  "groupClaim": "cognito:groups",
+                  "provider": "userPools",
+                  "allow": "groups",
+                  "operations": [],
+                  "groups": [
+                    "SuperAdmin"
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "primaryKeyInfo": {
+          "isCustomPrimaryKey": false,
+          "primaryKeyFieldName": "id",
+          "sortKeyFieldNames": []
+        }
+      }
+    },
+    {
+      "model": "TeamRosterSlot",
+      "classification": "TEAM_HUB_OWNED",
+      "environment": "Ntgre",
+      "physicalOwner": "arn:aws:cloudformation:eu-north-1:058264289478:stack/amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataTeamRosterSlotNestedStackTeamRo-14YH10PBU6UWL/f2059ed0-b5c7-11f1-ab9d-0e1012e43b33",
+      "table": "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "primaryKey": [
+        {
+          "AttributeName": "id",
+          "KeyType": "HASH"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "teamRosterSlotsByMembershipId",
+          "keys": [
+            {
+              "AttributeName": "membershipId",
+              "KeyType": "HASH"
+            }
+          ],
+          "projection": {
+            "ProjectionType": "ALL"
+          }
+        },
+        {
+          "name": "teamRosterSlotsByTeamId",
+          "keys": [
+            {
+              "AttributeName": "teamId",
+              "KeyType": "HASH"
+            }
+          ],
+          "projection": {
+            "ProjectionType": "ALL"
+          }
+        }
+      ],
+      "stateful": true,
+      "sensitive": "membership, identity references, private roster/configuration",
+      "approximateItemCount": 0,
+      "exactRecordCount": null,
+      "schemaSource": "amplify/data/resource.ts",
+      "schemaBlock": "    TeamRosterSlot: a\r\n      .model({\r\n        teamId: a.id().required(),\r\n        membershipId: a.id().required(),\r\n        playerUserId: a.string().required(),\r\n        gameRoleKey: a.string().required(),\r\n        slotType: a.string().required(),\r\n        status: a.string().required(),\r\n        assignedByUserId: a.string().required(),\r\n        deactivatedAt: a.datetime(),\r\n      })\r\n      .secondaryIndexes((index) => [\r\n        index('teamId').queryField('listTeamRosterSlotByTeamId'),\r\n        index('membershipId').queryField('listTeamRosterSlotByMembershipId'),\r\n      ])\r\n      .authorization((allow) => [allow.groups(['SuperAdmin']).to([])]),",
+      "generatedOperations": [
+        {
+          "type": "Query",
+          "field": "getTeamRosterSlot"
+        },
+        {
+          "type": "Query",
+          "field": "listTeamRosterSlots"
+        },
+        {
+          "type": "Mutation",
+          "field": "createTeamRosterSlot"
+        },
+        {
+          "type": "Mutation",
+          "field": "updateTeamRosterSlot"
+        },
+        {
+          "type": "Mutation",
+          "field": "deleteTeamRosterSlot"
+        },
+        {
+          "type": "Subscription",
+          "field": "onCreateTeamRosterSlot"
+        },
+        {
+          "type": "Subscription",
+          "field": "onUpdateTeamRosterSlot"
+        },
+        {
+          "type": "Subscription",
+          "field": "onDeleteTeamRosterSlot"
+        },
+        {
+          "type": "Query",
+          "field": "listTeamRosterSlotByTeamId"
+        },
+        {
+          "type": "Query",
+          "field": "listTeamRosterSlotByMembershipId"
+        }
+      ],
+      "retirementRisk": "HIGH: custom provider, Delete/replace settings; no authorization to remove",
+      "generatedModelMetadata": {
+        "name": "TeamRosterSlot",
+        "fields": {
+          "id": {
+            "name": "id",
+            "isArray": false,
+            "type": "ID",
+            "isRequired": true,
+            "attributes": []
+          },
+          "teamId": {
+            "name": "teamId",
+            "isArray": false,
+            "type": "ID",
+            "isRequired": true,
+            "attributes": []
+          },
+          "membershipId": {
+            "name": "membershipId",
+            "isArray": false,
+            "type": "ID",
+            "isRequired": true,
+            "attributes": []
+          },
+          "playerUserId": {
+            "name": "playerUserId",
+            "isArray": false,
+            "type": "String",
+            "isRequired": true,
+            "attributes": []
+          },
+          "gameRoleKey": {
+            "name": "gameRoleKey",
+            "isArray": false,
+            "type": "String",
+            "isRequired": true,
+            "attributes": []
+          },
+          "slotType": {
+            "name": "slotType",
+            "isArray": false,
+            "type": "String",
+            "isRequired": true,
+            "attributes": []
+          },
+          "status": {
+            "name": "status",
+            "isArray": false,
+            "type": "String",
+            "isRequired": true,
+            "attributes": []
+          },
+          "assignedByUserId": {
+            "name": "assignedByUserId",
+            "isArray": false,
+            "type": "String",
+            "isRequired": true,
+            "attributes": []
+          },
+          "deactivatedAt": {
+            "name": "deactivatedAt",
+            "isArray": false,
+            "type": "AWSDateTime",
+            "isRequired": false,
+            "attributes": []
+          },
+          "createdAt": {
+            "name": "createdAt",
+            "isArray": false,
+            "type": "AWSDateTime",
+            "isRequired": false,
+            "attributes": [],
+            "isReadOnly": true
+          },
+          "updatedAt": {
+            "name": "updatedAt",
+            "isArray": false,
+            "type": "AWSDateTime",
+            "isRequired": false,
+            "attributes": [],
+            "isReadOnly": true
+          }
+        },
+        "syncable": true,
+        "pluralName": "TeamRosterSlots",
+        "attributes": [
+          {
+            "type": "model",
+            "properties": {}
+          },
+          {
+            "type": "key",
+            "properties": {
+              "name": "teamRosterSlotsByTeamId",
+              "queryField": "listTeamRosterSlotByTeamId",
+              "fields": [
+                "teamId"
+              ]
+            }
+          },
+          {
+            "type": "key",
+            "properties": {
+              "name": "teamRosterSlotsByMembershipId",
+              "queryField": "listTeamRosterSlotByMembershipId",
+              "fields": [
+                "membershipId"
+              ]
+            }
+          },
+          {
+            "type": "auth",
+            "properties": {
+              "rules": [
+                {
+                  "groupClaim": "cognito:groups",
+                  "provider": "userPools",
+                  "allow": "groups",
+                  "operations": [],
+                  "groups": [
+                    "SuperAdmin"
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "primaryKeyInfo": {
+          "isCustomPrimaryKey": false,
+          "primaryKeyFieldName": "id",
+          "sortKeyFieldNames": []
+        }
+      }
+    },
+    {
+      "model": "PlayerChampionPoolEntry",
+      "classification": "TEAM_HUB_OWNED",
+      "environment": "Ntgre",
+      "physicalOwner": "arn:aws:cloudformation:eu-north-1:058264289478:stack/amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataPlayerChampionPoolEntryNestedSt-7CZOVYLEJDGR/0e815680-b5c8-11f1-9b4b-0effd87955e5",
+      "table": "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "primaryKey": [
+        {
+          "AttributeName": "id",
+          "KeyType": "HASH"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "playerChampionPoolEntriesByTeamId",
+          "keys": [
+            {
+              "AttributeName": "teamId",
+              "KeyType": "HASH"
+            }
+          ],
+          "projection": {
+            "ProjectionType": "ALL"
+          }
+        },
+        {
+          "name": "playerChampionPoolEntriesByMembershipId",
+          "keys": [
+            {
+              "AttributeName": "membershipId",
+              "KeyType": "HASH"
+            }
+          ],
+          "projection": {
+            "ProjectionType": "ALL"
+          }
+        }
+      ],
+      "stateful": true,
+      "sensitive": "private competitive/player/coach notes",
+      "approximateItemCount": 0,
+      "exactRecordCount": null,
+      "schemaSource": "amplify/data/resource.ts",
+      "schemaBlock": "    PlayerChampionPoolEntry: a\r\n      .model({\r\n        teamId: a.id().required(),\r\n        membershipId: a.id().required(),\r\n        playerUserId: a.string().required(),\r\n        championId: a.string().required(),\r\n        gameRoleKey: a.string(),\r\n        comfortLevel: a.string().required(),\r\n        priority: a.string().required(),\r\n        competitiveReady: a.boolean().required(),\r\n        playerNotes: a.string(),\r\n        coachTier: a.string(),\r\n        coachAssessment: a.string(),\r\n        coachRecommendation: a.string(),\r\n        coachPriorityPractice: a.boolean(),\r\n        coachUpdatedByUserId: a.string(),\r\n        coachUpdatedAt: a.datetime(),\r\n      })\r\n      .secondaryIndexes((index) => [\r\n        index('teamId').queryField('listPlayerChampionPoolEntryByTeamId'),\r\n        index('membershipId').queryField('listPlayerChampionPoolEntryByMembershipId'),\r\n      ])\r\n      .authorization((allow) => [allow.groups(['SuperAdmin']).to([])]),",
+      "generatedOperations": [
+        {
+          "type": "Query",
+          "field": "getPlayerChampionPoolEntry"
+        },
+        {
+          "type": "Query",
+          "field": "listPlayerChampionPoolEntries"
+        },
+        {
+          "type": "Mutation",
+          "field": "createPlayerChampionPoolEntry"
+        },
+        {
+          "type": "Mutation",
+          "field": "updatePlayerChampionPoolEntry"
+        },
+        {
+          "type": "Mutation",
+          "field": "deletePlayerChampionPoolEntry"
+        },
+        {
+          "type": "Subscription",
+          "field": "onCreatePlayerChampionPoolEntry"
+        },
+        {
+          "type": "Subscription",
+          "field": "onUpdatePlayerChampionPoolEntry"
+        },
+        {
+          "type": "Subscription",
+          "field": "onDeletePlayerChampionPoolEntry"
+        },
+        {
+          "type": "Query",
+          "field": "listPlayerChampionPoolEntryByTeamId"
+        },
+        {
+          "type": "Query",
+          "field": "listPlayerChampionPoolEntryByMembershipId"
+        }
+      ],
+      "retirementRisk": "HIGH: custom provider, Delete/replace settings; no authorization to remove",
+      "generatedModelMetadata": {
+        "name": "PlayerChampionPoolEntry",
+        "fields": {
+          "id": {
+            "name": "id",
+            "isArray": false,
+            "type": "ID",
+            "isRequired": true,
+            "attributes": []
+          },
+          "teamId": {
+            "name": "teamId",
+            "isArray": false,
+            "type": "ID",
+            "isRequired": true,
+            "attributes": []
+          },
+          "membershipId": {
+            "name": "membershipId",
+            "isArray": false,
+            "type": "ID",
+            "isRequired": true,
+            "attributes": []
+          },
+          "playerUserId": {
+            "name": "playerUserId",
+            "isArray": false,
+            "type": "String",
+            "isRequired": true,
+            "attributes": []
+          },
+          "championId": {
+            "name": "championId",
+            "isArray": false,
+            "type": "String",
+            "isRequired": true,
+            "attributes": []
+          },
+          "gameRoleKey": {
+            "name": "gameRoleKey",
+            "isArray": false,
+            "type": "String",
+            "isRequired": false,
+            "attributes": []
+          },
+          "comfortLevel": {
+            "name": "comfortLevel",
+            "isArray": false,
+            "type": "String",
+            "isRequired": true,
+            "attributes": []
+          },
+          "priority": {
+            "name": "priority",
+            "isArray": false,
+            "type": "String",
+            "isRequired": true,
+            "attributes": []
+          },
+          "competitiveReady": {
+            "name": "competitiveReady",
+            "isArray": false,
+            "type": "Boolean",
+            "isRequired": true,
+            "attributes": []
+          },
+          "playerNotes": {
+            "name": "playerNotes",
+            "isArray": false,
+            "type": "String",
+            "isRequired": false,
+            "attributes": []
+          },
+          "coachTier": {
+            "name": "coachTier",
+            "isArray": false,
+            "type": "String",
+            "isRequired": false,
+            "attributes": []
+          },
+          "coachAssessment": {
+            "name": "coachAssessment",
+            "isArray": false,
+            "type": "String",
+            "isRequired": false,
+            "attributes": []
+          },
+          "coachRecommendation": {
+            "name": "coachRecommendation",
+            "isArray": false,
+            "type": "String",
+            "isRequired": false,
+            "attributes": []
+          },
+          "coachPriorityPractice": {
+            "name": "coachPriorityPractice",
+            "isArray": false,
+            "type": "Boolean",
+            "isRequired": false,
+            "attributes": []
+          },
+          "coachUpdatedByUserId": {
+            "name": "coachUpdatedByUserId",
+            "isArray": false,
+            "type": "String",
+            "isRequired": false,
+            "attributes": []
+          },
+          "coachUpdatedAt": {
+            "name": "coachUpdatedAt",
+            "isArray": false,
+            "type": "AWSDateTime",
+            "isRequired": false,
+            "attributes": []
+          },
+          "createdAt": {
+            "name": "createdAt",
+            "isArray": false,
+            "type": "AWSDateTime",
+            "isRequired": false,
+            "attributes": [],
+            "isReadOnly": true
+          },
+          "updatedAt": {
+            "name": "updatedAt",
+            "isArray": false,
+            "type": "AWSDateTime",
+            "isRequired": false,
+            "attributes": [],
+            "isReadOnly": true
+          }
+        },
+        "syncable": true,
+        "pluralName": "PlayerChampionPoolEntries",
+        "attributes": [
+          {
+            "type": "model",
+            "properties": {}
+          },
+          {
+            "type": "key",
+            "properties": {
+              "name": "playerChampionPoolEntriesByTeamId",
+              "queryField": "listPlayerChampionPoolEntryByTeamId",
+              "fields": [
+                "teamId"
+              ]
+            }
+          },
+          {
+            "type": "key",
+            "properties": {
+              "name": "playerChampionPoolEntriesByMembershipId",
+              "queryField": "listPlayerChampionPoolEntryByMembershipId",
+              "fields": [
+                "membershipId"
+              ]
+            }
+          },
+          {
+            "type": "auth",
+            "properties": {
+              "rules": [
+                {
+                  "groupClaim": "cognito:groups",
+                  "provider": "userPools",
+                  "allow": "groups",
+                  "operations": [],
+                  "groups": [
+                    "SuperAdmin"
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "primaryKeyInfo": {
+          "isCustomPrimaryKey": false,
+          "primaryKeyFieldName": "id",
+          "sortKeyFieldNames": []
+        }
+      }
+    }
+  ],
+  "sourceHashes": [
+    {
+      "path": "src/features/Team Hub/champion-pool/championPool.constants.js",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "src/features/Team Hub/champion-pool/ChampionPool.css",
+      "sha256": "431a03b967b3b044f7d50a73aeb28ad292eeb611e8a3a0925a52e0481ff10b64"
+    },
+    {
+      "path": "src/features/Team Hub/champion-pool/ChampionPool.js",
+      "sha256": "993f417f66c1ffd0cfaf034604bb306253a4412bf1946bbeb5a526bbccb96dda"
+    },
+    {
+      "path": "src/features/Team Hub/champion-pool/ChampionPool.vue",
+      "sha256": "4ada2ad91e17377265e91b843aaf0514c4249b9d4e40c05eefd054352e1f5a3e"
+    },
+    {
+      "path": "src/features/Team Hub/champion-pool/CoachPoolReview.vue",
+      "sha256": "deb35be6fe5f5b2b8125c0ec93e1f43ccb445955dee213f135cc86e777944254"
+    },
+    {
+      "path": "src/features/Team Hub/champion-pool/dataDragon.service.js",
+      "sha256": "7a1dd51401a0e16983d88626785b0fdccf9ce715e78baf86923d356533b6c356"
+    },
+    {
+      "path": "src/features/Team Hub/champion-pool/TeamPool.vue",
+      "sha256": "dce506b2fc7189ee4c71fdfdf7feb7a90739e39c204cf08b86ed8147be973a89"
+    },
+    {
+      "path": "src/features/Team Hub/team-hub.routes.js",
+      "sha256": "058d38d3322fc530eb1d0a54b5d9a2a2dce70f2e906a3e9d74fc27ff31cf6135"
+    },
+    {
+      "path": "src/features/Team Hub/teamAdministration.viewModel.js",
+      "sha256": "6fdef80b561477500aa9c3eb3fe4552bf4dc856678bd9a1efe50756134fcc1f7"
+    },
+    {
+      "path": "src/features/Team Hub/TeamAdministration.vue",
+      "sha256": "b6d32c023b5ae0ee159076667923de50bfa43e73607be0ea583dde7c789a45cc"
+    },
+    {
+      "path": "src/features/Team Hub/teamBranding.js",
+      "sha256": "d96c317d32e8ed1dc5dab2b5550ce3ca1e04493693ed44ce50e29ea0c70b1e1f"
+    },
+    {
+      "path": "src/features/Team Hub/TeamHome.vue",
+      "sha256": "593a77986e733f673d501aafb7118bdde30d358a041f0fe486c08a305eba6415"
+    },
+    {
+      "path": "src/features/Team Hub/teamHub.service.js",
+      "sha256": "75cf1544fa51e516b20088c0d0c191e81e07131abaa1954f6f58dcd02a6bddda"
+    },
+    {
+      "path": "src/features/Team Hub/teamHub.viewModel.js",
+      "sha256": "7724548f13782e8f2164454cd9c24adfcd7ba0eac230a805d344ceb6cf4e4e0e"
+    },
+    {
+      "path": "src/features/Team Hub/teamHubDashboard.js",
+      "sha256": "01963c8de0aa88013a0a21c65091ce7f17b1f38dd9d4f1987ccea25ed7de4326"
+    },
+    {
+      "path": "src/features/Team Hub/teamHubFrontend.test.mjs",
+      "sha256": "381b80525ee64fe2bac931dc19f6a11464c1b39bdc56db9417251e686beb3c12"
+    },
+    {
+      "path": "src/features/Team Hub/TeamHubHome.vue",
+      "sha256": "67404b8995eef63fc430f9422849434fa0620603896b4fcbcfad00abf033bc8f"
+    },
+    {
+      "path": "src/features/Team Hub/TeamHubSidebar.vue",
+      "sha256": "a3faa6c1bd889ef2eb93fa82cb3fa10adbe0a0e8a8f7cdc404ce700a12ec2602"
+    },
+    {
+      "path": "src/features/Team Hub/TeamLogo.vue",
+      "sha256": "ebe6ab3661649a4ed2885e48703f7a94f62e1e11d990d2e1a34c245ee86bd038"
+    },
+    {
+      "path": "src/features/Team Hub/TeamManagement.vue",
+      "sha256": "0aaf4885952c904ef5fdb5eb82b00148a21b53aa0a4ee14381aced194875331b"
+    },
+    {
+      "path": "amplify/myFunction/teamHub/accounts.ts",
+      "sha256": "71db145bd0984bb4b1367469317d11057b1a41c6cc615a17d7ae9a33e7c1d91f"
+    },
+    {
+      "path": "amplify/myFunction/teamHub/branding.test.ts",
+      "sha256": "02c60f34f08126f578af5088459e003e0e97e7861dfa6062a9b459df9904e8c5"
+    },
+    {
+      "path": "amplify/myFunction/teamHub/branding.ts",
+      "sha256": "aa33ee41600a5a32ac4f4d1e9e6aac1fa62590524e31a7d8e9c9f78596264c21"
+    },
+    {
+      "path": "amplify/myFunction/teamHub/dynamo.ts",
+      "sha256": "890ac7f918fc51f7af55b3b204c11b8a6ad47b379a24354e2e897d1c03b5d9a7"
+    },
+    {
+      "path": "amplify/myFunction/teamHub/entitlements.ts",
+      "sha256": "e9384bc782a161c173186c7e80aa5ce00b53257c236c9a783dfecdf8090ef4f7"
+    },
+    {
+      "path": "amplify/myFunction/teamHub/gateway.test.ts",
+      "sha256": "540eae0b6a73f8b934648a814c79038294c4da3c783669aad6825e52e78f3e71"
+    },
+    {
+      "path": "amplify/myFunction/teamHub/gateway.ts",
+      "sha256": "2010d8bb1c3a35fe9d67538c1f0adcee508306a5f62099e3486685547a046360"
+    },
+    {
+      "path": "amplify/myFunction/teamHub/index.ts",
+      "sha256": "54ce07813b6cded45e9c19b5be64b258cbab14bda5a7ce14605e3154554272fa"
+    },
+    {
+      "path": "amplify/myFunction/teamHub/policy.ts",
+      "sha256": "a75fb37f15a03541c8bf3c33f2196e4d8ede237692b12fd19886f64b59362572"
+    },
+    {
+      "path": "amplify/myFunction/teamHub/teamHub.test.ts",
+      "sha256": "02295b84f531baafb157773ac9764ed90219cffeec4cfbaa8f898f55c5a8de9a"
+    },
+    {
+      "path": "src/router/index.js",
+      "sha256": "54d3c12c08f74def277a246e628c4d060cfad642e2ef1951234a5fbd85bc6b43"
+    },
+    {
+      "path": "src/router/admin.routes.js",
+      "sha256": "5e92f193292e5eefc5df4a7f8ff05ec4383a9a27c955869650af7e7d82ece27b"
+    },
+    {
+      "path": "src/router/features.routes.js",
+      "sha256": "50090d3ca16a8cf7c8f090ac3e8fe262f05a5ceb2a725937702cf2245d9e03da"
+    },
+    {
+      "path": "src/views/UserHomepage/UserHomepage.js",
+      "sha256": "4fe75377f5487ffd85f515eae8b47f35f0d709f9cded3afee0bc7f4fd694fa21"
+    },
+    {
+      "path": "src/composables/useAccessContext.js",
+      "sha256": "2192dbbad77c4cb3a41911b91c15abf6a08a91ced2582f615865c709454fc4ba"
+    },
+    {
+      "path": "src/composables/useAuth.js",
+      "sha256": "f52fe5f2dc4bcf3a3877350737bd31903c8ab81dc2d5092b7f90f43ffeb877dd"
+    },
+    {
+      "path": "amplify/backend.ts",
+      "sha256": "00bc6979f47c64cea3891d659e8089d07ac8eb7b07da6fd28dbacb0f8fa075a7"
+    },
+    {
+      "path": "amplify/data/resource.ts",
+      "sha256": "b9ab17bda9f5d5172fba20590e1af36901206ca0c7e6ce59a0872d5024b7836c"
+    },
+    {
+      "path": "amplify/myFunction/router/appSyncRouter.ts",
+      "sha256": "5292f0e3a736e64eeeef23175ba9b3a9b15567c9fb67b802372384ea5cb61aa0"
+    },
+    {
+      "path": "amplify/myFunction/shared/dataClient.ts",
+      "sha256": "e4eaeefa2765a9d7a65e2ba97a09c2665862a92235a00ee37181e6eb04a42299"
+    },
+    {
+      "path": "amplify/myFunction/shared/auth.ts",
+      "sha256": "e15a33a1077cc1ab7dd365ecdc48ae936b7b30923d52fe8d5e0972799ca2774f"
+    },
+    {
+      "path": "amplify/myFunction/shared/requirePermission.ts",
+      "sha256": "6f62a7d791c9de39270906efd895ef343922c657b403744ebc33634a4bcad4c2"
+    },
+    {
+      "path": "amplify/myFunction/shared/effectivePermissions.ts",
+      "sha256": "06dbb08ec0127a57b86131c70c69e78311caed7ef5ce730b23c9089115f90528"
+    },
+    {
+      "path": "amplify/myFunction/permissions/index.ts",
+      "sha256": "4c1d78eee14bb637f3bd6a268310404b7844fc166a91ac164cc7570f227321c9"
+    },
+    {
+      "path": "amplify/myFunction/brands/index.ts",
+      "sha256": "a89c5dd63321634ac79156e364d49cbf62658dd0457848e5d484fdf491eef36a"
+    },
+    {
+      "path": "amplify/myFunction/workspaces/accessContext.ts",
+      "sha256": "7a8cee6ce010933763d4112dbb7a120e39b3ec101ba4b6d9a9246ff6454d2b2f"
+    },
+    {
+      "path": "src/views/Admin/AdminLayout/AdminLayout.js",
+      "sha256": "43cadd9077c207c86b615c6d36ffa76504cfa14447eebfd9d326c8708bc348c8"
+    },
+    {
+      "path": "src/views/Admin/AdminLayout/AdminLayout.vue",
+      "sha256": "df780dd93706a0fcfa5cd2a4bf43dc76289563b3de7b34ac3f908d4cece3e84d"
+    },
+    {
+      "path": "src/main.js",
+      "sha256": "d3bac44aab4c8f98fa21ac67fe800e8d603c31643bcbeb281763b16eabe0f24b"
+    },
+    {
+      "path": "src/App.vue",
+      "sha256": "fa252fecbd5bb229302925134b64a02f4fb647492c18028cfcbabe9ea9830316"
+    },
+    {
+      "path": "amplify.yml",
+      "sha256": "465e114ded2df43a8e22f13d8feb498a25d72e497bf21778eb9728ed90d106a2"
+    }
+  ]
+}

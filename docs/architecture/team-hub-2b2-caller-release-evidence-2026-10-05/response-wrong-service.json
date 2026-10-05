@@ -1,0 +1,75 @@
+{
+  "EvaluationResults": [
+    {
+      "EvalActionName": "iam:PassRole",
+      "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "EvalDecision": "explicitDeny",
+      "MatchedStatements": [
+        {
+          "SourcePolicyId": "PolicyInputList.1",
+          "SourcePolicyType": "IAM Policy",
+          "StartPosition": {
+            "Line": 1,
+            "Column": 2173
+          },
+          "EndPosition": {
+            "Line": 1,
+            "Column": 2317
+          }
+        },
+        {
+          "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+          "SourcePolicyType": "Permissions Boundary Policy",
+          "StartPosition": {
+            "Line": 1,
+            "Column": 2173
+          },
+          "EndPosition": {
+            "Line": 1,
+            "Column": 2317
+          }
+        }
+      ],
+      "MissingContextValues": [],
+      "PermissionsBoundaryDecisionDetail": {
+        "AllowedByPermissionsBoundary": false
+      },
+      "EvalDecisionDetails": {},
+      "ResourceSpecificResults": [
+        {
+          "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+          "EvalResourceDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+              "SourcePolicyType": "Permissions Boundary Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 2173
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 2317
+              }
+            },
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 2173
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 2317
+              }
+            }
+          ],
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": false
+          }
+        }
+      ]
+    }
+  ]
+}

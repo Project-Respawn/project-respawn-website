@@ -1,0 +1,174 @@
+{
+  "teamDeniedActions": [
+    {
+      "job": "default-lambda-kms",
+      "action": "kms:Encrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "decision": "explicitDeny",
+      "missing": []
+    },
+    {
+      "job": "default-lambda-kms",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "decision": "explicitDeny",
+      "missing": []
+    },
+    {
+      "job": "default-lambda-kms",
+      "action": "kms:DescribeKey",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "decision": "explicitDeny",
+      "missing": []
+    },
+    {
+      "job": "default-lambda-kms",
+      "action": "kms:CreateGrant",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "decision": "explicitDeny",
+      "missing": []
+    }
+  ],
+  "priorFailure": [
+    {
+      "eventTime": "2026-10-04T13:11:58Z",
+      "eventID": "599bd918-52d6-4d33-a561-a4b57fc21c04",
+      "eventName": "Encrypt",
+      "eventSource": "kms.amazonaws.com",
+      "requestID": "6b430ae3-8eeb-4828-b360-b62b03eedd9c",
+      "awsRegion": "eu-north-1",
+      "principal": {
+        "type": "AssumedRole",
+        "arn": "arn:aws:sts::058264289478:assumed-role/ProjectRespawn-Tournaments-Ntgre-CfnExecution/AWSCloudFormation",
+        "invokedBy": "cloudformation.amazonaws.com",
+        "issuer": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-CfnExecution"
+      },
+      "userAgent": "cloudformation.amazonaws.com",
+      "sourceIPAddress": "cloudformation.amazonaws.com",
+      "errorCode": "AccessDenied",
+      "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-Tournaments-Ntgre-CfnExecution/AWSCloudFormation is not authorized to perform: kms:Encrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy: arn:aws:iam::058264289478:policy/ProjectRespawn-Tournaments-Ntgre-ExecutionBoundary",
+      "request": {}
+    }
+  ],
+  "priorSuccess": [
+    {
+      "at": "2026-10-04T13:35:21Z",
+      "operation": "Decrypt",
+      "requestId": "05b2d3f8-196c-4115-a778-efa91e4458c7",
+      "principal": "arn:aws:sts::058264289478:assumed-role/ProjectRespawn-Tournaments-Ntgre-CfnExecution/AWSCloudFormation",
+      "invokedBy": "cloudformation.amazonaws.com",
+      "encryptionContext": {
+        "aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre-PreviewFunction-Ao4o6udMacJV"
+      },
+      "resources": [
+        {
+          "accountId": "058264289478",
+          "type": "AWS::KMS::Key",
+          "ARN": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-04T13:35:21Z",
+      "operation": "Decrypt",
+      "requestId": "92643735-11b0-46f2-acfd-8580cc4fae8f",
+      "principal": "arn:aws:sts::058264289478:assumed-role/ProjectRespawn-Tournaments-Ntgre-CfnExecution/AWSCloudFormation",
+      "invokedBy": "cloudformation.amazonaws.com",
+      "encryptionContext": {
+        "aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre-PreviewFunction-Ao4o6udMacJV"
+      },
+      "resources": [
+        {
+          "accountId": "058264289478",
+          "type": "AWS::KMS::Key",
+          "ARN": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-04T13:35:14Z",
+      "operation": "Decrypt",
+      "requestId": "641f32aa-973c-4546-bf6c-d582489ed4b2",
+      "principal": "arn:aws:sts::058264289478:assumed-role/ProjectRespawn-Tournaments-Ntgre-CfnExecution/AWSCloudFormation",
+      "invokedBy": "cloudformation.amazonaws.com",
+      "encryptionContext": {
+        "aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre-PreviewFunction-Ao4o6udMacJV"
+      },
+      "resources": [
+        {
+          "accountId": "058264289478",
+          "type": "AWS::KMS::Key",
+          "ARN": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-04T13:35:13Z",
+      "operation": "DescribeKey",
+      "requestId": "535e3b23-1bbc-41a9-8c3c-bfb2b0935ff7",
+      "principal": "arn:aws:sts::058264289478:assumed-role/ProjectRespawn-Tournaments-Ntgre-CfnExecution/AWSCloudFormation",
+      "invokedBy": "cloudformation.amazonaws.com",
+      "key": "alias/aws/lambda",
+      "resources": [
+        {
+          "accountId": "058264289478",
+          "type": "AWS::KMS::Key",
+          "ARN": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-04T13:35:13Z",
+      "operation": "Encrypt",
+      "requestId": "c05c0b0c-4af2-4146-a505-5f57679d3cc1",
+      "principal": "arn:aws:sts::058264289478:assumed-role/ProjectRespawn-Tournaments-Ntgre-CfnExecution/AWSCloudFormation",
+      "invokedBy": "cloudformation.amazonaws.com",
+      "key": "alias/aws/lambda",
+      "encryptionContext": {
+        "aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre-PreviewFunction-Ao4o6udMacJV"
+      },
+      "resources": [
+        {
+          "accountId": "058264289478",
+          "type": "AWS::KMS::Key",
+          "ARN": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-04T13:35:13Z",
+      "operation": "Decrypt",
+      "requestId": "44c0d1ba-aeae-4cb5-9dc5-bd4df3d65fa5",
+      "principal": "arn:aws:sts::058264289478:assumed-role/ProjectRespawn-Tournaments-Ntgre-CfnExecution/AWSCloudFormation",
+      "invokedBy": "cloudformation.amazonaws.com",
+      "encryptionContext": {
+        "aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre-PreviewFunction-Ao4o6udMacJV"
+      },
+      "resources": [
+        {
+          "accountId": "058264289478",
+          "type": "AWS::KMS::Key",
+          "ARN": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-04T13:35:13Z",
+      "operation": "CreateGrant",
+      "requestId": "dc728d4b-9aa0-494e-a062-ba62ffa501ab",
+      "principal": "arn:aws:sts::058264289478:assumed-role/ProjectRespawn-Tournaments-Ntgre-CfnExecution/AWSCloudFormation",
+      "invokedBy": "cloudformation.amazonaws.com",
+      "key": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "resources": [
+        {
+          "accountId": "058264289478",
+          "type": "AWS::KMS::Key",
+          "ARN": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7"
+        }
+      ]
+    }
+  ],
+  "teamRuntimeModified": false,
+  "policyBroadening": false,
+  "conclusion": "A real default-Lambda encryption dependency, not a synthetic simulator anomaly; pinned execution policy needs separately reviewed correction before bootstrap"
+}

@@ -1,0 +1,21 @@
+{
+  "PolicySourceArn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+  "ActionNames": [
+    "dynamodb:Scan",
+    "dynamodb:GetItem",
+    "dynamodb:PutItem"
+  ],
+  "ResourceArns": [
+    "arn:aws:dynamodb:eu-north-1:058264289478:table/Team",
+    "arn:aws:dynamodb:eu-north-1:058264289478:table/Commerce"
+  ],
+  "ContextEntries": [
+    {
+      "ContextKeyName": "kms:ResourceAliases",
+      "ContextKeyType": "stringList",
+      "ContextKeyValues": [
+        "alias/aws/lambda"
+      ]
+    }
+  ]
+}

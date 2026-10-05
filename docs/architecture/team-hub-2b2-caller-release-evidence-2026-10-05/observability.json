@@ -1,0 +1,223 @@
+{
+  "at": "2026-10-05T15:18:31.762Z",
+  "start": "2026-10-05T15:03:51.347Z",
+  "lambda": {
+    "arn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+    "name": "ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+    "codeSha256": "uROMTdppYqBarFWhso61iQVCTQdVRmm8vCNVR3KRWVA=",
+    "state": "Active",
+    "lastUpdateStatus": "Successful"
+  },
+  "api": {
+    "stages": [
+      {
+        "AutoDeploy": true,
+        "CreatedDate": "2026-10-05T15:04:34+00:00",
+        "DefaultRouteSettings": {
+          "DetailedMetricsEnabled": false,
+          "ThrottlingBurstLimit": 20,
+          "ThrottlingRateLimit": 10
+        },
+        "DeploymentId": "9dkjiw",
+        "LastDeploymentStatusMessage": "Successfully deployed stage with deployment ID '9dkjiw'",
+        "LastUpdatedDate": "2026-10-05T15:04:36+00:00",
+        "RouteSettings": {},
+        "StageName": "$default",
+        "StageVariables": {},
+        "Tags": {
+          "Project": "ProjectRespawn",
+          "aws:cloudformation:stack-name": "ProjectRespawn-TeamHub-Ntgre",
+          "Environment": "Ntgre",
+          "aws:cloudformation:logical-id": "Stage",
+          "aws:cloudformation:stack-id": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/b66ad780-c0cd-11f1-91ba-0effc0d85417",
+          "Domain": "TeamHub"
+        }
+      }
+    ],
+    "authorizers": [
+      {
+        "AuthorizerId": "nvebda",
+        "AuthorizerType": "JWT",
+        "IdentitySource": [
+          "$request.header.Authorization"
+        ],
+        "JwtConfiguration": {
+          "Audience": [
+            "1iq7ovjaf7d16imdvbqgfgvf86"
+          ],
+          "Issuer": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE"
+        },
+        "Name": "ExistingNtgreIdentity"
+      }
+    ],
+    "integrations": [
+      {
+        "ConnectionType": "INTERNET",
+        "IntegrationId": "pb3fp80",
+        "IntegrationMethod": "POST",
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+        "PayloadFormatVersion": "2.0",
+        "TimeoutInMillis": 6000
+      }
+    ],
+    "routes": [
+      {
+        "ApiKeyRequired": false,
+        "AuthorizationScopes": [],
+        "AuthorizationType": "JWT",
+        "AuthorizerId": "nvebda",
+        "RequestModels": {},
+        "RouteId": "thj3tql",
+        "RouteKey": "GET /v1/team-hub/preview",
+        "Target": "integrations/pb3fp80"
+      }
+    ]
+  },
+  "metrics": {
+    "AWS/Lambda/Invocations": {
+      "Label": "Invocations",
+      "Datapoints": [
+        {
+          "Timestamp": "2026-10-05T16:15:00+01:00",
+          "Sum": 1,
+          "Maximum": 1,
+          "Unit": "Count"
+        }
+      ]
+    },
+    "AWS/Lambda/Errors": {
+      "Label": "Errors",
+      "Datapoints": [
+        {
+          "Timestamp": "2026-10-05T16:15:00+01:00",
+          "Sum": 0,
+          "Maximum": 0,
+          "Unit": "Count"
+        }
+      ]
+    },
+    "AWS/Lambda/Duration": {
+      "Label": "Duration",
+      "Datapoints": [
+        {
+          "Timestamp": "2026-10-05T16:15:00+01:00",
+          "Sum": 54.13,
+          "Maximum": 54.13,
+          "Unit": "Milliseconds"
+        }
+      ]
+    },
+    "AWS/ApiGateway/Count": {
+      "Label": "Count",
+      "Datapoints": [
+        {
+          "Timestamp": "2026-10-05T16:15:00+01:00",
+          "Sum": 9,
+          "Maximum": 1,
+          "Unit": "None"
+        }
+      ]
+    },
+    "AWS/ApiGateway/4xx": {
+      "Label": "4xx",
+      "Datapoints": [
+        {
+          "Timestamp": "2026-10-05T16:15:00+01:00",
+          "Sum": 4,
+          "Maximum": 1,
+          "Unit": "None"
+        }
+      ]
+    },
+    "AWS/ApiGateway/5xx": {
+      "Label": "5xx",
+      "Datapoints": [
+        {
+          "Timestamp": "2026-10-05T16:15:00+01:00",
+          "Sum": 0,
+          "Maximum": 0,
+          "Unit": "None"
+        }
+      ]
+    }
+  },
+  "alarms": [
+    {
+      "AlarmName": "ProjectRespawn-TeamHub-Ntgre-ReadProof-ApiErrors",
+      "AlarmArn": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-TeamHub-Ntgre-ReadProof-ApiErrors",
+      "AlarmConfigurationUpdatedTimestamp": "2026-10-05T16:04:00.051000+01:00",
+      "ActionsEnabled": true,
+      "OKActions": [],
+      "AlarmActions": [],
+      "InsufficientDataActions": [],
+      "StateValue": "OK",
+      "StateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+      "StateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-05T15:04:14.736+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":1.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-05T15:03:00.000+0000\"}]}",
+      "StateUpdatedTimestamp": "2026-10-05T16:04:14.737000+01:00",
+      "MetricName": "5xx",
+      "Namespace": "AWS/ApiGateway",
+      "Statistic": "Sum",
+      "Dimensions": [
+        {
+          "Name": "ApiId",
+          "Value": "t54b88casf"
+        }
+      ],
+      "Period": 60,
+      "EvaluationPeriods": 1,
+      "Threshold": 1,
+      "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+      "TreatMissingData": "notBreaching",
+      "StateTransitionedTimestamp": "2026-10-05T16:04:14.737000+01:00"
+    },
+    {
+      "AlarmName": "ProjectRespawn-TeamHub-Ntgre-ReadProof-ReadErrors",
+      "AlarmArn": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-TeamHub-Ntgre-ReadProof-ReadErrors",
+      "AlarmConfigurationUpdatedTimestamp": "2026-10-05T16:04:34.371000+01:00",
+      "ActionsEnabled": true,
+      "OKActions": [],
+      "AlarmActions": [],
+      "InsufficientDataActions": [],
+      "StateValue": "OK",
+      "StateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+      "StateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-05T15:05:13.333+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":1.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-05T15:04:00.000+0000\"}]}",
+      "StateUpdatedTimestamp": "2026-10-05T16:05:13.334000+01:00",
+      "MetricName": "Errors",
+      "Namespace": "AWS/Lambda",
+      "Statistic": "Sum",
+      "Dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-TeamHub-Ntgre-PreviewRead"
+        }
+      ],
+      "Period": 60,
+      "EvaluationPeriods": 1,
+      "Threshold": 1,
+      "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+      "TreatMissingData": "notBreaching",
+      "StateTransitionedTimestamp": "2026-10-05T16:05:13.334000+01:00"
+    }
+  ],
+  "initializationObserved": true,
+  "successfulReports": 1,
+  "applicationSuccessLogs": 1,
+  "runtimeRequestId": "712e8748-ce7c-4c35-8847-81abaf9bb763",
+  "invocations": 1,
+  "errors": 0,
+  "apiRequests": 9,
+  "api5xx": 0,
+  "kmsSuccessfulDryRunProbes": [
+    {
+      "at": "2026-10-05T15:04:21Z",
+      "operation": "Decrypt",
+      "errorCode": "DryRunOperationException",
+      "errorMessage": "The request would have succeeded, but the DryRun option is set.",
+      "requestId": "c1157d5e-9738-4308-9478-c51d1fdc2123"
+    }
+  ],
+  "kmsErrors": [],
+  "logErrors": 0,
+  "passed": true
+}

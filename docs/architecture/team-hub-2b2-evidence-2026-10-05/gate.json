@@ -1,0 +1,84 @@
+{
+  "candidateRevision": "d458da9a7a8d1d519aaab05418fda95097a26256da0a297b71c95a5aaef5085f",
+  "mode": "READ_PROOF",
+  "stack": "ProjectRespawn-TeamHub-Ntgre",
+  "productTemplateSha256": "0796ee8170bd0417fca6b2806e58e48c18278b4e6c32999824f55ac65898e7ee",
+  "securityTemplateSha256": "fd5aef33eef19e600fbc8e892facff2605c0286cf215156f1b2d34e842e33998",
+  "lambdaSha256": "0e3fde08f1dbf3c1803ff1daac65e902117d757c76506d478112d5291814e7b3",
+  "preservedAssembly": "infrastructure/domains/team-hub/.build/offline-1791205212119/assembly",
+  "productResources": 11,
+  "securityResources": 4,
+  "total": 15,
+  "fullTargetResources": 46,
+  "results": [
+    {
+      "name": "TypeScript",
+      "status": "PASS"
+    },
+    {
+      "name": "Generic CI FULL_TARGET Team-only synthesis/build",
+      "status": "PASS"
+    },
+    {
+      "name": "Generic CI READ_PROOF Team-only synthesis/build",
+      "status": "PASS"
+    },
+    {
+      "name": "2B1 regression",
+      "status": "PASS",
+      "tests": 221
+    },
+    {
+      "name": "2B2 preview/auth/security/accounting",
+      "status": "PASS",
+      "tests": 29
+    },
+    {
+      "name": "Domain selection/hosted dispatch",
+      "status": "PASS",
+      "tests": 18
+    },
+    {
+      "name": "Existing accounting/safeguards",
+      "status": "PASS",
+      "tests": 41
+    },
+    {
+      "name": "Tournament exact pinned preservation",
+      "status": "PASS"
+    },
+    {
+      "name": "Tournament accepted checkpoint preservation",
+      "status": "PASS"
+    }
+  ],
+  "tournament": {
+    "revision": "b75a91494c03606d825e234a65d295c184067820cd77dfc84e11a2c83484ae2f",
+    "allExact": true,
+    "accepted": true
+  },
+  "legacyBusinessSourceHashes": 50,
+  "authorizedSharedToolingChanges": [
+    "amplify.yml",
+    "scripts/validate-infrastructure-ci.mjs"
+  ],
+  "genericCI": "PASS: explicit Team selection, both modes; no Legacy fallback",
+  "hostedPipeline": "Guarded source only; not installed/run in AWS. Independent-domain deployment disabled; production requires separate gate.",
+  "awsReadAttempt": "STS identity could not run: no credentials; no authenticated AWS API response obtained",
+  "awsWrites": 0,
+  "changeSetsCreated": 0,
+  "iamBootstrapCreated": 0,
+  "deployment": false,
+  "liveAuthentication": "NOT RUN: no deployed Team API; synthetic signature/claim/packaged handler tests only",
+  "runtimeKms": "Reserved alias/aws/lambda boundary exception; no copied key ARN; verify AWS-managed key/resource grants during later AWS review",
+  "dataAuthority": "SYNTHETIC",
+  "statefulResources": 0,
+  "endpointManifestPublished": false,
+  "secretScan": {
+    "files": 56,
+    "matches": 0
+  },
+  "timestamp": "2026-10-05T13:00:16.569Z",
+  "documentLinks": 20,
+  "status": "TEAM HUB READ-PATH CANDIDATE READY FOR AWS REVIEW"
+}

@@ -1,0 +1,61 @@
+{
+  "previousRevision": "7e3f27a0191d5039f3035a4fddd0e14f10eb9c56fd41a8a13092ca5b4d14768b",
+  "change": "Remove only kms:* from execution Deny action list in identity/boundary for both deployment states",
+  "kmsAllowsAdded": 0,
+  "runtimeChanged": false,
+  "callerChanged": false,
+  "expiryChanged": false,
+  "apiPermissionsChanged": false,
+  "changes": [
+    {
+      "document": "first-create-policy",
+      "changes": [
+        {
+          "path": "/Statement/13/Action/6",
+          "before": "kms:*",
+          "after": null
+        }
+      ]
+    },
+    {
+      "document": "steady-state-fixture-policy",
+      "changes": [
+        {
+          "path": "/Statement/13/Action/6",
+          "before": "kms:*",
+          "after": null
+        }
+      ]
+    },
+    {
+      "document": "first-create-security.template",
+      "changes": [
+        {
+          "path": "/Resources/ExecutionBoundary/Properties/PolicyDocument/Statement/13/Action/6",
+          "before": "kms:*",
+          "after": null
+        },
+        {
+          "path": "/Resources/ExecutionRole/Properties/Policies/0/PolicyDocument/Statement/13/Action/6",
+          "before": "kms:*",
+          "after": null
+        }
+      ]
+    },
+    {
+      "document": "steady-state-security.template",
+      "changes": [
+        {
+          "path": "/Resources/ExecutionBoundary/Properties/PolicyDocument/Statement/13/Action/6",
+          "before": "kms:*",
+          "after": null
+        },
+        {
+          "path": "/Resources/ExecutionRole/Properties/Policies/0/PolicyDocument/Statement/13/Action/6",
+          "before": "kms:*",
+          "after": null
+        }
+      ]
+    }
+  ]
+}

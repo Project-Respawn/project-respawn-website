@@ -1,0 +1,52 @@
+{
+  "at": "2026-10-05T13:17:43.258Z",
+  "revision": "d458da9a7a8d1d519aaab05418fda95097a26256da0a297b71c95a5aaef5085f",
+  "inputs": 54,
+  "templates": [
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre",
+      "path": "infrastructure/domains/team-hub/.build/offline-1791205212119/assembly/ProjectRespawn-TeamHub-Ntgre.template.json",
+      "count": 11,
+      "sha256": "0796ee8170bd0417fca6b2806e58e48c18278b4e6c32999824f55ac65898e7ee"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-ReadProofSecurity",
+      "path": "infrastructure/domains/team-hub/.build/offline-1791205212119/assembly/ProjectRespawn-TeamHub-Ntgre-ReadProofSecurity.template.json",
+      "count": 4,
+      "sha256": "fd5aef33eef19e600fbc8e892facff2605c0286cf215156f1b2d34e842e33998"
+    }
+  ],
+  "closure": [
+    {
+      "name": "read",
+      "inputs": [
+        "domains/team-hub/auth.mjs",
+        "domains/team-hub/contracts.mjs",
+        "domains/team-hub/preview.mjs"
+      ],
+      "outputs": [
+        {
+          "path": "infrastructure/domains/team-hub/.build/offline-1791205212119/read/index.js",
+          "sha256": "0e3fde08f1dbf3c1803ff1daac65e902117d757c76506d478112d5291814e7b3"
+        }
+      ]
+    },
+    {
+      "name": "app",
+      "inputs": [
+        "infrastructure/domains/team-hub/read-proof-app.ts",
+        "infrastructure/domains/team-hub/read-proof-security.mjs",
+        "infrastructure/domains/team-hub/read-proof-stack.ts"
+      ],
+      "outputs": [
+        {
+          "path": "infrastructure/domains/team-hub/.build/offline-1791205212119/app/app.cjs",
+          "sha256": "6b704b6ce5425638035bbc54fbbc9af100792a45002d944d9023fc3c6dd36b3b"
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "freshSynthesis": false,
+  "headSubstituted": false
+}

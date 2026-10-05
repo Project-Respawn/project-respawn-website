@@ -1,0 +1,42 @@
+{
+  "ActionNames": [
+    "apigateway:POST",
+    "apigateway:PATCH",
+    "apigateway:DELETE"
+  ],
+  "ResourceArns": [
+    "arn:aws:apigateway:eu-north-1::/apis/othernew123",
+    "arn:aws:apigateway:eu-north-1::/apis/othernew123/routes"
+  ],
+  "ContextEntries": [
+    {
+      "ContextKeyName": "aws:RequestedRegion",
+      "ContextKeyValues": [
+        "eu-north-1"
+      ],
+      "ContextKeyType": "string"
+    },
+    {
+      "ContextKeyName": "aws:CurrentTime",
+      "ContextKeyValues": [
+        "2026-10-05T15:11:37.714Z"
+      ],
+      "ContextKeyType": "date"
+    },
+    {
+      "ContextKeyName": "iam:PassedToService",
+      "ContextKeyValues": [
+        "lambda.amazonaws.com"
+      ],
+      "ContextKeyType": "string"
+    },
+    {
+      "ContextKeyName": "iam:PermissionsBoundary",
+      "ContextKeyValues": [
+        "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-PreviewBoundary"
+      ],
+      "ContextKeyType": "string"
+    }
+  ],
+  "PolicySourceArn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution"
+}

@@ -1,0 +1,366 @@
+{
+  "resources": 5,
+  "unknownOperations": 0,
+  "rows": [
+    {
+      "type": "AWS::ApiGatewayV2::Api",
+      "schemaArn": "arn:aws:cloudformation:eu-north-1::type/resource/AWS-ApiGatewayV2-Api",
+      "create": [
+        {
+          "operation": "CreateApi",
+          "http": "POST /v2/apis",
+          "iamActions": [
+            "apigateway:POST"
+          ],
+          "iamResource": "arn:aws:apigateway:eu-north-1::/apis",
+          "requiredByPinnedTemplate": true,
+          "coverage": "apigateway:* regional first-create Allow, before expiry; resource must be the new owned API, never a protected ID"
+        }
+      ],
+      "readStabilize": [
+        {
+          "operation": "GetApi",
+          "http": "GET /v2/apis/{ApiId}",
+          "iamActions": [
+            "apigateway:GET"
+          ],
+          "iamResource": "arn:aws:apigateway:eu-north-1::/apis/{ApiId}",
+          "requiredByPinnedTemplate": true,
+          "coverage": "apigateway:* regional first-create Allow, before expiry; resource must be the new owned API, never a protected ID"
+        }
+      ],
+      "update": [
+        {
+          "operation": "UpdateApi",
+          "http": "PATCH /v2/apis/{ApiId}",
+          "iamActions": [
+            "apigateway:PATCH"
+          ],
+          "iamResource": "arn:aws:apigateway:eu-north-1::/apis/{ApiId}",
+          "requiredByPinnedTemplate": false,
+          "coverage": "apigateway:* regional first-create Allow, before expiry; resource must be the new owned API, never a protected ID"
+        }
+      ],
+      "delete": [
+        {
+          "operation": "DeleteApi",
+          "http": "DELETE /v2/apis/{ApiId}",
+          "iamActions": [
+            "apigateway:DELETE"
+          ],
+          "iamResource": "arn:aws:apigateway:eu-north-1::/apis/{ApiId}",
+          "requiredByPinnedTemplate": true,
+          "coverage": "apigateway:* regional first-create Allow, before expiry; resource must be the new owned API, never a protected ID"
+        }
+      ],
+      "tag": [
+        {
+          "operation": "TagResource",
+          "http": "POST /v2/tags/{UrlEncodedResourceARN}",
+          "iamActions": [
+            "apigateway:POST",
+            "apigateway:PUT",
+            "apigateway:PATCH"
+          ],
+          "iamResource": "arn:aws:apigateway:eu-north-1::/tags/{UrlEncodedResourceARN}",
+          "requiredByPinnedTemplate": true,
+          "coverage": "apigateway:* regional first-create Allow, before expiry; resource must be the new owned API, never a protected ID"
+        }
+      ],
+      "untag": [
+        {
+          "operation": "UntagResource",
+          "http": "DELETE /v2/tags/{UrlEncodedResourceARN}",
+          "iamActions": [
+            "apigateway:DELETE",
+            "apigateway:PATCH"
+          ],
+          "iamResource": "arn:aws:apigateway:eu-north-1::/tags/{UrlEncodedResourceARN}",
+          "requiredByPinnedTemplate": false,
+          "coverage": "apigateway:* regional first-create Allow, before expiry; resource must be the new owned API, never a protected ID"
+        }
+      ],
+      "rollback": "Read/stabilize as needed, then DeleteApi on exact owned resource; no standalone untag required by delete handler",
+      "notes": [
+        "Provider PUT permission covers import/tag branches too; no Body/BodyS3Location in pinned API. No S3 OpenAPI read needed."
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/service-authorization/latest/reference/list_apigatewayv2.html",
+        "https://docs.aws.amazon.com/apigatewayv2/latest/api-reference/tags-resource-arn.html"
+      ]
+    },
+    {
+      "type": "AWS::ApiGatewayV2::Stage",
+      "schemaArn": "arn:aws:cloudformation:eu-north-1::type/resource/AWS-ApiGatewayV2-Stage",
+      "create": [
+        {
+          "operation": "CreateStage",
+          "http": "POST /v2/apis/{ApiId}/stages",
+          "iamActions": [
+            "apigateway:POST"
+          ],
+          "iamResource": "arn:aws:apigateway:eu-north-1::/apis/{ApiId}/stages",
+          "requiredByPinnedTemplate": true,
+          "coverage": "apigateway:* regional first-create Allow, before expiry; resource must be the new owned API, never a protected ID"
+        }
+      ],
+      "readStabilize": [
+        {
+          "operation": "GetStage",
+          "http": "GET /v2/apis/{ApiId}/stages/{StageName}",
+          "iamActions": [
+            "apigateway:GET"
+          ],
+          "iamResource": "arn:aws:apigateway:eu-north-1::/apis/{ApiId}/stages/{StageName}",
+          "requiredByPinnedTemplate": true,
+          "coverage": "apigateway:* regional first-create Allow, before expiry; resource must be the new owned API, never a protected ID"
+        }
+      ],
+      "update": [
+        {
+          "operation": "UpdateStage",
+          "http": "PATCH /v2/apis/{ApiId}/stages/{StageName}",
+          "iamActions": [
+            "apigateway:PATCH"
+          ],
+          "iamResource": "arn:aws:apigateway:eu-north-1::/apis/{ApiId}/stages/{StageName}",
+          "requiredByPinnedTemplate": false,
+          "coverage": "apigateway:* regional first-create Allow, before expiry; resource must be the new owned API, never a protected ID"
+        }
+      ],
+      "delete": [
+        {
+          "operation": "DeleteStage",
+          "http": "DELETE /v2/apis/{ApiId}/stages/{StageName}",
+          "iamActions": [
+            "apigateway:DELETE"
+          ],
+          "iamResource": "arn:aws:apigateway:eu-north-1::/apis/{ApiId}/stages/{StageName}",
+          "requiredByPinnedTemplate": true,
+          "coverage": "apigateway:* regional first-create Allow, before expiry; resource must be the new owned API, never a protected ID"
+        }
+      ],
+      "tag": [
+        {
+          "operation": "TagResource",
+          "http": "POST /v2/tags/{UrlEncodedResourceARN}",
+          "iamActions": [
+            "apigateway:POST",
+            "apigateway:PUT",
+            "apigateway:PATCH"
+          ],
+          "iamResource": "arn:aws:apigateway:eu-north-1::/tags/{UrlEncodedResourceARN}",
+          "requiredByPinnedTemplate": true,
+          "coverage": "apigateway:* regional first-create Allow, before expiry; resource must be the new owned API, never a protected ID"
+        }
+      ],
+      "untag": [
+        {
+          "operation": "UntagResource",
+          "http": "DELETE /v2/tags/{UrlEncodedResourceARN}",
+          "iamActions": [
+            "apigateway:DELETE",
+            "apigateway:PATCH"
+          ],
+          "iamResource": "arn:aws:apigateway:eu-north-1::/tags/{UrlEncodedResourceARN}",
+          "requiredByPinnedTemplate": false,
+          "coverage": "apigateway:* regional first-create Allow, before expiry; resource must be the new owned API, never a protected ID"
+        }
+      ],
+      "rollback": "Read/stabilize as needed, then DeleteStage on exact owned resource; no standalone untag required by delete handler",
+      "notes": [
+        "Provider schema names apigateway:TagResource/UntagResource; those annotations are not added as explicit IAM actions. Existing apigateway:* and documented HTTP IAM verbs cover tagging."
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/service-authorization/latest/reference/list_apigatewayv2.html",
+        "https://docs.aws.amazon.com/apigatewayv2/latest/api-reference/tags-resource-arn.html"
+      ]
+    },
+    {
+      "type": "AWS::ApiGatewayV2::Authorizer",
+      "schemaArn": "arn:aws:cloudformation:eu-north-1::type/resource/AWS-ApiGatewayV2-Authorizer",
+      "create": [
+        {
+          "operation": "CreateAuthorizer",
+          "http": "POST /v2/apis/{ApiId}/authorizers",
+          "iamActions": [
+            "apigateway:POST"
+          ],
+          "iamResource": "arn:aws:apigateway:eu-north-1::/apis/{ApiId}/authorizers",
+          "requiredByPinnedTemplate": true,
+          "coverage": "apigateway:* regional first-create Allow, before expiry; resource must be the new owned API, never a protected ID"
+        }
+      ],
+      "readStabilize": [
+        {
+          "operation": "GetAuthorizer",
+          "http": "GET /v2/apis/{ApiId}/authorizers/{AuthorizerId}",
+          "iamActions": [
+            "apigateway:GET"
+          ],
+          "iamResource": "arn:aws:apigateway:eu-north-1::/apis/{ApiId}/authorizers/{AuthorizerId}",
+          "requiredByPinnedTemplate": true,
+          "coverage": "apigateway:* regional first-create Allow, before expiry; resource must be the new owned API, never a protected ID"
+        }
+      ],
+      "update": [
+        {
+          "operation": "UpdateAuthorizer",
+          "http": "PATCH /v2/apis/{ApiId}/authorizers/{AuthorizerId}",
+          "iamActions": [
+            "apigateway:PATCH"
+          ],
+          "iamResource": "arn:aws:apigateway:eu-north-1::/apis/{ApiId}/authorizers/{AuthorizerId}",
+          "requiredByPinnedTemplate": false,
+          "coverage": "apigateway:* regional first-create Allow, before expiry; resource must be the new owned API, never a protected ID"
+        }
+      ],
+      "delete": [
+        {
+          "operation": "DeleteAuthorizer",
+          "http": "DELETE /v2/apis/{ApiId}/authorizers/{AuthorizerId}",
+          "iamActions": [
+            "apigateway:DELETE"
+          ],
+          "iamResource": "arn:aws:apigateway:eu-north-1::/apis/{ApiId}/authorizers/{AuthorizerId}",
+          "requiredByPinnedTemplate": true,
+          "coverage": "apigateway:* regional first-create Allow, before expiry; resource must be the new owned API, never a protected ID"
+        }
+      ],
+      "tag": [],
+      "untag": [],
+      "rollback": "Read/stabilize as needed, then DeleteAuthorizer on exact owned resource; no standalone untag required by delete handler",
+      "notes": [
+        "Provider optional PassRole branches for credentials ARNs do not apply: none supplied."
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/service-authorization/latest/reference/list_apigatewayv2.html",
+        "https://docs.aws.amazon.com/apigatewayv2/latest/api-reference/tags-resource-arn.html"
+      ]
+    },
+    {
+      "type": "AWS::ApiGatewayV2::Integration",
+      "schemaArn": "arn:aws:cloudformation:eu-north-1::type/resource/AWS-ApiGatewayV2-Integration",
+      "create": [
+        {
+          "operation": "CreateIntegration",
+          "http": "POST /v2/apis/{ApiId}/integrations",
+          "iamActions": [
+            "apigateway:POST"
+          ],
+          "iamResource": "arn:aws:apigateway:eu-north-1::/apis/{ApiId}/integrations",
+          "requiredByPinnedTemplate": true,
+          "coverage": "apigateway:* regional first-create Allow, before expiry; resource must be the new owned API, never a protected ID"
+        }
+      ],
+      "readStabilize": [
+        {
+          "operation": "GetIntegration",
+          "http": "GET /v2/apis/{ApiId}/integrations/{IntegrationId}",
+          "iamActions": [
+            "apigateway:GET"
+          ],
+          "iamResource": "arn:aws:apigateway:eu-north-1::/apis/{ApiId}/integrations/{IntegrationId}",
+          "requiredByPinnedTemplate": true,
+          "coverage": "apigateway:* regional first-create Allow, before expiry; resource must be the new owned API, never a protected ID"
+        }
+      ],
+      "update": [
+        {
+          "operation": "UpdateIntegration",
+          "http": "PATCH /v2/apis/{ApiId}/integrations/{IntegrationId}",
+          "iamActions": [
+            "apigateway:PATCH"
+          ],
+          "iamResource": "arn:aws:apigateway:eu-north-1::/apis/{ApiId}/integrations/{IntegrationId}",
+          "requiredByPinnedTemplate": false,
+          "coverage": "apigateway:* regional first-create Allow, before expiry; resource must be the new owned API, never a protected ID"
+        }
+      ],
+      "delete": [
+        {
+          "operation": "DeleteIntegration",
+          "http": "DELETE /v2/apis/{ApiId}/integrations/{IntegrationId}",
+          "iamActions": [
+            "apigateway:DELETE"
+          ],
+          "iamResource": "arn:aws:apigateway:eu-north-1::/apis/{ApiId}/integrations/{IntegrationId}",
+          "requiredByPinnedTemplate": true,
+          "coverage": "apigateway:* regional first-create Allow, before expiry; resource must be the new owned API, never a protected ID"
+        }
+      ],
+      "tag": [],
+      "untag": [],
+      "rollback": "Read/stabilize as needed, then DeleteIntegration on exact owned resource; no standalone untag required by delete handler",
+      "notes": [
+        "Provider optional PassRole branches for credentials ARNs do not apply: none supplied."
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/service-authorization/latest/reference/list_apigatewayv2.html",
+        "https://docs.aws.amazon.com/apigatewayv2/latest/api-reference/tags-resource-arn.html"
+      ]
+    },
+    {
+      "type": "AWS::ApiGatewayV2::Route",
+      "schemaArn": "arn:aws:cloudformation:eu-north-1::type/resource/AWS-ApiGatewayV2-Route",
+      "create": [
+        {
+          "operation": "CreateRoute",
+          "http": "POST /v2/apis/{ApiId}/routes",
+          "iamActions": [
+            "apigateway:POST"
+          ],
+          "iamResource": "arn:aws:apigateway:eu-north-1::/apis/{ApiId}/routes",
+          "requiredByPinnedTemplate": true,
+          "coverage": "apigateway:* regional first-create Allow, before expiry; resource must be the new owned API, never a protected ID"
+        }
+      ],
+      "readStabilize": [
+        {
+          "operation": "GetRoute",
+          "http": "GET /v2/apis/{ApiId}/routes/{RouteId}",
+          "iamActions": [
+            "apigateway:GET"
+          ],
+          "iamResource": "arn:aws:apigateway:eu-north-1::/apis/{ApiId}/routes/{RouteId}",
+          "requiredByPinnedTemplate": true,
+          "coverage": "apigateway:* regional first-create Allow, before expiry; resource must be the new owned API, never a protected ID"
+        }
+      ],
+      "update": [
+        {
+          "operation": "UpdateRoute",
+          "http": "PATCH /v2/apis/{ApiId}/routes/{RouteId}",
+          "iamActions": [
+            "apigateway:PATCH"
+          ],
+          "iamResource": "arn:aws:apigateway:eu-north-1::/apis/{ApiId}/routes/{RouteId}",
+          "requiredByPinnedTemplate": false,
+          "coverage": "apigateway:* regional first-create Allow, before expiry; resource must be the new owned API, never a protected ID"
+        }
+      ],
+      "delete": [
+        {
+          "operation": "DeleteRoute",
+          "http": "DELETE /v2/apis/{ApiId}/routes/{RouteId}",
+          "iamActions": [
+            "apigateway:DELETE"
+          ],
+          "iamResource": "arn:aws:apigateway:eu-north-1::/apis/{ApiId}/routes/{RouteId}",
+          "requiredByPinnedTemplate": true,
+          "coverage": "apigateway:* regional first-create Allow, before expiry; resource must be the new owned API, never a protected ID"
+        }
+      ],
+      "tag": [],
+      "untag": [],
+      "rollback": "Read/stabilize as needed, then DeleteRoute on exact owned resource; no standalone untag required by delete handler",
+      "notes": [
+        "Provider optional PassRole branches for credentials ARNs do not apply: none supplied."
+      ],
+      "references": [
+        "https://docs.aws.amazon.com/service-authorization/latest/reference/list_apigatewayv2.html",
+        "https://docs.aws.amazon.com/apigatewayv2/latest/api-reference/tags-resource-arn.html"
+      ]
+    }
+  ]
+}

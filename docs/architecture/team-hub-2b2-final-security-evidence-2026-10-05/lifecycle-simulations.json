@@ -1,0 +1,365 @@
+{
+  "at": "2026-10-05T14:15:36.498Z",
+  "expiresAt": "2026-10-06T13:51:32.179Z",
+  "results": [
+    {
+      "name": "alarms-cleanup",
+      "rows": [
+        {
+          "action": "cloudwatch:DeleteAlarms",
+          "resource": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-TeamHub-Ntgre-ReadProof-ReadErrors",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "cloudwatch:DeleteAlarms",
+          "resource": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-TeamHub-Ntgre-ReadProof-ApiErrors",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "cloudwatch:DescribeAlarms",
+          "resource": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-TeamHub-Ntgre-ReadProof-ReadErrors",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "cloudwatch:DescribeAlarms",
+          "resource": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-TeamHub-Ntgre-ReadProof-ApiErrors",
+          "decision": "allowed",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "api-cleanup",
+      "rows": [
+        {
+          "action": "apigateway:GET",
+          "resource": "arn:aws:apigateway:eu-north-1::/apis/thproof123",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/apis/thproof123",
+          "decision": "allowed",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "authorizer-cleanup",
+      "rows": [
+        {
+          "action": "apigateway:GET",
+          "resource": "arn:aws:apigateway:eu-north-1::/apis/thproof123/authorizers/proof",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/apis/thproof123/authorizers/proof",
+          "decision": "allowed",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "default-lambda-kms",
+      "rows": [
+        {
+          "action": "kms:Encrypt",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:Decrypt",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:DescribeKey",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:CreateGrant",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+          "decision": "explicitDeny",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "integration-cleanup",
+      "rows": [
+        {
+          "action": "apigateway:GET",
+          "resource": "arn:aws:apigateway:eu-north-1::/apis/thproof123/integrations/proof",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/apis/thproof123/integrations/proof",
+          "decision": "allowed",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "lambda-cleanup",
+      "rows": [
+        {
+          "action": "lambda:DeleteFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "lambda:GetFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "lambda:GetFunctionConfiguration",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "allowed",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "lambda-create",
+      "rows": [
+        {
+          "action": "lambda:CreateFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "lambda:GetFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "lambda:TagResource",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "lambda:GetRuntimeManagementConfig",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "lambda:GetFunctionRecursionConfig",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "allowed",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "logs-cleanup",
+      "rows": [
+        {
+          "action": "logs:DeleteLogGroup",
+          "resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/preview",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "logs:DeleteLogGroup",
+          "resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/preview:*",
+          "decision": "allowed",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "logs-stabilize",
+      "rows": [
+        {
+          "action": "logs:DescribeLogGroups",
+          "resource": "*",
+          "decision": "allowed",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "permission-cleanup",
+      "rows": [
+        {
+          "action": "lambda:RemovePermission",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "lambda:GetPolicy",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "allowed",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "role-cleanup",
+      "rows": [
+        {
+          "action": "iam:DeleteRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "iam:DeleteRolePolicy",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "iam:ListRolePolicies",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "iam:ListAttachedRolePolicies",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "iam:GetRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "iam:GetRolePolicy",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "iam:TagRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "iam:UntagRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "allowed",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "role-create",
+      "rows": [
+        {
+          "action": "iam:CreateRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "iam:PutRolePolicy",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "iam:GetRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "iam:TagRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "allowed",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "route-cleanup",
+      "rows": [
+        {
+          "action": "apigateway:GET",
+          "resource": "arn:aws:apigateway:eu-north-1::/apis/thproof123/routes/proof",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/apis/thproof123/routes/proof",
+          "decision": "allowed",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "stage-cleanup",
+      "rows": [
+        {
+          "action": "apigateway:GET",
+          "resource": "arn:aws:apigateway:eu-north-1::/apis/thproof123/stages/$default",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "apigateway:DELETE",
+          "resource": "arn:aws:apigateway:eu-north-1::/apis/thproof123/stages/$default",
+          "decision": "allowed",
+          "missing": []
+        }
+      ]
+    }
+  ],
+  "failures": [
+    {
+      "job": "default-lambda-kms",
+      "action": "kms:Encrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "decision": "explicitDeny",
+      "missing": []
+    },
+    {
+      "job": "default-lambda-kms",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "decision": "explicitDeny",
+      "missing": []
+    },
+    {
+      "job": "default-lambda-kms",
+      "action": "kms:DescribeKey",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "decision": "explicitDeny",
+      "missing": []
+    },
+    {
+      "job": "default-lambda-kms",
+      "action": "kms:CreateGrant",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "decision": "explicitDeny",
+      "missing": []
+    }
+  ],
+  "awsWrites": 0
+}

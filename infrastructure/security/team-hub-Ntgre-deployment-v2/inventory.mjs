@@ -1,0 +1,25 @@
+import fs from 'node:fs';
+import {aws} from './aws-read.mjs';
+export const evidence='docs/architecture/team-hub-2b2-security-correction-evidence-2026-10-05';
+fs.mkdirSync(evidence,{recursive:true});
+const identity=await aws('sts','get-caller-identity');
+if(identity.Account!=='058264289478'||identity.Arn!=='arn:aws:iam::058264289478:user/RavenTest')throw Error('Unexpected AWS identity');
+const responses=await Promise.all([aws('apigatewayv2','get-apis'),aws('apigateway','get-rest-apis'),aws('cloudformation','list-stacks')]);
+const stacks=responses[2].StackSummaries.filter(s=>s.StackStatus!=='DELETE_COMPLETE'&&s.StackName.startsWith('ProjectRespawn-TeamHub'));
+const apis=[...responses[0].Items.map(a=>({id:a.ApiId,name:a.Name,type:a.ProtocolType,tags:a.Tags??{}})),...responses[1].items.map(a=>({id:a.id,name:a.name,type:'REST',tags:a.tags??{}}))].map(a=>{
+  const owner=a.tags['aws:cloudformation:stack-name']??'UNKNOWN';
+  const branch=a.tags['amplify:branch-name'];
+  const environment=branch??a.tags.Environment??(owner.startsWith('amplify-projectrespawnwebsite-Ntgre-sandbox-')?'Ntgre':'UNKNOWN');
+  let classification='UNKNOWN';
+  if(owner.startsWith('amplify-projectrespawnwebsite-Ntgre-sandbox-'))classification='LEGACY_PLATFORM';
+  else if(branch==='master'||['production','prod'].includes(environment.toLowerCase()))classification='PRODUCTION';
+  else if(a.id==='msipnwy39j'&&a.tags.Domain==='Tournaments'&&environment==='Ntgre')classification='TOURNAMENT';
+  else if(owner!=='UNKNOWN')classification='OTHER_EXISTING_PROTECTED';
+  const suspectedTeam=/TeamHub|team-hub/i.test(a.name+' '+owner+' '+JSON.stringify(a.tags));
+  return {...a,owner,environment,classification,protected:true,suspectedTeam};
+}).sort((a,b)=>a.id.localeCompare(b.id));
+const result={at:new Date().toISOString(),identity,region:'eu-north-1',apis,teamStacks:stacks,protectedIds:apis.map(a=>a.id),awsWrites:0};
+fs.writeFileSync(evidence+'/inventory.json',JSON.stringify(result,null,2)+'\n');
+if(stacks.length||apis.some(a=>a.suspectedTeam))throw Error('Unexpected Team resource: ownership investigation required');
+if(!apis.some(a=>a.classification==='TOURNAMENT'))throw Error('Accepted Tournament missing');
+console.log(JSON.stringify({total:apis.length,counts:apis.reduce((s,a)=>(s[a.classification]=(s[a.classification]??0)+1,s),{}),teamStacks:stacks.length}));

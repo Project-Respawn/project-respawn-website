@@ -1,0 +1,12 @@
+import { App } from 'aws-cdk-lib';
+import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { TeamHubStack, TeamHubSecurityStack } from './stack.js';
+if (process.env.TEAM_HUB_OFFLINE !== '1') throw new Error('Offline runner required');
+const bytes = readFileSync(process.env.TEAM_HUB_CORE!);
+if (createHash('sha256').update(bytes).digest('hex') !== '9bea68ab5781eeb7265c363fd6baac78d1e3e032196f9aa209bc3780644a6b9e') throw new Error('Core identity provenance changed');
+const core = JSON.parse(bytes.toString());
+const app = new App({ outdir: process.env.TEAM_HUB_OUT, analyticsReporting: false });
+new TeamHubStack(app, core, { read: process.env.TEAM_HUB_READ!, command: process.env.TEAM_HUB_COMMAND! });
+new TeamHubSecurityStack(app, core);
+app.synth();

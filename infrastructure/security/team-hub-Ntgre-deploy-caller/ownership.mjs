@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {bindSteadyState} from '../team-hub-Ntgre-deployment-v2/bind-steady-state.mjs';
+import {aws,read,save,verify,equal,dir,callerSession,hash} from './common.mjs';
+const c=verify(),caller=await callerSession(),identity=await caller('sts','get-caller-identity'),name='ProjectRespawn-TeamHub-Ntgre';
+const stack=(await caller('cloudformation','describe-stacks','--stack-name',name)).Stacks[0];assert.equal(stack.StackStatus,'CREATE_COMPLETE');assert.equal(stack.RoleARN,c.execution);assert.equal(stack.DisableRollback,false);
+const resources=(await caller('cloudformation','list-stack-resources','--stack-name',name)).StackResourceSummaries;assert.equal(resources.length,11);assert.ok(resources.every(r=>r.ResourceStatus==='CREATE_COMPLETE'));
+const body=(await caller('cloudformation','get-template','--stack-name',name)).TemplateBody;const productTemplate=typeof body==='string'?JSON.parse(body):body;
+const product=read('infrastructure/domains/team-hub/.build/offline-1791205212119/assembly/ProjectRespawn-TeamHub-Ntgre.template.json');equal(productTemplate,product);equal(resources.map(r=>[r.LogicalResourceId,r.ResourceType]).sort(),Object.entries(product.Resources).map(([id,r])=>[id,r.Type]).sort());
+const api=await aws('apigatewayv2','get-api','--api-id',resources.find(r=>r.LogicalResourceId==='HttpApi').PhysicalResourceId);
+for(const [key,value] of Object.entries({'aws:cloudformation:stack-id':stack.StackId,'aws:cloudformation:stack-name':name,'aws:cloudformation:logical-id':'HttpApi',Project:'ProjectRespawn',Domain:'TeamHub',Environment:'Ntgre'}))assert.equal(api.Tags[key],value,'API tag '+key);
+const evidence={at:new Date().toISOString(),identity,region:'eu-north-1',stack,resources,api,productTemplate};save('ownership',evidence);
+const steady=read('docs/architecture/team-hub-2b2-kms-correction-evidence-2026-10-05/steady-state-security.template.json');const old=read(dir+'/caller-security.template.json');
+steady.Resources.PreparationCaller=old.Resources.PreparationCaller;steady.Resources.DeploymentCaller=old.Resources.DeploymentCaller;
+const result=bindSteadyState(steady,{productTemplateBody:product},read('docs/architecture/team-hub-2b2-security-correction-evidence-2026-10-05/inventory.json'),evidence);
+const changed=Object.keys(old.Resources).filter(id=>JSON.stringify(old.Resources[id])!==JSON.stringify(result.template.Resources[id]));equal(changed,['ExecutionBoundary','ExecutionRole']);
+save('lockdown-security.template',result.template);save('lockdown-policy',result.template.Resources.ExecutionBoundary.Properties.PolicyDocument);
+save('lockdown-candidate',{at:new Date().toISOString(),apiId:api.ApiId,ownershipVerified:true,templateSha:hash(dir+'/lockdown-security.template.json'),policySha:hash(dir+'/lockdown-policy.json'),changes:changed,callerPreserved:true,runtimePreserved:true,additions:0,deletions:0,replacements:0,kmsAllowsAdded:0});
+console.log(JSON.stringify({status:stack.StackStatus,resources:resources.length,apiId:api.ApiId,tagsVerified:true,lockdownChanges:changed,callerPreserved:true}));

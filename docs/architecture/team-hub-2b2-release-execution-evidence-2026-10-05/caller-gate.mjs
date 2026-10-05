@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {aws,save,expiry} from './common.mjs';
+const arn='arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofPreparation';
+const identityAttachments=await aws('iam','list-entities-for-policy','--policy-arn',arn,'--policy-usage-filter','PermissionsPolicy');
+const boundaryAttachments=await aws('iam','list-entities-for-policy','--policy-arn',arn,'--policy-usage-filter','PermissionsBoundary');
+const roleCount=(await aws('iam','list-roles')).Roles.filter(r=>r.RoleName.startsWith('ProjectRespawn-TeamHub-Ntgre')).map(r=>({name:r.RoleName,arn:r.Arn,boundary:r.PermissionsBoundary}));
+const product=await aws('cloudformation','list-stacks','--stack-status-filter','REVIEW_IN_PROGRESS','CREATE_IN_PROGRESS','CREATE_COMPLETE','ROLLBACK_IN_PROGRESS','ROLLBACK_COMPLETE','UPDATE_COMPLETE');
+assert.equal(product.StackSummaries.filter(s=>s.StackName==='ProjectRespawn-TeamHub-Ntgre').length,0);
+save('product-caller-gate',{at:new Date().toISOString(),ready:false,time:expiry(),policyArn:arn,identityAttachments,boundaryAttachments,teamRoles:roleCount,productStackAbsent:true,productChangeSetPrepared:false,reason:'Reviewed dedicated restricted caller not installed. Preparation managed policy has no identity or boundary attachment. The four-resource template intentionally leaves this prerequisite outside its scope. Do not substitute bootstrap RavenTest or execution role.',requiredNextReview:'Prepare a dedicated caller principal/trust and effective identity/boundary installation proposal using the unchanged PreparationCaller ceiling; separately review added IAM resource/attachment scope before applying.',templatePublicationNote:'Product template was published at its preserved CDK asset-manifest key. The caller ceiling requires team-hub/read-proof/0796ee8170bd0417fca6b2806e58e48c18278b4e6c32999824f55ac65898e7ee.template.json; publish the identical bytes at that exact reviewed URL before future preparation. Do not alter the caller policy URL.'});
+console.log(JSON.stringify({ready:false,identityAttachments,boundaryAttachments,teamRoles:roleCount,productStackAbsent:true}));

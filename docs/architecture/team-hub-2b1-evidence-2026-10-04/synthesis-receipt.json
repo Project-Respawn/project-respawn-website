@@ -1,0 +1,1413 @@
+{
+  "status": "OFFLINE_ONLY",
+  "target": "ProjectRespawn-TeamHub-Ntgre",
+  "awsCalls": 0,
+  "synthesizedAt": "2026-10-04T17:24:25.007Z",
+  "total": 46,
+  "counts": {
+    "AWS::DynamoDB::Table": 2,
+    "AWS::ApiGatewayV2::Api": 1,
+    "AWS::ApiGatewayV2::Authorizer": 1,
+    "AWS::Logs::LogGroup": 3,
+    "AWS::Logs::ResourcePolicy": 1,
+    "AWS::IAM::ManagedPolicy": 4,
+    "AWS::IAM::Role": 3,
+    "AWS::Lambda::Function": 2,
+    "AWS::ApiGatewayV2::Integration": 2,
+    "AWS::Lambda::Permission": 2,
+    "AWS::CloudWatch::Alarm": 6,
+    "AWS::ApiGatewayV2::Route": 18,
+    "AWS::ApiGatewayV2::Stage": 1
+  },
+  "templates": [
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre",
+      "path": "infrastructure/domains/team-hub/.build/REGENERATE_LOCALLY/assembly/ProjectRespawn-TeamHub-Ntgre.template.json",
+      "count": 43,
+      "sha256": "618b9003e0d9a015a3042f16bd1cf7def67920afddc28709b083fb037a95d5fb"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-Security",
+      "path": "infrastructure/domains/team-hub/.build/REGENERATE_LOCALLY/assembly/ProjectRespawn-TeamHub-Ntgre-Security.template.json",
+      "count": 3,
+      "sha256": "cc8f69575ad3eeb140fd9bc303790892a79b7e9b50bcbca04f939ee95d00fe11"
+    }
+  ],
+  "closure": [
+    {
+      "name": "read",
+      "inputs": [
+        "domains/team-hub/contracts.mjs",
+        "domains/team-hub/core.mjs",
+        "domains/team-hub/http.mjs",
+        "domains/team-hub/read-entry.mjs",
+        "domains/team-hub/repository.mjs",
+        "domains/team-hub/service.mjs",
+        "domains/team-hub/storage-plan.mjs"
+      ],
+      "outputs": [
+        {
+          "path": "infrastructure/domains/team-hub/.build/REGENERATE_LOCALLY/read/index.js",
+          "sha256": "57339b02cb30a5f42ae227cdb79b043a1da1a9f71dc070d98d17f9f25a61a9d7"
+        }
+      ]
+    },
+    {
+      "name": "command",
+      "inputs": [
+        "domains/team-hub/command-entry.mjs",
+        "domains/team-hub/contracts.mjs",
+        "domains/team-hub/core.mjs",
+        "domains/team-hub/http.mjs",
+        "domains/team-hub/repository.mjs",
+        "domains/team-hub/service.mjs",
+        "domains/team-hub/storage-plan.mjs"
+      ],
+      "outputs": [
+        {
+          "path": "infrastructure/domains/team-hub/.build/REGENERATE_LOCALLY/command/index.js",
+          "sha256": "b3fe7e44df1ee8b362907d559800018db78ab78c70fd2d745959bee25035a1ff"
+        }
+      ]
+    },
+    {
+      "name": "client",
+      "inputs": [
+        "domains/team-hub/contracts.mjs",
+        "src/features/team-hub/api/client.mjs"
+      ],
+      "outputs": [
+        {
+          "path": "infrastructure/domains/team-hub/.build/REGENERATE_LOCALLY/client/index.js",
+          "sha256": "a9ee83ba43cf45c273343c031098d169bcc14910608ccad621625a0c2e5c7cdd"
+        }
+      ]
+    },
+    {
+      "name": "routes",
+      "inputs": [
+        "src/features/team-hub/components/offline-page.mjs",
+        "src/features/team-hub/pages/ChampionPool.mjs",
+        "src/features/team-hub/pages/CoachReview.mjs",
+        "src/features/team-hub/pages/TeamAdministration.mjs",
+        "src/features/team-hub/pages/TeamDetail.mjs",
+        "src/features/team-hub/pages/TeamHome.mjs",
+        "src/features/team-hub/pages/TeamManagement.mjs",
+        "src/features/team-hub/routes/index.mjs"
+      ],
+      "outputs": [
+        {
+          "path": "infrastructure/domains/team-hub/.build/REGENERATE_LOCALLY/routes/index.js",
+          "sha256": "10222eae31f9c64314d9f2a624fc550e39d63811e244f31a3d99d671174012c8"
+        },
+        {
+          "path": "infrastructure/domains/team-hub/.build/REGENERATE_LOCALLY/routes/chunks/TeamHome-FXF5UJIH.js",
+          "sha256": "92a5c92f4cab37cd7d2e05b54627ca064da520e2fb68e38c8077571e776b47e2"
+        },
+        {
+          "path": "infrastructure/domains/team-hub/.build/REGENERATE_LOCALLY/routes/chunks/TeamDetail-O2WN2Q65.js",
+          "sha256": "e3965990a1db081f2b52dda7869a9e180ab14e352bc88e12b974abf28651b92b"
+        },
+        {
+          "path": "infrastructure/domains/team-hub/.build/REGENERATE_LOCALLY/routes/chunks/TeamManagement-DIH4HHSN.js",
+          "sha256": "61fb024b5df24f40c0611312ca8c55aaa6d60b78cbdc796084c17f67a1ba2ead"
+        },
+        {
+          "path": "infrastructure/domains/team-hub/.build/REGENERATE_LOCALLY/routes/chunks/ChampionPool-KEHGXCPA.js",
+          "sha256": "0abfe5562c888c814c8d8f5f5ce607ca8253516577bb128dcc429da940779bf5"
+        },
+        {
+          "path": "infrastructure/domains/team-hub/.build/REGENERATE_LOCALLY/routes/chunks/CoachReview-5UIXUBDZ.js",
+          "sha256": "81187509611a2f6709bca7b7e0bf16bc4a452d6397e87587cbafd54ae144de85"
+        },
+        {
+          "path": "infrastructure/domains/team-hub/.build/REGENERATE_LOCALLY/routes/chunks/TeamAdministration-CFXX5LOK.js",
+          "sha256": "854b36b4eb0fcfb95051bb01da353b8793f7340c2b157899254ca4e0db8b4339"
+        },
+        {
+          "path": "infrastructure/domains/team-hub/.build/REGENERATE_LOCALLY/routes/chunks/chunk-E3YZ6GVS.js",
+          "sha256": "eb01a20e78baa98006d4f55904ce537188e47e75b0e66f05cd83502291b8fcc5"
+        }
+      ]
+    },
+    {
+      "name": "app",
+      "inputs": [
+        "domains/team-hub/contracts.mjs",
+        "infrastructure/domains/team-hub/app.ts",
+        "infrastructure/domains/team-hub/security.mjs",
+        "infrastructure/domains/team-hub/stack.ts"
+      ],
+      "outputs": [
+        {
+          "path": "infrastructure/domains/team-hub/.build/REGENERATE_LOCALLY/app/app.cjs",
+          "sha256": "8a59060cf64db05e6730507a171bec1de74fe7cf5c04671fc0448f0fd2061fe0"
+        }
+      ]
+    }
+  ],
+  "inputs": [
+    {
+      "path": "config/environments/Ntgre.core.json",
+      "sha256": "9bea68ab5781eeb7265c363fd6baac78d1e3e032196f9aa209bc3780644a6b9e"
+    },
+    {
+      "path": "domains/team-hub/command-entry.mjs",
+      "sha256": "f887f2ea967f767d0291f9a5a12746922cd22a0432bd287a96e2699eed4c42ab"
+    },
+    {
+      "path": "domains/team-hub/compatibility.mjs",
+      "sha256": "65faeed57e99aa484dea6ddb2b2eaf1f96672f00d3e3f0b2e398d72a2e6fcc9e"
+    },
+    {
+      "path": "domains/team-hub/contracts.mjs",
+      "sha256": "5a9ea05b66210eb709e8bc9f4097f5680f405dc498a72b5f12ca8599273b592d"
+    },
+    {
+      "path": "domains/team-hub/core-contracts.mjs",
+      "sha256": "c8f2eb134ab37cc88d564f9204680444d6332464c119b6706deeea9252831565"
+    },
+    {
+      "path": "domains/team-hub/core.mjs",
+      "sha256": "d1e2819e2ca5226944391a8eafc7d7f83aeda3dfa6da1d096e23a4e0e219c045"
+    },
+    {
+      "path": "domains/team-hub/http.mjs",
+      "sha256": "ae0e9dfbae9f59bc34f76c44c03949b823a0225c58cefa5a5bdada1384add8ec"
+    },
+    {
+      "path": "domains/team-hub/model.ts",
+      "sha256": "620d9f06662a525c28897f9997090ca0619a943a7d838adf4d9458a2c360386e"
+    },
+    {
+      "path": "domains/team-hub/read-entry.mjs",
+      "sha256": "9271601d8367d8fb1d517955be95077fab4ce2a8587c49ed5241007368d1951b"
+    },
+    {
+      "path": "domains/team-hub/repository.mjs",
+      "sha256": "4a84ee6b60ab625293545d2dd1be0dc863ab2f8c343b1e11e8cafeaf4bd921ca"
+    },
+    {
+      "path": "domains/team-hub/service.mjs",
+      "sha256": "c93f0410f5766bcc0c50d1c0008f7577f9e82034413170ef75aa2dd47b935466"
+    },
+    {
+      "path": "domains/team-hub/storage-plan.mjs",
+      "sha256": "aa6923a380b5a0426cd33fab605d7606c6a6b7e5b3d00e25e2971bdb8f72e491"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/README.md",
+      "sha256": "b2c32375c65a63f934c9c2a3f2e27046e34319ae06e79c4e76cb7c031087f346"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/app.ts",
+      "sha256": "54572634c8d864bfc319b87ff4ee38c62a3d3531087c8a429f31a9c4314f816f"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/package-lock.json",
+      "sha256": "edaa15dd2341b5186bcd48f7f93166915423f13f4a2b0f035d31c2eb67bfb83c"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/package.json",
+      "sha256": "441c4aedac47886515c416c0be7605154dcb2c8c04af1021f8b1bf5609894111"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/security.mjs",
+      "sha256": "ad373c039353d5a6a2c57df64342662a492bc25f271ef02f70516fc036032951"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/stack.ts",
+      "sha256": "f77e92b26c65b5d0c370326e985c109a1e4058bcf4ce2aabfd3a3656e5956bba"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/tsconfig.json",
+      "sha256": "09d3802b25ec8f921326116003554c4296e056d545735096c86a2c61ff559327"
+    },
+    {
+      "path": "scripts/team-hub/build-isolation.mjs",
+      "sha256": "c6d25266af34637da6d82a27df2558eb4eb638356b75685c0054f8f640651985"
+    },
+    {
+      "path": "scripts/team-hub/offline-guard.cjs",
+      "sha256": "c41e1a45354f25f9f8617b3990da21a4a5bb17bc8e2fb35cdfad11c69abeeb6e"
+    },
+    {
+      "path": "scripts/team-hub/plan.mjs",
+      "sha256": "708d39cabfd906d6305197fbbe14a4a1e48669cace6eb8030fe76574cbe9a308"
+    },
+    {
+      "path": "scripts/team-hub/tests/domain.test.mjs",
+      "sha256": "cfa1c9f0519b11306a97c735520d7a601cbb5e6938ad4899528254490d29caa9"
+    },
+    {
+      "path": "scripts/team-hub/tests/fixtures.mjs",
+      "sha256": "fc8d81445b594ecf2f3e96150b6eeadc22491402f0444acb462c7759761e15ed"
+    },
+    {
+      "path": "scripts/team-hub/tests/frontend-http.test.mjs",
+      "sha256": "7710d19ee96f940a920287b2dea8d1e7d4279678dd95f22adb238e1dbdeceb34"
+    },
+    {
+      "path": "scripts/team-hub/tests/security-isolation.test.mjs",
+      "sha256": "6ca876c94f7ab3f79c3a8495599dd4b3a73091ecdbfeedfa9b6471851f7adff9"
+    },
+    {
+      "path": "scripts/team-hub/verify.mjs",
+      "sha256": "fc8539df81c2606db08c5be8d349aef8a9a9865fb7321a67544b3322e8423d89"
+    },
+    {
+      "path": "src/features/team-hub/api/client.mjs",
+      "sha256": "3ca5be01fe601ff29699227747d49683c90a536c1940906413025e823846cffa"
+    },
+    {
+      "path": "src/features/team-hub/components/offline-page.mjs",
+      "sha256": "4b14782953e52d4501db55dbc362934ee934f3874d28e51902719f87ea848304"
+    },
+    {
+      "path": "src/features/team-hub/contracts/index.mjs",
+      "sha256": "3413ea298e3d83a61b79ce84a5a9542e6976dd595f4a48fc99c86eaa24d56e98"
+    },
+    {
+      "path": "src/features/team-hub/pages/ChampionPool.mjs",
+      "sha256": "40701d645f575c94f18b9d046d273a297b3b801dc3f702096858659f45841267"
+    },
+    {
+      "path": "src/features/team-hub/pages/CoachReview.mjs",
+      "sha256": "4df2e2e00418f895106a2ef56f9a7c70e74b5e5f5203045c1d404360cad38e3d"
+    },
+    {
+      "path": "src/features/team-hub/pages/TeamAdministration.mjs",
+      "sha256": "dc733abf5f85b40dd1a0d1f5a155602c632b11bb2869e0233f8b9474c99ab645"
+    },
+    {
+      "path": "src/features/team-hub/pages/TeamDetail.mjs",
+      "sha256": "74748623859cff04c474cea44560563164d9803a02d70a00b33476d43bd31182"
+    },
+    {
+      "path": "src/features/team-hub/pages/TeamHome.mjs",
+      "sha256": "df9565b25808f13af5db7cfc204cbafb5a3a09197ab441cd8460aaea8e60a2c0"
+    },
+    {
+      "path": "src/features/team-hub/pages/TeamManagement.mjs",
+      "sha256": "1f2d44001fbf4ccac6f701520a626518c1dc0b4ae0e4e45e2f6fae09b079c2b6"
+    },
+    {
+      "path": "src/features/team-hub/routes/index.mjs",
+      "sha256": "8216e9cdc6bc072ae844dab598b83b40f527ead015f583926dc24f3ba633be82"
+    },
+    {
+      "path": "src/features/team-hub/services/create-session.mjs",
+      "sha256": "5ff04053876cf0a61d501e86a454302c55cec3a9982fd7e6d173c6ae74d8b9c1"
+    },
+    {
+      "path": "src/features/team-hub/state/session.mjs",
+      "sha256": "e7ed56565c49147ba7b499566e8b80bf7e9f51bab951957901a32242f7c33d24"
+    }
+  ],
+  "loadedLibraries": [
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/cli-version.json",
+      "sha256": "bc95a09227342cb4a864d3cfc2b32f3cfb2d810759573ff5514f2404d2225391"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/lib/assets/aws-destination.js",
+      "sha256": "c23ec1bdaa1acaf8e5ac7b7d5f1bfd4e15c6b8c7f920cb29349d4591600ea77d"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/lib/assets/docker-image-asset.js",
+      "sha256": "509ddd373f111ede6e11f5ba5b513da08e3a21461d22b3034aa72834de3ab53e"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/lib/assets/file-asset.js",
+      "sha256": "27f8fa0fbb455debd94955ecf329728b6f637f36cb12ba7cc398cedf3b68ef40"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/lib/assets/index.js",
+      "sha256": "e70b129676f067c7a0e765923362578b154afb4c2f81e1e4c6a4e4a7eed42130"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/lib/assets/schema.js",
+      "sha256": "fd23382c41141a70fddae7e88612d492c6f2d17bed919eba1ababdaf59c3b775"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/lib/cloud-assembly/artifact-schema.js",
+      "sha256": "d910b553ab1cdcafaafaa70ec55a58f0a02b6f6c1ef4eed89a312f10acf4c0fe"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/lib/cloud-assembly/context-queries.js",
+      "sha256": "7fe14711b17d31a5f76929f657d022363cbabdf36b2847209591a6d2fb750b84"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/lib/cloud-assembly/index.js",
+      "sha256": "ba7fe0a25b0e56d2784414ea2b045a5cb41416575be321ebaf0459a5549533ee"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/lib/cloud-assembly/interfaces.js",
+      "sha256": "a9b30d2be78b4d5184c4d7572fc33458f702bfd51d1e68d5a7c5029ae36b2afb"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/lib/cloud-assembly/metadata-schema.js",
+      "sha256": "739d1ad1a06a83738b96564c9216961d7e3c27f61444be803bb08738d53f84bf"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/lib/cloud-assembly/schema.js",
+      "sha256": "e23e80030d450463b6f279a5e90130acffc07deaffb96d6985bfeb9a72b3f027"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/lib/cloud-assembly/validation-report-schema.js",
+      "sha256": "3a3b29d5a0eea44e8602da6193253c8c809ecf6efc67dde083eaf30ba8846f7b"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/lib/index.js",
+      "sha256": "e8b351e3c69d302351e5c81275aae405dbfe95b0cb9fbd48ae6756253b48ef10"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/lib/integ-tests/commands/common.js",
+      "sha256": "4252e8eb7913d95a214d30d286971c5f15dc4dcef3a70ba0afb1176c49333aa3"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/lib/integ-tests/commands/deploy.js",
+      "sha256": "8e649ad650a3e679c1e473bd4115ecedaaada679f8eee9a21554e32c56d83713"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/lib/integ-tests/commands/destroy.js",
+      "sha256": "1315eaf5c96be20ab120eba16b6a33acd2d79bc124f3909c0f6b39c7dad5d33c"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/lib/integ-tests/commands/index.js",
+      "sha256": "83982e13abdac3aa023f6fb2b1deb75199bce19c6bae4ae622fb97cef6a2e998"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/lib/integ-tests/index.js",
+      "sha256": "4a9ac16457a6363b7b4fa89ad2bdb46d1811c3b3690b91b38ae37ccda1eff66b"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/lib/integ-tests/schema.js",
+      "sha256": "dce7a06f7afd2de6811fdbd1cbe53733a63472556254ea500acfb29acca41126"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/lib/integ-tests/test-case.js",
+      "sha256": "ff42dd39acdafe4d7a22b4738e95886e261ac7eac6391e755047e46284852033"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/lib/manifest.js",
+      "sha256": "d26b7f1b6311fc5a733d2f1d8ee44ae53dca34c482cb0f73f6ff077926a5cd31"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/jsonschema/lib/attribute.js",
+      "sha256": "5ab2a7ae9b51cc7d2242a60ff52cac38b67dc7007e68ec2b39744047c10dc269"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/jsonschema/lib/helpers.js",
+      "sha256": "69fef90bacc712a7e19696997bfa7fe857341b2fec0718ae8ce7b27b3acb68e6"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/jsonschema/lib/index.js",
+      "sha256": "e0b8c4eacc1d1529b4d74255aead87ad13e4ca4c14b30355d07f3b8f6e75006e"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/jsonschema/lib/scan.js",
+      "sha256": "67b90565133aecb737a9c30d1d90207a86eaa6ddf9324b6de7fcea2f16b40626"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/jsonschema/lib/validator.js",
+      "sha256": "293a07d750d48653888eb60eaaa7bde93be47d5976cf4b214561d153df254442"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/classes/comparator.js",
+      "sha256": "054202956430d63d5ff4599fae09760ce465b489e4f0b5ef5ce7cc7ac21157ac"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/classes/range.js",
+      "sha256": "a6544485aa8575aa9854c67e2caa67726815de18a482d0ceb8a1003244de3bc1"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/classes/semver.js",
+      "sha256": "813b2c185512d30c9b931c2fed8140889d9d7490ceeeedc370da30337dc8ca57"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/functions/clean.js",
+      "sha256": "4eadb0892844cf3ae295121a86163a66c73f89acd1b7f0b114ec115b4539512f"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/functions/cmp.js",
+      "sha256": "a63d74e87b73788e78e9ce0a4892b5333d6b809c0de88b31e4ed76cbf17f94b3"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/functions/coerce.js",
+      "sha256": "28a251c5ab210ddf9e97551b9f37a53329fcce91f0c3943dcbc02de1a1de915a"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/functions/compare-build.js",
+      "sha256": "5ab651d5b40af289bd85c645a92b6d8cfe1a986dc413c797cfcc8d623d7c844c"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/functions/compare-loose.js",
+      "sha256": "07b6a3a1db0a5210ceb784c1708bd4679f3a94fc73a9c9eb349349e7070a6f78"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/functions/compare.js",
+      "sha256": "d404b5aa48aaddc8a654c5da8fb7d4443404b7948589b21ac4b045d1cee4e34c"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/functions/diff.js",
+      "sha256": "7a11fd39b987cdf06c65e928cb1aca49bec583feb86fb5c8fe47a6fd61d7de31"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/functions/eq.js",
+      "sha256": "b6e30a7168e52723216fc163d300e2bbabf92ec0251f9ac5438bb6ccf57c8936"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/functions/gt.js",
+      "sha256": "135523704aa48cd98834dd170ee9f74f0e68043b379f32d021db11e6304c5c93"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/functions/gte.js",
+      "sha256": "991c5bbe48ecb210a562646872f05862ad9fc0d42186d85aa60bdc6fa323eb9d"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/functions/inc.js",
+      "sha256": "952069fc8690b7d3af0fe9d55f7c54fe2ac067b48c5e74f6a54f9ce19a334493"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/functions/lt.js",
+      "sha256": "1c897a9bc849320e2e9dc0f6c09555c01ee3ddf30734515d717b88ad7740ea25"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/functions/lte.js",
+      "sha256": "3a8d0b1d00423f60cc7cb810b36ab77b61330831ad237dbe73eb5cecfa412800"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/functions/major.js",
+      "sha256": "5c678480d882f511200fed2c16ec3847dfedb08a1d70328dc2f031d35d825276"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/functions/minor.js",
+      "sha256": "1b051794f1713adec2a236517196691687c35f82e0b596ff3316a78b3cc10ae6"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/functions/neq.js",
+      "sha256": "a662883751918822c162183b46b9e20d09489132f82686c92ab78bee67f3a127"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/functions/parse.js",
+      "sha256": "29a69e15b6d02fe381d573f861881a89590e9d0f0f0ca740c5f85eaf0234c4ad"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/functions/patch.js",
+      "sha256": "f02d3c1b059fe3d96ce124886f7eef321d381a95638fd3c4a8d5ccd8e76ffadd"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/functions/prerelease.js",
+      "sha256": "baedbf503d5610ad041bfb56071efa48feb331ca278295c399537d35d3ffb593"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/functions/rcompare.js",
+      "sha256": "84fa5e88adf08d15c993cac8cdec6d1a65045b7e95a9c55184230a7f807f4dc0"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/functions/rsort.js",
+      "sha256": "6ec659ce3b6c2b173c719286caab04409adba046c0917874ec3b5e36ddfbc7e3"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/functions/satisfies.js",
+      "sha256": "8cf5e122b757251671ed6c9d9680904b71cd375845853f05312e608cf2cc2946"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/functions/sort.js",
+      "sha256": "c2fe2d3ed0be8a4e9de8f02abdfd5d9c0d3bcc510d88e87af84185592882c4b8"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/functions/truncate.js",
+      "sha256": "e145833a250311927c92f424f56498c52f1b7bb1271ce6afbf006db87773ff43"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/functions/valid.js",
+      "sha256": "0de7ea736cb7807179d46dfac09c830a9338e02b6a07db12d7040cde2def6025"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/index.js",
+      "sha256": "4b3e57d3d40e29e0706002eba113d09f35aea593578376bbeec83b777b9912ab"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/internal/constants.js",
+      "sha256": "38a112baf27ceca0260082ff26ac2fd7a9861cab1af12dd65e720277f68e6ce9"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/internal/debug.js",
+      "sha256": "8a9f420572260f3cf944463b5090d62a60f0730589dc23a7ec4ca25e2ee41bb3"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/internal/identifiers.js",
+      "sha256": "b4916b09dc7869ae0eb05e71c855c942a3a7365f7e6e89185d59a9e45a2451d7"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/internal/lrucache.js",
+      "sha256": "14d087c87da87b6f5c36fc4cdd7d2d14077874b14a68e20fce5b6138fa2ca34f"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/internal/parse-options.js",
+      "sha256": "fdf51d0de8d5442c35a997ef58cd530d239ce206f961d14c5121354451b01d01"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/internal/re.js",
+      "sha256": "5833262888e2b5d843a69193f83c05e374818dbe55379b497819b5bf58e48cd8"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/ranges/gtr.js",
+      "sha256": "8fadad28e36d28e93d498ac7ac20badba2a407312845eabc18e82e90a0732b19"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/ranges/intersects.js",
+      "sha256": "fe87ac5d3020010ad3ec00636dadbf0c669ff07d0f57e0a8165a8264f79a676f"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/ranges/ltr.js",
+      "sha256": "e5186fcc03018acf9be6d968755d4c49727aeb0d981d179eb568ae5fbe983038"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/ranges/max-satisfying.js",
+      "sha256": "e1a2c0d6144cc772cd20bbc8ecb9e8a3a4074e9172a3d8e794838b591cdeb416"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/ranges/min-satisfying.js",
+      "sha256": "2681abf54098aa670f12826b76a6ec77a2441186ae4243afde3be8ae4908f7ca"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/ranges/min-version.js",
+      "sha256": "fefba0a88c2bf74d5cede504b5ae50a8dc3edfd69cf0174a491e2cf3e442614b"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/ranges/outside.js",
+      "sha256": "3a2b0b23593d2f49419c06af2af75450cab103b0c25d665d48fe5bca495a21ca"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/ranges/simplify.js",
+      "sha256": "7b78581c13322bc68ece2088685386b2a9b51c15b94d0a2063bdf2546bd41934"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/ranges/subset.js",
+      "sha256": "ceb9eb6ed5bfc6c7ac7af7f47e5c3535444a4e66a0e2b58cdad4bd02a35d454d"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/ranges/to-comparators.js",
+      "sha256": "6c5e966210cff270fa2850668aaf8460fac7759f8d99f282521ef7a78f4564e9"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/node_modules/semver/ranges/valid.js",
+      "sha256": "5ef6f995af801868925940cf8df5735d565ebabb090b068695cae65218bcd3ac"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/schema/assets.schema.json",
+      "sha256": "63c74acf7436ddbcba3e5ad7ac16a2f1014a0082877033dececd7d8c0104d309"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/schema/cloud-assembly.schema.json",
+      "sha256": "423a682b32a2fe231864e69b8ec9f677bde4200fa1918ab26793eb08ff21f3fb"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/schema/integ.schema.json",
+      "sha256": "1add41f65160ff4dda0188b6b39f6b7005ba36f5f0170e190055444763381c09"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/schema/validation-report.schema.json",
+      "sha256": "2a72ca34f42040665797f15f16e6b1092f7e1d0c6fa629ea8870caaf34b5d5a8"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/@aws-cdk/cloud-assembly-schema/schema/version.json",
+      "sha256": "fbb97bb368c583b894a2a211e663d1bdfa244559dcb2d3a6a7fde9265750ca0d"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/.warnings.jsii.js",
+      "sha256": "46f3f00b6568ba96d1d05c9f9717a8ddef4040404e77fd1bdca639b7ec3749ec"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-apigatewayv2/index.js",
+      "sha256": "68c90ce1233ada2ad3bac32bb981d86e7d2760013b66da55d8cb5bf09063fdb4"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-apigatewayv2/lib/apigatewayv2.generated.js",
+      "sha256": "2027d2fa568a3b573b0c86ed2e9dce0731627f9ff751aaaf32847d63ffeab3e5"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-apigatewayv2/lib/index.js",
+      "sha256": "2c55741507d6f80fcab616aab45297d7aaa98a37acacfa5e2c6cc4b99677d878"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-cloudwatch/index.js",
+      "sha256": "6ec3a7efc1a25a939437069a12f105583c9c063eb28c7f162c26e8c6198568e4"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-cloudwatch/lib/cloudwatch.generated.js",
+      "sha256": "c9dd3144984dbd94e9a291730f8c2fa4869fb578b0afdda5ce4ee2467f5d4612"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-cloudwatch/lib/index.js",
+      "sha256": "27dbb579bb4be9af02dfe0ca2f018ab19916226b9567569012cd0f938dc923bb"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-dynamodb/index.js",
+      "sha256": "c133cfe965ed19274ef8095e72a7d33f2960c5d3be1e5fd1ef27c09b6a411542"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-dynamodb/lib/dynamodb.generated.js",
+      "sha256": "b66aa1451d673aceeae4278893ee03f86307a6f41a0b1e183564a00ac001c90a"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-dynamodb/lib/index.js",
+      "sha256": "0fa43d66e7c5cb33755c6723c4a409dfde99bd159ce7ae3639b44c63175645a5"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-dynamodb/lib/private/default-traits.js",
+      "sha256": "05650696fb782a969c7b7b5973f880b40269c1a6bc7ec348c9740be21f8c9686"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-iam/index.js",
+      "sha256": "6ccb95bf96ec319e92ca629efaa149156042cc64411518aa45e901b426b4c174"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-iam/lib/grant.js",
+      "sha256": "b9a9102be7f500107ffca52c4e8e8bdcc9796cd985cf24d4881f269af7b31c20"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-iam/lib/iam.generated.js",
+      "sha256": "d4336b742b9f23810cada6780fa88610ded64caca46acb10302d12282b85e49d"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-iam/lib/index.js",
+      "sha256": "42ce656a89600e207eac7392e4798aae2fe1510a6fa8262f8a750d8f5a0f1c8a"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-lambda/index.js",
+      "sha256": "559da6a2ffcc09a8c5e7b51c62d3993218ef8379033437b2840b760ed6ce01d5"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-lambda/lib/function-base.js",
+      "sha256": "0beff2eb9f8a1450d4b081b02a12ae5bc73f8d7a1f550f16fb9434ba42155ac3"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-lambda/lib/index.js",
+      "sha256": "a83e12be0b2d4e673d87fc276fe6bada2b1a23d00eb8b1bbee92a710cad06693"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-lambda/lib/lambda-augmentations.generated.js",
+      "sha256": "f93feb9f87ca1ee5323fa1e0b0de8c1dbb80007d1c35f64095eb246cc1a81421"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-lambda/lib/lambda.generated.js",
+      "sha256": "8700031a0438084b71f0847acccd84ea30d1a79adecd4dff6bf1677f67a755f6"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-logs/index.js",
+      "sha256": "0371d15f8468ee7d3a53a49b480bd723d3cc32ce62e41796c2ec562b1686f3dd"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-logs/lib/index.js",
+      "sha256": "412d60d1517649eb9ed8443b16678c03fad960e5469918a4bb1d55ed4f9820f7"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-logs/lib/logs.generated.js",
+      "sha256": "d93ae5c0b5cf1db60e84bd13e142cd973d1159910c68db0a2f909472ecf576a1"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-logs/lib/private/default-traits.js",
+      "sha256": "08ac46cf39cb6a821b388f8bf9d72411ec12534ebdd95ed77af8fa3065dfcb53"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-s3-assets/index.js",
+      "sha256": "cc5e7169b0add2460a353b3b6cb969228fda5182ba5c6045eb8cb30de9e14ffb"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-s3-assets/lib/asset.js",
+      "sha256": "dcf0c43ab64961141d7b8afacdc67c83270f87cd48405b9045cd785ce1c84720"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-s3-assets/lib/compat.js",
+      "sha256": "5865c85f148dedfb6759da98143746e2fd01dd70b3cc54ef868c3aecccb96f04"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-s3-assets/lib/index.js",
+      "sha256": "f21f8063901f5deede7b0c48461c5b11264c6e42550e0538d4d32f6fa98e10c3"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-s3/index.js",
+      "sha256": "5613e579a1f7712fbaaebe91d4cd378d4dea297a22924c9e12a5ee035091df54"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-s3/lib/bucket.js",
+      "sha256": "0f42be4a4d27cd86ce6cc78d52fc4c37030bf9baafc7b03133fbba16dbadee29"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-s3/lib/index.js",
+      "sha256": "b0c8d7523e69af9214b8b59301b68461b221a5c562753f36c8c9a4ba16676dab"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-s3/lib/private/default-traits.js",
+      "sha256": "5db9e922b92f8c43cf500acc586c5a29d69caa0da617fb6528784314378c7078"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/aws-s3/lib/util.js",
+      "sha256": "66360695283a26e81711074339ef9669f58de85681766f9edb5c737e33538fb4"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/cloud-assembly-schema/index.js",
+      "sha256": "d7674ba2aad1131af24134a53272d87247c9a3bc81ffa1027321dcd006401a6a"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/index.js",
+      "sha256": "ba21af63696e37ea0bd0adb3ba3404e17a48805ded2043193cea998d55ca9ea0"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/app.js",
+      "sha256": "33e05ab9699c19214c54df8b79b682e390154f50f9f6178d69f0d0f6a44b0033"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/arn.js",
+      "sha256": "165e0c7d48762cd3784e61c1f94aef0774dda839d8e63e012a39987ce5d8db26"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/aspect.js",
+      "sha256": "b83fa0c0df9cbb6b6f21f9c672ff4a40daf9c6e2484347ec4c3a2d32d2e9afa1"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/asset-staging.js",
+      "sha256": "908ccf8f2e2ac43de39d329da9c81632933d54ce2f5967dd6f184a0c6b3f626b"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/assets.js",
+      "sha256": "9c3d85e1ed4c564d88ff35443b6c4e7f004f05f627d40c01f2b46f34b94f7c25"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/cfn-element.js",
+      "sha256": "6428203a87d8660e117c4110f020c57cc72bc7ef750487827ffc8bed124ed5f4"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/cfn-fn.js",
+      "sha256": "251808fdae6ca4def4b2bf8d898a5fee037a0c4d56aa1618ea4e7bb00c66dac0"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/cfn-parameter.js",
+      "sha256": "e70b35ec511fe93b83ee64a1bc387b25ddf4c6345baa4c0296ad64fa95820c40"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/cfn-pseudo.js",
+      "sha256": "4275984fa338addc054391f236379dfe75c3471e4a3835e078f23f3839fdb3e9"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/cfn-resource-policy.js",
+      "sha256": "854145cdd812eac76c11ba62a75f85130bd052d4cd5044049b81c242e97c3ff0"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/cfn-resource.js",
+      "sha256": "72e3a0b416393559f6c0f63116404870e8795252427af98e0c0833498877906b"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/cfn-rule.js",
+      "sha256": "473fd68188b175fc0781979b4e89b0817b4a323f88a1085c45aec8945e35d1ee"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/constants.js",
+      "sha256": "412c76374dc4dcceea5cdf28494c8381d9caa4612c4bb664e7792f89963bd3c2"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/debug.js",
+      "sha256": "ce5db1920cea92e034f18221baf9449f3d786e2f1876d7546e142174b8241124"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/feature-flags.js",
+      "sha256": "b50cd6195cfa27ffeabe076f1fd8d2aea4902bd6fcdffc409cf2ed43aff559a6"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/fs/copy.js",
+      "sha256": "5ca26eac3d11524ad5fe636c424f7b1c15bc489d9a726653cbce0ef07b6fad27"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/fs/fingerprint-disk-cache.js",
+      "sha256": "ab20c01dabfd10ae389c1db1714fea3772dc4357dfbe225a602a692998ecaace"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/fs/fingerprint.js",
+      "sha256": "bbff6fd23872fbc2cfd5a3e810cf87b55cdf7e6a19574852ee1a32e05beb15bf"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/fs/ignore.js",
+      "sha256": "58243eb9932e0019db0acca5dfcb7c7241b619f658a8de64e15523ef291960cb"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/fs/index.js",
+      "sha256": "c50612bfa2b405290203d847302d19d83c855f720f9af7a4e4fa1401f6a3f68c"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/fs/options.js",
+      "sha256": "4c53f34018e07ab258610e37527223fad866bbb78cb187efb0e08ea78b8f1ef4"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/helpers-internal/box.js",
+      "sha256": "3290861c9bcde81c8bdfc3433d5b22cfdff17e274d64adc8ea0197cbd743be6a"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/helpers-internal/index.js",
+      "sha256": "548303bf70a28a2afd0cef87813d4c393750a4d5d678a9609d903f7dc5eade1d"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/helpers-internal/memoize.js",
+      "sha256": "48077b1ad74342314438c076c45867b3f55cf86a11ed8589ec634b709c866347"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/helpers-internal/string-specializer.js",
+      "sha256": "379591edadd34777dbd560e199970afcbe57ce04255572ff8cdfd792499e0aa3"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/helpers-internal/traits.js",
+      "sha256": "8a69d5e8f0daf340ec7aa4b139d52e340a0e4bd0ab3b84028015566cbd537a72"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/index.js",
+      "sha256": "a9a7c658de479adc293059a1829cfd6f0e5a76778056641994ed37189d61106a"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/lazy.js",
+      "sha256": "0d6359219ac15e7c559753b4f4930ae0de381513676004040636192059922933"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/metadata-resource.js",
+      "sha256": "04ff32bddb9ccfadd4ac3981d8ec0c027aadf08b501b8a0f48dbc72a4c25c997"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/metadata-type.js",
+      "sha256": "fab21589d0441b64575a94582452e9230c320096c93c0755af2f3977501e18af"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/names.js",
+      "sha256": "7c7ef8b3d6b78a450ceef01b71f20fe2e164c6007e7c7e97882ac339cfcf1571"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/no-box-stack-traces.js",
+      "sha256": "3190ec55f3799e31c46cf3526e6bda90d0c6a285fa40414b32bb0b864531e698"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/permissions-boundary.js",
+      "sha256": "b720ebf14aa4d1778b8c0a63095e84c9f5d3425530256fb59b53cccacd3e7c38"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/private/cache.js",
+      "sha256": "059905ca5223d3eaa7d871f1cc06a84a7466fb27de5c4852f2b7401f51b93e93"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/private/cfn-reference.js",
+      "sha256": "91a99553421ee48b06240eb95e46be0022ba58495c20ed657e799199bef5023a"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/private/cloudformation-lang.js",
+      "sha256": "ab09c03f05a067dba3d06dab075f41df96e9f4320082b15658445de7cb76f3f0"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/private/construct-iteration.js",
+      "sha256": "9c7c4aa57232ee989ca4eba50d602fc9b564e0f46d0b6e5fad8330d0941688da"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/private/deep-merge.js",
+      "sha256": "5e8f4f8374a033bcf891255933c3c3291c8786157f76aa231c3c5556b3a7b873"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/private/dispose-polyfill.js",
+      "sha256": "484bad40bd7d539030a49abf751db7f97402dd9dbda4459a5bfc3cd33267b5ff"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/private/encoding.js",
+      "sha256": "2266ce85cd9213610ea72f3c55eeb95669430e12363edccebd89510c52e5f68f"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/private/feature-flag-report.js",
+      "sha256": "d996fa1902443ad1fab2ffdae7b886c981208e82d7be32815be74b4125c2fc26"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/private/intrinsic.js",
+      "sha256": "e044b467a43a83880bd69bc6669be6611af7bb6c8cb2fc4242e3dc0df9d1d00c"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/private/linked-queue.js",
+      "sha256": "9d5adceb237f0cfa86ee1c5ca7b271743af4be12822766a76bb25b854b9e42bc"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/private/logical-id.js",
+      "sha256": "d87a3ecf442f698d6725bf83e027761fdd5e4adfb34099f229510e607c1d2714"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/private/perf.js",
+      "sha256": "36db80315dddf721e705ae3f92a955b3d49eadb80ad3a9105cb3a3758669614d"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/private/prepare-app.js",
+      "sha256": "e0b611584e886beca2f7846e8ece71cc842f7e6953bbd1f930a861ae3035e258"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/private/private-context.js",
+      "sha256": "c13a0648c136b3f8b5185e8bab23b638efb94349106cdcab4348f30e37ce9c22"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/private/refs.js",
+      "sha256": "4b8c7c09548ebfeb5de6e5143d00c35a0aef92115fff3a1e648922b7c5d99d38"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/private/resolve.js",
+      "sha256": "6a6f8717571182f468109837bcbb66d55d45a2bd6f265286311360eed488e9fc"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/private/runtime-info.js",
+      "sha256": "e90a79f7e18ddcfd3132a70bcb6c7ce9b2665fc024326b9d9e811df386947d68"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/private/stack-trace.js",
+      "sha256": "f5d5e8b51ca8d716384c6f89dc62c8c6e86705b4f1a477746c12cd2717534be1"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/private/synthesis.js",
+      "sha256": "5a44ce2e0d86afef14d983ea8cc78315570911b200181230f0fcfe51b4bc83cc"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/private/token-map.js",
+      "sha256": "3780859afc1b6c64abc92ccdb39f73f168f0bd4a5d62ad175a27801c433296eb"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/private/tree-metadata.js",
+      "sha256": "37570179d0217ada261512fd76fdf3841856d43fd9b3a1082f9e4c24c6274ebd"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/private/uniqueid.js",
+      "sha256": "48336ea003269c43dd60e3f52760a49f873514e248f615383b6f5cf1fe1f87ca"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/prop-injectable.js",
+      "sha256": "59da9ad33b51875d4a0c3186ffeb4ca116e417f9316af2cb0b235d55ea03870f"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/prop-injectors-helpers.js",
+      "sha256": "9933056a94d71ef7b729c02bdbca9628d3f7f914b9786dfb0efe6e27cd457e85"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/prop-injectors.js",
+      "sha256": "e52c19b9fe3b67e43df0500b4f3396590ab5c942b5c78eca4ee5ae0f59c25005"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/reference.js",
+      "sha256": "2c7a5243294e98980fdfbd8a9cd6ccf7ca4c97b77012195b85efdd92672c92e7"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/removal-policy.js",
+      "sha256": "560835fd92289072a3566b6204e8872d4bbbe16c3d023af650a29ef499392b0c"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/resolvable.js",
+      "sha256": "0dc5a1a476a7e7d9a179c1b63c5ee55dea048726e801196310d84f8cd11062ca"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/resource.js",
+      "sha256": "089d406029a1d6adecf8c74b013bfb820c3e313d9cbca0df372660d02c6fc2b1"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/runtime.js",
+      "sha256": "f465221e2d74b6b140988c9e24be509319f0d29c60423731b1ccbe4378970c9e"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/stack-synthesizers/_shared.js",
+      "sha256": "1cd62926b9136f918c7dc4e8fffb88630688ca84d104a52f99c885e695db24a0"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/stack-synthesizers/asset-manifest-builder.js",
+      "sha256": "d91cd8a0303a0b9c8d5fef347990fbd4dd75937b4faaf7f1125b18f218aa1947"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/stack-synthesizers/default-synthesizer.js",
+      "sha256": "e46c46badbc9a1e4f304e58e54fd16ce7b8e4cfe6a75923a680e5027d5055646"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/stack-synthesizers/index.js",
+      "sha256": "4f80e4ce03ebd57d07d428cc9309fb4001b1710799bb0f24ed2802e5d96c25ff"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/stack-synthesizers/stack-synthesizer.js",
+      "sha256": "9462c27a2b42ec8a5a36cc80c87a2389b175663a1faa1dd4d7687f966137a0f1"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/stack-synthesizers/types.js",
+      "sha256": "95a64f64f599f4bf84b7de92d0358d4e98bfc375b2520e8bacacc4d40a8b6ea5"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/stack.js",
+      "sha256": "4cd4c759c4a440963be4a4e0464464bf31841d9d6c1d1345d1015d3be28a53ad"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/stage.js",
+      "sha256": "0f474dbd3e52938b80c4864db65d9ecf685c970c74ea8faf2c31afa1c7df16fb"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/string-fragments.js",
+      "sha256": "8d7392746876dad524897b3a53e09663fe2f043834a61461dec23d395cd0368b"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/tag-manager.js",
+      "sha256": "390483ee5814871a396911c3fbb5c49525d7f00e9570e72f1e6eda28ff637fe8"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/token.js",
+      "sha256": "673fe0c23883e59776e9ecd341d615ca0f8eb3624d78112cafc5e64c6f91004b"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/tree.js",
+      "sha256": "895925fb6eaa9efff0c1b8c2a890c2aad51a440f296740e034f7667c51222138"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/type-hints.js",
+      "sha256": "fba2c0a32cece8271e9fdd07efd0a1823f8dfca252087b91ad763fa4ca4c76ef"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/core/lib/util.js",
+      "sha256": "c07ab23a541cadd8809df85a257e2bb141b65da97d080adcc59ff1263917ada5"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/cx-api/index.js",
+      "sha256": "2553131740ea0ceebca878b2c4d3b12c6c46a0641743d4c439a8b1b79a40d7ae"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/cx-api/lib/app.js",
+      "sha256": "03e023b12007c880adfd59a5008fb922c5c4c51136ff0ae01bd0b25db33bf7f3"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/cx-api/lib/cxapi.js",
+      "sha256": "80217c9b5f0a959227763ac08d41831391883579d3750d4b9367b53e1a7029a8"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/cx-api/lib/features.js",
+      "sha256": "185396f0f81a5d2bd1366209f904097720dbbc2c6c9654cb6ce2843bed7e5e0e"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/cx-api/lib/index.js",
+      "sha256": "c92e503df233a866783c3f983630bb15b619aad57011cc18ad31ab56a18e5058"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/cx-api/lib/legacy-moved.js",
+      "sha256": "63f26cb2a3694c594cad494576d4b1df655aa5252b7811ae7ab09341ebb532ec"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/cx-api/lib/private/flag-modeling.js",
+      "sha256": "e56a44d88e18c0f52c237e2ede6389d79f3b93b8d8a9490d9d28389c517cb205"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/index.js",
+      "sha256": "a06bcc245e64250ebc63452f4e537c342e77a7d3f816194dc1c9f0d49117c2e1"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/@aws-cdk/cloud-assembly-api/lib/artifacts/asset-manifest-artifact.js",
+      "sha256": "c85dc84b8c458c8ac30640043b8d5e482d8a4ecf97468f074e64359314b314f5"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/@aws-cdk/cloud-assembly-api/lib/artifacts/cloudformation-artifact.js",
+      "sha256": "74026e5478cdf6a8c6909060b8c4205d4d985b998156a768e5922428fd09216b"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/@aws-cdk/cloud-assembly-api/lib/artifacts/nested-cloud-assembly-artifact-aug.js",
+      "sha256": "ffc4b3c3d34fbed734b01d162007a49fec10f11134fde7ba08b2de2c63f7ccbc"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/@aws-cdk/cloud-assembly-api/lib/artifacts/nested-cloud-assembly-artifact.js",
+      "sha256": "7718b8e01e816e984da9eae6f22437b2357c512bb2ff6e524db8fcd7949db374"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/@aws-cdk/cloud-assembly-api/lib/artifacts/tree-cloud-artifact.js",
+      "sha256": "74539fb32e0443e8b3ff72f7bd04638a0962db5f8ededab7cb77d4c3d422a944"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/@aws-cdk/cloud-assembly-api/lib/assets.js",
+      "sha256": "605d262bceb347ddd57b3f86de76aac97a81df06fc7aaa0a07efbc7d00aba04c"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/@aws-cdk/cloud-assembly-api/lib/bootstrap.js",
+      "sha256": "9a25fc3f29fb2ce6bc67e1b73bc2a80c69d7a978c92be30414c7c414783ee84d"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/@aws-cdk/cloud-assembly-api/lib/cloud-artifact-aug.js",
+      "sha256": "edd8a7039ddf2406d76ade7242cc18c87a3653c1f441ec4a46348f53a3fb1f87"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/@aws-cdk/cloud-assembly-api/lib/cloud-artifact.js",
+      "sha256": "c4122c1bf9ab95fbb59389c40ea7b68a004a3d00d5ad4835a89958e103816f4d"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/@aws-cdk/cloud-assembly-api/lib/cloud-assembly.js",
+      "sha256": "80c736b65087efa91c59ab9e613ae88dba859141f6ea6d97fa6ef8c515ffc3c2"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/@aws-cdk/cloud-assembly-api/lib/context/ami.js",
+      "sha256": "8971646e4ffc7a734cfd76c06ddab5679e0946cb54a5a44b7942b7713364108b"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/@aws-cdk/cloud-assembly-api/lib/context/availability-zones.js",
+      "sha256": "4ae75300641ae872122e919eebad0af78f7d88bd15e4294ed0d4e1326fe810a5"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/@aws-cdk/cloud-assembly-api/lib/context/endpoint-service-availability-zones.js",
+      "sha256": "c956bf1eaf4b1f00e5ff6c88db0f9fca33ad9260be37f3dab088cf564a8a64c5"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/@aws-cdk/cloud-assembly-api/lib/context/generic.js",
+      "sha256": "0b19b68c1963c288917e330bb7c995cf693cb0e6d9b08abbc6b736ed53fa51f0"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/@aws-cdk/cloud-assembly-api/lib/context/key.js",
+      "sha256": "5fd1e3655dbfef44defc44f7d147dc5562a721c773a639286e9ef72876dfcdbe"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/@aws-cdk/cloud-assembly-api/lib/context/load-balancer.js",
+      "sha256": "c41606e0538dd6e60f7632e087778c4f9fb9b06226444c1626aaff214eddedb9"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/@aws-cdk/cloud-assembly-api/lib/context/security-group.js",
+      "sha256": "cf3363e124d461934b4fd34c986e41a0e3d774b21e8dd0e306219e2a1600fef0"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/@aws-cdk/cloud-assembly-api/lib/context/vpc.js",
+      "sha256": "6e2ea11ec0c16e6c1e8b61d39964ade677d8213dc02c3e70e18bdbd6c04bde10"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/@aws-cdk/cloud-assembly-api/lib/environment.js",
+      "sha256": "5c5f65bac25bca20f20e298c6190e9be5d407aedb4d75b42e8552ab72575c1c4"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/@aws-cdk/cloud-assembly-api/lib/index.js",
+      "sha256": "fc955ac6f5c461244338a85c4c6c2aa6d1770852314bf15b2a294cf5ad73234d"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/@aws-cdk/cloud-assembly-api/lib/metadata.js",
+      "sha256": "50dc97bcb080eb88e850dbee54429f3f7a000e356a8569ea2b9ccbb3de2647c3"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/@aws-cdk/cloud-assembly-api/lib/placeholders.js",
+      "sha256": "7b6d9512740b7464cbd828eff239610e640a1d0d3862a8e787b2625c324c3063"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/@aws-cdk/cloud-assembly-api/lib/private/error.js",
+      "sha256": "f2d459086a7528b27aa6570bf8f6d766d12ca9c8a1e3406f7e6c50c49cdc135f"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/@aws-cdk/cloud-assembly-api/lib/private/toposort.js",
+      "sha256": "d67ca3f4dad53adc66d26ef30d55ac8545147ff3e87a94fbc018a22368dcf9e4"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/balanced-match/dist/commonjs/index.js",
+      "sha256": "180549ef6f34f31e245f3060395dc453a602849558fd6657d11c28509b33347c"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/brace-expansion/dist/commonjs/index.js",
+      "sha256": "f57911eb24b9c74f7b3b08f25f6f78d21b360cc092b051c2d2c76232884c5d33"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/copy/copy-sync.js",
+      "sha256": "7b7e567e1d6212920d9239069036dbc234bd4b9160d243ad415d885d35659eb9"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/copy/copy.js",
+      "sha256": "69b2573cad17fedc821be48ae2d3fdaa0986db1053d90d3404b2f819f8f2eb7d"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/copy/index.js",
+      "sha256": "d935e170aa9a282a5fcf796cf2d21306cbeb8822c92c8e7ef73182b9e32b3f82"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/empty/index.js",
+      "sha256": "1096edcb5ec0ed015b36914beff0826f6cd5d7ce2645ee9dee60c0b272e57856"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/ensure/file.js",
+      "sha256": "f97c89606abb7c256eefd7acf35fc37a60a002768696125905df3944ac792d07"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/ensure/index.js",
+      "sha256": "77ccb9b4d1eab607ce7ba8d3d5bed59b0cb9cc4748d02aa896a2413b71dbfe60"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/ensure/link.js",
+      "sha256": "ddb60e2e233764a9bba933f97e3cc534a370e66c44a0dcc02eb24b16e8ca12d7"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/ensure/symlink-paths.js",
+      "sha256": "25cdbbe6724088ddd28fe8ac10dfab9f18a93cf6fdb14e7be41fdc29e13767d5"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/ensure/symlink-type.js",
+      "sha256": "ef80c7221f923205bd4472d166d79d4f75f683dd1f32d342f2fef5ee64fb2796"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/ensure/symlink.js",
+      "sha256": "e9b1eed74145385ed7b4b94a72ff47367e2084643d726fa561932027401bed7b"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/fs/index.js",
+      "sha256": "62ceb1a4526cf820140c4d7fbf86ca0a330108a1d7929daa3db69e565fd58367"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/index.js",
+      "sha256": "4967e903b3dc290f2b401b81bfcad8b2d94fd68c1bf4563df63ac082af0e1dae"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/json/index.js",
+      "sha256": "c5ac6a8005308e5bb36619fed225c987872300d356fa95d0d56878029ebbdc45"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/json/jsonfile.js",
+      "sha256": "a986ad3c13166f3bf8f30b18140bfc8ea1754760ab3802aa7c8c3780d54f07ba"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/json/output-json-sync.js",
+      "sha256": "a68fde22ad1a194755de03e90861805248f883342e05bd685258e76a90e7a6ab"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/json/output-json.js",
+      "sha256": "b738aaf8ff9aae265b0512cb2554e1f8ce8605d21dc6230189a9be6980079fc8"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/mkdirs/index.js",
+      "sha256": "adcd576e2e3868b94adb1bad6d1e3cf2312ffdfa71e49a57fe6247e116e75ecf"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/mkdirs/make-dir.js",
+      "sha256": "23c7ce8a3d6b39d1c7cf5d16ba6447c1690a6fdaa8c5f41e6b76526b7afe96f3"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/mkdirs/utils.js",
+      "sha256": "5372a36f4b2c5023788c23dbc6639155cb016a1b111e8fc1d6bf97cbaf11b1f8"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/move/index.js",
+      "sha256": "ee7ac772c9ed6ca64adf993498c1199fb72bc9a05b49b7b4b8185ac71dacf930"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/move/move-sync.js",
+      "sha256": "639191af40bebf2a1dc76ee0c5317282d352461ece1d165537bc7096b80818c5"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/move/move.js",
+      "sha256": "81fca78408ac2a838f6c7f75c871b5b5b9649b7260addf0c21464eb9d8b32a9b"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/output-file/index.js",
+      "sha256": "5226ff89a2c66941f0aa322d81c68e199b5d554a99fe71cbd7a740663e541722"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/path-exists/index.js",
+      "sha256": "5ce096c95daec0259817248921b39a9e0df4d342db171138ccb62440cc7a0cbe"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/remove/index.js",
+      "sha256": "0ac7807ffba679e0d8fee03d3879da7f3d99bc16e8db6c6494c8eaf9ec5608b6"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/util/async.js",
+      "sha256": "1f6e8aa79654041ebb8513719a4e8689e0c71e70a0653bd6f6cf8af90f9138b3"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/util/stat.js",
+      "sha256": "7c85bd418d9fe3e2dc8a6925772726ce7538092baf01cade518c7f65aca94a61"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/fs-extra/lib/util/utimes.js",
+      "sha256": "6b20f591e8ff8c6d6bdf6d7603a73f135fd1bc54ed2255ece5449be63b50c01b"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/graceful-fs/clone.js",
+      "sha256": "7258eca52e65d69845759503f9fdd66c252f40e5eafb76db5d481172e31ac9ed"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/graceful-fs/graceful-fs.js",
+      "sha256": "7da35669b6b6b0e4aafee31674c033f2cebb0c8f9ae010f709dcc185d3f17786"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/graceful-fs/legacy-streams.js",
+      "sha256": "60a6a7ecf7c3e55a3ffaae13433b6cff388b7205bba6daf393c863f77a949e36"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/graceful-fs/polyfills.js",
+      "sha256": "66ea1687ed5edf39d67296d26edccc8da695d9a869303a78d0e580cd770aca27"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/jsonfile/index.js",
+      "sha256": "ec5a9f1f45014486f1df4a8c11a5b078671e9936c0651e035b67cb5e763954e8"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/jsonfile/utils.js",
+      "sha256": "3a37b4b21c2cd8f75b850f1373f68a39bcaab3ac58d75ab44e62674cdb0d4cad"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/minimatch/dist/commonjs/assert-valid-pattern.js",
+      "sha256": "fcd3b0e6efee67b11249804cc64bf4d22c883395491f79bfb484869d61823600"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/minimatch/dist/commonjs/ast.js",
+      "sha256": "64eef2ec09b28ba2db87a46111ad87e1e56c73b603baf6de86a12eb5b591f324"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/minimatch/dist/commonjs/brace-expressions.js",
+      "sha256": "12054a62fa32362027b8103896d28d65adad412efb2a41f01af2e2e7400bbf9a"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/minimatch/dist/commonjs/escape.js",
+      "sha256": "54b57f8f50c8e834f35a30c1848ac3f79acf8dd85894505f046afaf3965e63a0"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/minimatch/dist/commonjs/index.js",
+      "sha256": "d224f71f20d7c206fcc5b7e9f747324c7698345a0b2c28d717dd9cf698306783"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/minimatch/dist/commonjs/unescape.js",
+      "sha256": "bec1bb4483a2c325599949dd6668b5b7daa2dcbe046c5a09899bc8c5b51c08c1"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/node_modules/universalify/index.js",
+      "sha256": "83b02adb3872f6c482db4e57c300fa39b5cad65e317fc2f70b9de7d305c035a1"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/region-info/index.js",
+      "sha256": "b7ba16d0db9b0651435d5516c1762bf0c1e4f8336aa370307e580fd5186a61d1"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/region-info/lib/built-ins.generated.js",
+      "sha256": "735a0e74ffe1713d91991cee038a188a42e656b0d1b8846627fda389ca02ad80"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/region-info/lib/fact.js",
+      "sha256": "e3004ae909cf4e52041ac98791c6c95c2487c80b4ce013d9cd5cce33f48f0ef0"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/region-info/lib/index.js",
+      "sha256": "f469de927770dfd26e9d43af966491f7678738f430ba03759135707ac833e77c"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/aws-cdk-lib/region-info/lib/region-info.js",
+      "sha256": "287ef8011a1ed7e5dc0abaef847c3f61846e750b18dc6f4145932aca59fd9338"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/constructs/lib/construct.js",
+      "sha256": "fb3da94c2eb70fd66f191b5f6590f19435afa7f17bad2750907975af6ce06526"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/constructs/lib/dependency.js",
+      "sha256": "fc2715d70ca1e9a066315dc022ba5eb4a3c34f92da2787d6b869aefefd76e00f"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/constructs/lib/index.js",
+      "sha256": "cc5c4c45cb0103e51738b0729f5428486c7077dcb107028bb84d8d80f1a34a8e"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/constructs/lib/private/stack-trace.js",
+      "sha256": "ffb0d8b521e3360af8a7896be23a5ca70d6fa95e56b337bfe4d2fe2614dcb821"
+    },
+    {
+      "path": "infrastructure/domains/team-hub/node_modules/constructs/lib/private/uniqueid.js",
+      "sha256": "cb80129ab92bbb00123f84ab5a856b033cca4206bf57133d6fd30f3882a02ad2"
+    }
+  ],
+  "networkGuard": true,
+  "legacySynthesized": false,
+  "tournamentSynthesized": false,
+  "liveEndpointManifest": false
+}

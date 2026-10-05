@@ -1,0 +1,202 @@
+{
+  "schemaVersion": "domain-migration-status.v1",
+  "scope": "Ntgre; stored evidence reviewed offline, not a fresh AWS observation",
+  "currentDomain": "Team Hub",
+  "currentPhase": "M3 accepted; repository maintenance checkpoint; M4 pending",
+  "awsChanges": 0,
+  "productionChanges": 0,
+  "domains": [
+    {
+      "domain": "Shared/Core",
+      "classification": "SHARED_CAPABILITY",
+      "owner": "SHARED_CORE",
+      "phase": "M0",
+      "architectureStatus": "EXISTING_SHARED_IDENTITY",
+      "awsStatus": "UPDATE_COMPLETE",
+      "stack": null,
+      "api": null,
+      "dataStatus": "LEGACY_AUTHORITATIVE_NO_BUSINESS_DATA_MIGRATED",
+      "frontendStatus": "NO_INDEPENDENT_CUTOVER",
+      "legacyAuthority": true,
+      "gitCheckpoint": null,
+      "blockers": [
+        "Independent extraction and migration have not been accepted."
+      ],
+      "nextStep": "Retain shared identity; resolve shared consumer ownership.",
+      "lastVerified": "2026-10-05T15:22:18.164Z",
+      "evidence": [
+        "docs/architecture/team-hub-2b2-caller-release-evidence-2026-10-05/accepted-state.json",
+        "docs/architecture/project-respawn-domain-classification.md"
+      ]
+    },
+    {
+      "domain": "Tournament",
+      "classification": "INDEPENDENT_PRODUCT_DOMAIN",
+      "owner": "TOURNAMENT",
+      "phase": "M3_ACCEPTED_M7_PENDING",
+      "architectureStatus": "PROVEN_INDEPENDENT_ARCHITECTURE",
+      "awsStatus": "UPDATE_COMPLETE",
+      "stack": "ProjectRespawn-Tournaments-Ntgre",
+      "api": "msipnwy39j",
+      "dataStatus": "LEGACY_AUTHORITATIVE_NO_BUSINESS_DATA_MIGRATED",
+      "frontendStatus": "NO_INDEPENDENT_CUTOVER",
+      "legacyAuthority": true,
+      "gitCheckpoint": "98dc1230dfadebbbcc1756823c85c866956ceadc",
+      "blockers": [
+        "M7 update/restore proof outstanding; Phase 2A is not complete."
+      ],
+      "nextStep": "Separate authorization for Release 2 and restore Release 1 proof.",
+      "lastVerified": "2026-10-05T15:22:18.164Z",
+      "evidence": [
+        "docs/architecture/team-hub-2b2-caller-release-evidence-2026-10-05/accepted-state.json",
+        "docs/architecture/project-respawn-domain-classification.md"
+      ]
+    },
+    {
+      "domain": "Team Hub",
+      "classification": "INDEPENDENT_PRODUCT_DOMAIN",
+      "owner": "TEAM_HUB",
+      "phase": "M3_ACCEPTED",
+      "architectureStatus": "SECOND_INDEPENDENT_DOMAIN_PROVEN",
+      "awsStatus": "CREATE_COMPLETE",
+      "stack": "ProjectRespawn-TeamHub-Ntgre",
+      "api": "t54b88casf",
+      "dataStatus": "LEGACY_AUTHORITATIVE_NO_BUSINESS_DATA_MIGRATED",
+      "frontendStatus": "NO_INDEPENDENT_CUTOVER",
+      "legacyAuthority": true,
+      "gitCheckpoint": {
+        "reference": "CONTAINING_ACCEPTED_CHECKPOINT_COMMIT",
+        "resolve": "git log -1 -- config/domains/team-hub/domain-endpoints.Ntgre.json"
+      },
+      "blockers": [
+        "M4-M8 not accepted; no business data or writer cutover."
+      ],
+      "nextStep": "2B3 / M4 state inventory and migration preparation; separate authorization.",
+      "lastVerified": "2026-10-05T15:22:18.164Z",
+      "evidence": [
+        "docs/architecture/team-hub-2b2-caller-release-evidence-2026-10-05/accepted-state.json",
+        "docs/architecture/project-respawn-domain-classification.md"
+      ],
+      "restrictedCaller": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Deploy",
+      "executionRole": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "firstCreateAuthorityEffective": false,
+      "frontendCutover": false,
+      "businessDataMigrated": false
+    },
+    {
+      "domain": "Creator",
+      "classification": "DOMAIN_CANDIDATE",
+      "owner": "CREATOR",
+      "phase": "M0",
+      "architectureStatus": "PAUSED",
+      "awsStatus": "NOT_EXTRACTED",
+      "stack": null,
+      "api": null,
+      "dataStatus": "LEGACY_AUTHORITATIVE_NO_BUSINESS_DATA_MIGRATED",
+      "frontendStatus": "NO_INDEPENDENT_CUTOVER",
+      "legacyAuthority": true,
+      "gitCheckpoint": null,
+      "blockers": [
+        "Independent extraction and migration have not been accepted."
+      ],
+      "nextStep": "Paused for this maintenance checkpoint; resume only with a scoped instruction.",
+      "lastVerified": "2026-10-05T15:22:18.164Z",
+      "evidence": [
+        "docs/architecture/team-hub-2b2-caller-release-evidence-2026-10-05/accepted-state.json",
+        "docs/architecture/project-respawn-domain-classification.md"
+      ]
+    },
+    {
+      "domain": "Commerce",
+      "classification": "DOMAIN_CANDIDATE",
+      "owner": "COMMERCE",
+      "phase": "M0",
+      "architectureStatus": "NOT_EXTRACTED",
+      "awsStatus": "NOT_EXTRACTED",
+      "stack": null,
+      "api": null,
+      "dataStatus": "LEGACY_AUTHORITATIVE_NO_BUSINESS_DATA_MIGRATED",
+      "frontendStatus": "NO_INDEPENDENT_CUTOVER",
+      "legacyAuthority": true,
+      "gitCheckpoint": null,
+      "blockers": [
+        "Independent extraction and migration have not been accepted."
+      ],
+      "nextStep": "Ownership/design review before foundation.",
+      "lastVerified": "2026-10-05T15:22:18.164Z",
+      "evidence": [
+        "docs/architecture/team-hub-2b2-caller-release-evidence-2026-10-05/accepted-state.json",
+        "docs/architecture/project-respawn-domain-classification.md"
+      ]
+    },
+    {
+      "domain": "Community/Events",
+      "classification": "DOMAIN_CANDIDATE",
+      "owner": "COMMUNITY_EVENTS",
+      "phase": "M0",
+      "architectureStatus": "NOT_EXTRACTED",
+      "awsStatus": "NOT_EXTRACTED",
+      "stack": null,
+      "api": null,
+      "dataStatus": "LEGACY_AUTHORITATIVE_NO_BUSINESS_DATA_MIGRATED",
+      "frontendStatus": "NO_INDEPENDENT_CUTOVER",
+      "legacyAuthority": true,
+      "gitCheckpoint": null,
+      "blockers": [
+        "Independent extraction and migration have not been accepted."
+      ],
+      "nextStep": "Ownership/design review before foundation.",
+      "lastVerified": "2026-10-05T15:22:18.164Z",
+      "evidence": [
+        "docs/architecture/team-hub-2b2-caller-release-evidence-2026-10-05/accepted-state.json",
+        "docs/architecture/project-respawn-domain-classification.md"
+      ]
+    },
+    {
+      "domain": "Applications/Intake",
+      "classification": "DOMAIN_CANDIDATE",
+      "owner": "APPLICATIONS_INTAKE",
+      "phase": "M0",
+      "architectureStatus": "NOT_EXTRACTED",
+      "awsStatus": "NOT_EXTRACTED",
+      "stack": null,
+      "api": null,
+      "dataStatus": "LEGACY_AUTHORITATIVE_NO_BUSINESS_DATA_MIGRATED",
+      "frontendStatus": "NO_INDEPENDENT_CUTOVER",
+      "legacyAuthority": true,
+      "gitCheckpoint": null,
+      "blockers": [
+        "Independent extraction and migration have not been accepted."
+      ],
+      "nextStep": "Review module versus independent root and contracts.",
+      "lastVerified": "2026-10-05T15:22:18.164Z",
+      "evidence": [
+        "docs/architecture/team-hub-2b2-caller-release-evidence-2026-10-05/accepted-state.json",
+        "docs/architecture/project-respawn-domain-classification.md"
+      ]
+    },
+    {
+      "domain": "Investor Access",
+      "classification": "DOMAIN_CANDIDATE",
+      "owner": "INVESTOR_ACCESS",
+      "phase": "M0",
+      "architectureStatus": "NOT_EXTRACTED",
+      "awsStatus": "NOT_EXTRACTED",
+      "stack": null,
+      "api": null,
+      "dataStatus": "LEGACY_AUTHORITATIVE_NO_BUSINESS_DATA_MIGRATED",
+      "frontendStatus": "NO_INDEPENDENT_CUTOVER",
+      "legacyAuthority": true,
+      "gitCheckpoint": null,
+      "blockers": [
+        "Independent extraction and migration have not been accepted."
+      ],
+      "nextStep": "Review module versus independent root and shared authorization.",
+      "lastVerified": "2026-10-05T15:22:18.164Z",
+      "evidence": [
+        "docs/architecture/team-hub-2b2-caller-release-evidence-2026-10-05/accepted-state.json",
+        "docs/architecture/project-respawn-domain-classification.md"
+      ]
+    }
+  ]
+}
