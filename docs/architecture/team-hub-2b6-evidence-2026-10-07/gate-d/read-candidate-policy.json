@@ -1,0 +1,144 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Deny",
+      "NotAction": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "kms:Decrypt",
+        "dynamodb:GetItem",
+        "dynamodb:Query",
+        "lambda:InvokeFunction",
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Deny",
+      "Action": "logs:*",
+      "NotResource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read:*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read:*"
+    },
+    {
+      "Effect": "Deny",
+      "Action": "kms:Decrypt",
+      "NotResource": "arn:aws:kms:eu-north-1:058264289478:key/*"
+    },
+    {
+      "Effect": "Deny",
+      "Action": "kms:Decrypt",
+      "Resource": "*",
+      "Condition": {
+        "ForAllValues:StringNotEquals": {
+          "kms:ResourceAliases": [
+            "alias/aws/lambda"
+          ]
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": "kms:Decrypt",
+      "Resource": "arn:aws:kms:eu-north-1:058264289478:key/*",
+      "Condition": {
+        "ForAnyValue:StringEquals": {
+          "kms:ResourceAliases": [
+            "alias/aws/lambda"
+          ]
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:GetItem",
+        "dynamodb:Query"
+      ],
+      "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "Condition": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "TEAM#team:*",
+            "SLUG#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": "dynamodb:Query",
+      "Resource": [
+        "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/BySubject",
+        "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/ByTeamStatus"
+      ],
+      "Condition": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "SUBJECT#*",
+            "STATUS#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": "dynamodb:GetItem",
+      "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "Condition": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "CONTROL#AUTHORITY"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": "dynamodb:*",
+      "NotResource": [
+        "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+        "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/BySubject",
+        "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/ByTeamStatus",
+        "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "lambda:InvokeFunction",
+      "Resource": [
+        "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+        "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST"
+      ]
+    },
+    {
+      "Effect": "Deny",
+      "Action": "lambda:*",
+      "NotResource": [
+        "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+        "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "secretsmanager:GetSecretValue",
+      "Resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-??????"
+    }
+  ]
+}

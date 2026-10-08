@@ -1,0 +1,153 @@
+{
+  "at": "2026-10-05T20:01:33.171Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "lambda": "arn:aws:lambda:eu-north-1:058264289478:function:amplify-projectrespawnweb-myFunctionrebuildlambdaF-LwVW5TljICgV",
+  "role": {
+    "arn": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+    "trust": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "lambda.amazonaws.com"
+          },
+          "Action": "sts:AssumeRole"
+        }
+      ]
+    },
+    "boundary": null
+  },
+  "policyDigests": [
+    {
+      "name": "GraphqlAccessPolicy11EF5618C",
+      "digest": "cfb05f8ca0f2dd64cd24a80fb9e36556ee282335605d1867c3d68ba2d24e9872"
+    },
+    {
+      "name": "myFunctionrebuildlambdaServiceRoleDefaultPolicy67EF0A34",
+      "digest": "9d2c14d3ede731f0d433d06a9165cc5a4acb869329aa2ef377e8678a17e2427f"
+    },
+    {
+      "name": "AWSLambdaBasicExecutionRole",
+      "digest": "8992968b3dd4b9898b807c3af58ac8e5322f8991eef973e4ccdf877b1fed99cf"
+    }
+  ],
+  "relevantStatements": [
+    {
+      "policy": "GraphqlAccessPolicy11EF5618C",
+      "statement": {
+        "Action": "appsync:GraphQL",
+        "Resource": [
+          "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/types/Query/*",
+          "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/types/Mutation/*"
+        ],
+        "Effect": "Allow"
+      }
+    },
+    {
+      "policy": "myFunctionrebuildlambdaServiceRoleDefaultPolicy67EF0A34",
+      "statement": {
+        "Action": [
+          "dynamodb:PutItem",
+          "dynamodb:UpdateItem"
+        ],
+        "Resource": [
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+        ],
+        "Effect": "Allow"
+      }
+    },
+    {
+      "policy": "myFunctionrebuildlambdaServiceRoleDefaultPolicy67EF0A34",
+      "statement": {
+        "Action": [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject"
+        ],
+        "Resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/*",
+        "Effect": "Allow"
+      }
+    }
+  ],
+  "tableEnvironment": {
+    "TEAM_HUB_MEMBERSHIP_TABLE": "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+    "TEAM_HUB_TEAM_TABLE": "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+    "TEAM_HUB_ROSTER_TABLE": "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+  },
+  "streams": [
+    {
+      "model": "PlayerChampionPoolEntry",
+      "mappings": []
+    },
+    {
+      "model": "TeamMembership",
+      "mappings": []
+    },
+    {
+      "model": "Team",
+      "mappings": []
+    },
+    {
+      "model": "TeamRosterSlot",
+      "mappings": []
+    }
+  ],
+  "eventBridgeDefaultBusRules": [],
+  "tablePolicies": [
+    {
+      "model": "PlayerChampionPoolEntry",
+      "present": false
+    },
+    {
+      "model": "TeamMembership",
+      "present": false
+    },
+    {
+      "model": "Team",
+      "present": false
+    },
+    {
+      "model": "TeamRosterSlot",
+      "present": false
+    }
+  ],
+  "limitations": [
+    "EventBridge check covers default event bus, not every external scheduler/client.",
+    "Shared Lambda permissions are not a complete account-wide principal/session/data-event audit.",
+    "No production stacks or business data inspected."
+  ],
+  "audit": {
+    "calls": 18,
+    "retries": 0,
+    "errors": [
+      {
+        "service": "dynamodb",
+        "action": "get-resource-policy",
+        "code": "PolicyNotFoundException"
+      },
+      {
+        "service": "dynamodb",
+        "action": "get-resource-policy",
+        "code": "PolicyNotFoundException"
+      },
+      {
+        "service": "dynamodb",
+        "action": "get-resource-policy",
+        "code": "PolicyNotFoundException"
+      },
+      {
+        "service": "dynamodb",
+        "action": "get-resource-policy",
+        "code": "PolicyNotFoundException"
+      }
+    ],
+    "awsWrites": 0
+  }
+}

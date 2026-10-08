@@ -1,0 +1,1190 @@
+{
+  "status": "PROPOSAL_ONLY_NOT_APPLIED",
+  "proposals": [
+    {
+      "resourceId": "044:PlayerChampionPoolEntryTable",
+      "stack": "arn:aws:cloudformation:eu-north-1:058264289478:stack/amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataPlayerChampionPoolEntryNestedSt-7CZOVYLEJDGR/0e815680-b5c8-11f1-9b4b-0effd87955e5",
+      "physicalId": "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "templateDigest": "b07cf5b8c4d417a1c3b1ba8b130da5aaebb433e4f2ce5d0995b3abab145576f9",
+      "before": {
+        "Type": "Custom::AmplifyDynamoDBTable",
+        "Properties": {
+          "ServiceToken": {
+            "Ref": "referencetoamplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource0EF36838OutputsamplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataAmplifyTableMana6D60D95B"
+          },
+          "tableName": {
+            "Fn::Join": [
+              "",
+              [
+                "PlayerChampionPoolEntry-",
+                {
+                  "Ref": "referencetoamplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataGraphQLAPI0F1D14CBApiId"
+                },
+                "-NONE"
+              ]
+            ]
+          },
+          "attributeDefinitions": [
+            {
+              "attributeName": "id",
+              "attributeType": "S"
+            },
+            {
+              "attributeName": "teamId",
+              "attributeType": "S"
+            },
+            {
+              "attributeName": "membershipId",
+              "attributeType": "S"
+            }
+          ],
+          "keySchema": [
+            {
+              "attributeName": "id",
+              "keyType": "HASH"
+            }
+          ],
+          "globalSecondaryIndexes": [
+            {
+              "indexName": "playerChampionPoolEntriesByTeamId",
+              "keySchema": [
+                {
+                  "attributeName": "teamId",
+                  "keyType": "HASH"
+                }
+              ],
+              "projection": {
+                "projectionType": "ALL"
+              },
+              "provisionedThroughput": {
+                "Fn::If": [
+                  "ShouldUsePayPerRequestBilling",
+                  {
+                    "Ref": "AWS::NoValue"
+                  },
+                  {
+                    "ReadCapacityUnits": {
+                      "Ref": "DynamoDBModelTableReadIOPS"
+                    },
+                    "WriteCapacityUnits": {
+                      "Ref": "DynamoDBModelTableWriteIOPS"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "indexName": "playerChampionPoolEntriesByMembershipId",
+              "keySchema": [
+                {
+                  "attributeName": "membershipId",
+                  "keyType": "HASH"
+                }
+              ],
+              "projection": {
+                "projectionType": "ALL"
+              },
+              "provisionedThroughput": {
+                "Fn::If": [
+                  "ShouldUsePayPerRequestBilling",
+                  {
+                    "Ref": "AWS::NoValue"
+                  },
+                  {
+                    "ReadCapacityUnits": {
+                      "Ref": "DynamoDBModelTableReadIOPS"
+                    },
+                    "WriteCapacityUnits": {
+                      "Ref": "DynamoDBModelTableWriteIOPS"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "provisionedThroughput": {
+            "Fn::If": [
+              "ShouldUsePayPerRequestBilling",
+              {
+                "Ref": "AWS::NoValue"
+              },
+              {
+                "ReadCapacityUnits": {
+                  "Ref": "DynamoDBModelTableReadIOPS"
+                },
+                "WriteCapacityUnits": {
+                  "Ref": "DynamoDBModelTableWriteIOPS"
+                }
+              }
+            ]
+          },
+          "sseSpecification": {
+            "sseEnabled": false
+          },
+          "streamSpecification": {
+            "streamViewType": "NEW_AND_OLD_IMAGES"
+          },
+          "deletionProtectionEnabled": false,
+          "allowDestructiveGraphqlSchemaUpdates": true,
+          "replaceTableUponGsiUpdate": true,
+          "pointInTimeRecoverySpecification": {
+            "Fn::If": [
+              "ShouldUsePointInTimeRecovery",
+              {
+                "PointInTimeRecoveryEnabled": true
+              },
+              {
+                "Ref": "AWS::NoValue"
+              }
+            ]
+          },
+          "billingMode": {
+            "Fn::If": [
+              "ShouldUsePayPerRequestBilling",
+              "PAY_PER_REQUEST",
+              {
+                "Ref": "AWS::NoValue"
+              }
+            ]
+          }
+        },
+        "UpdateReplacePolicy": "Delete",
+        "DeletionPolicy": "Delete",
+        "Metadata": {
+          "aws:cdk:path": "amplify-projectrespawnwebsite-Ntgre-sandbox-8bd9d02332/data/amplifyData/PlayerChampionPoolEntry/PlayerChampionPoolEntryTable/Default/Default"
+        }
+      },
+      "proposed": {
+        "Type": "Custom::AmplifyDynamoDBTable",
+        "Properties": {
+          "ServiceToken": {
+            "Ref": "referencetoamplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource0EF36838OutputsamplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataAmplifyTableMana6D60D95B"
+          },
+          "tableName": {
+            "Fn::Join": [
+              "",
+              [
+                "PlayerChampionPoolEntry-",
+                {
+                  "Ref": "referencetoamplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataGraphQLAPI0F1D14CBApiId"
+                },
+                "-NONE"
+              ]
+            ]
+          },
+          "attributeDefinitions": [
+            {
+              "attributeName": "id",
+              "attributeType": "S"
+            },
+            {
+              "attributeName": "teamId",
+              "attributeType": "S"
+            },
+            {
+              "attributeName": "membershipId",
+              "attributeType": "S"
+            }
+          ],
+          "keySchema": [
+            {
+              "attributeName": "id",
+              "keyType": "HASH"
+            }
+          ],
+          "globalSecondaryIndexes": [
+            {
+              "indexName": "playerChampionPoolEntriesByTeamId",
+              "keySchema": [
+                {
+                  "attributeName": "teamId",
+                  "keyType": "HASH"
+                }
+              ],
+              "projection": {
+                "projectionType": "ALL"
+              },
+              "provisionedThroughput": {
+                "Fn::If": [
+                  "ShouldUsePayPerRequestBilling",
+                  {
+                    "Ref": "AWS::NoValue"
+                  },
+                  {
+                    "ReadCapacityUnits": {
+                      "Ref": "DynamoDBModelTableReadIOPS"
+                    },
+                    "WriteCapacityUnits": {
+                      "Ref": "DynamoDBModelTableWriteIOPS"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "indexName": "playerChampionPoolEntriesByMembershipId",
+              "keySchema": [
+                {
+                  "attributeName": "membershipId",
+                  "keyType": "HASH"
+                }
+              ],
+              "projection": {
+                "projectionType": "ALL"
+              },
+              "provisionedThroughput": {
+                "Fn::If": [
+                  "ShouldUsePayPerRequestBilling",
+                  {
+                    "Ref": "AWS::NoValue"
+                  },
+                  {
+                    "ReadCapacityUnits": {
+                      "Ref": "DynamoDBModelTableReadIOPS"
+                    },
+                    "WriteCapacityUnits": {
+                      "Ref": "DynamoDBModelTableWriteIOPS"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "provisionedThroughput": {
+            "Fn::If": [
+              "ShouldUsePayPerRequestBilling",
+              {
+                "Ref": "AWS::NoValue"
+              },
+              {
+                "ReadCapacityUnits": {
+                  "Ref": "DynamoDBModelTableReadIOPS"
+                },
+                "WriteCapacityUnits": {
+                  "Ref": "DynamoDBModelTableWriteIOPS"
+                }
+              }
+            ]
+          },
+          "sseSpecification": {
+            "sseEnabled": false
+          },
+          "streamSpecification": {
+            "streamViewType": "NEW_AND_OLD_IMAGES"
+          },
+          "deletionProtectionEnabled": true,
+          "allowDestructiveGraphqlSchemaUpdates": false,
+          "replaceTableUponGsiUpdate": false,
+          "pointInTimeRecoverySpecification": {
+            "pointInTimeRecoveryEnabled": true
+          },
+          "billingMode": {
+            "Fn::If": [
+              "ShouldUsePayPerRequestBilling",
+              "PAY_PER_REQUEST",
+              {
+                "Ref": "AWS::NoValue"
+              }
+            ]
+          }
+        },
+        "UpdateReplacePolicy": "Retain",
+        "DeletionPolicy": "Retain",
+        "Metadata": {
+          "aws:cdk:path": "amplify-projectrespawnwebsite-Ntgre-sandbox-8bd9d02332/data/amplifyData/PlayerChampionPoolEntry/PlayerChampionPoolEntryTable/Default/Default"
+        }
+      },
+      "identityUnchanged": true
+    },
+    {
+      "resourceId": "047:TeamMembershipTable",
+      "stack": "arn:aws:cloudformation:eu-north-1:058264289478:stack/amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataTeamMembershipNestedStackTeamMe-WCZXVS62U7CN/f21a8660-b5c7-11f1-ab49-0e259bcc21f3",
+      "physicalId": "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "templateDigest": "64555a29cf874b6cf68e074ec62f5e3955eef865d55dbf6775ea58e56998fa29",
+      "before": {
+        "Type": "Custom::AmplifyDynamoDBTable",
+        "Properties": {
+          "ServiceToken": {
+            "Ref": "referencetoamplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource0EF36838OutputsamplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataAmplifyTableMana6D60D95B"
+          },
+          "tableName": {
+            "Fn::Join": [
+              "",
+              [
+                "TeamMembership-",
+                {
+                  "Ref": "referencetoamplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataGraphQLAPI0F1D14CBApiId"
+                },
+                "-NONE"
+              ]
+            ]
+          },
+          "attributeDefinitions": [
+            {
+              "attributeName": "id",
+              "attributeType": "S"
+            },
+            {
+              "attributeName": "teamId",
+              "attributeType": "S"
+            },
+            {
+              "attributeName": "userId",
+              "attributeType": "S"
+            }
+          ],
+          "keySchema": [
+            {
+              "attributeName": "id",
+              "keyType": "HASH"
+            }
+          ],
+          "globalSecondaryIndexes": [
+            {
+              "indexName": "teamMembershipsByTeamId",
+              "keySchema": [
+                {
+                  "attributeName": "teamId",
+                  "keyType": "HASH"
+                }
+              ],
+              "projection": {
+                "projectionType": "ALL"
+              },
+              "provisionedThroughput": {
+                "Fn::If": [
+                  "ShouldUsePayPerRequestBilling",
+                  {
+                    "Ref": "AWS::NoValue"
+                  },
+                  {
+                    "ReadCapacityUnits": {
+                      "Ref": "DynamoDBModelTableReadIOPS"
+                    },
+                    "WriteCapacityUnits": {
+                      "Ref": "DynamoDBModelTableWriteIOPS"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "indexName": "teamMembershipsByUserId",
+              "keySchema": [
+                {
+                  "attributeName": "userId",
+                  "keyType": "HASH"
+                }
+              ],
+              "projection": {
+                "projectionType": "ALL"
+              },
+              "provisionedThroughput": {
+                "Fn::If": [
+                  "ShouldUsePayPerRequestBilling",
+                  {
+                    "Ref": "AWS::NoValue"
+                  },
+                  {
+                    "ReadCapacityUnits": {
+                      "Ref": "DynamoDBModelTableReadIOPS"
+                    },
+                    "WriteCapacityUnits": {
+                      "Ref": "DynamoDBModelTableWriteIOPS"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "provisionedThroughput": {
+            "Fn::If": [
+              "ShouldUsePayPerRequestBilling",
+              {
+                "Ref": "AWS::NoValue"
+              },
+              {
+                "ReadCapacityUnits": {
+                  "Ref": "DynamoDBModelTableReadIOPS"
+                },
+                "WriteCapacityUnits": {
+                  "Ref": "DynamoDBModelTableWriteIOPS"
+                }
+              }
+            ]
+          },
+          "sseSpecification": {
+            "sseEnabled": false
+          },
+          "streamSpecification": {
+            "streamViewType": "NEW_AND_OLD_IMAGES"
+          },
+          "deletionProtectionEnabled": false,
+          "allowDestructiveGraphqlSchemaUpdates": true,
+          "replaceTableUponGsiUpdate": true,
+          "pointInTimeRecoverySpecification": {
+            "Fn::If": [
+              "ShouldUsePointInTimeRecovery",
+              {
+                "PointInTimeRecoveryEnabled": true
+              },
+              {
+                "Ref": "AWS::NoValue"
+              }
+            ]
+          },
+          "billingMode": {
+            "Fn::If": [
+              "ShouldUsePayPerRequestBilling",
+              "PAY_PER_REQUEST",
+              {
+                "Ref": "AWS::NoValue"
+              }
+            ]
+          }
+        },
+        "UpdateReplacePolicy": "Delete",
+        "DeletionPolicy": "Delete",
+        "Metadata": {
+          "aws:cdk:path": "amplify-projectrespawnwebsite-Ntgre-sandbox-8bd9d02332/data/amplifyData/TeamMembership/TeamMembershipTable/Default/Default"
+        }
+      },
+      "proposed": {
+        "Type": "Custom::AmplifyDynamoDBTable",
+        "Properties": {
+          "ServiceToken": {
+            "Ref": "referencetoamplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource0EF36838OutputsamplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataAmplifyTableMana6D60D95B"
+          },
+          "tableName": {
+            "Fn::Join": [
+              "",
+              [
+                "TeamMembership-",
+                {
+                  "Ref": "referencetoamplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataGraphQLAPI0F1D14CBApiId"
+                },
+                "-NONE"
+              ]
+            ]
+          },
+          "attributeDefinitions": [
+            {
+              "attributeName": "id",
+              "attributeType": "S"
+            },
+            {
+              "attributeName": "teamId",
+              "attributeType": "S"
+            },
+            {
+              "attributeName": "userId",
+              "attributeType": "S"
+            }
+          ],
+          "keySchema": [
+            {
+              "attributeName": "id",
+              "keyType": "HASH"
+            }
+          ],
+          "globalSecondaryIndexes": [
+            {
+              "indexName": "teamMembershipsByTeamId",
+              "keySchema": [
+                {
+                  "attributeName": "teamId",
+                  "keyType": "HASH"
+                }
+              ],
+              "projection": {
+                "projectionType": "ALL"
+              },
+              "provisionedThroughput": {
+                "Fn::If": [
+                  "ShouldUsePayPerRequestBilling",
+                  {
+                    "Ref": "AWS::NoValue"
+                  },
+                  {
+                    "ReadCapacityUnits": {
+                      "Ref": "DynamoDBModelTableReadIOPS"
+                    },
+                    "WriteCapacityUnits": {
+                      "Ref": "DynamoDBModelTableWriteIOPS"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "indexName": "teamMembershipsByUserId",
+              "keySchema": [
+                {
+                  "attributeName": "userId",
+                  "keyType": "HASH"
+                }
+              ],
+              "projection": {
+                "projectionType": "ALL"
+              },
+              "provisionedThroughput": {
+                "Fn::If": [
+                  "ShouldUsePayPerRequestBilling",
+                  {
+                    "Ref": "AWS::NoValue"
+                  },
+                  {
+                    "ReadCapacityUnits": {
+                      "Ref": "DynamoDBModelTableReadIOPS"
+                    },
+                    "WriteCapacityUnits": {
+                      "Ref": "DynamoDBModelTableWriteIOPS"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "provisionedThroughput": {
+            "Fn::If": [
+              "ShouldUsePayPerRequestBilling",
+              {
+                "Ref": "AWS::NoValue"
+              },
+              {
+                "ReadCapacityUnits": {
+                  "Ref": "DynamoDBModelTableReadIOPS"
+                },
+                "WriteCapacityUnits": {
+                  "Ref": "DynamoDBModelTableWriteIOPS"
+                }
+              }
+            ]
+          },
+          "sseSpecification": {
+            "sseEnabled": false
+          },
+          "streamSpecification": {
+            "streamViewType": "NEW_AND_OLD_IMAGES"
+          },
+          "deletionProtectionEnabled": true,
+          "allowDestructiveGraphqlSchemaUpdates": false,
+          "replaceTableUponGsiUpdate": false,
+          "pointInTimeRecoverySpecification": {
+            "pointInTimeRecoveryEnabled": true
+          },
+          "billingMode": {
+            "Fn::If": [
+              "ShouldUsePayPerRequestBilling",
+              "PAY_PER_REQUEST",
+              {
+                "Ref": "AWS::NoValue"
+              }
+            ]
+          }
+        },
+        "UpdateReplacePolicy": "Retain",
+        "DeletionPolicy": "Retain",
+        "Metadata": {
+          "aws:cdk:path": "amplify-projectrespawnwebsite-Ntgre-sandbox-8bd9d02332/data/amplifyData/TeamMembership/TeamMembershipTable/Default/Default"
+        }
+      },
+      "identityUnchanged": true
+    },
+    {
+      "resourceId": "048:TeamTable",
+      "stack": "arn:aws:cloudformation:eu-north-1:058264289478:stack/amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataTeamNestedStackTeamNestedStackR-1JDKU82MS8003/f2133360-b5c7-11f1-b24b-06e73c31677d",
+      "physicalId": "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "templateDigest": "f4334508b7483c8dab9e45dc9ef644e50dd388de8f08937aea5072266878a50d",
+      "before": {
+        "Type": "Custom::AmplifyDynamoDBTable",
+        "Properties": {
+          "ServiceToken": {
+            "Ref": "referencetoamplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource0EF36838OutputsamplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataAmplifyTableMana6D60D95B"
+          },
+          "tableName": {
+            "Fn::Join": [
+              "",
+              [
+                "Team-",
+                {
+                  "Ref": "referencetoamplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataGraphQLAPI0F1D14CBApiId"
+                },
+                "-NONE"
+              ]
+            ]
+          },
+          "attributeDefinitions": [
+            {
+              "attributeName": "id",
+              "attributeType": "S"
+            },
+            {
+              "attributeName": "slug",
+              "attributeType": "S"
+            },
+            {
+              "attributeName": "status",
+              "attributeType": "S"
+            }
+          ],
+          "keySchema": [
+            {
+              "attributeName": "id",
+              "keyType": "HASH"
+            }
+          ],
+          "globalSecondaryIndexes": [
+            {
+              "indexName": "teamsBySlug",
+              "keySchema": [
+                {
+                  "attributeName": "slug",
+                  "keyType": "HASH"
+                }
+              ],
+              "projection": {
+                "projectionType": "ALL"
+              },
+              "provisionedThroughput": {
+                "Fn::If": [
+                  "ShouldUsePayPerRequestBilling",
+                  {
+                    "Ref": "AWS::NoValue"
+                  },
+                  {
+                    "ReadCapacityUnits": {
+                      "Ref": "DynamoDBModelTableReadIOPS"
+                    },
+                    "WriteCapacityUnits": {
+                      "Ref": "DynamoDBModelTableWriteIOPS"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "indexName": "teamsByStatus",
+              "keySchema": [
+                {
+                  "attributeName": "status",
+                  "keyType": "HASH"
+                }
+              ],
+              "projection": {
+                "projectionType": "ALL"
+              },
+              "provisionedThroughput": {
+                "Fn::If": [
+                  "ShouldUsePayPerRequestBilling",
+                  {
+                    "Ref": "AWS::NoValue"
+                  },
+                  {
+                    "ReadCapacityUnits": {
+                      "Ref": "DynamoDBModelTableReadIOPS"
+                    },
+                    "WriteCapacityUnits": {
+                      "Ref": "DynamoDBModelTableWriteIOPS"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "provisionedThroughput": {
+            "Fn::If": [
+              "ShouldUsePayPerRequestBilling",
+              {
+                "Ref": "AWS::NoValue"
+              },
+              {
+                "ReadCapacityUnits": {
+                  "Ref": "DynamoDBModelTableReadIOPS"
+                },
+                "WriteCapacityUnits": {
+                  "Ref": "DynamoDBModelTableWriteIOPS"
+                }
+              }
+            ]
+          },
+          "sseSpecification": {
+            "sseEnabled": false
+          },
+          "streamSpecification": {
+            "streamViewType": "NEW_AND_OLD_IMAGES"
+          },
+          "deletionProtectionEnabled": false,
+          "allowDestructiveGraphqlSchemaUpdates": true,
+          "replaceTableUponGsiUpdate": true,
+          "pointInTimeRecoverySpecification": {
+            "Fn::If": [
+              "ShouldUsePointInTimeRecovery",
+              {
+                "PointInTimeRecoveryEnabled": true
+              },
+              {
+                "Ref": "AWS::NoValue"
+              }
+            ]
+          },
+          "billingMode": {
+            "Fn::If": [
+              "ShouldUsePayPerRequestBilling",
+              "PAY_PER_REQUEST",
+              {
+                "Ref": "AWS::NoValue"
+              }
+            ]
+          }
+        },
+        "UpdateReplacePolicy": "Delete",
+        "DeletionPolicy": "Delete",
+        "Metadata": {
+          "aws:cdk:path": "amplify-projectrespawnwebsite-Ntgre-sandbox-8bd9d02332/data/amplifyData/Team/TeamTable/Default/Default"
+        }
+      },
+      "proposed": {
+        "Type": "Custom::AmplifyDynamoDBTable",
+        "Properties": {
+          "ServiceToken": {
+            "Ref": "referencetoamplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource0EF36838OutputsamplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataAmplifyTableMana6D60D95B"
+          },
+          "tableName": {
+            "Fn::Join": [
+              "",
+              [
+                "Team-",
+                {
+                  "Ref": "referencetoamplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataGraphQLAPI0F1D14CBApiId"
+                },
+                "-NONE"
+              ]
+            ]
+          },
+          "attributeDefinitions": [
+            {
+              "attributeName": "id",
+              "attributeType": "S"
+            },
+            {
+              "attributeName": "slug",
+              "attributeType": "S"
+            },
+            {
+              "attributeName": "status",
+              "attributeType": "S"
+            }
+          ],
+          "keySchema": [
+            {
+              "attributeName": "id",
+              "keyType": "HASH"
+            }
+          ],
+          "globalSecondaryIndexes": [
+            {
+              "indexName": "teamsBySlug",
+              "keySchema": [
+                {
+                  "attributeName": "slug",
+                  "keyType": "HASH"
+                }
+              ],
+              "projection": {
+                "projectionType": "ALL"
+              },
+              "provisionedThroughput": {
+                "Fn::If": [
+                  "ShouldUsePayPerRequestBilling",
+                  {
+                    "Ref": "AWS::NoValue"
+                  },
+                  {
+                    "ReadCapacityUnits": {
+                      "Ref": "DynamoDBModelTableReadIOPS"
+                    },
+                    "WriteCapacityUnits": {
+                      "Ref": "DynamoDBModelTableWriteIOPS"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "indexName": "teamsByStatus",
+              "keySchema": [
+                {
+                  "attributeName": "status",
+                  "keyType": "HASH"
+                }
+              ],
+              "projection": {
+                "projectionType": "ALL"
+              },
+              "provisionedThroughput": {
+                "Fn::If": [
+                  "ShouldUsePayPerRequestBilling",
+                  {
+                    "Ref": "AWS::NoValue"
+                  },
+                  {
+                    "ReadCapacityUnits": {
+                      "Ref": "DynamoDBModelTableReadIOPS"
+                    },
+                    "WriteCapacityUnits": {
+                      "Ref": "DynamoDBModelTableWriteIOPS"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "provisionedThroughput": {
+            "Fn::If": [
+              "ShouldUsePayPerRequestBilling",
+              {
+                "Ref": "AWS::NoValue"
+              },
+              {
+                "ReadCapacityUnits": {
+                  "Ref": "DynamoDBModelTableReadIOPS"
+                },
+                "WriteCapacityUnits": {
+                  "Ref": "DynamoDBModelTableWriteIOPS"
+                }
+              }
+            ]
+          },
+          "sseSpecification": {
+            "sseEnabled": false
+          },
+          "streamSpecification": {
+            "streamViewType": "NEW_AND_OLD_IMAGES"
+          },
+          "deletionProtectionEnabled": true,
+          "allowDestructiveGraphqlSchemaUpdates": false,
+          "replaceTableUponGsiUpdate": false,
+          "pointInTimeRecoverySpecification": {
+            "pointInTimeRecoveryEnabled": true
+          },
+          "billingMode": {
+            "Fn::If": [
+              "ShouldUsePayPerRequestBilling",
+              "PAY_PER_REQUEST",
+              {
+                "Ref": "AWS::NoValue"
+              }
+            ]
+          }
+        },
+        "UpdateReplacePolicy": "Retain",
+        "DeletionPolicy": "Retain",
+        "Metadata": {
+          "aws:cdk:path": "amplify-projectrespawnwebsite-Ntgre-sandbox-8bd9d02332/data/amplifyData/Team/TeamTable/Default/Default"
+        }
+      },
+      "identityUnchanged": true
+    },
+    {
+      "resourceId": "049:TeamRosterSlotTable",
+      "stack": "arn:aws:cloudformation:eu-north-1:058264289478:stack/amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataTeamRosterSlotNestedStackTeamRo-14YH10PBU6UWL/f2059ed0-b5c7-11f1-ab9d-0e1012e43b33",
+      "physicalId": "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "templateDigest": "45c8d1e03900cfd9ee8c9c42c4fe6f0a5a312c3151d3dfce5d1526bc9bbef240",
+      "before": {
+        "Type": "Custom::AmplifyDynamoDBTable",
+        "Properties": {
+          "ServiceToken": {
+            "Ref": "referencetoamplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource0EF36838OutputsamplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataAmplifyTableMana6D60D95B"
+          },
+          "tableName": {
+            "Fn::Join": [
+              "",
+              [
+                "TeamRosterSlot-",
+                {
+                  "Ref": "referencetoamplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataGraphQLAPI0F1D14CBApiId"
+                },
+                "-NONE"
+              ]
+            ]
+          },
+          "attributeDefinitions": [
+            {
+              "attributeName": "id",
+              "attributeType": "S"
+            },
+            {
+              "attributeName": "teamId",
+              "attributeType": "S"
+            },
+            {
+              "attributeName": "membershipId",
+              "attributeType": "S"
+            }
+          ],
+          "keySchema": [
+            {
+              "attributeName": "id",
+              "keyType": "HASH"
+            }
+          ],
+          "globalSecondaryIndexes": [
+            {
+              "indexName": "teamRosterSlotsByTeamId",
+              "keySchema": [
+                {
+                  "attributeName": "teamId",
+                  "keyType": "HASH"
+                }
+              ],
+              "projection": {
+                "projectionType": "ALL"
+              },
+              "provisionedThroughput": {
+                "Fn::If": [
+                  "ShouldUsePayPerRequestBilling",
+                  {
+                    "Ref": "AWS::NoValue"
+                  },
+                  {
+                    "ReadCapacityUnits": {
+                      "Ref": "DynamoDBModelTableReadIOPS"
+                    },
+                    "WriteCapacityUnits": {
+                      "Ref": "DynamoDBModelTableWriteIOPS"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "indexName": "teamRosterSlotsByMembershipId",
+              "keySchema": [
+                {
+                  "attributeName": "membershipId",
+                  "keyType": "HASH"
+                }
+              ],
+              "projection": {
+                "projectionType": "ALL"
+              },
+              "provisionedThroughput": {
+                "Fn::If": [
+                  "ShouldUsePayPerRequestBilling",
+                  {
+                    "Ref": "AWS::NoValue"
+                  },
+                  {
+                    "ReadCapacityUnits": {
+                      "Ref": "DynamoDBModelTableReadIOPS"
+                    },
+                    "WriteCapacityUnits": {
+                      "Ref": "DynamoDBModelTableWriteIOPS"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "provisionedThroughput": {
+            "Fn::If": [
+              "ShouldUsePayPerRequestBilling",
+              {
+                "Ref": "AWS::NoValue"
+              },
+              {
+                "ReadCapacityUnits": {
+                  "Ref": "DynamoDBModelTableReadIOPS"
+                },
+                "WriteCapacityUnits": {
+                  "Ref": "DynamoDBModelTableWriteIOPS"
+                }
+              }
+            ]
+          },
+          "sseSpecification": {
+            "sseEnabled": false
+          },
+          "streamSpecification": {
+            "streamViewType": "NEW_AND_OLD_IMAGES"
+          },
+          "deletionProtectionEnabled": false,
+          "allowDestructiveGraphqlSchemaUpdates": true,
+          "replaceTableUponGsiUpdate": true,
+          "pointInTimeRecoverySpecification": {
+            "Fn::If": [
+              "ShouldUsePointInTimeRecovery",
+              {
+                "PointInTimeRecoveryEnabled": true
+              },
+              {
+                "Ref": "AWS::NoValue"
+              }
+            ]
+          },
+          "billingMode": {
+            "Fn::If": [
+              "ShouldUsePayPerRequestBilling",
+              "PAY_PER_REQUEST",
+              {
+                "Ref": "AWS::NoValue"
+              }
+            ]
+          }
+        },
+        "UpdateReplacePolicy": "Delete",
+        "DeletionPolicy": "Delete",
+        "Metadata": {
+          "aws:cdk:path": "amplify-projectrespawnwebsite-Ntgre-sandbox-8bd9d02332/data/amplifyData/TeamRosterSlot/TeamRosterSlotTable/Default/Default"
+        }
+      },
+      "proposed": {
+        "Type": "Custom::AmplifyDynamoDBTable",
+        "Properties": {
+          "ServiceToken": {
+            "Ref": "referencetoamplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataAmplifyTableManagerNestedStackAmplifyTableManagerNestedStackResource0EF36838OutputsamplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataAmplifyTableMana6D60D95B"
+          },
+          "tableName": {
+            "Fn::Join": [
+              "",
+              [
+                "TeamRosterSlot-",
+                {
+                  "Ref": "referencetoamplifyprojectrespawnwebsiteNtgresandbox8bd9d02332dataamplifyDataGraphQLAPI0F1D14CBApiId"
+                },
+                "-NONE"
+              ]
+            ]
+          },
+          "attributeDefinitions": [
+            {
+              "attributeName": "id",
+              "attributeType": "S"
+            },
+            {
+              "attributeName": "teamId",
+              "attributeType": "S"
+            },
+            {
+              "attributeName": "membershipId",
+              "attributeType": "S"
+            }
+          ],
+          "keySchema": [
+            {
+              "attributeName": "id",
+              "keyType": "HASH"
+            }
+          ],
+          "globalSecondaryIndexes": [
+            {
+              "indexName": "teamRosterSlotsByTeamId",
+              "keySchema": [
+                {
+                  "attributeName": "teamId",
+                  "keyType": "HASH"
+                }
+              ],
+              "projection": {
+                "projectionType": "ALL"
+              },
+              "provisionedThroughput": {
+                "Fn::If": [
+                  "ShouldUsePayPerRequestBilling",
+                  {
+                    "Ref": "AWS::NoValue"
+                  },
+                  {
+                    "ReadCapacityUnits": {
+                      "Ref": "DynamoDBModelTableReadIOPS"
+                    },
+                    "WriteCapacityUnits": {
+                      "Ref": "DynamoDBModelTableWriteIOPS"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "indexName": "teamRosterSlotsByMembershipId",
+              "keySchema": [
+                {
+                  "attributeName": "membershipId",
+                  "keyType": "HASH"
+                }
+              ],
+              "projection": {
+                "projectionType": "ALL"
+              },
+              "provisionedThroughput": {
+                "Fn::If": [
+                  "ShouldUsePayPerRequestBilling",
+                  {
+                    "Ref": "AWS::NoValue"
+                  },
+                  {
+                    "ReadCapacityUnits": {
+                      "Ref": "DynamoDBModelTableReadIOPS"
+                    },
+                    "WriteCapacityUnits": {
+                      "Ref": "DynamoDBModelTableWriteIOPS"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "provisionedThroughput": {
+            "Fn::If": [
+              "ShouldUsePayPerRequestBilling",
+              {
+                "Ref": "AWS::NoValue"
+              },
+              {
+                "ReadCapacityUnits": {
+                  "Ref": "DynamoDBModelTableReadIOPS"
+                },
+                "WriteCapacityUnits": {
+                  "Ref": "DynamoDBModelTableWriteIOPS"
+                }
+              }
+            ]
+          },
+          "sseSpecification": {
+            "sseEnabled": false
+          },
+          "streamSpecification": {
+            "streamViewType": "NEW_AND_OLD_IMAGES"
+          },
+          "deletionProtectionEnabled": true,
+          "allowDestructiveGraphqlSchemaUpdates": false,
+          "replaceTableUponGsiUpdate": false,
+          "pointInTimeRecoverySpecification": {
+            "pointInTimeRecoveryEnabled": true
+          },
+          "billingMode": {
+            "Fn::If": [
+              "ShouldUsePayPerRequestBilling",
+              "PAY_PER_REQUEST",
+              {
+                "Ref": "AWS::NoValue"
+              }
+            ]
+          }
+        },
+        "UpdateReplacePolicy": "Retain",
+        "DeletionPolicy": "Retain",
+        "Metadata": {
+          "aws:cdk:path": "amplify-projectrespawnwebsite-Ntgre-sandbox-8bd9d02332/data/amplifyData/TeamRosterSlot/TeamRosterSlotTable/Default/Default"
+        }
+      },
+      "identityUnchanged": true
+    }
+  ],
+  "audit": {
+    "calls": 7,
+    "errors": [],
+    "writes": 0
+  }
+}

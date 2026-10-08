@@ -1,0 +1,53 @@
+{
+  "summary": {
+    "version": "team-hub-migration.v1",
+    "accepted": true,
+    "inputCount": 10,
+    "inputByModel": {
+      "Team": 1,
+      "TeamMembership": 5,
+      "TeamRosterSlot": 3,
+      "PlayerChampionPoolEntry": 1
+    },
+    "outputCount": 12,
+    "outputByType": {
+      "SLUG": 1,
+      "COACH_ASSESSMENT": 1,
+      "MEMBERSHIP": 5,
+      "TEAM": 1,
+      "PLAYER_POOL": 1,
+      "ROSTER": 3
+    },
+    "rejectCount": 0,
+    "warningCount": 1,
+    "rejects": [],
+    "warnings": [
+      {
+        "code": "COACH_VISIBILITY_APPROVAL_REQUIRED",
+        "model": "PlayerChampionPoolEntry",
+        "recordDigest": "8adcb02c93502a51bcf13724c233f59e56efbc086280578a272e7eaee2d4f5ac"
+      }
+    ],
+    "sourceDigest": "7234c228b77b216a26ea43a72d6a7cdb4605a6c0cd11746d19b0bc373e7ab4f3",
+    "canonicalDigest": "3535798bcc23df2be4216742307846aff82a4fe12f316949d063b3bd8b58b2fe",
+    "relationshipsValid": true,
+    "perTeam": [
+      {
+        "teamDigest": "54ead8c6f67e0815d46ebb9d5a04f85209923d7ca7784ccc0c5819580833172d",
+        "members": 5,
+        "sourceRows": 10
+      }
+    ],
+    "writes": 0
+  },
+  "reverseRoundTrip": true,
+  "reconciliation": {
+    "equal": true,
+    "sourceDigest": "7234c228b77b216a26ea43a72d6a7cdb4605a6c0cd11746d19b0bc373e7ab4f3",
+    "expectedDigest": "3535798bcc23df2be4216742307846aff82a4fe12f316949d063b3bd8b58b2fe",
+    "actualDigest": "3535798bcc23df2be4216742307846aff82a4fe12f316949d063b3bd8b58b2fe",
+    "expectedCount": 12,
+    "actualCount": 12
+  },
+  "sensitivePayloadPersisted": false
+}

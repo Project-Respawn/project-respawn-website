@@ -1,0 +1,235 @@
+{
+  "at": "2026-10-07T22:46:09.809Z",
+  "roleArn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-C1Initialize",
+  "roleId": "AROAQ3EGSQDDMJYX366SZ",
+  "policy": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Condition": {
+          "Null": {
+            "dynamodb:LeadingKeys": "false"
+          },
+          "ForAllValues:StringEquals": {
+            "dynamodb:LeadingKeys": [
+              "CONTROL#AUTHORITY"
+            ]
+          },
+          "DateGreaterThanEquals": {
+            "aws:CurrentTime": "2026-10-07T22:44:27Z"
+          },
+          "DateLessThan": {
+            "aws:CurrentTime": "2026-10-07T22:59:27Z"
+          }
+        },
+        "Action": [
+          "dynamodb:GetItem",
+          "dynamodb:PutItem"
+        ],
+        "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+        "Effect": "Allow"
+      },
+      {
+        "Resource": "*",
+        "Effect": "Deny",
+        "NotAction": [
+          "dynamodb:GetItem",
+          "dynamodb:PutItem"
+        ]
+      },
+      {
+        "Action": "dynamodb:*",
+        "Effect": "Deny",
+        "NotResource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal"
+      }
+    ]
+  },
+  "trust": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "Service": "states.amazonaws.com"
+        },
+        "Action": "sts:AssumeRole",
+        "Condition": {
+          "StringEquals": {
+            "aws:SourceAccount": "058264289478"
+          },
+          "ArnEquals": {
+            "aws:SourceArn": "arn:aws:states:eu-north-1:058264289478:stateMachine:ProjectRespawn-TeamHub-Ntgre-C1Initialize"
+          }
+        }
+      }
+    ]
+  },
+  "machineArn": "arn:aws:states:eu-north-1:058264289478:stateMachine:ProjectRespawn-TeamHub-Ntgre-C1Initialize",
+  "definition": {
+    "Comment": "Fixed Ntgre C1 create only. Input discarded. No retries or authority transition.",
+    "StartAt": "DiscardInput",
+    "States": {
+      "AlreadyExists": {
+        "Error": "AuthorityAlreadyExists",
+        "Type": "Fail"
+      },
+      "CreateLegacy": {
+        "Catch": [
+          {
+            "ErrorEquals": [
+              "States.ALL"
+            ],
+            "Next": "CreateStopped"
+          }
+        ],
+        "Next": "Verify",
+        "Parameters": {
+          "ConditionExpression": "attribute_not_exists(PK) AND attribute_not_exists(SK)",
+          "Item": {
+            "PK": {
+              "S": "CONTROL#AUTHORITY"
+            },
+            "SK": {
+              "S": "STATE"
+            },
+            "changedAt": {
+              "S": "2026-10-07T22:32:12.867Z"
+            },
+            "changedBy": {
+              "S": "team-hub-c1-executor"
+            },
+            "epoch": {
+              "N": "1"
+            },
+            "gateDigest": {
+              "S": "2227a62a06992e9e09ff672ad6e2f09164e0304f3f68db491437a93577f1ab94"
+            },
+            "mode": {
+              "S": "LEGACY_WRITER"
+            },
+            "schemaVersion": {
+              "S": "team-hub-authority.v1"
+            },
+            "version": {
+              "N": "1"
+            }
+          },
+          "ReturnValues": "NONE",
+          "TableName": "ProjectRespawn-TeamHub-Ntgre-Journal"
+        },
+        "Resource": "arn:aws:states:::dynamodb:putItem",
+        "Type": "Task"
+      },
+      "CreateStopped": {
+        "Error": "ConditionalCreateNotConfirmed",
+        "Type": "Fail"
+      },
+      "DiscardInput": {
+        "Next": "ReadExisting",
+        "Result": {},
+        "Type": "Pass"
+      },
+      "Done": {
+        "Type": "Succeed"
+      },
+      "ReadExisting": {
+        "Next": "RequireAbsent",
+        "Parameters": {
+          "ConsistentRead": true,
+          "Key": {
+            "PK": {
+              "S": "CONTROL#AUTHORITY"
+            },
+            "SK": {
+              "S": "STATE"
+            }
+          },
+          "TableName": "ProjectRespawn-TeamHub-Ntgre-Journal"
+        },
+        "Resource": "arn:aws:states:::dynamodb:getItem",
+        "Type": "Task"
+      },
+      "RequireAbsent": {
+        "Choices": [
+          {
+            "IsPresent": true,
+            "Next": "AlreadyExists",
+            "Variable": "$.Item.PK"
+          }
+        ],
+        "Default": "CreateLegacy",
+        "Type": "Choice"
+      },
+      "VerificationFailed": {
+        "Error": "AuthorityReadbackMismatch",
+        "Type": "Fail"
+      },
+      "Verify": {
+        "Next": "VerifyExact",
+        "Parameters": {
+          "ConsistentRead": true,
+          "Key": {
+            "PK": {
+              "S": "CONTROL#AUTHORITY"
+            },
+            "SK": {
+              "S": "STATE"
+            }
+          },
+          "TableName": "ProjectRespawn-TeamHub-Ntgre-Journal"
+        },
+        "Resource": "arn:aws:states:::dynamodb:getItem",
+        "Type": "Task"
+      },
+      "VerifyExact": {
+        "Choices": [
+          {
+            "And": [
+              {
+                "StringEquals": "CONTROL#AUTHORITY",
+                "Variable": "$.Item.PK.S"
+              },
+              {
+                "StringEquals": "STATE",
+                "Variable": "$.Item.SK.S"
+              },
+              {
+                "StringEquals": "team-hub-authority.v1",
+                "Variable": "$.Item.schemaVersion.S"
+              },
+              {
+                "StringEquals": "LEGACY_WRITER",
+                "Variable": "$.Item.mode.S"
+              },
+              {
+                "StringEquals": "1",
+                "Variable": "$.Item.epoch.N"
+              },
+              {
+                "StringEquals": "1",
+                "Variable": "$.Item.version.N"
+              },
+              {
+                "StringEquals": "2026-10-07T22:32:12.867Z",
+                "Variable": "$.Item.changedAt.S"
+              },
+              {
+                "StringEquals": "team-hub-c1-executor",
+                "Variable": "$.Item.changedBy.S"
+              },
+              {
+                "StringEquals": "2227a62a06992e9e09ff672ad6e2f09164e0304f3f68db491437a93577f1ab94",
+                "Variable": "$.Item.gateDigest.S"
+              }
+            ],
+            "Next": "Done"
+          }
+        ],
+        "Default": "VerificationFailed",
+        "Type": "Choice"
+      }
+    },
+    "TimeoutSeconds": 120
+  },
+  "passed": true
+}

@@ -1,0 +1,115 @@
+{
+  "Changes": [
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "Contracts",
+        "ResourceType": "AWS::Lambda::Function",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"Role\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"FunctionName\":\"ProjectRespawn-Core-Ntgre-Contracts\",\"MemorySize\":\"256\",\"Runtime\":\"nodejs22.x\",\"Timeout\":\"10\",\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"LogGroup\":\"{{changeSet:KNOWN_AFTER_APPLY}}\"},\"Handler\":\"index.handler\",\"Environment\":{\"Variables\":{\"CORE_ENVIRONMENT\":\"{\\\"contractVersion\\\":\\\"environment.v1\\\",\\\"environment\\\":\\\"Ntgre\\\",\\\"account\\\":\\\"058264289478\\\",\\\"region\\\":\\\"eu-north-1\\\",\\\"poolId\\\":\\\"eu-north-1_n24iLL7QE\\\",\\\"clientId\\\":\\\"1iq7ovjaf7d16imdvbqgfgvf86\\\",\\\"issuer\\\":\\\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\\\"}\",\"CORE_CURSOR_SECRET_ARN\":\"{{changeSet:KNOWN_AFTER_APPLY}}\"}},\"Code\":{\"S3Bucket\":\"cdk-hnb659fds-assets-058264289478-eu-north-1\",\"S3Key\":\"core/2b5a/4841f475dab09982d8ff5babc240c8a7d8809d05911de8e239ac9031e6fcefcf/runtime.zip\"},\"Architectures\":[\"arm64\"]}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "CursorSecret",
+        "ResourceType": "AWS::SecretsManager::Secret",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"GenerateSecretString\":{\"RequireEachIncludedType\":\"false\",\"ExcludeCharacters\":\"ghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\",\"PasswordLength\":\"64\",\"ExcludePunctuation\":\"true\"},\"Name\":\"ProjectRespawn-Core-Ntgre-Cursor\"},\"UpdateReplacePolicy\":\"Retain\",\"DeletionPolicy\":\"Retain\"}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "Denied",
+        "ResourceType": "AWS::CloudWatch::Alarm",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"MetricName\":\"Denied\",\"ComparisonOperator\":\"GreaterThanOrEqualToThreshold\",\"TreatMissingData\":\"notBreaching\",\"AlarmName\":\"ProjectRespawn-Core-Ntgre-Denied\",\"Statistic\":\"Sum\",\"Dimensions\":[{\"Value\":\"Ntgre\",\"Name\":\"Environment\"}],\"Period\":\"60\",\"EvaluationPeriods\":\"1\",\"Namespace\":\"ProjectRespawn/Core\",\"Threshold\":\"20\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "DependencyFailures",
+        "ResourceType": "AWS::CloudWatch::Alarm",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"MetricName\":\"DependencyFailures\",\"ComparisonOperator\":\"GreaterThanOrEqualToThreshold\",\"TreatMissingData\":\"notBreaching\",\"AlarmName\":\"ProjectRespawn-Core-Ntgre-DependencyFailures\",\"Statistic\":\"Sum\",\"Dimensions\":[{\"Value\":\"Ntgre\",\"Name\":\"Environment\"}],\"Period\":\"60\",\"EvaluationPeriods\":\"1\",\"Namespace\":\"ProjectRespawn/Core\",\"Threshold\":\"1\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "Errors",
+        "ResourceType": "AWS::CloudWatch::Alarm",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"MetricName\":\"Errors\",\"ComparisonOperator\":\"GreaterThanOrEqualToThreshold\",\"TreatMissingData\":\"notBreaching\",\"AlarmName\":\"ProjectRespawn-Core-Ntgre-Errors\",\"Statistic\":\"Sum\",\"Dimensions\":[{\"Value\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"Name\":\"FunctionName\"}],\"Period\":\"60\",\"EvaluationPeriods\":\"1\",\"Namespace\":\"AWS/Lambda\",\"Threshold\":\"1\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "Logs",
+        "ResourceType": "AWS::Logs::LogGroup",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"RetentionInDays\":\"30\",\"LogGroupName\":\"/project-respawn/Ntgre/core/contracts\"},\"UpdateReplacePolicy\":\"Retain\",\"DeletionPolicy\":\"Retain\"}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "Runtime",
+        "ResourceType": "AWS::IAM::Role",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"RoleName\":\"ProjectRespawn-Core-Ntgre-Contracts\",\"Policies\":[{\"PolicyName\":\"CoreRuntime\",\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Resource\":\"*\",\"Effect\":\"Deny\",\"NotAction\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\",\"cognito-idp:AdminGetUser\",\"cognito-idp:AdminListGroupsForUser\",\"cognito-idp:ListUsers\",\"secretsmanager:GetSecretValue\",\"kms:Decrypt\"]},{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Resource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/core/contracts:*\",\"Effect\":\"Allow\"},{\"Action\":[\"cognito-idp:AdminGetUser\",\"cognito-idp:AdminListGroupsForUser\",\"cognito-idp:ListUsers\"],\"Resource\":\"arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE\",\"Effect\":\"Allow\"},{\"Action\":\"secretsmanager:GetSecretValue\",\"Resource\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-??????\",\"Effect\":\"Allow\"},{\"Action\":\"cognito-idp:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE\"},{\"Action\":\"logs:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/core/contracts:*\"},{\"Action\":\"secretsmanager:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-??????\"},{\"Action\":\"kms:Decrypt\",\"Effect\":\"Deny\",\"NotResource\":[\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\"]}]}}],\"AssumeRolePolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"}}]},\"PermissionsBoundary\":\"arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Ntgre-RuntimeBoundary\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "Throttles",
+        "ResourceType": "AWS::CloudWatch::Alarm",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"MetricName\":\"Throttles\",\"ComparisonOperator\":\"GreaterThanOrEqualToThreshold\",\"TreatMissingData\":\"notBreaching\",\"AlarmName\":\"ProjectRespawn-Core-Ntgre-Throttles\",\"Statistic\":\"Sum\",\"Dimensions\":[{\"Value\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"Name\":\"FunctionName\"}],\"Period\":\"60\",\"EvaluationPeriods\":\"1\",\"Namespace\":\"AWS/Lambda\",\"Threshold\":\"1\"}}"
+      }
+    }
+  ],
+  "ChangeSetName": "core-release1-pinned-20261006",
+  "ChangeSetId": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/core-release1-pinned-20261006/98d1ed1b-fa0e-455b-b856-0f4ddad5dcc3",
+  "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre/96e97f10-c1cc-11f1-a24e-0effea944a5b",
+  "StackName": "ProjectRespawn-Core-Ntgre",
+  "Description": null,
+  "Parameters": null,
+  "CreationTime": "2026-10-06T21:26:27.615000+00:00",
+  "ExecutionStatus": "AVAILABLE",
+  "Status": "CREATE_COMPLETE",
+  "StatusReason": null,
+  "NotificationARNs": [],
+  "RollbackConfiguration": {},
+  "Capabilities": [
+    "CAPABILITY_NAMED_IAM"
+  ],
+  "Tags": null,
+  "ParentChangeSetId": null,
+  "IncludeNestedStacks": false,
+  "RootChangeSetId": null,
+  "OnStackFailure": null,
+  "ImportExistingResources": null,
+  "StackDriftStatus": null,
+  "DeploymentMode": null
+}

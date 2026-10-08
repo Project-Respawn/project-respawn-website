@@ -1,0 +1,96 @@
+{
+  "at": "2026-10-06T15:52:28.843Z",
+  "hashes": {
+    "product": "d9e47021ffc55ee99c9477f0ff00590258f10e51375d7f8065afbf28f26c51c2",
+    "security": "8431078d29f8a5c8cbdd53737727fe3df75421c1ce2f804d09eb48e3a5d9389c",
+    "zip": "fd586f77dd3d872299e432f8e6d4631da09592cd29f47df6221ec8ede77b4a6d",
+    "bundle": "6f83d22ddc4a19c5a43d3cc6de8d1a6d5857ab287f4b731b122f1e6b59750175"
+  },
+  "manifestFiles": 35,
+  "bundleClosureVerified": true,
+  "freshSynthesis": false,
+  "headSubstituted": false,
+  "offlineOnly": true,
+  "results": [
+    {
+      "runtime": "Command",
+      "routeKey": "POST /v1/teams",
+      "status": 403,
+      "error": "FORBIDDEN"
+    },
+    {
+      "runtime": "Command",
+      "routeKey": "PATCH /v1/teams/{teamId}",
+      "status": 403,
+      "error": "FORBIDDEN"
+    },
+    {
+      "runtime": "Command",
+      "routeKey": "PUT /v1/teams/{teamId}/manager",
+      "status": 403,
+      "error": "FORBIDDEN"
+    },
+    {
+      "runtime": "Command",
+      "routeKey": "POST /v1/teams/{teamId}/members",
+      "status": 403,
+      "error": "FORBIDDEN"
+    },
+    {
+      "runtime": "Command",
+      "routeKey": "POST /v1/teams/{teamId}/roster-slots",
+      "status": 403,
+      "error": "FORBIDDEN"
+    },
+    {
+      "runtime": "Command",
+      "routeKey": "PUT /v1/teams/{teamId}/me/champions/{championId}",
+      "status": 403,
+      "error": "FORBIDDEN"
+    },
+    {
+      "runtime": "Command",
+      "routeKey": "DELETE /v1/teams/{teamId}/me/champions/{championId}",
+      "status": 403,
+      "error": "FORBIDDEN"
+    },
+    {
+      "runtime": "Command",
+      "routeKey": "PUT /v1/teams/{teamId}/players/{membershipId}/assessments/{championId}",
+      "status": 403,
+      "error": "FORBIDDEN"
+    },
+    {
+      "runtime": "Command",
+      "routeKey": "PUT /v1/teams/{teamId}/plan",
+      "status": 403,
+      "error": "FORBIDDEN"
+    },
+    {
+      "runtime": "Read",
+      "routeKey": "GET /v1/teams/{teamId}",
+      "status": 403,
+      "error": "FORBIDDEN"
+    },
+    {
+      "runtime": "Read",
+      "routeKey": "GET /v1/teams/{teamId}/me/champions",
+      "status": 403,
+      "error": "FORBIDDEN"
+    },
+    {
+      "runtime": "Read",
+      "routeKey": "GET /v1/teams/{teamId}/champion-pools",
+      "status": 403,
+      "error": "FORBIDDEN"
+    },
+    {
+      "runtime": "Read",
+      "routeKey": "GET /v1/teams/{teamId}/players/{membershipId}/competitive",
+      "status": 403,
+      "error": "FORBIDDEN"
+    }
+  ],
+  "blocker": "Step 22 empty/not-found read behavior cannot be met by pinned disabled runtime. All four reads fail at verification gate before DynamoDB.",
+  "awsWrites": 0
+}

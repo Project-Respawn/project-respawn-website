@@ -1,0 +1,278 @@
+{
+  "status": "LOCAL_PROPOSALS_NOT_APPLIED",
+  "account": "058264289478",
+  "region": "eu-north-1",
+  "A": {
+    "configuration": "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/legacy-protection-proposal.json",
+    "resultingActions": [
+      "dynamodb:UpdateContinuousBackups",
+      "dynamodb:UpdateTable"
+    ],
+    "resources": [
+      "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+    ],
+    "backups": [
+      {
+        "tableName": "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "backupNamePattern": "ProjectRespawn-TeamHub-Ntgre-M4-PlayerChampionPoolEntry-<APPROVED_UTC_GATE_STAMP>",
+        "action": "dynamodb:CreateBackup"
+      },
+      {
+        "tableName": "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "backupNamePattern": "ProjectRespawn-TeamHub-Ntgre-M4-TeamMembership-<APPROVED_UTC_GATE_STAMP>",
+        "action": "dynamodb:CreateBackup"
+      },
+      {
+        "tableName": "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "backupNamePattern": "ProjectRespawn-TeamHub-Ntgre-M4-Team-<APPROVED_UTC_GATE_STAMP>",
+        "action": "dynamodb:CreateBackup"
+      },
+      {
+        "tableName": "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "backupNamePattern": "ProjectRespawn-TeamHub-Ntgre-M4-TeamRosterSlot-<APPROVED_UTC_GATE_STAMP>",
+        "action": "dynamodb:CreateBackup"
+      }
+    ]
+  },
+  "B": {
+    "restores": [
+      {
+        "sourceTable": "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "backupArn": "BIND_RETURNED_AVAILABLE_BACKUP_ARN_FROM_A",
+        "targetTable": "ProjectRespawn-TeamHub-Ntgre-M4Restore-PlayerChampionPoolEntry-20261005"
+      },
+      {
+        "sourceTable": "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "backupArn": "BIND_RETURNED_AVAILABLE_BACKUP_ARN_FROM_A",
+        "targetTable": "ProjectRespawn-TeamHub-Ntgre-M4Restore-TeamMembership-20261005"
+      },
+      {
+        "sourceTable": "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "backupArn": "BIND_RETURNED_AVAILABLE_BACKUP_ARN_FROM_A",
+        "targetTable": "ProjectRespawn-TeamHub-Ntgre-M4Restore-Team-20261005"
+      },
+      {
+        "sourceTable": "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "backupArn": "BIND_RETURNED_AVAILABLE_BACKUP_ARN_FROM_A",
+        "targetTable": "ProjectRespawn-TeamHub-Ntgre-M4Restore-TeamRosterSlot-20261005"
+      }
+    ],
+    "actions": [
+      "dynamodb:RestoreTableFromBackup",
+      "dynamodb:DescribeTable",
+      "dynamodb:Scan",
+      "dynamodb:UpdateTable",
+      "dynamodb:DeleteTable"
+    ],
+    "cleanupOnlyNewRestoreTables": true,
+    "newTables": 4
+  },
+  "C": {
+    "product": "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/dark-target.template.json",
+    "security": "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/dark-security.template.json",
+    "productAdditions": 2,
+    "securityModifications": [
+      "ExecutionBoundary",
+      "ExecutionRole"
+    ],
+    "securityAdditions": 0,
+    "acceptedSecurityDigest": "18d81aa71694c63d28c98d8135edc8c2cb82f379994f9d54d699fb38a505ef4e",
+    "proposedSecurityDigest": "a586bbe2e50a5e0552f4129b22495534cbe7a5ce948cea9ccb64ead62188dcc5",
+    "runtimePermissionsUnchanged": true
+  },
+  "D": {
+    "modeA": {
+      "newIdentities": 0,
+      "dataWrites": 0
+    },
+    "modeB": {
+      "status": "REAUTHORIZE_AFTER_NONEMPTY_INVENTORY",
+      "reference": "docs/architecture/team-hub-2b3-evidence-2026-10-05/migration-identity-proposal.json",
+      "newDeclarations": 2
+    }
+  },
+  "E": {
+    "status": "DESIGN_ONLY_NOT_INSTALLED",
+    "controlRow": {
+      "table": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "PK": "CONTROL#AUTHORITY",
+      "SK": "STATE",
+      "mode": "LEGACY_WRITER",
+      "epoch": 0,
+      "version": 1,
+      "ttl": false
+    },
+    "sourceTablePolicies": [
+      {
+        "ResourceArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Policy": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "TeamHubSourceBusinessWriteFence",
+              "Effect": "Deny",
+              "Principal": "*",
+              "Action": [
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PartiQLInsert",
+                "dynamodb:PartiQLUpdate",
+                "dynamodb:PartiQLDelete"
+              ],
+              "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE"
+            }
+          ]
+        }
+      },
+      {
+        "ResourceArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Policy": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "TeamHubSourceBusinessWriteFence",
+              "Effect": "Deny",
+              "Principal": "*",
+              "Action": [
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PartiQLInsert",
+                "dynamodb:PartiQLUpdate",
+                "dynamodb:PartiQLDelete"
+              ],
+              "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE"
+            }
+          ]
+        }
+      },
+      {
+        "ResourceArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Policy": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "TeamHubSourceBusinessWriteFence",
+              "Effect": "Deny",
+              "Principal": "*",
+              "Action": [
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PartiQLInsert",
+                "dynamodb:PartiQLUpdate",
+                "dynamodb:PartiQLDelete"
+              ],
+              "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE"
+            }
+          ]
+        }
+      },
+      {
+        "ResourceArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Policy": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "TeamHubSourceBusinessWriteFence",
+              "Effect": "Deny",
+              "Principal": "*",
+              "Action": [
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PartiQLInsert",
+                "dynamodb:PartiQLUpdate",
+                "dynamodb:PartiQLDelete"
+              ],
+              "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+            }
+          ]
+        }
+      }
+    ],
+    "logoPolicy": {
+      "bucket": "amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+      "document": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Deny",
+            "Principal": {
+              "AWS": "*"
+            },
+            "Action": "s3:*",
+            "Resource": [
+              "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+              "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/*"
+            ],
+            "Condition": {
+              "Bool": {
+                "aws:SecureTransport": "false"
+              }
+            }
+          },
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3"
+            },
+            "Action": [
+              "s3:PutBucketPolicy",
+              "s3:GetBucket*",
+              "s3:List*",
+              "s3:DeleteObject*"
+            ],
+            "Resource": [
+              "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+              "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/*"
+            ]
+          },
+          {
+            "Sid": "TeamHubLogoWriteFence",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": [
+              "s3:PutObject",
+              "s3:DeleteObject",
+              "s3:DeleteObjectVersion",
+              "s3:AbortMultipartUpload"
+            ],
+            "Resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/*"
+          }
+        ]
+      }
+    },
+    "legacyControlRead": {
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:GetItem",
+        "dynamodb:ConditionCheckItem"
+      ],
+      "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "Condition": {
+        "ForAllValues:StringEquals": {
+          "dynamodb:LeadingKeys": [
+            "CONTROL#AUTHORITY"
+          ]
+        },
+        "StringEquals": {
+          "aws:RequestedRegion": "eu-north-1"
+        }
+      }
+    },
+    "newDeclarations": 0,
+    "requiresRuntimeAtomicGuard": true,
+    "requiresLiveNegativeTests": true,
+    "requiresAdministrativeMaintenanceFreeze": true
+  },
+  "awsWrites": 0
+}

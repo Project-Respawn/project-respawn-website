@@ -1,0 +1,29 @@
+# Core 2B5A security model
+
+6 October 2026. Proposed policies only, not installed. [Candidate](core-2b5a-evidence-2026-10-06/candidate.json), [generated security](core-2b5a-evidence-2026-10-06/security.template.json), [deployment standard](domain-deployment-runtime-security.md).
+
+## Four distinct identities
+
+Security custodian: approved operator RavenTest, only under a future exact security-bootstrap authorization. Product caller: `ProjectRespawn-Core-Ntgre-Deploy`, trust exactly that operator, maximum one-hour sessions, matching inline policy and boundary. Execution: `ProjectRespawn-Core-Ntgre-Execution`, trust CloudFormation, separate matching policy/boundary. Runtime: `ProjectRespawn-Core-Ntgre-Contracts`, trust Lambda and strict Core boundary. No Team/Tournament roles reused. No policies installed or roles assumed in this preparation.
+
+Caller orchestrates only `ProjectRespawn-Core-Ntgre/*`; CreateChangeSet binds exact execution role and hash-addressed template URL. Only that execution role can be passed to CloudFormation. It may read the exact template and ZIP objects; it cannot publish artifacts, modify runtime infrastructure/IAM or orchestrate Legacy/Team/Tournament/production. ExecuteChangeSet remains a future human gate: stack-scoped IAM cannot prove the contents of an already-created change set, so retrieve and reconcile its complete immutable input immediately before execution. Do not use the operator as product caller.
+
+Execution manages only the named Core function, runtime role, own log group, cursor secret and named alarms. CreateRole/PutRolePermissionsBoundary require the exact runtime boundary; removing that boundary is denied. PassRole is exact runtime-to-Lambda. It cannot administer its own deployment roles/policies or invoke Core business contracts. DescribeLogGroups and GetRandomPassword are deliberate service-level wildcard-resource exceptions; no log value or arbitrary secret read is granted. No API Gateway authority of any kind. All existing APIs are protected by lack of Allow and explicit non-service denial, not a temporary list of IDs. Existing API inventory is retained in absence evidence.
+
+Runtime permits only exact-pool AdminGetUser, AdminListGroupsForUser and ListUsers; those are reads, despite Admin in their names. It cannot create/update/delete users, change groups, access Team/foreign tables, business S3, AppSync, IAM or CloudFormation. Only its own logs and cursor secret can be accessed. Team receives only a future exact Core invocation proposal, none of these Cognito permissions. IAM and boundary do not alone supersede all possible resource policies; actual-role and resource-policy checks remain mandatory after bootstrap.
+
+## Service encryption and artifact policy
+
+Fresh [encryption evidence](core-2b5a-evidence-2026-10-06/encryption.json) identifies enabled AWS-managed Lambda and Secrets Manager keys and captures their key policies. Identity policies add **zero KMS Allows**. Boundaries contain limited Allow caps for these exact service keys; a cap is not a grant. Explicit denials protect every other key and non-service KMS operation. Runtime caps only Decrypt; execution caps the service-encryption actions present in the inspected managed key policies, avoiding the prior blanket-denial failure. No business/customer-managed key is an exception. Secret creation/update with an explicit KMS key is denied.
+
+The managed key policies grant bounded account/service encryption paths. Live function initialization, secret retrieval, runtime logging and negative business-key checks remain execution acceptance tests; simulator identity results alone cannot prove the KMS resource-policy path. No direct decrypt probe or secret-value read was performed here.
+
+Publish only reviewed hash-addressed Core objects to the existing asset bucket under `core/2b5a/`, explicitly AES256/SSE-S3, then verify checksum, length and ServerSideEncryption before any change set. The execution/caller can read only those two object ARNs and cannot upload/overwrite them. Publication is not performed in this task. Never add KMS decrypt to compensate for the asset bucket default. Retained cursor secret/log resources require recovery review after rollback.
+
+## Validation and trust limits
+
+AWS Access Analyzer validates identity/boundary policies. Custom-policy simulations exercise own permissions and other-domain, wrong-artifact, boundary and PassRole negatives. The raw own-log positive simulator discrepancy is retained and checked independently with Analyzer inclusion plus missing-Allow/removed-Deny controls; it must never be relabeled as a simulator pass. See [security review](core-2b5a-evidence-2026-10-06/security-review.json) and [logging review](core-2b5a-evidence-2026-10-06/logging-review.json).
+
+Lambda invocation in the same account can be granted by an identity policy; absence of a resource Allow is not a universal deny. No Team invocation grant is installed now. Before integration, review effective callers and prove the Team resource-authorizing path; operator-wide IAM remains privileged. No untrusted field proves the invoking role. Relevant AWS references: [Lambda identity policies](https://docs.aws.amazon.com/lambda/latest/dg/access-control-identity-based.html), [Secrets Manager action/resource scopes](https://docs.aws.amazon.com/service-authorization/latest/reference/list_secretsmanager.html).
+
+Future sequence: explicit bootstrap approval → inspect security change set → rollback-enabled execution → verify installed trust/boundaries → assume restricted caller → repeat principal checks → inspect exact product change set → separate execution approval → runtime acceptance. No first-create API authority or lockdown phase is needed for this Lambda-only design. Stop on unexpected resources, replacements, identity mismatch, policy differences or failed deployment; no automatic permission patch/retry.

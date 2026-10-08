@@ -1,0 +1,436 @@
+{
+  "at": "2026-10-06T21:24:47.299Z",
+  "verified": true,
+  "records": [
+    {
+      "id": "RuntimeBoundary",
+      "arn": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Ntgre-RuntimeBoundary",
+      "document": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Resource": "*",
+            "Effect": "Deny",
+            "NotAction": [
+              "logs:CreateLogStream",
+              "logs:PutLogEvents",
+              "cognito-idp:AdminGetUser",
+              "cognito-idp:AdminListGroupsForUser",
+              "cognito-idp:ListUsers",
+              "secretsmanager:GetSecretValue",
+              "kms:Decrypt"
+            ]
+          },
+          {
+            "Action": [
+              "logs:CreateLogStream",
+              "logs:PutLogEvents"
+            ],
+            "Resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/core/contracts:*",
+            "Effect": "Allow"
+          },
+          {
+            "Action": [
+              "cognito-idp:AdminGetUser",
+              "cognito-idp:AdminListGroupsForUser",
+              "cognito-idp:ListUsers"
+            ],
+            "Resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+            "Effect": "Allow"
+          },
+          {
+            "Action": "secretsmanager:GetSecretValue",
+            "Resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-??????",
+            "Effect": "Allow"
+          },
+          {
+            "Action": "cognito-idp:*",
+            "Effect": "Deny",
+            "NotResource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE"
+          },
+          {
+            "Action": "logs:*",
+            "Effect": "Deny",
+            "NotResource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/core/contracts:*"
+          },
+          {
+            "Action": "secretsmanager:*",
+            "Effect": "Deny",
+            "NotResource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-??????"
+          },
+          {
+            "Action": "kms:Decrypt",
+            "Effect": "Deny",
+            "NotResource": [
+              "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+              "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a"
+            ]
+          },
+          {
+            "Action": "kms:Decrypt",
+            "Resource": [
+              "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+              "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a"
+            ],
+            "Effect": "Allow"
+          }
+        ]
+      },
+      "verified": true
+    },
+    {
+      "id": "ExecutionBoundary",
+      "arn": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Ntgre-ExecutionBoundary",
+      "document": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Resource": "*",
+            "Effect": "Deny",
+            "NotAction": [
+              "lambda:CreateFunction",
+              "lambda:GetFunction",
+              "lambda:GetFunctionConfiguration",
+              "lambda:UpdateFunctionCode",
+              "lambda:UpdateFunctionConfiguration",
+              "lambda:DeleteFunction",
+              "lambda:ListTags",
+              "lambda:TagResource",
+              "lambda:UntagResource",
+              "lambda:PutFunctionConcurrency",
+              "lambda:GetFunctionConcurrency",
+              "lambda:DeleteFunctionConcurrency",
+              "iam:GetRole",
+              "iam:GetRolePolicy",
+              "iam:ListRolePolicies",
+              "iam:ListAttachedRolePolicies",
+              "iam:PutRolePolicy",
+              "iam:DeleteRolePolicy",
+              "iam:DeleteRole",
+              "iam:UpdateAssumeRolePolicy",
+              "iam:TagRole",
+              "iam:UntagRole",
+              "iam:CreateRole",
+              "iam:PutRolePermissionsBoundary",
+              "iam:PassRole",
+              "iam:GetPolicy",
+              "logs:CreateLogGroup",
+              "logs:DeleteLogGroup",
+              "logs:PutRetentionPolicy",
+              "logs:DeleteRetentionPolicy",
+              "logs:TagResource",
+              "logs:UntagResource",
+              "logs:ListTagsForResource",
+              "logs:DescribeLogGroups",
+              "secretsmanager:GetRandomPassword",
+              "secretsmanager:CreateSecret",
+              "secretsmanager:DescribeSecret",
+              "secretsmanager:UpdateSecret",
+              "secretsmanager:PutSecretValue",
+              "secretsmanager:DeleteSecret",
+              "secretsmanager:RestoreSecret",
+              "secretsmanager:TagResource",
+              "secretsmanager:UntagResource",
+              "cloudwatch:PutMetricAlarm",
+              "cloudwatch:DeleteAlarms",
+              "cloudwatch:DescribeAlarms",
+              "cloudwatch:TagResource",
+              "cloudwatch:UntagResource",
+              "cloudwatch:ListTagsForResource",
+              "s3:GetObject",
+              "kms:Encrypt",
+              "kms:Decrypt",
+              "kms:ReEncrypt*",
+              "kms:GenerateDataKey*",
+              "kms:CreateGrant",
+              "kms:DescribeKey"
+            ]
+          },
+          {
+            "Action": [
+              "lambda:CreateFunction",
+              "lambda:GetFunction",
+              "lambda:GetFunctionConfiguration",
+              "lambda:UpdateFunctionCode",
+              "lambda:UpdateFunctionConfiguration",
+              "lambda:DeleteFunction",
+              "lambda:ListTags",
+              "lambda:TagResource",
+              "lambda:UntagResource",
+              "lambda:PutFunctionConcurrency",
+              "lambda:GetFunctionConcurrency",
+              "lambda:DeleteFunctionConcurrency"
+            ],
+            "Resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+            "Effect": "Allow"
+          },
+          {
+            "Action": [
+              "iam:GetRole",
+              "iam:GetRolePolicy",
+              "iam:ListRolePolicies",
+              "iam:ListAttachedRolePolicies",
+              "iam:PutRolePolicy",
+              "iam:DeleteRolePolicy",
+              "iam:DeleteRole",
+              "iam:UpdateAssumeRolePolicy",
+              "iam:TagRole",
+              "iam:UntagRole"
+            ],
+            "Resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Contracts",
+            "Effect": "Allow"
+          },
+          {
+            "Condition": {
+              "StringEquals": {
+                "iam:PermissionsBoundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Ntgre-RuntimeBoundary"
+              }
+            },
+            "Action": [
+              "iam:CreateRole",
+              "iam:PutRolePermissionsBoundary"
+            ],
+            "Resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Contracts",
+            "Effect": "Allow"
+          },
+          {
+            "Condition": {
+              "StringEquals": {
+                "iam:PassedToService": "lambda.amazonaws.com"
+              }
+            },
+            "Action": "iam:PassRole",
+            "Resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Contracts",
+            "Effect": "Allow"
+          },
+          {
+            "Action": "iam:GetPolicy",
+            "Resource": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Ntgre-RuntimeBoundary",
+            "Effect": "Allow"
+          },
+          {
+            "Action": [
+              "logs:CreateLogGroup",
+              "logs:DeleteLogGroup",
+              "logs:PutRetentionPolicy",
+              "logs:DeleteRetentionPolicy",
+              "logs:TagResource",
+              "logs:UntagResource",
+              "logs:ListTagsForResource"
+            ],
+            "Resource": [
+              "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/core/contracts",
+              "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/core/contracts:*"
+            ],
+            "Effect": "Allow"
+          },
+          {
+            "Action": [
+              "logs:DescribeLogGroups",
+              "secretsmanager:GetRandomPassword"
+            ],
+            "Resource": "*",
+            "Effect": "Allow"
+          },
+          {
+            "Action": [
+              "secretsmanager:CreateSecret",
+              "secretsmanager:DescribeSecret",
+              "secretsmanager:UpdateSecret",
+              "secretsmanager:PutSecretValue",
+              "secretsmanager:DeleteSecret",
+              "secretsmanager:RestoreSecret",
+              "secretsmanager:TagResource",
+              "secretsmanager:UntagResource"
+            ],
+            "Resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-??????",
+            "Effect": "Allow"
+          },
+          {
+            "Action": [
+              "cloudwatch:PutMetricAlarm",
+              "cloudwatch:DeleteAlarms",
+              "cloudwatch:DescribeAlarms",
+              "cloudwatch:TagResource",
+              "cloudwatch:UntagResource",
+              "cloudwatch:ListTagsForResource"
+            ],
+            "Resource": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-Core-Ntgre-*",
+            "Effect": "Allow"
+          },
+          {
+            "Action": "s3:GetObject",
+            "Resource": [
+              "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/core/2b5a/4841f475dab09982d8ff5babc240c8a7d8809d05911de8e239ac9031e6fcefcf/runtime.zip",
+              "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/core/2b5a/4aad4b8df1b1272f12e93144b3a1e89a2addaab5e404950f924ff7d7b58b9e46/product.template.json"
+            ],
+            "Effect": "Allow"
+          },
+          {
+            "Action": "kms:*",
+            "Effect": "Deny",
+            "NotResource": [
+              "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+              "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a"
+            ]
+          },
+          {
+            "Action": "iam:DeleteRolePermissionsBoundary",
+            "Resource": "*",
+            "Effect": "Deny"
+          },
+          {
+            "Condition": {
+              "Null": {
+                "secretsmanager:KmsKeyArn": "false"
+              }
+            },
+            "Action": [
+              "secretsmanager:CreateSecret",
+              "secretsmanager:UpdateSecret"
+            ],
+            "Resource": "*",
+            "Effect": "Deny"
+          },
+          {
+            "Action": [
+              "kms:Encrypt",
+              "kms:Decrypt",
+              "kms:ReEncrypt*",
+              "kms:GenerateDataKey*",
+              "kms:CreateGrant",
+              "kms:DescribeKey"
+            ],
+            "Resource": [
+              "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+              "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a"
+            ],
+            "Effect": "Allow"
+          }
+        ]
+      },
+      "verified": true
+    },
+    {
+      "id": "CallerBoundary",
+      "arn": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Ntgre-CallerBoundary",
+      "document": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Resource": "*",
+            "Effect": "Deny",
+            "NotAction": [
+              "cloudformation:DescribeStacks",
+              "cloudformation:DescribeStackEvents",
+              "cloudformation:ListStackResources",
+              "cloudformation:GetTemplate",
+              "cloudformation:DescribeChangeSet",
+              "cloudformation:CreateChangeSet",
+              "cloudformation:ExecuteChangeSet",
+              "cloudformation:DeleteChangeSet",
+              "iam:PassRole",
+              "s3:GetObject"
+            ]
+          },
+          {
+            "Action": "cloudformation:*",
+            "Effect": "Deny",
+            "NotResource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre/*"
+          },
+          {
+            "Action": [
+              "cloudformation:DescribeStacks",
+              "cloudformation:DescribeStackEvents",
+              "cloudformation:ListStackResources",
+              "cloudformation:GetTemplate",
+              "cloudformation:DescribeChangeSet"
+            ],
+            "Resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre/*",
+            "Effect": "Allow"
+          },
+          {
+            "Condition": {
+              "StringEquals": {
+                "cloudformation:TemplateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/core/2b5a/4aad4b8df1b1272f12e93144b3a1e89a2addaab5e404950f924ff7d7b58b9e46/product.template.json",
+                "cloudformation:RoleArn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Execution"
+              }
+            },
+            "Action": "cloudformation:CreateChangeSet",
+            "Resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre/*",
+            "Effect": "Allow"
+          },
+          {
+            "Action": [
+              "cloudformation:ExecuteChangeSet",
+              "cloudformation:DeleteChangeSet"
+            ],
+            "Resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre/*",
+            "Effect": "Allow"
+          },
+          {
+            "Condition": {
+              "StringEquals": {
+                "iam:PassedToService": "cloudformation.amazonaws.com"
+              }
+            },
+            "Action": "iam:PassRole",
+            "Resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Execution",
+            "Effect": "Allow"
+          },
+          {
+            "Action": "s3:GetObject",
+            "Resource": [
+              "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/core/2b5a/4841f475dab09982d8ff5babc240c8a7d8809d05911de8e239ac9031e6fcefcf/runtime.zip",
+              "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/core/2b5a/4aad4b8df1b1272f12e93144b3a1e89a2addaab5e404950f924ff7d7b58b9e46/product.template.json"
+            ],
+            "Effect": "Allow"
+          }
+        ]
+      },
+      "verified": true
+    },
+    {
+      "id": "Execution",
+      "name": "ProjectRespawn-Core-Ntgre-Execution",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "cloudformation.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Ntgre-ExecutionBoundary",
+      "verified": true
+    },
+    {
+      "id": "Caller",
+      "name": "ProjectRespawn-Core-Ntgre-Deploy",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:user/RavenTest"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Ntgre-CallerBoundary",
+      "verified": true
+    }
+  ],
+  "restrictedCallerIdentity": {
+    "UserId": "AROAQ3EGSQDDLTII2D5ZM:CoreRelease1Review",
+    "Account": "058264289478",
+    "Arn": "arn:aws:sts::058264289478:assumed-role/ProjectRespawn-Core-Ntgre-Deploy/CoreRelease1Review"
+  },
+  "runtimeRole": "Created by product later; installed runtime boundary verified now; actual runtime-role checks deferred until product exists."
+}

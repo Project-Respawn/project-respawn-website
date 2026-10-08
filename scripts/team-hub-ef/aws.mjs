@@ -1,0 +1,1 @@
+import fs from 'node:fs';export {aws,identity,json,P,B,product,security,canonical,pin,sha} from '../team-hub-d1/aws.mjs';export const E='docs/architecture/team-hub-ef-evidence-2026-10-08',read=n=>JSON.parse(fs.readFileSync(E+'/'+n+'.json')),save=(n,v)=>fs.writeFileSync(E+'/'+n+'.json',JSON.stringify(v,null,2)+'\n');

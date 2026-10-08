@@ -1,0 +1,336 @@
+{
+  "at": "2026-10-07T22:04:54.603Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "analyzer": [
+    {
+      "name": "executionBoundary",
+      "findings": []
+    },
+    {
+      "name": "executionIdentity",
+      "findings": []
+    },
+    {
+      "name": "caller",
+      "findings": []
+    },
+    {
+      "name": "command",
+      "findings": []
+    },
+    {
+      "name": "read",
+      "findings": []
+    }
+  ],
+  "checks": [
+    {
+      "name": "read",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+      "expected": "allowed",
+      "decision": "allowed"
+    },
+    {
+      "name": "read",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST",
+      "expected": "allowed",
+      "decision": "allowed"
+    },
+    {
+      "name": "read",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:other",
+      "expected": "denied",
+      "decision": "explicitDeny"
+    },
+    {
+      "name": "read",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre-Contracts",
+      "expected": "denied",
+      "decision": "explicitDeny"
+    },
+    {
+      "name": "read",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "expected": "allowed",
+      "decision": "allowed"
+    },
+    {
+      "name": "read",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": "allowed",
+      "decision": "allowed"
+    },
+    {
+      "name": "read",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "expected": "denied",
+      "decision": "explicitDeny"
+    },
+    {
+      "name": "read",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": "denied",
+      "decision": "explicitDeny"
+    },
+    {
+      "name": "read",
+      "action": "dynamodb:Scan",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "expected": "denied",
+      "decision": "explicitDeny"
+    },
+    {
+      "name": "read",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "expected": "allowed",
+      "decision": "allowed"
+    },
+    {
+      "name": "read",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+      "expected": "denied",
+      "decision": "implicitDeny"
+    },
+    {
+      "name": "read",
+      "action": "cognito-idp:AdminGetUser",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": "denied",
+      "decision": "explicitDeny"
+    },
+    {
+      "name": "command",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+      "expected": "allowed",
+      "decision": "allowed"
+    },
+    {
+      "name": "command",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST",
+      "expected": "allowed",
+      "decision": "allowed"
+    },
+    {
+      "name": "command",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:other",
+      "expected": "denied",
+      "decision": "explicitDeny"
+    },
+    {
+      "name": "command",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre-Contracts",
+      "expected": "denied",
+      "decision": "explicitDeny"
+    },
+    {
+      "name": "command",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "expected": "allowed",
+      "decision": "allowed"
+    },
+    {
+      "name": "command",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": "allowed",
+      "decision": "allowed"
+    },
+    {
+      "name": "command",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "expected": "allowed",
+      "decision": "allowed"
+    },
+    {
+      "name": "command",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": "denied",
+      "decision": "implicitDeny"
+    },
+    {
+      "name": "command",
+      "action": "dynamodb:Scan",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "expected": "denied",
+      "decision": "explicitDeny"
+    },
+    {
+      "name": "command",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "expected": "allowed",
+      "decision": "allowed"
+    },
+    {
+      "name": "command",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+      "expected": "denied",
+      "decision": "implicitDeny"
+    },
+    {
+      "name": "command",
+      "action": "cognito-idp:AdminGetUser",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": "denied",
+      "decision": "explicitDeny"
+    },
+    {
+      "name": "executionIdentity",
+      "action": "secretsmanager:CreateSecret",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "expected": "allowed",
+      "decision": "allowed"
+    },
+    {
+      "name": "executionIdentity",
+      "action": "secretsmanager:CreateSecret",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+      "expected": "denied",
+      "decision": "implicitDeny"
+    },
+    {
+      "name": "executionIdentity",
+      "action": "secretsmanager:DescribeSecret",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "expected": "allowed",
+      "decision": "allowed"
+    },
+    {
+      "name": "executionIdentity",
+      "action": "secretsmanager:DescribeSecret",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+      "expected": "denied",
+      "decision": "implicitDeny"
+    },
+    {
+      "name": "executionIdentity",
+      "action": "secretsmanager:DeleteSecret",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "expected": "allowed",
+      "decision": "allowed"
+    },
+    {
+      "name": "executionIdentity",
+      "action": "secretsmanager:DeleteSecret",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+      "expected": "denied",
+      "decision": "implicitDeny"
+    },
+    {
+      "name": "executionIdentity",
+      "action": "secretsmanager:GetRandomPassword",
+      "resource": "*",
+      "expected": "allowed",
+      "decision": "allowed"
+    },
+    {
+      "name": "executionIdentity",
+      "action": "iam:CreateRole",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "expected": "denied",
+      "decision": "implicitDeny"
+    },
+    {
+      "name": "caller",
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/b66ad780-c0cd-11f1-91ba-0effc0d85417",
+      "expected": "allowed",
+      "decision": "allowed"
+    },
+    {
+      "name": "caller",
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Tournaments-Ntgre/b66ad780-c0cd-11f1-91ba-0effc0d85417",
+      "expected": "denied",
+      "decision": "explicitDeny"
+    },
+    {
+      "name": "read",
+      "action": "logs:PutLogEvents",
+      "resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read:*",
+      "expected": "allowed",
+      "decision": "allowed"
+    },
+    {
+      "name": "read",
+      "action": "cloudwatch:PutMetricData",
+      "resource": "*",
+      "expected": "denied",
+      "decision": "explicitDeny"
+    },
+    {
+      "name": "command",
+      "action": "logs:PutLogEvents",
+      "resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-command:*",
+      "expected": "allowed",
+      "decision": "allowed"
+    },
+    {
+      "name": "command",
+      "action": "cloudwatch:PutMetricData",
+      "resource": "*",
+      "expected": "denied",
+      "decision": "explicitDeny"
+    },
+    {
+      "name": "executionIdentity",
+      "action": "logs:PutResourcePolicy",
+      "resource": "*",
+      "expected": "denied",
+      "decision": "explicitDeny"
+    },
+    {
+      "name": "executionIdentity",
+      "action": "logs:CreateLogDelivery",
+      "resource": "*",
+      "expected": "denied",
+      "decision": "explicitDeny"
+    },
+    {
+      "name": "executionIdentity",
+      "action": "logs:CreateLogGroup",
+      "resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/access",
+      "expected": "denied",
+      "decision": "implicitDeny"
+    },
+    {
+      "name": "executionIdentity",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/2b6-gate-d/37f1ce14ef5876011480f68526425d6e6f0a6099ca53dd6a288cd8b939287c70.zip",
+      "expected": "allowed",
+      "decision": "allowed"
+    },
+    {
+      "name": "executionIdentity",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/unreviewed.zip",
+      "expected": "denied",
+      "decision": "explicitDeny"
+    }
+  ],
+  "complete": true,
+  "installed": false,
+  "awsWrites": 0
+}

@@ -1,0 +1,105 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "domain",
+    "environment",
+    "account",
+    "region",
+    "status",
+    "stack",
+    "apiId",
+    "authority",
+    "stage",
+    "normalWritesEnabled",
+    "normalReadRoutesEnabled",
+    "frontendCutover",
+    "coreManifest",
+    "coreManifestSha256",
+    "coreLambdaArn",
+    "contractVersions",
+    "runtimeSha256",
+    "productSha256",
+    "securitySha256",
+    "acceptedAt",
+    "report",
+    "proof"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "team-hub.core-integration.v1"
+    },
+    "domain": {
+      "const": "TeamHub"
+    },
+    "environment": {
+      "const": "Ntgre"
+    },
+    "account": {
+      "const": "058264289478"
+    },
+    "region": {
+      "const": "eu-north-1"
+    },
+    "status": {
+      "const": "ACCEPTED_DARK_INTEGRATION"
+    },
+    "stack": {
+      "const": "ProjectRespawn-TeamHub-Ntgre"
+    },
+    "apiId": {
+      "const": "t54b88casf"
+    },
+    "authority": {
+      "const": "LEGACY_WRITER"
+    },
+    "stage": {
+      "const": "PRE_CUTOVER"
+    },
+    "normalWritesEnabled": {
+      "const": false
+    },
+    "normalReadRoutesEnabled": {
+      "const": false
+    },
+    "frontendCutover": {
+      "const": false
+    },
+    "coreManifest": {
+      "const": "config/domains/core/domain-endpoints.Ntgre.json"
+    },
+    "coreManifestSha256": {
+      "const": "73ccb94e6477198f9853bd90db9581e26f7d384836db0b8ba5dcace7b99a5c3b"
+    },
+    "coreLambdaArn": {
+      "const": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts"
+    },
+    "contractVersions": {
+      "const": [
+        "environment.v1",
+        "authorization.decision.v1",
+        "directory.assignment.v1"
+      ]
+    },
+    "runtimeSha256": {
+      "const": "2992b5d6b736c90c3fc306654a38576cd861dc0e07068c92bf02c79c87948e6a"
+    },
+    "productSha256": {
+      "const": "46fd756d8cadb76c519dee8fc11e9db2d7d42cf82b2caed989e2a54ecef57c94"
+    },
+    "securitySha256": {
+      "const": "febfd6b2210d5417b808fc98c2afcbfb217566a54e1dcc4d886b437f888b4b13"
+    },
+    "acceptedAt": {
+      "const": "2026-10-07T07:41:46.763Z"
+    },
+    "report": {
+      "const": "docs/architecture/team-hub-2b5a2-live-core-integration.md"
+    },
+    "proof": {
+      "const": "docs/architecture/team-hub-core-integration-evidence-2026-10-07/live-proof.json"
+    }
+  }
+}

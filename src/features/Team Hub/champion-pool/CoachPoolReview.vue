@@ -12,6 +12,7 @@
           <p>{{ canEditAssessments ? 'Review Player-authored pools and save independent Coach assessments.' : 'Read-only Player pools and Coach assessments for team planning.' }}</p>
         </div>
 
+        <p v-if="usingIndependentTeamHub">Only team-visible assessment text is available during migration. Private notes and additional assessment fields are disabled.</p>
         <div v-if="selectedPlayer" class="review-controls">
           <label>
             <span>Player</span>
@@ -149,7 +150,7 @@
 
               <label class="form-field">
                 <span>Coach ranking</span>
-                <select v-model="reviewForm.coachTier" :disabled="!selectedChampion || !canEditAssessments">
+                <select v-model="reviewForm.coachTier" :disabled="usingIndependentTeamHub || !selectedChampion || !canEditAssessments">
                   <option value="">Not ranked</option><option v-for="tier in tiers" :key="tier.id" :value="tier.id">{{ tier.id }} — {{ tier.label }}</option>
                 </select>
               </label>
@@ -182,7 +183,7 @@
 
                 <textarea
                   v-model.trim="reviewForm.suggestion"
-                  :disabled="!selectedChampion || !canEditAssessments"
+                  :disabled="usingIndependentTeamHub || !selectedChampion || !canEditAssessments"
                   maxlength="500"
                   placeholder="Enter your improvement suggestions…"
                 />
@@ -197,7 +198,7 @@
 
                 <textarea
                   v-model.trim="reviewForm.privateNote"
-                  :disabled="!selectedChampion || !canEditAssessments"
+                  :disabled="usingIndependentTeamHub || !selectedChampion || !canEditAssessments"
                   maxlength="300"
                   placeholder="Visible to coaches only…"
                 />
@@ -490,6 +491,7 @@
 </template>
 
 <script setup>
+import { usingIndependentTeamHub } from '../../team-hub/services/migration-mode.mjs';
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -780,7 +782,7 @@ async function saveChampionReview() {
 
   savingAssessment.value = true;
   try {
-    await upsertCoachAssessment({ teamId: teamContext.value.team.id, membershipId: selectedPlayer.value.id, championId: selectedChampion.value.id, payload: { coachTier: reviewForm.coachTier || null, coachAssessment: reviewForm.assessment, coachRecommendation: `${reviewForm.suggestion}${reviewForm.privateNote ? `\nPrivate: ${reviewForm.privateNote}` : ''}`, coachPriorityPractice: reviewForm.assessment === 'MORE_PRACTICE' } });
+    await upsertCoachAssessment({ teamId: teamContext.value.team.id, membershipId: selectedPlayer.value.id, championId: selectedChampion.value.id, payload: usingIndependentTeamHub ? { coachAssessment: reviewForm.assessment } : { coachTier: reviewForm.coachTier || null, coachAssessment: reviewForm.assessment, coachRecommendation: `${reviewForm.suggestion}${reviewForm.privateNote ? `\nPrivate: ${reviewForm.privateNote}` : ''}`, coachPriorityPractice: reviewForm.assessment === 'MORE_PRACTICE' } });
   championReviews.value = {
     ...championReviews.value,
 

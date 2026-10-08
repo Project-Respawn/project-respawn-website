@@ -1,0 +1,42 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:GetItem",
+        "dynamodb:PutItem"
+      ],
+      "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "Condition": {
+        "ForAllValues:StringEquals": {
+          "dynamodb:LeadingKeys": [
+            "CONTROL#AUTHORITY"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        },
+        "DateGreaterThanEquals": {
+          "aws:CurrentTime": "2026-10-08T10:00:00Z"
+        },
+        "DateLessThan": {
+          "aws:CurrentTime": "2026-10-08T10:15:00Z"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "NotAction": [
+        "dynamodb:GetItem",
+        "dynamodb:PutItem"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Deny",
+      "Action": "dynamodb:*",
+      "NotResource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal"
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "at": "2026-10-07T21:17:19.163Z",
+  "authority": "LEGACY_WRITER",
+  "targetWrites": "DISABLED",
+  "epoch": null,
+  "frontendActivation": false,
+  "awsWrites": 0,
+  "gates": [
+    {
+      "gate": "C",
+      "status": "OFFLINE_PREPARATION_REVALIDATED_LIVE_ACCEPTANCE_PENDING",
+      "artifacts": [
+        {
+          "path": "docs/architecture/team-hub-2b5b-evidence-2026-10-07/candidate.json",
+          "sha256": "3bf568c857242ad5999f3d66defb59e332c2818ecacbee47133af38166f84e1d"
+        },
+        {
+          "path": "docs/architecture/team-hub-2b5b-evidence-2026-10-07/product-candidate.template.json",
+          "sha256": "06c944a01d49b4cb9a4dfa05abb0c9af0d420081264a7fc6c370297ee76f490e"
+        },
+        {
+          "path": "docs/architecture/team-hub-2b5b-evidence-2026-10-07/security-candidate.template.json",
+          "sha256": "dc261c2e886802c8f50759d73bc3b72bf3111926115db41609e65a36f1857e00"
+        },
+        {
+          "path": "docs/architecture/team-hub-2b5b-evidence-2026-10-07/security-validation.json",
+          "sha256": "1d542b7f0651889e13fdadc5bed38adc083d68a43c1730c03115fa0f79727fb9"
+        }
+      ],
+      "remaining": [
+        "Exact security/product change-set review and separately authorized deployment",
+        "Actual Lambda role proof; no direct CONTROL writes from runtime",
+        "Initialize LEGACY_WRITER only if separately executing approved preparation; conditional absence check"
+      ]
+    },
+    {
+      "gate": "D",
+      "status": "OFFLINE_PREPARATION_REVALIDATED_LIVE_ACCEPTANCE_PENDING",
+      "artifacts": [
+        {
+          "path": "docs/architecture/team-hub-2b5b-evidence-2026-10-07/monitoring-candidate.template.json",
+          "sha256": "cb8eeea63bbfc6015fb200528dce8ef76ca86ae281bd9c6b2ca8dd1fc9eebc91"
+        }
+      ],
+      "remaining": [
+        "Monitoring template artifact/permissions review",
+        "Deployed signal injection and log/metric receipt",
+        "Accepted operator visibility; no notification delivery claimed"
+      ]
+    },
+    {
+      "gate": "E",
+      "status": "OFFLINE_PREPARATION_REVALIDATED_LIVE_ACCEPTANCE_PENDING",
+      "artifacts": [
+        {
+          "path": "config/domains/team-hub/frontend-cutover.PROPOSAL.json",
+          "sha256": "232bd6de5728b9410f089cb99b34aeda6c1c2ddcd74834e7112ea9c94220c02b"
+        },
+        {
+          "path": "config/domains/core/domain-endpoints.Ntgre.json",
+          "sha256": "73ccb94e6477198f9853bd90db9581e26f7d384836db0b8ba5dcace7b99a5c3b"
+        },
+        {
+          "path": "docs/architecture/team-hub-2b6-evidence-2026-10-07/frontend-revision.json",
+          "sha256": "ec8bee285f2dbbf98c1a2ebb30f563b52a5a9084416c0136338fde20ddded624"
+        },
+        {
+          "path": "docs/architecture/team-hub-2b6-evidence-2026-10-07/built-isolation.json",
+          "sha256": "6cb287fda739ab8c143b5b5a0eb1c5eb08773317084c8c7d8dc106851aae6055"
+        }
+      ],
+      "remaining": [
+        "Bind only to actual strongly read deployed epoch and pinned bundle after authorization",
+        "Keep reviewed:false; no live frontend publication"
+      ]
+    },
+    {
+      "gate": "F",
+      "status": "OFFLINE_PREPARATION_REVALIDATED_LIVE_ACCEPTANCE_PENDING",
+      "artifacts": [
+        {
+          "path": "docs/architecture/team-hub-2b5b-evidence-2026-10-07/rehearsal.json",
+          "sha256": "a35becc4c7e72d399adb7a836ff6fdba12562ba0e3a1d16da95375b85dddcc0a"
+        },
+        {
+          "path": "docs/architecture/team-hub-2b5b-evidence-2026-10-07/security-review.json",
+          "sha256": "3fd0b721672339b7df3fcbab33e3e2f1a4938712304c2b8ab58a0d6f8c50c23a"
+        }
+      ],
+      "remaining": [
+        "Refresh isolated export/restore/in-flight-failure proof against final deployed candidate before cutover",
+        "Fresh reconciliation and post-write recovery authorization; historical live rehearsal is not current Gate F acceptance"
+      ]
+    }
+  ],
+  "restrictions": [
+    "No artifact regeneration or deployment",
+    "No real control row initialized",
+    "Proposal epoch 3 is not a live accepted epoch",
+    "No gate fully accepted on simulated or historical evidence"
+  ]
+}

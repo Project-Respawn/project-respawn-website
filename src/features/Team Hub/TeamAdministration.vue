@@ -42,10 +42,11 @@
       <div v-if="context.capabilities.canAdministerTeam" class="settings-card">
         <h3>Team plan</h3>
         <p><strong>{{ context.team.entitlement?.expired ? 'Expired' : (context.team.entitlement?.isPro ? 'Pro' : 'Free') }}</strong><span v-if="context.team.entitlement?.expiresAt"> · expires {{ formatDate(context.team.entitlement.expiresAt) }}</span></p>
-        <form class="form-grid" @submit.prevent="savePlan"><label class="toggle"><input v-model="planForm.pro" type="checkbox" /> Enable Pro</label><label>Optional expiry<input v-model="planForm.expiresAt" type="datetime-local" :disabled="!planForm.pro" /></label><button :disabled="submitting">{{ submitting ? 'Saving…' : 'Update plan' }}</button></form>
+        <form class="form-grid" @submit.prevent="savePlan"><label class="toggle"><input v-model="planForm.pro" type="checkbox" /> Enable Pro</label><label v-if="!usingIndependentTeamHub">Optional expiry<input v-model="planForm.expiresAt" type="datetime-local" :disabled="!planForm.pro" /></label><button :disabled="submitting">{{ submitting ? 'Saving…' : 'Update plan' }}</button></form>
         <p v-if="context.team.planAdministration?.changedAt" class="hint">Last changed {{ formatDate(context.team.planAdministration.changedAt) }} by {{ context.team.planAdministration.changedBy }}</p>
       </div>
 
+      <p v-if="usingIndependentTeamHub" class="hint">Team logo changes are disabled during migration.</p>
       <div v-if="context.capabilities.canManageBranding" class="settings-card">
         <h3>Team branding</h3>
         <div class="branding-row"><TeamLogo :src="logoPreview || context.team.logoUrl" :name="context.team.name" :size="96"/><div><input ref="logoInput" type="file" accept="image/png,.png" :disabled="submitting" @change="chooseLogo"/><p class="hint">PNG only, 2 MB maximum, 256–2048 pixels. Non-square images are contained within a square frame.</p><p v-if="logoMessage" :class="logoError ? 'error' : 'hint'">{{ logoMessage }}</p><button type="button" :disabled="submitting || !logoFile" @click="saveLogo">{{ submitting ? 'Uploading…' : (context.team.logoUrl ? 'Replace logo' : 'Upload logo') }}</button> <button v-if="context.team.logoUrl" type="button" class="danger" :disabled="submitting" @click="clearLogo">Remove logo</button></div></div>
@@ -53,9 +54,10 @@
 
       <div v-if="context.capabilities.canAdministerTeam" class="manager-card">
         <h3>Team Manager</h3>
+        <form v-if="usingIndependentTeamHub" class="form-grid" @submit.prevent="assignCandidateManager"><label>Existing account email<input v-model.trim="candidateManagerEmail" type="email" required autocomplete="off" /></label><button :disabled="submitting">Assign or replace manager</button><button v-if="manager" type="button" :disabled="submitting" @click="removeManager">Remove manager</button></form>
         <p v-if="manager"><strong>{{ manager.displayName }}</strong><br /><small>Active manager membership</small></p>
         <p v-else>No Team Manager is assigned.</p>
-        <form class="form-grid" @submit.prevent="assignManager">
+        <form v-if="!usingIndependentTeamHub" class="form-grid" @submit.prevent="assignManager">
           <div class="account-search">
             <label :for="'manager-account-search'">{{ manager ? 'Find replacement manager' : 'Find manager account' }}</label>
             <input id="manager-account-search" v-model="managerQuery" type="search" autocomplete="off" maxlength="100" role="combobox" aria-autocomplete="list" aria-controls="manager-account-results" :aria-expanded="searchOpen" :aria-activedescendant="activeSearchIndex >= 0 ? `manager-result-${activeSearchIndex}` : undefined" placeholder="Search username or email" @focus="openSearchResults" @blur="closeSearchResults" @keydown.down.prevent="moveSearchSelection(1)" @keydown.up.prevent="moveSearchSelection(-1)" @keydown.enter.prevent="chooseActiveSearchResult" @keydown.esc="searchOpen = false" />
@@ -79,6 +81,7 @@
 </template>
 
 <script setup>
+import { usingIndependentTeamHub, loadTeamCapabilities } from '../team-hub/services/migration-mode.mjs';
 import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue';
 import { createTeam, getTeamHub, listAdminTeams, loadBoundedPages, removeTeamLogo, searchAssignableUsers, setTeamManager, setTeamPlan, updateTeam, uploadTeamLogo } from './teamHub.service.js';
 import TeamLogo from './TeamLogo.vue';
@@ -89,7 +92,8 @@ import { managerAssignmentInput } from './teamHub.viewModel.js';
 
 const teams = ref([]), selectedId = ref(''), context = ref(null), search = ref(''), statusFilter = ref('ALL');
 const { isAdmin, isSuperAdmin } = useAuth();
-const canPlatformAdmin = computed(() => isAdmin.value || isSuperAdmin.value);
+const coreAdmin = ref(false);
+const canPlatformAdmin = computed(() => usingIndependentTeamHub ? coreAdmin.value : (isAdmin.value || isSuperAdmin.value));
 const loading = ref(false), detailLoading = ref(false), submitting = ref(false), error = ref(''), notice = ref('');
 const createForm = reactive({ name: '', slug: '', gameKey: 'LEAGUE_OF_LEGENDS' });
 const editForm = reactive({ name: '', status: 'ACTIVE' });
@@ -97,6 +101,8 @@ const planForm = reactive({ pro: false, expiresAt: '' });
 const logoFile = ref(null), logoPreview = ref(''), logoMessage = ref(''), logoError = ref(false), logoInput = ref(null);
 const managerQuery = ref(''), accountResults = ref([]), selectedAccount = ref(null), managerSearching = ref(false), managerSearchError = ref(''), searchOpen = ref(false), activeSearchIndex = ref(-1), slugEdited = ref(false);
 let searchTimer, searchRequest = 0;
+const candidateManagerEmail=ref('');
+const assignCandidateManager=()=>run(async()=>{await setTeamManager(managerAssignmentInput(context.value.team,candidateManagerEmail.value));await selectTeam(context.value.team);candidateManagerEmail.value='';},'Team Manager assigned.');
 const manager = computed(() => activeManager(context.value));
 const filteredTeams = computed(() => filterAdminTeams(teams.value, search.value, statusFilter.value));
 
@@ -129,6 +135,7 @@ async function run(action, success) { if (submitting.value) return; submitting.v
 async function refreshTeams(preferredId = selectedId.value) {
   loading.value = true; error.value = '';
   try {
+    if (usingIndependentTeamHub) coreAdmin.value = (await loadTeamCapabilities()).teamsAdmin;
     const [active, inactive] = await Promise.all(['ACTIVE', 'INACTIVE'].map((status) => loadBoundedPages((nextToken) => listAdminTeams({ status, limit: 50, ...(nextToken ? { nextToken } : {}) }))));
     if (!active.complete || !inactive.complete) throw new Error('Team Hub data limit exceeded');
     teams.value = [...active.items, ...inactive.items].map(normalizeAdminTeam).sort((a, b) => a.name.localeCompare(b.name));

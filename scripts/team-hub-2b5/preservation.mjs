@@ -1,0 +1,9 @@
+import fs from 'node:fs';import assert from 'node:assert/strict';import crypto from 'node:crypto';import {execFileSync} from 'node:child_process';
+const read=p=>JSON.parse(fs.readFileSync(p)),sha=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex'),E='docs/architecture/team-hub-2b5-evidence-2026-10-06';
+const accepted=read('docs/architecture/team-hub-2b4-evidence-2026-10-06/source-manifest.json');for(const f of accepted.files)assert.equal(sha(f.path),f.sha256,f.path);assert.equal(sha('amplify/backend.ts'),accepted.legacyBackendSha256);
+const tournament=read('scripts/config/domain-build-inputs.json');
+const prefixes=tournament.owned??[];const git=execFileSync('git',['status','--porcelain','--untracked-files=no'],{encoding:'utf8'});assert.ok(!git.split('\n').some(line=>prefixes.some(p=>line.slice(3).replaceAll('\\','/').startsWith(p))),'Tournament tracked source changed');
+const source=read('docs/architecture/team-hub-2b4b-evidence-2026-10-06/source-after.json');assert.ok(source.complete&&source.empty);
+const current=read('docs/architecture/team-hub-2b4b-evidence-2026-10-06/final-state.json');assert.equal(current.tables[0].counts[0],0);assert.equal(current.tables[1].counts[0],15);
+const result={at:new Date().toISOString(),acceptedFiles:accepted.files.length,acceptedFilesUnchanged:true,legacyBackendMatchesAccepted2B4Hash:true,tournamentTrackedSourceUnchanged:true,sourceRecoveryEvidence:source.at,sourceRecoveryRevalidatedLive:false,liveEvidence:'docs/architecture/team-hub-2b4b-evidence-2026-10-06/final-state.json',liveEvidenceAt:current.at,liveAuthority:'LEGACY_WRITER',liveSyntheticVerification:'DISABLED',liveOperational:0,liveJournalSyntheticAudit:15,awsCalls:0,awsWrites:0};
+fs.writeFileSync(E+'/preservation.json',JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result));

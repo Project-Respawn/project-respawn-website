@@ -1,0 +1,114 @@
+{
+  "at": "2026-10-08T14:56:11.031Z",
+  "conclusion": "TEAM HUB E/F PREPARATION BLOCKED",
+  "gateE": {
+    "prepared": true,
+    "browserPersonas": [
+      "ordinary",
+      "manager",
+      "coach",
+      "player",
+      "admin"
+    ],
+    "totals": {
+      "ui": 49,
+      "pages": 14,
+      "routeVisits": 42,
+      "responseChecks": 352,
+      "contractChecks": 40
+    },
+    "lazyIsolationChecks": 24,
+    "liveBinding": false,
+    "blocker": "D1 has no deployed authority-status contract",
+    "frontendActivated": false,
+    "brandingEnabled": false,
+    "authorityProposal": "authority-contract-proposal.json"
+  },
+  "gateF": {
+    "passed": true,
+    "checks": 19,
+    "created": 6,
+    "removed": 6,
+    "remaining": 0,
+    "nativeRows": 9,
+    "journalRows": 19,
+    "restoredCounts": {
+      "Team": 1,
+      "TeamMembership": 3,
+      "TeamRosterSlot": 2,
+      "PlayerChampionPoolEntry": 1
+    },
+    "canonicalNativeDigest": "45123d17dbf654d51a0bb406df189cfe6f692d214845aa6106571944a94331a3",
+    "canonicalLegacyDigest": "445ddbe59be01e6cda747a1557cca11cf5ca2f00f9acf6029060c8f323c332d3",
+    "actualAuthorityChanged": false
+  },
+  "preservation": {
+    "at": "2026-10-08T14:46:58.457Z",
+    "acceptedD1Pin": "a36406c42c727b4d8c262083e0cb95807f2404c4c8649b2eacc559915f4ba7d5",
+    "productSha256": "cd11644cc163b2f06f486a6217127221109b26bd7dd8456726f63fd0dc307232",
+    "securitySha256": "90876a5b857beadb6f1e4e72603b30939685c33ce9f7647c86b850f1e0b01d6f",
+    "installedIamUnchanged": true,
+    "authority": "LEGACY_WRITER",
+    "epoch": 1,
+    "version": 1,
+    "sourceTables": 4,
+    "pitr": true,
+    "deletionProtection": true,
+    "backupsAvailable": 4,
+    "targetBusinessRows": 0,
+    "temporaryRehearsalTablesRemaining": 0,
+    "productionWrites": 0,
+    "awsDeployment": false,
+    "complete": true
+  },
+  "validation": {
+    "tests": 630,
+    "allPassed": true,
+    "typescript": true,
+    "builds": [
+      "NORMAL_WEBSITE",
+      "DORMANT_INDEPENDENT",
+      "ISOLATED_BROWSER"
+    ],
+    "actualRoleIamChecks": 68,
+    "accessAnalyzerPolicies": 4,
+    "secretScan": {
+      "at": "2026-10-08T14:55:39.437Z",
+      "scannedFiles": 59,
+      "secretFindings": [],
+      "localLinksChecked": 109,
+      "brokenLinks": [],
+      "temporaryProfilesGitIgnored": true,
+      "scope": "Current E/F source, reports and sanitized evidence; unrelated workspace and browser profile contents not scanned"
+    }
+  },
+  "localCleanup": {
+    "at": "2026-10-08T14:54:56.746Z",
+    "authenticatedContextsDisposed": true,
+    "awsTemporaryResourcesRemaining": 0,
+    "remainingProfiles": [
+      "browser-profile-f1fc8fee28474c4e",
+      "browser-profile-2a5dae4cfaa6cc44"
+    ],
+    "status": "LOCAL_PROFILE_FILES_LOCKED",
+    "reason": "Windows denies termination of remaining headless processes; local debugging endpoints unavailable. No ordinary browser processes targeted.",
+    "ignoredByGit": true,
+    "complete": false
+  },
+  "requiredGates": [
+    "Separate authority-status wrapper/artifact review, authorized deployment and live binding proof",
+    "Gate C deployed business transactional epoch proof",
+    "Gate B installed denial proof in separately authorized FROZEN maintenance",
+    "Final cutover/frontend authorization"
+  ],
+  "awsChanges": {
+    "temporaryTableCreates": 6,
+    "temporaryTableDeletes": 6,
+    "syntheticData": "isolated rehearsal only",
+    "deployedStackUpdates": 0,
+    "iamUpdates": 0,
+    "realAuthorityTransitions": 0,
+    "realBusinessWrites": 0,
+    "productionWrites": 0
+  }
+}

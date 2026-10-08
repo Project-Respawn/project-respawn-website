@@ -1,0 +1,2310 @@
+{
+  "contractVersion": "team-hub.v1",
+  "commands": [
+    {
+      "name": "CREATE_TEAM",
+      "method": "POST",
+      "path": "/v1/teams",
+      "runtime": "command",
+      "request": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "slug": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 48,
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "gameKey": {
+            "type": "string",
+            "enum": [
+              "LEAGUE_OF_LEGENDS"
+            ]
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_-]{8,128}$"
+          }
+        },
+        "required": [
+          "slug",
+          "name",
+          "gameKey",
+          "idempotencyKey"
+        ]
+      },
+      "response": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "team": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 70,
+                "pattern": "^team:[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "slug": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 48,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "gameKey": {
+                "type": "string",
+                "enum": [
+                  "LEAGUE_OF_LEGENDS"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "INACTIVE"
+                ]
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "authorizationEpoch": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "rosterVersion": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "settings": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "plan": {
+                    "type": "string",
+                    "enum": [
+                      "FREE",
+                      "PRO"
+                    ]
+                  },
+                  "logoAssetId": {
+                    "type": "string",
+                    "minLength": 0,
+                    "maxLength": 180
+                  }
+                },
+                "required": [
+                  "plan",
+                  "logoAssetId"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "slug",
+              "name",
+              "gameKey",
+              "status",
+              "version",
+              "authorizationEpoch",
+              "rosterVersion",
+              "settings"
+            ]
+          }
+        },
+        "required": [
+          "team"
+        ]
+      },
+      "authorization": "teams.admin",
+      "classification": "CORE_STATE_MUTATION_PARITY",
+      "persona": "teams.admin",
+      "transaction": "META version/epoch + actor membership version, changed entities/slug/roster guards, audit append and idempotency Put; max 25 actions /4 MiB",
+      "idempotency": "issuer hash + subject + Team + operation + key; 24h; reauthorize replay; changed digest CONFLICT; expired request executes only with current revisions",
+      "expectedVersion": "Team/epoch/member plus operation-specific DTO revisions; absence required for create",
+      "privacyProjection": "Closed operation response schema; no stored private note or private response; assessment is Manager/Coach only",
+      "liveCoreBlocker": "authorization.decision.v1"
+    },
+    {
+      "name": "UPDATE_TEAM",
+      "method": "PATCH",
+      "path": "/v1/teams/{teamId}",
+      "runtime": "command",
+      "request": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "teamId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 70,
+            "pattern": "^team:[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_-]{8,128}$"
+          },
+          "expectedTeamVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "expectedAuthorizationEpoch": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "expectedMembershipVersion": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE"
+            ]
+          }
+        },
+        "required": [
+          "teamId",
+          "idempotencyKey",
+          "expectedTeamVersion",
+          "expectedAuthorizationEpoch",
+          "expectedMembershipVersion",
+          "name",
+          "status"
+        ]
+      },
+      "response": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "team": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 70,
+                "pattern": "^team:[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "slug": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 48,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "gameKey": {
+                "type": "string",
+                "enum": [
+                  "LEAGUE_OF_LEGENDS"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "INACTIVE"
+                ]
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "authorizationEpoch": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "rosterVersion": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "settings": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "plan": {
+                    "type": "string",
+                    "enum": [
+                      "FREE",
+                      "PRO"
+                    ]
+                  },
+                  "logoAssetId": {
+                    "type": "string",
+                    "minLength": 0,
+                    "maxLength": 180
+                  }
+                },
+                "required": [
+                  "plan",
+                  "logoAssetId"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "slug",
+              "name",
+              "gameKey",
+              "status",
+              "version",
+              "authorizationEpoch",
+              "rosterVersion",
+              "settings"
+            ]
+          }
+        },
+        "required": [
+          "team"
+        ]
+      },
+      "authorization": "teams.admin",
+      "classification": "CORE_STATE_MUTATION_PARITY",
+      "persona": "teams.admin",
+      "transaction": "META version/epoch + actor membership version, changed entities/slug/roster guards, audit append and idempotency Put; max 25 actions /4 MiB",
+      "idempotency": "issuer hash + subject + Team + operation + key; 24h; reauthorize replay; changed digest CONFLICT; expired request executes only with current revisions",
+      "expectedVersion": "Team/epoch/member plus operation-specific DTO revisions; absence required for create",
+      "privacyProjection": "Closed operation response schema; no stored private note or private response; assessment is Manager/Coach only",
+      "liveCoreBlocker": "authorization.decision.v1"
+    },
+    {
+      "name": "SET_MANAGER",
+      "method": "PUT",
+      "path": "/v1/teams/{teamId}/manager",
+      "runtime": "command",
+      "request": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "teamId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 70,
+            "pattern": "^team:[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_-]{8,128}$"
+          },
+          "expectedTeamVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "expectedAuthorizationEpoch": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "expectedMembershipVersion": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "ASSIGN",
+              "REVOKE"
+            ]
+          },
+          "targetAccount": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 254
+          },
+          "targetMembershipId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160,
+            "pattern": "^team-membership:team:[a-z0-9-]+:[0-9a-fA-F-]{36}$"
+          },
+          "expectedTargetMembershipVersion": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "teamId",
+          "idempotencyKey",
+          "expectedTeamVersion",
+          "expectedAuthorizationEpoch",
+          "expectedMembershipVersion",
+          "action",
+          "expectedTargetMembershipVersion"
+        ]
+      },
+      "response": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "membership": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160,
+                "pattern": "^team-membership:team:[a-z0-9-]+:[0-9a-fA-F-]{36}$"
+              },
+              "subject": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 36,
+                "pattern": "^[0-9a-fA-F]{8}(-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}$"
+              },
+              "displayName": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "MANAGER",
+                  "COACH",
+                  "PLAYER"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "INACTIVE"
+                ]
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "id",
+              "subject",
+              "displayName",
+              "role",
+              "status",
+              "version"
+            ]
+          },
+          "team": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 70,
+                "pattern": "^team:[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "slug": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 48,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "gameKey": {
+                "type": "string",
+                "enum": [
+                  "LEAGUE_OF_LEGENDS"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "INACTIVE"
+                ]
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "authorizationEpoch": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "rosterVersion": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "settings": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "plan": {
+                    "type": "string",
+                    "enum": [
+                      "FREE",
+                      "PRO"
+                    ]
+                  },
+                  "logoAssetId": {
+                    "type": "string",
+                    "minLength": 0,
+                    "maxLength": 180
+                  }
+                },
+                "required": [
+                  "plan",
+                  "logoAssetId"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "slug",
+              "name",
+              "gameKey",
+              "status",
+              "version",
+              "authorizationEpoch",
+              "rosterVersion",
+              "settings"
+            ]
+          }
+        },
+        "required": [
+          "membership",
+          "team"
+        ]
+      },
+      "authorization": "teams.admin",
+      "classification": "CORE_STATE_MUTATION_PARITY",
+      "persona": "teams.admin",
+      "transaction": "META version/epoch + actor membership version, changed entities/slug/roster guards, audit append and idempotency Put; max 25 actions /4 MiB",
+      "idempotency": "issuer hash + subject + Team + operation + key; 24h; reauthorize replay; changed digest CONFLICT; expired request executes only with current revisions",
+      "expectedVersion": "Team/epoch/member plus operation-specific DTO revisions; absence required for create",
+      "privacyProjection": "Closed operation response schema; no stored private note or private response; assessment is Manager/Coach only",
+      "liveCoreBlocker": "authorization.decision.v1"
+    },
+    {
+      "name": "MANAGE_MEMBER",
+      "method": "POST",
+      "path": "/v1/teams/{teamId}/members",
+      "runtime": "command",
+      "request": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "teamId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 70,
+            "pattern": "^team:[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_-]{8,128}$"
+          },
+          "expectedTeamVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "expectedAuthorizationEpoch": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "expectedMembershipVersion": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "ASSIGN",
+              "REVOKE"
+            ]
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "COACH",
+              "PLAYER"
+            ]
+          },
+          "targetAccount": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 254
+          },
+          "targetMembershipId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160,
+            "pattern": "^team-membership:team:[a-z0-9-]+:[0-9a-fA-F-]{36}$"
+          },
+          "expectedTargetMembershipVersion": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "teamId",
+          "idempotencyKey",
+          "expectedTeamVersion",
+          "expectedAuthorizationEpoch",
+          "expectedMembershipVersion",
+          "action",
+          "role",
+          "expectedTargetMembershipVersion"
+        ]
+      },
+      "response": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "membership": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160,
+                "pattern": "^team-membership:team:[a-z0-9-]+:[0-9a-fA-F-]{36}$"
+              },
+              "subject": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 36,
+                "pattern": "^[0-9a-fA-F]{8}(-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}$"
+              },
+              "displayName": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "MANAGER",
+                  "COACH",
+                  "PLAYER"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "INACTIVE"
+                ]
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "id",
+              "subject",
+              "displayName",
+              "role",
+              "status",
+              "version"
+            ]
+          },
+          "team": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 70,
+                "pattern": "^team:[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "slug": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 48,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "gameKey": {
+                "type": "string",
+                "enum": [
+                  "LEAGUE_OF_LEGENDS"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "INACTIVE"
+                ]
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "authorizationEpoch": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "rosterVersion": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "settings": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "plan": {
+                    "type": "string",
+                    "enum": [
+                      "FREE",
+                      "PRO"
+                    ]
+                  },
+                  "logoAssetId": {
+                    "type": "string",
+                    "minLength": 0,
+                    "maxLength": 180
+                  }
+                },
+                "required": [
+                  "plan",
+                  "logoAssetId"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "slug",
+              "name",
+              "gameKey",
+              "status",
+              "version",
+              "authorizationEpoch",
+              "rosterVersion",
+              "settings"
+            ]
+          }
+        },
+        "required": [
+          "membership",
+          "team"
+        ]
+      },
+      "authorization": "MANAGER",
+      "classification": "CORE_STATE_MUTATION_PARITY",
+      "persona": "MANAGER",
+      "transaction": "META version/epoch + actor membership version, changed entities/slug/roster guards, audit append and idempotency Put; max 25 actions /4 MiB",
+      "idempotency": "issuer hash + subject + Team + operation + key; 24h; reauthorize replay; changed digest CONFLICT; expired request executes only with current revisions",
+      "expectedVersion": "Team/epoch/member plus operation-specific DTO revisions; absence required for create",
+      "privacyProjection": "Closed operation response schema; no stored private note or private response; assessment is Manager/Coach only",
+      "liveCoreBlocker": "directory.assignment.v1 for assignment"
+    },
+    {
+      "name": "SET_ROSTER_SLOT",
+      "method": "POST",
+      "path": "/v1/teams/{teamId}/roster-slots",
+      "runtime": "command",
+      "request": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "teamId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 70,
+            "pattern": "^team:[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_-]{8,128}$"
+          },
+          "expectedTeamVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "expectedAuthorizationEpoch": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "expectedMembershipVersion": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "membershipId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160,
+            "pattern": "^team-membership:team:[a-z0-9-]+:[0-9a-fA-F-]{36}$"
+          },
+          "gameRoleKey": {
+            "type": "string",
+            "enum": [
+              "TOP",
+              "JUNGLE",
+              "MID",
+              "ADC",
+              "SUPPORT"
+            ]
+          },
+          "slotType": {
+            "type": "string",
+            "enum": [
+              "STARTER",
+              "SUBSTITUTE"
+            ]
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "ASSIGN",
+              "REMOVE"
+            ]
+          },
+          "expectedRosterVersion": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "expectedTargetMembershipVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "teamId",
+          "idempotencyKey",
+          "expectedTeamVersion",
+          "expectedAuthorizationEpoch",
+          "expectedMembershipVersion",
+          "membershipId",
+          "gameRoleKey",
+          "slotType",
+          "action",
+          "expectedRosterVersion",
+          "expectedTargetMembershipVersion"
+        ]
+      },
+      "response": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "roster": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "membershipId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 160,
+                  "pattern": "^team-membership:team:[a-z0-9-]+:[0-9a-fA-F-]{36}$"
+                },
+                "gameRoleKey": {
+                  "type": "string",
+                  "enum": [
+                    "TOP",
+                    "JUNGLE",
+                    "MID",
+                    "ADC",
+                    "SUPPORT"
+                  ]
+                },
+                "slotType": {
+                  "type": "string",
+                  "enum": [
+                    "STARTER",
+                    "SUBSTITUTE"
+                  ]
+                }
+              },
+              "required": [
+                "membershipId",
+                "gameRoleKey",
+                "slotType"
+              ]
+            },
+            "maxItems": 20
+          },
+          "team": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 70,
+                "pattern": "^team:[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "slug": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 48,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "gameKey": {
+                "type": "string",
+                "enum": [
+                  "LEAGUE_OF_LEGENDS"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "INACTIVE"
+                ]
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "authorizationEpoch": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "rosterVersion": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "settings": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "plan": {
+                    "type": "string",
+                    "enum": [
+                      "FREE",
+                      "PRO"
+                    ]
+                  },
+                  "logoAssetId": {
+                    "type": "string",
+                    "minLength": 0,
+                    "maxLength": 180
+                  }
+                },
+                "required": [
+                  "plan",
+                  "logoAssetId"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "slug",
+              "name",
+              "gameKey",
+              "status",
+              "version",
+              "authorizationEpoch",
+              "rosterVersion",
+              "settings"
+            ]
+          }
+        },
+        "required": [
+          "roster",
+          "team"
+        ]
+      },
+      "authorization": "MANAGER",
+      "classification": "CORE_STATE_MUTATION_PARITY",
+      "persona": "MANAGER",
+      "transaction": "META version/epoch + actor membership version, changed entities/slug/roster guards, audit append and idempotency Put; max 25 actions /4 MiB",
+      "idempotency": "issuer hash + subject + Team + operation + key; 24h; reauthorize replay; changed digest CONFLICT; expired request executes only with current revisions",
+      "expectedVersion": "Team/epoch/member plus operation-specific DTO revisions; absence required for create",
+      "privacyProjection": "Closed operation response schema; no stored private note or private response; assessment is Manager/Coach only",
+      "liveCoreBlocker": null
+    },
+    {
+      "name": "UPSERT_MY_CHAMPION",
+      "method": "PUT",
+      "path": "/v1/teams/{teamId}/me/champions/{championId}",
+      "runtime": "command",
+      "request": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "teamId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 70,
+            "pattern": "^team:[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_-]{8,128}$"
+          },
+          "expectedTeamVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "expectedAuthorizationEpoch": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "expectedMembershipVersion": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "championId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40,
+            "pattern": "^[A-Za-z0-9]+$"
+          },
+          "gameRoleKey": {
+            "type": "string",
+            "enum": [
+              "TOP",
+              "JUNGLE",
+              "MID",
+              "ADC",
+              "SUPPORT"
+            ]
+          },
+          "comfortLevel": {
+            "type": "string",
+            "enum": [
+              "S",
+              "A",
+              "B",
+              "C",
+              "D"
+            ]
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "LOW",
+              "NORMAL",
+              "HIGH"
+            ]
+          },
+          "competitiveReady": {
+            "type": "boolean"
+          },
+          "playerNotes": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 500
+          },
+          "expectedEntryVersion": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "teamId",
+          "idempotencyKey",
+          "expectedTeamVersion",
+          "expectedAuthorizationEpoch",
+          "expectedMembershipVersion",
+          "championId",
+          "gameRoleKey",
+          "comfortLevel",
+          "priority",
+          "competitiveReady",
+          "playerNotes",
+          "expectedEntryVersion"
+        ]
+      },
+      "response": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "entry": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "teamId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 70,
+                "pattern": "^team:[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "membershipId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160,
+                "pattern": "^team-membership:team:[a-z0-9-]+:[0-9a-fA-F-]{36}$"
+              },
+              "championId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 40,
+                "pattern": "^[A-Za-z0-9]+$"
+              },
+              "gameRoleKey": {
+                "type": "string",
+                "enum": [
+                  "TOP",
+                  "JUNGLE",
+                  "MID",
+                  "ADC",
+                  "SUPPORT"
+                ]
+              },
+              "comfortLevel": {
+                "type": "string",
+                "enum": [
+                  "S",
+                  "A",
+                  "B",
+                  "C",
+                  "D"
+                ]
+              },
+              "priority": {
+                "type": "string",
+                "enum": [
+                  "LOW",
+                  "NORMAL",
+                  "HIGH"
+                ]
+              },
+              "competitiveReady": {
+                "type": "boolean"
+              },
+              "playerNotes": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 500
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "teamId",
+              "membershipId",
+              "championId",
+              "gameRoleKey",
+              "comfortLevel",
+              "priority",
+              "competitiveReady",
+              "playerNotes",
+              "version"
+            ]
+          },
+          "team": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 70,
+                "pattern": "^team:[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "slug": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 48,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "gameKey": {
+                "type": "string",
+                "enum": [
+                  "LEAGUE_OF_LEGENDS"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "INACTIVE"
+                ]
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "authorizationEpoch": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "rosterVersion": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "settings": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "plan": {
+                    "type": "string",
+                    "enum": [
+                      "FREE",
+                      "PRO"
+                    ]
+                  },
+                  "logoAssetId": {
+                    "type": "string",
+                    "minLength": 0,
+                    "maxLength": 180
+                  }
+                },
+                "required": [
+                  "plan",
+                  "logoAssetId"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "slug",
+              "name",
+              "gameKey",
+              "status",
+              "version",
+              "authorizationEpoch",
+              "rosterVersion",
+              "settings"
+            ]
+          }
+        },
+        "required": [
+          "entry",
+          "team"
+        ]
+      },
+      "authorization": "PLAYER",
+      "classification": "CORE_STATE_MUTATION_PARITY",
+      "persona": "PLAYER",
+      "transaction": "META version/epoch + actor membership version, changed entities/slug/roster guards, audit append and idempotency Put; max 25 actions /4 MiB",
+      "idempotency": "issuer hash + subject + Team + operation + key; 24h; reauthorize replay; changed digest CONFLICT; expired request executes only with current revisions",
+      "expectedVersion": "Team/epoch/member plus operation-specific DTO revisions; absence required for create",
+      "privacyProjection": "Closed operation response schema; no stored private note or private response; assessment is Manager/Coach only",
+      "liveCoreBlocker": null
+    },
+    {
+      "name": "DELETE_MY_CHAMPION",
+      "method": "DELETE",
+      "path": "/v1/teams/{teamId}/me/champions/{championId}",
+      "runtime": "command",
+      "request": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "teamId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 70,
+            "pattern": "^team:[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_-]{8,128}$"
+          },
+          "expectedTeamVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "expectedAuthorizationEpoch": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "expectedMembershipVersion": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "championId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40,
+            "pattern": "^[A-Za-z0-9]+$"
+          },
+          "expectedEntryVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "teamId",
+          "idempotencyKey",
+          "expectedTeamVersion",
+          "expectedAuthorizationEpoch",
+          "expectedMembershipVersion",
+          "championId",
+          "expectedEntryVersion"
+        ]
+      },
+      "response": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "deleted": {
+            "const": true
+          },
+          "championId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40,
+            "pattern": "^[A-Za-z0-9]+$"
+          },
+          "team": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 70,
+                "pattern": "^team:[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "slug": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 48,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "gameKey": {
+                "type": "string",
+                "enum": [
+                  "LEAGUE_OF_LEGENDS"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "INACTIVE"
+                ]
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "authorizationEpoch": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "rosterVersion": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "settings": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "plan": {
+                    "type": "string",
+                    "enum": [
+                      "FREE",
+                      "PRO"
+                    ]
+                  },
+                  "logoAssetId": {
+                    "type": "string",
+                    "minLength": 0,
+                    "maxLength": 180
+                  }
+                },
+                "required": [
+                  "plan",
+                  "logoAssetId"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "slug",
+              "name",
+              "gameKey",
+              "status",
+              "version",
+              "authorizationEpoch",
+              "rosterVersion",
+              "settings"
+            ]
+          }
+        },
+        "required": [
+          "deleted",
+          "championId",
+          "team"
+        ]
+      },
+      "authorization": "PLAYER",
+      "classification": "CORE_STATE_MUTATION_PARITY",
+      "persona": "PLAYER",
+      "transaction": "META version/epoch + actor membership version, changed entities/slug/roster guards, audit append and idempotency Put; max 25 actions /4 MiB",
+      "idempotency": "issuer hash + subject + Team + operation + key; 24h; reauthorize replay; changed digest CONFLICT; expired request executes only with current revisions",
+      "expectedVersion": "Team/epoch/member plus operation-specific DTO revisions; absence required for create",
+      "privacyProjection": "Closed operation response schema; no stored private note or private response; assessment is Manager/Coach only",
+      "liveCoreBlocker": null
+    },
+    {
+      "name": "UPSERT_COACH_ASSESSMENT",
+      "method": "PUT",
+      "path": "/v1/teams/{teamId}/players/{membershipId}/assessments/{championId}",
+      "runtime": "command",
+      "request": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "teamId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 70,
+            "pattern": "^team:[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_-]{8,128}$"
+          },
+          "expectedTeamVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "expectedAuthorizationEpoch": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "expectedMembershipVersion": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "membershipId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160,
+            "pattern": "^team-membership:team:[a-z0-9-]+:[0-9a-fA-F-]{36}$"
+          },
+          "championId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40,
+            "pattern": "^[A-Za-z0-9]+$"
+          },
+          "teamVisible": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 1000
+          },
+          "privateNote": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 1000
+          },
+          "expectedAssessmentVersion": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "expectedTargetMembershipVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "teamId",
+          "idempotencyKey",
+          "expectedTeamVersion",
+          "expectedAuthorizationEpoch",
+          "expectedMembershipVersion",
+          "membershipId",
+          "championId",
+          "teamVisible",
+          "privateNote",
+          "expectedAssessmentVersion",
+          "expectedTargetMembershipVersion"
+        ]
+      },
+      "response": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "assessment": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "championId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 40,
+                "pattern": "^[A-Za-z0-9]+$"
+              },
+              "teamVisible": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 1000
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "championId",
+              "teamVisible",
+              "version"
+            ]
+          },
+          "privateNote": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "championId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 40,
+                "pattern": "^[A-Za-z0-9]+$"
+              },
+              "privateNote": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 1000
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "championId",
+              "privateNote",
+              "version"
+            ]
+          },
+          "team": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 70,
+                "pattern": "^team:[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "slug": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 48,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "gameKey": {
+                "type": "string",
+                "enum": [
+                  "LEAGUE_OF_LEGENDS"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "INACTIVE"
+                ]
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "authorizationEpoch": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "rosterVersion": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "settings": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "plan": {
+                    "type": "string",
+                    "enum": [
+                      "FREE",
+                      "PRO"
+                    ]
+                  },
+                  "logoAssetId": {
+                    "type": "string",
+                    "minLength": 0,
+                    "maxLength": 180
+                  }
+                },
+                "required": [
+                  "plan",
+                  "logoAssetId"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "slug",
+              "name",
+              "gameKey",
+              "status",
+              "version",
+              "authorizationEpoch",
+              "rosterVersion",
+              "settings"
+            ]
+          }
+        },
+        "required": [
+          "assessment",
+          "privateNote",
+          "team"
+        ]
+      },
+      "authorization": "COACH",
+      "classification": "CORE_STATE_MUTATION_PARITY",
+      "persona": "COACH",
+      "transaction": "META version/epoch + actor membership version, changed entities/slug/roster guards, audit append and idempotency Put; max 25 actions /4 MiB",
+      "idempotency": "issuer hash + subject + Team + operation + key; 24h; reauthorize replay; changed digest CONFLICT; expired request executes only with current revisions",
+      "expectedVersion": "Team/epoch/member plus operation-specific DTO revisions; absence required for create",
+      "privacyProjection": "Closed operation response schema; no stored private note or private response; assessment is Manager/Coach only",
+      "liveCoreBlocker": null
+    },
+    {
+      "name": "SET_TEAM_PLAN",
+      "method": "PUT",
+      "path": "/v1/teams/{teamId}/plan",
+      "runtime": "command",
+      "request": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "teamId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 70,
+            "pattern": "^team:[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_-]{8,128}$"
+          },
+          "expectedTeamVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "expectedAuthorizationEpoch": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "expectedMembershipVersion": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "plan": {
+            "type": "string",
+            "enum": [
+              "FREE",
+              "PRO"
+            ]
+          }
+        },
+        "required": [
+          "teamId",
+          "idempotencyKey",
+          "expectedTeamVersion",
+          "expectedAuthorizationEpoch",
+          "expectedMembershipVersion",
+          "plan"
+        ]
+      },
+      "response": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "team": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 70,
+                "pattern": "^team:[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "slug": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 48,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "gameKey": {
+                "type": "string",
+                "enum": [
+                  "LEAGUE_OF_LEGENDS"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "INACTIVE"
+                ]
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "authorizationEpoch": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "rosterVersion": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "settings": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "plan": {
+                    "type": "string",
+                    "enum": [
+                      "FREE",
+                      "PRO"
+                    ]
+                  },
+                  "logoAssetId": {
+                    "type": "string",
+                    "minLength": 0,
+                    "maxLength": 180
+                  }
+                },
+                "required": [
+                  "plan",
+                  "logoAssetId"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "slug",
+              "name",
+              "gameKey",
+              "status",
+              "version",
+              "authorizationEpoch",
+              "rosterVersion",
+              "settings"
+            ]
+          }
+        },
+        "required": [
+          "team"
+        ]
+      },
+      "authorization": "teams.admin",
+      "classification": "CORE_STATE_MUTATION_PARITY",
+      "persona": "teams.admin",
+      "transaction": "META version/epoch + actor membership version, changed entities/slug/roster guards, audit append and idempotency Put; max 25 actions /4 MiB",
+      "idempotency": "issuer hash + subject + Team + operation + key; 24h; reauthorize replay; changed digest CONFLICT; expired request executes only with current revisions",
+      "expectedVersion": "Team/epoch/member plus operation-specific DTO revisions; absence required for create",
+      "privacyProjection": "Closed operation response schema; no stored private note or private response; assessment is Manager/Coach only",
+      "liveCoreBlocker": "authorization.decision.v1"
+    },
+    {
+      "name": "REQUEST_TEAM_LOGO_UPLOAD",
+      "method": "POST",
+      "path": "/v1/teams/{teamId}/logo-upload-intents",
+      "runtime": "command",
+      "request": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "teamId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 70,
+            "pattern": "^team:[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_-]{8,128}$"
+          },
+          "expectedTeamVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "expectedAuthorizationEpoch": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "expectedMembershipVersion": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "contentType": {
+            "const": "image/png"
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2097152
+          }
+        },
+        "required": [
+          "teamId",
+          "idempotencyKey",
+          "expectedTeamVersion",
+          "expectedAuthorizationEpoch",
+          "expectedMembershipVersion",
+          "contentType",
+          "size"
+        ]
+      },
+      "response": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "intentId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 180
+          },
+          "expiresAt": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "team": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 70,
+                "pattern": "^team:[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "slug": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 48,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "gameKey": {
+                "type": "string",
+                "enum": [
+                  "LEAGUE_OF_LEGENDS"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "INACTIVE"
+                ]
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "authorizationEpoch": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "rosterVersion": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "settings": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "plan": {
+                    "type": "string",
+                    "enum": [
+                      "FREE",
+                      "PRO"
+                    ]
+                  },
+                  "logoAssetId": {
+                    "type": "string",
+                    "minLength": 0,
+                    "maxLength": 180
+                  }
+                },
+                "required": [
+                  "plan",
+                  "logoAssetId"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "slug",
+              "name",
+              "gameKey",
+              "status",
+              "version",
+              "authorizationEpoch",
+              "rosterVersion",
+              "settings"
+            ]
+          }
+        },
+        "required": [
+          "intentId",
+          "expiresAt",
+          "team"
+        ]
+      },
+      "authorization": "teams.branding.manage; synthetic media only",
+      "classification": "DEFERRED_BRANDING_MUTATIONS",
+      "persona": "teams.branding.manage; synthetic media only",
+      "transaction": "META version/epoch + actor membership version, changed entities/slug/roster guards, audit append and idempotency Put; max 25 actions /4 MiB",
+      "idempotency": "issuer hash + subject + Team + operation + key; 24h; reauthorize replay; changed digest CONFLICT; expired request executes only with current revisions",
+      "expectedVersion": "Team/epoch/member plus operation-specific DTO revisions; absence required for create",
+      "privacyProjection": "Closed operation response schema; no stored private note or private response; assessment is Manager/Coach only",
+      "liveCoreBlocker": null
+    },
+    {
+      "name": "COMMIT_TEAM_LOGO",
+      "method": "PUT",
+      "path": "/v1/teams/{teamId}/logo",
+      "runtime": "command",
+      "request": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "teamId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 70,
+            "pattern": "^team:[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_-]{8,128}$"
+          },
+          "expectedTeamVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "expectedAuthorizationEpoch": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "expectedMembershipVersion": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "intentId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 180
+          }
+        },
+        "required": [
+          "teamId",
+          "idempotencyKey",
+          "expectedTeamVersion",
+          "expectedAuthorizationEpoch",
+          "expectedMembershipVersion",
+          "intentId"
+        ]
+      },
+      "response": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "team": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 70,
+                "pattern": "^team:[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "slug": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 48,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "gameKey": {
+                "type": "string",
+                "enum": [
+                  "LEAGUE_OF_LEGENDS"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "INACTIVE"
+                ]
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "authorizationEpoch": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "rosterVersion": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "settings": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "plan": {
+                    "type": "string",
+                    "enum": [
+                      "FREE",
+                      "PRO"
+                    ]
+                  },
+                  "logoAssetId": {
+                    "type": "string",
+                    "minLength": 0,
+                    "maxLength": 180
+                  }
+                },
+                "required": [
+                  "plan",
+                  "logoAssetId"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "slug",
+              "name",
+              "gameKey",
+              "status",
+              "version",
+              "authorizationEpoch",
+              "rosterVersion",
+              "settings"
+            ]
+          }
+        },
+        "required": [
+          "team"
+        ]
+      },
+      "authorization": "teams.branding.manage; verified media only",
+      "classification": "DEFERRED_BRANDING_MUTATIONS",
+      "persona": "teams.branding.manage; verified media only",
+      "transaction": "META version/epoch + actor membership version, changed entities/slug/roster guards, audit append and idempotency Put; max 25 actions /4 MiB",
+      "idempotency": "issuer hash + subject + Team + operation + key; 24h; reauthorize replay; changed digest CONFLICT; expired request executes only with current revisions",
+      "expectedVersion": "Team/epoch/member plus operation-specific DTO revisions; absence required for create",
+      "privacyProjection": "Closed operation response schema; no stored private note or private response; assessment is Manager/Coach only",
+      "liveCoreBlocker": null
+    },
+    {
+      "name": "REMOVE_TEAM_LOGO",
+      "method": "DELETE",
+      "path": "/v1/teams/{teamId}/logo",
+      "runtime": "command",
+      "request": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "teamId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 70,
+            "pattern": "^team:[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_-]{8,128}$"
+          },
+          "expectedTeamVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "expectedAuthorizationEpoch": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "expectedMembershipVersion": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "teamId",
+          "idempotencyKey",
+          "expectedTeamVersion",
+          "expectedAuthorizationEpoch",
+          "expectedMembershipVersion"
+        ]
+      },
+      "response": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "team": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 70,
+                "pattern": "^team:[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "slug": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 48,
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "gameKey": {
+                "type": "string",
+                "enum": [
+                  "LEAGUE_OF_LEGENDS"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "INACTIVE"
+                ]
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "authorizationEpoch": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "rosterVersion": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "settings": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "plan": {
+                    "type": "string",
+                    "enum": [
+                      "FREE",
+                      "PRO"
+                    ]
+                  },
+                  "logoAssetId": {
+                    "type": "string",
+                    "minLength": 0,
+                    "maxLength": 180
+                  }
+                },
+                "required": [
+                  "plan",
+                  "logoAssetId"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "slug",
+              "name",
+              "gameKey",
+              "status",
+              "version",
+              "authorizationEpoch",
+              "rosterVersion",
+              "settings"
+            ]
+          }
+        },
+        "required": [
+          "team"
+        ]
+      },
+      "authorization": "teams.branding.manage",
+      "classification": "DEFERRED_BRANDING_MUTATIONS",
+      "persona": "teams.branding.manage",
+      "transaction": "META version/epoch + actor membership version, changed entities/slug/roster guards, audit append and idempotency Put; max 25 actions /4 MiB",
+      "idempotency": "issuer hash + subject + Team + operation + key; 24h; reauthorize replay; changed digest CONFLICT; expired request executes only with current revisions",
+      "expectedVersion": "Team/epoch/member plus operation-specific DTO revisions; absence required for create",
+      "privacyProjection": "Closed operation response schema; no stored private note or private response; assessment is Manager/Coach only",
+      "liveCoreBlocker": null
+    }
+  ]
+}

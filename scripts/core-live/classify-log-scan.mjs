@@ -1,0 +1,5 @@
+import {execFileSync} from 'node:child_process';import {read,E,save,identity} from './aws.mjs';
+await identity();const start=Date.parse(read(E+'/product-executed.json').at);const data=JSON.parse(execFileSync('aws',['logs','filter-log-events','--log-group-name','/project-respawn/Ntgre/core/contracts','--start-time',String(start),'--profile','default','--region','eu-north-1','--output','json','--no-cli-pager'],{encoding:'utf8',maxBuffer:12e6,windowsHide:true}));
+const patterns={jwt:/\beyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}\b/,secretField:/"(?:SecretString|accessToken|password)"\s*:/,hex64:/\b[a-f0-9]{64}\b/},matches=[];
+for(const e of data.events??[]){let value;try{value=JSON.parse(e.message);}catch{value={unparsed:e.message};}function visit(v,path){if(v&&typeof v==='object')for(const[k,x]of Object.entries(v))visit(x,path+'.'+k);else if(typeof v==='string')for(const[name,re]of Object.entries(patterns))if(re.test(v))matches.push({eventType:value.type??'application',field:path,pattern:name,valuePrinted:false});}visit(value,'$');}
+save('log-scan-classification',{matches,valuesPersisted:false});console.log(JSON.stringify({matches}));

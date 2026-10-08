@@ -1,0 +1,88 @@
+{
+  "at": "2026-10-06T20:49:52.802Z",
+  "previousTemplateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/core/2b5a/89c712720e1fc09b9546865bd36b12a0123c8560ed8334d282918ac7cedbbaeb/product.template.json",
+  "newTemplateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/core/2b5a/4aad4b8df1b1272f12e93144b3a1e89a2addaab5e404950f924ff7d7b58b9e46/product.template.json",
+  "results": [
+    {
+      "role": "caller",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/core/2b5a/4aad4b8df1b1272f12e93144b3a1e89a2addaab5e404950f924ff7d7b58b9e46/product.template.json",
+      "expectedForNewCandidate": "allowed",
+      "response": {
+        "EvaluationResults": [
+          {
+            "EvalActionName": "s3:GetObject",
+            "EvalResourceName": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/core/2b5a/4aad4b8df1b1272f12e93144b3a1e89a2addaab5e404950f924ff7d7b58b9e46/product.template.json",
+            "EvalDecision": "implicitDeny",
+            "MatchedStatements": [],
+            "MissingContextValues": [
+              "cloudformation:TemplateUrl",
+              "cloudformation:RoleArn",
+              "iam:PassedToService"
+            ],
+            "PermissionsBoundaryDecisionDetail": {
+              "AllowedByPermissionsBoundary": false
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/core/2b5a/4aad4b8df1b1272f12e93144b3a1e89a2addaab5e404950f924ff7d7b58b9e46/product.template.json",
+                "EvalResourceDecision": "implicitDeny",
+                "MissingContextValues": [
+                  "cloudformation:TemplateUrl",
+                  "cloudformation:RoleArn",
+                  "iam:PassedToService"
+                ],
+                "PermissionsBoundaryDecisionDetail": {
+                  "AllowedByPermissionsBoundary": false
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "role": "execution",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/core/2b5a/4aad4b8df1b1272f12e93144b3a1e89a2addaab5e404950f924ff7d7b58b9e46/product.template.json",
+      "expectedForNewCandidate": "allowed",
+      "response": {
+        "EvaluationResults": [
+          {
+            "EvalActionName": "s3:GetObject",
+            "EvalResourceName": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/core/2b5a/4aad4b8df1b1272f12e93144b3a1e89a2addaab5e404950f924ff7d7b58b9e46/product.template.json",
+            "EvalDecision": "implicitDeny",
+            "MatchedStatements": [],
+            "MissingContextValues": [
+              "secretsmanager:KmsKeyArn",
+              "iam:PermissionsBoundary",
+              "iam:PassedToService"
+            ],
+            "PermissionsBoundaryDecisionDetail": {
+              "AllowedByPermissionsBoundary": false
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/core/2b5a/4aad4b8df1b1272f12e93144b3a1e89a2addaab5e404950f924ff7d7b58b9e46/product.template.json",
+                "EvalResourceDecision": "implicitDeny",
+                "MissingContextValues": [
+                  "secretsmanager:KmsKeyArn",
+                  "iam:PermissionsBoundary",
+                  "iam:PassedToService"
+                ],
+                "PermissionsBoundaryDecisionDetail": {
+                  "AllowedByPermissionsBoundary": false
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "securityChanged": false,
+  "blocker": "Exact template URL and object references still name the old hash; no wildcard or old-key overwrite permitted",
+  "awsWrites": 0
+}

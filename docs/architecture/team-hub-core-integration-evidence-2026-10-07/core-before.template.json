@@ -1,0 +1,235 @@
+{
+  "Resources": {
+    "CursorSecret": {
+      "Type": "AWS::SecretsManager::Secret",
+      "Properties": {
+        "Name": "ProjectRespawn-Core-Ntgre-Cursor",
+        "GenerateSecretString": {
+          "PasswordLength": 64,
+          "ExcludePunctuation": true,
+          "RequireEachIncludedType": false,
+          "ExcludeCharacters": "ghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        }
+      },
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain"
+    },
+    "Logs": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/project-respawn/Ntgre/core/contracts",
+        "RetentionInDays": 30
+      },
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain"
+    },
+    "Runtime": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": "ProjectRespawn-Core-Ntgre-Contracts",
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "PermissionsBoundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Ntgre-RuntimeBoundary",
+        "Policies": [
+          {
+            "PolicyName": "CoreRuntime",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Deny",
+                  "NotAction": [
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                    "cognito-idp:AdminGetUser",
+                    "cognito-idp:AdminListGroupsForUser",
+                    "cognito-idp:ListUsers",
+                    "secretsmanager:GetSecretValue",
+                    "kms:Decrypt"
+                  ],
+                  "Resource": "*"
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/core/contracts:*"
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "cognito-idp:AdminGetUser",
+                    "cognito-idp:AdminListGroupsForUser",
+                    "cognito-idp:ListUsers"
+                  ],
+                  "Resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE"
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": "secretsmanager:GetSecretValue",
+                  "Resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-??????"
+                },
+                {
+                  "Effect": "Deny",
+                  "Action": "cognito-idp:*",
+                  "NotResource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE"
+                },
+                {
+                  "Effect": "Deny",
+                  "Action": "logs:*",
+                  "NotResource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/core/contracts:*"
+                },
+                {
+                  "Effect": "Deny",
+                  "Action": "secretsmanager:*",
+                  "NotResource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-??????"
+                },
+                {
+                  "Effect": "Deny",
+                  "Action": "kms:Decrypt",
+                  "NotResource": [
+                    "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+                    "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a"
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "Contracts": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "FunctionName": "ProjectRespawn-Core-Ntgre-Contracts",
+        "Runtime": "nodejs22.x",
+        "Handler": "index.handler",
+        "Architectures": [
+          "arm64"
+        ],
+        "MemorySize": 256,
+        "Timeout": 10,
+        "Role": {
+          "Fn::GetAtt": [
+            "Runtime",
+            "Arn"
+          ]
+        },
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+          "S3Key": "core/2b5a/4841f475dab09982d8ff5babc240c8a7d8809d05911de8e239ac9031e6fcefcf/runtime.zip"
+        },
+        "LoggingConfig": {
+          "LogGroup": {
+            "Ref": "Logs"
+          },
+          "LogFormat": "JSON"
+        },
+        "Environment": {
+          "Variables": {
+            "CORE_ENVIRONMENT": "{\"contractVersion\":\"environment.v1\",\"environment\":\"Ntgre\",\"account\":\"058264289478\",\"region\":\"eu-north-1\",\"poolId\":\"eu-north-1_n24iLL7QE\",\"clientId\":\"1iq7ovjaf7d16imdvbqgfgvf86\",\"issuer\":\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\"}",
+            "CORE_CURSOR_SECRET_ARN": {
+              "Ref": "CursorSecret"
+            }
+          }
+        }
+      }
+    },
+    "Errors": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmName": "ProjectRespawn-Core-Ntgre-Errors",
+        "Namespace": "AWS/Lambda",
+        "MetricName": "Errors",
+        "Dimensions": [
+          {
+            "Name": "FunctionName",
+            "Value": {
+              "Ref": "Contracts"
+            }
+          }
+        ],
+        "Statistic": "Sum",
+        "Period": 60,
+        "EvaluationPeriods": 1,
+        "Threshold": 1,
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "TreatMissingData": "notBreaching"
+      }
+    },
+    "Throttles": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmName": "ProjectRespawn-Core-Ntgre-Throttles",
+        "Namespace": "AWS/Lambda",
+        "MetricName": "Throttles",
+        "Dimensions": [
+          {
+            "Name": "FunctionName",
+            "Value": {
+              "Ref": "Contracts"
+            }
+          }
+        ],
+        "Statistic": "Sum",
+        "Period": 60,
+        "EvaluationPeriods": 1,
+        "Threshold": 1,
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "TreatMissingData": "notBreaching"
+      }
+    },
+    "DependencyFailures": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmName": "ProjectRespawn-Core-Ntgre-DependencyFailures",
+        "Namespace": "ProjectRespawn/Core",
+        "MetricName": "DependencyFailures",
+        "Dimensions": [
+          {
+            "Name": "Environment",
+            "Value": "Ntgre"
+          }
+        ],
+        "Statistic": "Sum",
+        "Period": 60,
+        "EvaluationPeriods": 1,
+        "Threshold": 1,
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "TreatMissingData": "notBreaching"
+      }
+    },
+    "Denied": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmName": "ProjectRespawn-Core-Ntgre-Denied",
+        "Namespace": "ProjectRespawn/Core",
+        "MetricName": "Denied",
+        "Dimensions": [
+          {
+            "Name": "Environment",
+            "Value": "Ntgre"
+          }
+        ],
+        "Statistic": "Sum",
+        "Period": 60,
+        "EvaluationPeriods": 1,
+        "Threshold": 20,
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "TreatMissingData": "notBreaching"
+      }
+    }
+  }
+}

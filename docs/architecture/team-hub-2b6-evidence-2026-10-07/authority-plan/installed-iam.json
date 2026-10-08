@@ -1,0 +1,382 @@
+{
+  "at": "2026-10-07T22:56:06.091Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "roles": [
+    {
+      "kind": "Read",
+      "name": "ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "roleId": "AROAQ3EGSQDDMQAUUA2OF",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "lambda.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "inline": [
+        {
+          "name": "ExactSyntheticTeamState",
+          "document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Resource": "*",
+                "Effect": "Deny",
+                "NotAction": [
+                  "logs:CreateLogStream",
+                  "logs:PutLogEvents",
+                  "kms:Decrypt",
+                  "lambda:InvokeFunction"
+                ],
+                "Sid": "OnlyDarkCoreIntegration"
+              },
+              {
+                "Action": "logs:*",
+                "Effect": "Deny",
+                "NotResource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read:*"
+              },
+              {
+                "Action": [
+                  "logs:CreateLogStream",
+                  "logs:PutLogEvents"
+                ],
+                "Resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read:*",
+                "Effect": "Allow"
+              },
+              {
+                "Action": "kms:Decrypt",
+                "Effect": "Deny",
+                "NotResource": "arn:aws:kms:eu-north-1:058264289478:key/*"
+              },
+              {
+                "Condition": {
+                  "ForAllValues:StringNotEquals": {
+                    "kms:ResourceAliases": [
+                      "alias/aws/lambda"
+                    ]
+                  }
+                },
+                "Action": "kms:Decrypt",
+                "Resource": "*",
+                "Effect": "Deny"
+              },
+              {
+                "Condition": {
+                  "ForAnyValue:StringEquals": {
+                    "kms:ResourceAliases": [
+                      "alias/aws/lambda"
+                    ]
+                  }
+                },
+                "Action": "kms:Decrypt",
+                "Resource": "arn:aws:kms:eu-north-1:058264289478:key/*",
+                "Effect": "Allow"
+              },
+              {
+                "Action": "lambda:InvokeFunction",
+                "Resource": [
+                  "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+                  "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST"
+                ],
+                "Effect": "Allow"
+              },
+              {
+                "Action": "lambda:*",
+                "Effect": "Deny",
+                "NotResource": [
+                  "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+                  "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST"
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "attached": [],
+      "boundary": {
+        "arn": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary",
+        "version": "v5",
+        "document": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Resource": "*",
+              "Effect": "Deny",
+              "NotAction": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "kms:Decrypt",
+                "lambda:InvokeFunction"
+              ],
+              "Sid": "OnlyDarkCoreIntegration"
+            },
+            {
+              "Action": "logs:*",
+              "Effect": "Deny",
+              "NotResource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read:*"
+            },
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read:*",
+              "Effect": "Allow"
+            },
+            {
+              "Action": "kms:Decrypt",
+              "Effect": "Deny",
+              "NotResource": "arn:aws:kms:eu-north-1:058264289478:key/*"
+            },
+            {
+              "Condition": {
+                "ForAllValues:StringNotEquals": {
+                  "kms:ResourceAliases": [
+                    "alias/aws/lambda"
+                  ]
+                }
+              },
+              "Action": "kms:Decrypt",
+              "Resource": "*",
+              "Effect": "Deny"
+            },
+            {
+              "Condition": {
+                "ForAnyValue:StringEquals": {
+                  "kms:ResourceAliases": [
+                    "alias/aws/lambda"
+                  ]
+                }
+              },
+              "Action": "kms:Decrypt",
+              "Resource": "arn:aws:kms:eu-north-1:058264289478:key/*",
+              "Effect": "Allow"
+            },
+            {
+              "Action": "lambda:InvokeFunction",
+              "Resource": [
+                "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+                "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST"
+              ],
+              "Effect": "Allow"
+            },
+            {
+              "Action": "lambda:*",
+              "Effect": "Deny",
+              "NotResource": [
+                "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+                "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST"
+              ]
+            }
+          ]
+        }
+      },
+      "codeSha256": "KZK11rc2yQw/wwZlSjhXbNhh3A4HBoySvwLHnIeUjmo=",
+      "authority": "LEGACY_WRITER",
+      "normalWrites": "DISABLED",
+      "acceptedDarkMatch": true
+    },
+    {
+      "kind": "Command",
+      "name": "ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "roleId": "AROAQ3EGSQDDMRDNYALN2",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "lambda.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "inline": [
+        {
+          "name": "ExactSyntheticTeamState",
+          "document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Resource": "*",
+                "Effect": "Deny",
+                "NotAction": [
+                  "logs:CreateLogStream",
+                  "logs:PutLogEvents",
+                  "kms:Decrypt",
+                  "lambda:InvokeFunction"
+                ],
+                "Sid": "OnlyDarkCoreIntegration"
+              },
+              {
+                "Action": "logs:*",
+                "Effect": "Deny",
+                "NotResource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-command:*"
+              },
+              {
+                "Action": [
+                  "logs:CreateLogStream",
+                  "logs:PutLogEvents"
+                ],
+                "Resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-command:*",
+                "Effect": "Allow"
+              },
+              {
+                "Action": "kms:Decrypt",
+                "Effect": "Deny",
+                "NotResource": "arn:aws:kms:eu-north-1:058264289478:key/*"
+              },
+              {
+                "Condition": {
+                  "ForAllValues:StringNotEquals": {
+                    "kms:ResourceAliases": [
+                      "alias/aws/lambda"
+                    ]
+                  }
+                },
+                "Action": "kms:Decrypt",
+                "Resource": "*",
+                "Effect": "Deny"
+              },
+              {
+                "Condition": {
+                  "ForAnyValue:StringEquals": {
+                    "kms:ResourceAliases": [
+                      "alias/aws/lambda"
+                    ]
+                  }
+                },
+                "Action": "kms:Decrypt",
+                "Resource": "arn:aws:kms:eu-north-1:058264289478:key/*",
+                "Effect": "Allow"
+              },
+              {
+                "Action": "lambda:InvokeFunction",
+                "Resource": [
+                  "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+                  "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST"
+                ],
+                "Effect": "Allow"
+              },
+              {
+                "Action": "lambda:*",
+                "Effect": "Deny",
+                "NotResource": [
+                  "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+                  "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST"
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "attached": [],
+      "boundary": {
+        "arn": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+        "version": "v5",
+        "document": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Resource": "*",
+              "Effect": "Deny",
+              "NotAction": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "kms:Decrypt",
+                "lambda:InvokeFunction"
+              ],
+              "Sid": "OnlyDarkCoreIntegration"
+            },
+            {
+              "Action": "logs:*",
+              "Effect": "Deny",
+              "NotResource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-command:*"
+            },
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-command:*",
+              "Effect": "Allow"
+            },
+            {
+              "Action": "kms:Decrypt",
+              "Effect": "Deny",
+              "NotResource": "arn:aws:kms:eu-north-1:058264289478:key/*"
+            },
+            {
+              "Condition": {
+                "ForAllValues:StringNotEquals": {
+                  "kms:ResourceAliases": [
+                    "alias/aws/lambda"
+                  ]
+                }
+              },
+              "Action": "kms:Decrypt",
+              "Resource": "*",
+              "Effect": "Deny"
+            },
+            {
+              "Condition": {
+                "ForAnyValue:StringEquals": {
+                  "kms:ResourceAliases": [
+                    "alias/aws/lambda"
+                  ]
+                }
+              },
+              "Action": "kms:Decrypt",
+              "Resource": "arn:aws:kms:eu-north-1:058264289478:key/*",
+              "Effect": "Allow"
+            },
+            {
+              "Action": "lambda:InvokeFunction",
+              "Resource": [
+                "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+                "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST"
+              ],
+              "Effect": "Allow"
+            },
+            {
+              "Action": "lambda:*",
+              "Effect": "Deny",
+              "NotResource": [
+                "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+                "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST"
+              ]
+            }
+          ]
+        }
+      },
+      "codeSha256": "KZK11rc2yQw/wwZlSjhXbNhh3A4HBoySvwLHnIeUjmo=",
+      "authority": "LEGACY_WRITER",
+      "normalWrites": "DISABLED",
+      "acceptedDarkMatch": true
+    }
+  ],
+  "awsWrites": 0,
+  "complete": true,
+  "resourcePolicies": [
+    {
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "policy": null
+    },
+    {
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "policy": null
+    }
+  ]
+}

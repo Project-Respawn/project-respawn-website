@@ -73,7 +73,9 @@ test('synth receipt counts every root/resource including security and closes ove
   for (const dependency of evidence.loadedLibraries) assert.ok(dependency.path.startsWith('infrastructure/domains/team-hub/node_modules/'));
   assert.equal(evidence.networkGuard, true); assert.equal(evidence.awsCalls, 0);
   assert.ok(evidence.closure.find(c => c.name === 'routes').outputs.length >= 7, 'major pages emitted as lazy chunks');
-  for (const input of evidence.inputs) assert.equal(createHash('sha256').update(fs.readFileSync(path.join(root, input.path))).digest('hex'), input.sha256, `stale synthesis input ${input.path}`);
+  const amendment=JSON.parse(fs.readFileSync('docs/architecture/team-hub-ef-evidence-2026-10-08/frontend-amendment.json'));
+  const expectedInputHash=input=>{const change=amendment.files.find(f=>f.path===input.path);if(!change)return input.sha256;assert.equal(input.sha256,change.previousSha256);assert.equal(amendment.liveActivation,false);return change.sha256;};
+  for (const input of evidence.inputs) assert.equal(createHash('sha256').update(fs.readFileSync(path.join(root, input.path))).digest('hex'), expectedInputHash(input), `stale synthesis input ${input.path}`);
   const product = read(evidence.templates.find(t => t.name === target.stack).path);
   assert.equal(product.Metadata.Status, 'OFFLINE_SKELETON'); assert.equal(product.Outputs, undefined);
   for (const [id, resource] of Object.entries(product.Resources)) {
@@ -97,8 +99,29 @@ test('offline runner rejects deployment/wrong environment before building; netwo
   const result = spawnSync(process.execPath, ['--require', './scripts/team-hub/offline-guard.cjs', '-e', 'require("node:net").connect(443,"example.invalid")'], { cwd: root, env: { ...process.env, TEAM_HUB_TRACE: trace }, encoding: 'utf8' });
   assert.notEqual(result.status, 0); assert.match(result.stderr, /Network\/subprocess prohibited/);
 });
-test('protected Legacy business/live-client hashes unchanged; authorized hosted selector is guarded', () => {
+test('protected Legacy hashes retained; explicit accepted phase amendments and dormant frontend are pinned', () => {
   const inventory = read('docs/architecture/team-hub-extraction-evidence-2026-10-04/current-source-inventory.json');
+  const frontend = read('docs/architecture/team-hub-2b5b-evidence-2026-10-07/frontend-source-manifest.json');
+  const repair = read('docs/architecture/team-hub-2b6-evidence-2026-10-07/frontend-revision.json');
+  assert.equal(repair.backendChanged, false); assert.equal(repair.liveActivation, false);
+  const repairPaths = new Set(['src/features/team-hub/services/website-adapter.mjs','src/features/Team Hub/team-hub.routes.js','src/features/team-hub/services/route-access.mjs','src/features/Team Hub/champion-pool/ChampionPool.vue']);
+  assert.equal(repair.changes.length, repairPaths.size);
+  for (const change of repair.changes) {
+    assert.ok(repairPaths.has(change.path));
+    assert.equal(change.previousSha256, frontend.files.find(f => f.path === change.path)?.sha256 ?? null);
+    assert.equal(createHash('sha256').update(fs.readFileSync(path.join(root, change.path))).digest('hex'), change.sha256);
+  }
+  const allowedFrontend = new Set([
+    'src/features/Team Hub/champion-pool/ChampionPool.vue',
+    'src/features/Team Hub/champion-pool/CoachPoolReview.vue',
+    'src/features/Team Hub/team-hub.routes.js',
+    'src/features/Team Hub/TeamAdministration.vue',
+    'src/features/Team Hub/TeamHubHome.vue',
+    'src/features/Team Hub/TeamManagement.vue',
+    'src/router/index.js', 'src/router/admin.routes.js', 'src/App.vue',
+  ]);
+  assert.equal(frontend.liveActivation, false);
+  assert.match(fs.readFileSync(path.join(root, 'src/features/team-hub/services/migration-mode.mjs'), 'utf8'), /usingIndependentTeamHub\s*=\s*false/);
   for (const { path: p, sha256 } of inventory.sourceHashes) {
     if (p === 'amplify.yml') {
       const current = fs.readFileSync(path.join(root, p), 'utf8').replaceAll('\r\n', '\n');
@@ -109,7 +132,13 @@ test('protected Legacy business/live-client hashes unchanged; authorized hosted 
       assert.doesNotMatch(current.split('frontend:')[0], /ampx pipeline-deploy/);
       continue;
     }
-    assert.equal(createHash('sha256').update(fs.readFileSync(path.join(root, p))).digest('hex'), sha256, p);
+    // The accepted 2B4 recovery guard predates this task; never repin backend drift
+    // from the working tree. Only the enumerated 2B5B frontend paths may advance.
+    const expected = p === 'amplify/backend.ts'
+      ? read('docs/architecture/team-hub-2b4-evidence-2026-10-06/source-manifest.json').legacyBackendSha256
+      : allowedFrontend.has(p) ? (repair.changes.find(f => f.path === p)?.sha256 ?? frontend.files.find(f => f.path === p)?.sha256) : sha256;
+    assert.ok(expected, `Missing explicit phase pin for ${p}`);
+    assert.equal(createHash('sha256').update(fs.readFileSync(path.join(root, p))).digest('hex'), expected, p);
   }
   const manifest = read('config/domains/team-hub/domain-endpoints.Ntgre.json');
   assert.equal(manifest.stackName, 'ProjectRespawn-TeamHub-Ntgre');

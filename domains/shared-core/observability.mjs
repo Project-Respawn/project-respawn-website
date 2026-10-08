@@ -1,0 +1,5 @@
+// Never accept request bodies, tokens, email, subject or raw provider errors here.
+export function eventRecord({requestId,contractVersion,outcome,durationMs}){
+ const outcomeName=['ALLOW','DENY','SUCCESS','UNAUTHENTICATED','FORBIDDEN','INVALID_INPUT','WRONG_ENVIRONMENT','NOT_FOUND','DEPENDENCY_UNAVAILABLE','RATE_LIMITED'].includes(outcome)?outcome:'DEPENDENCY_UNAVAILABLE';
+ return {_aws:{Timestamp:Date.now(),CloudWatchMetrics:[{Namespace:'ProjectRespawn/Core',Dimensions:[['Environment']],Metrics:[{Name:'Requests',Unit:'Count'},{Name:'Denied',Unit:'Count'},{Name:'DependencyFailures',Unit:'Count'},{Name:'RateLimited',Unit:'Count'}]}]},Environment:'Ntgre',Requests:1,Denied:['DENY','UNAUTHENTICATED','FORBIDDEN'].includes(outcomeName)?1:0,DependencyFailures:outcomeName==='DEPENDENCY_UNAVAILABLE'?1:0,RateLimited:outcomeName==='RATE_LIMITED'?1:0,requestId:String(requestId??'').slice(0,80),contractVersion:['authorization.decision.v1','directory.assignment.v1'].includes(contractVersion)?contractVersion:'INVALID',outcome:outcomeName,durationMs:Math.max(0,Math.round(durationMs))};
+}

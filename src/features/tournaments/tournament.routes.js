@@ -1,4 +1,3 @@
-import { getTournament } from './tournament.data.js';
 const children = [
   { path: '', name: 'tournament-overview', component: () => import('../../views/Tournaments/Overview/TournamentOverview.vue'), meta: { public: true, tournamentSection: 'overview' } },
   { path: 'teams', name: 'tournament-teams', component: () => import('../../views/Tournaments/Teams/TournamentTeams.vue'), meta: { public: true, tournamentSection: 'teams' } },
@@ -16,5 +15,5 @@ const children = [
 ];
 export default [
   { path: '/tournaments', redirect: '/tournaments/founders-cup' },
-  { path: '/tournaments/:tournamentSlug', component: () => import('./shell/TournamentShell.vue'), beforeEnter: to => getTournament(to.params.tournamentSlug) ? true : { path: '/tournaments/founders-cup' }, children, meta: { public: true } },
+  { path: '/tournaments/:tournamentSlug', component: () => import('./shell/TournamentShell.vue'), beforeEnter: async to => (await import('./tournament.data.js')).getTournament(to.params.tournamentSlug) ? true : { path: '/tournaments/founders-cup' }, children, meta: { public: true } },
 ];

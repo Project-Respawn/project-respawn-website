@@ -1,0 +1,113 @@
+{
+  "at": "2026-10-05T19:55:17.913Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "stack": {
+    "name": "ProjectRespawn-TeamHub-Ntgre",
+    "id": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/b66ad780-c0cd-11f1-91ba-0effc0d85417",
+    "status": "CREATE_COMPLETE",
+    "lastUpdated": "2026-10-05T15:03:51.170000+00:00"
+  },
+  "resources": [
+    [
+      "ApiErrors",
+      "AWS::CloudWatch::Alarm",
+      "ProjectRespawn-TeamHub-Ntgre-ReadProof-ApiErrors"
+    ],
+    [
+      "ApiInvoke",
+      "AWS::Lambda::Permission",
+      "ProjectRespawn-TeamHub-Ntgre-ApiInvoke-udDZcwx2P70z"
+    ],
+    [
+      "HttpApi",
+      "AWS::ApiGatewayV2::Api",
+      "t54b88casf"
+    ],
+    [
+      "JwtAuthorizer",
+      "AWS::ApiGatewayV2::Authorizer",
+      "nvebda"
+    ],
+    [
+      "PreviewRoute",
+      "AWS::ApiGatewayV2::Route",
+      "thj3tql"
+    ],
+    [
+      "ReadErrors",
+      "AWS::CloudWatch::Alarm",
+      "ProjectRespawn-TeamHub-Ntgre-ReadProof-ReadErrors"
+    ],
+    [
+      "ReadFunction",
+      "AWS::Lambda::Function",
+      "ProjectRespawn-TeamHub-Ntgre-PreviewRead"
+    ],
+    [
+      "ReadIntegration",
+      "AWS::ApiGatewayV2::Integration",
+      "pb3fp80"
+    ],
+    [
+      "ReadLogs",
+      "AWS::Logs::LogGroup",
+      "/project-respawn/Ntgre/team-hub/preview"
+    ],
+    [
+      "ReadRole",
+      "AWS::IAM::Role",
+      "ProjectRespawn-TeamHub-Ntgre-PreviewRead"
+    ],
+    [
+      "Stage",
+      "AWS::ApiGatewayV2::Stage",
+      "$default"
+    ]
+  ],
+  "api": "t54b88casf",
+  "lambda": {
+    "name": "ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+    "hash": "uROMTdppYqBarFWhso61iQVCTQdVRmm8vCNVR3KRWVA="
+  },
+  "security": {
+    "stack": "ProjectRespawn-TeamHub-Ntgre-ReadProofSecurity",
+    "status": "UPDATE_COMPLETE",
+    "resources": 5,
+    "roles": [
+      {
+        "role": "ProjectRespawn-TeamHub-Ntgre-Deploy",
+        "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofPreparation",
+        "policyVersion": "v2",
+        "policyDigest": "92074f4dc132b030c38147e43f94ed20a3a3aa0cc941a10382d13110054659a5",
+        "unchanged": true
+      },
+      {
+        "role": "ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+        "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofExecutionBoundary",
+        "policyVersion": "v2",
+        "policyDigest": "dbcd76a5b2a90109165627baed0d8b5880bf823d418508cf864550ee2cd7fd33",
+        "unchanged": true
+      },
+      {
+        "role": "ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+        "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+        "policyVersion": "v1",
+        "policyDigest": "7928d12160a2cae1fb5dede3ab8dde5e5aff315a444deb8dac71f63600a4832a",
+        "unchanged": true
+      }
+    ]
+  },
+  "firstCreateAuthorityEffective": false,
+  "exactApi": "t54b88casf",
+  "unchanged": true,
+  "audit": {
+    "calls": 24,
+    "retries": 0,
+    "errors": [],
+    "awsWrites": 0
+  }
+}

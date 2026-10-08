@@ -1,0 +1,339 @@
+{
+  "status": "DESIGN_ONLY_NOT_CREATED",
+  "roleName": "ProjectRespawn-TeamHub-Ntgre-Migration",
+  "identityPolicy": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "ExactSourceTables",
+        "Effect": "Allow",
+        "Action": [
+          "dynamodb:DescribeTable",
+          "dynamodb:Scan",
+          "dynamodb:GetItem",
+          "dynamodb:BatchGetItem"
+        ],
+        "Resource": [
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+        ],
+        "Condition": {
+          "StringEquals": {
+            "aws:RequestedRegion": "eu-north-1"
+          },
+          "DateGreaterThan": {
+            "aws:CurrentTime": "2026-10-06T08:00:00Z"
+          },
+          "DateLessThan": {
+            "aws:CurrentTime": "2026-10-06T12:00:00Z"
+          }
+        }
+      },
+      {
+        "Sid": "ExactTargetTables",
+        "Effect": "Allow",
+        "Action": [
+          "dynamodb:DescribeTable",
+          "dynamodb:Scan",
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:BatchWriteItem",
+          "dynamodb:ConditionCheckItem"
+        ],
+        "Resource": [
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal"
+        ],
+        "Condition": {
+          "StringEquals": {
+            "aws:RequestedRegion": "eu-north-1"
+          },
+          "DateGreaterThan": {
+            "aws:CurrentTime": "2026-10-06T08:00:00Z"
+          },
+          "DateLessThan": {
+            "aws:CurrentTime": "2026-10-06T12:00:00Z"
+          }
+        }
+      },
+      {
+        "Sid": "SourceLogoRead",
+        "Effect": "Allow",
+        "Action": [
+          "s3:GetObject",
+          "s3:GetObjectVersion"
+        ],
+        "Resource": [
+          "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/*"
+        ],
+        "Condition": {
+          "StringEquals": {
+            "aws:RequestedRegion": "eu-north-1"
+          },
+          "DateGreaterThan": {
+            "aws:CurrentTime": "2026-10-06T08:00:00Z"
+          },
+          "DateLessThan": {
+            "aws:CurrentTime": "2026-10-06T12:00:00Z"
+          }
+        }
+      },
+      {
+        "Sid": "TargetLogoRead",
+        "Effect": "Allow",
+        "Action": [
+          "s3:GetObject",
+          "s3:GetObjectVersion"
+        ],
+        "Resource": [
+          "arn:aws:s3:::projectrespawn-teamhub-ntgre-058264289478-eu-north-1/team-logos/*"
+        ],
+        "Condition": {
+          "StringEquals": {
+            "aws:RequestedRegion": "eu-north-1"
+          },
+          "DateGreaterThan": {
+            "aws:CurrentTime": "2026-10-06T08:00:00Z"
+          },
+          "DateLessThan": {
+            "aws:CurrentTime": "2026-10-06T12:00:00Z"
+          }
+        }
+      },
+      {
+        "Sid": "TargetLogoWrite",
+        "Effect": "Allow",
+        "Action": [
+          "s3:PutObject"
+        ],
+        "Resource": [
+          "arn:aws:s3:::projectrespawn-teamhub-ntgre-058264289478-eu-north-1/team-logos/*"
+        ],
+        "Condition": {
+          "StringEquals": {
+            "aws:RequestedRegion": "eu-north-1",
+            "s3:x-amz-server-side-encryption": "AES256"
+          },
+          "DateGreaterThan": {
+            "aws:CurrentTime": "2026-10-06T08:00:00Z"
+          },
+          "DateLessThan": {
+            "aws:CurrentTime": "2026-10-06T12:00:00Z"
+          }
+        }
+      },
+      {
+        "Sid": "ExactLogoListings",
+        "Effect": "Allow",
+        "Action": [
+          "s3:ListBucket",
+          "s3:ListBucketVersions"
+        ],
+        "Resource": [
+          "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+          "arn:aws:s3:::projectrespawn-teamhub-ntgre-058264289478-eu-north-1"
+        ],
+        "Condition": {
+          "StringEquals": {
+            "aws:RequestedRegion": "eu-north-1",
+            "s3:prefix": "team-logos/"
+          },
+          "DateGreaterThan": {
+            "aws:CurrentTime": "2026-10-06T08:00:00Z"
+          },
+          "DateLessThan": {
+            "aws:CurrentTime": "2026-10-06T12:00:00Z"
+          }
+        }
+      }
+    ]
+  },
+  "permissionsBoundary": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "ExactSourceTables",
+        "Effect": "Allow",
+        "Action": [
+          "dynamodb:DescribeTable",
+          "dynamodb:Scan",
+          "dynamodb:GetItem",
+          "dynamodb:BatchGetItem"
+        ],
+        "Resource": [
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+        ],
+        "Condition": {
+          "StringEquals": {
+            "aws:RequestedRegion": "eu-north-1"
+          },
+          "DateGreaterThan": {
+            "aws:CurrentTime": "2026-10-06T08:00:00Z"
+          },
+          "DateLessThan": {
+            "aws:CurrentTime": "2026-10-06T12:00:00Z"
+          }
+        }
+      },
+      {
+        "Sid": "ExactTargetTables",
+        "Effect": "Allow",
+        "Action": [
+          "dynamodb:DescribeTable",
+          "dynamodb:Scan",
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:BatchWriteItem",
+          "dynamodb:ConditionCheckItem"
+        ],
+        "Resource": [
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal"
+        ],
+        "Condition": {
+          "StringEquals": {
+            "aws:RequestedRegion": "eu-north-1"
+          },
+          "DateGreaterThan": {
+            "aws:CurrentTime": "2026-10-06T08:00:00Z"
+          },
+          "DateLessThan": {
+            "aws:CurrentTime": "2026-10-06T12:00:00Z"
+          }
+        }
+      },
+      {
+        "Sid": "SourceLogoRead",
+        "Effect": "Allow",
+        "Action": [
+          "s3:GetObject",
+          "s3:GetObjectVersion"
+        ],
+        "Resource": [
+          "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/*"
+        ],
+        "Condition": {
+          "StringEquals": {
+            "aws:RequestedRegion": "eu-north-1"
+          },
+          "DateGreaterThan": {
+            "aws:CurrentTime": "2026-10-06T08:00:00Z"
+          },
+          "DateLessThan": {
+            "aws:CurrentTime": "2026-10-06T12:00:00Z"
+          }
+        }
+      },
+      {
+        "Sid": "TargetLogoRead",
+        "Effect": "Allow",
+        "Action": [
+          "s3:GetObject",
+          "s3:GetObjectVersion"
+        ],
+        "Resource": [
+          "arn:aws:s3:::projectrespawn-teamhub-ntgre-058264289478-eu-north-1/team-logos/*"
+        ],
+        "Condition": {
+          "StringEquals": {
+            "aws:RequestedRegion": "eu-north-1"
+          },
+          "DateGreaterThan": {
+            "aws:CurrentTime": "2026-10-06T08:00:00Z"
+          },
+          "DateLessThan": {
+            "aws:CurrentTime": "2026-10-06T12:00:00Z"
+          }
+        }
+      },
+      {
+        "Sid": "TargetLogoWrite",
+        "Effect": "Allow",
+        "Action": [
+          "s3:PutObject"
+        ],
+        "Resource": [
+          "arn:aws:s3:::projectrespawn-teamhub-ntgre-058264289478-eu-north-1/team-logos/*"
+        ],
+        "Condition": {
+          "StringEquals": {
+            "aws:RequestedRegion": "eu-north-1",
+            "s3:x-amz-server-side-encryption": "AES256"
+          },
+          "DateGreaterThan": {
+            "aws:CurrentTime": "2026-10-06T08:00:00Z"
+          },
+          "DateLessThan": {
+            "aws:CurrentTime": "2026-10-06T12:00:00Z"
+          }
+        }
+      },
+      {
+        "Sid": "ExactLogoListings",
+        "Effect": "Allow",
+        "Action": [
+          "s3:ListBucket",
+          "s3:ListBucketVersions"
+        ],
+        "Resource": [
+          "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+          "arn:aws:s3:::projectrespawn-teamhub-ntgre-058264289478-eu-north-1"
+        ],
+        "Condition": {
+          "StringEquals": {
+            "aws:RequestedRegion": "eu-north-1",
+            "s3:prefix": "team-logos/"
+          },
+          "DateGreaterThan": {
+            "aws:CurrentTime": "2026-10-06T08:00:00Z"
+          },
+          "DateLessThan": {
+            "aws:CurrentTime": "2026-10-06T12:00:00Z"
+          }
+        }
+      }
+    ]
+  },
+  "trust": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": "arn:aws:iam::058264289478:user/RavenTest"
+        },
+        "Action": "sts:AssumeRole",
+        "Condition": {
+          "DateGreaterThan": {
+            "aws:CurrentTime": "2026-10-06T08:00:00Z"
+          },
+          "DateLessThan": {
+            "aws:CurrentTime": "2026-10-06T12:00:00Z"
+          }
+        }
+      }
+    ]
+  },
+  "roleMaxSessionSeconds": 3600,
+  "requestedSessionSeconds": 900,
+  "window": "ILLUSTRATIVE ONLY; bind fresh reviewed timestamps at later gate",
+  "sourceArns": [
+    "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+    "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+    "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+    "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+  ],
+  "targetArns": [
+    "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+    "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal"
+  ],
+  "targetBucket": "projectrespawn-teamhub-ntgre-058264289478-eu-north-1",
+  "normalRuntimeUnchanged": true,
+  "missingGate": "CloudTrail data-event coverage/log destination and custodian approval; no role exists",
+  "awsWrites": 0
+}

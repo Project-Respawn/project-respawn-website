@@ -2,7 +2,7 @@
 
 [Required START HERE](README-PHASE2-MIGRATION.md) · [Machine inventory](phase2-document-inventory.json) · [Retention review](../maintenance/phase2-document-retention.md)
 
-738 existing Markdown references target 574 architecture paths. No paths were moved, preserving links and byte-pinned evidence. Status here separates current authority from historical instructions.
+820 existing Markdown references target 612 architecture paths. No paths were moved, preserving links and byte-pinned evidence. Status here separates current authority from historical instructions.
 
 ## Current required reading
 
@@ -11,6 +11,7 @@
 
 ## Domain current documents
 
+- [Team Hub M4 state inventory](team-hub-2b3-state-inventory.md), [migration plan](team-hub-2b3-migration-plan.md), [recovery proposal](team-hub-2b3-recovery-plan.md), [final preparation gate](team-hub-2b3-dark-target-readiness.md).
 - [Team Hub accepted read proof](team-hub-2b2-read-path-release1-2026-10-05.md); its accepted-state evidence selects the exact-ID steady-state policy.
 - Tournament: config/domains/tournaments/domain-endpoints.Ntgre.json and infrastructure/security/tournaments-Ntgre-accepted-release1; run the offline accepted-state verifier. Release 2/restore remains pending.
 - Other domains: dated classification/design informs ownership; current phase comes from the status JSON.
@@ -26,8 +27,8 @@ Dated roadmap/classification statuses, failed preflights, temporary first-create
 | Classification | Files |
 |---|---:|
 | AUTHORITATIVE_CURRENT | 13 |
-| DOMAIN_CURRENT | 105 |
-| HISTORICAL_EVIDENCE | 1529 |
+| DOMAIN_CURRENT | 144 |
+| HISTORICAL_EVIDENCE | 1567 |
 | SUPERSEDED | 9 |
 | DUPLICATE | 486 |
 | TEMPORARY_DIAGNOSTIC | 30 |

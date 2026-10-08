@@ -1,0 +1,548 @@
+{
+  "at": "2026-10-07T08:12:58.545Z",
+  "account": "058264289478",
+  "region": "eu-north-1",
+  "revisions": {
+    "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE": "NO_POLICY",
+    "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE": "NO_POLICY",
+    "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE": "NO_POLICY",
+    "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE": "NO_POLICY"
+  },
+  "existing": {},
+  "bucketPolicySha256": "e569233b4da8cf824f8fb98c42c42be56f8b8fdf32b3027d18610d08c0ee1208",
+  "modes": {
+    "LEGACY_WRITER": {
+      "mode": "LEGACY_WRITER",
+      "tables": [
+        {
+          "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "policy": {
+            "Version": "2012-10-17",
+            "Statement": []
+          },
+          "install": false
+        },
+        {
+          "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "policy": {
+            "Version": "2012-10-17",
+            "Statement": []
+          },
+          "install": false
+        },
+        {
+          "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "policy": {
+            "Version": "2012-10-17",
+            "Statement": []
+          },
+          "install": false
+        },
+        {
+          "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "policy": {
+            "Version": "2012-10-17",
+            "Statement": []
+          },
+          "install": false
+        }
+      ],
+      "bucket": {
+        "name": "amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+        "policy": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Action": "s3:*",
+              "Resource": [
+                "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+                "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/*"
+              ],
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3"
+              },
+              "Action": [
+                "s3:PutBucketPolicy",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*"
+              ],
+              "Resource": [
+                "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+                "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/*"
+              ]
+            }
+          ]
+        }
+      },
+      "install": false,
+      "resourceDelta": 0,
+      "requiresFreshPolicyRevision": true,
+      "recoveryBypass": false
+    },
+    "FROZEN": {
+      "mode": "FROZEN",
+      "tables": [
+        {
+          "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "policy": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Sid": "TeamHubMigrationWriterFence",
+                "Effect": "Deny",
+                "Principal": "*",
+                "Action": [
+                  "dynamodb:PutItem",
+                  "dynamodb:UpdateItem",
+                  "dynamodb:DeleteItem",
+                  "dynamodb:BatchWriteItem",
+                  "dynamodb:PartiQLInsert",
+                  "dynamodb:PartiQLUpdate",
+                  "dynamodb:PartiQLDelete"
+                ],
+                "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE"
+              }
+            ]
+          },
+          "install": false
+        },
+        {
+          "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "policy": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Sid": "TeamHubMigrationWriterFence",
+                "Effect": "Deny",
+                "Principal": "*",
+                "Action": [
+                  "dynamodb:PutItem",
+                  "dynamodb:UpdateItem",
+                  "dynamodb:DeleteItem",
+                  "dynamodb:BatchWriteItem",
+                  "dynamodb:PartiQLInsert",
+                  "dynamodb:PartiQLUpdate",
+                  "dynamodb:PartiQLDelete"
+                ],
+                "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE"
+              }
+            ]
+          },
+          "install": false
+        },
+        {
+          "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "policy": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Sid": "TeamHubMigrationWriterFence",
+                "Effect": "Deny",
+                "Principal": "*",
+                "Action": [
+                  "dynamodb:PutItem",
+                  "dynamodb:UpdateItem",
+                  "dynamodb:DeleteItem",
+                  "dynamodb:BatchWriteItem",
+                  "dynamodb:PartiQLInsert",
+                  "dynamodb:PartiQLUpdate",
+                  "dynamodb:PartiQLDelete"
+                ],
+                "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE"
+              }
+            ]
+          },
+          "install": false
+        },
+        {
+          "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "policy": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Sid": "TeamHubMigrationWriterFence",
+                "Effect": "Deny",
+                "Principal": "*",
+                "Action": [
+                  "dynamodb:PutItem",
+                  "dynamodb:UpdateItem",
+                  "dynamodb:DeleteItem",
+                  "dynamodb:BatchWriteItem",
+                  "dynamodb:PartiQLInsert",
+                  "dynamodb:PartiQLUpdate",
+                  "dynamodb:PartiQLDelete"
+                ],
+                "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+              }
+            ]
+          },
+          "install": false
+        }
+      ],
+      "bucket": {
+        "name": "amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+        "policy": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Action": "s3:*",
+              "Resource": [
+                "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+                "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/*"
+              ],
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3"
+              },
+              "Action": [
+                "s3:PutBucketPolicy",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*"
+              ],
+              "Resource": [
+                "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+                "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/*"
+              ]
+            },
+            {
+              "Sid": "TeamHubMigrationLogoFence",
+              "Effect": "Deny",
+              "Principal": "*",
+              "Action": [
+                "s3:PutObject",
+                "s3:DeleteObject",
+                "s3:DeleteObjectVersion",
+                "s3:AbortMultipartUpload"
+              ],
+              "Resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/*"
+            }
+          ]
+        }
+      },
+      "install": false,
+      "resourceDelta": 0,
+      "requiresFreshPolicyRevision": true,
+      "recoveryBypass": false
+    },
+    "TARGET_WRITER": {
+      "mode": "TARGET_WRITER",
+      "tables": [
+        {
+          "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "policy": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Sid": "TeamHubMigrationWriterFence",
+                "Effect": "Deny",
+                "Principal": "*",
+                "Action": [
+                  "dynamodb:PutItem",
+                  "dynamodb:UpdateItem",
+                  "dynamodb:DeleteItem",
+                  "dynamodb:BatchWriteItem",
+                  "dynamodb:PartiQLInsert",
+                  "dynamodb:PartiQLUpdate",
+                  "dynamodb:PartiQLDelete"
+                ],
+                "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE"
+              },
+              {
+                "Sid": "TeamHubMigrationRetiredReaderFence",
+                "Effect": "Deny",
+                "Principal": "*",
+                "Action": [
+                  "dynamodb:GetItem",
+                  "dynamodb:BatchGetItem",
+                  "dynamodb:Query",
+                  "dynamodb:Scan",
+                  "dynamodb:PartiQLSelect"
+                ],
+                "Resource": [
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE/index/*"
+                ]
+              }
+            ]
+          },
+          "install": false
+        },
+        {
+          "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "policy": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Sid": "TeamHubMigrationWriterFence",
+                "Effect": "Deny",
+                "Principal": "*",
+                "Action": [
+                  "dynamodb:PutItem",
+                  "dynamodb:UpdateItem",
+                  "dynamodb:DeleteItem",
+                  "dynamodb:BatchWriteItem",
+                  "dynamodb:PartiQLInsert",
+                  "dynamodb:PartiQLUpdate",
+                  "dynamodb:PartiQLDelete"
+                ],
+                "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE"
+              },
+              {
+                "Sid": "TeamHubMigrationRetiredReaderFence",
+                "Effect": "Deny",
+                "Principal": "*",
+                "Action": [
+                  "dynamodb:GetItem",
+                  "dynamodb:BatchGetItem",
+                  "dynamodb:Query",
+                  "dynamodb:Scan",
+                  "dynamodb:PartiQLSelect"
+                ],
+                "Resource": [
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE/index/*"
+                ]
+              }
+            ]
+          },
+          "install": false
+        },
+        {
+          "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "policy": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Sid": "TeamHubMigrationWriterFence",
+                "Effect": "Deny",
+                "Principal": "*",
+                "Action": [
+                  "dynamodb:PutItem",
+                  "dynamodb:UpdateItem",
+                  "dynamodb:DeleteItem",
+                  "dynamodb:BatchWriteItem",
+                  "dynamodb:PartiQLInsert",
+                  "dynamodb:PartiQLUpdate",
+                  "dynamodb:PartiQLDelete"
+                ],
+                "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE"
+              },
+              {
+                "Sid": "TeamHubMigrationRetiredReaderFence",
+                "Effect": "Deny",
+                "Principal": "*",
+                "Action": [
+                  "dynamodb:GetItem",
+                  "dynamodb:BatchGetItem",
+                  "dynamodb:Query",
+                  "dynamodb:Scan",
+                  "dynamodb:PartiQLSelect"
+                ],
+                "Resource": [
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE/index/*"
+                ]
+              }
+            ]
+          },
+          "install": false
+        },
+        {
+          "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "policy": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Sid": "TeamHubMigrationWriterFence",
+                "Effect": "Deny",
+                "Principal": "*",
+                "Action": [
+                  "dynamodb:PutItem",
+                  "dynamodb:UpdateItem",
+                  "dynamodb:DeleteItem",
+                  "dynamodb:BatchWriteItem",
+                  "dynamodb:PartiQLInsert",
+                  "dynamodb:PartiQLUpdate",
+                  "dynamodb:PartiQLDelete"
+                ],
+                "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+              },
+              {
+                "Sid": "TeamHubMigrationRetiredReaderFence",
+                "Effect": "Deny",
+                "Principal": "*",
+                "Action": [
+                  "dynamodb:GetItem",
+                  "dynamodb:BatchGetItem",
+                  "dynamodb:Query",
+                  "dynamodb:Scan",
+                  "dynamodb:PartiQLSelect"
+                ],
+                "Resource": [
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE/index/*"
+                ]
+              }
+            ]
+          },
+          "install": false
+        }
+      ],
+      "bucket": {
+        "name": "amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+        "policy": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Action": "s3:*",
+              "Resource": [
+                "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+                "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/*"
+              ],
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3"
+              },
+              "Action": [
+                "s3:PutBucketPolicy",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*"
+              ],
+              "Resource": [
+                "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+                "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/*"
+              ]
+            },
+            {
+              "Sid": "TeamHubMigrationLogoFence",
+              "Effect": "Deny",
+              "Principal": "*",
+              "Action": [
+                "s3:PutObject",
+                "s3:DeleteObject",
+                "s3:DeleteObjectVersion",
+                "s3:AbortMultipartUpload"
+              ],
+              "Resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/*"
+            }
+          ]
+        }
+      },
+      "install": false,
+      "resourceDelta": 0,
+      "requiresFreshPolicyRevision": true,
+      "recoveryBypass": false
+    }
+  },
+  "gateways": [
+    {
+      "api": "dxb2tdlulrch7hj2pts2mfijia",
+      "type": "Query",
+      "field": "readTeamHub",
+      "before": {
+        "typeName": "Query",
+        "fieldName": "readTeamHub",
+        "resolverArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/types/Query/resolvers/readTeamHub",
+        "requestMappingTemplate": "## [Start] Stash resolver specific context.. **\n$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"readTeamHub\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthauthenticatedU-U29LVCPfkFsl/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthunauthenticate-y8Sz5XK5OfBN/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"eu-north-1:a3621b12-4773-4295-b232-b55863c37fd3\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n{}\n## [End] Stash resolver specific context.. **",
+        "responseMappingTemplate": "$util.toJson($ctx.prev.result)",
+        "kind": "PIPELINE",
+        "pipelineConfig": {
+          "functions": [
+            "7hlakiy7fzhwhidtlxltmstq5i",
+            "lev4xkxdl5cszjd3xgyqs2yomm"
+          ]
+        },
+        "maxBatchSize": 0
+      },
+      "beforeSha256": "f90024ffeffc959a5faef7a0e892e4015207436e042bbd731022ec5d4ee484fb",
+      "frozenRequest": "$util.error(\"TEAM_HUB_MAINTENANCE\", \"TeamHubMigration\")",
+      "targetRequest": "$util.error(\"TEAM_HUB_DOMAIN_MOVED\", \"TeamHubMigration\")",
+      "preserve": [
+        "kind",
+        "pipelineConfig",
+        "responseMappingTemplate",
+        "cachingConfig",
+        "syncConfig",
+        "runtime",
+        "code"
+      ],
+      "install": false
+    },
+    {
+      "api": "dxb2tdlulrch7hj2pts2mfijia",
+      "type": "Mutation",
+      "field": "mutateTeamHub",
+      "before": {
+        "typeName": "Mutation",
+        "fieldName": "mutateTeamHub",
+        "resolverArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/types/Mutation/resolvers/mutateTeamHub",
+        "requestMappingTemplate": "## [Start] Stash resolver specific context.. **\n$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"mutateTeamHub\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthauthenticatedU-U29LVCPfkFsl/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthunauthenticate-y8Sz5XK5OfBN/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"eu-north-1:a3621b12-4773-4295-b232-b55863c37fd3\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n{}\n## [End] Stash resolver specific context.. **",
+        "responseMappingTemplate": "$util.toJson($ctx.prev.result)",
+        "kind": "PIPELINE",
+        "pipelineConfig": {
+          "functions": [
+            "4yb6cg662ralnnxiwlrwrb5vqa",
+            "lev4xkxdl5cszjd3xgyqs2yomm"
+          ]
+        },
+        "maxBatchSize": 0
+      },
+      "beforeSha256": "3c1f93e32397ec85fd26e9f20b19f23db4a6b577d7149caf8acf188cd48d24fd",
+      "frozenRequest": "$util.error(\"TEAM_HUB_MAINTENANCE\", \"TeamHubMigration\")",
+      "targetRequest": "$util.error(\"TEAM_HUB_DOMAIN_MOVED\", \"TeamHubMigration\")",
+      "preserve": [
+        "kind",
+        "pipelineConfig",
+        "responseMappingTemplate",
+        "cachingConfig",
+        "syncConfig",
+        "runtime",
+        "code"
+      ],
+      "install": false
+    }
+  ],
+  "installed": false,
+  "actualAuthority": "LEGACY_WRITER",
+  "requiresFreshRevisionRead": true,
+  "policyCustodian": "Ntgre (user)",
+  "recoveryException": false,
+  "awsWrites": 0
+}

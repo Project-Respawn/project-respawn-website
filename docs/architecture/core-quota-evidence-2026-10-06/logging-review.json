@@ -1,0 +1,88 @@
+{
+  "at": "2026-10-06T20:48:41.760Z",
+  "results": [
+    {
+      "name": "runtime-policy-own-inclusion",
+      "expected": "PASS",
+      "result": "PASS",
+      "message": "The modified permissions grant less or equal access compared to your existing policy.",
+      "pass": true
+    },
+    {
+      "name": "runtime-policy-missing-own-allow-control",
+      "expected": "FAIL",
+      "result": "FAIL",
+      "message": "The modified permissions grant new access compared to your existing policy.",
+      "reasons": [
+        {
+          "description": "New access in the statement with index: 0.",
+          "statementIndex": 0
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "runtime-policy-foreign-denied",
+      "expected": "PASS",
+      "result": "PASS",
+      "message": "The modified permissions grant less or equal access compared to your existing policy.",
+      "pass": true
+    },
+    {
+      "name": "runtime-policy-foreign-deny-removed-control",
+      "expected": "FAIL",
+      "result": "FAIL",
+      "message": "The modified permissions grant new access compared to your existing policy.",
+      "reasons": [
+        {
+          "description": "New access in the statement with index: 7.",
+          "statementIndex": 7
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "runtime-boundary-own-inclusion",
+      "expected": "PASS",
+      "result": "PASS",
+      "message": "The modified permissions grant less or equal access compared to your existing policy.",
+      "pass": true
+    },
+    {
+      "name": "runtime-boundary-missing-own-allow-control",
+      "expected": "FAIL",
+      "result": "FAIL",
+      "message": "The modified permissions grant new access compared to your existing policy.",
+      "reasons": [
+        {
+          "description": "New access in the statement with index: 0.",
+          "statementIndex": 0
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "runtime-boundary-foreign-denied",
+      "expected": "PASS",
+      "result": "PASS",
+      "message": "The modified permissions grant less or equal access compared to your existing policy.",
+      "pass": true
+    },
+    {
+      "name": "runtime-boundary-foreign-deny-removed-control",
+      "expected": "FAIL",
+      "result": "FAIL",
+      "message": "The modified permissions grant new access compared to your existing policy.",
+      "reasons": [
+        {
+          "description": "New access in the statement with index: 8.",
+          "statementIndex": 8
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "rawSimulationPreserved": true,
+  "liveLogging": false,
+  "awsWrites": 0
+}

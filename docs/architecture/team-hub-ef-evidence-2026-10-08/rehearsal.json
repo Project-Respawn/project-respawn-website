@@ -1,0 +1,256 @@
+{
+  "at": "2026-10-08T14:31:51.614Z",
+  "scope": "ISOLATED_SYNTHETIC_LOCAL_HANDLER_REAL_DYNAMODB",
+  "actualAuthorityChanged": false,
+  "core": "SYNTHETIC_LOCAL_TRANSPORT_ONLY; accepted live Core unchanged",
+  "created": [
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-EF-Rehearsal-20261008-Operational",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-EF-Rehearsal-20261008-Operational",
+      "tableId": "82b7fd54-74e6-4f31-a05b-4eda0ede7b8e"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-EF-Rehearsal-20261008-Journal",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-EF-Rehearsal-20261008-Journal",
+      "tableId": "c96edcb1-38c5-4cd0-b89d-8c8349e4cd2d"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-EF-Rehearsal-20261008-PlayerChampionPoolEntry",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-EF-Rehearsal-20261008-PlayerChampionPoolEntry",
+      "tableId": "c1c88fb9-6fc6-4230-98ea-998baa48973d"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-EF-Rehearsal-20261008-TeamMembership",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-EF-Rehearsal-20261008-TeamMembership",
+      "tableId": "e5718a4a-48ea-4a44-aae6-1844a778cb45"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-EF-Rehearsal-20261008-Team",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-EF-Rehearsal-20261008-Team",
+      "tableId": "7819ac3f-bdbf-4f43-9fe0-621392779ae1"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-EF-Rehearsal-20261008-TeamRosterSlot",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-EF-Rehearsal-20261008-TeamRosterSlot",
+      "tableId": "900105c2-9657-4ab4-b79c-c7820f943504"
+    }
+  ],
+  "checks": [
+    {
+      "operation": "CREATE_TEAM",
+      "persona": "admin",
+      "status": 503,
+      "expected": 503
+    },
+    {
+      "operation": "CREATE_TEAM",
+      "persona": "admin",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "operation": "CREATE_TEAM",
+      "persona": "admin",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "operation": "CREATE_TEAM",
+      "persona": "admin",
+      "status": 503,
+      "expected": 503
+    },
+    {
+      "operation": "CREATE_TEAM",
+      "persona": "admin",
+      "status": 409,
+      "expected": 409
+    },
+    {
+      "operation": "CREATE_TEAM",
+      "persona": "admin",
+      "status": 409,
+      "expected": 409
+    },
+    {
+      "operation": "CREATE_TEAM",
+      "persona": "admin",
+      "status": 409,
+      "expected": 409
+    },
+    {
+      "operation": "CREATE_TEAM",
+      "persona": "player",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "operation": "CREATE_TEAM",
+      "persona": "admin",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "operation": "SET_MANAGER",
+      "persona": "admin",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "operation": "MANAGE_MEMBER",
+      "persona": "manager",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "operation": "MANAGE_MEMBER",
+      "persona": "manager",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "operation": "UPDATE_TEAM",
+      "persona": "admin",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "operation": "SET_TEAM_PLAN",
+      "persona": "admin",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "operation": "SET_ROSTER_SLOT",
+      "persona": "manager",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "operation": "UPSERT_MY_CHAMPION",
+      "persona": "player",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "operation": "UPSERT_COACH_ASSESSMENT",
+      "persona": "coach",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "operation": "UPDATE_TEAM",
+      "persona": "admin",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "operation": "UPDATE_TEAM",
+      "persona": "admin",
+      "status": 403,
+      "expected": 403
+    }
+  ],
+  "cleanup": [
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-EF-Rehearsal-20261008-TeamRosterSlot",
+      "absent": true
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-EF-Rehearsal-20261008-Team",
+      "absent": true
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-EF-Rehearsal-20261008-TeamMembership",
+      "absent": true
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-EF-Rehearsal-20261008-PlayerChampionPoolEntry",
+      "absent": true
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-EF-Rehearsal-20261008-Journal",
+      "absent": true
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-EF-Rehearsal-20261008-Operational",
+      "absent": true
+    }
+  ],
+  "passed": true,
+  "candidate": {
+    "scope": "LOCAL_REVIEWED_HANDLER_ISOLATED_AWS_DYNAMODB_ONLY",
+    "prefix": "ProjectRespawn-TeamHub-Ntgre-EF-Rehearsal-20261008-",
+    "files": [
+      {
+        "path": "scripts/team-hub-ef/isolated-rehearsal.mjs",
+        "sha256": "802315b08df982dcc4e6d5c6bb7404ff955f80cb11b404710232e1ae6e33a87b"
+      },
+      {
+        "path": "domains/team-hub/cutover/handler.mjs",
+        "sha256": "0748055c798a02d5eaa7a94b7b6543488449e4769dd2cb44679214b98e136a74"
+      },
+      {
+        "path": "domains/team-hub/cutover/repository.mjs",
+        "sha256": "61e233c3a19921c8d9df159f9130cb00434f42b5e35a5708bc8796c928242261"
+      },
+      {
+        "path": "scripts/team-hub-migration/native-state.mjs",
+        "sha256": "e3d43463be530103be83040c56247b56ff5dd7434d09775a8eebeee7cefa7850"
+      }
+    ],
+    "deployedRuntimeUnchanged": true
+  },
+  "authorityNegativeControls": {
+    "missing": true,
+    "malformed": true,
+    "legacyWriter": true,
+    "frozen": true,
+    "missingEpoch": true,
+    "staleEpoch": true,
+    "futureEpoch": true,
+    "syntheticNameCannotBypass": true,
+    "noOperationalAuditOrIdempotencyWrites": true
+  },
+  "atomicFreezeRaceDenied": true,
+  "auditIdempotencyUnaffected": true,
+  "reverse": {
+    "schemaVersion": "team-hub-state.v1",
+    "nativeDigest": "45123d17dbf654d51a0bb406df189cfe6f692d214845aa6106571944a94331a3",
+    "legacyDigest": "445ddbe59be01e6cda747a1557cca11cf5ca2f00f9acf6029060c8f323c332d3",
+    "counts": {
+      "Team": 1,
+      "TeamMembership": 3,
+      "TeamRosterSlot": 2,
+      "PlayerChampionPoolEntry": 1
+    },
+    "sourceSnapshotRequired": false,
+    "archiveRequired": [
+      "all native items including versions/epochs",
+      "audit",
+      "idempotency",
+      "authority transitions"
+    ],
+    "writes": 0
+  },
+  "journalRows": 19,
+  "journalDigest": "dae328fed76d779b1f843698da227d77813fb4a300a351e04652f61e1e8793d0",
+  "nativeRows": 9,
+  "nativeDigest": "568ef0ce361858607b4907328be4cee3f900b152d82fff32277fc3ee913d4f52",
+  "export": {
+    "operationalComplete": true,
+    "journalComplete": true,
+    "stronglyConsistent": true,
+    "paginatedToExhaustion": true,
+    "rawSyntheticDataPersisted": false
+  },
+  "restoredCounts": {
+    "Team": 1,
+    "TeamMembership": 3,
+    "TeamRosterSlot": 2,
+    "PlayerChampionPoolEntry": 1
+  },
+  "reconciled": true,
+  "syntheticAuthority": "FROZEN",
+  "completedAt": "2026-10-08T14:34:30.618Z"
+}

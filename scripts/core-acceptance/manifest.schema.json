@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "domain", "environment", "account", "region", "stack", "stackArn", "status", "lambdaName", "lambdaArn", "endpoint", "invocation", "authMode", "contractVersions", "environmentContract", "deploymentRevision", "productRevision", "runtimeSha256", "securityRevision", "provenance", "frontendCutover", "teamIntegrationDeployed"],
+  "properties": {
+    "schemaVersion": {"const": "core-endpoint.v1"},
+    "domain": {"const": "Core"},
+    "environment": {"const": "Ntgre"},
+    "account": {"const": "058264289478"},
+    "region": {"const": "eu-north-1"},
+    "stack": {"const": "ProjectRespawn-Core-Ntgre"},
+    "stackArn": {"type": "string", "pattern": "^arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre/[a-f0-9-]+$"},
+    "status": {"const": "ACCEPTED"},
+    "lambdaName": {"const": "ProjectRespawn-Core-Ntgre-Contracts"},
+    "lambdaArn": {"const": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts"},
+    "endpoint": {"const": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts"},
+    "invocation": {"const": "IAM"},
+    "authMode": {"const": "AWS_IAM_AND_DELEGATED_COGNITO_ACCESS_JWT"},
+    "contractVersions": {"type": "array", "minItems": 3, "maxItems": 3, "uniqueItems": true, "items": {"enum": ["environment.v1", "authorization.decision.v1", "directory.assignment.v1"]}},
+    "environmentContract": {
+      "type": "object", "additionalProperties": false,
+      "required": ["contractVersion", "environment", "account", "region", "poolId", "clientId", "issuer"],
+      "properties": {
+        "contractVersion": {"const": "environment.v1"}, "environment": {"const": "Ntgre"},
+        "account": {"const": "058264289478"}, "region": {"const": "eu-north-1"},
+        "poolId": {"const": "eu-north-1_n24iLL7QE"}, "clientId": {"const": "1iq7ovjaf7d16imdvbqgfgvf86"},
+        "issuer": {"const": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE"}
+      }
+    },
+    "deploymentRevision": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "productRevision": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "runtimeSha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "securityRevision": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "provenance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["acceptedAt", "report", "adminReceipt", "ordinaryReceipt", "observability", "acceptance"],
+      "properties": {
+        "acceptedAt": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T"},
+        "report": {"const": "docs/architecture/core-release1-acceptance.md"},
+        "adminReceipt": {"type": "string", "pattern": "^docs/architecture/.*\\.json$"},
+        "ordinaryReceipt": {"type": "string", "pattern": "^docs/architecture/.*\\.json$"},
+        "observability": {"type": "string", "pattern": "^docs/architecture/.*\\.json$"},
+        "acceptance": {"type": "string", "pattern": "^docs/architecture/.*\\.json$"}
+      }
+    },
+    "frontendCutover": {"const": false},
+    "teamIntegrationDeployed": {"const": false}
+  }
+}

@@ -1,29 +1,29 @@
 // src/router/admin.routes.js
 
-import AdminLayout from '../views/Admin/AdminLayout/AdminLayout.vue';
+const AdminLayout = () => import('../views/Admin/AdminLayout/AdminLayout.vue');
 
-import AdminHome from '../views/Admin/AdminHome/AdminHome.vue';
-import AdminUsers from '../views/Admin/AdminUsers/AdminUsers.vue';
-import AdminPermissions from '../views/Admin/AdminPermissions/AdminPermissions.vue';
-import AdminBrands from '../views/Admin/AdminBrands/AdminBrands.vue';
-import BrandPermissions from '../views/BrandPermissions/BrandPermissions.vue';
-import AdminMerchCategories from '../views/Admin/AdminMerchCategories/AdminMerchCategories.vue';
-import AdminForums from '../views/Admin/AdminForums/AdminForums.vue';
-import AdminEvents from '../views/Admin/AdminEvents/AdminEvents.vue';
-import ProductControl from '../views/Admin/ProductControl/ProductControl.vue';
-import MediaLibrary from '../views/Admin/MediaLibrary/MediaLibrary.vue';
-import AdminOrders from '../views/Admin/AdminOrders/AdminOrders.vue';
-import AdminApplications from '../views/Admin/AdminApplications/AdminApplications.vue';
-import AdminApplicationReviews from '../views/Admin/AdminApplications/AdminApplicationReviews.vue';
-import AdminReviewerPerformance from '../views/Admin/AdminApplications/AdminReviewerPerformance.vue';
-import AdminReviewerDetail from '../views/Admin/AdminApplications/AdminReviewerDetail.vue';
-import AdminApplicationDetail from '../views/Admin/AdminApplications/AdminApplicationDetail.vue';
-import AdminApplicationReview from '../views/Admin/AdminApplications/AdminApplicationReview.vue';
-import AdminInductions from '../views/Admin/AdminApplications/AdminInductions.vue';
-import AdminInductionDetail from '../views/Admin/AdminApplications/AdminInductionDetail.vue';
-import AdminAvailability from '../views/Admin/Bookings/AdminAvailability.vue';
-import AdminInvestors from '../views/Admin/AdminInvestors/AdminInvestors.vue';
-import TeamAdministration from '../features/Team Hub/TeamAdministration.vue';
+const AdminHome = () => import('../views/Admin/AdminHome/AdminHome.vue');
+const AdminUsers = () => import('../views/Admin/AdminUsers/AdminUsers.vue');
+const AdminPermissions = () => import('../views/Admin/AdminPermissions/AdminPermissions.vue');
+const AdminBrands = () => import('../views/Admin/AdminBrands/AdminBrands.vue');
+const BrandPermissions = () => import('../views/BrandPermissions/BrandPermissions.vue');
+const AdminMerchCategories = () => import('../views/Admin/AdminMerchCategories/AdminMerchCategories.vue');
+const AdminForums = () => import('../views/Admin/AdminForums/AdminForums.vue');
+const AdminEvents = () => import('../views/Admin/AdminEvents/AdminEvents.vue');
+const ProductControl = () => import('../views/Admin/ProductControl/ProductControl.vue');
+const MediaLibrary = () => import('../views/Admin/MediaLibrary/MediaLibrary.vue');
+const AdminOrders = () => import('../views/Admin/AdminOrders/AdminOrders.vue');
+const AdminApplications = () => import('../views/Admin/AdminApplications/AdminApplications.vue');
+const AdminApplicationReviews = () => import('../views/Admin/AdminApplications/AdminApplicationReviews.vue');
+const AdminReviewerPerformance = () => import('../views/Admin/AdminApplications/AdminReviewerPerformance.vue');
+const AdminReviewerDetail = () => import('../views/Admin/AdminApplications/AdminReviewerDetail.vue');
+const AdminApplicationDetail = () => import('../views/Admin/AdminApplications/AdminApplicationDetail.vue');
+const AdminApplicationReview = () => import('../views/Admin/AdminApplications/AdminApplicationReview.vue');
+const AdminInductions = () => import('../views/Admin/AdminApplications/AdminInductions.vue');
+const AdminInductionDetail = () => import('../views/Admin/AdminApplications/AdminInductionDetail.vue');
+const AdminAvailability = () => import('../views/Admin/Bookings/AdminAvailability.vue');
+const AdminInvestors = () => import('../views/Admin/AdminInvestors/AdminInvestors.vue');
+const TeamAdministration = () => import('../features/Team Hub/TeamAdministration.vue');
 
 export default [
 

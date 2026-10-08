@@ -1,0 +1,84 @@
+{
+  "at": "2026-10-06T20:29:40.414Z",
+  "createUserPool": {
+    "classification": "INVALID_TEST",
+    "originalResource": "pool ARN",
+    "correctResource": "*",
+    "response": {
+      "EvaluationResults": [
+        {
+          "EvalActionName": "cognito-idp:CreateUserPool",
+          "EvalResourceName": "*",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+              "SourcePolicyType": "Permissions Boundary Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 261
+              }
+            },
+            {
+              "SourcePolicyId": "PermissionsBoundaryPolicyInputList.1",
+              "SourcePolicyType": "Permissions Boundary Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 806
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 939
+              }
+            },
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 261
+              }
+            },
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 806
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 939
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": false
+          }
+        }
+      ]
+    }
+  },
+  "iamMutationActionsExplicitlyDenied": 21,
+  "tokenAuthorizedOperations": {
+    "actions": [
+      "cognito-idp:UpdateUserAttributes",
+      "cognito-idp:DeleteUser",
+      "cognito-idp:ChangePassword",
+      "cognito-idp:SetUserMFAPreference"
+    ],
+    "classification": "NOT_IAM_AUTHORIZED",
+    "note": "These user-access-token operations do not derive authority from IAM; Core implements no mutation route/SDK call and never exposes tokens. IAM simulation is not proof of denial of a user-token API."
+  },
+  "unknown": 0,
+  "candidateChanged": false
+}

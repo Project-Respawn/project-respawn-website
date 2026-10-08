@@ -1,0 +1,35 @@
+{
+  "at": "2026-10-07T17:41:14.363Z",
+  "status": "FULL_GATE_A_ACCEPTED_PRE_CUTOVER_ONLY",
+  "baseline": "docs/architecture/team-hub-2b5b-evidence-2026-10-07/frontend-source-manifest.json",
+  "changes": [
+    {
+      "path": "src/features/team-hub/services/website-adapter.mjs",
+      "previousSha256": "7cc29a7f1719a4d97fc1e8d2ed93eeb30a65cbffc10601dce4f6879252eec109",
+      "sha256": "1104737bd8939871161e47f414bfacd55c1b76c9b6f6c564d5f7f55416b9eeb3",
+      "reason": "Expose canEditCoachAssessments matching the existing Coach Review consumer; no permission expansion beyond Coach"
+    },
+    {
+      "path": "src/features/Team Hub/team-hub.routes.js",
+      "previousSha256": "b052b02d81896435b20d98467422c73be4903325bd85226e267fc43a480d7530",
+      "sha256": "1606b527b1c0ce7e9380487e72bc17b7bf7310353b39a116a3f00830d436173e",
+      "reason": "Fail-closed Team route denial without uncaught router rejection"
+    },
+    {
+      "path": "src/features/team-hub/services/route-access.mjs",
+      "previousSha256": null,
+      "sha256": "4538d3ee5eb15b892af35bad1d4f704b97a64ac0fb8e790c1d97159a323b56d4",
+      "reason": "Fail-closed Team route denial without uncaught router rejection"
+    },
+    {
+      "path": "src/features/Team Hub/champion-pool/ChampionPool.vue",
+      "previousSha256": "16bc884e7558b091cc09e66925f71acc1f30155794ee279a2463778ebd145661",
+      "reason": "Disable all player mutation controls until owner-authorized pool data loads",
+      "sha256": "806a4e5ab34acce2459db8d082b7f4169ba2bde1fa40f716af0f2094d3f6045f"
+    }
+  ],
+  "backendChanged": false,
+  "liveActivation": false,
+  "browserReceipt": "docs/architecture/team-hub-2b6-evidence-2026-10-07/full-browser.json",
+  "acceptedAt": "2026-10-07T19:09:58.263Z"
+}

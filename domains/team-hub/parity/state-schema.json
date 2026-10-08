@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "team-hub-state.v1",
+  "commonFields": [
+    "schemaVersion",
+    "entityType",
+    "PK",
+    "SK",
+    "version",
+    "createdAt",
+    "updatedAt"
+  ],
+  "closedFields": {
+    "TEAM": [
+      "id",
+      "slug",
+      "name",
+      "gameKey",
+      "status",
+      "authorizationEpoch",
+      "rosterVersion",
+      "membershipRevision",
+      "settingsRevision",
+      "managerMembershipId",
+      "coachMembershipId",
+      "createdByUserId",
+      "updatedByUserId",
+      "settings",
+      "StatusPK",
+      "StatusSK"
+    ],
+    "SLUG": [
+      "teamId"
+    ],
+    "MEMBERSHIP": [
+      "id",
+      "teamId",
+      "issuer",
+      "subject",
+      "displayName",
+      "role",
+      "status",
+      "addedByUserId",
+      "revokedAt",
+      "revokedByUserId",
+      "SubjectPK",
+      "SubjectSK"
+    ],
+    "ROSTER": [
+      "id",
+      "teamId",
+      "membershipId",
+      "gameRoleKey",
+      "slotType",
+      "status",
+      "assignedByUserId",
+      "deactivatedAt"
+    ],
+    "PLAYER_POOL": [
+      "id",
+      "teamId",
+      "membershipId",
+      "championId",
+      "gameRoleKey",
+      "comfortLevel",
+      "priority",
+      "competitiveReady",
+      "playerNotes"
+    ],
+    "COACH_ASSESSMENT": [
+      "teamId",
+      "membershipId",
+      "championId",
+      "coachTier",
+      "coachAssessment",
+      "coachRecommendation",
+      "coachPriorityPractice",
+      "coachUpdatedByUserId",
+      "coachUpdatedAt",
+      "visibility"
+    ],
+    "COACH_PRIVATE": [
+      "teamId",
+      "membershipId",
+      "championId",
+      "authorIssuer",
+      "authorSubject",
+      "privateNote"
+    ]
+  },
+  "settingsFields": [
+    "plan",
+    "logoAssetId",
+    "proGrantedAt",
+    "proGrantedBy",
+    "proExpiresAt",
+    "planUpdatedAt",
+    "planUpdatedBy",
+    "logoUpdatedAt",
+    "logoUpdatedBy"
+  ]
+}

@@ -1,0 +1,9 @@
+import assert from 'node:assert/strict';import {pin,read,save,P,core} from './aws.mjs';import {op} from './operations.mjs';
+const c=pin(),phase=process.argv[2];assert.ok(['security','runtime'].includes(phase));const prior=read(P+'/security-review.json').checks.filter(x=>phase==='runtime'?x.role==='runtime':x.role!=='runtime'),checks=[];
+for(const test of prior){const role=core+'-'+({caller:'Deploy',execution:'Execution',runtime:'Contracts'}[test.role]);const args=['--policy-source-arn','arn:aws:iam::058264289478:role/'+role,'--action-names',test.action,'--resource-arns',test.resource];
+ const context={};if(test.action==='cloudformation:CreateChangeSet'){context['cloudformation:RoleArn']=c.executionRole;context['cloudformation:TemplateUrl']=test.expected==='allowed'?c.templateUrl:c.previousTemplateUrl;}
+ if(test.action==='iam:PassRole')context['iam:PassedToService']=test.resource.endsWith(core+'-Execution')&&test.expected==='denied'?'lambda.amazonaws.com':'cloudformation.amazonaws.com';
+ if(Object.keys(context).length)args.push('--context-entries',JSON.stringify(Object.entries(context).map(([ContextKeyName,v])=>({ContextKeyName,ContextKeyValues:[v],ContextKeyType:'string'}))));
+ const response=await op('iam','simulate-principal-policy',args);assert.equal(response.EvaluationResults.length,1);const r=response.EvaluationResults[0],pass=test.expected==='allowed'?r.EvalDecision==='allowed':r.EvalDecision!=='allowed';checks.push({...test,actual:r.EvalDecision,missing:r.MissingContextValues??[],pass,actualRole:role});save('effective-'+phase,{at:new Date().toISOString(),checks,complete:false});assert.ok(pass,'Actual-role evaluation failed '+test.action+' '+test.resource);
+}
+save('effective-'+phase,{at:new Date().toISOString(),checks,complete:true,positive:checks.filter(x=>x.expected==='allowed').length,negative:checks.filter(x=>x.expected==='denied').length,failures:0});console.log(JSON.stringify({phase,checks:checks.length,failures:0}));

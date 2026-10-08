@@ -1,0 +1,343 @@
+{
+  "Changes": [
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityCommandErrors",
+        "ResourceType": "AWS::CloudWatch::Alarm",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"MetricName\":\"Errors\",\"ComparisonOperator\":\"GreaterThanOrEqualToThreshold\",\"TreatMissingData\":\"notBreaching\",\"AlarmName\":\"ProjectRespawn-TeamHub-Ntgre-ParityCommand-Errors\",\"Statistic\":\"Sum\",\"Dimensions\":[{\"Value\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"Name\":\"FunctionName\"}],\"Period\":\"60\",\"EvaluationPeriods\":\"1\",\"Namespace\":\"AWS/Lambda\",\"Threshold\":\"1\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityCommandFunction",
+        "ResourceType": "AWS::Lambda::Function",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"Role\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"FunctionName\":\"ProjectRespawn-TeamHub-Ntgre-ParityCommand\",\"MemorySize\":\"256\",\"Runtime\":\"nodejs22.x\",\"Timeout\":\"15\",\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"LogGroup\":\"{{changeSet:KNOWN_AFTER_APPLY}}\"},\"Handler\":\"index.handler\",\"Environment\":{\"Variables\":{\"TEAM_HUB_RUNTIME\":\"command\",\"EXPECTED_ISSUER\":\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\",\"TEAM_HUB_VERIFICATION\":\"{\\\"mode\\\":\\\"DISABLED\\\",\\\"authority\\\":\\\"LEGACY_WRITER\\\"}\",\"EXPECTED_POOL_ID\":\"eu-north-1_n24iLL7QE\",\"EXPECTED_CLIENT_ID\":\"1iq7ovjaf7d16imdvbqgfgvf86\"}},\"Code\":{\"S3Bucket\":\"cdk-hnb659fds-assets-058264289478-eu-north-1\",\"S3Key\":\"team-hub/parity/fd586f77dd3d872299e432f8e6d4631da09592cd29f47df6221ec8ede77b4a6d.zip\"},\"Architectures\":[\"arm64\"]}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityCommandIntegration",
+        "ResourceType": "AWS::ApiGatewayV2::Integration",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"TimeoutInMillis\":\"16000\",\"IntegrationUri\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"PayloadFormatVersion\":\"2.0\",\"ApiId\":\"t54b88casf\",\"IntegrationType\":\"AWS_PROXY\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityCommandLogs",
+        "ResourceType": "AWS::Logs::LogGroup",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"RetentionInDays\":\"14\",\"LogGroupName\":\"/project-respawn/Ntgre/team-hub/parity-command\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityCommandPermission",
+        "ResourceType": "AWS::Lambda::Permission",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"FunctionName\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"Action\":\"lambda:InvokeFunction\",\"SourceArn\":\"arn:aws:execute-api:eu-north-1:058264289478:t54b88casf/*/*/v1/teams*\",\"Principal\":\"apigateway.amazonaws.com\",\"SourceAccount\":\"058264289478\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityCommandRole",
+        "ResourceType": "AWS::IAM::Role",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"RoleName\":\"ProjectRespawn-TeamHub-Ntgre-ParityCommand\",\"Policies\":[{\"PolicyName\":\"ExactSyntheticTeamState\",\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Resource\":\"*\",\"Effect\":\"Deny\",\"NotAction\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\",\"kms:Decrypt\",\"dynamodb:GetItem\",\"dynamodb:Query\",\"dynamodb:PutItem\",\"dynamodb:DeleteItem\",\"dynamodb:ConditionCheckItem\"],\"Sid\":\"OnlyOwnedParityOperations\"},{\"Action\":\"logs:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-command:*\"},{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Resource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-command:*\",\"Effect\":\"Allow\"},{\"Action\":\"kms:Decrypt\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:kms:eu-north-1:058264289478:key/*\"},{\"Condition\":{\"ForAllValues:StringNotEquals\":{\"kms:ResourceAliases\":[\"alias/aws/lambda\"]}},\"Action\":\"kms:Decrypt\",\"Resource\":\"*\",\"Effect\":\"Deny\"},{\"Condition\":{\"ForAnyValue:StringEquals\":{\"kms:ResourceAliases\":[\"alias/aws/lambda\"]}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/*\",\"Effect\":\"Allow\"},{\"Condition\":{\"ForAllValues:StringLike\":{\"dynamodb:LeadingKeys\":[\"TEAM#team:phase2b4-test-*\",\"SLUG#phase2b4-test-*\"]}},\"Action\":[\"dynamodb:GetItem\",\"dynamodb:Query\"],\"Resource\":\"arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational\",\"Effect\":\"Allow\"},{\"Condition\":{\"ForAllValues:StringLike\":{\"dynamodb:LeadingKeys\":[\"IDEMP#*#team:phase2b4-test-*\"]}},\"Action\":\"dynamodb:GetItem\",\"Resource\":\"arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal\",\"Effect\":\"Allow\"},{\"Condition\":{\"ForAllValues:StringLike\":{\"dynamodb:LeadingKeys\":[\"TEAM#team:phase2b4-test-*\",\"SLUG#phase2b4-test-*\"]},\"ForAnyValue:StringEquals\":{\"dynamodb:EnclosingOperation\":[\"TransactWriteItems\"]}},\"Action\":[\"dynamodb:PutItem\",\"dynamodb:DeleteItem\"],\"Resource\":\"arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational\",\"Effect\":\"Allow\"},{\"Condition\":{\"ForAllValues:StringLike\":{\"dynamodb:LeadingKeys\":[\"TEAM#team:phase2b4-test-*\",\"SLUG#phase2b4-test-*\"]}},\"Action\":\"dynamodb:ConditionCheckItem\",\"Resource\":\"arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational\",\"Effect\":\"Allow\"},{\"Condition\":{\"ForAllValues:StringLike\":{\"dynamodb:LeadingKeys\":[\"TEAM#team:phase2b4-test-*\",\"IDEMP#*#team:phase2b4-test-*\"]},\"ForAnyValue:StringEquals\":{\"dynamodb:EnclosingOperation\":[\"TransactWriteItems\"]}},\"Action\":\"dynamodb:PutItem\",\"Resource\":\"arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal\",\"Effect\":\"Allow\"},{\"Action\":\"dynamodb:*\",\"Effect\":\"Deny\",\"NotResource\":[\"arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational\",\"arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal\"]}]}}],\"AssumeRolePolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"}}]},\"PermissionsBoundary\":\"arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityCommandThrottles",
+        "ResourceType": "AWS::CloudWatch::Alarm",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"MetricName\":\"Throttles\",\"ComparisonOperator\":\"GreaterThanOrEqualToThreshold\",\"TreatMissingData\":\"notBreaching\",\"AlarmName\":\"ProjectRespawn-TeamHub-Ntgre-ParityCommand-Throttles\",\"Statistic\":\"Sum\",\"Dimensions\":[{\"Value\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"Name\":\"FunctionName\"}],\"Period\":\"60\",\"EvaluationPeriods\":\"1\",\"Namespace\":\"AWS/Lambda\",\"Threshold\":\"1\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityReadErrors",
+        "ResourceType": "AWS::CloudWatch::Alarm",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"MetricName\":\"Errors\",\"ComparisonOperator\":\"GreaterThanOrEqualToThreshold\",\"TreatMissingData\":\"notBreaching\",\"AlarmName\":\"ProjectRespawn-TeamHub-Ntgre-ParityRead-Errors\",\"Statistic\":\"Sum\",\"Dimensions\":[{\"Value\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"Name\":\"FunctionName\"}],\"Period\":\"60\",\"EvaluationPeriods\":\"1\",\"Namespace\":\"AWS/Lambda\",\"Threshold\":\"1\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityReadFunction",
+        "ResourceType": "AWS::Lambda::Function",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"Role\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"FunctionName\":\"ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"MemorySize\":\"256\",\"Runtime\":\"nodejs22.x\",\"Timeout\":\"15\",\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"LogGroup\":\"{{changeSet:KNOWN_AFTER_APPLY}}\"},\"Handler\":\"index.handler\",\"Environment\":{\"Variables\":{\"TEAM_HUB_RUNTIME\":\"read\",\"EXPECTED_ISSUER\":\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\",\"TEAM_HUB_VERIFICATION\":\"{\\\"mode\\\":\\\"DISABLED\\\",\\\"authority\\\":\\\"LEGACY_WRITER\\\"}\",\"EXPECTED_POOL_ID\":\"eu-north-1_n24iLL7QE\",\"EXPECTED_CLIENT_ID\":\"1iq7ovjaf7d16imdvbqgfgvf86\"}},\"Code\":{\"S3Bucket\":\"cdk-hnb659fds-assets-058264289478-eu-north-1\",\"S3Key\":\"team-hub/parity/fd586f77dd3d872299e432f8e6d4631da09592cd29f47df6221ec8ede77b4a6d.zip\"},\"Architectures\":[\"arm64\"]}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityReadIntegration",
+        "ResourceType": "AWS::ApiGatewayV2::Integration",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"TimeoutInMillis\":\"16000\",\"IntegrationUri\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"PayloadFormatVersion\":\"2.0\",\"ApiId\":\"t54b88casf\",\"IntegrationType\":\"AWS_PROXY\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityReadLogs",
+        "ResourceType": "AWS::Logs::LogGroup",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"RetentionInDays\":\"14\",\"LogGroupName\":\"/project-respawn/Ntgre/team-hub/parity-read\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityReadPermission",
+        "ResourceType": "AWS::Lambda::Permission",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"FunctionName\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"Action\":\"lambda:InvokeFunction\",\"SourceArn\":\"arn:aws:execute-api:eu-north-1:058264289478:t54b88casf/*/*/v1/teams*\",\"Principal\":\"apigateway.amazonaws.com\",\"SourceAccount\":\"058264289478\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityReadRole",
+        "ResourceType": "AWS::IAM::Role",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"RoleName\":\"ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"Policies\":[{\"PolicyName\":\"ExactSyntheticTeamState\",\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Resource\":\"*\",\"Effect\":\"Deny\",\"NotAction\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\",\"kms:Decrypt\",\"dynamodb:GetItem\",\"dynamodb:Query\"],\"Sid\":\"OnlyOwnedParityOperations\"},{\"Action\":\"logs:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read:*\"},{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Resource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read:*\",\"Effect\":\"Allow\"},{\"Action\":\"kms:Decrypt\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:kms:eu-north-1:058264289478:key/*\"},{\"Condition\":{\"ForAllValues:StringNotEquals\":{\"kms:ResourceAliases\":[\"alias/aws/lambda\"]}},\"Action\":\"kms:Decrypt\",\"Resource\":\"*\",\"Effect\":\"Deny\"},{\"Condition\":{\"ForAnyValue:StringEquals\":{\"kms:ResourceAliases\":[\"alias/aws/lambda\"]}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/*\",\"Effect\":\"Allow\"},{\"Condition\":{\"ForAllValues:StringLike\":{\"dynamodb:LeadingKeys\":[\"TEAM#team:phase2b4-test-*\",\"SLUG#phase2b4-test-*\"]}},\"Action\":[\"dynamodb:GetItem\",\"dynamodb:Query\"],\"Resource\":\"arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational\",\"Effect\":\"Allow\"},{\"Action\":\"dynamodb:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational\"}]}}],\"AssumeRolePolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"}}]},\"PermissionsBoundary\":\"arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityReadThrottles",
+        "ResourceType": "AWS::CloudWatch::Alarm",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"MetricName\":\"Throttles\",\"ComparisonOperator\":\"GreaterThanOrEqualToThreshold\",\"TreatMissingData\":\"notBreaching\",\"AlarmName\":\"ProjectRespawn-TeamHub-Ntgre-ParityRead-Throttles\",\"Statistic\":\"Sum\",\"Dimensions\":[{\"Value\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"Name\":\"FunctionName\"}],\"Period\":\"60\",\"EvaluationPeriods\":\"1\",\"Namespace\":\"AWS/Lambda\",\"Threshold\":\"1\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityRouteCREATETEAM",
+        "ResourceType": "AWS::ApiGatewayV2::Route",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"Target\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"RouteKey\":\"POST /v1/teams\",\"AuthorizationType\":\"JWT\",\"AuthorizerId\":\"nvebda\",\"ApiId\":\"t54b88casf\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityRouteDELETEMYCHAMPION",
+        "ResourceType": "AWS::ApiGatewayV2::Route",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"Target\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"RouteKey\":\"DELETE /v1/teams/{teamId}/me/champions/{championId}\",\"AuthorizationType\":\"JWT\",\"AuthorizerId\":\"nvebda\",\"ApiId\":\"t54b88casf\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityRouteGETPLAYERCOMPETITIVEDETAIL",
+        "ResourceType": "AWS::ApiGatewayV2::Route",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"Target\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"RouteKey\":\"GET /v1/teams/{teamId}/players/{membershipId}/competitive\",\"AuthorizationType\":\"JWT\",\"AuthorizerId\":\"nvebda\",\"ApiId\":\"t54b88casf\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityRouteGETTEAMHUB",
+        "ResourceType": "AWS::ApiGatewayV2::Route",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"Target\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"RouteKey\":\"GET /v1/teams/{teamId}\",\"AuthorizationType\":\"JWT\",\"AuthorizerId\":\"nvebda\",\"ApiId\":\"t54b88casf\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityRouteLISTMYCHAMPIONPOOL",
+        "ResourceType": "AWS::ApiGatewayV2::Route",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"Target\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"RouteKey\":\"GET /v1/teams/{teamId}/me/champions\",\"AuthorizationType\":\"JWT\",\"AuthorizerId\":\"nvebda\",\"ApiId\":\"t54b88casf\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityRouteLISTTEAMCHAMPIONPOOLS",
+        "ResourceType": "AWS::ApiGatewayV2::Route",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"Target\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"RouteKey\":\"GET /v1/teams/{teamId}/champion-pools\",\"AuthorizationType\":\"JWT\",\"AuthorizerId\":\"nvebda\",\"ApiId\":\"t54b88casf\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityRouteMANAGEMEMBER",
+        "ResourceType": "AWS::ApiGatewayV2::Route",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"Target\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"RouteKey\":\"POST /v1/teams/{teamId}/members\",\"AuthorizationType\":\"JWT\",\"AuthorizerId\":\"nvebda\",\"ApiId\":\"t54b88casf\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityRouteSETMANAGER",
+        "ResourceType": "AWS::ApiGatewayV2::Route",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"Target\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"RouteKey\":\"PUT /v1/teams/{teamId}/manager\",\"AuthorizationType\":\"JWT\",\"AuthorizerId\":\"nvebda\",\"ApiId\":\"t54b88casf\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityRouteSETROSTERSLOT",
+        "ResourceType": "AWS::ApiGatewayV2::Route",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"Target\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"RouteKey\":\"POST /v1/teams/{teamId}/roster-slots\",\"AuthorizationType\":\"JWT\",\"AuthorizerId\":\"nvebda\",\"ApiId\":\"t54b88casf\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityRouteSETTEAMPLAN",
+        "ResourceType": "AWS::ApiGatewayV2::Route",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"Target\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"RouteKey\":\"PUT /v1/teams/{teamId}/plan\",\"AuthorizationType\":\"JWT\",\"AuthorizerId\":\"nvebda\",\"ApiId\":\"t54b88casf\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityRouteUPDATETEAM",
+        "ResourceType": "AWS::ApiGatewayV2::Route",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"Target\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"RouteKey\":\"PATCH /v1/teams/{teamId}\",\"AuthorizationType\":\"JWT\",\"AuthorizerId\":\"nvebda\",\"ApiId\":\"t54b88casf\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityRouteUPSERTCOACHASSESSMENT",
+        "ResourceType": "AWS::ApiGatewayV2::Route",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"Target\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"RouteKey\":\"PUT /v1/teams/{teamId}/players/{membershipId}/assessments/{championId}\",\"AuthorizationType\":\"JWT\",\"AuthorizerId\":\"nvebda\",\"ApiId\":\"t54b88casf\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ParityRouteUPSERTMYCHAMPION",
+        "ResourceType": "AWS::ApiGatewayV2::Route",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"Target\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"RouteKey\":\"PUT /v1/teams/{teamId}/me/champions/{championId}\",\"AuthorizationType\":\"JWT\",\"AuthorizerId\":\"nvebda\",\"ApiId\":\"t54b88casf\"}}"
+      }
+    }
+  ],
+  "ChangeSetName": "team-hub-2b4a-product-20261006",
+  "ChangeSetId": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/team-hub-2b4a-product-20261006/71f320f3-e6a7-42de-b903-44cb03923fef",
+  "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/b66ad780-c0cd-11f1-91ba-0effc0d85417",
+  "StackName": "ProjectRespawn-TeamHub-Ntgre",
+  "Description": null,
+  "Parameters": [
+    {
+      "ParameterKey": "BootstrapVersion",
+      "ParameterValue": "/cdk-bootstrap/hnb659fds/version",
+      "ResolvedValue": "30"
+    }
+  ],
+  "CreationTime": "2026-10-06T16:01:15.485000+00:00",
+  "ExecutionStatus": "AVAILABLE",
+  "Status": "CREATE_COMPLETE",
+  "StatusReason": null,
+  "NotificationARNs": [],
+  "RollbackConfiguration": {},
+  "Capabilities": [
+    "CAPABILITY_NAMED_IAM"
+  ],
+  "Tags": [
+    {
+      "Key": "Project",
+      "Value": "ProjectRespawn"
+    },
+    {
+      "Key": "Environment",
+      "Value": "Ntgre"
+    },
+    {
+      "Key": "Domain",
+      "Value": "TeamHub"
+    }
+  ],
+  "ParentChangeSetId": null,
+  "IncludeNestedStacks": false,
+  "RootChangeSetId": null,
+  "OnStackFailure": null,
+  "ImportExistingResources": null,
+  "StackDriftStatus": null,
+  "DeploymentMode": null
+}

@@ -1,0 +1,305 @@
+{
+  "at": "2026-10-07T21:45:13.307Z",
+  "branch": "phase2/team-hub-extraction",
+  "head": "4591f326de5c8ef6f09fc0b3a3d459d5d0d8580f",
+  "workingTree": [
+    "M amplify/backend.ts",
+    " M docs/architecture/README-PHASE2-MIGRATION.md",
+    " M docs/architecture/domain-migration-status.json",
+    " M docs/architecture/legacy-resource-ownership-summary.md",
+    " M docs/architecture/legacy-resource-ownership.json",
+    " M docs/architecture/legacy-resource-ownership.md",
+    " M docs/architecture/phase2-document-inventory.json",
+    " M docs/architecture/phase2-documentation-index.md",
+    " M docs/maintenance/phase2-document-retention.md",
+    " M scripts/migration/ledger.mjs",
+    " M scripts/migration/prepare-control.mjs",
+    " M scripts/team-hub/tests/security-isolation.test.mjs",
+    " M src/App.vue",
+    " M \"src/features/Team Hub/TeamAdministration.vue\"",
+    " M \"src/features/Team Hub/TeamHubHome.vue\"",
+    " M \"src/features/Team Hub/TeamManagement.vue\"",
+    " M \"src/features/Team Hub/champion-pool/ChampionPool.vue\"",
+    " M \"src/features/Team Hub/champion-pool/CoachPoolReview.vue\"",
+    " M \"src/features/Team Hub/team-hub.routes.js\"",
+    " M src/features/creator-tools/creator-tools.routes.js",
+    " M src/features/esports/esports.routes.js",
+    " M src/features/partner-hub/partner-hub.routes.js",
+    " M src/features/therapist/therapist.routes.js",
+    " M src/features/tournaments/tournament.routes.js",
+    " M src/features/trainer-hub/trainer-hub.routes.js",
+    " M src/router/admin.routes.js",
+    " M src/router/forum.routes.js",
+    " M src/router/index.js",
+    " M src/router/public.routes.js",
+    "?? amplify/teamHubRecovery.ts",
+    "?? config/domains/core/",
+    "?? config/domains/team-hub/core-integration.Ntgre.json",
+    "?? config/domains/team-hub/frontend-cutover.PROPOSAL.json",
+    "?? docs/architecture/core-2b5a-evidence-2026-10-06/",
+    "?? docs/architecture/core-acceptance-evidence-2026-10-06/",
+    "?? docs/architecture/core-artifact-evidence-2026-10-06/",
+    "?? docs/architecture/core-contracts-v1.md",
+    "?? docs/architecture/core-domain-plan.md",
+    "?? docs/architecture/core-first-deployment-readiness.md",
+    "?? docs/architecture/core-live-evidence-2026-10-06/",
+    "?? docs/architecture/core-quota-evidence-2026-10-06/",
+    "?? docs/architecture/core-release1-acceptance.md",
+    "?? docs/architecture/core-release1-evidence-2026-10-06/",
+    "?? docs/architecture/core-security-model.md",
+    "?? docs/architecture/core-template-security-correction.md",
+    "?? docs/architecture/team-hub-2b3-aws-write-proposal.md",
+    "?? docs/architecture/team-hub-2b3-dark-target-readiness.md",
+    "?? docs/architecture/team-hub-2b3-direct-legacy-recovery-protection.md",
+    "?? docs/architecture/team-hub-2b3-direct-protection-evidence-2026-10-05/",
+    "?? docs/architecture/team-hub-2b3-empty-source-cutover.md",
+    "?? docs/architecture/team-hub-2b3-evidence-2026-10-05/",
+    "?? docs/architecture/team-hub-2b3-final-evidence-2026-10-05/",
+    "?? docs/architecture/team-hub-2b3-gate1-evidence-2026-10-05/",
+    "?? docs/architecture/team-hub-2b3-gate1-legacy-recovery-protection.md",
+    "?? docs/architecture/team-hub-2b3-gate2-evidence-2026-10-05/",
+    "?? docs/architecture/team-hub-2b3-gate2-restore-rehearsal.md",
+    "?? docs/architecture/team-hub-2b3-gate3-dark-target.md",
+    "?? docs/architecture/team-hub-2b3-gate3-evidence-2026-10-05/",
+    "?? docs/architecture/team-hub-2b3-migration-plan.md",
+    "?? docs/architecture/team-hub-2b3-recovery-plan.md",
+    "?? docs/architecture/team-hub-2b3-rollback-contract.md",
+    "?? docs/architecture/team-hub-2b3-state-inventory.md",
+    "?? docs/architecture/team-hub-2b3-writer-reader-coverage.md",
+    "?? docs/architecture/team-hub-2b4-core-dependencies.md",
+    "?? docs/architecture/team-hub-2b4-evidence-2026-10-06/",
+    "?? docs/architecture/team-hub-2b4-live-test-plan.md",
+    "?? docs/architecture/team-hub-2b4-mutation-parity-readiness.md",
+    "?? docs/architecture/team-hub-2b4-writer-fence.md",
+    "?? docs/architecture/team-hub-2b4a-dark-mutation-runtime.md",
+    "?? docs/architecture/team-hub-2b4a-evidence-2026-10-06/",
+    "?? docs/architecture/team-hub-2b4b-evidence-2026-10-06/",
+    "?? docs/architecture/team-hub-2b4b-synthetic-mutation-verification.md",
+    "?? docs/architecture/team-hub-2b5-core-contracts.md",
+    "?? docs/architecture/team-hub-2b5-cutover-dependency-review.md",
+    "?? docs/architecture/team-hub-2b5-cutover-runbook.md",
+    "?? docs/architecture/team-hub-2b5-evidence-2026-10-06/",
+    "?? docs/architecture/team-hub-2b5-frontend-cutover.md",
+    "?? docs/architecture/team-hub-2b5-legacy-writer-fence.md",
+    "?? docs/architecture/team-hub-2b5-rollback-rehearsal.md",
+    "?? docs/architecture/team-hub-2b5a-core-integration.md",
+    "?? docs/architecture/team-hub-2b5a2-live-core-integration.md",
+    "?? docs/architecture/team-hub-2b5b-evidence-2026-10-07/",
+    "?? docs/architecture/team-hub-2b5b-final-cutover-readiness.md",
+    "?? docs/architecture/team-hub-2b5b-frontend-acceptance.md",
+    "?? docs/architecture/team-hub-2b5b-rollback-rehearsal-result.md",
+    "?? docs/architecture/team-hub-2b5b-writer-fence-proof.md",
+    "?? docs/architecture/team-hub-2b6-acceptance.md",
+    "?? docs/architecture/team-hub-2b6-cutover-runbook.md",
+    "?? docs/architecture/team-hub-2b6-evidence-2026-10-07/",
+    "?? docs/architecture/team-hub-2b6-gate-b-sequencing.md",
+    "?? docs/architecture/team-hub-2b6-precutover-readiness.md",
+    "?? docs/architecture/team-hub-core-integration-evidence-2026-10-07/",
+    "?? domains/shared-core/",
+    "?? domains/team-hub/core-integration/",
+    "?? domains/team-hub/cutover/",
+    "?? domains/team-hub/parity/",
+    "?? infrastructure/domains/core/",
+    "?? infrastructure/domains/team-hub/parity-security.mjs",
+    "?? scripts/core-2b5a/",
+    "?? scripts/core-acceptance/",
+    "?? scripts/core-artifact/",
+    "?? scripts/core-live/",
+    "?? scripts/core-quota/",
+    "?? scripts/core-release1/",
+    "?? scripts/team-hub-2b4/",
+    "?? scripts/team-hub-2b4a/",
+    "?? scripts/team-hub-2b4b/",
+    "?? scripts/team-hub-2b5/",
+    "?? scripts/team-hub-2b5b/",
+    "?? scripts/team-hub-2b6/",
+    "?? scripts/team-hub-core-integration/",
+    "?? scripts/team-hub-migration/",
+    "?? src/features/team-hub/api/cutover-client.mjs",
+    "?? src/features/team-hub/services/cutover-consumers.mjs",
+    "?? src/features/team-hub/services/independent-service.mjs",
+    "?? src/features/team-hub/services/migration-mode.mjs",
+    "?? src/features/team-hub/services/route-access.mjs",
+    "?? src/features/team-hub/services/website-adapter.mjs"
+  ],
+  "candidateRuntime": "cc32b3eadc5f9f1613478b1fe5a657dda6513ec0bf847333ea33991d009ec319",
+  "product": "06c944a01d49b4cb9a4dfa05abb0c9af0d420081264a7fc6c370297ee76f490e",
+  "security": "dc261c2e886802c8f50759d73bc3b72bf3111926115db41609e65a36f1857e00",
+  "monitoring": "cb8eeea63bbfc6015fb200528dce8ef76ca86ae281bd9c6b2ca8dd1fc9eebc91",
+  "sourceFiles": [
+    {
+      "path": "domains/team-hub/contracts.mjs",
+      "sha256": "5a9ea05b66210eb709e8bc9f4097f5680f405dc498a72b5f12ca8599273b592d"
+    },
+    {
+      "path": "domains/team-hub/auth.mjs",
+      "sha256": "f18932d8664eb3775d3ad1ff89d3e01b0d05b3d81f62822b51189993d500f622"
+    },
+    {
+      "path": "domains/team-hub/cutover/contracts.mjs",
+      "sha256": "8da47289f6fd1118461e9bb931b5c38fcc1d5196260e4a1b5e0a76611f686a8e"
+    },
+    {
+      "path": "domains/team-hub/storage-plan.mjs",
+      "sha256": "aa6923a380b5a0426cd33fab605d7606c6a6b7e5b3d00e25e2971bdb8f72e491"
+    },
+    {
+      "path": "domains/team-hub/repository.mjs",
+      "sha256": "4a84ee6b60ab625293545d2dd1be0dc863ab2f8c343b1e11e8cafeaf4bd921ca"
+    },
+    {
+      "path": "domains/team-hub/cutover/service.mjs",
+      "sha256": "5b1fdeb75355133685f6e1d61e7ad28119436f994798da85a1c153842be60b3d"
+    },
+    {
+      "path": "domains/team-hub/cutover/http.mjs",
+      "sha256": "ae0e9dfbae9f59bc34f76c44c03949b823a0225c58cefa5a5bdada1384add8ec"
+    },
+    {
+      "path": "domains/team-hub/cutover/authority.mjs",
+      "sha256": "46b2a75c857f74ef8802565f2c75b0c6c006945f95fb9dbc65e5a79a7bdc7d27"
+    },
+    {
+      "path": "domains/team-hub/parity/state-schema.json",
+      "sha256": "bf7fffcba70af3fea79e051e73c1f62ab6cb1cee492a78947e97b9b71b32a429"
+    },
+    {
+      "path": "domains/team-hub/parity/codec.mjs",
+      "sha256": "25d71ad9a7b7e7aa79cef7d44082c2d97a4da11961c58aa8bc67c204a8d21826"
+    },
+    {
+      "path": "domains/team-hub/cutover/repository.mjs",
+      "sha256": "61e233c3a19921c8d9df159f9130cb00434f42b5e35a5708bc8796c928242261"
+    },
+    {
+      "path": "domains/team-hub/cutover/core-client.mjs",
+      "sha256": "9f8745d9744e330ee7eddfa6b05cc2173085083a0cdfd9c165659193ea92612d"
+    },
+    {
+      "path": "domains/team-hub/cutover/handler.mjs",
+      "sha256": "cb08ad5d9a941654c03d031e3e200f95d6711de1f0f3ffb79eb900124de99816"
+    },
+    {
+      "path": "config/domains/core/domain-endpoints.Ntgre.json",
+      "sha256": "73ccb94e6477198f9853bd90db9581e26f7d384836db0b8ba5dcace7b99a5c3b"
+    },
+    {
+      "path": "domains/team-hub/core-integration/manifest.mjs",
+      "sha256": "ad879c2a96d41b9f9ea3cce045a677e376d4cd976c38f4abe660309c8e0da5d1"
+    },
+    {
+      "path": "domains/team-hub/cutover/observability.mjs",
+      "sha256": "eab373e9e8382437fc59144b95ceace0b793137a4d3dfd68e3189f84a41ed8a5"
+    },
+    {
+      "path": "domains/team-hub/cutover/entry.mjs",
+      "sha256": "dd0cc00c12dc1634972498cc85d06e9f251764e2d3fe143c70376af2dbe748e9"
+    },
+    {
+      "path": "src/features/Team Hub/champion-pool/ChampionPool.vue",
+      "sha256": "806a4e5ab34acce2459db8d082b7f4169ba2bde1fa40f716af0f2094d3f6045f"
+    },
+    {
+      "path": "src/features/Team Hub/champion-pool/CoachPoolReview.vue",
+      "sha256": "fe5b4706f218fbbc38d6704ff1071261c4a6c610c000fc9db7149c105b7a3951"
+    },
+    {
+      "path": "src/features/Team Hub/team-hub.routes.js",
+      "sha256": "1606b527b1c0ce7e9380487e72bc17b7bf7310353b39a116a3f00830d436173e"
+    },
+    {
+      "path": "src/features/Team Hub/TeamAdministration.vue",
+      "sha256": "efbd41241fd7c0da99a858a9c5094dfd91803d325167ce5affe368c0a1cf0ee4"
+    },
+    {
+      "path": "src/features/Team Hub/TeamHubHome.vue",
+      "sha256": "881520c1a6c299b85896b927b432400482b5c03e671edb51c1fd6875d57c3104"
+    },
+    {
+      "path": "src/features/Team Hub/TeamManagement.vue",
+      "sha256": "f0ad33dee42be4e713f04d478e247f0b2b004a000586cb807efab4fc9e02ddb4"
+    },
+    {
+      "path": "src/router/index.js",
+      "sha256": "f6b103159bd7af20ffcf8706516451d15d5b50ede4054f91438d912a74f0ac88"
+    },
+    {
+      "path": "src/router/admin.routes.js",
+      "sha256": "48a7f5717622ba76bac4be288d0f82253f2b53f11f6820bad80bc8b221adebf5"
+    },
+    {
+      "path": "src/router/public.routes.js",
+      "sha256": "4b8276423559c4ce78996d180cd720a80802a8d3cf40b5daeb17b49ca918accf"
+    },
+    {
+      "path": "src/router/forum.routes.js",
+      "sha256": "928a8bc9adfa143e6dce6223149f5705cf0bba02ba4ee4cb6ae0483bb7f5fff8"
+    },
+    {
+      "path": "src/App.vue",
+      "sha256": "7deee0803aa2265d0b8410f4be60cd947051cf88c55f79e341a1cce4c51237e1"
+    },
+    {
+      "path": "src/features/team-hub/services/migration-mode.mjs",
+      "sha256": "22579394c6ecfa1fb9756a67d3d0623d97bfec6b1a18c10b7e877cbf9ad2f045"
+    },
+    {
+      "path": "src/features/team-hub/services/website-adapter.mjs",
+      "sha256": "1104737bd8939871161e47f414bfacd55c1b76c9b6f6c564d5f7f55416b9eeb3"
+    },
+    {
+      "path": "src/features/team-hub/services/independent-service.mjs",
+      "sha256": "09765a99d63c46f0d96440e4cd3b3e346a2eb45dce618d562efd3c1a2de8e121"
+    },
+    {
+      "path": "config/domains/team-hub/frontend-cutover.PROPOSAL.json",
+      "sha256": "232bd6de5728b9410f089cb99b34aeda6c1c2ddcd74834e7112ea9c94220c02b"
+    },
+    {
+      "path": "src/features/team-hub/api/cutover-client.mjs",
+      "sha256": "916a562d8dc925f34df9bf647a9b54b8931a65712172d1afb00877078a86a93b"
+    },
+    {
+      "path": "src/views/UserHomepage/UserHomepage.js",
+      "sha256": "4fe75377f5487ffd85f515eae8b47f35f0d709f9cded3afee0bc7f4fd694fa21"
+    }
+  ],
+  "frontendRevision": {
+    "at": "2026-10-07T17:41:14.363Z",
+    "status": "FULL_GATE_A_ACCEPTED_PRE_CUTOVER_ONLY",
+    "baseline": "docs/architecture/team-hub-2b5b-evidence-2026-10-07/frontend-source-manifest.json",
+    "changes": [
+      {
+        "path": "src/features/team-hub/services/website-adapter.mjs",
+        "previousSha256": "7cc29a7f1719a4d97fc1e8d2ed93eeb30a65cbffc10601dce4f6879252eec109",
+        "sha256": "1104737bd8939871161e47f414bfacd55c1b76c9b6f6c564d5f7f55416b9eeb3",
+        "reason": "Expose canEditCoachAssessments matching the existing Coach Review consumer; no permission expansion beyond Coach"
+      },
+      {
+        "path": "src/features/Team Hub/team-hub.routes.js",
+        "previousSha256": "b052b02d81896435b20d98467422c73be4903325bd85226e267fc43a480d7530",
+        "sha256": "1606b527b1c0ce7e9380487e72bc17b7bf7310353b39a116a3f00830d436173e",
+        "reason": "Fail-closed Team route denial without uncaught router rejection"
+      },
+      {
+        "path": "src/features/team-hub/services/route-access.mjs",
+        "previousSha256": null,
+        "sha256": "4538d3ee5eb15b892af35bad1d4f704b97a64ac0fb8e790c1d97159a323b56d4",
+        "reason": "Fail-closed Team route denial without uncaught router rejection"
+      },
+      {
+        "path": "src/features/Team Hub/champion-pool/ChampionPool.vue",
+        "previousSha256": "16bc884e7558b091cc09e66925f71acc1f30155794ee279a2463778ebd145661",
+        "reason": "Disable all player mutation controls until owner-authorized pool data loads",
+        "sha256": "806a4e5ab34acce2459db8d082b7f4169ba2bde1fa40f716af0f2094d3f6045f"
+      }
+    ],
+    "backendChanged": false,
+    "liveActivation": false,
+    "browserReceipt": "docs/architecture/team-hub-2b6-evidence-2026-10-07/full-browser.json",
+    "acceptedAt": "2026-10-07T19:09:58.263Z"
+  },
+  "pinsVerified": true,
+  "frontendActivation": false,
+  "awsWrites": 0
+}

@@ -1,0 +1,509 @@
+{
+  "at": "2026-10-07T22:23:34.746Z",
+  "deployedSource": "installed-iam.json",
+  "businessRuntimeEqualsMonitoringRuntimeIAM": true,
+  "delta": [
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary",
+      "change": "ADDED_OR_CHANGED_STATEMENT",
+      "statement": {
+        "Effect": "Deny",
+        "NotAction": [
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "kms:Decrypt",
+          "dynamodb:GetItem",
+          "dynamodb:Query",
+          "lambda:InvokeFunction",
+          "secretsmanager:GetSecretValue"
+        ],
+        "Resource": "*"
+      },
+      "classifications": [
+        {
+          "classification": "UNRESOLVED",
+          "reason": "Business candidate expands allowed-action ceiling. Minimal C2 opens only GetItem, paired with exact partition-key allow; full ceiling change is not approved."
+        }
+      ]
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary",
+      "change": "ADDED_OR_CHANGED_STATEMENT",
+      "statement": {
+        "Effect": "Allow",
+        "Action": [
+          "dynamodb:GetItem",
+          "dynamodb:Query"
+        ],
+        "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+        "Condition": {
+          "ForAllValues:StringLike": {
+            "dynamodb:LeadingKeys": [
+              "TEAM#team:*",
+              "SLUG#*"
+            ]
+          },
+          "Null": {
+            "dynamodb:LeadingKeys": "false"
+          }
+        }
+      },
+      "classifications": [
+        {
+          "action": "dynamodb:GetItem",
+          "classification": "UNNECESSARY",
+          "reason": "Business data access is unnecessary for C1/C2 authority-read-only preparation; separately review before business runtime activation."
+        },
+        {
+          "action": "dynamodb:Query",
+          "classification": "UNNECESSARY",
+          "reason": "Business data access is unnecessary for C1/C2 authority-read-only preparation; separately review before business runtime activation."
+        }
+      ]
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary",
+      "change": "ADDED_OR_CHANGED_STATEMENT",
+      "statement": {
+        "Effect": "Allow",
+        "Action": "dynamodb:Query",
+        "Resource": [
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/BySubject",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/ByTeamStatus"
+        ],
+        "Condition": {
+          "ForAllValues:StringLike": {
+            "dynamodb:LeadingKeys": [
+              "SUBJECT#*",
+              "STATUS#*"
+            ]
+          },
+          "Null": {
+            "dynamodb:LeadingKeys": "false"
+          }
+        }
+      },
+      "classifications": [
+        {
+          "action": "dynamodb:Query",
+          "classification": "UNNECESSARY",
+          "reason": "Business data access is unnecessary for C1/C2 authority-read-only preparation; separately review before business runtime activation."
+        }
+      ]
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary",
+      "change": "ADDED_OR_CHANGED_STATEMENT",
+      "statement": {
+        "Effect": "Allow",
+        "Action": "dynamodb:GetItem",
+        "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+        "Condition": {
+          "ForAllValues:StringLike": {
+            "dynamodb:LeadingKeys": [
+              "CONTROL#AUTHORITY"
+            ]
+          },
+          "Null": {
+            "dynamodb:LeadingKeys": "false"
+          }
+        }
+      },
+      "classifications": [
+        {
+          "action": "dynamodb:GetItem",
+          "classification": "REQUIRED_FOR_AUTHORITY_ENFORCEMENT",
+          "reason": "Only CONTROL#AUTHORITY read is necessary; IDEMP#* is excluded from minimal C2."
+        }
+      ]
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary",
+      "change": "ADDED_OR_CHANGED_STATEMENT",
+      "statement": {
+        "Effect": "Deny",
+        "Action": "dynamodb:*",
+        "NotResource": [
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/BySubject",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/ByTeamStatus",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal"
+        ]
+      },
+      "classifications": [
+        {
+          "classification": "REQUIRED_FOR_AUTHORITY_ENFORCEMENT",
+          "reason": "Foreign DynamoDB resource deny is protective; retain confinement and do not interpret as additional access."
+        }
+      ]
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary",
+      "change": "ADDED_OR_CHANGED_STATEMENT",
+      "statement": {
+        "Effect": "Allow",
+        "Action": "secretsmanager:GetSecretValue",
+        "Resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-??????"
+      },
+      "classifications": [
+        {
+          "action": "secretsmanager:GetSecretValue",
+          "classification": "UNRESOLVED",
+          "reason": "Pinned business entry fetches cursor material before authority check; pagination dependency is not monitoring/authority enforcement. Requires separate runtime/deployment design; not granted in C2."
+        }
+      ]
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary",
+      "change": "REMOVED_STATEMENT",
+      "statement": {
+        "Resource": "*",
+        "Effect": "Deny",
+        "NotAction": [
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "kms:Decrypt",
+          "lambda:InvokeFunction"
+        ],
+        "Sid": "OnlyDarkCoreIntegration"
+      },
+      "classifications": [
+        {
+          "classification": "UNRESOLVED",
+          "reason": "Replaces OnlyDarkCoreIntegration action ceiling; whole business expansion not needed for minimal authority read."
+        }
+      ]
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "change": "ADDED_OR_CHANGED_STATEMENT",
+      "statement": {
+        "Effect": "Deny",
+        "NotAction": [
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "kms:Decrypt",
+          "dynamodb:GetItem",
+          "dynamodb:Query",
+          "dynamodb:PutItem",
+          "dynamodb:DeleteItem",
+          "dynamodb:ConditionCheckItem",
+          "lambda:InvokeFunction",
+          "secretsmanager:GetSecretValue"
+        ],
+        "Resource": "*"
+      },
+      "classifications": [
+        {
+          "classification": "UNRESOLVED",
+          "reason": "Business candidate expands allowed-action ceiling. Minimal C2 opens only GetItem, paired with exact partition-key allow; full ceiling change is not approved."
+        }
+      ]
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "change": "ADDED_OR_CHANGED_STATEMENT",
+      "statement": {
+        "Effect": "Allow",
+        "Action": [
+          "dynamodb:GetItem",
+          "dynamodb:Query"
+        ],
+        "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+        "Condition": {
+          "ForAllValues:StringLike": {
+            "dynamodb:LeadingKeys": [
+              "TEAM#team:*",
+              "SLUG#*"
+            ]
+          },
+          "Null": {
+            "dynamodb:LeadingKeys": "false"
+          }
+        }
+      },
+      "classifications": [
+        {
+          "action": "dynamodb:GetItem",
+          "classification": "UNNECESSARY",
+          "reason": "Business data access is unnecessary for C1/C2 authority-read-only preparation; separately review before business runtime activation."
+        },
+        {
+          "action": "dynamodb:Query",
+          "classification": "UNNECESSARY",
+          "reason": "Business data access is unnecessary for C1/C2 authority-read-only preparation; separately review before business runtime activation."
+        }
+      ]
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "change": "ADDED_OR_CHANGED_STATEMENT",
+      "statement": {
+        "Effect": "Allow",
+        "Action": "dynamodb:Query",
+        "Resource": [
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/BySubject",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/ByTeamStatus"
+        ],
+        "Condition": {
+          "ForAllValues:StringLike": {
+            "dynamodb:LeadingKeys": [
+              "SUBJECT#*",
+              "STATUS#*"
+            ]
+          },
+          "Null": {
+            "dynamodb:LeadingKeys": "false"
+          }
+        }
+      },
+      "classifications": [
+        {
+          "action": "dynamodb:Query",
+          "classification": "UNNECESSARY",
+          "reason": "Business data access is unnecessary for C1/C2 authority-read-only preparation; separately review before business runtime activation."
+        }
+      ]
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "change": "ADDED_OR_CHANGED_STATEMENT",
+      "statement": {
+        "Effect": "Allow",
+        "Action": "dynamodb:GetItem",
+        "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+        "Condition": {
+          "ForAllValues:StringLike": {
+            "dynamodb:LeadingKeys": [
+              "CONTROL#AUTHORITY",
+              "IDEMP#*"
+            ]
+          },
+          "Null": {
+            "dynamodb:LeadingKeys": "false"
+          }
+        }
+      },
+      "classifications": [
+        {
+          "action": "dynamodb:GetItem",
+          "classification": "REQUIRED_FOR_AUTHORITY_ENFORCEMENT",
+          "reason": "Only CONTROL#AUTHORITY read is necessary; IDEMP#* is excluded from minimal C2."
+        }
+      ]
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "change": "ADDED_OR_CHANGED_STATEMENT",
+      "statement": {
+        "Effect": "Allow",
+        "Action": [
+          "dynamodb:PutItem",
+          "dynamodb:DeleteItem"
+        ],
+        "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+        "Condition": {
+          "ForAllValues:StringLike": {
+            "dynamodb:LeadingKeys": [
+              "TEAM#team:*",
+              "SLUG#*"
+            ]
+          },
+          "Null": {
+            "dynamodb:LeadingKeys": "false"
+          },
+          "ForAnyValue:StringEquals": {
+            "dynamodb:EnclosingOperation": [
+              "TransactWriteItems"
+            ]
+          }
+        }
+      },
+      "classifications": [
+        {
+          "action": "dynamodb:PutItem",
+          "classification": "UNNECESSARY",
+          "reason": "Business data access is unnecessary for C1/C2 authority-read-only preparation; separately review before business runtime activation."
+        },
+        {
+          "action": "dynamodb:DeleteItem",
+          "classification": "UNNECESSARY",
+          "reason": "Business data access is unnecessary for C1/C2 authority-read-only preparation; separately review before business runtime activation."
+        }
+      ]
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "change": "ADDED_OR_CHANGED_STATEMENT",
+      "statement": {
+        "Effect": "Allow",
+        "Action": "dynamodb:ConditionCheckItem",
+        "Resource": [
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal"
+        ],
+        "Condition": {
+          "ForAllValues:StringLike": {
+            "dynamodb:LeadingKeys": [
+              "TEAM#team:*",
+              "SLUG#*",
+              "CONTROL#AUTHORITY"
+            ]
+          },
+          "Null": {
+            "dynamodb:LeadingKeys": "false"
+          }
+        }
+      },
+      "classifications": [
+        {
+          "action": "dynamodb:ConditionCheckItem",
+          "classification": "REQUIRED_FOR_AUTHORITY_ENFORCEMENT",
+          "reason": "CONTROL#AUTHORITY transaction check is required only for future business-write transaction enforcement; not needed for C2 read-only or monitoring. TEAM/SLUG checks belong to later business operations."
+        }
+      ]
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "change": "ADDED_OR_CHANGED_STATEMENT",
+      "statement": {
+        "Effect": "Allow",
+        "Action": "dynamodb:PutItem",
+        "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+        "Condition": {
+          "ForAllValues:StringLike": {
+            "dynamodb:LeadingKeys": [
+              "TEAM#team:*",
+              "IDEMP#*"
+            ]
+          },
+          "Null": {
+            "dynamodb:LeadingKeys": "false"
+          },
+          "ForAnyValue:StringEquals": {
+            "dynamodb:EnclosingOperation": [
+              "TransactWriteItems"
+            ]
+          }
+        }
+      },
+      "classifications": [
+        {
+          "action": "dynamodb:PutItem",
+          "classification": "UNNECESSARY",
+          "reason": "Business data access is unnecessary for C1/C2 authority-read-only preparation; separately review before business runtime activation."
+        }
+      ]
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "change": "ADDED_OR_CHANGED_STATEMENT",
+      "statement": {
+        "Effect": "Deny",
+        "Action": "dynamodb:*",
+        "NotResource": [
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/BySubject",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/ByTeamStatus",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal"
+        ]
+      },
+      "classifications": [
+        {
+          "classification": "REQUIRED_FOR_AUTHORITY_ENFORCEMENT",
+          "reason": "Foreign DynamoDB resource deny is protective; retain confinement and do not interpret as additional access."
+        }
+      ]
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "change": "ADDED_OR_CHANGED_STATEMENT",
+      "statement": {
+        "Effect": "Allow",
+        "Action": "secretsmanager:GetSecretValue",
+        "Resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-??????"
+      },
+      "classifications": [
+        {
+          "action": "secretsmanager:GetSecretValue",
+          "classification": "UNRESOLVED",
+          "reason": "Pinned business entry fetches cursor material before authority check; pagination dependency is not monitoring/authority enforcement. Requires separate runtime/deployment design; not granted in C2."
+        }
+      ]
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "change": "REMOVED_STATEMENT",
+      "statement": {
+        "Resource": "*",
+        "Effect": "Deny",
+        "NotAction": [
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "kms:Decrypt",
+          "lambda:InvokeFunction"
+        ],
+        "Sid": "OnlyDarkCoreIntegration"
+      },
+      "classifications": [
+        {
+          "classification": "UNRESOLVED",
+          "reason": "Replaces OnlyDarkCoreIntegration action ceiling; whole business expansion not needed for minimal authority read."
+        }
+      ]
+    }
+  ],
+  "unchanged": [
+    {
+      "classification": "REQUIRED_FOR_CORE_INTEGRATION",
+      "actions": [
+        "lambda:InvokeFunction"
+      ],
+      "resources": [
+        "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+        "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST"
+      ],
+      "reason": "Already installed; no additional Core permission required"
+    },
+    {
+      "classification": "REQUIRED_FOR_MONITORING",
+      "actions": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "reason": "Already scoped to each role own log group; EMF needs no extra permission"
+    },
+    {
+      "classification": "UNNECESSARY",
+      "actions": [
+        "cloudwatch:PutMetricData",
+        "logs:CreateLogDelivery",
+        "logs:PutResourcePolicy",
+        "cognito-idp:*",
+        "kms business access"
+      ],
+      "reason": "No new grant proposed"
+    }
+  ],
+  "limitations": [
+    "LeadingKeys constrains partition key, not sort-key value; exact STATE key is enforced in reviewed runtime/initializer",
+    "Custom simulation uses actual installed documents plus boundary; no claim of exhaustive SCP/RCP/session/endpoint evaluation"
+  ]
+}

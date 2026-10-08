@@ -1,0 +1,255 @@
+{
+  "started": "2026-10-06T22:22:36.413Z",
+  "environment": "Ntgre",
+  "identityClassification": "ORDINARY",
+  "checks": [
+    {
+      "at": "2026-10-06T22:26:10.083Z",
+      "began": "2026-10-06T22:26:08.801Z",
+      "label": "teams.admin",
+      "contractVersion": "authorization.decision.v1",
+      "pass": true,
+      "invokeRequestId": "7da9b228-42b3-47f4-b557-7f4f23129c19",
+      "outcome": "DENY",
+      "allowed": false,
+      "bounded": true
+    },
+    {
+      "at": "2026-10-06T22:26:10.466Z",
+      "began": "2026-10-06T22:26:10.085Z",
+      "label": "teams.branding.manage",
+      "contractVersion": "authorization.decision.v1",
+      "pass": true,
+      "invokeRequestId": "96b6135c-32ab-4e4a-bec0-3c740c1e96f4",
+      "outcome": "DENY",
+      "allowed": false,
+      "bounded": true
+    },
+    {
+      "at": "2026-10-06T22:26:10.569Z",
+      "began": "2026-10-06T22:26:10.466Z",
+      "label": "unknown-capability",
+      "contractVersion": "authorization.decision.v1",
+      "pass": true,
+      "invokeRequestId": "a91dae04-f843-4147-b4b9-aa8f9f796695",
+      "outcome": "INVALID_INPUT",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT"
+    },
+    {
+      "at": "2026-10-06T22:26:10.704Z",
+      "began": "2026-10-06T22:26:10.570Z",
+      "label": "authorization-wrong-environment",
+      "contractVersion": "authorization.decision.v1",
+      "pass": true,
+      "invokeRequestId": "e6c38335-c441-4f22-9d7f-4f175efe5306",
+      "outcome": "WRONG_ENVIRONMENT",
+      "expected": "WRONG_ENVIRONMENT",
+      "actual": "WRONG_ENVIRONMENT"
+    },
+    {
+      "at": "2026-10-06T22:26:11.244Z",
+      "began": "2026-10-06T22:26:10.831Z",
+      "label": "exact-resolution",
+      "contractVersion": "directory.assignment.v1",
+      "pass": true,
+      "invokeRequestId": "e02e3b27-5a6c-41f5-9e5d-6c05f4e58566",
+      "outcome": "SUCCESS",
+      "exactMatch": true,
+      "fields": [
+        "contractVersion",
+        "subject",
+        "displayName"
+      ],
+      "minimized": true
+    },
+    {
+      "at": "2026-10-06T22:26:11.687Z",
+      "began": "2026-10-06T22:26:11.245Z",
+      "label": "bounded-search",
+      "contractVersion": "directory.assignment.v1",
+      "pass": true,
+      "invokeRequestId": "e4cfd810-7c52-4fcb-89c2-e9a8938a145e",
+      "outcome": "SUCCESS",
+      "itemCount": 1,
+      "fields": [
+        "subject",
+        "displayName"
+      ],
+      "minimized": true
+    },
+    {
+      "at": "2026-10-06T22:26:12.106Z",
+      "began": "2026-10-06T22:26:11.717Z",
+      "label": "valid-cursor-pagination",
+      "contractVersion": "directory.assignment.v1",
+      "pass": true,
+      "invokeRequestId": "6257cef6-fd43-4294-a1de-4051931707d8",
+      "outcome": "SUCCESS",
+      "itemCount": 1,
+      "fields": [
+        "subject",
+        "displayName"
+      ],
+      "minimized": true
+    },
+    {
+      "at": "2026-10-06T22:26:12.191Z",
+      "began": "2026-10-06T22:26:12.108Z",
+      "label": "query-minimum",
+      "contractVersion": "directory.assignment.v1",
+      "pass": true,
+      "invokeRequestId": "71aa4800-d7bb-4ce4-9ec3-34911ec095f9",
+      "outcome": "INVALID_INPUT",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT"
+    },
+    {
+      "at": "2026-10-06T22:26:12.272Z",
+      "began": "2026-10-06T22:26:12.192Z",
+      "label": "result-maximum",
+      "contractVersion": "directory.assignment.v1",
+      "pass": true,
+      "invokeRequestId": "974be7ab-a2fb-43aa-91d6-ffec07aaffd8",
+      "outcome": "INVALID_INPUT",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT"
+    },
+    {
+      "at": "2026-10-06T22:26:12.366Z",
+      "began": "2026-10-06T22:26:12.273Z",
+      "label": "directory-wrong-environment",
+      "contractVersion": "directory.assignment.v1",
+      "pass": true,
+      "invokeRequestId": "e386b3fe-e28b-4101-bf84-4ae58cfbb6df",
+      "outcome": "WRONG_ENVIRONMENT",
+      "expected": "WRONG_ENVIRONMENT",
+      "actual": "WRONG_ENVIRONMENT"
+    },
+    {
+      "at": "2026-10-06T22:26:12.519Z",
+      "began": "2026-10-06T22:26:12.367Z",
+      "label": "unauthorized-search-missing-token",
+      "contractVersion": "directory.assignment.v1",
+      "pass": true,
+      "invokeRequestId": "7867fe92-5381-4cac-b90e-198c822f92de",
+      "outcome": "UNAUTHENTICATED",
+      "expected": "UNAUTHENTICATED",
+      "actual": "UNAUTHENTICATED"
+    },
+    {
+      "at": "2026-10-06T22:26:12.656Z",
+      "began": "2026-10-06T22:26:12.522Z",
+      "label": "unauthorized-search-invalid-token",
+      "contractVersion": "directory.assignment.v1",
+      "pass": true,
+      "invokeRequestId": "7b45fc26-0122-426b-ab68-b469570c4c79",
+      "outcome": "UNAUTHENTICATED",
+      "expected": "UNAUTHENTICATED",
+      "actual": "UNAUTHENTICATED"
+    },
+    {
+      "at": "2026-10-06T22:26:12.840Z",
+      "began": "2026-10-06T22:26:12.657Z",
+      "label": "tampered-cursor",
+      "contractVersion": "directory.assignment.v1",
+      "pass": true,
+      "invokeRequestId": "d5274dd9-5b5a-4597-b51e-2a6a83c59bad",
+      "outcome": "INVALID_INPUT",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT"
+    },
+    {
+      "at": "2026-10-06T22:26:12.924Z",
+      "began": "2026-10-06T22:26:12.841Z",
+      "label": "cursor-wrong-environment",
+      "contractVersion": "directory.assignment.v1",
+      "pass": true,
+      "invokeRequestId": "97150148-2204-4966-968c-3487ee3e09ba",
+      "outcome": "WRONG_ENVIRONMENT",
+      "expected": "WRONG_ENVIRONMENT",
+      "actual": "WRONG_ENVIRONMENT"
+    },
+    {
+      "at": "2026-10-06T22:26:13.001Z",
+      "began": "2026-10-06T22:26:12.925Z",
+      "label": "cursor-wrong-contract",
+      "contractVersion": "authorization.decision.v1",
+      "pass": true,
+      "invokeRequestId": "8481eedb-4246-4830-a746-a2739ae831aa",
+      "outcome": "INVALID_INPUT",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT"
+    },
+    {
+      "at": "2026-10-06T22:26:13.190Z",
+      "began": "2026-10-06T22:26:13.002Z",
+      "label": "cursor-wrong-team",
+      "contractVersion": "directory.assignment.v1",
+      "pass": true,
+      "invokeRequestId": "b54fec5f-ad96-45e5-8ea1-0585e4c71950",
+      "outcome": "INVALID_INPUT",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT"
+    },
+    {
+      "at": "2026-10-06T22:26:13.343Z",
+      "began": "2026-10-06T22:26:13.191Z",
+      "label": "cursor-wrong-context",
+      "contractVersion": "directory.assignment.v1",
+      "pass": true,
+      "invokeRequestId": "19d08d2b-101d-42d4-9cde-05f8e03ad8b3",
+      "outcome": "INVALID_INPUT",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT"
+    },
+    {
+      "at": "2026-10-06T22:26:13.522Z",
+      "began": "2026-10-06T22:26:13.344Z",
+      "label": "invalid-cursor",
+      "contractVersion": "directory.assignment.v1",
+      "pass": true,
+      "invokeRequestId": "8352a365-d24e-45f3-9a2a-3a2d857aab3a",
+      "outcome": "INVALID_INPUT",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT"
+    },
+    {
+      "at": "2026-10-06T22:31:17.343Z",
+      "began": "2026-10-06T22:31:16.768Z",
+      "label": "expired-cursor",
+      "contractVersion": "directory.assignment.v1",
+      "pass": true,
+      "invokeRequestId": "1e9702b2-4b5e-4b2d-9247-77abe3e45171",
+      "outcome": "INVALID_INPUT",
+      "expected": "INVALID_INPUT",
+      "actual": "INVALID_INPUT"
+    }
+  ],
+  "complete": true,
+  "failed": false,
+  "optional": {
+    "crossActor": "NOT_REQUIRED_FOR_RELEASE_1",
+    "disabledAccount": "UNTESTED_LIVE_WITH_OFFLINE_COVERAGE"
+  },
+  "tokensPersisted": false,
+  "cursorsPersisted": false,
+  "personalValuesPersisted": false,
+  "secretRetrieved": false,
+  "cognitoMutations": 0,
+  "teamWrites": 0,
+  "legacyWrites": 0,
+  "tournamentChanges": 0,
+  "productionChanges": 0,
+  "infrastructureWrites": 0,
+  "authentication": "NORMAL_AMPLIFY_LOCAL_MASKED_INPUT",
+  "identityReferenceSha256": "0ce6c3ff025df9c49b38c97cb719da4a99d1ac51df3cb8e9a1f22e54f69b2f7a",
+  "identityChecks": {
+    "enabled": true,
+    "confirmed": true,
+    "admin": false,
+    "superAdmin": false
+  },
+  "phase": "COMPLETE",
+  "at": "2026-10-06T22:31:17.345Z"
+}

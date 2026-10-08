@@ -1,0 +1,39 @@
+{
+  "at": "2026-10-07T22:57:13.893Z",
+  "pinsVerified": true,
+  "manifest": "d58034a8c638c1f02ac00c70639631f2ff3cfca3b3aa4ecc0faca480d110d3fd",
+  "hashes": {
+    "productSha256": "46345d29a78166b1371792b42aebb922d73af45c69fbf4ba88bfad371f47ff01",
+    "securitySha256": "9db9889666146cc4f5529794b437c4b81117b0365a68c48d85b3ecb39669e622",
+    "resourceDelta": 0,
+    "deploymentArtifactRebinding": "Exact C2 product URL/object added; previous rollback references preserved"
+  },
+  "changes": {
+    "product": [
+      "ParityCommandRole",
+      "ParityReadRole"
+    ],
+    "security": [
+      "ParityCommandBoundary",
+      "ParityReadBoundary",
+      "PreparationCaller"
+    ]
+  },
+  "permission": {
+    "Sid": "ReadOnlyAuthorityPartition",
+    "Effect": "Allow",
+    "Action": "dynamodb:GetItem",
+    "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+    "Condition": {
+      "ForAllValues:StringEquals": {
+        "dynamodb:LeadingKeys": [
+          "CONTROL#AUTHORITY"
+        ]
+      },
+      "Null": {
+        "dynamodb:LeadingKeys": "false"
+      }
+    }
+  },
+  "complete": true
+}

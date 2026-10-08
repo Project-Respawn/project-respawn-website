@@ -1,0 +1,423 @@
+{
+  "at": "2026-10-05T20:46:05.574Z",
+  "api": "dxb2tdlulrch7hj2pts2mfijia",
+  "streams": [
+    {
+      "model": "PlayerChampionPoolEntry",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE/stream/2026-09-21T14:23:52.403",
+      "error": "dynamodb get-resource-policy PolicyNotFoundException",
+      "absent": true
+    },
+    {
+      "model": "TeamMembership",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE/stream/2026-09-21T14:23:11.616",
+      "error": "dynamodb get-resource-policy PolicyNotFoundException",
+      "absent": true
+    },
+    {
+      "model": "Team",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE/stream/2026-09-21T14:23:11.675",
+      "error": "dynamodb get-resource-policy PolicyNotFoundException",
+      "absent": true
+    },
+    {
+      "model": "TeamRosterSlot",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE/stream/2026-09-21T14:23:12.021",
+      "error": "dynamodb get-resource-policy PolicyNotFoundException",
+      "absent": true
+    }
+  ],
+  "subscriptionResolvers": [
+    {
+      "field": "onCreatePlayerChampionPoolEntry",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "3tivdn7urnaqrg4gnkcxaz4sia",
+          "2fdjqu6yrjhnvjurpelvyznms4",
+          "tkp4osqrpfcgtikdzqbnwfus6q"
+        ]
+      }
+    },
+    {
+      "field": "onCreateTeam",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "szb4czhmhfgehp24bpgl63nj24",
+          "sa25ff7eezh3tj25arxn5ughba",
+          "dv23pigjmrejbkldrji4dnk2iu"
+        ]
+      }
+    },
+    {
+      "field": "onCreateTeamMembership",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "5sosv7ip35h5fcyzbg3esti5tu",
+          "6hoco54w7zbrxe37oo4q3u6yna",
+          "7dwi762h2ranbjukszlthu6dz4"
+        ]
+      }
+    },
+    {
+      "field": "onCreateTeamRosterSlot",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "bxjis2vt6jh5hppmcycware2gq",
+          "wz7piheteveyfj5nee2vlcoax4",
+          "zvahmpvgnjdevj4uwfou4jbnse"
+        ]
+      }
+    },
+    {
+      "field": "onDeletePlayerChampionPoolEntry",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "5nwze4fe2bci3phgxu4w6c5p2e",
+          "ovedpcfgifczzexkeq7exzreka",
+          "qw36re7hwvbyngsxxlgvnipo5m"
+        ]
+      }
+    },
+    {
+      "field": "onDeleteTeam",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "v4hkjo723raitbjttjbigvdhhu",
+          "3wbawljx7fbhrpl4j2js3uw2cy",
+          "2xdecvj4wrfk5a53um4sx62z44"
+        ]
+      }
+    },
+    {
+      "field": "onDeleteTeamMembership",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "v46lyxz66zdxzkyzcm2rw2ycfq",
+          "qiys6hj5lnemzee64xpoxs3gpi",
+          "7ngycgipkvgxzo4t3c3k4qrtpa"
+        ]
+      }
+    },
+    {
+      "field": "onDeleteTeamRosterSlot",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "gajeqclth5duto6tu3q6cpvqga",
+          "22ef7szluzcsho32w4fkxnu7oe",
+          "jjiabthnonbfznkuxqc7fodx3q"
+        ]
+      }
+    },
+    {
+      "field": "onUpdatePlayerChampionPoolEntry",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "ktzrcc3hnbhpnidbdxynnj4bqi",
+          "7p2jddqcpfboznxazy4bvmtza4",
+          "u77rsxmuincfxjhqrzuoafsi5y"
+        ]
+      }
+    },
+    {
+      "field": "onUpdateTeam",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "bebwzefetbcfxia2wy4zf7c7sm",
+          "35xqyqisbnahxkeam54zfej54u",
+          "wnjwin6b7zcpboeq3mxgqiv4k4"
+        ]
+      }
+    },
+    {
+      "field": "onUpdateTeamMembership",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "ezog4enkzze6zkbd47btizo4si",
+          "2b43vo5xbncvtm7zczl6sdwpaq",
+          "sqyhlbcdlzbcvp2z7qm5nqi7i4"
+        ]
+      }
+    },
+    {
+      "field": "onUpdateTeamRosterSlot",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "rvkjinjpdjhbnhgj4ymxkp2lzi",
+          "smeevjir4rhwzbhcxznwwbodsu",
+          "baffquu7xfcglhlknfzotifhva"
+        ]
+      }
+    }
+  ],
+  "subscriptionFunctions": [
+    {
+      "id": "22ef7szluzcsho32w4fkxnu7oe",
+      "name": "SubscriptiononDeleteTeamRosterSlotpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **"
+    },
+    {
+      "id": "2b43vo5xbncvtm7zczl6sdwpaq",
+      "name": "SubscriptiononUpdateTeamMembershippostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **"
+    },
+    {
+      "id": "2fdjqu6yrjhnvjurpelvyznms4",
+      "name": "SubscriptiononCreatePlayerChampionPoolEntrypostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **"
+    },
+    {
+      "id": "2xdecvj4wrfk5a53um4sx62z44",
+      "name": "SubscriptionOnDeleteTeamDataResolverFn",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Subscription Request template. **\n$util.toJson({\n  \"version\": \"2018-05-29\",\n  \"payload\": {}\n})\n## [End] Subscription Request template. **"
+    },
+    {
+      "id": "35xqyqisbnahxkeam54zfej54u",
+      "name": "SubscriptiononUpdateTeampostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **"
+    },
+    {
+      "id": "3tivdn7urnaqrg4gnkcxaz4sia",
+      "name": "SubscriptiononCreatePlayerChampionPoolEntryauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n  #set( $hasValidOwnerArgument = false )\n  #set( $authRuntimeFilter = [] )\n  #set( $authOwnerRuntimeFilter = [] )\n  #set( $authGroupRuntimeFilter = [] )\n  ## Apply dynamic roles auth if not previously authorized by static groups and owner argument **\n  #if( $authOwnerRuntimeFilter.size() > 0 )\n    $util.qr($authRuntimeFilter.addAll($authOwnerRuntimeFilter))\n  #end\n  #if( $authGroupRuntimeFilter.size() > 0 )\n    $util.qr($authRuntimeFilter.addAll($authGroupRuntimeFilter))\n  #end\n  #set( $filterArgsSize = 0 )\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filterArgsSize = $ctx.args.filter.size() )\n  #end\n  #set( $isOwnerAuthAuthorizedAndNoOtherFilters = $hasValidOwnerArgument && $authRuntimeFilter.size() == 1 && $filterArgsSize == 0 )\n  #set( $isOwnerOrDynamicAuthAuthorizedWithFilters = (!$isAuthorized || $hasValidOwnerArgument) && $authRuntimeFilter.size() > 0 )\n  #if( !$isOwnerAuthAuthorizedAndNoOtherFilters && $isOwnerOrDynamicAuthAuthorizedWithFilters )\n    #if( $util.isNullOrEmpty($ctx.args.filter) )\n      #set( $ctx.args.filter = { \"or\": $authRuntimeFilter } )\n    #else\n      #set( $ctx.args.filter = { \"and\": [ { \"or\": $authRuntimeFilter }, $ctx.args.filter ]} )\n    #end\n    #set( $isAuthorized = true )\n  #end\n#end\n#if( !$isAuthorized )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **"
+    },
+    {
+      "id": "3wbawljx7fbhrpl4j2js3uw2cy",
+      "name": "SubscriptiononDeleteTeampostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **"
+    },
+    {
+      "id": "5nwze4fe2bci3phgxu4w6c5p2e",
+      "name": "SubscriptiononDeletePlayerChampionPoolEntryauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n  #set( $hasValidOwnerArgument = false )\n  #set( $authRuntimeFilter = [] )\n  #set( $authOwnerRuntimeFilter = [] )\n  #set( $authGroupRuntimeFilter = [] )\n  ## Apply dynamic roles auth if not previously authorized by static groups and owner argument **\n  #if( $authOwnerRuntimeFilter.size() > 0 )\n    $util.qr($authRuntimeFilter.addAll($authOwnerRuntimeFilter))\n  #end\n  #if( $authGroupRuntimeFilter.size() > 0 )\n    $util.qr($authRuntimeFilter.addAll($authGroupRuntimeFilter))\n  #end\n  #set( $filterArgsSize = 0 )\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filterArgsSize = $ctx.args.filter.size() )\n  #end\n  #set( $isOwnerAuthAuthorizedAndNoOtherFilters = $hasValidOwnerArgument && $authRuntimeFilter.size() == 1 && $filterArgsSize == 0 )\n  #set( $isOwnerOrDynamicAuthAuthorizedWithFilters = (!$isAuthorized || $hasValidOwnerArgument) && $authRuntimeFilter.size() > 0 )\n  #if( !$isOwnerAuthAuthorizedAndNoOtherFilters && $isOwnerOrDynamicAuthAuthorizedWithFilters )\n    #if( $util.isNullOrEmpty($ctx.args.filter) )\n      #set( $ctx.args.filter = { \"or\": $authRuntimeFilter } )\n    #else\n      #set( $ctx.args.filter = { \"and\": [ { \"or\": $authRuntimeFilter }, $ctx.args.filter ]} )\n    #end\n    #set( $isAuthorized = true )\n  #end\n#end\n#if( !$isAuthorized )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **"
+    },
+    {
+      "id": "5sosv7ip35h5fcyzbg3esti5tu",
+      "name": "SubscriptiononCreateTeamMembershipauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n  #set( $hasValidOwnerArgument = false )\n  #set( $authRuntimeFilter = [] )\n  #set( $authOwnerRuntimeFilter = [] )\n  #set( $authGroupRuntimeFilter = [] )\n  ## Apply dynamic roles auth if not previously authorized by static groups and owner argument **\n  #if( $authOwnerRuntimeFilter.size() > 0 )\n    $util.qr($authRuntimeFilter.addAll($authOwnerRuntimeFilter))\n  #end\n  #if( $authGroupRuntimeFilter.size() > 0 )\n    $util.qr($authRuntimeFilter.addAll($authGroupRuntimeFilter))\n  #end\n  #set( $filterArgsSize = 0 )\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filterArgsSize = $ctx.args.filter.size() )\n  #end\n  #set( $isOwnerAuthAuthorizedAndNoOtherFilters = $hasValidOwnerArgument && $authRuntimeFilter.size() == 1 && $filterArgsSize == 0 )\n  #set( $isOwnerOrDynamicAuthAuthorizedWithFilters = (!$isAuthorized || $hasValidOwnerArgument) && $authRuntimeFilter.size() > 0 )\n  #if( !$isOwnerAuthAuthorizedAndNoOtherFilters && $isOwnerOrDynamicAuthAuthorizedWithFilters )\n    #if( $util.isNullOrEmpty($ctx.args.filter) )\n      #set( $ctx.args.filter = { \"or\": $authRuntimeFilter } )\n    #else\n      #set( $ctx.args.filter = { \"and\": [ { \"or\": $authRuntimeFilter }, $ctx.args.filter ]} )\n    #end\n    #set( $isAuthorized = true )\n  #end\n#end\n#if( !$isAuthorized )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **"
+    },
+    {
+      "id": "6hoco54w7zbrxe37oo4q3u6yna",
+      "name": "SubscriptiononCreateTeamMembershippostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **"
+    },
+    {
+      "id": "7dwi762h2ranbjukszlthu6dz4",
+      "name": "SubscriptionOnCreateTeamMembershipDataResolverFn",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Subscription Request template. **\n$util.toJson({\n  \"version\": \"2018-05-29\",\n  \"payload\": {}\n})\n## [End] Subscription Request template. **"
+    },
+    {
+      "id": "7ngycgipkvgxzo4t3c3k4qrtpa",
+      "name": "SubscriptionOnDeleteTeamMembershipDataResolverFn",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Subscription Request template. **\n$util.toJson({\n  \"version\": \"2018-05-29\",\n  \"payload\": {}\n})\n## [End] Subscription Request template. **"
+    },
+    {
+      "id": "7p2jddqcpfboznxazy4bvmtza4",
+      "name": "SubscriptiononUpdatePlayerChampionPoolEntrypostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **"
+    },
+    {
+      "id": "baffquu7xfcglhlknfzotifhva",
+      "name": "SubscriptionOnUpdateTeamRosterSlotDataResolverFn",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Subscription Request template. **\n$util.toJson({\n  \"version\": \"2018-05-29\",\n  \"payload\": {}\n})\n## [End] Subscription Request template. **"
+    },
+    {
+      "id": "bebwzefetbcfxia2wy4zf7c7sm",
+      "name": "SubscriptiononUpdateTeamauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n  #set( $hasValidOwnerArgument = false )\n  #set( $authRuntimeFilter = [] )\n  #set( $authOwnerRuntimeFilter = [] )\n  #set( $authGroupRuntimeFilter = [] )\n  ## Apply dynamic roles auth if not previously authorized by static groups and owner argument **\n  #if( $authOwnerRuntimeFilter.size() > 0 )\n    $util.qr($authRuntimeFilter.addAll($authOwnerRuntimeFilter))\n  #end\n  #if( $authGroupRuntimeFilter.size() > 0 )\n    $util.qr($authRuntimeFilter.addAll($authGroupRuntimeFilter))\n  #end\n  #set( $filterArgsSize = 0 )\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filterArgsSize = $ctx.args.filter.size() )\n  #end\n  #set( $isOwnerAuthAuthorizedAndNoOtherFilters = $hasValidOwnerArgument && $authRuntimeFilter.size() == 1 && $filterArgsSize == 0 )\n  #set( $isOwnerOrDynamicAuthAuthorizedWithFilters = (!$isAuthorized || $hasValidOwnerArgument) && $authRuntimeFilter.size() > 0 )\n  #if( !$isOwnerAuthAuthorizedAndNoOtherFilters && $isOwnerOrDynamicAuthAuthorizedWithFilters )\n    #if( $util.isNullOrEmpty($ctx.args.filter) )\n      #set( $ctx.args.filter = { \"or\": $authRuntimeFilter } )\n    #else\n      #set( $ctx.args.filter = { \"and\": [ { \"or\": $authRuntimeFilter }, $ctx.args.filter ]} )\n    #end\n    #set( $isAuthorized = true )\n  #end\n#end\n#if( !$isAuthorized )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **"
+    },
+    {
+      "id": "bxjis2vt6jh5hppmcycware2gq",
+      "name": "SubscriptiononCreateTeamRosterSlotauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n  #set( $hasValidOwnerArgument = false )\n  #set( $authRuntimeFilter = [] )\n  #set( $authOwnerRuntimeFilter = [] )\n  #set( $authGroupRuntimeFilter = [] )\n  ## Apply dynamic roles auth if not previously authorized by static groups and owner argument **\n  #if( $authOwnerRuntimeFilter.size() > 0 )\n    $util.qr($authRuntimeFilter.addAll($authOwnerRuntimeFilter))\n  #end\n  #if( $authGroupRuntimeFilter.size() > 0 )\n    $util.qr($authRuntimeFilter.addAll($authGroupRuntimeFilter))\n  #end\n  #set( $filterArgsSize = 0 )\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filterArgsSize = $ctx.args.filter.size() )\n  #end\n  #set( $isOwnerAuthAuthorizedAndNoOtherFilters = $hasValidOwnerArgument && $authRuntimeFilter.size() == 1 && $filterArgsSize == 0 )\n  #set( $isOwnerOrDynamicAuthAuthorizedWithFilters = (!$isAuthorized || $hasValidOwnerArgument) && $authRuntimeFilter.size() > 0 )\n  #if( !$isOwnerAuthAuthorizedAndNoOtherFilters && $isOwnerOrDynamicAuthAuthorizedWithFilters )\n    #if( $util.isNullOrEmpty($ctx.args.filter) )\n      #set( $ctx.args.filter = { \"or\": $authRuntimeFilter } )\n    #else\n      #set( $ctx.args.filter = { \"and\": [ { \"or\": $authRuntimeFilter }, $ctx.args.filter ]} )\n    #end\n    #set( $isAuthorized = true )\n  #end\n#end\n#if( !$isAuthorized )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **"
+    },
+    {
+      "id": "dv23pigjmrejbkldrji4dnk2iu",
+      "name": "SubscriptionOnCreateTeamDataResolverFn",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Subscription Request template. **\n$util.toJson({\n  \"version\": \"2018-05-29\",\n  \"payload\": {}\n})\n## [End] Subscription Request template. **"
+    },
+    {
+      "id": "ezog4enkzze6zkbd47btizo4si",
+      "name": "SubscriptiononUpdateTeamMembershipauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n  #set( $hasValidOwnerArgument = false )\n  #set( $authRuntimeFilter = [] )\n  #set( $authOwnerRuntimeFilter = [] )\n  #set( $authGroupRuntimeFilter = [] )\n  ## Apply dynamic roles auth if not previously authorized by static groups and owner argument **\n  #if( $authOwnerRuntimeFilter.size() > 0 )\n    $util.qr($authRuntimeFilter.addAll($authOwnerRuntimeFilter))\n  #end\n  #if( $authGroupRuntimeFilter.size() > 0 )\n    $util.qr($authRuntimeFilter.addAll($authGroupRuntimeFilter))\n  #end\n  #set( $filterArgsSize = 0 )\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filterArgsSize = $ctx.args.filter.size() )\n  #end\n  #set( $isOwnerAuthAuthorizedAndNoOtherFilters = $hasValidOwnerArgument && $authRuntimeFilter.size() == 1 && $filterArgsSize == 0 )\n  #set( $isOwnerOrDynamicAuthAuthorizedWithFilters = (!$isAuthorized || $hasValidOwnerArgument) && $authRuntimeFilter.size() > 0 )\n  #if( !$isOwnerAuthAuthorizedAndNoOtherFilters && $isOwnerOrDynamicAuthAuthorizedWithFilters )\n    #if( $util.isNullOrEmpty($ctx.args.filter) )\n      #set( $ctx.args.filter = { \"or\": $authRuntimeFilter } )\n    #else\n      #set( $ctx.args.filter = { \"and\": [ { \"or\": $authRuntimeFilter }, $ctx.args.filter ]} )\n    #end\n    #set( $isAuthorized = true )\n  #end\n#end\n#if( !$isAuthorized )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **"
+    },
+    {
+      "id": "gajeqclth5duto6tu3q6cpvqga",
+      "name": "SubscriptiononDeleteTeamRosterSlotauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n  #set( $hasValidOwnerArgument = false )\n  #set( $authRuntimeFilter = [] )\n  #set( $authOwnerRuntimeFilter = [] )\n  #set( $authGroupRuntimeFilter = [] )\n  ## Apply dynamic roles auth if not previously authorized by static groups and owner argument **\n  #if( $authOwnerRuntimeFilter.size() > 0 )\n    $util.qr($authRuntimeFilter.addAll($authOwnerRuntimeFilter))\n  #end\n  #if( $authGroupRuntimeFilter.size() > 0 )\n    $util.qr($authRuntimeFilter.addAll($authGroupRuntimeFilter))\n  #end\n  #set( $filterArgsSize = 0 )\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filterArgsSize = $ctx.args.filter.size() )\n  #end\n  #set( $isOwnerAuthAuthorizedAndNoOtherFilters = $hasValidOwnerArgument && $authRuntimeFilter.size() == 1 && $filterArgsSize == 0 )\n  #set( $isOwnerOrDynamicAuthAuthorizedWithFilters = (!$isAuthorized || $hasValidOwnerArgument) && $authRuntimeFilter.size() > 0 )\n  #if( !$isOwnerAuthAuthorizedAndNoOtherFilters && $isOwnerOrDynamicAuthAuthorizedWithFilters )\n    #if( $util.isNullOrEmpty($ctx.args.filter) )\n      #set( $ctx.args.filter = { \"or\": $authRuntimeFilter } )\n    #else\n      #set( $ctx.args.filter = { \"and\": [ { \"or\": $authRuntimeFilter }, $ctx.args.filter ]} )\n    #end\n    #set( $isAuthorized = true )\n  #end\n#end\n#if( !$isAuthorized )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **"
+    },
+    {
+      "id": "jjiabthnonbfznkuxqc7fodx3q",
+      "name": "SubscriptionOnDeleteTeamRosterSlotDataResolverFn",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Subscription Request template. **\n$util.toJson({\n  \"version\": \"2018-05-29\",\n  \"payload\": {}\n})\n## [End] Subscription Request template. **"
+    },
+    {
+      "id": "ktzrcc3hnbhpnidbdxynnj4bqi",
+      "name": "SubscriptiononUpdatePlayerChampionPoolEntryauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n  #set( $hasValidOwnerArgument = false )\n  #set( $authRuntimeFilter = [] )\n  #set( $authOwnerRuntimeFilter = [] )\n  #set( $authGroupRuntimeFilter = [] )\n  ## Apply dynamic roles auth if not previously authorized by static groups and owner argument **\n  #if( $authOwnerRuntimeFilter.size() > 0 )\n    $util.qr($authRuntimeFilter.addAll($authOwnerRuntimeFilter))\n  #end\n  #if( $authGroupRuntimeFilter.size() > 0 )\n    $util.qr($authRuntimeFilter.addAll($authGroupRuntimeFilter))\n  #end\n  #set( $filterArgsSize = 0 )\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filterArgsSize = $ctx.args.filter.size() )\n  #end\n  #set( $isOwnerAuthAuthorizedAndNoOtherFilters = $hasValidOwnerArgument && $authRuntimeFilter.size() == 1 && $filterArgsSize == 0 )\n  #set( $isOwnerOrDynamicAuthAuthorizedWithFilters = (!$isAuthorized || $hasValidOwnerArgument) && $authRuntimeFilter.size() > 0 )\n  #if( !$isOwnerAuthAuthorizedAndNoOtherFilters && $isOwnerOrDynamicAuthAuthorizedWithFilters )\n    #if( $util.isNullOrEmpty($ctx.args.filter) )\n      #set( $ctx.args.filter = { \"or\": $authRuntimeFilter } )\n    #else\n      #set( $ctx.args.filter = { \"and\": [ { \"or\": $authRuntimeFilter }, $ctx.args.filter ]} )\n    #end\n    #set( $isAuthorized = true )\n  #end\n#end\n#if( !$isAuthorized )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **"
+    },
+    {
+      "id": "ovedpcfgifczzexkeq7exzreka",
+      "name": "SubscriptiononDeletePlayerChampionPoolEntrypostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **"
+    },
+    {
+      "id": "qiys6hj5lnemzee64xpoxs3gpi",
+      "name": "SubscriptiononDeleteTeamMembershippostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **"
+    },
+    {
+      "id": "qw36re7hwvbyngsxxlgvnipo5m",
+      "name": "SubscriptionOnDeletePlayerChampionPoolEntryDataResolverFn",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Subscription Request template. **\n$util.toJson({\n  \"version\": \"2018-05-29\",\n  \"payload\": {}\n})\n## [End] Subscription Request template. **"
+    },
+    {
+      "id": "rvkjinjpdjhbnhgj4ymxkp2lzi",
+      "name": "SubscriptiononUpdateTeamRosterSlotauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n  #set( $hasValidOwnerArgument = false )\n  #set( $authRuntimeFilter = [] )\n  #set( $authOwnerRuntimeFilter = [] )\n  #set( $authGroupRuntimeFilter = [] )\n  ## Apply dynamic roles auth if not previously authorized by static groups and owner argument **\n  #if( $authOwnerRuntimeFilter.size() > 0 )\n    $util.qr($authRuntimeFilter.addAll($authOwnerRuntimeFilter))\n  #end\n  #if( $authGroupRuntimeFilter.size() > 0 )\n    $util.qr($authRuntimeFilter.addAll($authGroupRuntimeFilter))\n  #end\n  #set( $filterArgsSize = 0 )\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filterArgsSize = $ctx.args.filter.size() )\n  #end\n  #set( $isOwnerAuthAuthorizedAndNoOtherFilters = $hasValidOwnerArgument && $authRuntimeFilter.size() == 1 && $filterArgsSize == 0 )\n  #set( $isOwnerOrDynamicAuthAuthorizedWithFilters = (!$isAuthorized || $hasValidOwnerArgument) && $authRuntimeFilter.size() > 0 )\n  #if( !$isOwnerAuthAuthorizedAndNoOtherFilters && $isOwnerOrDynamicAuthAuthorizedWithFilters )\n    #if( $util.isNullOrEmpty($ctx.args.filter) )\n      #set( $ctx.args.filter = { \"or\": $authRuntimeFilter } )\n    #else\n      #set( $ctx.args.filter = { \"and\": [ { \"or\": $authRuntimeFilter }, $ctx.args.filter ]} )\n    #end\n    #set( $isAuthorized = true )\n  #end\n#end\n#if( !$isAuthorized )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **"
+    },
+    {
+      "id": "sa25ff7eezh3tj25arxn5ughba",
+      "name": "SubscriptiononCreateTeampostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **"
+    },
+    {
+      "id": "smeevjir4rhwzbhcxznwwbodsu",
+      "name": "SubscriptiononUpdateTeamRosterSlotpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **"
+    },
+    {
+      "id": "sqyhlbcdlzbcvp2z7qm5nqi7i4",
+      "name": "SubscriptionOnUpdateTeamMembershipDataResolverFn",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Subscription Request template. **\n$util.toJson({\n  \"version\": \"2018-05-29\",\n  \"payload\": {}\n})\n## [End] Subscription Request template. **"
+    },
+    {
+      "id": "szb4czhmhfgehp24bpgl63nj24",
+      "name": "SubscriptiononCreateTeamauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n  #set( $hasValidOwnerArgument = false )\n  #set( $authRuntimeFilter = [] )\n  #set( $authOwnerRuntimeFilter = [] )\n  #set( $authGroupRuntimeFilter = [] )\n  ## Apply dynamic roles auth if not previously authorized by static groups and owner argument **\n  #if( $authOwnerRuntimeFilter.size() > 0 )\n    $util.qr($authRuntimeFilter.addAll($authOwnerRuntimeFilter))\n  #end\n  #if( $authGroupRuntimeFilter.size() > 0 )\n    $util.qr($authRuntimeFilter.addAll($authGroupRuntimeFilter))\n  #end\n  #set( $filterArgsSize = 0 )\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filterArgsSize = $ctx.args.filter.size() )\n  #end\n  #set( $isOwnerAuthAuthorizedAndNoOtherFilters = $hasValidOwnerArgument && $authRuntimeFilter.size() == 1 && $filterArgsSize == 0 )\n  #set( $isOwnerOrDynamicAuthAuthorizedWithFilters = (!$isAuthorized || $hasValidOwnerArgument) && $authRuntimeFilter.size() > 0 )\n  #if( !$isOwnerAuthAuthorizedAndNoOtherFilters && $isOwnerOrDynamicAuthAuthorizedWithFilters )\n    #if( $util.isNullOrEmpty($ctx.args.filter) )\n      #set( $ctx.args.filter = { \"or\": $authRuntimeFilter } )\n    #else\n      #set( $ctx.args.filter = { \"and\": [ { \"or\": $authRuntimeFilter }, $ctx.args.filter ]} )\n    #end\n    #set( $isAuthorized = true )\n  #end\n#end\n#if( !$isAuthorized )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **"
+    },
+    {
+      "id": "tkp4osqrpfcgtikdzqbnwfus6q",
+      "name": "SubscriptionOnCreatePlayerChampionPoolEntryDataResolverFn",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Subscription Request template. **\n$util.toJson({\n  \"version\": \"2018-05-29\",\n  \"payload\": {}\n})\n## [End] Subscription Request template. **"
+    },
+    {
+      "id": "u77rsxmuincfxjhqrzuoafsi5y",
+      "name": "SubscriptionOnUpdatePlayerChampionPoolEntryDataResolverFn",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Subscription Request template. **\n$util.toJson({\n  \"version\": \"2018-05-29\",\n  \"payload\": {}\n})\n## [End] Subscription Request template. **"
+    },
+    {
+      "id": "v46lyxz66zdxzkyzcm2rw2ycfq",
+      "name": "SubscriptiononDeleteTeamMembershipauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n  #set( $hasValidOwnerArgument = false )\n  #set( $authRuntimeFilter = [] )\n  #set( $authOwnerRuntimeFilter = [] )\n  #set( $authGroupRuntimeFilter = [] )\n  ## Apply dynamic roles auth if not previously authorized by static groups and owner argument **\n  #if( $authOwnerRuntimeFilter.size() > 0 )\n    $util.qr($authRuntimeFilter.addAll($authOwnerRuntimeFilter))\n  #end\n  #if( $authGroupRuntimeFilter.size() > 0 )\n    $util.qr($authRuntimeFilter.addAll($authGroupRuntimeFilter))\n  #end\n  #set( $filterArgsSize = 0 )\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filterArgsSize = $ctx.args.filter.size() )\n  #end\n  #set( $isOwnerAuthAuthorizedAndNoOtherFilters = $hasValidOwnerArgument && $authRuntimeFilter.size() == 1 && $filterArgsSize == 0 )\n  #set( $isOwnerOrDynamicAuthAuthorizedWithFilters = (!$isAuthorized || $hasValidOwnerArgument) && $authRuntimeFilter.size() > 0 )\n  #if( !$isOwnerAuthAuthorizedAndNoOtherFilters && $isOwnerOrDynamicAuthAuthorizedWithFilters )\n    #if( $util.isNullOrEmpty($ctx.args.filter) )\n      #set( $ctx.args.filter = { \"or\": $authRuntimeFilter } )\n    #else\n      #set( $ctx.args.filter = { \"and\": [ { \"or\": $authRuntimeFilter }, $ctx.args.filter ]} )\n    #end\n    #set( $isAuthorized = true )\n  #end\n#end\n#if( !$isAuthorized )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **"
+    },
+    {
+      "id": "v4hkjo723raitbjttjbigvdhhu",
+      "name": "SubscriptiononDeleteTeamauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n  #set( $hasValidOwnerArgument = false )\n  #set( $authRuntimeFilter = [] )\n  #set( $authOwnerRuntimeFilter = [] )\n  #set( $authGroupRuntimeFilter = [] )\n  ## Apply dynamic roles auth if not previously authorized by static groups and owner argument **\n  #if( $authOwnerRuntimeFilter.size() > 0 )\n    $util.qr($authRuntimeFilter.addAll($authOwnerRuntimeFilter))\n  #end\n  #if( $authGroupRuntimeFilter.size() > 0 )\n    $util.qr($authRuntimeFilter.addAll($authGroupRuntimeFilter))\n  #end\n  #set( $filterArgsSize = 0 )\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filterArgsSize = $ctx.args.filter.size() )\n  #end\n  #set( $isOwnerAuthAuthorizedAndNoOtherFilters = $hasValidOwnerArgument && $authRuntimeFilter.size() == 1 && $filterArgsSize == 0 )\n  #set( $isOwnerOrDynamicAuthAuthorizedWithFilters = (!$isAuthorized || $hasValidOwnerArgument) && $authRuntimeFilter.size() > 0 )\n  #if( !$isOwnerAuthAuthorizedAndNoOtherFilters && $isOwnerOrDynamicAuthAuthorizedWithFilters )\n    #if( $util.isNullOrEmpty($ctx.args.filter) )\n      #set( $ctx.args.filter = { \"or\": $authRuntimeFilter } )\n    #else\n      #set( $ctx.args.filter = { \"and\": [ { \"or\": $authRuntimeFilter }, $ctx.args.filter ]} )\n    #end\n    #set( $isAuthorized = true )\n  #end\n#end\n#if( !$isAuthorized )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **"
+    },
+    {
+      "id": "wnjwin6b7zcpboeq3mxgqiv4k4",
+      "name": "SubscriptionOnUpdateTeamDataResolverFn",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Subscription Request template. **\n$util.toJson({\n  \"version\": \"2018-05-29\",\n  \"payload\": {}\n})\n## [End] Subscription Request template. **"
+    },
+    {
+      "id": "wz7piheteveyfj5nee2vlcoax4",
+      "name": "SubscriptiononCreateTeamRosterSlotpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **"
+    },
+    {
+      "id": "zvahmpvgnjdevj4uwfou4jbnse",
+      "name": "SubscriptionOnCreateTeamRosterSlotDataResolverFn",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Subscription Request template. **\n$util.toJson({\n  \"version\": \"2018-05-29\",\n  \"payload\": {}\n})\n## [End] Subscription Request template. **"
+    }
+  ],
+  "subscriptionDeclarations": [
+    "  onCreatePlayerChampionPoolEntry(filter: ModelSubscriptionPlayerChampionPoolEntryFilterInput): PlayerChampionPoolEntry @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : [\"createPlayerChampionPoolEntry\"])",
+    "  onCreateTeam(filter: ModelSubscriptionTeamFilterInput): Team @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : [\"createTeam\"])",
+    "  onCreateTeamMembership(filter: ModelSubscriptionTeamMembershipFilterInput): TeamMembership @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : [\"createTeamMembership\"])",
+    "  onCreateTeamRosterSlot(filter: ModelSubscriptionTeamRosterSlotFilterInput): TeamRosterSlot @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : [\"createTeamRosterSlot\"])",
+    "  onDeletePlayerChampionPoolEntry(filter: ModelSubscriptionPlayerChampionPoolEntryFilterInput): PlayerChampionPoolEntry @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : [\"deletePlayerChampionPoolEntry\"])",
+    "  onDeleteTeam(filter: ModelSubscriptionTeamFilterInput): Team @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : [\"deleteTeam\"])",
+    "  onDeleteTeamMembership(filter: ModelSubscriptionTeamMembershipFilterInput): TeamMembership @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : [\"deleteTeamMembership\"])",
+    "  onDeleteTeamRosterSlot(filter: ModelSubscriptionTeamRosterSlotFilterInput): TeamRosterSlot @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : [\"deleteTeamRosterSlot\"])",
+    "  onUpdatePlayerChampionPoolEntry(filter: ModelSubscriptionPlayerChampionPoolEntryFilterInput): PlayerChampionPoolEntry @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : [\"updatePlayerChampionPoolEntry\"])",
+    "  onUpdateTeam(filter: ModelSubscriptionTeamFilterInput): Team @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : [\"updateTeam\"])",
+    "  onUpdateTeamMembership(filter: ModelSubscriptionTeamMembershipFilterInput): TeamMembership @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : [\"updateTeamMembership\"])",
+    "  onUpdateTeamRosterSlot(filter: ModelSubscriptionTeamRosterSlotFilterInput): TeamRosterSlot @aws_cognito_user_pools @aws_iam @aws_subscribe(mutations : [\"updateTeamRosterSlot\"])"
+  ],
+  "schemaStoredOnlyIgnored": true,
+  "audit": {
+    "calls": 8,
+    "errors": [
+      {
+        "service": "dynamodb",
+        "op": "get-resource-policy",
+        "code": "PolicyNotFoundException"
+      },
+      {
+        "service": "dynamodb",
+        "op": "get-resource-policy",
+        "code": "PolicyNotFoundException"
+      },
+      {
+        "service": "dynamodb",
+        "op": "get-resource-policy",
+        "code": "PolicyNotFoundException"
+      },
+      {
+        "service": "dynamodb",
+        "op": "get-resource-policy",
+        "code": "PolicyNotFoundException"
+      }
+    ],
+    "writes": 0
+  }
+}

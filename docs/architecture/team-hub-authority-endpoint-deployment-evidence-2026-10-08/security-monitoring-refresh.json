@@ -1,0 +1,135 @@
+{
+  "at": "2026-10-08T16:16:49.311Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "policies": [
+    {
+      "role": "ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "kind": "identity",
+      "findings": []
+    },
+    {
+      "role": "ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "kind": "boundary",
+      "findings": []
+    },
+    {
+      "role": "ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "kind": "identity",
+      "findings": []
+    },
+    {
+      "role": "ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "kind": "boundary",
+      "findings": []
+    }
+  ],
+  "awsWrites": 0,
+  "complete": true,
+  "stage": {
+    "AutoDeploy": true,
+    "CreatedDate": "2026-10-05T15:04:34+00:00",
+    "DefaultRouteSettings": {
+      "DetailedMetricsEnabled": true,
+      "ThrottlingBurstLimit": 20,
+      "ThrottlingRateLimit": 10
+    },
+    "DeploymentId": "kucxug",
+    "LastDeploymentStatusMessage": "Successfully deployed stage with deployment ID 'kucxug'",
+    "LastUpdatedDate": "2026-10-08T13:19:25+00:00",
+    "RouteSettings": {},
+    "StageName": "$default",
+    "StageVariables": {},
+    "Tags": {
+      "Project": "ProjectRespawn",
+      "aws:cloudformation:stack-name": "ProjectRespawn-TeamHub-Ntgre",
+      "Environment": "Ntgre",
+      "aws:cloudformation:logical-id": "Stage",
+      "aws:cloudformation:stack-id": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/b66ad780-c0cd-11f1-91ba-0effc0d85417",
+      "Domain": "TeamHub"
+    }
+  },
+  "alarms": [
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-ParityCommand-Errors",
+      "namespace": "AWS/Lambda",
+      "metric": "Errors",
+      "dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-TeamHub-Ntgre-ParityCommand"
+        }
+      ],
+      "actions": [],
+      "state": "OK"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-ParityCommand-Throttles",
+      "namespace": "AWS/Lambda",
+      "metric": "Throttles",
+      "dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-TeamHub-Ntgre-ParityCommand"
+        }
+      ],
+      "actions": [],
+      "state": "OK"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-ParityRead-Errors",
+      "namespace": "AWS/Lambda",
+      "metric": "Errors",
+      "dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-TeamHub-Ntgre-ParityRead"
+        }
+      ],
+      "actions": [],
+      "state": "OK"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-ParityRead-Throttles",
+      "namespace": "AWS/Lambda",
+      "metric": "Throttles",
+      "dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-TeamHub-Ntgre-ParityRead"
+        }
+      ],
+      "actions": [],
+      "state": "OK"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-ReadProof-ApiErrors",
+      "namespace": "AWS/ApiGateway",
+      "metric": "5xx",
+      "dimensions": [
+        {
+          "Name": "ApiId",
+          "Value": "t54b88casf"
+        }
+      ],
+      "actions": [],
+      "state": "OK"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-ReadProof-ReadErrors",
+      "namespace": "AWS/Lambda",
+      "metric": "Errors",
+      "dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-TeamHub-Ntgre-PreviewRead"
+        }
+      ],
+      "actions": [],
+      "state": "OK"
+    }
+  ]
+}

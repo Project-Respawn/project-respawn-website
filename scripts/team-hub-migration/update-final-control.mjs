@@ -1,0 +1,21 @@
+// Evidence-only ledger/status update. No reassignment, cutover, retirement or AWS calls.
+import fs from 'node:fs';
+import {read,save,F} from './final-read.mjs';
+import {validateLedger,renderReports} from '../migration/ledger.mjs';
+const coverage=read(F+'/coverage.json');
+if(coverage.counts.unknownWriters||coverage.counts.unknownReaders)throw Error('Coverage unresolved');
+const paths=['docs/architecture/team-hub-2b3-empty-source-cutover.md','docs/architecture/team-hub-2b3-writer-reader-coverage.md','docs/architecture/team-hub-2b3-rollback-contract.md','docs/architecture/team-hub-2b3-aws-write-proposal.md'];
+const p='docs/architecture/legacy-resource-ownership.json',l=read(p);
+for(const r of l.resources)if(r.currentDomainAttribution==='TEAM HUB')for(const path of [paths[1],F+'/coverage.json',...(r.migrationStatus==='MIGRATION_PREP'?[F+'/provider-review.json',F+'/legacy-protection-proposal.json']:[])])if(!r.evidence.some(e=>e.path===path))r.evidence.push({path});
+l.latestTeamPreparationReview={at:coverage.at,evidence:F+'/coverage.json',awsWrites:0,scope:'IAM/resolver/provider/traffic metadata and offline final preparation; no new full-account or recursive-stack inventory',ownerChanges:0,unknownWriters:0,unknownReaders:0};
+const counts=validateLedger(l);fs.writeFileSync(p,JSON.stringify(l,null,2)+'\n');renderReports(l);
+const sp='docs/architecture/domain-migration-status.json',s=read(sp),team=s.domains.find(d=>d.owner==='TEAM_HUB');
+s.scope='Ntgre; final stateful preparation with scoped read-only AWS metadata; no writes/cutover';s.currentPhase='M4 / 2B3 final preparation ready for separate A-E AWS write gates; recovery/fence not installed';
+team.phase='M4_PREPARATION_READY_FOR_WRITE_GATES';team.preparationReady=true;team.m4RecoveryAccepted=false;team.legacyAuthority=true;team.frontendCutover=false;team.businessDataMigrated=false;
+team.lastPreparationVerified=coverage.at;
+team.blockers=['Cutover prohibited: A Legacy protection/backup not applied and B live restore rehearsal not performed','C dark tables/security proposal not executed; persistent runtime adapter not installed','E all-path server fence and negative runtime tests not installed/performed','State rollback live import/reconciliation and old-request replay guard not rehearsed','Fresh exact empty-source observations and coverage refresh required immediately before and after freeze'];
+team.nextStep='Separately authorize Gate A preparation/inspection for exact protection-only Legacy candidate; do not bundle B-E or cutover.';
+team.evidence=[...new Set([...team.evidence,...paths,F+'/coverage.json',F+'/provider-review.json',F+'/write-sets.json'])];
+fs.writeFileSync(sp,JSON.stringify(s,null,2)+'\n');
+save('ledger-update',{at:coverage.at,assigned:counts.assigned,unresolvedShared:counts.unresolvedShared,ownerChanges:0,resourcesWithAdditionalEvidence:192,migrationPrepTables:4,migrated:0,retired:0,awsWrites:0});
+console.log(JSON.stringify({assigned:counts.assigned,unresolvedShared:counts.unresolvedShared,ownerChanges:0,phase:team.phase}));

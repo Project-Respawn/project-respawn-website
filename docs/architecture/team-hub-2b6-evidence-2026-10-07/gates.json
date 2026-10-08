@@ -1,0 +1,199 @@
+{
+  "at": "2026-10-07T21:44:49.650Z",
+  "decision": "PRE_CUTOVER_PREPARATION_BLOCKED_GATE_D",
+  "authorization": "PRE_CUTOVER_ONLY_FINAL_AUTHORITY_SWITCH_NOT_EXECUTED",
+  "gates": [
+    {
+      "gate": "A",
+      "status": "PASS",
+      "tests": [
+        {
+          "at": "2026-10-07T19:09:58.263Z",
+          "status": "PASS",
+          "scope": "BUILT_LOCAL_CANDIDATE_LIVE_CORE_IN_MEMORY_TEAM",
+          "personas": [
+            "admin",
+            "ordinary",
+            "manager",
+            "coach",
+            "player"
+          ],
+          "uiChecks": 49,
+          "contractChecks": 40,
+          "basePageChecks": 14,
+          "additionalRouteVisits": 42,
+          "sanitizedResponseChecks": 186,
+          "builtIsolationChecks": 24,
+          "tests": 591,
+          "typescript": "PASS",
+          "builds": "PASS_NORMAL_AND_CANDIDATE",
+          "awsInfrastructureWrites": 0,
+          "liveBusinessWrites": 0,
+          "cleanupComplete": true,
+          "evidence": [
+            "full-browser.json",
+            "built-isolation.json",
+            "validation.json",
+            "frontend-revision.json",
+            "full-browser-cleanup.json"
+          ]
+        }
+      ],
+      "awsChanges": [],
+      "businessWrites": {
+        "live": 0,
+        "isolated": "Nine commands exercised against disposable in-memory fixtures"
+      },
+      "cleanup": {
+        "at": "2026-10-07T19:09:58.263Z",
+        "helpersStopped": true,
+        "authenticatedContextsDisposed": true,
+        "profilesRemoved": [
+          "browser-profile-53f2ae86c7782df5",
+          "browser-profile-77ecf70e24e5b1f8",
+          "browser-profile-8d5b79cf97ce9a94",
+          "browser-profile-b0127d36f795e884",
+          "browser-profile-c4b39c513a64304e",
+          "browser-profile-d1a0a1a934dda1ea",
+          "browser-profile-f66035babafc634c"
+        ],
+        "syntheticState": "IN_MEMORY_ONLY_DISCARDED",
+        "awsResourcesCreated": 0,
+        "liveBusinessWrites": 0,
+        "complete": true,
+        "remainingProfiles": 0,
+        "remainingSessionPages": 0,
+        "cleanupNote": "Initially locked disposable profile removed after headless process exited; absence verified."
+      },
+      "evidence": [
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/gate-a-acceptance.json"
+      ],
+      "blockers": []
+    },
+    {
+      "gate": "B",
+      "status": "DESIGN_READY_LIVE_PROOF_PENDING",
+      "tests": [
+        "Five resource-policy Analyzer validations passed",
+        "120 supported identity-deny-projection decisions matched controls",
+        "20 offline sequencing/rollback tests passed",
+        "Fresh 19 principals / 30 business resolvers / 131 functions; UNKNOWN=0"
+      ],
+      "awsChanges": [],
+      "businessWrites": {
+        "live": 0,
+        "isolated": 0
+      },
+      "cleanup": "No AWS resources created",
+      "evidence": [
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/gate-b/dormant-bundle.json",
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/gate-b/policy-evaluation.json",
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/gate-b/writer-proof-matrix.json",
+        "docs/architecture/team-hub-2b6-gate-b-sequencing.md"
+      ],
+      "blockers": [
+        "Actual installed-fence all-path proof reserved for separately authorized FROZEN maintenance; Gate B not fully accepted"
+      ]
+    },
+    {
+      "gate": "C",
+      "status": "PRIOR_OFFLINE_PROOF_RETAINED_FRESH_ISOLATED_RUN_NOT_EXECUTED",
+      "tests": [
+        "117 candidate C-E and 100 rollback tests passed; existing artifacts pinned without regeneration"
+      ],
+      "awsChanges": [],
+      "businessWrites": {
+        "live": 0,
+        "isolated": 0
+      },
+      "cleanup": "No AWS resources created",
+      "evidence": [
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/gate-b/offline-preparation.json",
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/gate-b/independent-gates-preparation.json"
+      ],
+      "blockers": [
+        "Exact security/product change-set review and separately authorized deployment",
+        "Actual Lambda role proof; no direct CONTROL writes from runtime",
+        "Initialize LEGACY_WRITER only if separately executing approved preparation; conditional absence check",
+        "Current preparation stopped at mandatory Gate D failure; already authorized isolated rehearsal not started"
+      ]
+    },
+    {
+      "gate": "D",
+      "status": "FAILED_MANDATORY_TELEMETRY_AND_SECURITY_REVIEW",
+      "tests": [
+        "Actual handler 403 FORBIDDEN: AuthorizationFailures 0, expected 1",
+        "Actual inner 503 DEPENDENCY_UNAVAILABLE: DependencyFailures 0, expected 1",
+        "Read-only simulation: access log CreateLogGroup denied; log delivery/resource policy explicitly denied; matching Allow controls pass"
+      ],
+      "awsChanges": [],
+      "businessWrites": {
+        "live": 0,
+        "isolated": 0
+      },
+      "cleanup": "No AWS resources created",
+      "evidence": [
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/preparation/telemetry-tests.json",
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/preparation/telemetry-diagnostic.json",
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/preparation/monitoring-permissions.json"
+      ],
+      "blockers": [
+        "Correct and repin handler telemetry integration",
+        "Review separately scoped API logging/security architecture without IAM broadening to make a test pass"
+      ]
+    },
+    {
+      "gate": "E",
+      "status": "OFFLINE_PREPARATION_REVALIDATED_LIVE_ACCEPTANCE_PENDING",
+      "tests": [
+        "117 candidate C-E and 100 rollback tests passed; existing artifacts pinned without regeneration"
+      ],
+      "awsChanges": [],
+      "businessWrites": {
+        "live": 0,
+        "isolated": 0
+      },
+      "cleanup": "No AWS resources created",
+      "evidence": [
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/gate-b/offline-preparation.json",
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/gate-b/independent-gates-preparation.json"
+      ],
+      "blockers": [
+        "Bind only to actual strongly read deployed epoch and pinned bundle after authorization",
+        "Keep reviewed:false; no live frontend publication"
+      ]
+    },
+    {
+      "gate": "F",
+      "status": "PRIOR_OFFLINE_PROOF_RETAINED_FRESH_ISOLATED_RUN_NOT_EXECUTED",
+      "tests": [
+        "117 candidate C-E and 100 rollback tests passed; existing artifacts pinned without regeneration"
+      ],
+      "awsChanges": [],
+      "businessWrites": {
+        "live": 0,
+        "isolated": 0
+      },
+      "cleanup": "No AWS resources created",
+      "evidence": [
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/gate-b/offline-preparation.json",
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/gate-b/independent-gates-preparation.json"
+      ],
+      "blockers": [
+        "Refresh isolated export/restore/in-flight-failure proof against final deployed candidate before cutover",
+        "Fresh reconciliation and post-write recovery authorization; historical live rehearsal is not current Gate F acceptance",
+        "Current preparation stopped at mandatory Gate D failure; already authorized isolated rehearsal not started"
+      ]
+    }
+  ],
+  "awsWrites": 0,
+  "authority": "LEGACY_WRITER",
+  "epoch": null,
+  "epochStatus": "NOT_INITIALIZED",
+  "frontend": "LEGACY",
+  "normalTeamWrites": "DISABLED",
+  "businessAuthorityChanged": false,
+  "productionTouched": false,
+  "stopReason": "Failed mandatory handler telemetry tests and new logging-security decision; Gate B deferral is not the blocker",
+  "consolidatedReport": "docs/architecture/team-hub-2b6-precutover-readiness.md"
+}

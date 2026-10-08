@@ -1,0 +1,6 @@
+import net from 'node:net';import assert from 'node:assert/strict';import {execFileSync} from 'node:child_process';
+assert.ok(process.stdin.isTTY);const command=process.argv[2]?'':execFileSync('powershell.exe',['-NoProfile','-Command',"(Get-CimInstance Win32_Process -Filter \"Name = 'powershell.exe'\" | Where-Object { $_.CommandLine -like '*core-acceptance*password-prompt.ps1*' } | Select-Object -First 1).CommandLine"],{encoding:'utf8',windowsHide:true});
+const nonce=process.argv[2]??command.match(/-Nonce\s+([a-f0-9]{48})/)?.[1];assert.ok(nonce,'Local private input channel unavailable');
+process.stdin.setRawMode(true);process.stdin.resume();console.log('Private non-echo input ready.');let value='';
+const password=await new Promise((resolve,reject)=>{process.stdin.on('data',b=>{for(const ch of b.toString()){if(ch==='\u0003'){reject(new Error('Cancelled'));return;}if(ch==='\r'||ch==='\n'){resolve(value);value='';return;}value+=ch;}});});
+await new Promise((resolve,reject)=>{const socket=net.createConnection(49184,'127.0.0.1',()=>socket.end(nonce+'\n'+password));socket.on('close',resolve);socket.on('error',reject);});process.stdin.setRawMode(false);process.stdin.pause();console.log('Input sent privately; no credential output.');

@@ -1,0 +1,595 @@
+{
+  "at": "2026-10-05T19:53:33.642Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "region": "eu-north-1",
+  "tables": [
+    {
+      "model": "PlayerChampionPoolEntry",
+      "table": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "membershipId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "teamId",
+            "AttributeType": "S"
+          }
+        ],
+        "TableName": "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "TableStatus": "ACTIVE",
+        "CreationDateTime": "2026-09-21T15:23:52.403000+01:00",
+        "ProvisionedThroughput": {
+          "NumberOfDecreasesToday": 0,
+          "ReadCapacityUnits": 0,
+          "WriteCapacityUnits": 0
+        },
+        "TableSizeBytes": 0,
+        "ItemCount": 0,
+        "TableArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TableId": "4fd10070-25d1-4343-acd4-5f0927a0c3ac",
+        "BillingModeSummary": {
+          "BillingMode": "PAY_PER_REQUEST",
+          "LastUpdateToPayPerRequestDateTime": "2026-09-21T15:23:52.403000+01:00"
+        },
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "playerChampionPoolEntriesByTeamId",
+            "KeySchema": [
+              {
+                "AttributeName": "teamId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "NumberOfDecreasesToday": 0,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 0,
+            "ItemCount": 0,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE/index/playerChampionPoolEntriesByTeamId",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          },
+          {
+            "IndexName": "playerChampionPoolEntriesByMembershipId",
+            "KeySchema": [
+              {
+                "AttributeName": "membershipId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "NumberOfDecreasesToday": 0,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 0,
+            "ItemCount": 0,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE/index/playerChampionPoolEntriesByMembershipId",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          }
+        ],
+        "StreamSpecification": {
+          "StreamEnabled": true,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        },
+        "LatestStreamLabel": "2026-09-21T14:23:52.403",
+        "LatestStreamArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE/stream/2026-09-21T14:23:52.403",
+        "DeletionProtectionEnabled": false,
+        "WarmThroughput": {
+          "ReadUnitsPerSecond": 12000,
+          "WriteUnitsPerSecond": 4000,
+          "Status": "ACTIVE"
+        }
+      },
+      "recovery": {
+        "ContinuousBackupsStatus": "ENABLED",
+        "PointInTimeRecoveryDescription": {
+          "PointInTimeRecoveryStatus": "DISABLED"
+        }
+      },
+      "ttl": {
+        "TimeToLiveStatus": "DISABLED"
+      },
+      "backups": [],
+      "resourceId": "044:PlayerChampionPoolEntryTable",
+      "deletionPolicy": "Delete",
+      "updateReplacePolicy": "Delete",
+      "first": {
+        "count": 0,
+        "pages": 1,
+        "capacity": 4,
+        "startedAt": "2026-10-05T19:53:38.049Z",
+        "finishedAt": "2026-10-05T19:53:39.277Z",
+        "paginationCompleted": true,
+        "consistentRead": true
+      },
+      "second": {
+        "count": 0,
+        "pages": 1,
+        "capacity": 4,
+        "startedAt": "2026-10-05T19:53:39.277Z",
+        "finishedAt": "2026-10-05T19:53:40.483Z",
+        "paginationCompleted": true,
+        "consistentRead": true
+      },
+      "metadataCount": 0,
+      "structural": {
+        "evaluated": 0,
+        "reason": "Both complete scans observed zero; no item attributes retrieved."
+      },
+      "atomicSnapshot": false
+    },
+    {
+      "model": "TeamMembership",
+      "table": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "teamId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "userId",
+            "AttributeType": "S"
+          }
+        ],
+        "TableName": "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "TableStatus": "ACTIVE",
+        "CreationDateTime": "2026-09-21T15:23:11.616000+01:00",
+        "ProvisionedThroughput": {
+          "NumberOfDecreasesToday": 0,
+          "ReadCapacityUnits": 0,
+          "WriteCapacityUnits": 0
+        },
+        "TableSizeBytes": 0,
+        "ItemCount": 0,
+        "TableArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TableId": "683f3029-f861-494c-84ef-8c308ee05d30",
+        "BillingModeSummary": {
+          "BillingMode": "PAY_PER_REQUEST",
+          "LastUpdateToPayPerRequestDateTime": "2026-09-21T15:23:11.616000+01:00"
+        },
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "teamMembershipsByTeamId",
+            "KeySchema": [
+              {
+                "AttributeName": "teamId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "NumberOfDecreasesToday": 0,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 0,
+            "ItemCount": 0,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE/index/teamMembershipsByTeamId",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          },
+          {
+            "IndexName": "teamMembershipsByUserId",
+            "KeySchema": [
+              {
+                "AttributeName": "userId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "NumberOfDecreasesToday": 0,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 0,
+            "ItemCount": 0,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE/index/teamMembershipsByUserId",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          }
+        ],
+        "StreamSpecification": {
+          "StreamEnabled": true,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        },
+        "LatestStreamLabel": "2026-09-21T14:23:11.616",
+        "LatestStreamArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE/stream/2026-09-21T14:23:11.616",
+        "DeletionProtectionEnabled": false,
+        "WarmThroughput": {
+          "ReadUnitsPerSecond": 12000,
+          "WriteUnitsPerSecond": 4000,
+          "Status": "ACTIVE"
+        }
+      },
+      "recovery": {
+        "ContinuousBackupsStatus": "ENABLED",
+        "PointInTimeRecoveryDescription": {
+          "PointInTimeRecoveryStatus": "DISABLED"
+        }
+      },
+      "ttl": {
+        "TimeToLiveStatus": "DISABLED"
+      },
+      "backups": [],
+      "resourceId": "047:TeamMembershipTable",
+      "deletionPolicy": "Delete",
+      "updateReplacePolicy": "Delete",
+      "first": {
+        "count": 0,
+        "pages": 1,
+        "capacity": 4,
+        "startedAt": "2026-10-05T19:53:43.371Z",
+        "finishedAt": "2026-10-05T19:53:44.615Z",
+        "paginationCompleted": true,
+        "consistentRead": true
+      },
+      "second": {
+        "count": 0,
+        "pages": 1,
+        "capacity": 4,
+        "startedAt": "2026-10-05T19:53:44.615Z",
+        "finishedAt": "2026-10-05T19:53:45.859Z",
+        "paginationCompleted": true,
+        "consistentRead": true
+      },
+      "metadataCount": 0,
+      "structural": {
+        "evaluated": 0,
+        "reason": "Both complete scans observed zero; no item attributes retrieved."
+      },
+      "atomicSnapshot": false
+    },
+    {
+      "model": "Team",
+      "table": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "slug",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "status",
+            "AttributeType": "S"
+          }
+        ],
+        "TableName": "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "TableStatus": "ACTIVE",
+        "CreationDateTime": "2026-09-21T15:23:11.675000+01:00",
+        "ProvisionedThroughput": {
+          "NumberOfDecreasesToday": 0,
+          "ReadCapacityUnits": 0,
+          "WriteCapacityUnits": 0
+        },
+        "TableSizeBytes": 0,
+        "ItemCount": 0,
+        "TableArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TableId": "ef06d2fc-4f20-450b-816b-0c15a649815a",
+        "BillingModeSummary": {
+          "BillingMode": "PAY_PER_REQUEST",
+          "LastUpdateToPayPerRequestDateTime": "2026-09-21T15:23:11.675000+01:00"
+        },
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "teamsBySlug",
+            "KeySchema": [
+              {
+                "AttributeName": "slug",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "NumberOfDecreasesToday": 0,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 0,
+            "ItemCount": 0,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE/index/teamsBySlug",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          },
+          {
+            "IndexName": "teamsByStatus",
+            "KeySchema": [
+              {
+                "AttributeName": "status",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "NumberOfDecreasesToday": 0,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 0,
+            "ItemCount": 0,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE/index/teamsByStatus",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          }
+        ],
+        "StreamSpecification": {
+          "StreamEnabled": true,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        },
+        "LatestStreamLabel": "2026-09-21T14:23:11.675",
+        "LatestStreamArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE/stream/2026-09-21T14:23:11.675",
+        "DeletionProtectionEnabled": false,
+        "WarmThroughput": {
+          "ReadUnitsPerSecond": 12000,
+          "WriteUnitsPerSecond": 4000,
+          "Status": "ACTIVE"
+        }
+      },
+      "recovery": {
+        "ContinuousBackupsStatus": "ENABLED",
+        "PointInTimeRecoveryDescription": {
+          "PointInTimeRecoveryStatus": "DISABLED"
+        }
+      },
+      "ttl": {
+        "TimeToLiveStatus": "DISABLED"
+      },
+      "backups": [],
+      "resourceId": "048:TeamTable",
+      "deletionPolicy": "Delete",
+      "updateReplacePolicy": "Delete",
+      "first": {
+        "count": 0,
+        "pages": 1,
+        "capacity": 4,
+        "startedAt": "2026-10-05T19:53:48.781Z",
+        "finishedAt": "2026-10-05T19:53:49.959Z",
+        "paginationCompleted": true,
+        "consistentRead": true
+      },
+      "second": {
+        "count": 0,
+        "pages": 1,
+        "capacity": 4,
+        "startedAt": "2026-10-05T19:53:49.959Z",
+        "finishedAt": "2026-10-05T19:53:51.406Z",
+        "paginationCompleted": true,
+        "consistentRead": true
+      },
+      "metadataCount": 0,
+      "structural": {
+        "evaluated": 0,
+        "reason": "Both complete scans observed zero; no item attributes retrieved."
+      },
+      "atomicSnapshot": false
+    },
+    {
+      "model": "TeamRosterSlot",
+      "table": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "membershipId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "teamId",
+            "AttributeType": "S"
+          }
+        ],
+        "TableName": "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "TableStatus": "ACTIVE",
+        "CreationDateTime": "2026-09-21T15:23:12.021000+01:00",
+        "ProvisionedThroughput": {
+          "NumberOfDecreasesToday": 0,
+          "ReadCapacityUnits": 0,
+          "WriteCapacityUnits": 0
+        },
+        "TableSizeBytes": 0,
+        "ItemCount": 0,
+        "TableArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TableId": "9db95b7c-b1de-40b0-b88e-d11617b76f00",
+        "BillingModeSummary": {
+          "BillingMode": "PAY_PER_REQUEST",
+          "LastUpdateToPayPerRequestDateTime": "2026-09-21T15:23:12.021000+01:00"
+        },
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "teamRosterSlotsByMembershipId",
+            "KeySchema": [
+              {
+                "AttributeName": "membershipId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "NumberOfDecreasesToday": 0,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 0,
+            "ItemCount": 0,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE/index/teamRosterSlotsByMembershipId",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          },
+          {
+            "IndexName": "teamRosterSlotsByTeamId",
+            "KeySchema": [
+              {
+                "AttributeName": "teamId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "NumberOfDecreasesToday": 0,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 0,
+            "ItemCount": 0,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE/index/teamRosterSlotsByTeamId",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          }
+        ],
+        "StreamSpecification": {
+          "StreamEnabled": true,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        },
+        "LatestStreamLabel": "2026-09-21T14:23:12.021",
+        "LatestStreamArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE/stream/2026-09-21T14:23:12.021",
+        "DeletionProtectionEnabled": false,
+        "WarmThroughput": {
+          "ReadUnitsPerSecond": 12000,
+          "WriteUnitsPerSecond": 4000,
+          "Status": "ACTIVE"
+        }
+      },
+      "recovery": {
+        "ContinuousBackupsStatus": "ENABLED",
+        "PointInTimeRecoveryDescription": {
+          "PointInTimeRecoveryStatus": "DISABLED"
+        }
+      },
+      "ttl": {
+        "TimeToLiveStatus": "DISABLED"
+      },
+      "backups": [],
+      "resourceId": "049:TeamRosterSlotTable",
+      "deletionPolicy": "Delete",
+      "updateReplacePolicy": "Delete",
+      "first": {
+        "count": 0,
+        "pages": 1,
+        "capacity": 4,
+        "startedAt": "2026-10-05T19:53:54.385Z",
+        "finishedAt": "2026-10-05T19:53:55.632Z",
+        "paginationCompleted": true,
+        "consistentRead": true
+      },
+      "second": {
+        "count": 0,
+        "pages": 1,
+        "capacity": 4,
+        "startedAt": "2026-10-05T19:53:55.632Z",
+        "finishedAt": "2026-10-05T19:53:56.910Z",
+        "paginationCompleted": true,
+        "consistentRead": true
+      },
+      "metadataCount": 0,
+      "structural": {
+        "evaluated": 0,
+        "reason": "Both complete scans observed zero; no item attributes retrieved."
+      },
+      "atomicSnapshot": false
+    }
+  ],
+  "complete": true,
+  "scanWarning": "Exact observed paginated counts; no scan isolation or cross-table snapshot while writers remain active.",
+  "audit": {
+    "calls": 29,
+    "retries": 0,
+    "errors": [],
+    "awsWrites": 0
+  }
+}

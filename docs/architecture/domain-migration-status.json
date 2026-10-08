@@ -1,33 +1,96 @@
 {
   "schemaVersion": "domain-migration-status.v1",
-  "scope": "Ntgre; stored evidence reviewed offline, not a fresh AWS observation",
+  "scope": "Accepted Team/Core checkpoint and read-only final cutover dependency review",
   "currentDomain": "Team Hub",
-  "currentPhase": "M3 accepted; repository maintenance checkpoint; M4 pending",
-  "awsChanges": 0,
+  "currentPhase": "M5 / 2B6 CHECKPOINT_FINAL_EXECUTION_REVIEW",
+  "awsChanges": 42,
   "productionChanges": 0,
   "domains": [
     {
       "domain": "Shared/Core",
       "classification": "SHARED_CAPABILITY",
       "owner": "SHARED_CORE",
-      "phase": "M0",
-      "architectureStatus": "EXISTING_SHARED_IDENTITY",
-      "awsStatus": "UPDATE_COMPLETE",
-      "stack": null,
+      "phase": "M3_INDEPENDENT_CONTRACT_RELEASE_1_ACCEPTED",
+      "architectureStatus": "INDEPENDENT_CONTRACT_RELEASE_1_ACCEPTED",
+      "awsStatus": "CREATE_COMPLETE",
+      "stack": "ProjectRespawn-Core-Ntgre",
       "api": null,
       "dataStatus": "LEGACY_AUTHORITATIVE_NO_BUSINESS_DATA_MIGRATED",
       "frontendStatus": "NO_INDEPENDENT_CUTOVER",
       "legacyAuthority": true,
       "gitCheckpoint": null,
-      "blockers": [
-        "Independent extraction and migration have not been accepted."
-      ],
-      "nextStep": "Retain shared identity; resolve shared consumer ownership.",
-      "lastVerified": "2026-10-05T15:22:18.164Z",
+      "blockers": [],
+      "nextStep": "Team Hub dark Core integration accepted; maintain accepted contracts while Team writer-fence/frontend/rollback gates remain separate",
+      "lastVerified": "2026-10-06T22:34:35.274Z",
       "evidence": [
         "docs/architecture/team-hub-2b2-caller-release-evidence-2026-10-05/accepted-state.json",
-        "docs/architecture/project-respawn-domain-classification.md"
-      ]
+        "docs/architecture/project-respawn-domain-classification.md",
+        "docs/architecture/core-domain-plan.md",
+        "docs/architecture/core-contracts-v1.md",
+        "docs/architecture/core-security-model.md",
+        "docs/architecture/core-first-deployment-readiness.md",
+        "docs/architecture/team-hub-2b5a-core-integration.md",
+        "docs/architecture/core-release1-acceptance.md",
+        "docs/architecture/core-template-security-correction.md"
+      ],
+      "offlineContractCandidate": {
+        "status": "SUPERSEDED_BY_2B5A",
+        "report": "docs/architecture/team-hub-2b5-core-contracts.md",
+        "proposedProductResources": 6,
+        "proposedRuntimeBoundary": 1,
+        "deploymentSecurityReserved": 4,
+        "supersededBy": "docs/architecture/core-first-deployment-readiness.md"
+      },
+      "independentContractCandidate": {
+        "status": "SUPERSEDED_BY_QUOTA_CORRECTED_PRODUCT_PENDING_SECURITY_REBIND",
+        "stack": "ProjectRespawn-Core-Ntgre",
+        "productResources": 8,
+        "securityResources": 5,
+        "report": "docs/architecture/core-first-deployment-readiness.md",
+        "candidate": "docs/architecture/core-2b5a-evidence-2026-10-06/candidate.json",
+        "authority": "EXISTING_NTGRE_COGNITO_UNCHANGED",
+        "awsChanges": 0
+      },
+      "release1Attempt": {
+        "status": "PREFLIGHT_BLOCKED_NOT_DEPLOYED",
+        "report": "docs/architecture/core-release1-acceptance.md",
+        "awsChanges": 0
+      },
+      "quotaCorrectedCandidate": {
+        "productSha256": "4aad4b8df1b1272f12e93144b3a1e89a2addaab5e404950f924ff7d7b58b9e46",
+        "securitySha256": "6b2afefb79172922e4338128a6b5fdab5e561e4055f8960650798acd4c4e8515",
+        "runtimeZipSha256": "4841f475dab09982d8ff5babc240c8a7d8809d05911de8e239ac9031e6fcefcf",
+        "reservedConcurrency": "UNSET",
+        "quotaBlockerResolved": true,
+        "deploymentReady": false,
+        "report": "docs/architecture/core-first-deployment-readiness.md",
+        "awsChanges": 0
+      },
+      "artifactCorrectedCandidate": {
+        "status": "READY_FOR_DEPLOYMENT_REVIEW_NOT_DEPLOYED",
+        "candidate": "docs/architecture/core-artifact-evidence-2026-10-06/candidate.json",
+        "productSha256": "4aad4b8df1b1272f12e93144b3a1e89a2addaab5e404950f924ff7d7b58b9e46",
+        "securitySha256": "232c577cf84eb151dccaee88e702174a0225972fec87a3d432a2dc7f631acf79",
+        "runtimeZipSha256": "4841f475dab09982d8ff5babc240c8a7d8809d05911de8e239ac9031e6fcefcf",
+        "awsChanges": 0
+      },
+      "release1Deployment": {
+        "status": "ACCEPTED",
+        "report": "docs/architecture/core-release1-acceptance.md",
+        "evidence": "docs/architecture/core-live-evidence-2026-10-06",
+        "productResources": 8,
+        "securityResources": 5,
+        "awsResourceAdditions": 13,
+        "artifactObjects": 2,
+        "accepted": true
+      },
+      "release1Acceptance": {
+        "status": "INDEPENDENT_CONTRACT_RELEASE_1_ACCEPTED",
+        "report": "docs/architecture/core-release1-acceptance.md",
+        "receipt": "docs/architecture/core-acceptance-evidence-2026-10-06/acceptance.json",
+        "manifest": "config/domains/core/domain-endpoints.Ntgre.json",
+        "infrastructureWrites": 0
+      }
     },
     {
       "domain": "Tournament",
@@ -56,32 +119,293 @@
       "domain": "Team Hub",
       "classification": "INDEPENDENT_PRODUCT_DOMAIN",
       "owner": "TEAM_HUB",
-      "phase": "M3_ACCEPTED",
+      "phase": "M5_2B6_AUTHORITY_ENDPOINT_ACCEPTED",
       "architectureStatus": "SECOND_INDEPENDENT_DOMAIN_PROVEN",
-      "awsStatus": "CREATE_COMPLETE",
+      "awsStatus": "UPDATE_COMPLETE",
       "stack": "ProjectRespawn-TeamHub-Ntgre",
       "api": "t54b88casf",
       "dataStatus": "LEGACY_AUTHORITATIVE_NO_BUSINESS_DATA_MIGRATED",
       "frontendStatus": "NO_INDEPENDENT_CUTOVER",
       "legacyAuthority": true,
-      "gitCheckpoint": {
-        "reference": "CONTAINING_ACCEPTED_CHECKPOINT_COMMIT",
-        "resolve": "git log -1 -- config/domains/team-hub/domain-endpoints.Ntgre.json"
-      },
+      "gitCheckpoint": "4591f326de5c8ef6f09fc0b3a3d459d5d0d8580f",
       "blockers": [
-        "M4-M8 not accepted; no business data or writer cutover."
+        "Authority-status candidate not deployed; real frontend epoch-binding acceptance pending",
+        "Gate C business runtime transactional authority/epoch live proof pending",
+        "Gate B installed fence denial proof requires separately authorized FROZEN maintenance",
+        "Final authority/frontend transition remains separately unauthorized"
       ],
-      "nextStep": "2B3 / M4 state inventory and migration preparation; separate authorization.",
-      "lastVerified": "2026-10-05T15:22:18.164Z",
+      "nextStep": "R1/R2: prepare, separately authorize and install business transactional runtime before any Legacy freeze",
+      "lastVerified": "2026-10-08T16:46:03.361Z",
       "evidence": [
         "docs/architecture/team-hub-2b2-caller-release-evidence-2026-10-05/accepted-state.json",
-        "docs/architecture/project-respawn-domain-classification.md"
+        "docs/architecture/project-respawn-domain-classification.md",
+        "docs/architecture/team-hub-2b3-dark-target-readiness.md",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/table-inventory.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/team-baseline.json",
+        "docs/architecture/team-hub-2b3-empty-source-cutover.md",
+        "docs/architecture/team-hub-2b3-writer-reader-coverage.md",
+        "docs/architecture/team-hub-2b3-rollback-contract.md",
+        "docs/architecture/team-hub-2b3-aws-write-proposal.md",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/provider-review.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/write-sets.json",
+        "docs/architecture/team-hub-2b3-gate1-legacy-recovery-protection.md",
+        "docs/architecture/team-hub-2b3-direct-legacy-recovery-protection.md",
+        "docs/architecture/team-hub-2b3-gate2-restore-rehearsal.md",
+        "docs/architecture/team-hub-2b3-gate3-dark-target.md",
+        "docs/architecture/team-hub-2b4-mutation-parity-readiness.md",
+        "docs/architecture/team-hub-2b4a-dark-mutation-runtime.md",
+        "docs/architecture/team-hub-2b4b-synthetic-mutation-verification.md",
+        "docs/architecture/team-hub-2b5-cutover-dependency-review.md",
+        "docs/architecture/team-hub-2b5-core-contracts.md",
+        "docs/architecture/team-hub-2b5-legacy-writer-fence.md",
+        "docs/architecture/team-hub-2b5-frontend-cutover.md",
+        "docs/architecture/team-hub-2b5-cutover-runbook.md",
+        "docs/architecture/team-hub-2b5-rollback-rehearsal.md",
+        "docs/architecture/team-hub-2b5a2-live-core-integration.md",
+        "docs/architecture/team-hub-2b5b-final-cutover-readiness.md",
+        "docs/architecture/team-hub-2b5b-writer-fence-proof.md",
+        "docs/architecture/team-hub-2b5b-frontend-acceptance.md",
+        "docs/architecture/team-hub-2b5b-rollback-rehearsal-result.md",
+        "docs/architecture/team-hub-2b6-cutover-runbook.md",
+        "docs/architecture/team-hub-2b6-acceptance.md",
+        "docs/architecture/team-hub-2b6-gates-ef-result.md",
+        "docs/architecture/team-hub-2b6-authority-status-contract-proposal.md",
+        "docs/architecture/team-hub-d1-live-monitoring-result.md",
+        "docs/architecture/team-hub-authority-status-endpoint-readiness.md",
+        "docs/architecture/team-hub-authority-endpoint-deployment-result.md",
+        "docs/architecture/team-hub-2b6-checkpoint-cutover-readiness.md"
       ],
       "restrictedCaller": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Deploy",
       "executionRole": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
       "firstCreateAuthorityEffective": false,
       "frontendCutover": false,
-      "businessDataMigrated": false
+      "businessDataMigrated": false,
+      "preparationReady": true,
+      "m4RecoveryAccepted": false,
+      "lastPreparationVerified": "2026-10-05T20:46:32.199Z",
+      "gate1": {
+        "status": "DIRECT_PROTECTION_AND_BACKUPS_VERIFIED",
+        "method": "USER_AUTHORIZED_OUT_OF_BAND_TEMPORARY_PROTECTION",
+        "lastVerified": "2026-10-05T21:21:25.843Z",
+        "recoveryProtectionEstablished": true,
+        "managedProtection": false,
+        "backupsCreated": 4,
+        "backupsAvailable": 4,
+        "cloudFormationExecuted": false,
+        "blockedChangeSetMustNotExecute": true,
+        "evidence": "docs/architecture/team-hub-2b3-direct-legacy-recovery-protection.md"
+      },
+      "recoveryRehearsalAccepted": true,
+      "gate2": {
+        "status": "PASSED_CLEANED_UP",
+        "verified": "2026-10-05T21:43:33.264Z",
+        "restoresSucceeded": 4,
+        "structuresPassed": 4,
+        "countsReconciled": 4,
+        "temporaryTablesDeleted": 4,
+        "remainingTemporaryResources": 0,
+        "sourceProtectionsIntact": true,
+        "backupsAvailable": 4,
+        "evidence": "docs/architecture/team-hub-2b3-gate2-restore-rehearsal.md"
+      },
+      "gate3": {
+        "status": "PASSED",
+        "verified": "2026-10-05T21:59:39.219Z",
+        "productResources": 13,
+        "securityResources": 5,
+        "tables": [
+          {
+            "name": "ProjectRespawn-TeamHub-Ntgre-Operational",
+            "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+            "records": 0,
+            "authoritative": false
+          },
+          {
+            "name": "ProjectRespawn-TeamHub-Ntgre-Journal",
+            "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+            "records": 0,
+            "authoritative": false
+          }
+        ],
+        "legacyAuthority": true,
+        "targetWriterEnabled": false,
+        "evidence": "docs/architecture/team-hub-2b3-gate3-dark-target.md"
+      },
+      "mutationParity": {
+        "status": "SYNTHETIC_PARITY_VERIFIED_DISABLED",
+        "coreCommands": 9,
+        "deferredBranding": 3,
+        "liveTestPerformed": true,
+        "verificationEnabled": false,
+        "proposedProductResources": 40,
+        "proposedSecurityResources": 7,
+        "awsWrites": 0,
+        "report": "docs/architecture/team-hub-2b4b-synthetic-mutation-verification.md"
+      },
+      "darkMutationReview": {
+        "status": "DEPLOYED_DARK_ACCEPTED",
+        "awsWrites": 6,
+        "verificationEnabled": false,
+        "deployed": true,
+        "evidence": "docs/architecture/team-hub-2b4a-dark-mutation-runtime.md",
+        "readAcceptance": "User explicitly accepts denied reads with verification disabled; preserve exact pin",
+        "productResources": 40,
+        "securityResources": 7,
+        "targetWriter": false,
+        "liveMutationParityPerformed": false
+      },
+      "syntheticVerificationReview": {
+        "status": "PASSED_DISABLED_CLEANED",
+        "activated": true,
+        "verificationEnabled": false,
+        "awsResourceChanges": 0,
+        "awsConfigurationWrites": 4,
+        "syntheticTransactions": 15,
+        "liveChecks": 41,
+        "postDisableDenials": 10,
+        "operationalRecords": 0,
+        "retainedAuditRecords": 15,
+        "ordinaryTargetWriter": false,
+        "legacyAuthority": "LEGACY_WRITER",
+        "report": "docs/architecture/team-hub-2b4b-synthetic-mutation-verification.md"
+      },
+      "cutoverDependencyReview": {
+        "status": "PREPARED_BLOCKED",
+        "awsChanges": 0,
+        "authority": "LEGACY_WRITER",
+        "frontendCutover": false,
+        "coreDeployed": false,
+        "legacyFenceInstalled": false,
+        "targetOrdinaryWriter": false,
+        "report": "docs/architecture/team-hub-2b5-cutover-dependency-review.md",
+        "validation": "docs/architecture/team-hub-2b5-evidence-2026-10-06/validation.json"
+      },
+      "coreIntegration": {
+        "status": "ACCEPTED_DARK_CORE_INTEGRATION",
+        "report": "docs/architecture/team-hub-2b5a2-live-core-integration.md",
+        "candidate": "docs/architecture/team-hub-core-integration-evidence-2026-10-07/candidate.json",
+        "coreManifest": "config/domains/core/domain-endpoints.Ntgre.json",
+        "authority": "LEGACY_WRITER",
+        "stage": "PRE_CUTOVER",
+        "normalWritesEnabled": false,
+        "frontendCutover": false,
+        "resources": {
+          "product": 40,
+          "security": 7
+        },
+        "liveProof": "PASS_ADMIN_AND_ORDINARY",
+        "manifest": "config/domains/team-hub/core-integration.Ntgre.json",
+        "acceptance": "docs/architecture/team-hub-core-integration-evidence-2026-10-07/acceptance.json",
+        "runtimeSha256": "2992b5d6b736c90c3fc306654a38576cd861dc0e07068c92bf02c79c87948e6a",
+        "awsWriteOperations": 19
+      },
+      "finalCutoverPreparation": {
+        "status": "EF_PREPARATION_BLOCKED_LIVE_AUTHORITY_CONTRACT",
+        "report": "docs/architecture/team-hub-2b6-gates-ef-result.md",
+        "runbook": "docs/architecture/team-hub-2b6-cutover-runbook.md",
+        "actualAuthority": "LEGACY_WRITER",
+        "frontendCutover": false,
+        "normalWrites": "DISABLED",
+        "isolatedRollbackPassed": true,
+        "temporaryResourcesRemaining": 0,
+        "liveProductResources": 40,
+        "liveSecurityResources": 7,
+        "candidateProductResources": 44,
+        "monitoringCandidateProductResources": 44,
+        "browserAcceptance": "FIVE_PERSONAS_PASS_ISOLATED_TEAM_LIVE_CORE",
+        "custodian": "Ntgre (user)",
+        "businessAuthorityChanged": false
+      },
+      "phase2B6": {
+        "status": "AUTHORITY_ENDPOINT_ACCEPTED_READY_FOR_FINAL_PRECUTOVER_REVIEW",
+        "report": "docs/architecture/team-hub-2b6-acceptance.md",
+        "gates": "docs/architecture/team-hub-2b6-gates-ef-result.md",
+        "awsWrites": 33,
+        "authority": "LEGACY_WRITER",
+        "epoch": 1,
+        "frontendCutover": false,
+        "legacyRetired": false,
+        "browserAcceptance": "FIVE_PERSONAS_PASS_ISOLATED_TEAM_LIVE_CORE",
+        "blockers": [
+          "Gate C business runtime transactional authority/epoch live proof pending",
+          "Gate B installed fence denial proof requires separately authorized FROZEN maintenance",
+          "Final authority/frontend transition remains separately unauthorized"
+        ],
+        "nextStep": "R1/R2: prepare, separately authorize and install business transactional runtime before any Legacy freeze",
+        "gateBDesign": "READY_DETACHED_NOT_INSTALLED",
+        "gateBLiveProof": "PENDING_FROZEN_MAINTENANCE",
+        "readinessReport": "docs/architecture/team-hub-2b6-precutover-readiness.md",
+        "sequencingReport": "docs/architecture/team-hub-c1-c2-d1-execution-readiness.md",
+        "c1": {
+          "status": "ACCEPTED_LIVE",
+          "version": 1,
+          "report": "docs/architecture/team-hub-c1-execution-result.md",
+          "evidence": "docs/architecture/team-hub-c1-execution-evidence-2026-10-07/result.json",
+          "temporaryResourcesRemaining": 0,
+          "businessRecordsChanged": 0
+        },
+        "awsWriteCounting": "C1 4 + C2 5 + D1 6 direct control-plane calls, plus E/F 6 isolated CreateTable and 6 DeleteTable; synthetic data writes/read-only probes separately evidenced; authority endpoint 6 (2 PutObject +2 CreateChangeSet +2 ExecuteChangeSet)",
+        "c2": {
+          "status": "ACCEPTED_INSTALLED_IAM_AND_ROUTE_DENIAL",
+          "report": "docs/architecture/team-hub-c2-execution-result.md",
+          "evidence": "docs/architecture/team-hub-c2-execution-evidence-2026-10-07/result.json",
+          "actualRoleIamDecisions": 68,
+          "normalRoutesDenied": 13,
+          "businessRecordsChanged": 0,
+          "awsWrites": 5
+        },
+        "d1": {
+          "status": "ACCEPTED_DARK_LIVE_MONITORING_ONLY",
+          "report": "docs/architecture/team-hub-d1-live-monitoring-result.md",
+          "evidence": "docs/architecture/team-hub-d1-execution-evidence-2026-10-08/result.json",
+          "runtimeSha256": "a36406c42c727b4d8c262083e0cb95807f2404c4c8649b2eacc559915f4ba7d5",
+          "requests": 21,
+          "normalRoutesDenied": 13,
+          "liveDependencyFailure": false,
+          "liveTransactionalEpochProof": false,
+          "controlPlaneWrites": 6
+        },
+        "ef": {
+          "report": "docs/architecture/team-hub-2b6-gates-ef-result.md",
+          "frontendPrepared": true,
+          "frontendLiveBinding": true,
+          "authorityContractDeployed": true,
+          "isolatedRollbackPassed": true,
+          "temporaryTablesCreated": 6,
+          "temporaryTablesRemoved": 6,
+          "realBusinessWrites": 0,
+          "authorityPreserved": true,
+          "localCleanup": "Two Git-ignored headless test-browser profile directories remain Windows-locked; authenticated contexts disposed, isolated server stopped",
+          "liveBindingScope": "Real LEGACY status fail-closed; no TARGET business authorization acceptance"
+        },
+        "authorityStatus": {
+          "status": "ACCEPTED_LIVE",
+          "report": "docs/architecture/team-hub-authority-endpoint-deployment-result.md",
+          "candidate": "docs/architecture/team-hub-authority-status-evidence-2026-10-08/candidate.json",
+          "candidateSha256": "30ac97e5b48f3867268403c13766e9439aa2e0821d87585a685cfdfae1b997d1",
+          "productResources": 42,
+          "securityResources": 7,
+          "runtimeIamChanges": 0,
+          "awsWrites": 6,
+          "liveAccepted": true,
+          "readinessReport": "docs/architecture/team-hub-authority-status-endpoint-readiness.md",
+          "businessRoutesDenied": 13,
+          "epoch": 1,
+          "version": 1,
+          "frontendActivated": false
+        },
+        "checkpointReview": {
+          "report": "docs/architecture/team-hub-2b6-checkpoint-cutover-readiness.md",
+          "branch": "phase2/team-hub-extraction",
+          "previousCheckpoint": "4591f326de5c8ef6f09fc0b3a3d459d5d0d8580f",
+          "businessRuntimeInstalled": false,
+          "freezeAuthorized": false,
+          "targetActivationAuthorized": false,
+          "frontendActivationAuthorized": false,
+          "awsWrites": 0
+        }
+      }
     },
     {
       "domain": "Creator",
@@ -198,5 +522,21 @@
         "docs/architecture/project-respawn-domain-classification.md"
       ]
     }
-  ]
+  ],
+  "awsChangesMeaning": "Historical 42 infrastructure calls through 2B4B; 2B5 and 2B5A add zero AWS resource changes. 2B5A performed read-only inventory and policy validation. Synthetic data transactions remain separately accounted.",
+  "executedDeploymentChanges": 4,
+  "gateDTelemetryCorrection": {
+    "status": "LIVE_EXECUTION_BLOCKED",
+    "report": "docs/architecture/team-hub-2b6-gate-d-live-monitoring-result.md",
+    "awsWritesThisTask": 0,
+    "authorityChanged": false,
+    "frontendActivated": false
+  },
+  "latestTaskAwsChanges": {
+    "task": "GITHUB_CHECKPOINT_READONLY_REVIEW",
+    "controlPlaneWrites": 0,
+    "businessWrites": 0,
+    "authorityWrites": 0,
+    "productionChanges": 0
+  }
 }

@@ -32,7 +32,7 @@
             <button
               type="button"
               class="secondary-button"
-              :disabled="!isDirty"
+              :disabled="!canEdit || !isDirty"
               @click="saveDraft"
             >
               Save Draft
@@ -41,6 +41,7 @@
             <button
               type="button"
               class="primary-button"
+              :disabled="!canEdit"
               @click="submitPool"
             >
               Submit
@@ -315,6 +316,7 @@ const teamId = ref('');
 const teamContext = ref(null);
 const originalChampionIds = ref(new Set());
 const storedEntries = ref({});
+const poolReady = ref(false);
 
 const champions = ref([]);
 const dataDragonVersion = ref('');
@@ -353,7 +355,7 @@ const unratedChampionCount = computed(() => {
 });
 
 const canEdit = computed(() => {
-  return submissionStatus.value !== 'UNDER_REVIEW';
+  return poolReady.value && teamContext.value?.capabilities?.canEditChampionPool === true && !loadError.value && submissionStatus.value !== 'UNDER_REVIEW';
 });
 
 const filteredChampions = computed(() => {
@@ -400,7 +402,7 @@ onMounted(async () => {
     const context = await getTeamHub({ teamSlug: teamSlug.value });
     teamContext.value = context;
     teamId.value = context.team.id;
-    const mine = context.members.find((member) => member.role === 'PLAYER' && member.status === 'ACTIVE');
+    const mine = context.membership ?? context.members.find((member) => member.role === 'PLAYER' && member.status === 'ACTIVE');
     const slot = context.roster.find((entry) => entry.membershipId === mine?.id && entry.status === 'ACTIVE');
     assignedRole.value = slot?.gameRoleKey || 'Unassigned';
     const pool = await loadBoundedPages((nextToken) => listMyChampionPool(teamId.value, { limit: 50, ...(nextToken ? { nextToken } : {}) }));
@@ -409,6 +411,7 @@ onMounted(async () => {
     storedEntries.value = indexRoleIndependentPool(entries);
     ratings.value = Object.fromEntries(entries.map((entry) => [entry.championId, entry.comfortLevel]));
     originalChampionIds.value = new Set(entries.map((entry) => entry.championId));
+    poolReady.value = true;
   } catch (error) {
     if (isTeamHubDenied(error)) {
       teamId.value = '';
@@ -530,15 +533,15 @@ function withdrawSubmission() {
 }
 
 async function persistPool() {
-  if (!teamId.value) return;
+  if (!teamId.value || !canEdit.value) return;
   try {
-    await Promise.all(Object.entries(ratings.value).map(([championId, comfortLevel]) => upsertMyChampionPoolEntry({
+    for (const [championId, comfortLevel] of Object.entries(ratings.value)) await upsertMyChampionPoolEntry({
       teamId: teamId.value, championId, gameRoleKey: assignedRole.value === 'Unassigned' ? null : assignedRole.value,
       comfortLevel, priority: 'NORMAL', competitiveReady: ['S', 'A'].includes(comfortLevel),
-    })));
-    await Promise.all([...originalChampionIds.value].filter((id) => !ratings.value[id]).map((championId) => deleteMyChampionPoolEntry({
+    });
+    for (const championId of [...originalChampionIds.value].filter((id) => !ratings.value[id])) await deleteMyChampionPoolEntry({
       teamId: teamId.value, championId, gameRoleKey: storedEntries.value[championId]?.gameRoleKey || null,
-    })));
+    });
     originalChampionIds.value = new Set(Object.keys(ratings.value));
     isDirty.value = false;
     submissionStatus.value = 'DRAFT';

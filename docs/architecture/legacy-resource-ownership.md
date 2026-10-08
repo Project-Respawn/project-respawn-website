@@ -2,7 +2,7 @@
 
 [START HERE](README-PHASE2-MIGRATION.md) · [Coverage summary](legacy-resource-ownership-summary.md) · [Complete JSON records](legacy-resource-ownership.json)
 
-2621 declarations; one root plus 61 nested stacks. Nested handles are included once; no synthetic extra root row. Every JSON record includes exact stack ARN/name, nested path, non-secret physical identity (API key hash only), attribution, future owner/rationale, status, risk, protection, retirement and source evidence. This compact table is a view of those records, not a replacement for the complete JSON. All current rows are LEGACY_ACTIVE / NOT_ELIGIBLE.
+2621 declarations; one root plus 61 nested stacks. Nested handles are included once; no synthetic extra root row. Every JSON record includes exact stack ARN/name, nested path, non-secret physical identity (API key hash only), attribution, future owner/rationale, status, risk, protection, retirement and source evidence. This compact table is a view of those records, not a replacement for the complete JSON. Current row migration status is recorded in JSON; MIGRATION_PREP does not transfer authority. All retirement statuses remain NOT_ELIGIBLE.
 
 | Resource ID (stack key:logical ID) | Type | Future owner | Stateful | Protected | Risk |
 |---|---|---|---|---|---|

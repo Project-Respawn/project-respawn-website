@@ -241,6 +241,7 @@
 </template>
 
 <script setup>
+import { usingIndependentTeamHub, loadTeamCapabilities } from '../team-hub/services/migration-mode.mjs';
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -251,7 +252,8 @@ import { canShowAdminControls } from './teamHub.viewModel.js';
 
 const router = useRouter();
 const { isAdmin, isSuperAdmin } = useAuth();
-const canAdmin = computed(() => canShowAdminControls({ isAdmin: isAdmin.value, isSuperAdmin: isSuperAdmin.value }));
+const coreAdmin = ref(false);
+const canAdmin = computed(() => usingIndependentTeamHub ? coreAdmin.value : (canShowAdminControls({ isAdmin: isAdmin.value, isSuperAdmin: isSuperAdmin.value })));
 const games = ref([]);
 const history = ref([]);
 const loading = ref(true);
@@ -316,6 +318,7 @@ async function refreshTeams() {
   loading.value = true;
   errorMessage.value = '';
   try {
+    if (usingIndependentTeamHub) coreAdmin.value = (await loadTeamCapabilities()).teamsAdmin;
     const activePage = await loadBoundedPages((nextToken) => listMyTeams({ status: 'ACTIVE', limit: 50, ...(nextToken ? { nextToken } : {}) }));
     const inactivePage = canAdmin.value ? await loadBoundedPages((nextToken) => listMyTeams({ status: 'INACTIVE', limit: 50, ...(nextToken ? { nextToken } : {}) })) : { items: [], complete: true };
     if (!activePage.complete || !inactivePage.complete) throw new Error('Team Hub data limit exceeded');

@@ -1,0 +1,101 @@
+{
+  "at": "2026-10-06T20:01:28.541Z",
+  "ready": false,
+  "verdict": "TEAM HUB CUTOVER REMAINS BLOCKED",
+  "documentationLinks": 34,
+  "credentialPatternScan": "PASS",
+  "credentialsOrTokensWritten": false,
+  "awsCalls": 0,
+  "awsChanges": 0,
+  "businessDataWrites": 0,
+  "authority": "LEGACY_WRITER",
+  "frontendCutover": false,
+  "retirement": false,
+  "productionTouched": false,
+  "acceptedSourcesPreserved": true,
+  "validation": {
+    "at": "2026-10-06T19:53:15.189Z",
+    "results": [
+      {
+        "name": "core-team-fence-client-security",
+        "exit": 0,
+        "passed": 74,
+        "failed": 0
+      },
+      {
+        "name": "team-foundation",
+        "exit": 1,
+        "passed": 248,
+        "failed": 2
+      },
+      {
+        "name": "accepted-parity",
+        "exit": 0,
+        "passed": 23,
+        "failed": 0
+      },
+      {
+        "name": "rollback-transform",
+        "exit": 0,
+        "passed": 46,
+        "failed": 0
+      },
+      {
+        "name": "resource-accounting",
+        "exit": 0,
+        "passed": 41,
+        "failed": 0
+      },
+      {
+        "name": "ledger",
+        "exit": 0,
+        "passed": 0,
+        "failed": 0
+      },
+      {
+        "name": "typescript",
+        "exit": 0,
+        "passed": 0,
+        "failed": 0
+      },
+      {
+        "name": "domain-selector",
+        "exit": 0,
+        "passed": 18,
+        "failed": 0
+      },
+      {
+        "name": "source-protection",
+        "exit": 0,
+        "passed": 0,
+        "failed": 0
+      },
+      {
+        "name": "accepted-source-preservation",
+        "exit": 0,
+        "passed": 0,
+        "failed": 0
+      }
+    ],
+    "historicalFailures": [
+      {
+        "file": "amplify/backend.ts",
+        "reason": "Older foundation hash differs from accepted 2B4 baseline; preserved current accepted bytes."
+      },
+      {
+        "file": "domains/team-hub/parity/fence.mjs",
+        "reason": "Historical read-proof receipt hash differs from accepted 2B4 source manifest; preserved current accepted bytes."
+      }
+    ]
+  },
+  "candidate": {
+    "teamProduct": 44,
+    "teamSecurity": 7,
+    "coreProduct": 6,
+    "coreRuntimeSecurity": 1,
+    "coreDeploymentSecurityReserved": 4,
+    "fence": 0,
+    "frontend": 0,
+    "branding": 0
+  }
+}

@@ -1,5 +1,5 @@
 // src/features/team-hub/team-hub.routes.js
-import { resolveTeamRouteAccess } from './teamHub.service.js';
+const resolveTeamRouteAccess = async (...args) => (await import('./teamHub.service.js')).resolveTeamRouteAccess(...args);
 
 const teamHubRoutes = [
   {
@@ -21,7 +21,7 @@ const teamHubRoutes = [
     path: '/team-hub/:teamSlug',
     name: 'team-hub-team',
     component: () => import('./TeamHome.vue'),
-    beforeEnter: async (to) => { await resolveTeamRouteAccess(String(to.params.teamSlug || '')); return true; },
+    beforeEnter: async to => (await import('../team-hub/services/route-access.mjs')).teamEntryGuard(resolveTeamRouteAccess)(to),
     meta: {
       requiresAuth: true,
     },

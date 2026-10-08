@@ -1,9 +1,9 @@
 // src/router/forum.routes.js
 
-import ForumLayout from '../views/Forum/ForumLayout/ForumLayout.vue';
-import ForumIndex from '../views/Forum/ForumIndex/ForumIndex.vue';
-import ForumBoard from '../views/Forum/ForumBoard/ForumBoard.vue';
-import ForumThread from '../views/Forum/ForumThread/ForumThread.vue';
+const ForumLayout = () => import('../views/Forum/ForumLayout/ForumLayout.vue');
+const ForumIndex = () => import('../views/Forum/ForumIndex/ForumIndex.vue');
+const ForumBoard = () => import('../views/Forum/ForumBoard/ForumBoard.vue');
+const ForumThread = () => import('../views/Forum/ForumThread/ForumThread.vue');
 
 export default [
 

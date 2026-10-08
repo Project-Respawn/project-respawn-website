@@ -1,0 +1,6 @@
+import fs from 'node:fs';import crypto from 'node:crypto';import assert from 'node:assert/strict';
+import {aws as readonly,identity} from '../core-2b5a/aws.mjs';
+export {identity};export const aws=readonly;
+export const E='docs/architecture/core-live-evidence-2026-10-06',P='docs/architecture/core-artifact-evidence-2026-10-06',core='ProjectRespawn-Core-Ntgre';
+export const read=p=>JSON.parse(fs.readFileSync(p)),save=(n,v)=>fs.writeFileSync(E+'/'+n+'.json',JSON.stringify(v,null,2)+'\n'),sha=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
+export function pin(){const c=read(P+'/candidate.json');assert.equal(c.productSha256,'4aad4b8df1b1272f12e93144b3a1e89a2addaab5e404950f924ff7d7b58b9e46');assert.equal(c.securitySha256,'232c577cf84eb151dccaee88e702174a0225972fec87a3d432a2dc7f631acf79');assert.equal(c.zipSha256,'4841f475dab09982d8ff5babc240c8a7d8809d05911de8e239ac9031e6fcefcf');assert.equal(sha(P+'/product.template.json'),c.productSha256);assert.equal(sha(P+'/security.template.json'),c.securitySha256);assert.equal(sha(c.zipPath),c.zipSha256);for(const f of read(P+'/source-preservation.json').files)assert.equal(sha(f.path),f.sha256);assert.ok(!Object.hasOwn(read(P+'/product.template.json').Resources.Contracts.Properties,'ReservedConcurrentExecutions'));return c;}

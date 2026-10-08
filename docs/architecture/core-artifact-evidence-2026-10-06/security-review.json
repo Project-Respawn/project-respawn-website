@@ -1,0 +1,771 @@
+{
+  "at": "2026-10-06T21:03:42.105Z",
+  "analyzer": [
+    {
+      "policy": "caller-policy",
+      "findings": []
+    },
+    {
+      "policy": "execution-policy",
+      "findings": []
+    },
+    {
+      "policy": "executionBoundary-policy",
+      "findings": []
+    },
+    {
+      "policy": "runtime-policy",
+      "findings": []
+    },
+    {
+      "policy": "runtime-boundary",
+      "findings": []
+    }
+  ],
+  "checks": [
+    {
+      "role": "caller",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/core/2b5a/4aad4b8df1b1272f12e93144b3a1e89a2addaab5e404950f924ff7d7b58b9e46/product.template.json",
+      "expected": "allowed",
+      "actual": "allowed",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/core/2b5a/4841f475dab09982d8ff5babc240c8a7d8809d05911de8e239ac9031e6fcefcf/runtime.zip",
+      "expected": "allowed",
+      "actual": "allowed",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/random.txt",
+      "expected": "denied",
+      "actual": "implicitDeny",
+      "missing": [
+        "cloudformation:TemplateUrl",
+        "cloudformation:RoleArn",
+        "iam:PassedToService"
+      ],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/core/2b5a/0000000000000000000000000000000000000000000000000000000000000000/product.template.json",
+      "expected": "denied",
+      "actual": "implicitDeny",
+      "missing": [
+        "cloudformation:TemplateUrl",
+        "cloudformation:RoleArn",
+        "iam:PassedToService"
+      ],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/core/2b5a/89c712720e1fc09b9546865bd36b12a0123c8560ed8334d282918ac7cedbbaeb/product.template.json",
+      "expected": "denied",
+      "actual": "implicitDeny",
+      "missing": [
+        "cloudformation:TemplateUrl",
+        "cloudformation:RoleArn",
+        "iam:PassedToService"
+      ],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/legacy/product.template.json",
+      "expected": "denied",
+      "actual": "implicitDeny",
+      "missing": [
+        "cloudformation:TemplateUrl",
+        "cloudformation:RoleArn",
+        "iam:PassedToService"
+      ],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/product.template.json",
+      "expected": "denied",
+      "actual": "implicitDeny",
+      "missing": [
+        "cloudformation:TemplateUrl",
+        "cloudformation:RoleArn",
+        "iam:PassedToService"
+      ],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/tournaments/product.template.json",
+      "expected": "denied",
+      "actual": "implicitDeny",
+      "missing": [
+        "cloudformation:TemplateUrl",
+        "cloudformation:RoleArn",
+        "iam:PassedToService"
+      ],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/product.template.json",
+      "expected": "denied",
+      "actual": "implicitDeny",
+      "missing": [
+        "cloudformation:TemplateUrl",
+        "cloudformation:RoleArn",
+        "iam:PassedToService"
+      ],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "s3:ListBucket",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "execution",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/core/2b5a/4aad4b8df1b1272f12e93144b3a1e89a2addaab5e404950f924ff7d7b58b9e46/product.template.json",
+      "expected": "allowed",
+      "actual": "allowed",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "execution",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/core/2b5a/4841f475dab09982d8ff5babc240c8a7d8809d05911de8e239ac9031e6fcefcf/runtime.zip",
+      "expected": "allowed",
+      "actual": "allowed",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "execution",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/random.txt",
+      "expected": "denied",
+      "actual": "implicitDeny",
+      "missing": [
+        "secretsmanager:KmsKeyArn",
+        "iam:PermissionsBoundary",
+        "iam:PassedToService"
+      ],
+      "pass": true
+    },
+    {
+      "role": "execution",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/core/2b5a/0000000000000000000000000000000000000000000000000000000000000000/product.template.json",
+      "expected": "denied",
+      "actual": "implicitDeny",
+      "missing": [
+        "secretsmanager:KmsKeyArn",
+        "iam:PermissionsBoundary",
+        "iam:PassedToService"
+      ],
+      "pass": true
+    },
+    {
+      "role": "execution",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/core/2b5a/89c712720e1fc09b9546865bd36b12a0123c8560ed8334d282918ac7cedbbaeb/product.template.json",
+      "expected": "denied",
+      "actual": "implicitDeny",
+      "missing": [
+        "secretsmanager:KmsKeyArn",
+        "iam:PermissionsBoundary",
+        "iam:PassedToService"
+      ],
+      "pass": true
+    },
+    {
+      "role": "execution",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/legacy/product.template.json",
+      "expected": "denied",
+      "actual": "implicitDeny",
+      "missing": [
+        "secretsmanager:KmsKeyArn",
+        "iam:PermissionsBoundary",
+        "iam:PassedToService"
+      ],
+      "pass": true
+    },
+    {
+      "role": "execution",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/product.template.json",
+      "expected": "denied",
+      "actual": "implicitDeny",
+      "missing": [
+        "secretsmanager:KmsKeyArn",
+        "iam:PermissionsBoundary",
+        "iam:PassedToService"
+      ],
+      "pass": true
+    },
+    {
+      "role": "execution",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/tournaments/product.template.json",
+      "expected": "denied",
+      "actual": "implicitDeny",
+      "missing": [
+        "secretsmanager:KmsKeyArn",
+        "iam:PermissionsBoundary",
+        "iam:PassedToService"
+      ],
+      "pass": true
+    },
+    {
+      "role": "execution",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/product.template.json",
+      "expected": "denied",
+      "actual": "implicitDeny",
+      "missing": [
+        "secretsmanager:KmsKeyArn",
+        "iam:PermissionsBoundary",
+        "iam:PassedToService"
+      ],
+      "pass": true
+    },
+    {
+      "role": "execution",
+      "action": "s3:ListBucket",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre/review",
+      "expected": "allowed",
+      "actual": "allowed",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre/review",
+      "expected": "denied",
+      "actual": "implicitDeny",
+      "missing": [
+        "iam:PassedToService"
+      ],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "cloudformation:DescribeStacks",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre/review",
+      "expected": "allowed",
+      "actual": "allowed",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "cloudformation:DescribeStackEvents",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre/review",
+      "expected": "allowed",
+      "actual": "allowed",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "cloudformation:ListStackResources",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre/review",
+      "expected": "allowed",
+      "actual": "allowed",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "cloudformation:GetTemplate",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre/review",
+      "expected": "allowed",
+      "actual": "allowed",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "cloudformation:DescribeChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre/review",
+      "expected": "allowed",
+      "actual": "allowed",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "cloudformation:ExecuteChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre/review",
+      "expected": "allowed",
+      "actual": "allowed",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "cloudformation:DeleteChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre/review",
+      "expected": "allowed",
+      "actual": "allowed",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "cloudformation:ExecuteChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/amplify-projectrespawnwebsite-Ntgre-sandbox-8bd9d02332/review",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "cloudformation:ExecuteChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/review",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "cloudformation:ExecuteChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Tournaments-Ntgre/review",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "cloudformation:ExecuteChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/review",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "iam:PassRole",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Execution",
+      "expected": "allowed",
+      "actual": "allowed",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "iam:PassRole",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Execution",
+      "expected": "denied",
+      "actual": "implicitDeny",
+      "missing": [
+        "cloudformation:TemplateUrl",
+        "cloudformation:RoleArn"
+      ],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "iam:PassRole",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "expected": "denied",
+      "actual": "implicitDeny",
+      "missing": [
+        "cloudformation:TemplateUrl",
+        "cloudformation:RoleArn"
+      ],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "lambda:UpdateFunctionCode",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "iam:PutRolePolicy",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Execution",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "caller",
+      "action": "cloudformation:CreateStack",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre/review",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "cognito-idp:AdminGetUser",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": "allowed",
+      "actual": "allowed",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "cognito-idp:AdminListGroupsForUser",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": "allowed",
+      "actual": "allowed",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "cognito-idp:ListUsers",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": "allowed",
+      "actual": "allowed",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "cognito-idp:AdminCreateUser",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "cognito-idp:AdminUpdateUserAttributes",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "cognito-idp:AdminDeleteUser",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "cognito-idp:UpdateUserPool",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "cognito-idp:DeleteUserPool",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "cognito-idp:CreateUserPoolClient",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "cognito-idp:UpdateUserPoolClient",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "cognito-idp:DeleteUserPoolClient",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "cognito-idp:AdminSetUserPassword",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "cognito-idp:AdminAddUserToGroup",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "cognito-idp:AdminRemoveUserFromGroup",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "cognito-idp:CreateGroup",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "cognito-idp:UpdateGroup",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "cognito-idp:DeleteGroup",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "cognito-idp:AdminDisableUser",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "cognito-idp:AdminEnableUser",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "cognito-idp:AdminConfirmSignUp",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "cognito-idp:AdminResetUserPassword",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "cognito-idp:AdminSetUserMFAPreference",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "cognito-idp:AdminDeleteUserAttributes",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "cognito-idp:CreateUserPool",
+      "resource": "*",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Tournament",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Creator",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Commerce",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Community",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::business/review",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/11111111-1111-1111-1111-111111111111",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "iam:CreateRole",
+      "resource": "*",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "cloudformation:CreateStack",
+      "resource": "*",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "appsync:GraphQL",
+      "resource": "*",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    },
+    {
+      "role": "runtime",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre-PreviewRead",
+      "expected": "denied",
+      "actual": "explicitDeny",
+      "missing": [],
+      "pass": true
+    }
+  ],
+  "logging": "SIMULATOR_UNSUPPORTED; existing core-release1 logging controls and core-quota Analyzer controls retained, no new logging evidence or permission change",
+  "awsWrites": 0,
+  "positive": 16,
+  "negative": 59,
+  "failures": []
+}

@@ -1,0 +1,76 @@
+{
+  "status": "SOURCE_CONTRACT_FOR_SEPARATE_REVIEW_NOT_DEPLOYABLE",
+  "route": {
+    "logicalId": "AuthorityStatusRoute",
+    "Type": "AWS::ApiGatewayV2::Route",
+    "Properties": {
+      "ApiId": {
+        "Ref": "HttpApi"
+      },
+      "RouteKey": "GET /v1/authority",
+      "AuthorizationType": "JWT",
+      "AuthorizerId": {
+        "Ref": "JwtAuthorizer"
+      },
+      "Target": {
+        "Fn::Join": [
+          "",
+          [
+            "integrations/",
+            {
+              "Ref": "ParityReadIntegration"
+            }
+          ]
+        ]
+      }
+    }
+  },
+  "expectedFutureDelta": {
+    "productResources": "40 -> 41",
+    "additions": 1,
+    "updates": [
+      "ParityReadFunction.Code (new reviewed wrapper and bundle required)"
+    ],
+    "deletions": 0,
+    "replacements": 0,
+    "iamChanges": 0
+  },
+  "remaining": [
+    "Review read-only route and sanitized response",
+    "Build separately pinned Read wrapper preserving D1 emission and every existing route",
+    "Inspect exact artifact security publication changes separately",
+    "Deploy only after explicit authorization",
+    "Live JWT, privacy, LEGACY epoch1 and all 13 denial checks; reverify D1 counters"
+  ],
+  "files": [
+    {
+      "path": "domains/team-hub/authority-contract/contract.mjs",
+      "sha256": "190ae44422d0be2743bb6a88c3936d1b87e1a6653faecf93c21e5e2849b8711a"
+    },
+    {
+      "path": "domains/team-hub/authority-contract/handler.mjs",
+      "sha256": "b0fb8e6bb7386b11387eea2001b3638884f8f7868cf63bd4bdb05b5b2a67f586"
+    },
+    {
+      "path": "scripts/team-hub-ef/authority-contract.test.mjs",
+      "sha256": "1e952936daad66a21da5734d9bbca2037ddca80ff12c74f984c5d35b6a3056a5"
+    },
+    {
+      "path": "src/features/team-hub/api/cutover-client.mjs",
+      "sha256": "84dd485a00aea9e36797ebe7feb702912694a6e67422a74a66b8e31ad0b4193e"
+    },
+    {
+      "path": "config/domains/team-hub/frontend-cutover.PROPOSAL.json",
+      "sha256": "04284395dcae0d447df68e16981d4e7d877e3b5a7de93056b09467153eeff6df"
+    },
+    {
+      "path": "config/domains/team-hub/domain-endpoints.Ntgre.json",
+      "sha256": "c8ede7fca162d1549b34be6d70973ab53ddc024c973317b76c93b1af6009f0b5"
+    },
+    {
+      "path": "config/domains/core/domain-endpoints.Ntgre.json",
+      "sha256": "73ccb94e6477198f9853bd90db9581e26f7d384836db0b8ba5dcace7b99a5c3b"
+    }
+  ],
+  "awsWrites": 0
+}

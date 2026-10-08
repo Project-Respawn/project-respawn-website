@@ -1,0 +1,68 @@
+{
+  "Changes": [
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "JournalTable",
+        "ResourceType": "AWS::DynamoDB::Table",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"SSESpecification\":{\"SSEEnabled\":\"false\"},\"TableName\":\"ProjectRespawn-TeamHub-Ntgre-Journal\",\"AttributeDefinitions\":[{\"AttributeType\":\"S\",\"AttributeName\":\"PK\"},{\"AttributeType\":\"S\",\"AttributeName\":\"SK\"}],\"BillingMode\":\"PAY_PER_REQUEST\",\"PointInTimeRecoverySpecification\":{\"PointInTimeRecoveryEnabled\":\"true\"},\"KeySchema\":[{\"KeyType\":\"HASH\",\"AttributeName\":\"PK\"},{\"KeyType\":\"RANGE\",\"AttributeName\":\"SK\"}],\"DeletionProtectionEnabled\":\"true\",\"Tags\":[{\"Value\":\"TeamHub\",\"Key\":\"Domain\"},{\"Value\":\"Ntgre\",\"Key\":\"Environment\"},{\"Value\":\"ProjectRespawn\",\"Key\":\"Project\"}],\"TimeToLiveSpecification\":{\"Enabled\":\"true\",\"AttributeName\":\"expiresAt\"}},\"UpdateReplacePolicy\":\"Retain\",\"DeletionPolicy\":\"Retain\"}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "OperationalTable",
+        "ResourceType": "AWS::DynamoDB::Table",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"SSESpecification\":{\"SSEEnabled\":\"false\"},\"TableName\":\"ProjectRespawn-TeamHub-Ntgre-Operational\",\"AttributeDefinitions\":[{\"AttributeType\":\"S\",\"AttributeName\":\"PK\"},{\"AttributeType\":\"S\",\"AttributeName\":\"SK\"},{\"AttributeType\":\"S\",\"AttributeName\":\"SubjectPK\"},{\"AttributeType\":\"S\",\"AttributeName\":\"SubjectSK\"},{\"AttributeType\":\"S\",\"AttributeName\":\"StatusPK\"},{\"AttributeType\":\"S\",\"AttributeName\":\"StatusSK\"}],\"BillingMode\":\"PAY_PER_REQUEST\",\"GlobalSecondaryIndexes\":[{\"IndexName\":\"BySubject\",\"Projection\":{\"ProjectionType\":\"KEYS_ONLY\"},\"KeySchema\":[{\"KeyType\":\"HASH\",\"AttributeName\":\"SubjectPK\"},{\"KeyType\":\"RANGE\",\"AttributeName\":\"SubjectSK\"}]},{\"IndexName\":\"ByTeamStatus\",\"Projection\":{\"ProjectionType\":\"KEYS_ONLY\"},\"KeySchema\":[{\"KeyType\":\"HASH\",\"AttributeName\":\"StatusPK\"},{\"KeyType\":\"RANGE\",\"AttributeName\":\"StatusSK\"}]}],\"PointInTimeRecoverySpecification\":{\"PointInTimeRecoveryEnabled\":\"true\"},\"KeySchema\":[{\"KeyType\":\"HASH\",\"AttributeName\":\"PK\"},{\"KeyType\":\"RANGE\",\"AttributeName\":\"SK\"}],\"DeletionProtectionEnabled\":\"true\",\"Tags\":[{\"Value\":\"TeamHub\",\"Key\":\"Domain\"},{\"Value\":\"Ntgre\",\"Key\":\"Environment\"},{\"Value\":\"ProjectRespawn\",\"Key\":\"Project\"}]},\"UpdateReplacePolicy\":\"Retain\",\"DeletionPolicy\":\"Retain\"}"
+      }
+    }
+  ],
+  "ChangeSetName": "team-hub-gate3-dark-target-20261005",
+  "ChangeSetId": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/team-hub-gate3-dark-target-20261005/830beb6c-904b-4e48-8804-7d6440efd096",
+  "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/b66ad780-c0cd-11f1-91ba-0effc0d85417",
+  "StackName": "ProjectRespawn-TeamHub-Ntgre",
+  "Description": null,
+  "Parameters": [
+    {
+      "ParameterKey": "BootstrapVersion",
+      "ParameterValue": "/cdk-bootstrap/hnb659fds/version",
+      "ResolvedValue": "30"
+    }
+  ],
+  "CreationTime": "2026-10-05T21:55:53.613000+00:00",
+  "ExecutionStatus": "AVAILABLE",
+  "Status": "CREATE_COMPLETE",
+  "StatusReason": null,
+  "NotificationARNs": [],
+  "RollbackConfiguration": {},
+  "Capabilities": [
+    "CAPABILITY_NAMED_IAM"
+  ],
+  "Tags": [
+    {
+      "Key": "Project",
+      "Value": "ProjectRespawn"
+    },
+    {
+      "Key": "Environment",
+      "Value": "Ntgre"
+    },
+    {
+      "Key": "Domain",
+      "Value": "TeamHub"
+    }
+  ],
+  "ParentChangeSetId": null,
+  "IncludeNestedStacks": false,
+  "RootChangeSetId": null,
+  "OnStackFailure": null,
+  "ImportExistingResources": null,
+  "StackDriftStatus": null,
+  "DeploymentMode": null
+}

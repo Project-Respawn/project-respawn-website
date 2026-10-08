@@ -1,0 +1,680 @@
+{
+  "scope": "Every new allow expanded by action/resource/leading key; statement delta separately preserves removed/changed explicit denies",
+  "rows": [
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "leadingKey": "TEAM#team:*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "TEAM#team:*",
+            "SLUG#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "leadingKey": "SLUG#*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "TEAM#team:*",
+            "SLUG#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "leadingKey": "TEAM#team:*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "TEAM#team:*",
+            "SLUG#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "leadingKey": "SLUG#*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "TEAM#team:*",
+            "SLUG#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/BySubject",
+      "leadingKey": "SUBJECT#*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "SUBJECT#*",
+            "STATUS#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/BySubject",
+      "leadingKey": "STATUS#*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "SUBJECT#*",
+            "STATUS#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/ByTeamStatus",
+      "leadingKey": "SUBJECT#*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "SUBJECT#*",
+            "STATUS#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/ByTeamStatus",
+      "leadingKey": "STATUS#*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "SUBJECT#*",
+            "STATUS#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "leadingKey": "CONTROL#AUTHORITY",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "CONTROL#AUTHORITY"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      },
+      "classification": "REQUIRED_FOR_AUTHORITY_ENFORCEMENT",
+      "reason": "Minimal authority partition read."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-??????",
+      "leadingKey": null,
+      "conditions": {},
+      "classification": "UNRESOLVED",
+      "reason": "Business entry cursor-secret prerequisite must be separated from minimal monitoring design."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "leadingKey": "TEAM#team:*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "TEAM#team:*",
+            "SLUG#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "leadingKey": "SLUG#*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "TEAM#team:*",
+            "SLUG#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "leadingKey": "TEAM#team:*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "TEAM#team:*",
+            "SLUG#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "leadingKey": "SLUG#*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "TEAM#team:*",
+            "SLUG#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/BySubject",
+      "leadingKey": "SUBJECT#*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "SUBJECT#*",
+            "STATUS#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/BySubject",
+      "leadingKey": "STATUS#*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "SUBJECT#*",
+            "STATUS#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/ByTeamStatus",
+      "leadingKey": "SUBJECT#*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "SUBJECT#*",
+            "STATUS#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/ByTeamStatus",
+      "leadingKey": "STATUS#*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "SUBJECT#*",
+            "STATUS#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "leadingKey": "CONTROL#AUTHORITY",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "CONTROL#AUTHORITY",
+            "IDEMP#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      },
+      "classification": "REQUIRED_FOR_AUTHORITY_ENFORCEMENT",
+      "reason": "Minimal authority partition read."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "leadingKey": "IDEMP#*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "CONTROL#AUTHORITY",
+            "IDEMP#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "leadingKey": "TEAM#team:*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "TEAM#team:*",
+            "SLUG#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        },
+        "ForAnyValue:StringEquals": {
+          "dynamodb:EnclosingOperation": [
+            "TransactWriteItems"
+          ]
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "leadingKey": "SLUG#*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "TEAM#team:*",
+            "SLUG#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        },
+        "ForAnyValue:StringEquals": {
+          "dynamodb:EnclosingOperation": [
+            "TransactWriteItems"
+          ]
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "action": "dynamodb:DeleteItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "leadingKey": "TEAM#team:*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "TEAM#team:*",
+            "SLUG#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        },
+        "ForAnyValue:StringEquals": {
+          "dynamodb:EnclosingOperation": [
+            "TransactWriteItems"
+          ]
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "action": "dynamodb:DeleteItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "leadingKey": "SLUG#*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "TEAM#team:*",
+            "SLUG#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        },
+        "ForAnyValue:StringEquals": {
+          "dynamodb:EnclosingOperation": [
+            "TransactWriteItems"
+          ]
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "action": "dynamodb:ConditionCheckItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "leadingKey": "TEAM#team:*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "TEAM#team:*",
+            "SLUG#*",
+            "CONTROL#AUTHORITY"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "action": "dynamodb:ConditionCheckItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "leadingKey": "SLUG#*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "TEAM#team:*",
+            "SLUG#*",
+            "CONTROL#AUTHORITY"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "action": "dynamodb:ConditionCheckItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "leadingKey": "CONTROL#AUTHORITY",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "TEAM#team:*",
+            "SLUG#*",
+            "CONTROL#AUTHORITY"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "action": "dynamodb:ConditionCheckItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "leadingKey": "TEAM#team:*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "TEAM#team:*",
+            "SLUG#*",
+            "CONTROL#AUTHORITY"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "action": "dynamodb:ConditionCheckItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "leadingKey": "SLUG#*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "TEAM#team:*",
+            "SLUG#*",
+            "CONTROL#AUTHORITY"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "action": "dynamodb:ConditionCheckItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "leadingKey": "CONTROL#AUTHORITY",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "TEAM#team:*",
+            "SLUG#*",
+            "CONTROL#AUTHORITY"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      },
+      "classification": "REQUIRED_FOR_AUTHORITY_ENFORCEMENT",
+      "reason": "Future transaction epoch enforcement only; not granted in minimal C2."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "leadingKey": "TEAM#team:*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "TEAM#team:*",
+            "IDEMP#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        },
+        "ForAnyValue:StringEquals": {
+          "dynamodb:EnclosingOperation": [
+            "TransactWriteItems"
+          ]
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "leadingKey": "IDEMP#*",
+      "conditions": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "TEAM#team:*",
+            "IDEMP#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        },
+        "ForAnyValue:StringEquals": {
+          "dynamodb:EnclosingOperation": [
+            "TransactWriteItems"
+          ]
+        }
+      },
+      "classification": "UNNECESSARY",
+      "reason": "Unnecessary for current authority-read and monitoring scope; future business runtime separately reviewed."
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-??????",
+      "leadingKey": null,
+      "conditions": {},
+      "classification": "UNRESOLVED",
+      "reason": "Business entry cursor-secret prerequisite must be separated from minimal monitoring design."
+    }
+  ]
+}

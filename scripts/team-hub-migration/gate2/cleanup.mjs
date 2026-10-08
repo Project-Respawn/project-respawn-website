@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import {aws,identity,targets,read,save,E,count,guardCleanup} from './common.mjs';
+const gate=read(E+'/cleanup-gate.json');assert.equal(gate.ready,true);assert.equal(gate.evidenceCaptured,true);assert.ok(Date.now()-Date.parse(gate.at)<20*60e3,'Cleanup gate is stale');
+const who=await identity(),restores=read(E+'/restore-requests.json');assert.ok(!fs.existsSync(E+'/cleanup-requests.json'),'Prior cleanup attempt exists; inspect instead of retry');
+const verified=[];
+for(const t of targets){const table=(await aws('dynamodb','describe-table','--table-name',t.name)).Table;const passes=await count(t.name);guardCleanup(t,table,restores.requests.find(r=>r.name===t.name),passes);verified.push({...t,table,passes});}
+save('cleanup-precheck',{at:new Date().toISOString(),identity:who,tables:verified});
+const receipt={at:new Date().toISOString(),identity:who,requests:[],complete:false};save('cleanup-requests',receipt);
+try{for(const t of verified){if(t.table.DeletionProtectionEnabled){await aws('dynamodb','update-table','--table-name',t.name,'--no-deletion-protection-enabled');receipt.requests.push({name:t.name,arn:t.arn,action:'UpdateTable',deletionProtectionEnabled:false,at:new Date().toISOString()});save('cleanup-requests',receipt);const table=(await aws('dynamodb','describe-table','--table-name',t.name)).Table;assert.equal(table.TableId,t.table.TableId);assert.equal(table.DeletionProtectionEnabled,false);assert.equal(table.TableStatus,'ACTIVE');}const r=await aws('dynamodb','delete-table','--table-name',t.name);assert.equal(r.TableDescription.TableArn,t.arn);receipt.requests.push({name:t.name,arn:t.arn,tableId:t.table.TableId,action:'DeleteTable',at:new Date().toISOString(),status:r.TableDescription.TableStatus});save('cleanup-requests',receipt);}receipt.complete=true;save('cleanup-requests',receipt);console.log(JSON.stringify({deleteRequests:receipt.requests.filter(r=>r.action==='DeleteTable').length,temporaryProtectionDisables:receipt.requests.filter(r=>r.action==='UpdateTable').length,complete:true}));}catch(e){receipt.error=e.message;save('cleanup-requests',receipt);throw e;}

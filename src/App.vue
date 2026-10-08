@@ -3,7 +3,7 @@
     <Header v-if="!hidePublicLayout" />
     <div>
       <main>
-        <router-view />
+        <router-view :key="cognitoUser?.userId || 'signed-out'" />
       </main>
     </div>
     <Footer v-if="!hidePublicLayout" />
@@ -15,8 +15,10 @@
   import { useRoute } from 'vue-router'
   import Header from './components/Header/Header.vue'
   import Footer from './components/Footer/Footer.vue'
+  import { useAuth } from './composables/useAuth.js'
 
   const route = useRoute()
+  const { cognitoUser } = useAuth()
 
   const hidePublicLayout = computed(() => {
     if (route.path.startsWith('/dashboard')) {

@@ -24,7 +24,9 @@
 
       <section v-if="context.capabilities.canManageMembers">
         <h2>Coach and players</h2>
-        <form @submit.prevent="saveMember">
+        <form v-if="usingIndependentTeamHub" @submit.prevent="assignCandidateMember"><select v-model="memberRole"><option>COACH</option><option>PLAYER</option></select><label>Existing account email<input v-model.trim="candidateMemberEmail" type="email" required autocomplete="off" /></label><button :disabled="submitting">Assign member</button></form>
+        <div v-if="usingIndependentTeamHub"><label>Find an account by email prefix<input v-model.trim="candidateQuery" minlength="2" maxlength="100" /></label><button type="button" @click="searchCandidate">Search directory</button><ul><li v-for="account in candidateAccounts" :key="account.subject">{{ account.displayName }}</li></ul><p>Enter the exact existing account email above to assign. Directory results do not expose emails.</p></div>
+        <form v-if="!usingIndependentTeamHub" @submit.prevent="saveMember">
           <select v-model="memberRole"><option>COACH</option><option>PLAYER</option></select>
           <div class="account-search">
             <input v-model="memberQuery" type="search" autocomplete="off" maxlength="100" role="combobox" aria-autocomplete="list" aria-controls="member-account-results" :aria-expanded="searchOpen" :aria-activedescendant="activeSearchIndex >= 0 ? `member-result-${activeSearchIndex}` : undefined" placeholder="Search username or email" @focus="openSearchResults" @blur="closeSearchResults" @keydown.down.prevent="moveSearchSelection(1)" @keydown.up.prevent="moveSearchSelection(-1)" @keydown.enter.prevent="chooseActiveSearchResult" @keydown.esc="searchOpen = false" />
@@ -51,6 +53,7 @@
 </template>
 
 <script setup>
+import { usingIndependentTeamHub } from '../team-hub/services/migration-mode.mjs';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { getTeamHub, manageTeamMember, searchAssignableUsers, setTeamManager, setTeamRosterSlot, updateTeam } from './teamHub.service.js';
@@ -61,6 +64,9 @@ import TeamLogo from './TeamLogo.vue';
 const route = useRoute();
 const loading = ref(true), error = ref(''), context = ref(null);
 const managerEmail = ref(''), memberRole = ref('COACH');
+const candidateMemberEmail=ref(''), candidateQuery=ref(''), candidateAccounts=ref([]);
+const assignCandidateMember=()=>run(()=>manageTeamMember(memberAssignmentInput(context.value.team,candidateMemberEmail.value,memberRole.value)),()=>{candidateMemberEmail.value='';});
+async function searchCandidate(){try{candidateAccounts.value=(await searchAssignableUsers(candidateQuery.value,context.value.team.id)).items;}catch(reason){error.value=reason.message;}}
 const memberQuery = ref(''), accountResults = ref([]), selectedAccount = ref(null), memberSearching = ref(false), memberSearchError = ref(''), searchOpen = ref(false), activeSearchIndex = ref(-1);
 let searchTimer, searchRequest = 0;
 const teamName = ref(''), teamStatus = ref('ACTIVE');

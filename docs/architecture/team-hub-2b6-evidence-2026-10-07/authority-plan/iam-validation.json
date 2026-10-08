@@ -1,0 +1,358 @@
+{
+  "at": "2026-10-07T22:23:52.534Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "analyzer": [
+    {
+      "policy": "c2-read-identity.PROPOSAL",
+      "findings": []
+    },
+    {
+      "policy": "c2-command-identity.PROPOSAL",
+      "findings": []
+    },
+    {
+      "policy": "c1-initializer-policy.PROPOSAL",
+      "findings": []
+    }
+  ],
+  "checks": [
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "version": "installed",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "key": "CONTROL#AUTHORITY",
+      "expected": false,
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "version": "installed",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "key": "IDEMP#test",
+      "expected": false,
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "version": "installed",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "key": "TEAM#team:test",
+      "expected": false,
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "version": "installed",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "key": "CONTROL#AUTHORITY",
+      "expected": false,
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "version": "installed",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "key": "CONTROL#AUTHORITY",
+      "expected": false,
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "version": "installed",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Core-Ntgre-Journal",
+      "key": "CONTROL#AUTHORITY",
+      "expected": false,
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "version": "installed",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+      "key": null,
+      "expected": true,
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "version": "installed",
+      "action": "logs:PutResourcePolicy",
+      "resource": "*",
+      "key": null,
+      "expected": false,
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "version": "minimal-c2",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "key": "CONTROL#AUTHORITY",
+      "expected": true,
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "version": "minimal-c2",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "key": "IDEMP#test",
+      "expected": false,
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "version": "minimal-c2",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "key": "TEAM#team:test",
+      "expected": false,
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "version": "minimal-c2",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "key": "CONTROL#AUTHORITY",
+      "expected": false,
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "version": "minimal-c2",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "key": "CONTROL#AUTHORITY",
+      "expected": false,
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "version": "minimal-c2",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Core-Ntgre-Journal",
+      "key": "CONTROL#AUTHORITY",
+      "expected": false,
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "version": "minimal-c2",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+      "key": null,
+      "expected": true,
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "version": "minimal-c2",
+      "action": "logs:PutResourcePolicy",
+      "resource": "*",
+      "key": null,
+      "expected": false,
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "version": "installed",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "key": "CONTROL#AUTHORITY",
+      "expected": false,
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "version": "installed",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "key": "IDEMP#test",
+      "expected": false,
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "version": "installed",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "key": "TEAM#team:test",
+      "expected": false,
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "version": "installed",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "key": "CONTROL#AUTHORITY",
+      "expected": false,
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "version": "installed",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "key": "CONTROL#AUTHORITY",
+      "expected": false,
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "version": "installed",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Core-Ntgre-Journal",
+      "key": "CONTROL#AUTHORITY",
+      "expected": false,
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "version": "installed",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+      "key": null,
+      "expected": true,
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "version": "installed",
+      "action": "logs:PutResourcePolicy",
+      "resource": "*",
+      "key": null,
+      "expected": false,
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "version": "minimal-c2",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "key": "CONTROL#AUTHORITY",
+      "expected": true,
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "version": "minimal-c2",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "key": "IDEMP#test",
+      "expected": false,
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "version": "minimal-c2",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "key": "TEAM#team:test",
+      "expected": false,
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "version": "minimal-c2",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "key": "CONTROL#AUTHORITY",
+      "expected": false,
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "version": "minimal-c2",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "key": "CONTROL#AUTHORITY",
+      "expected": false,
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "version": "minimal-c2",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Core-Ntgre-Journal",
+      "key": "CONTROL#AUTHORITY",
+      "expected": false,
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "version": "minimal-c2",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+      "key": null,
+      "expected": true,
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "version": "minimal-c2",
+      "action": "logs:PutResourcePolicy",
+      "resource": "*",
+      "key": null,
+      "expected": false,
+      "decision": "explicitDeny",
+      "missingContext": []
+    }
+  ],
+  "awsWrites": 0,
+  "complete": true
+}

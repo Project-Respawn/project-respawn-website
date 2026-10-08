@@ -19,7 +19,7 @@
 // MAIN VIEW
 // ============================================================
 
-import EsportsHome from './views/EsportsHome.vue';
+const EsportsHome = () => import('./views/EsportsHome.vue');
 
 
 // ============================================================

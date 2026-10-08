@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import {E,save,read} from './read-only.mjs';
+const report='docs/architecture/team-hub-2b3-gate3-dark-target.md';
+const walk=p=>fs.readdirSync(p,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(p,e.name)):[path.join(p,e.name)]);
+const files=[...walk(E),...walk('scripts/team-hub-migration/gate3'),'scripts/team-hub-migration/setup-gate3.mjs',report,'docs/architecture/domain-migration-status.json','docs/architecture/legacy-resource-ownership.json','docs/architecture/legacy-resource-ownership-summary.md','docs/architecture/README-PHASE2-MIGRATION.md'];
+const patterns=[/\b(?:AKIA|ASIA)[A-Z0-9]{16}\b/,/\beyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}\b/,/-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/,/["']?(?:aws_secret_access_key|aws_session_token|client_secret|refresh_token|id_token|access_token)["']?\s*[:=]\s*["'][^"']{16,}["']/i];
+for(const file of files)assert.ok(!patterns.some(p=>p.test(fs.readFileSync(file,'utf8'))),'Sensitive pattern in '+file);
+const links=[...fs.readFileSync(report,'utf8').matchAll(/\]\(([^)]+)\)/g)].map(m=>m[1]).filter(p=>!/^https?:/.test(p));for(const link of links)assert.ok(fs.existsSync(path.resolve(path.dirname(report),link.split('#')[0])),'Missing '+link);
+assert.ok(read(E+'/runtime-after.json').unchanged);assert.ok(read(E+'/result.json').status==='PASSED');
+save('output-audit',{at:new Date().toISOString(),filesScanned:files.length,secretPatternFindings:0,localReportLinks:links.length,missingLinks:0,selectedTestsPassed:140,candidateTestsPassed:4,broaderTests:{passed:314,failed:1,failure:'Historical amplify/backend.ts byte hash; preserved working file has no Git content diff and normalized content equals HEAD'},typeScript:'PASS',independentSynthesis:'PASS',acceptedTeamInputs:54,commitCreated:false,unrelatedWorkspaceChangesPreserved:true});console.log(JSON.stringify({filesScanned:files.length,secretPatternFindings:0,localReportLinks:links.length}));

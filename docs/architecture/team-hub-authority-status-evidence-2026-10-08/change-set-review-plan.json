@@ -1,0 +1,100 @@
+{
+  "candidateSha256": "30ac97e5b48f3867268403c13766e9439aa2e0821d87585a685cfdfae1b997d1",
+  "status": "PLAN_ONLY_NO_AWS_CHANGE_SET_CREATED",
+  "target": {
+    "account": "058264289478",
+    "region": "eu-north-1",
+    "productStack": "ProjectRespawn-TeamHub-Ntgre",
+    "securityStack": "ProjectRespawn-TeamHub-Ntgre-ReadProofSecurity",
+    "api": "t54b88casf"
+  },
+  "preflight": [
+    "Verify preserved files and every source hash; never rebuild for execution",
+    "Verify approved security operator and restricted product caller",
+    "Refresh actual installed D1 templates, runtime code, C2 policies/boundaries and exact authority LEGACY_WRITER epoch/version 1",
+    "Recheck protected source tables/backups and unchanged domains; stop for drift",
+    "Verify existing API/Read integration/JWT authorizer/Lambda invocation permission; no new API, Lambda or identity pool"
+  ],
+  "security": {
+    "changeSetName": "team-hub-authority-status-security-20261008",
+    "expected": {
+      "add": [],
+      "modify": [
+        "ExecutionBoundary",
+        "ExecutionRole",
+        "PreparationCaller"
+      ],
+      "delete": [],
+      "replace": []
+    },
+    "permissionDelta": {
+      "runtime": "NONE",
+      "deployment": "Exact new runtime ZIP replaces historical pre-D1 ZIP; exact product URL/object added; installed D1 rollback ZIP retained"
+    },
+    "rollback": "Restore exact accepted D1 security only after product has returned to D1 or if product never changed"
+  },
+  "publication": {
+    "authorizedNow": false,
+    "template": {
+      "key": "team-hub/as/5a2d99f4919fd07c619f483e556a0464b9cbaad0be00665201438b0f4ec7d0e9.template.json",
+      "sha256": "5a2d99f4919fd07c619f483e556a0464b9cbaad0be00665201438b0f4ec7d0e9"
+    },
+    "runtime": {
+      "key": "team-hub/as/cd58cc3553867f268af79bc9c710fe35e1bab07882d39b423e05b39626a7eedd.zip",
+      "sha256": "cd58cc3553867f268af79bc9c710fe35e1bab07882d39b423e05b39626a7eedd"
+    },
+    "bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+    "encryption": "Explicit AES256/SSE-S3; verify encryption and checksums; never add KMS permission"
+  },
+  "product": {
+    "changeSetName": "team-hub-authority-status-product-20261008",
+    "templateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/team-hub/as/5a2d99f4919fd07c619f483e556a0464b9cbaad0be00665201438b0f4ec7d0e9.template.json",
+    "executionRole": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+    "expected": {
+      "add": [
+        "AuthorityStatusRoute",
+        "AuthorityStatusInvokePermission"
+      ],
+      "modify": [
+        "ParityReadFunction.Code"
+      ],
+      "delete": [],
+      "replace": [],
+      "resources": 42
+    },
+    "rollback": "Retain installed D1 code/template references; revert only Read Code and remove only AuthorityStatusRoute and AuthorityStatusInvokePermission. No data or authority rollback."
+  },
+  "inspection": [
+    "Retrieve all change-set pages and property-level details",
+    "Require product Add AuthorityStatusRoute and AuthorityStatusInvokePermission plus Modify ParityReadFunction Code only; new invoke permission exact existing API $default GET /v1/authority, principal apigateway.amazonaws.com, source account 058264289478",
+    "Require security exactly ExecutionBoundary/ExecutionRole/PreparationCaller artifact-reference changes",
+    "Stop on any replacement including conditional/dynamic, deletion, nested effect, runtime IAM delta, Cognito/Core/Tournament/Legacy/production effect",
+    "Retain exact installed D1 rollback access; re-run effective IAM and policy-size gates after security installation"
+  ],
+  "execution": {
+    "authorizedNow": false,
+    "separateAuthorizationRequired": true,
+    "rollbackEnabled": true,
+    "apiInput": {
+      "DisableRollback": false
+    },
+    "order": [
+      "Inspected security update under approved security ownership",
+      "Publish only exact approved artifacts with checksum/encryption proof",
+      "Inspect then separately authorized restricted product update",
+      "Live acceptance; no frontend activation"
+    ],
+    "onFailure": "Allow rollback, collect events and stop. Do not broaden IAM or retry automatically."
+  },
+  "liveAcceptance": [
+    "Valid existing Admin and ordinary Ntgre access tokens return sanitized real LEGACY_WRITER epoch/version 1 with no-store",
+    "Missing/forged/expired/wrong issuer/wrong client/ID tokens deny without data access",
+    "Browser-supplied mode/epoch/query/body rejected; real control unchanged",
+    "Read/malformed-authority failures only through safe isolated tests, never corrupt live control",
+    "All 13 normal business routes remain denied; Command/Preview/D1 non-status responses unchanged",
+    "Correlate status 200/401-or-Gateway-denial/400 and allowed failure proofs with request IDs, Lambda EMF and API metrics; Gateway-rejected JWT does not imply Lambda custom counter",
+    "Prove fresh frontend status handling and stale/missing/mismatched rejection without activating website",
+    "Recheck exact real authority, zero business rows, D1/C2 preservation, protected domains and runtime IAM"
+  ],
+  "awsWrites": 0
+}

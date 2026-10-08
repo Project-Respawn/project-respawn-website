@@ -1,0 +1,3923 @@
+{
+  "at": "2026-10-07T21:17:19.155Z",
+  "inputs": [
+    {
+      "path": "docs/architecture/team-hub-2b6-evidence-2026-10-07/iam-coverage.json",
+      "sha256": "49965bcaaa16fd869ce6d7dae77bd4d4e104b26e1c50b21feb673189117c021c"
+    },
+    {
+      "path": "docs/architecture/team-hub-2b6-evidence-2026-10-07/coverage-refresh.json",
+      "sha256": "d44b4d8eab754ed3628894d034fe8d01116aa92bc5eee479ffb33e2c6ad1e7a8"
+    },
+    {
+      "path": "docs/architecture/team-hub-2b6-evidence-2026-10-07/edge-refresh.json",
+      "sha256": "07a8c0140ea9fe5312d9038ad2518f6d46140b062a66aae9508ba02b74821147"
+    },
+    {
+      "path": "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/coverage.json",
+      "sha256": "2b43c2c0f612e8dde7f8d5293e76514b69fcfb217e74fd8dd5afd179b3cd2075"
+    }
+  ],
+  "principals": [
+    {
+      "arn": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-adminusermanagementlambda-OIbycFZWXsdJ",
+      "kind": "ROLE",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "lambda.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "administrationCapability": false,
+      "grantStatementDigests": [
+        "f067aa4c1ab91a58bc4b49c5c4e5f13098c30cd7cbd58f710e3830e6c18d48c2"
+      ],
+      "actions": [
+        "appsync:GraphQL"
+      ],
+      "entryPaths": [
+        "appsync:"
+      ],
+      "priorClassification": "POSSIBLE_BUSINESS_WRITER",
+      "currentGrantInterpretation": "Conservative potential authority; conditions/denies/boundaries/session policies may narrow it. Not an effective-permission simulation.",
+      "proofRequired": "ACTUAL_PATH_DENIAL_OR_REVIEWED_NO_BUSINESS_PATH_EVIDENCE",
+      "actualInstalledFenceProof": "PENDING",
+      "policyAdministrationRisk": "Retain provider/deployment path review; never grant extra access for testing"
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-AmplifyManagedTableIsComp-i528Yre6Bga7",
+      "kind": "ROLE",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "lambda.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "administrationCapability": false,
+      "grantStatementDigests": [
+        "3baf2ba56effa730fd3d6e7c30c69a45fb4c7a4da452f84449bb87c29ead8c91"
+      ],
+      "actions": [
+        "dynamodb:DeleteTable",
+        "dynamodb:UpdateTable"
+      ],
+      "entryPaths": [
+        "dynamodb:"
+      ],
+      "priorClassification": "GENERATED_INTERNAL",
+      "currentGrantInterpretation": "Conservative potential authority; conditions/denies/boundaries/session policies may narrow it. Not an effective-permission simulation.",
+      "proofRequired": "ACTUAL_PATH_DENIAL_OR_REVIEWED_NO_BUSINESS_PATH_EVIDENCE",
+      "actualInstalledFenceProof": "PENDING",
+      "policyAdministrationRisk": "Retain provider/deployment path review; never grant extra access for testing"
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-AmplifyManagedTableOnEven-QvbafGiZcl6c",
+      "kind": "ROLE",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "lambda.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "administrationCapability": false,
+      "grantStatementDigests": [
+        "3baf2ba56effa730fd3d6e7c30c69a45fb4c7a4da452f84449bb87c29ead8c91"
+      ],
+      "actions": [
+        "dynamodb:DeleteTable",
+        "dynamodb:UpdateTable"
+      ],
+      "entryPaths": [
+        "dynamodb:"
+      ],
+      "priorClassification": "GENERATED_INTERNAL",
+      "currentGrantInterpretation": "Conservative potential authority; conditions/denies/boundaries/session policies may narrow it. Not an effective-permission simulation.",
+      "proofRequired": "ACTUAL_PATH_DENIAL_OR_REVIEWED_NO_BUSINESS_PATH_EVIDENCE",
+      "actualInstalledFenceProof": "PENDING",
+      "policyAdministrationRisk": "Retain provider/deployment path review; never grant extra access for testing"
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-FnSubmitInvestorAccessReq-D8KMAbW9Y6qD",
+      "kind": "ROLE",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "appsync.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "administrationCapability": false,
+      "grantStatementDigests": [
+        "07f03595654b5cf01a5211d34f51a7b5bc84d1b8a9b5fca5a9eea0d9ae0db28b"
+      ],
+      "actions": [
+        "lambda:InvokeFunction"
+      ],
+      "entryPaths": [
+        "lambda:"
+      ],
+      "priorClassification": "GENERATED_INTERNAL",
+      "currentGrantInterpretation": "Conservative potential authority; conditions/denies/boundaries/session policies may narrow it. Not an effective-permission simulation.",
+      "proofRequired": "ACTUAL_PATH_DENIAL_OR_REVIEWED_NO_BUSINESS_PATH_EVIDENCE",
+      "actualInstalledFenceProof": "PENDING",
+      "policyAdministrationRisk": "Retain provider/deployment path review; never grant extra access for testing"
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "kind": "ROLE",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "lambda.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "administrationCapability": false,
+      "grantStatementDigests": [
+        "f067aa4c1ab91a58bc4b49c5c4e5f13098c30cd7cbd58f710e3830e6c18d48c2",
+        "827bcca3994396da9673fe9f92e4cc6f9948e433ffa4f9c4584110921d048c54",
+        "f63f68a0bdf5d98231f6e66fcc05e31d6d782573459f8bef6f655b15696cd69c"
+      ],
+      "actions": [
+        "appsync:GraphQL",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject"
+      ],
+      "entryPaths": [
+        "dynamodb:",
+        "s3:",
+        "appsync:"
+      ],
+      "priorClassification": "RETAINED_IN_REVIEW",
+      "currentGrantInterpretation": "Conservative potential authority; conditions/denies/boundaries/session policies may narrow it. Not an effective-permission simulation.",
+      "proofRequired": "ACTUAL_PATH_DENIAL_OR_REVIEWED_NO_BUSINESS_PATH_EVIDENCE",
+      "actualInstalledFenceProof": "PENDING",
+      "policyAdministrationRisk": "Retain provider/deployment path review; never grant extra access for testing"
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/AWSAmplifyDomainRole-Z09658113PMRCPOCQ18QP",
+      "kind": "ROLE",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "amplify.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "administrationCapability": true,
+      "grantStatementDigests": [
+        "9f24f7ef4c96c5245e2501e6642e8948944e7d72f56001abc5dbd4e10325d62d",
+        "6922e7776efc42ad93dfdbb962575a6d455a4cb1cf409b1dd04af0376388c302",
+        "1a6111f5c8d4d66d56bcfa8b8c0671e8328ff75df870e30ed299ab7ce5c93b37",
+        "24c67d9c9e1e5e3184eeba9fd548231d2c6ed056ed43c53180d87960cef56cbb"
+      ],
+      "actions": [
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "appsync:GraphQL",
+        "lambda:InvokeFunction",
+        "dynamodb:DeleteTable",
+        "dynamodb:UpdateTable",
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject"
+      ],
+      "entryPaths": [
+        "dynamodb:",
+        "s3:",
+        "appsync:",
+        "lambda:"
+      ],
+      "priorClassification": "PRIVILEGED_MANUAL",
+      "currentGrantInterpretation": "Conservative potential authority; conditions/denies/boundaries/session policies may narrow it. Not an effective-permission simulation.",
+      "proofRequired": "ACTUAL_PATH_DENIAL_OR_REVIEWED_NO_BUSINESS_PATH_EVIDENCE",
+      "actualInstalledFenceProof": "PENDING",
+      "policyAdministrationRisk": "Custody and change audit required; data deny is not immutable against policy administrators"
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/aws-service-role/sso.amazonaws.com/AWSServiceRoleForSSO",
+      "kind": "ROLE",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "sso.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "administrationCapability": true,
+      "grantStatementDigests": [],
+      "actions": [],
+      "entryPaths": [],
+      "priorClassification": "PRIVILEGED_MANUAL",
+      "currentGrantInterpretation": "Conservative potential authority; conditions/denies/boundaries/session policies may narrow it. Not an effective-permission simulation.",
+      "proofRequired": "REVALIDATE_NO_BUSINESS_WRITE_PATH",
+      "actualInstalledFenceProof": "PENDING",
+      "policyAdministrationRisk": "Custody and change audit required; data deny is not immutable against policy administrators"
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/cdk-hnb659fds-cfn-exec-role-058264289478-eu-north-1",
+      "kind": "ROLE",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "cloudformation.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "administrationCapability": true,
+      "grantStatementDigests": [
+        "1676d2f7e7bca5c3998b0cf0f9dbee31bb4a3f93427993086b757e00c1583af5"
+      ],
+      "actions": [
+        "dynamodb:GetItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:BatchGetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PartiQLSelect",
+        "dynamodb:PartiQLInsert",
+        "dynamodb:PartiQLUpdate",
+        "dynamodb:PartiQLDelete",
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "appsync:GraphQL",
+        "lambda:InvokeFunction",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:DeleteTable",
+        "dynamodb:UpdateTable",
+        "dynamodb:ExportTableToPointInTime"
+      ],
+      "entryPaths": [
+        "dynamodb:",
+        "s3:",
+        "appsync:",
+        "lambda:"
+      ],
+      "priorClassification": "PRIVILEGED_MANUAL",
+      "currentGrantInterpretation": "Conservative potential authority; conditions/denies/boundaries/session policies may narrow it. Not an effective-permission simulation.",
+      "proofRequired": "ACTUAL_PATH_DENIAL_OR_REVIEWED_NO_BUSINESS_PATH_EVIDENCE",
+      "actualInstalledFenceProof": "PENDING",
+      "policyAdministrationRisk": "Custody and change audit required; data deny is not immutable against policy administrators"
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/cdk-hnb659fds-deploy-role-058264289478-eu-north-1",
+      "kind": "ROLE",
+      "trust": {
+        "Version": "2008-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": "sts:AssumeRole",
+            "Condition": {
+              "Null": {
+                "sts:ExternalId": "true"
+              }
+            }
+          },
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": "sts:TagSession"
+          }
+        ]
+      },
+      "boundary": null,
+      "administrationCapability": false,
+      "grantStatementDigests": [
+        "4016838705dee0b742e9340620962d6a64615767eea8639d9f041fd3fa05f70a"
+      ],
+      "actions": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject"
+      ],
+      "entryPaths": [
+        "s3:"
+      ],
+      "priorClassification": "DEAD",
+      "currentGrantInterpretation": "Conservative potential authority; conditions/denies/boundaries/session policies may narrow it. Not an effective-permission simulation.",
+      "proofRequired": "ACTUAL_PATH_DENIAL_OR_REVIEWED_NO_BUSINESS_PATH_EVIDENCE",
+      "actualInstalledFenceProof": "PENDING",
+      "policyAdministrationRisk": "Retain provider/deployment path review; never grant extra access for testing"
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/cdk-hnb659fds-lookup-role-058264289478-eu-north-1",
+      "kind": "ROLE",
+      "trust": {
+        "Version": "2008-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": "sts:AssumeRole",
+            "Condition": {
+              "Null": {
+                "sts:ExternalId": "true"
+              }
+            }
+          },
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": "sts:TagSession"
+          }
+        ]
+      },
+      "boundary": null,
+      "administrationCapability": false,
+      "grantStatementDigests": [
+        "f98d316321b44a54157095da81c6ca0bcd8e9d0cbeaba4dfa5575f9636621efa",
+        "434e3467f15e08e5b81916d6aa8070489f89ef183c407a20a1ace61c26a43205"
+      ],
+      "actions": [
+        "dynamodb:GetItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:BatchGetItem",
+        "dynamodb:PartiQLSelect",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "s3:GetObject"
+      ],
+      "entryPaths": [
+        "dynamodb:",
+        "s3:"
+      ],
+      "priorClassification": "RETAINED_IN_REVIEW",
+      "currentGrantInterpretation": "Conservative potential authority; conditions/denies/boundaries/session policies may narrow it. Not an effective-permission simulation.",
+      "proofRequired": "REVALIDATE_NO_BUSINESS_WRITE_PATH",
+      "actualInstalledFenceProof": "PENDING",
+      "policyAdministrationRisk": "Retain provider/deployment path review; never grant extra access for testing"
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/PlayerChampionPoolEn5c689d-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "kind": "ROLE",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "appsync.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "administrationCapability": false,
+      "grantStatementDigests": [
+        "a5c0e92ea433102c56140e6a8e925d07462073615814e6691e51cc2882b44d0f"
+      ],
+      "actions": [
+        "dynamodb:GetItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:BatchGetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+      ],
+      "entryPaths": [
+        "dynamodb:"
+      ],
+      "priorClassification": "GENERATED_INTERNAL",
+      "currentGrantInterpretation": "Conservative potential authority; conditions/denies/boundaries/session policies may narrow it. Not an effective-permission simulation.",
+      "proofRequired": "ACTUAL_PATH_DENIAL_OR_REVIEWED_NO_BUSINESS_PATH_EVIDENCE",
+      "actualInstalledFenceProof": "PENDING",
+      "policyAdministrationRisk": "Retain provider/deployment path review; never grant extra access for testing"
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Execution",
+      "kind": "ROLE",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "cloudformation.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": {
+        "PermissionsBoundaryType": "Policy",
+        "PermissionsBoundaryArn": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Ntgre-ExecutionBoundary"
+      },
+      "administrationCapability": true,
+      "grantStatementDigests": [],
+      "actions": [],
+      "entryPaths": [],
+      "priorClassification": "RETAINED_IN_REVIEW",
+      "currentGrantInterpretation": "Conservative potential authority; conditions/denies/boundaries/session policies may narrow it. Not an effective-permission simulation.",
+      "proofRequired": "REVALIDATE_NO_BUSINESS_WRITE_PATH",
+      "actualInstalledFenceProof": "PENDING",
+      "policyAdministrationRisk": "Custody and change audit required; data deny is not immutable against policy administrators"
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "kind": "ROLE",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "cloudformation.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": {
+        "PermissionsBoundaryType": "Policy",
+        "PermissionsBoundaryArn": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofExecutionBoundary"
+      },
+      "administrationCapability": true,
+      "grantStatementDigests": [],
+      "actions": [],
+      "entryPaths": [],
+      "priorClassification": "PRIVILEGED_MANUAL",
+      "currentGrantInterpretation": "Conservative potential authority; conditions/denies/boundaries/session policies may narrow it. Not an effective-permission simulation.",
+      "proofRequired": "REVALIDATE_NO_BUSINESS_WRITE_PATH",
+      "actualInstalledFenceProof": "PENDING",
+      "policyAdministrationRisk": "Custody and change audit required; data deny is not immutable against policy administrators"
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-CfnExecution",
+      "kind": "ROLE",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "cloudformation.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": {
+        "PermissionsBoundaryType": "Policy",
+        "PermissionsBoundaryArn": "arn:aws:iam::058264289478:policy/ProjectRespawn-Tournaments-Ntgre-ExecutionBoundary"
+      },
+      "administrationCapability": true,
+      "grantStatementDigests": [],
+      "actions": [],
+      "entryPaths": [],
+      "priorClassification": "PRIVILEGED_MANUAL",
+      "currentGrantInterpretation": "Conservative potential authority; conditions/denies/boundaries/session policies may narrow it. Not an effective-permission simulation.",
+      "proofRequired": "REVALIDATE_NO_BUSINESS_WRITE_PATH",
+      "actualInstalledFenceProof": "PENDING",
+      "policyAdministrationRisk": "Custody and change audit required; data deny is not immutable against policy administrators"
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/TeamIAMRoleb6b1b2-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "kind": "ROLE",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "appsync.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "administrationCapability": false,
+      "grantStatementDigests": [
+        "237192334597f5c6c3af3d8071fac60aa34ec58f83284bb65279a2a817caf394"
+      ],
+      "actions": [
+        "dynamodb:GetItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:BatchGetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+      ],
+      "entryPaths": [
+        "dynamodb:"
+      ],
+      "priorClassification": "GENERATED_INTERNAL",
+      "currentGrantInterpretation": "Conservative potential authority; conditions/denies/boundaries/session policies may narrow it. Not an effective-permission simulation.",
+      "proofRequired": "ACTUAL_PATH_DENIAL_OR_REVIEWED_NO_BUSINESS_PATH_EVIDENCE",
+      "actualInstalledFenceProof": "PENDING",
+      "policyAdministrationRisk": "Retain provider/deployment path review; never grant extra access for testing"
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/TeamMembershipIAMRolb0882a-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "kind": "ROLE",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "appsync.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "administrationCapability": false,
+      "grantStatementDigests": [
+        "d204f5b724f1e4434acda08b41b1f8430a76c0f309fb1ef3dadf4e337e21c400"
+      ],
+      "actions": [
+        "dynamodb:GetItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:BatchGetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+      ],
+      "entryPaths": [
+        "dynamodb:"
+      ],
+      "priorClassification": "GENERATED_INTERNAL",
+      "currentGrantInterpretation": "Conservative potential authority; conditions/denies/boundaries/session policies may narrow it. Not an effective-permission simulation.",
+      "proofRequired": "ACTUAL_PATH_DENIAL_OR_REVIEWED_NO_BUSINESS_PATH_EVIDENCE",
+      "actualInstalledFenceProof": "PENDING",
+      "policyAdministrationRisk": "Retain provider/deployment path review; never grant extra access for testing"
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/TeamRosterSlotIAMRol236c3d-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "kind": "ROLE",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "appsync.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "administrationCapability": false,
+      "grantStatementDigests": [
+        "432fdbb37ea8ff99f8af0840ab88d245a6413e1d7f41f23197f794f13fd91b91"
+      ],
+      "actions": [
+        "dynamodb:GetItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:BatchGetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+      ],
+      "entryPaths": [
+        "dynamodb:"
+      ],
+      "priorClassification": "GENERATED_INTERNAL",
+      "currentGrantInterpretation": "Conservative potential authority; conditions/denies/boundaries/session policies may narrow it. Not an effective-permission simulation.",
+      "proofRequired": "ACTUAL_PATH_DENIAL_OR_REVIEWED_NO_BUSINESS_PATH_EVIDENCE",
+      "actualInstalledFenceProof": "PENDING",
+      "policyAdministrationRisk": "Retain provider/deployment path review; never grant extra access for testing"
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:user/RavenTest",
+      "kind": "USER",
+      "trust": null,
+      "boundary": null,
+      "administrationCapability": true,
+      "grantStatementDigests": [
+        "1676d2f7e7bca5c3998b0cf0f9dbee31bb4a3f93427993086b757e00c1583af5"
+      ],
+      "actions": [
+        "dynamodb:GetItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:BatchGetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PartiQLSelect",
+        "dynamodb:PartiQLInsert",
+        "dynamodb:PartiQLUpdate",
+        "dynamodb:PartiQLDelete",
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "appsync:GraphQL",
+        "lambda:InvokeFunction",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:DeleteTable",
+        "dynamodb:UpdateTable",
+        "dynamodb:ExportTableToPointInTime"
+      ],
+      "entryPaths": [
+        "dynamodb:",
+        "s3:",
+        "appsync:",
+        "lambda:"
+      ],
+      "priorClassification": "PRIVILEGED_MANUAL",
+      "currentGrantInterpretation": "Conservative potential authority; conditions/denies/boundaries/session policies may narrow it. Not an effective-permission simulation.",
+      "proofRequired": "ACTUAL_PATH_DENIAL_OR_REVIEWED_NO_BUSINESS_PATH_EVIDENCE",
+      "actualInstalledFenceProof": "PENDING",
+      "policyAdministrationRisk": "Custody and change audit required; data deny is not immutable against policy administrators"
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:user/Zmar",
+      "kind": "USER",
+      "trust": null,
+      "boundary": null,
+      "administrationCapability": true,
+      "grantStatementDigests": [
+        "1676d2f7e7bca5c3998b0cf0f9dbee31bb4a3f93427993086b757e00c1583af5",
+        "62f32fe1c0b35bbfa17963aab83f51fc2a6e54c94a01c39811fd0a2b3bb67d0b"
+      ],
+      "actions": [
+        "dynamodb:GetItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:BatchGetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PartiQLSelect",
+        "dynamodb:PartiQLInsert",
+        "dynamodb:PartiQLUpdate",
+        "dynamodb:PartiQLDelete",
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "appsync:GraphQL",
+        "lambda:InvokeFunction",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:DeleteTable",
+        "dynamodb:UpdateTable",
+        "dynamodb:ExportTableToPointInTime"
+      ],
+      "entryPaths": [
+        "dynamodb:",
+        "s3:",
+        "appsync:",
+        "lambda:"
+      ],
+      "priorClassification": "PRIVILEGED_MANUAL",
+      "currentGrantInterpretation": "Conservative potential authority; conditions/denies/boundaries/session policies may narrow it. Not an effective-permission simulation.",
+      "proofRequired": "ACTUAL_PATH_DENIAL_OR_REVIEWED_NO_BUSINESS_PATH_EVIDENCE",
+      "actualInstalledFenceProof": "PENDING",
+      "policyAdministrationRisk": "Custody and change audit required; data deny is not immutable against policy administrators"
+    }
+  ],
+  "resolvers": [
+    {
+      "type": "Query",
+      "field": "getPlayerChampionPoolEntry",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "5pckndzh5zbhbfhch6v3nau3xu",
+          "jgyr3dbbtzds5hkjfzmdimwimi",
+          "66bufnzhfna47pqcbsllxiag6e"
+        ]
+      },
+      "requestSha256": "3b5082ffe1b93db7415a6d1db09b211fb07bf871ff3fe7aee7a3302749fc2c88",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "5pckndzh5zbhbfhch6v3nau3xu",
+        "jgyr3dbbtzds5hkjfzmdimwimi",
+        "66bufnzhfna47pqcbsllxiag6e"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "PlayerChampionPoolEntryTable"
+      ],
+      "path": "READ",
+      "requiredProof": "READ_BEHAVIOR_PRESERVED_IN_FROZEN",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Query",
+      "field": "getTeam",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "u5rntlqoivfutemedbrszz3vhq",
+          "al42527zqrczlod4qbqpise634",
+          "xporl4wkpvhxhi4m5ed3dk72mi"
+        ]
+      },
+      "requestSha256": "e6f49ef61b37de0ed68c156f48f8096e1b520e900e90a6fe8c23eec69cc23de5",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "u5rntlqoivfutemedbrszz3vhq",
+        "al42527zqrczlod4qbqpise634",
+        "xporl4wkpvhxhi4m5ed3dk72mi"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "TeamTable"
+      ],
+      "path": "READ",
+      "requiredProof": "READ_BEHAVIOR_PRESERVED_IN_FROZEN",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Query",
+      "field": "getTeamMembership",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "vbtwqaucx5ev7nhu2hrvlpsxq4",
+          "bvjmw5dfbfdcbfy4d3v2ohgpfq",
+          "ceaupb67obfy7kaajwvjhr33rq"
+        ]
+      },
+      "requestSha256": "636c310cf100ab628f54ea345e69c615b1b6dcdd6a4c49863cfccedab249cbb0",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "vbtwqaucx5ev7nhu2hrvlpsxq4",
+        "bvjmw5dfbfdcbfy4d3v2ohgpfq",
+        "ceaupb67obfy7kaajwvjhr33rq"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "TeamMembershipTable"
+      ],
+      "path": "READ",
+      "requiredProof": "READ_BEHAVIOR_PRESERVED_IN_FROZEN",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Query",
+      "field": "getTeamRosterSlot",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "qiqc7f6tdve73hmzfw53aax35y",
+          "bgvm7oobsnbvblgvje5vomxbsq",
+          "qrfxzprbobgdlnjs2phjirviba"
+        ]
+      },
+      "requestSha256": "982e9e00ea91852220a31e09a219a67680c6b5624699f2069f16f89c4be9e465",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "qiqc7f6tdve73hmzfw53aax35y",
+        "bgvm7oobsnbvblgvje5vomxbsq",
+        "qrfxzprbobgdlnjs2phjirviba"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "TeamRosterSlotTable"
+      ],
+      "path": "READ",
+      "requiredProof": "READ_BEHAVIOR_PRESERVED_IN_FROZEN",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Query",
+      "field": "listPlayerChampionPoolEntries",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "jlghaqtxqjekho3n3qdmo2j77m",
+          "6q73scpmjvdjvlulekdmftpugi",
+          "jevzeegtdbad3fzke3rdjiqjbe"
+        ]
+      },
+      "requestSha256": "8d312bb3d734edb2388216a273846ea071b640340858230890a93a08fe31aa95",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "jlghaqtxqjekho3n3qdmo2j77m",
+        "6q73scpmjvdjvlulekdmftpugi",
+        "jevzeegtdbad3fzke3rdjiqjbe"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "PlayerChampionPoolEntryTable"
+      ],
+      "path": "READ",
+      "requiredProof": "READ_BEHAVIOR_PRESERVED_IN_FROZEN",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Query",
+      "field": "listPlayerChampionPoolEntryByMembershipId",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "wyughbluljgs7pqab26wz4zf4i",
+          "phj7o6m5kjek7d3k5cy4beqwde",
+          "fs3lmhkdavboxlwjws3jvbkmoy"
+        ]
+      },
+      "requestSha256": "9d0ae72ba3a37b0b6b33db5c5996678391519da602d5c447324749685e286bde",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "wyughbluljgs7pqab26wz4zf4i",
+        "phj7o6m5kjek7d3k5cy4beqwde",
+        "fs3lmhkdavboxlwjws3jvbkmoy"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "PlayerChampionPoolEntryTable"
+      ],
+      "path": "READ",
+      "requiredProof": "READ_BEHAVIOR_PRESERVED_IN_FROZEN",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Query",
+      "field": "listPlayerChampionPoolEntryByTeamId",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "2juiqmhsrzgkze2xcyb7mzkcge",
+          "kinx3d2bhvc7bcpofyprooxksy",
+          "jzetqmo5dnge3cybidicvazyfy"
+        ]
+      },
+      "requestSha256": "236245b8e98a8e3c3c86380555a1c0a3981014ba9787ba88f78ea6836c3c8528",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "2juiqmhsrzgkze2xcyb7mzkcge",
+        "kinx3d2bhvc7bcpofyprooxksy",
+        "jzetqmo5dnge3cybidicvazyfy"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "PlayerChampionPoolEntryTable"
+      ],
+      "path": "READ",
+      "requiredProof": "READ_BEHAVIOR_PRESERVED_IN_FROZEN",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Query",
+      "field": "listTeamBySlug",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "i2vzi73dqjelfncyfyt3lwln2u",
+          "sah4dkxbsjaifhdovjqzwi7bre",
+          "zvop5uwvuvctxp6245fxzvov64"
+        ]
+      },
+      "requestSha256": "0d819053eb257458633c8f63b567b10bec483c67061240e850b18b7c549daa2c",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "i2vzi73dqjelfncyfyt3lwln2u",
+        "sah4dkxbsjaifhdovjqzwi7bre",
+        "zvop5uwvuvctxp6245fxzvov64"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "TeamTable"
+      ],
+      "path": "READ",
+      "requiredProof": "READ_BEHAVIOR_PRESERVED_IN_FROZEN",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Query",
+      "field": "listTeamByStatus",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "avr7jepsurblpm5f7onyrvbffu",
+          "aqkte3zr6vg5pp2rqt2ku3aqme",
+          "md3i7bdfg5hcbpdx6stqiv5oiq"
+        ]
+      },
+      "requestSha256": "194bb75dbfffc47a3942ce4a4c0b8a62f45fb76cfa428f9e9aea8649dbeea949",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "avr7jepsurblpm5f7onyrvbffu",
+        "aqkte3zr6vg5pp2rqt2ku3aqme",
+        "md3i7bdfg5hcbpdx6stqiv5oiq"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "TeamTable"
+      ],
+      "path": "READ",
+      "requiredProof": "READ_BEHAVIOR_PRESERVED_IN_FROZEN",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Query",
+      "field": "listTeamMembershipByTeamId",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "cd3s4laagneilivpwhvqdqd5xa",
+          "sll6bcs2inakdh5546ex6pfu74",
+          "dmwzkroo2fbc5eizissybohm2y"
+        ]
+      },
+      "requestSha256": "5732b49b0aa77c02b2bef2699f3746771f243c06da6eef64ed056ef02f039a54",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "cd3s4laagneilivpwhvqdqd5xa",
+        "sll6bcs2inakdh5546ex6pfu74",
+        "dmwzkroo2fbc5eizissybohm2y"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "TeamMembershipTable"
+      ],
+      "path": "READ",
+      "requiredProof": "READ_BEHAVIOR_PRESERVED_IN_FROZEN",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Query",
+      "field": "listTeamMembershipByUserId",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "rdmax4lw4faatp2n6icq7gij4u",
+          "67guecekl5gpfmswpu3wh7v4pe",
+          "od77khw425dwzbjj5cg3iz3b4i"
+        ]
+      },
+      "requestSha256": "42cf421f7ebed3940e75025bbba134bb7630d637338c692602ac9cd5b08e6775",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "rdmax4lw4faatp2n6icq7gij4u",
+        "67guecekl5gpfmswpu3wh7v4pe",
+        "od77khw425dwzbjj5cg3iz3b4i"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "TeamMembershipTable"
+      ],
+      "path": "READ",
+      "requiredProof": "READ_BEHAVIOR_PRESERVED_IN_FROZEN",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Query",
+      "field": "listTeamMemberships",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "3yo27hgkm5hydgfhs3esmi2gce",
+          "2ywliik2qrcgdcljjsvmvu3y4i",
+          "iv7pwfmxnrfc5lyoofmtlo24rq"
+        ]
+      },
+      "requestSha256": "cb4a3e774e9879ba37b3ef6720c5d60ab120c025bba03f53d1c7ac9a31d99e0e",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "3yo27hgkm5hydgfhs3esmi2gce",
+        "2ywliik2qrcgdcljjsvmvu3y4i",
+        "iv7pwfmxnrfc5lyoofmtlo24rq"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "TeamMembershipTable"
+      ],
+      "path": "READ",
+      "requiredProof": "READ_BEHAVIOR_PRESERVED_IN_FROZEN",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Query",
+      "field": "listTeamRosterSlotByMembershipId",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "6egkm2nv6zgfpo3ytamrvzntla",
+          "fpd2o3fiinhvto7x3ipdpniq2y",
+          "7kyysecebffh5j3exfhmccezuy"
+        ]
+      },
+      "requestSha256": "f3656c62a2f4eb5c83af2c60082d22daa4a0b8f4488de2a6ff996a8bf07a1e87",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "6egkm2nv6zgfpo3ytamrvzntla",
+        "fpd2o3fiinhvto7x3ipdpniq2y",
+        "7kyysecebffh5j3exfhmccezuy"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "TeamRosterSlotTable"
+      ],
+      "path": "READ",
+      "requiredProof": "READ_BEHAVIOR_PRESERVED_IN_FROZEN",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Query",
+      "field": "listTeamRosterSlotByTeamId",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "p3e2b5idwjhbra6lobtsra4f3u",
+          "kcu6w2yxfncwrdcynf5zhxu7xy",
+          "ffyplag4w5ehhbccmi2b7kuxou"
+        ]
+      },
+      "requestSha256": "e3696eaa4ee8bcaaa21c2ff0adcfd41700c9687fb468dc9ff88a249603224a72",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "p3e2b5idwjhbra6lobtsra4f3u",
+        "kcu6w2yxfncwrdcynf5zhxu7xy",
+        "ffyplag4w5ehhbccmi2b7kuxou"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "TeamRosterSlotTable"
+      ],
+      "path": "READ",
+      "requiredProof": "READ_BEHAVIOR_PRESERVED_IN_FROZEN",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Query",
+      "field": "listTeamRosterSlots",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "7kh6lahikzbtff2qindb5nxega",
+          "oiqsz7lwavajnacnobszfjclla",
+          "jle6d2saofh2jhj2ghdqj6nehu"
+        ]
+      },
+      "requestSha256": "cc90d90f2f2a77f89644beb7701a3b7f3f04892f47e69e5fd90aab978a59b555",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "7kh6lahikzbtff2qindb5nxega",
+        "oiqsz7lwavajnacnobszfjclla",
+        "jle6d2saofh2jhj2ghdqj6nehu"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "TeamRosterSlotTable"
+      ],
+      "path": "READ",
+      "requiredProof": "READ_BEHAVIOR_PRESERVED_IN_FROZEN",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Query",
+      "field": "listTeams",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "gmobi2r67zhenkulz7oyjss64q",
+          "n6pmvdrewzfjtfjsfyuswgsfny",
+          "kvhtekbxbzfyhnwwyuzuelpihm"
+        ]
+      },
+      "requestSha256": "2bc45f38c94913110d86a65d1a1cb28a24069d1e3279c5cd348233c156ee84a7",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "gmobi2r67zhenkulz7oyjss64q",
+        "n6pmvdrewzfjtfjsfyuswgsfny",
+        "kvhtekbxbzfyhnwwyuzuelpihm"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "TeamTable"
+      ],
+      "path": "READ",
+      "requiredProof": "READ_BEHAVIOR_PRESERVED_IN_FROZEN",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Query",
+      "field": "readTeamHub",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "7hlakiy7fzhwhidtlxltmstq5i",
+          "lev4xkxdl5cszjd3xgyqs2yomm"
+        ]
+      },
+      "requestSha256": "e93b2f88b780b79a6c9e5409f0ccf7eac68dc5f4273d13693eadf870535979be",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "7hlakiy7fzhwhidtlxltmstq5i",
+        "lev4xkxdl5cszjd3xgyqs2yomm"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "FnSubmitInvestorAccessRequestLambdaDataSource"
+      ],
+      "path": "READ",
+      "requiredProof": "READ_BEHAVIOR_PRESERVED_IN_FROZEN",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Mutation",
+      "field": "createPlayerChampionPoolEntry",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "unkkie6vu5enpb6pz5a3x2epr4",
+          "33e2nrzupjd6vi7orq625k7v2u",
+          "kgz4lwx475cdthrxmu7v5cavr4",
+          "vortpg4iojhihgdp7gsahg6po4"
+        ]
+      },
+      "requestSha256": "ec0b0cc36b70492cf4c525d51ccf4e27d4da9dad04d17a57334c2961d4ed2c22",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "unkkie6vu5enpb6pz5a3x2epr4",
+        "33e2nrzupjd6vi7orq625k7v2u",
+        "kgz4lwx475cdthrxmu7v5cavr4",
+        "vortpg4iojhihgdp7gsahg6po4"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "PlayerChampionPoolEntryTable"
+      ],
+      "path": "GENERATED_MODEL_WRITE",
+      "requiredProof": "AUTHENTICATED_AUTHORIZED_PATH_REACHES_INSTALLED_ENFORCEMENT",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Mutation",
+      "field": "createTeam",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "iubpximlzzcchewbgnfnalbdaq",
+          "dxe45df33rdndgjpli4icvdg3u",
+          "ziacl7v67vef5ndrluhbdpkrlm",
+          "ii3z75gzwvesbmgmmb2xjow3di"
+        ]
+      },
+      "requestSha256": "9049ab2007bf194733bf55f01aae7605b977d953ff59f7fede1bb5f754c02667",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "iubpximlzzcchewbgnfnalbdaq",
+        "dxe45df33rdndgjpli4icvdg3u",
+        "ziacl7v67vef5ndrluhbdpkrlm",
+        "ii3z75gzwvesbmgmmb2xjow3di"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "TeamTable"
+      ],
+      "path": "GENERATED_MODEL_WRITE",
+      "requiredProof": "AUTHENTICATED_AUTHORIZED_PATH_REACHES_INSTALLED_ENFORCEMENT",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Mutation",
+      "field": "createTeamMembership",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "n4zadpn2r5civkgsul6zvomnwq",
+          "zv7d2mx6lffstaqpwc362fbcxq",
+          "6kn74x3ab5f6hnr6uew6mkkmye",
+          "rpiahqp5ozhnxololb6ivmdthu"
+        ]
+      },
+      "requestSha256": "7a19ded12cb0c10d169862be57e0b7ae7a76287a8ee9bf2bfab16c43f35bdf63",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "n4zadpn2r5civkgsul6zvomnwq",
+        "zv7d2mx6lffstaqpwc362fbcxq",
+        "6kn74x3ab5f6hnr6uew6mkkmye",
+        "rpiahqp5ozhnxololb6ivmdthu"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "TeamMembershipTable"
+      ],
+      "path": "GENERATED_MODEL_WRITE",
+      "requiredProof": "AUTHENTICATED_AUTHORIZED_PATH_REACHES_INSTALLED_ENFORCEMENT",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Mutation",
+      "field": "createTeamRosterSlot",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "sfzt4vwd3jea7d5xxz2mty4i24",
+          "sd6zowiwcnhcrivislngfjnriq",
+          "2ixizvz7iffhjkknuwx3ycpj6q",
+          "ydsceie6fjbalkc3xvv4ecwfy4"
+        ]
+      },
+      "requestSha256": "7f38d05c019f11870fc8d204739e40da07d9cd30e8c99946ffbc1c6a7553e15b",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "sfzt4vwd3jea7d5xxz2mty4i24",
+        "sd6zowiwcnhcrivislngfjnriq",
+        "2ixizvz7iffhjkknuwx3ycpj6q",
+        "ydsceie6fjbalkc3xvv4ecwfy4"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "TeamRosterSlotTable"
+      ],
+      "path": "GENERATED_MODEL_WRITE",
+      "requiredProof": "AUTHENTICATED_AUTHORIZED_PATH_REACHES_INSTALLED_ENFORCEMENT",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Mutation",
+      "field": "deletePlayerChampionPoolEntry",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "bevzo2dkfjfhldtm6nnyuh6wfm",
+          "qiigqmt53je3fn6x4lfw3geyk4",
+          "oosgrzq6ijflpmcniy5gzlpnz4"
+        ]
+      },
+      "requestSha256": "a5d269840362de401ffd7b92f6a71e9683998fabbbaccdfc220e6b5765ddb728",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "bevzo2dkfjfhldtm6nnyuh6wfm",
+        "qiigqmt53je3fn6x4lfw3geyk4",
+        "oosgrzq6ijflpmcniy5gzlpnz4"
+      ],
+      "dataSources": [
+        "PlayerChampionPoolEntryTable",
+        "NONE_DS"
+      ],
+      "path": "GENERATED_MODEL_WRITE",
+      "requiredProof": "AUTHENTICATED_AUTHORIZED_PATH_REACHES_INSTALLED_ENFORCEMENT",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Mutation",
+      "field": "deleteTeam",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "fwtpfuiif5ccxly6ljdxrgovpi",
+          "p6iymqzicvespbwmhrnowsy54a",
+          "fnhiym653bf57f4wetzzyqsjfa"
+        ]
+      },
+      "requestSha256": "7f315e4d93866092e1af3bc776ad3dd84a50fb1eeb93c9e7d8b00d22fa8acdd8",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "fwtpfuiif5ccxly6ljdxrgovpi",
+        "p6iymqzicvespbwmhrnowsy54a",
+        "fnhiym653bf57f4wetzzyqsjfa"
+      ],
+      "dataSources": [
+        "TeamTable",
+        "NONE_DS"
+      ],
+      "path": "GENERATED_MODEL_WRITE",
+      "requiredProof": "AUTHENTICATED_AUTHORIZED_PATH_REACHES_INSTALLED_ENFORCEMENT",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Mutation",
+      "field": "deleteTeamMembership",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "vywcbczjaffyll4d4yosiqrdg4",
+          "yty3ubwbuzey3fqw57zxaiijea",
+          "e7tikdggjbdkrpm7ieedlhsoxy"
+        ]
+      },
+      "requestSha256": "2958117a7b6b027b225901461601ed444a6221da60c255491be8ac6b13ed892b",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "vywcbczjaffyll4d4yosiqrdg4",
+        "yty3ubwbuzey3fqw57zxaiijea",
+        "e7tikdggjbdkrpm7ieedlhsoxy"
+      ],
+      "dataSources": [
+        "TeamMembershipTable",
+        "NONE_DS"
+      ],
+      "path": "GENERATED_MODEL_WRITE",
+      "requiredProof": "AUTHENTICATED_AUTHORIZED_PATH_REACHES_INSTALLED_ENFORCEMENT",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Mutation",
+      "field": "deleteTeamRosterSlot",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "iiuz4vvtbjfbfhqhlytzld6xfy",
+          "j24ml2iez5cxngse34wexbdmfa",
+          "7kjronj7c5aknhvko2jjjpdcsu"
+        ]
+      },
+      "requestSha256": "1414dd3baf90a41aae9a036ec6e37449c8ea4b98ed76d1108c22222c7639049b",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "iiuz4vvtbjfbfhqhlytzld6xfy",
+        "j24ml2iez5cxngse34wexbdmfa",
+        "7kjronj7c5aknhvko2jjjpdcsu"
+      ],
+      "dataSources": [
+        "TeamRosterSlotTable",
+        "NONE_DS"
+      ],
+      "path": "GENERATED_MODEL_WRITE",
+      "requiredProof": "AUTHENTICATED_AUTHORIZED_PATH_REACHES_INSTALLED_ENFORCEMENT",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Mutation",
+      "field": "mutateTeamHub",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "4yb6cg662ralnnxiwlrwrb5vqa",
+          "lev4xkxdl5cszjd3xgyqs2yomm"
+        ]
+      },
+      "requestSha256": "9f4a352bafd08f9737a4772feb3768d98427e5775cac6af7f5d170e1ff44aa87",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "4yb6cg662ralnnxiwlrwrb5vqa",
+        "lev4xkxdl5cszjd3xgyqs2yomm"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "FnSubmitInvestorAccessRequestLambdaDataSource"
+      ],
+      "path": "MANUAL_GATEWAY",
+      "requiredProof": "AUTHENTICATED_AUTHORIZED_PATH_REACHES_INSTALLED_ENFORCEMENT",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Mutation",
+      "field": "updatePlayerChampionPoolEntry",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "hsgjnij5xfc6tj66orugqxjc2y",
+          "rpyksurb4bhm5ja5ix5sm4v7cm",
+          "cpac5y4xqveolbvfc5dnxttgdm",
+          "jhbpv6y7h5f2ziko52qth2zydy"
+        ]
+      },
+      "requestSha256": "fad964035342611471dea0efa74d3cf36079de9eb492c45410213a1039c822b4",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "hsgjnij5xfc6tj66orugqxjc2y",
+        "rpyksurb4bhm5ja5ix5sm4v7cm",
+        "cpac5y4xqveolbvfc5dnxttgdm",
+        "jhbpv6y7h5f2ziko52qth2zydy"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "PlayerChampionPoolEntryTable"
+      ],
+      "path": "GENERATED_MODEL_WRITE",
+      "requiredProof": "AUTHENTICATED_AUTHORIZED_PATH_REACHES_INSTALLED_ENFORCEMENT",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Mutation",
+      "field": "updateTeam",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "yrbhyofhnnhidpqrf574z5ubii",
+          "sunjobjrhjfejkee6qns2t5jzq",
+          "25pm42wqyvg6vn44q4di7rarl4",
+          "ck7byltdqzhehkssh6visgkmwi"
+        ]
+      },
+      "requestSha256": "b1080ac118d9d4397e27ce1782458d579dc1a15a2929b2b1bcb2bcf91243aad0",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "yrbhyofhnnhidpqrf574z5ubii",
+        "sunjobjrhjfejkee6qns2t5jzq",
+        "25pm42wqyvg6vn44q4di7rarl4",
+        "ck7byltdqzhehkssh6visgkmwi"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "TeamTable"
+      ],
+      "path": "GENERATED_MODEL_WRITE",
+      "requiredProof": "AUTHENTICATED_AUTHORIZED_PATH_REACHES_INSTALLED_ENFORCEMENT",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Mutation",
+      "field": "updateTeamMembership",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "eomegjddwfa53e2kngljjqvn5m",
+          "jgc3n4yfp5fejp62j6v4puutda",
+          "ogypvarrz5etpls4twialqv7hu",
+          "a2ryteiwojc3baqx2zdiw2f45y"
+        ]
+      },
+      "requestSha256": "40c949a6ceced840d38df52b1eb4aa9e90390cdfcf71b04a7adb82498fb0be74",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "eomegjddwfa53e2kngljjqvn5m",
+        "jgc3n4yfp5fejp62j6v4puutda",
+        "ogypvarrz5etpls4twialqv7hu",
+        "a2ryteiwojc3baqx2zdiw2f45y"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "TeamMembershipTable"
+      ],
+      "path": "GENERATED_MODEL_WRITE",
+      "requiredProof": "AUTHENTICATED_AUTHORIZED_PATH_REACHES_INSTALLED_ENFORCEMENT",
+      "liveProof": "PENDING"
+    },
+    {
+      "type": "Mutation",
+      "field": "updateTeamRosterSlot",
+      "kind": "PIPELINE",
+      "pipeline": {
+        "functions": [
+          "snloogk7q5dpdhg7g6ct2slsuq",
+          "7jdwagecgjefbfkbivpsc47xju",
+          "sbzaqdp5ljcvxbzlha3fbpxlzu",
+          "ftsq6dyokjbshfvkckwwyoosde"
+        ]
+      },
+      "requestSha256": "a154e937be7d1edb332e7b2318120b0f54d6764d57a4fc34c41bd0388995b06b",
+      "responseSha256": "2b0a52c6ceac59d813aa20c8ff7f1bfe0ba3af005e9036c0706ad7c30e8b4331",
+      "functionIds": [
+        "snloogk7q5dpdhg7g6ct2slsuq",
+        "7jdwagecgjefbfkbivpsc47xju",
+        "sbzaqdp5ljcvxbzlha3fbpxlzu",
+        "ftsq6dyokjbshfvkckwwyoosde"
+      ],
+      "dataSources": [
+        "NONE_DS",
+        "TeamRosterSlotTable"
+      ],
+      "path": "GENERATED_MODEL_WRITE",
+      "requiredProof": "AUTHENTICATED_AUTHORIZED_PATH_REACHES_INSTALLED_ENFORCEMENT",
+      "liveProof": "PENDING"
+    }
+  ],
+  "functions": [
+    {
+      "id": "22ef7szluzcsho32w4fkxnu7oe",
+      "name": "SubscriptiononDeleteTeamRosterSlotpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "25pm42wqyvg6vn44q4di7rarl4",
+      "name": "MutationupdateTeampostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Mutation.updateTeam"
+      ]
+    },
+    {
+      "id": "2b43vo5xbncvtm7zczl6sdwpaq",
+      "name": "SubscriptiononUpdateTeamMembershippostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "2fdjqu6yrjhnvjurpelvyznms4",
+      "name": "SubscriptiononCreatePlayerChampionPoolEntrypostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "2ixizvz7iffhjkknuwx3ycpj6q",
+      "name": "MutationcreateTeamRosterSlotpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Mutation.createTeamRosterSlot"
+      ]
+    },
+    {
+      "id": "2juiqmhsrzgkze2xcyb7mzkcge",
+      "name": "QuerylistPlayerChampionPoolEntryByTeamIdauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2b3338e4c19119ac26ef44fb4e2197b10d827a30e7e70edf125b4b6bd9b8e61f",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.listPlayerChampionPoolEntryByTeamId"
+      ]
+    },
+    {
+      "id": "2xdecvj4wrfk5a53um4sx62z44",
+      "name": "SubscriptionOnDeleteTeamDataResolverFn",
+      "dataSource": "NONE_DS",
+      "requestSha256": "74d0e41fcd5a3bab3d3c4e8ae68676418db9a96a58abf844e69a1c3091f75118",
+      "responseSha256": "290af319e9c90aa6b3a361e3cfdfc9d81ae37b77af6e2d4447f7913bdeec5315",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "2ywliik2qrcgdcljjsvmvu3y4i",
+      "name": "QuerylistTeamMembershipspostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.listTeamMemberships"
+      ]
+    },
+    {
+      "id": "33e2nrzupjd6vi7orq625k7v2u",
+      "name": "MutationcreatePlayerChampionPoolEntryauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "ac96925854f75966153d4fcaf0a7ac53fa6805e541734ed1651d076852852606",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Mutation.createPlayerChampionPoolEntry"
+      ]
+    },
+    {
+      "id": "35xqyqisbnahxkeam54zfej54u",
+      "name": "SubscriptiononUpdateTeampostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "3tivdn7urnaqrg4gnkcxaz4sia",
+      "name": "SubscriptiononCreatePlayerChampionPoolEntryauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "1d238fabb708e2d5226209a1bd2801d3fdee8f99780d17b394f954a522a3df9a",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "3wbawljx7fbhrpl4j2js3uw2cy",
+      "name": "SubscriptiononDeleteTeampostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "3yo27hgkm5hydgfhs3esmi2gce",
+      "name": "QuerylistTeamMembershipsauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2b3338e4c19119ac26ef44fb4e2197b10d827a30e7e70edf125b4b6bd9b8e61f",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.listTeamMemberships"
+      ]
+    },
+    {
+      "id": "4yb6cg662ralnnxiwlrwrb5vqa",
+      "name": "MutationMutateTeamHubAuthFN",
+      "dataSource": "NONE_DS",
+      "requestSha256": "88f9234e64fef4b8e2e71824e0cd1e525edbb399f27b38a2ac5a5cec64df8428",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Mutation.mutateTeamHub"
+      ]
+    },
+    {
+      "id": "5nwze4fe2bci3phgxu4w6c5p2e",
+      "name": "SubscriptiononDeletePlayerChampionPoolEntryauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "1d238fabb708e2d5226209a1bd2801d3fdee8f99780d17b394f954a522a3df9a",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "5pckndzh5zbhbfhch6v3nau3xu",
+      "name": "QuerygetPlayerChampionPoolEntryauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2b3338e4c19119ac26ef44fb4e2197b10d827a30e7e70edf125b4b6bd9b8e61f",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.getPlayerChampionPoolEntry"
+      ]
+    },
+    {
+      "id": "5sosv7ip35h5fcyzbg3esti5tu",
+      "name": "SubscriptiononCreateTeamMembershipauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "1d238fabb708e2d5226209a1bd2801d3fdee8f99780d17b394f954a522a3df9a",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "66bufnzhfna47pqcbsllxiag6e",
+      "name": "QueryGetPlayerChampionPoolEntryDataResolverFn",
+      "dataSource": "PlayerChampionPoolEntryTable",
+      "requestSha256": "b93ac52639b90327efcee50c83f86079c0346c1ed0bf1f1a557980b702d0966c",
+      "responseSha256": "514f6609dc17faf5bde4d12df7e630a1a01252876f147f194f4e2e76747e5608",
+      "businessResolverConsumers": [
+        "Query.getPlayerChampionPoolEntry"
+      ]
+    },
+    {
+      "id": "67guecekl5gpfmswpu3wh7v4pe",
+      "name": "QuerylistTeamMembershipByUserIdpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.listTeamMembershipByUserId"
+      ]
+    },
+    {
+      "id": "6egkm2nv6zgfpo3ytamrvzntla",
+      "name": "QuerylistTeamRosterSlotByMembershipIdauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2b3338e4c19119ac26ef44fb4e2197b10d827a30e7e70edf125b4b6bd9b8e61f",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.listTeamRosterSlotByMembershipId"
+      ]
+    },
+    {
+      "id": "6hoco54w7zbrxe37oo4q3u6yna",
+      "name": "SubscriptiononCreateTeamMembershippostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "6kn74x3ab5f6hnr6uew6mkkmye",
+      "name": "MutationcreateTeamMembershippostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Mutation.createTeamMembership"
+      ]
+    },
+    {
+      "id": "6q73scpmjvdjvlulekdmftpugi",
+      "name": "QuerylistPlayerChampionPoolEntriespostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.listPlayerChampionPoolEntries"
+      ]
+    },
+    {
+      "id": "7dwi762h2ranbjukszlthu6dz4",
+      "name": "SubscriptionOnCreateTeamMembershipDataResolverFn",
+      "dataSource": "NONE_DS",
+      "requestSha256": "74d0e41fcd5a3bab3d3c4e8ae68676418db9a96a58abf844e69a1c3091f75118",
+      "responseSha256": "290af319e9c90aa6b3a361e3cfdfc9d81ae37b77af6e2d4447f7913bdeec5315",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "7hlakiy7fzhwhidtlxltmstq5i",
+      "name": "QueryReadTeamHubAuthFN",
+      "dataSource": "NONE_DS",
+      "requestSha256": "88f9234e64fef4b8e2e71824e0cd1e525edbb399f27b38a2ac5a5cec64df8428",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.readTeamHub"
+      ]
+    },
+    {
+      "id": "7jdwagecgjefbfkbivpsc47xju",
+      "name": "MutationupdateTeamRosterSlotauth0Function",
+      "dataSource": "TeamRosterSlotTable",
+      "requestSha256": "0cb25b362349e90ffe18349fce998774b015b0eb712b8beb40279723524accd8",
+      "responseSha256": "43f6054d0f78930b0d51bae6f3c0765f93e6b3ca976e2d92963f938c35ed1c3f",
+      "businessResolverConsumers": [
+        "Mutation.updateTeamRosterSlot"
+      ]
+    },
+    {
+      "id": "7kh6lahikzbtff2qindb5nxega",
+      "name": "QuerylistTeamRosterSlotsauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2b3338e4c19119ac26ef44fb4e2197b10d827a30e7e70edf125b4b6bd9b8e61f",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.listTeamRosterSlots"
+      ]
+    },
+    {
+      "id": "7kjronj7c5aknhvko2jjjpdcsu",
+      "name": "MutationDeleteTeamRosterSlotDataResolverFn",
+      "dataSource": "TeamRosterSlotTable",
+      "requestSha256": "d271cd2615275578ecd04f2c8f94f07562a3197869b237a87ab3d9303d743c4d",
+      "responseSha256": "1cbc30872aca5f6071fee27c5dba83b98ca36595a6c3f1260d2d037068480fe9",
+      "businessResolverConsumers": [
+        "Mutation.deleteTeamRosterSlot"
+      ]
+    },
+    {
+      "id": "7kyysecebffh5j3exfhmccezuy",
+      "name": "QueryListTeamRosterSlotByMembershipIdDataResolverFn",
+      "dataSource": "TeamRosterSlotTable",
+      "requestSha256": "597cbc5a578ddf5ef472e1b0fc4672abd11a35971b5d3a3cf7d712161c81f80f",
+      "responseSha256": "70c474ce1880b65e72c404f4bab78bc128afae949a5484d2d77af6a2828d1b90",
+      "businessResolverConsumers": [
+        "Query.listTeamRosterSlotByMembershipId"
+      ]
+    },
+    {
+      "id": "7ngycgipkvgxzo4t3c3k4qrtpa",
+      "name": "SubscriptionOnDeleteTeamMembershipDataResolverFn",
+      "dataSource": "NONE_DS",
+      "requestSha256": "74d0e41fcd5a3bab3d3c4e8ae68676418db9a96a58abf844e69a1c3091f75118",
+      "responseSha256": "290af319e9c90aa6b3a361e3cfdfc9d81ae37b77af6e2d4447f7913bdeec5315",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "7p2jddqcpfboznxazy4bvmtza4",
+      "name": "SubscriptiononUpdatePlayerChampionPoolEntrypostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "a2ryteiwojc3baqx2zdiw2f45y",
+      "name": "MutationUpdateTeamMembershipDataResolverFn",
+      "dataSource": "TeamMembershipTable",
+      "requestSha256": "8592bc37d4d908ef77eeaea6978863495b336de0ce8a59cb8d8fc71113d510b0",
+      "responseSha256": "1cbc30872aca5f6071fee27c5dba83b98ca36595a6c3f1260d2d037068480fe9",
+      "businessResolverConsumers": [
+        "Mutation.updateTeamMembership"
+      ]
+    },
+    {
+      "id": "al42527zqrczlod4qbqpise634",
+      "name": "QuerygetTeampostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.getTeam"
+      ]
+    },
+    {
+      "id": "aqkte3zr6vg5pp2rqt2ku3aqme",
+      "name": "QuerylistTeamByStatuspostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.listTeamByStatus"
+      ]
+    },
+    {
+      "id": "avr7jepsurblpm5f7onyrvbffu",
+      "name": "QuerylistTeamByStatusauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2b3338e4c19119ac26ef44fb4e2197b10d827a30e7e70edf125b4b6bd9b8e61f",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.listTeamByStatus"
+      ]
+    },
+    {
+      "id": "baffquu7xfcglhlknfzotifhva",
+      "name": "SubscriptionOnUpdateTeamRosterSlotDataResolverFn",
+      "dataSource": "NONE_DS",
+      "requestSha256": "74d0e41fcd5a3bab3d3c4e8ae68676418db9a96a58abf844e69a1c3091f75118",
+      "responseSha256": "290af319e9c90aa6b3a361e3cfdfc9d81ae37b77af6e2d4447f7913bdeec5315",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "bebwzefetbcfxia2wy4zf7c7sm",
+      "name": "SubscriptiononUpdateTeamauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "1d238fabb708e2d5226209a1bd2801d3fdee8f99780d17b394f954a522a3df9a",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "bevzo2dkfjfhldtm6nnyuh6wfm",
+      "name": "MutationdeletePlayerChampionPoolEntryauth0Function",
+      "dataSource": "PlayerChampionPoolEntryTable",
+      "requestSha256": "0cb25b362349e90ffe18349fce998774b015b0eb712b8beb40279723524accd8",
+      "responseSha256": "37e3757a7d1ebd2d0c62b0aee55bed6eec79ef4529d781952c42f915533816cf",
+      "businessResolverConsumers": [
+        "Mutation.deletePlayerChampionPoolEntry"
+      ]
+    },
+    {
+      "id": "bgvm7oobsnbvblgvje5vomxbsq",
+      "name": "QuerygetTeamRosterSlotpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.getTeamRosterSlot"
+      ]
+    },
+    {
+      "id": "bvjmw5dfbfdcbfy4d3v2ohgpfq",
+      "name": "QuerygetTeamMembershippostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.getTeamMembership"
+      ]
+    },
+    {
+      "id": "bxjis2vt6jh5hppmcycware2gq",
+      "name": "SubscriptiononCreateTeamRosterSlotauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "1d238fabb708e2d5226209a1bd2801d3fdee8f99780d17b394f954a522a3df9a",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "cd3s4laagneilivpwhvqdqd5xa",
+      "name": "QuerylistTeamMembershipByTeamIdauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2b3338e4c19119ac26ef44fb4e2197b10d827a30e7e70edf125b4b6bd9b8e61f",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.listTeamMembershipByTeamId"
+      ]
+    },
+    {
+      "id": "ceaupb67obfy7kaajwvjhr33rq",
+      "name": "QueryGetTeamMembershipDataResolverFn",
+      "dataSource": "TeamMembershipTable",
+      "requestSha256": "b93ac52639b90327efcee50c83f86079c0346c1ed0bf1f1a557980b702d0966c",
+      "responseSha256": "514f6609dc17faf5bde4d12df7e630a1a01252876f147f194f4e2e76747e5608",
+      "businessResolverConsumers": [
+        "Query.getTeamMembership"
+      ]
+    },
+    {
+      "id": "ck7byltdqzhehkssh6visgkmwi",
+      "name": "MutationUpdateTeamDataResolverFn",
+      "dataSource": "TeamTable",
+      "requestSha256": "8592bc37d4d908ef77eeaea6978863495b336de0ce8a59cb8d8fc71113d510b0",
+      "responseSha256": "1cbc30872aca5f6071fee27c5dba83b98ca36595a6c3f1260d2d037068480fe9",
+      "businessResolverConsumers": [
+        "Mutation.updateTeam"
+      ]
+    },
+    {
+      "id": "cpac5y4xqveolbvfc5dnxttgdm",
+      "name": "MutationupdatePlayerChampionPoolEntrypostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Mutation.updatePlayerChampionPoolEntry"
+      ]
+    },
+    {
+      "id": "dmwzkroo2fbc5eizissybohm2y",
+      "name": "QueryListTeamMembershipByTeamIdDataResolverFn",
+      "dataSource": "TeamMembershipTable",
+      "requestSha256": "e642075ab8923273a171382c768e7bd582e0bcf23ae3f3b076a450965d92d4b5",
+      "responseSha256": "70c474ce1880b65e72c404f4bab78bc128afae949a5484d2d77af6a2828d1b90",
+      "businessResolverConsumers": [
+        "Query.listTeamMembershipByTeamId"
+      ]
+    },
+    {
+      "id": "dv23pigjmrejbkldrji4dnk2iu",
+      "name": "SubscriptionOnCreateTeamDataResolverFn",
+      "dataSource": "NONE_DS",
+      "requestSha256": "74d0e41fcd5a3bab3d3c4e8ae68676418db9a96a58abf844e69a1c3091f75118",
+      "responseSha256": "290af319e9c90aa6b3a361e3cfdfc9d81ae37b77af6e2d4447f7913bdeec5315",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "dxe45df33rdndgjpli4icvdg3u",
+      "name": "MutationcreateTeamauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "ac96925854f75966153d4fcaf0a7ac53fa6805e541734ed1651d076852852606",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Mutation.createTeam"
+      ]
+    },
+    {
+      "id": "e7tikdggjbdkrpm7ieedlhsoxy",
+      "name": "MutationDeleteTeamMembershipDataResolverFn",
+      "dataSource": "TeamMembershipTable",
+      "requestSha256": "d271cd2615275578ecd04f2c8f94f07562a3197869b237a87ab3d9303d743c4d",
+      "responseSha256": "1cbc30872aca5f6071fee27c5dba83b98ca36595a6c3f1260d2d037068480fe9",
+      "businessResolverConsumers": [
+        "Mutation.deleteTeamMembership"
+      ]
+    },
+    {
+      "id": "eomegjddwfa53e2kngljjqvn5m",
+      "name": "MutationupdateTeamMembershipinit0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "84d429b3d529bb973d3aa56a0cf715e113feda395a89fa1b77a1a8829000fe1b",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Mutation.updateTeamMembership"
+      ]
+    },
+    {
+      "id": "ezog4enkzze6zkbd47btizo4si",
+      "name": "SubscriptiononUpdateTeamMembershipauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "1d238fabb708e2d5226209a1bd2801d3fdee8f99780d17b394f954a522a3df9a",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "ffyplag4w5ehhbccmi2b7kuxou",
+      "name": "QueryListTeamRosterSlotByTeamIdDataResolverFn",
+      "dataSource": "TeamRosterSlotTable",
+      "requestSha256": "e42d5d14d84bc7daae9d09588f4a50a87aa8a523d720e1bf89b778a518c74287",
+      "responseSha256": "70c474ce1880b65e72c404f4bab78bc128afae949a5484d2d77af6a2828d1b90",
+      "businessResolverConsumers": [
+        "Query.listTeamRosterSlotByTeamId"
+      ]
+    },
+    {
+      "id": "fnhiym653bf57f4wetzzyqsjfa",
+      "name": "MutationDeleteTeamDataResolverFn",
+      "dataSource": "TeamTable",
+      "requestSha256": "d271cd2615275578ecd04f2c8f94f07562a3197869b237a87ab3d9303d743c4d",
+      "responseSha256": "1cbc30872aca5f6071fee27c5dba83b98ca36595a6c3f1260d2d037068480fe9",
+      "businessResolverConsumers": [
+        "Mutation.deleteTeam"
+      ]
+    },
+    {
+      "id": "fpd2o3fiinhvto7x3ipdpniq2y",
+      "name": "QuerylistTeamRosterSlotByMembershipIdpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.listTeamRosterSlotByMembershipId"
+      ]
+    },
+    {
+      "id": "fs3lmhkdavboxlwjws3jvbkmoy",
+      "name": "QueryListPlayerChampionPoolEntryByMembershipIdDataResolverFn",
+      "dataSource": "PlayerChampionPoolEntryTable",
+      "requestSha256": "5f6053b5ffb694fd17c837bacc7dff04e1206a16ea1595af48668b8fcac776f8",
+      "responseSha256": "70c474ce1880b65e72c404f4bab78bc128afae949a5484d2d77af6a2828d1b90",
+      "businessResolverConsumers": [
+        "Query.listPlayerChampionPoolEntryByMembershipId"
+      ]
+    },
+    {
+      "id": "ftsq6dyokjbshfvkckwwyoosde",
+      "name": "MutationUpdateTeamRosterSlotDataResolverFn",
+      "dataSource": "TeamRosterSlotTable",
+      "requestSha256": "8592bc37d4d908ef77eeaea6978863495b336de0ce8a59cb8d8fc71113d510b0",
+      "responseSha256": "1cbc30872aca5f6071fee27c5dba83b98ca36595a6c3f1260d2d037068480fe9",
+      "businessResolverConsumers": [
+        "Mutation.updateTeamRosterSlot"
+      ]
+    },
+    {
+      "id": "fwtpfuiif5ccxly6ljdxrgovpi",
+      "name": "MutationdeleteTeamauth0Function",
+      "dataSource": "TeamTable",
+      "requestSha256": "0cb25b362349e90ffe18349fce998774b015b0eb712b8beb40279723524accd8",
+      "responseSha256": "37e3757a7d1ebd2d0c62b0aee55bed6eec79ef4529d781952c42f915533816cf",
+      "businessResolverConsumers": [
+        "Mutation.deleteTeam"
+      ]
+    },
+    {
+      "id": "gajeqclth5duto6tu3q6cpvqga",
+      "name": "SubscriptiononDeleteTeamRosterSlotauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "1d238fabb708e2d5226209a1bd2801d3fdee8f99780d17b394f954a522a3df9a",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "gmobi2r67zhenkulz7oyjss64q",
+      "name": "QuerylistTeamsauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2b3338e4c19119ac26ef44fb4e2197b10d827a30e7e70edf125b4b6bd9b8e61f",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.listTeams"
+      ]
+    },
+    {
+      "id": "hsgjnij5xfc6tj66orugqxjc2y",
+      "name": "MutationupdatePlayerChampionPoolEntryinit0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "84d429b3d529bb973d3aa56a0cf715e113feda395a89fa1b77a1a8829000fe1b",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Mutation.updatePlayerChampionPoolEntry"
+      ]
+    },
+    {
+      "id": "i2vzi73dqjelfncyfyt3lwln2u",
+      "name": "QuerylistTeamBySlugauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2b3338e4c19119ac26ef44fb4e2197b10d827a30e7e70edf125b4b6bd9b8e61f",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.listTeamBySlug"
+      ]
+    },
+    {
+      "id": "ii3z75gzwvesbmgmmb2xjow3di",
+      "name": "MutationCreateTeamDataResolverFn",
+      "dataSource": "TeamTable",
+      "requestSha256": "28ec7d5f95de42f9218aeca97ea74d0f109642b3fede6800df99502bc136fe95",
+      "responseSha256": "1cbc30872aca5f6071fee27c5dba83b98ca36595a6c3f1260d2d037068480fe9",
+      "businessResolverConsumers": [
+        "Mutation.createTeam"
+      ]
+    },
+    {
+      "id": "iiuz4vvtbjfbfhqhlytzld6xfy",
+      "name": "MutationdeleteTeamRosterSlotauth0Function",
+      "dataSource": "TeamRosterSlotTable",
+      "requestSha256": "0cb25b362349e90ffe18349fce998774b015b0eb712b8beb40279723524accd8",
+      "responseSha256": "37e3757a7d1ebd2d0c62b0aee55bed6eec79ef4529d781952c42f915533816cf",
+      "businessResolverConsumers": [
+        "Mutation.deleteTeamRosterSlot"
+      ]
+    },
+    {
+      "id": "iubpximlzzcchewbgnfnalbdaq",
+      "name": "MutationcreateTeaminit0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "9f8521cd00a126bd7fb4791e5c187dd5649248fc4df4c4cd949f013b61aafbd0",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Mutation.createTeam"
+      ]
+    },
+    {
+      "id": "iv7pwfmxnrfc5lyoofmtlo24rq",
+      "name": "QueryListTeamMembershipsDataResolverFn",
+      "dataSource": "TeamMembershipTable",
+      "requestSha256": "27d3baeb27b83875ff83f613ebe340204bcb2c4261c747f92fc63dce45dd6bd8",
+      "responseSha256": "93a63ee2c7038e62839c21818f7583eab3ad39128c1558c4e936e356de04617f",
+      "businessResolverConsumers": [
+        "Query.listTeamMemberships"
+      ]
+    },
+    {
+      "id": "j24ml2iez5cxngse34wexbdmfa",
+      "name": "MutationdeleteTeamRosterSlotpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Mutation.deleteTeamRosterSlot"
+      ]
+    },
+    {
+      "id": "jevzeegtdbad3fzke3rdjiqjbe",
+      "name": "QueryListPlayerChampionPoolEntriesDataResolverFn",
+      "dataSource": "PlayerChampionPoolEntryTable",
+      "requestSha256": "27d3baeb27b83875ff83f613ebe340204bcb2c4261c747f92fc63dce45dd6bd8",
+      "responseSha256": "93a63ee2c7038e62839c21818f7583eab3ad39128c1558c4e936e356de04617f",
+      "businessResolverConsumers": [
+        "Query.listPlayerChampionPoolEntries"
+      ]
+    },
+    {
+      "id": "jgc3n4yfp5fejp62j6v4puutda",
+      "name": "MutationupdateTeamMembershipauth0Function",
+      "dataSource": "TeamMembershipTable",
+      "requestSha256": "0cb25b362349e90ffe18349fce998774b015b0eb712b8beb40279723524accd8",
+      "responseSha256": "43f6054d0f78930b0d51bae6f3c0765f93e6b3ca976e2d92963f938c35ed1c3f",
+      "businessResolverConsumers": [
+        "Mutation.updateTeamMembership"
+      ]
+    },
+    {
+      "id": "jgyr3dbbtzds5hkjfzmdimwimi",
+      "name": "QuerygetPlayerChampionPoolEntrypostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.getPlayerChampionPoolEntry"
+      ]
+    },
+    {
+      "id": "jhbpv6y7h5f2ziko52qth2zydy",
+      "name": "MutationUpdatePlayerChampionPoolEntryDataResolverFn",
+      "dataSource": "PlayerChampionPoolEntryTable",
+      "requestSha256": "8592bc37d4d908ef77eeaea6978863495b336de0ce8a59cb8d8fc71113d510b0",
+      "responseSha256": "1cbc30872aca5f6071fee27c5dba83b98ca36595a6c3f1260d2d037068480fe9",
+      "businessResolverConsumers": [
+        "Mutation.updatePlayerChampionPoolEntry"
+      ]
+    },
+    {
+      "id": "jjiabthnonbfznkuxqc7fodx3q",
+      "name": "SubscriptionOnDeleteTeamRosterSlotDataResolverFn",
+      "dataSource": "NONE_DS",
+      "requestSha256": "74d0e41fcd5a3bab3d3c4e8ae68676418db9a96a58abf844e69a1c3091f75118",
+      "responseSha256": "290af319e9c90aa6b3a361e3cfdfc9d81ae37b77af6e2d4447f7913bdeec5315",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "jle6d2saofh2jhj2ghdqj6nehu",
+      "name": "QueryListTeamRosterSlotsDataResolverFn",
+      "dataSource": "TeamRosterSlotTable",
+      "requestSha256": "27d3baeb27b83875ff83f613ebe340204bcb2c4261c747f92fc63dce45dd6bd8",
+      "responseSha256": "93a63ee2c7038e62839c21818f7583eab3ad39128c1558c4e936e356de04617f",
+      "businessResolverConsumers": [
+        "Query.listTeamRosterSlots"
+      ]
+    },
+    {
+      "id": "jlghaqtxqjekho3n3qdmo2j77m",
+      "name": "QuerylistPlayerChampionPoolEntriesauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2b3338e4c19119ac26ef44fb4e2197b10d827a30e7e70edf125b4b6bd9b8e61f",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.listPlayerChampionPoolEntries"
+      ]
+    },
+    {
+      "id": "jzetqmo5dnge3cybidicvazyfy",
+      "name": "QueryListPlayerChampionPoolEntryByTeamIdDataResolverFn",
+      "dataSource": "PlayerChampionPoolEntryTable",
+      "requestSha256": "0117943d760228df3d2b9ec1e53817866cc0f8d06da4205f33f2bb95efd1b76a",
+      "responseSha256": "70c474ce1880b65e72c404f4bab78bc128afae949a5484d2d77af6a2828d1b90",
+      "businessResolverConsumers": [
+        "Query.listPlayerChampionPoolEntryByTeamId"
+      ]
+    },
+    {
+      "id": "kcu6w2yxfncwrdcynf5zhxu7xy",
+      "name": "QuerylistTeamRosterSlotByTeamIdpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.listTeamRosterSlotByTeamId"
+      ]
+    },
+    {
+      "id": "kgz4lwx475cdthrxmu7v5cavr4",
+      "name": "MutationcreatePlayerChampionPoolEntrypostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Mutation.createPlayerChampionPoolEntry"
+      ]
+    },
+    {
+      "id": "kinx3d2bhvc7bcpofyprooxksy",
+      "name": "QuerylistPlayerChampionPoolEntryByTeamIdpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.listPlayerChampionPoolEntryByTeamId"
+      ]
+    },
+    {
+      "id": "ktzrcc3hnbhpnidbdxynnj4bqi",
+      "name": "SubscriptiononUpdatePlayerChampionPoolEntryauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "1d238fabb708e2d5226209a1bd2801d3fdee8f99780d17b394f954a522a3df9a",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "kvhtekbxbzfyhnwwyuzuelpihm",
+      "name": "QueryListTeamsDataResolverFn",
+      "dataSource": "TeamTable",
+      "requestSha256": "27d3baeb27b83875ff83f613ebe340204bcb2c4261c747f92fc63dce45dd6bd8",
+      "responseSha256": "93a63ee2c7038e62839c21818f7583eab3ad39128c1558c4e936e356de04617f",
+      "businessResolverConsumers": [
+        "Query.listTeams"
+      ]
+    },
+    {
+      "id": "lev4xkxdl5cszjd3xgyqs2yomm",
+      "name": "InvokeFnSubmitInvestorAccessRequestLambdaDataSource",
+      "dataSource": "FnSubmitInvestorAccessRequestLambdaDataSource",
+      "requestSha256": "1e5a235677e212a9cbf206e371db335d1cc53185fac36632ae50d9fa56aecbd2",
+      "responseSha256": "b985054143ea8df11e57739455198dc70725e95be6ac7889b749fd2bf5481fc9",
+      "businessResolverConsumers": [
+        "Query.readTeamHub",
+        "Mutation.mutateTeamHub"
+      ]
+    },
+    {
+      "id": "md3i7bdfg5hcbpdx6stqiv5oiq",
+      "name": "QueryListTeamByStatusDataResolverFn",
+      "dataSource": "TeamTable",
+      "requestSha256": "89081c6a46c159fbe8642594d202b4cefe00b1aba21f930cd17b3a16c778dd9c",
+      "responseSha256": "70c474ce1880b65e72c404f4bab78bc128afae949a5484d2d77af6a2828d1b90",
+      "businessResolverConsumers": [
+        "Query.listTeamByStatus"
+      ]
+    },
+    {
+      "id": "n4zadpn2r5civkgsul6zvomnwq",
+      "name": "MutationcreateTeamMembershipinit0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "9f8521cd00a126bd7fb4791e5c187dd5649248fc4df4c4cd949f013b61aafbd0",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Mutation.createTeamMembership"
+      ]
+    },
+    {
+      "id": "n6pmvdrewzfjtfjsfyuswgsfny",
+      "name": "QuerylistTeamspostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.listTeams"
+      ]
+    },
+    {
+      "id": "od77khw425dwzbjj5cg3iz3b4i",
+      "name": "QueryListTeamMembershipByUserIdDataResolverFn",
+      "dataSource": "TeamMembershipTable",
+      "requestSha256": "4e51d6d3b106daa1ebc98a0323f3aca5bc456146d86300d8121e5694dd07ab51",
+      "responseSha256": "70c474ce1880b65e72c404f4bab78bc128afae949a5484d2d77af6a2828d1b90",
+      "businessResolverConsumers": [
+        "Query.listTeamMembershipByUserId"
+      ]
+    },
+    {
+      "id": "ogypvarrz5etpls4twialqv7hu",
+      "name": "MutationupdateTeamMembershippostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Mutation.updateTeamMembership"
+      ]
+    },
+    {
+      "id": "oiqsz7lwavajnacnobszfjclla",
+      "name": "QuerylistTeamRosterSlotspostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.listTeamRosterSlots"
+      ]
+    },
+    {
+      "id": "oosgrzq6ijflpmcniy5gzlpnz4",
+      "name": "MutationDeletePlayerChampionPoolEntryDataResolverFn",
+      "dataSource": "PlayerChampionPoolEntryTable",
+      "requestSha256": "d271cd2615275578ecd04f2c8f94f07562a3197869b237a87ab3d9303d743c4d",
+      "responseSha256": "1cbc30872aca5f6071fee27c5dba83b98ca36595a6c3f1260d2d037068480fe9",
+      "businessResolverConsumers": [
+        "Mutation.deletePlayerChampionPoolEntry"
+      ]
+    },
+    {
+      "id": "ovedpcfgifczzexkeq7exzreka",
+      "name": "SubscriptiononDeletePlayerChampionPoolEntrypostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "p3e2b5idwjhbra6lobtsra4f3u",
+      "name": "QuerylistTeamRosterSlotByTeamIdauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2b3338e4c19119ac26ef44fb4e2197b10d827a30e7e70edf125b4b6bd9b8e61f",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.listTeamRosterSlotByTeamId"
+      ]
+    },
+    {
+      "id": "p6iymqzicvespbwmhrnowsy54a",
+      "name": "MutationdeleteTeampostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Mutation.deleteTeam"
+      ]
+    },
+    {
+      "id": "phj7o6m5kjek7d3k5cy4beqwde",
+      "name": "QuerylistPlayerChampionPoolEntryByMembershipIdpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.listPlayerChampionPoolEntryByMembershipId"
+      ]
+    },
+    {
+      "id": "qiigqmt53je3fn6x4lfw3geyk4",
+      "name": "MutationdeletePlayerChampionPoolEntrypostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Mutation.deletePlayerChampionPoolEntry"
+      ]
+    },
+    {
+      "id": "qiqc7f6tdve73hmzfw53aax35y",
+      "name": "QuerygetTeamRosterSlotauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2b3338e4c19119ac26ef44fb4e2197b10d827a30e7e70edf125b4b6bd9b8e61f",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.getTeamRosterSlot"
+      ]
+    },
+    {
+      "id": "qiys6hj5lnemzee64xpoxs3gpi",
+      "name": "SubscriptiononDeleteTeamMembershippostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "qrfxzprbobgdlnjs2phjirviba",
+      "name": "QueryGetTeamRosterSlotDataResolverFn",
+      "dataSource": "TeamRosterSlotTable",
+      "requestSha256": "b93ac52639b90327efcee50c83f86079c0346c1ed0bf1f1a557980b702d0966c",
+      "responseSha256": "514f6609dc17faf5bde4d12df7e630a1a01252876f147f194f4e2e76747e5608",
+      "businessResolverConsumers": [
+        "Query.getTeamRosterSlot"
+      ]
+    },
+    {
+      "id": "qw36re7hwvbyngsxxlgvnipo5m",
+      "name": "SubscriptionOnDeletePlayerChampionPoolEntryDataResolverFn",
+      "dataSource": "NONE_DS",
+      "requestSha256": "74d0e41fcd5a3bab3d3c4e8ae68676418db9a96a58abf844e69a1c3091f75118",
+      "responseSha256": "290af319e9c90aa6b3a361e3cfdfc9d81ae37b77af6e2d4447f7913bdeec5315",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "rdmax4lw4faatp2n6icq7gij4u",
+      "name": "QuerylistTeamMembershipByUserIdauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2b3338e4c19119ac26ef44fb4e2197b10d827a30e7e70edf125b4b6bd9b8e61f",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.listTeamMembershipByUserId"
+      ]
+    },
+    {
+      "id": "rpiahqp5ozhnxololb6ivmdthu",
+      "name": "MutationCreateTeamMembershipDataResolverFn",
+      "dataSource": "TeamMembershipTable",
+      "requestSha256": "5333bafe52b3306f859b4288c75b5506cf615960613fa4d29f9ed9ab439e7406",
+      "responseSha256": "1cbc30872aca5f6071fee27c5dba83b98ca36595a6c3f1260d2d037068480fe9",
+      "businessResolverConsumers": [
+        "Mutation.createTeamMembership"
+      ]
+    },
+    {
+      "id": "rpyksurb4bhm5ja5ix5sm4v7cm",
+      "name": "MutationupdatePlayerChampionPoolEntryauth0Function",
+      "dataSource": "PlayerChampionPoolEntryTable",
+      "requestSha256": "0cb25b362349e90ffe18349fce998774b015b0eb712b8beb40279723524accd8",
+      "responseSha256": "43f6054d0f78930b0d51bae6f3c0765f93e6b3ca976e2d92963f938c35ed1c3f",
+      "businessResolverConsumers": [
+        "Mutation.updatePlayerChampionPoolEntry"
+      ]
+    },
+    {
+      "id": "rvkjinjpdjhbnhgj4ymxkp2lzi",
+      "name": "SubscriptiononUpdateTeamRosterSlotauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "1d238fabb708e2d5226209a1bd2801d3fdee8f99780d17b394f954a522a3df9a",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "sa25ff7eezh3tj25arxn5ughba",
+      "name": "SubscriptiononCreateTeampostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "sah4dkxbsjaifhdovjqzwi7bre",
+      "name": "QuerylistTeamBySlugpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.listTeamBySlug"
+      ]
+    },
+    {
+      "id": "sbzaqdp5ljcvxbzlha3fbpxlzu",
+      "name": "MutationupdateTeamRosterSlotpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Mutation.updateTeamRosterSlot"
+      ]
+    },
+    {
+      "id": "sd6zowiwcnhcrivislngfjnriq",
+      "name": "MutationcreateTeamRosterSlotauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "ac96925854f75966153d4fcaf0a7ac53fa6805e541734ed1651d076852852606",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Mutation.createTeamRosterSlot"
+      ]
+    },
+    {
+      "id": "sfzt4vwd3jea7d5xxz2mty4i24",
+      "name": "MutationcreateTeamRosterSlotinit0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "9f8521cd00a126bd7fb4791e5c187dd5649248fc4df4c4cd949f013b61aafbd0",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Mutation.createTeamRosterSlot"
+      ]
+    },
+    {
+      "id": "sll6bcs2inakdh5546ex6pfu74",
+      "name": "QuerylistTeamMembershipByTeamIdpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.listTeamMembershipByTeamId"
+      ]
+    },
+    {
+      "id": "smeevjir4rhwzbhcxznwwbodsu",
+      "name": "SubscriptiononUpdateTeamRosterSlotpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "snloogk7q5dpdhg7g6ct2slsuq",
+      "name": "MutationupdateTeamRosterSlotinit0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "84d429b3d529bb973d3aa56a0cf715e113feda395a89fa1b77a1a8829000fe1b",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Mutation.updateTeamRosterSlot"
+      ]
+    },
+    {
+      "id": "sqyhlbcdlzbcvp2z7qm5nqi7i4",
+      "name": "SubscriptionOnUpdateTeamMembershipDataResolverFn",
+      "dataSource": "NONE_DS",
+      "requestSha256": "74d0e41fcd5a3bab3d3c4e8ae68676418db9a96a58abf844e69a1c3091f75118",
+      "responseSha256": "290af319e9c90aa6b3a361e3cfdfc9d81ae37b77af6e2d4447f7913bdeec5315",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "sunjobjrhjfejkee6qns2t5jzq",
+      "name": "MutationupdateTeamauth0Function",
+      "dataSource": "TeamTable",
+      "requestSha256": "0cb25b362349e90ffe18349fce998774b015b0eb712b8beb40279723524accd8",
+      "responseSha256": "43f6054d0f78930b0d51bae6f3c0765f93e6b3ca976e2d92963f938c35ed1c3f",
+      "businessResolverConsumers": [
+        "Mutation.updateTeam"
+      ]
+    },
+    {
+      "id": "szb4czhmhfgehp24bpgl63nj24",
+      "name": "SubscriptiononCreateTeamauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "1d238fabb708e2d5226209a1bd2801d3fdee8f99780d17b394f954a522a3df9a",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "tkp4osqrpfcgtikdzqbnwfus6q",
+      "name": "SubscriptionOnCreatePlayerChampionPoolEntryDataResolverFn",
+      "dataSource": "NONE_DS",
+      "requestSha256": "74d0e41fcd5a3bab3d3c4e8ae68676418db9a96a58abf844e69a1c3091f75118",
+      "responseSha256": "290af319e9c90aa6b3a361e3cfdfc9d81ae37b77af6e2d4447f7913bdeec5315",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "u5rntlqoivfutemedbrszz3vhq",
+      "name": "QuerygetTeamauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2b3338e4c19119ac26ef44fb4e2197b10d827a30e7e70edf125b4b6bd9b8e61f",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.getTeam"
+      ]
+    },
+    {
+      "id": "u77rsxmuincfxjhqrzuoafsi5y",
+      "name": "SubscriptionOnUpdatePlayerChampionPoolEntryDataResolverFn",
+      "dataSource": "NONE_DS",
+      "requestSha256": "74d0e41fcd5a3bab3d3c4e8ae68676418db9a96a58abf844e69a1c3091f75118",
+      "responseSha256": "290af319e9c90aa6b3a361e3cfdfc9d81ae37b77af6e2d4447f7913bdeec5315",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "unkkie6vu5enpb6pz5a3x2epr4",
+      "name": "MutationcreatePlayerChampionPoolEntryinit0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "9f8521cd00a126bd7fb4791e5c187dd5649248fc4df4c4cd949f013b61aafbd0",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Mutation.createPlayerChampionPoolEntry"
+      ]
+    },
+    {
+      "id": "v46lyxz66zdxzkyzcm2rw2ycfq",
+      "name": "SubscriptiononDeleteTeamMembershipauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "1d238fabb708e2d5226209a1bd2801d3fdee8f99780d17b394f954a522a3df9a",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "v4hkjo723raitbjttjbigvdhhu",
+      "name": "SubscriptiononDeleteTeamauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "1d238fabb708e2d5226209a1bd2801d3fdee8f99780d17b394f954a522a3df9a",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "vbtwqaucx5ev7nhu2hrvlpsxq4",
+      "name": "QuerygetTeamMembershipauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2b3338e4c19119ac26ef44fb4e2197b10d827a30e7e70edf125b4b6bd9b8e61f",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.getTeamMembership"
+      ]
+    },
+    {
+      "id": "vortpg4iojhihgdp7gsahg6po4",
+      "name": "MutationCreatePlayerChampionPoolEntryDataResolverFn",
+      "dataSource": "PlayerChampionPoolEntryTable",
+      "requestSha256": "4bf8293d0a4995de1b5b8e65c2f2bfd693c029aed217af56da196172dc7ce4cb",
+      "responseSha256": "1cbc30872aca5f6071fee27c5dba83b98ca36595a6c3f1260d2d037068480fe9",
+      "businessResolverConsumers": [
+        "Mutation.createPlayerChampionPoolEntry"
+      ]
+    },
+    {
+      "id": "vywcbczjaffyll4d4yosiqrdg4",
+      "name": "MutationdeleteTeamMembershipauth0Function",
+      "dataSource": "TeamMembershipTable",
+      "requestSha256": "0cb25b362349e90ffe18349fce998774b015b0eb712b8beb40279723524accd8",
+      "responseSha256": "37e3757a7d1ebd2d0c62b0aee55bed6eec79ef4529d781952c42f915533816cf",
+      "businessResolverConsumers": [
+        "Mutation.deleteTeamMembership"
+      ]
+    },
+    {
+      "id": "wnjwin6b7zcpboeq3mxgqiv4k4",
+      "name": "SubscriptionOnUpdateTeamDataResolverFn",
+      "dataSource": "NONE_DS",
+      "requestSha256": "74d0e41fcd5a3bab3d3c4e8ae68676418db9a96a58abf844e69a1c3091f75118",
+      "responseSha256": "290af319e9c90aa6b3a361e3cfdfc9d81ae37b77af6e2d4447f7913bdeec5315",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "wyughbluljgs7pqab26wz4zf4i",
+      "name": "QuerylistPlayerChampionPoolEntryByMembershipIdauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2b3338e4c19119ac26ef44fb4e2197b10d827a30e7e70edf125b4b6bd9b8e61f",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Query.listPlayerChampionPoolEntryByMembershipId"
+      ]
+    },
+    {
+      "id": "wz7piheteveyfj5nee2vlcoax4",
+      "name": "SubscriptiononCreateTeamRosterSlotpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "xporl4wkpvhxhi4m5ed3dk72mi",
+      "name": "QueryGetTeamDataResolverFn",
+      "dataSource": "TeamTable",
+      "requestSha256": "b93ac52639b90327efcee50c83f86079c0346c1ed0bf1f1a557980b702d0966c",
+      "responseSha256": "514f6609dc17faf5bde4d12df7e630a1a01252876f147f194f4e2e76747e5608",
+      "businessResolverConsumers": [
+        "Query.getTeam"
+      ]
+    },
+    {
+      "id": "ydsceie6fjbalkc3xvv4ecwfy4",
+      "name": "MutationCreateTeamRosterSlotDataResolverFn",
+      "dataSource": "TeamRosterSlotTable",
+      "requestSha256": "1d7a9d006889ca74edd9e38df56a31a68909171086bf099eca7786c981eb07c5",
+      "responseSha256": "1cbc30872aca5f6071fee27c5dba83b98ca36595a6c3f1260d2d037068480fe9",
+      "businessResolverConsumers": [
+        "Mutation.createTeamRosterSlot"
+      ]
+    },
+    {
+      "id": "yrbhyofhnnhidpqrf574z5ubii",
+      "name": "MutationupdateTeaminit0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "84d429b3d529bb973d3aa56a0cf715e113feda395a89fa1b77a1a8829000fe1b",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Mutation.updateTeam"
+      ]
+    },
+    {
+      "id": "yty3ubwbuzey3fqw57zxaiijea",
+      "name": "MutationdeleteTeamMembershippostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Mutation.deleteTeamMembership"
+      ]
+    },
+    {
+      "id": "ziacl7v67vef5ndrluhbdpkrlm",
+      "name": "MutationcreateTeampostAuth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "2dee8016631f0a51113ff9e2f72c0487146c3d02488e83b275a778198509ce61",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Mutation.createTeam"
+      ]
+    },
+    {
+      "id": "zv7d2mx6lffstaqpwc362fbcxq",
+      "name": "MutationcreateTeamMembershipauth0Function",
+      "dataSource": "NONE_DS",
+      "requestSha256": "ac96925854f75966153d4fcaf0a7ac53fa6805e541734ed1651d076852852606",
+      "responseSha256": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1",
+      "businessResolverConsumers": [
+        "Mutation.createTeamMembership"
+      ]
+    },
+    {
+      "id": "zvahmpvgnjdevj4uwfou4jbnse",
+      "name": "SubscriptionOnCreateTeamRosterSlotDataResolverFn",
+      "dataSource": "NONE_DS",
+      "requestSha256": "74d0e41fcd5a3bab3d3c4e8ae68676418db9a96a58abf844e69a1c3091f75118",
+      "responseSha256": "290af319e9c90aa6b3a361e3cfdfc9d81ae37b77af6e2d4447f7913bdeec5315",
+      "businessResolverConsumers": []
+    },
+    {
+      "id": "zvop5uwvuvctxp6245fxzvov64",
+      "name": "QueryListTeamBySlugDataResolverFn",
+      "dataSource": "TeamTable",
+      "requestSha256": "7914dd654c6a0ed55094ae4d3fe7ca75e26b81daea0b957967f1c53db12e6592",
+      "responseSha256": "70c474ce1880b65e72c404f4bab78bc128afae949a5484d2d77af6a2828d1b90",
+      "businessResolverConsumers": [
+        "Query.listTeamBySlug"
+      ]
+    }
+  ],
+  "subscriptions": 12,
+  "streams": [
+    {
+      "model": "PlayerChampionPoolEntry",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE/stream/2026-09-21T14:23:52.403",
+      "mappings": 0,
+      "resourcePolicyAbsent": true
+    },
+    {
+      "model": "TeamMembership",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE/stream/2026-09-21T14:23:11.616",
+      "mappings": 0,
+      "resourcePolicyAbsent": true
+    },
+    {
+      "model": "Team",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE/stream/2026-09-21T14:23:11.675",
+      "mappings": 0,
+      "resourcePolicyAbsent": true
+    },
+    {
+      "model": "TeamRosterSlot",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE/stream/2026-09-21T14:23:12.021",
+      "mappings": 0,
+      "resourcePolicyAbsent": true
+    }
+  ],
+  "retainedWriters": [
+    {
+      "id": "CREATE_TEAM",
+      "classification": "ACTIVE_BUSINESS_WRITER",
+      "source": "amplify/myFunction/teamHub/gateway.ts",
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "operation": "CREATE_TEAM",
+      "targets": [
+        "Team"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Enabled Legacy Team business command",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "UPDATE_TEAM",
+      "classification": "ACTIVE_BUSINESS_WRITER",
+      "source": "amplify/myFunction/teamHub/gateway.ts",
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "operation": "UPDATE_TEAM",
+      "targets": [
+        "Team"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Enabled Legacy Team business command",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "SET_MANAGER",
+      "classification": "ACTIVE_BUSINESS_WRITER",
+      "source": "amplify/myFunction/teamHub/gateway.ts",
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "operation": "SET_MANAGER",
+      "targets": [
+        "Team",
+        "TeamMembership",
+        "TeamRosterSlot"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Enabled Legacy Team business command",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "MANAGE_MEMBER",
+      "classification": "ACTIVE_BUSINESS_WRITER",
+      "source": "amplify/myFunction/teamHub/gateway.ts",
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "operation": "MANAGE_MEMBER",
+      "targets": [
+        "Team",
+        "TeamMembership",
+        "TeamRosterSlot"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Enabled Legacy Team business command",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "SET_ROSTER_SLOT",
+      "classification": "ACTIVE_BUSINESS_WRITER",
+      "source": "amplify/myFunction/teamHub/gateway.ts",
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "operation": "SET_ROSTER_SLOT",
+      "targets": [
+        "Team",
+        "TeamRosterSlot"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Enabled Legacy Team business command",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "UPSERT_MY_CHAMPION",
+      "classification": "ACTIVE_BUSINESS_WRITER",
+      "source": "amplify/myFunction/teamHub/gateway.ts",
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "operation": "UPSERT_MY_CHAMPION",
+      "targets": [
+        "PlayerChampionPoolEntry"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Enabled Legacy Team business command",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "DELETE_MY_CHAMPION",
+      "classification": "ACTIVE_BUSINESS_WRITER",
+      "source": "amplify/myFunction/teamHub/gateway.ts",
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "operation": "DELETE_MY_CHAMPION",
+      "targets": [
+        "PlayerChampionPoolEntry"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Enabled Legacy Team business command",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "UPSERT_COACH_ASSESSMENT",
+      "classification": "ACTIVE_BUSINESS_WRITER",
+      "source": "amplify/myFunction/teamHub/gateway.ts",
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "operation": "UPSERT_COACH_ASSESSMENT",
+      "targets": [
+        "PlayerChampionPoolEntry"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Enabled Legacy Team business command",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "SET_TEAM_PLAN",
+      "classification": "ACTIVE_BUSINESS_WRITER",
+      "source": "amplify/myFunction/teamHub/gateway.ts",
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "operation": "SET_TEAM_PLAN",
+      "targets": [
+        "Team"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Enabled Legacy Team business command",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "REQUEST_TEAM_LOGO_UPLOAD",
+      "classification": "ACTIVE_BUSINESS_WRITER",
+      "source": "amplify/myFunction/teamHub/gateway.ts",
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "operation": "REQUEST_TEAM_LOGO_UPLOAD",
+      "targets": [
+        "team-logos/"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Enabled Legacy Team business command",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "COMMIT_TEAM_LOGO",
+      "classification": "ACTIVE_BUSINESS_WRITER",
+      "source": "amplify/myFunction/teamHub/gateway.ts",
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "operation": "COMMIT_TEAM_LOGO",
+      "targets": [
+        "Team",
+        "team-logos/"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Enabled Legacy Team business command",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "REMOVE_TEAM_LOGO",
+      "classification": "ACTIVE_BUSINESS_WRITER",
+      "source": "amplify/myFunction/teamHub/gateway.ts",
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "operation": "REMOVE_TEAM_LOGO",
+      "targets": [
+        "Team",
+        "team-logos/"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Enabled Legacy Team business command",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "PRESIGNED_LOGO_PUT",
+      "classification": "ACTIVE_BUSINESS_WRITER",
+      "source": "amplify/myFunction/teamHub/branding.ts",
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "operation": "s3:PutObject",
+      "targets": [
+        "amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/*"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Previously issued URLs remain usable until expiry or policy denial",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "SHARED_LAMBDA_DIRECT_ADAPTER",
+      "classification": "POSSIBLE_BUSINESS_WRITER",
+      "source": "amplify/myFunction/teamHub/dynamo.ts",
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "operation": "TransactWriteItems governed by underlying PutItem/UpdateItem permissions",
+      "targets": [
+        "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Internal direct table transaction bypass of the public gateway",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "SYNTHETIC_TESTS",
+      "classification": "TEST_ONLY",
+      "source": "scripts/team-hub/tests; scripts/team-hub-migration",
+      "principal": "NONE",
+      "operation": "in-memory only",
+      "targets": [],
+      "enabled": false,
+      "reachable": "NO_CURRENT_MATCHING_SOURCE_GRANT",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Offline fixtures",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "PRINCIPAL:amplify-projectrespawnweb-adminusermanagementlambda-OIbycFZWXsdJ",
+      "classification": "POSSIBLE_BUSINESS_WRITER",
+      "source": "Deployed IAM / resolver / CloudFormation metadata",
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-adminusermanagementlambda-OIbycFZWXsdJ",
+      "operation": [
+        "appsync:GraphQL"
+      ],
+      "targets": [
+        "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Admin Lambda has generated Team GraphQL authority; no Team business intent assumed",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "PRINCIPAL:amplify-projectrespawnweb-AmplifyManagedTableIsComp-i528Yre6Bga7",
+      "classification": "GENERATED_INTERNAL",
+      "source": "Deployed IAM / resolver / CloudFormation metadata",
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-AmplifyManagedTableIsComp-i528Yre6Bga7",
+      "operation": [
+        "dynamodb:DeleteTable",
+        "dynamodb:UpdateTable"
+      ],
+      "targets": [
+        "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Exact deployed data-source or hash-verified table-provider role mapping; preserve ownership, fence by role/path",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "PRINCIPAL:amplify-projectrespawnweb-AmplifyManagedTableOnEven-QvbafGiZcl6c",
+      "classification": "GENERATED_INTERNAL",
+      "source": "Deployed IAM / resolver / CloudFormation metadata",
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-AmplifyManagedTableOnEven-QvbafGiZcl6c",
+      "operation": [
+        "dynamodb:DeleteTable",
+        "dynamodb:UpdateTable"
+      ],
+      "targets": [
+        "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Exact deployed data-source or hash-verified table-provider role mapping; preserve ownership, fence by role/path",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "PRINCIPAL:amplify-projectrespawnweb-FnSubmitInvestorAccessReq-D8KMAbW9Y6qD",
+      "classification": "GENERATED_INTERNAL",
+      "source": "Deployed IAM / resolver / CloudFormation metadata",
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-FnSubmitInvestorAccessReq-D8KMAbW9Y6qD",
+      "operation": [
+        "lambda:InvokeFunction"
+      ],
+      "targets": [
+        "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Exact deployed data-source or hash-verified table-provider role mapping; preserve ownership, fence by role/path",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "PRINCIPAL:AWSAmplifyDomainRole-Z09658113PMRCPOCQ18QP",
+      "classification": "PRIVILEGED_MANUAL",
+      "source": "Deployed IAM / resolver / CloudFormation metadata",
+      "principal": "arn:aws:iam::058264289478:role/AWSAmplifyDomainRole-Z09658113PMRCPOCQ18QP",
+      "operation": [
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "appsync:GraphQL",
+        "lambda:InvokeFunction",
+        "dynamodb:DeleteTable",
+        "dynamodb:UpdateTable",
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject"
+      ],
+      "targets": [
+        "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Potential administration/deployment authority; conditions and boundaries may limit escalation, not presumed business use",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "PRINCIPAL:AWSServiceRoleForSSO",
+      "classification": "PRIVILEGED_MANUAL",
+      "source": "Deployed IAM / resolver / CloudFormation metadata",
+      "principal": "arn:aws:iam::058264289478:role/aws-service-role/sso.amazonaws.com/AWSServiceRoleForSSO",
+      "operation": [],
+      "targets": [
+        "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Potential administration/deployment authority; conditions and boundaries may limit escalation, not presumed business use",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "PRINCIPAL:cdk-hnb659fds-cfn-exec-role-058264289478-eu-north-1",
+      "classification": "PRIVILEGED_MANUAL",
+      "source": "Deployed IAM / resolver / CloudFormation metadata",
+      "principal": "arn:aws:iam::058264289478:role/cdk-hnb659fds-cfn-exec-role-058264289478-eu-north-1",
+      "operation": [
+        "dynamodb:GetItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:BatchGetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PartiQLSelect",
+        "dynamodb:PartiQLInsert",
+        "dynamodb:PartiQLUpdate",
+        "dynamodb:PartiQLDelete",
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "appsync:GraphQL",
+        "lambda:InvokeFunction",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:DeleteTable",
+        "dynamodb:UpdateTable",
+        "dynamodb:ExportTableToPointInTime"
+      ],
+      "targets": [
+        "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Potential administration/deployment authority; conditions and boundaries may limit escalation, not presumed business use",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "PRINCIPAL:cdk-hnb659fds-deploy-role-058264289478-eu-north-1",
+      "classification": "DEAD",
+      "source": "Deployed IAM / resolver / CloudFormation metadata",
+      "principal": "arn:aws:iam::058264289478:role/cdk-hnb659fds-deploy-role-058264289478-eu-north-1",
+      "operation": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject"
+      ],
+      "targets": [
+        "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+      ],
+      "enabled": false,
+      "reachable": "NO_CURRENT_MATCHING_SOURCE_GRANT",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Matched S3 statement excludes this account via s3:ResourceAccount; deployment delegation remains maintenance-frozen",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "PRINCIPAL:PlayerChampionPoolEn5c689d-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "classification": "GENERATED_INTERNAL",
+      "source": "Deployed IAM / resolver / CloudFormation metadata",
+      "principal": "arn:aws:iam::058264289478:role/PlayerChampionPoolEn5c689d-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "operation": [
+        "dynamodb:GetItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:BatchGetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+      ],
+      "targets": [
+        "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Exact deployed data-source or hash-verified table-provider role mapping; preserve ownership, fence by role/path",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "PRINCIPAL:ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "classification": "PRIVILEGED_MANUAL",
+      "source": "Deployed IAM / resolver / CloudFormation metadata",
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "operation": [],
+      "targets": [
+        "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Potential administration/deployment authority; conditions and boundaries may limit escalation, not presumed business use",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "PRINCIPAL:ProjectRespawn-Tournaments-Ntgre-CfnExecution",
+      "classification": "PRIVILEGED_MANUAL",
+      "source": "Deployed IAM / resolver / CloudFormation metadata",
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-CfnExecution",
+      "operation": [],
+      "targets": [
+        "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Potential administration/deployment authority; conditions and boundaries may limit escalation, not presumed business use",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "PRINCIPAL:TeamIAMRoleb6b1b2-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "classification": "GENERATED_INTERNAL",
+      "source": "Deployed IAM / resolver / CloudFormation metadata",
+      "principal": "arn:aws:iam::058264289478:role/TeamIAMRoleb6b1b2-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "operation": [
+        "dynamodb:GetItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:BatchGetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+      ],
+      "targets": [
+        "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Exact deployed data-source or hash-verified table-provider role mapping; preserve ownership, fence by role/path",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "PRINCIPAL:TeamMembershipIAMRolb0882a-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "classification": "GENERATED_INTERNAL",
+      "source": "Deployed IAM / resolver / CloudFormation metadata",
+      "principal": "arn:aws:iam::058264289478:role/TeamMembershipIAMRolb0882a-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "operation": [
+        "dynamodb:GetItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:BatchGetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+      ],
+      "targets": [
+        "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Exact deployed data-source or hash-verified table-provider role mapping; preserve ownership, fence by role/path",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "PRINCIPAL:TeamRosterSlotIAMRol236c3d-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "classification": "GENERATED_INTERNAL",
+      "source": "Deployed IAM / resolver / CloudFormation metadata",
+      "principal": "arn:aws:iam::058264289478:role/TeamRosterSlotIAMRol236c3d-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "operation": [
+        "dynamodb:GetItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:BatchGetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+      ],
+      "targets": [
+        "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Exact deployed data-source or hash-verified table-provider role mapping; preserve ownership, fence by role/path",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "PRINCIPAL:RavenTest",
+      "classification": "PRIVILEGED_MANUAL",
+      "source": "Deployed IAM / resolver / CloudFormation metadata",
+      "principal": "arn:aws:iam::058264289478:user/RavenTest",
+      "operation": [
+        "dynamodb:GetItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:BatchGetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PartiQLSelect",
+        "dynamodb:PartiQLInsert",
+        "dynamodb:PartiQLUpdate",
+        "dynamodb:PartiQLDelete",
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "appsync:GraphQL",
+        "lambda:InvokeFunction",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:DeleteTable",
+        "dynamodb:UpdateTable",
+        "dynamodb:ExportTableToPointInTime"
+      ],
+      "targets": [
+        "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Potential administration/deployment authority; conditions and boundaries may limit escalation, not presumed business use",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "PRINCIPAL:Zmar",
+      "classification": "PRIVILEGED_MANUAL",
+      "source": "Deployed IAM / resolver / CloudFormation metadata",
+      "principal": "arn:aws:iam::058264289478:user/Zmar",
+      "operation": [
+        "dynamodb:GetItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:BatchGetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PartiQLSelect",
+        "dynamodb:PartiQLInsert",
+        "dynamodb:PartiQLUpdate",
+        "dynamodb:PartiQLDelete",
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "appsync:GraphQL",
+        "lambda:InvokeFunction",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:DeleteTable",
+        "dynamodb:UpdateTable",
+        "dynamodb:ExportTableToPointInTime"
+      ],
+      "targets": [
+        "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Potential administration/deployment authority; conditions and boundaries may limit escalation, not presumed business use",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "ACCOUNT_ROOT",
+      "classification": "PRIVILEGED_MANUAL",
+      "source": "AWS account root",
+      "principal": "arn:aws:iam::058264289478:root",
+      "operation": "account administration and potential data writes",
+      "targets": [
+        "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Break-glass; explicit operator maintenance freeze, cannot technically prevent root policy removal",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    },
+    {
+      "id": "LOGO_CLEANUP_PROVIDER",
+      "classification": "GENERATED_INTERNAL",
+      "source": "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3",
+      "operation": [
+        "s3:PutBucketPolicy",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:DeleteObject*"
+      ],
+      "targets": [
+        "amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/*"
+      ],
+      "enabled": true,
+      "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+      "environment": "Ntgre data only; principal may also have unrelated authority",
+      "businessPurpose": "Generated bucket teardown path; no lifecycle changes permitted during cutover",
+      "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+      "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+      "evidence": [
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+        "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+        "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+      ]
+    }
+  ],
+  "rootPrincipal": "arn:aws:iam::058264289478:root",
+  "logoCleanupProvider": {
+    "id": "LOGO_CLEANUP_PROVIDER",
+    "classification": "GENERATED_INTERNAL",
+    "source": "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+    "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3",
+    "operation": [
+      "s3:PutBucketPolicy",
+      "s3:GetBucket*",
+      "s3:List*",
+      "s3:DeleteObject*"
+    ],
+    "targets": [
+      "amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/*"
+    ],
+    "enabled": true,
+    "reachable": "CAPABILITY_PRESENT_NOT_INVOCATION_PROOF",
+    "environment": "Ntgre data only; principal may also have unrelated authority",
+    "businessPurpose": "Generated bucket teardown path; no lifecycle changes permitted during cutover",
+    "fence": "E: authoritative journal row + all-principal source data-write deny; maintenance/deployment freeze for control-plane paths; exact logo prefix deny",
+    "retirement": "After verified target authority, reject Legacy writes explicitly; remove exact legacy grants only at separate retirement review",
+    "evidence": [
+      "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/iam-coverage.json",
+      "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-coverage.json",
+      "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/resolver-functions.json",
+      "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/principal-functions.json",
+      "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/schedule-coverage.json",
+      "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/logo-resource-policy.json",
+      "docs/architecture/team-hub-2b3-final-evidence-2026-10-05/reader-edges.json",
+      "docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json"
+    ]
+  },
+  "unknownPipelineEdges": 0,
+  "scope": "Every inventoried principal/resolver/function retained. No principal removed because it is privileged, service-only or currently read-only. Snapshot is not a guarantee against future access grants.",
+  "liveProofComplete": false,
+  "awsWrites": 0
+}

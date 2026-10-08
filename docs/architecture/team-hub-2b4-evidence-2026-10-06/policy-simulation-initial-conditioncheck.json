@@ -1,0 +1,115 @@
+{
+  "checks": [
+    {
+      "name": "command-policy",
+      "allowed": true,
+      "results": [
+        {
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "EvalResourceDecision": "allowed",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 1040
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 1325
+              }
+            }
+          ],
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": true
+          },
+          "action": "dynamodb:GetItem",
+          "decision": "allowed"
+        },
+        {
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "EvalResourceDecision": "allowed",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 1040
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 1325
+              }
+            }
+          ],
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": true
+          },
+          "action": "dynamodb:Query",
+          "decision": "allowed"
+        },
+        {
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "EvalResourceDecision": "allowed",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 1567
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 1969
+              }
+            }
+          ],
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": true
+          },
+          "action": "dynamodb:PutItem",
+          "decision": "allowed"
+        },
+        {
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "EvalResourceDecision": "allowed",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 1567
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 1969
+              }
+            }
+          ],
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": true
+          },
+          "action": "dynamodb:DeleteItem",
+          "decision": "allowed"
+        },
+        {
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "EvalResourceDecision": "implicitDeny",
+          "MissingContextValues": [
+            "kms:ResourceAliases"
+          ],
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": false
+          },
+          "action": "dynamodb:ConditionCheckItem",
+          "decision": "implicitDeny"
+        }
+      ]
+    }
+  ],
+  "complete": false
+}

@@ -1,0 +1,195 @@
+{
+  "schemaVersion": "team-hub-state.v1",
+  "issuer": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE",
+  "closedFields": {
+    "TEAM": [
+      "id",
+      "slug",
+      "name",
+      "gameKey",
+      "status",
+      "authorizationEpoch",
+      "rosterVersion",
+      "membershipRevision",
+      "settingsRevision",
+      "managerMembershipId",
+      "coachMembershipId",
+      "createdByUserId",
+      "updatedByUserId",
+      "settings",
+      "StatusPK",
+      "StatusSK"
+    ],
+    "SLUG": [
+      "teamId"
+    ],
+    "MEMBERSHIP": [
+      "id",
+      "teamId",
+      "issuer",
+      "subject",
+      "displayName",
+      "role",
+      "status",
+      "addedByUserId",
+      "revokedAt",
+      "revokedByUserId",
+      "SubjectPK",
+      "SubjectSK"
+    ],
+    "ROSTER": [
+      "id",
+      "teamId",
+      "membershipId",
+      "gameRoleKey",
+      "slotType",
+      "status",
+      "assignedByUserId",
+      "deactivatedAt"
+    ],
+    "PLAYER_POOL": [
+      "id",
+      "teamId",
+      "membershipId",
+      "championId",
+      "gameRoleKey",
+      "comfortLevel",
+      "priority",
+      "competitiveReady",
+      "playerNotes"
+    ],
+    "COACH_ASSESSMENT": [
+      "teamId",
+      "membershipId",
+      "championId",
+      "coachTier",
+      "coachAssessment",
+      "coachRecommendation",
+      "coachPriorityPractice",
+      "coachUpdatedByUserId",
+      "coachUpdatedAt",
+      "visibility"
+    ],
+    "COACH_PRIVATE": [
+      "teamId",
+      "membershipId",
+      "championId",
+      "authorIssuer",
+      "authorSubject",
+      "privateNote"
+    ]
+  },
+  "commonFields": [
+    "schemaVersion",
+    "entityType",
+    "PK",
+    "SK",
+    "version",
+    "createdAt",
+    "updatedAt"
+  ],
+  "settingsFields": [
+    "plan",
+    "logoAssetId",
+    "proGrantedAt",
+    "proGrantedBy",
+    "proExpiresAt",
+    "planUpdatedAt",
+    "planUpdatedBy",
+    "logoUpdatedAt",
+    "logoUpdatedBy"
+  ],
+  "operational": "ProjectRespawn-TeamHub-Ntgre-Operational",
+  "journal": {
+    "authority": {
+      "PK": "CONTROL#AUTHORITY",
+      "SK": "STATE",
+      "fields": [
+        "mode",
+        "epoch",
+        "version",
+        "changedAt",
+        "changedBy",
+        "gateDigest"
+      ],
+      "ttl": false
+    },
+    "audit": {
+      "PK": "TEAM#<teamId>",
+      "SK": "AUDIT#<UTC ISO time>#<requestId>",
+      "fields": [
+        "actorIssuer",
+        "actorSubject",
+        "operation",
+        "teamId",
+        "requestId",
+        "resultingVersion",
+        "authorizationEpoch",
+        "at",
+        "expiresAt"
+      ],
+      "retentionDays": 365,
+      "privateTextForbidden": true
+    },
+    "idempotency": {
+      "PK": "IDEMP#<issuer SHA256>#<subject>#<teamId>",
+      "SK": "<operation>#<requestKey>",
+      "fields": [
+        "digest",
+        "response",
+        "expiresAt",
+        "authorizationEpoch",
+        "version"
+      ],
+      "retentionSeconds": 86400,
+      "currentAuthorizationRequiredOnReplay": true,
+      "privateResponseForbidden": true
+    }
+  },
+  "gsis": [
+    {
+      "IndexName": "BySubject",
+      "KeySchema": [
+        {
+          "AttributeName": "SubjectPK",
+          "KeyType": "HASH"
+        },
+        {
+          "AttributeName": "SubjectSK",
+          "KeyType": "RANGE"
+        }
+      ],
+      "Projection": {
+        "ProjectionType": "KEYS_ONLY"
+      }
+    },
+    {
+      "IndexName": "ByTeamStatus",
+      "KeySchema": [
+        {
+          "AttributeName": "StatusPK",
+          "KeyType": "HASH"
+        },
+        {
+          "AttributeName": "StatusSK",
+          "KeyType": "RANGE"
+        }
+      ],
+      "Projection": {
+        "ProjectionType": "KEYS_ONLY"
+      }
+    }
+  ],
+  "privacy": {
+    "player": "own player fields; no Coach fields",
+    "assessment": "active Manager or Coach only, never Player or implicit admin",
+    "private": "authoring active Coach only; disabled during rollback window"
+  },
+  "rollbackWindow": {
+    "durationHours": 24,
+    "closure": "explicit accepted rollback proof and operator signoff; time alone does not close window",
+    "coachPrivate": "NON_REVERSIBLE_DURING_ROLLBACK_WINDOW",
+    "branding": "DISABLED_NO_BUCKET"
+  },
+  "runtimeAdapterInstalled": false
+}

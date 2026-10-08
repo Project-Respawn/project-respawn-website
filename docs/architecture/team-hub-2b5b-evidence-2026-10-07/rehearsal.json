@@ -1,0 +1,167 @@
+{
+  "at": "2026-10-07T08:31:45.244Z",
+  "scope": "ISOLATED_SYNTHETIC_LOCAL_HANDLER_REAL_DYNAMODB",
+  "actualAuthorityChanged": false,
+  "core": "SYNTHETIC_LOCAL_TRANSPORT_ONLY; accepted live Core unchanged",
+  "created": [
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-2B5B-Rehearsal-20261007-Operational",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-2B5B-Rehearsal-20261007-Operational",
+      "tableId": "0833ecf4-e1f1-4a44-a344-9697c97727cd"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-2B5B-Rehearsal-20261007-Journal",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-2B5B-Rehearsal-20261007-Journal",
+      "tableId": "504bc2a2-6dcb-46bd-93af-ef5c9f87f34b"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-2B5B-Rehearsal-20261007-PlayerChampionPoolEntry",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-2B5B-Rehearsal-20261007-PlayerChampionPoolEntry",
+      "tableId": "eff926a1-7fcf-4f07-8ec7-5297ce06d128"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-2B5B-Rehearsal-20261007-TeamMembership",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-2B5B-Rehearsal-20261007-TeamMembership",
+      "tableId": "7b24feac-5714-4ee9-9a12-15bb46ea4361"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-2B5B-Rehearsal-20261007-Team",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-2B5B-Rehearsal-20261007-Team",
+      "tableId": "0f5fb3fc-dce7-4342-b6a1-cc3f3b8b1470"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-2B5B-Rehearsal-20261007-TeamRosterSlot",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-2B5B-Rehearsal-20261007-TeamRosterSlot",
+      "tableId": "c1ff9fed-d1b4-4a1e-894a-6ff91f3d43e0"
+    }
+  ],
+  "checks": [
+    {
+      "operation": "CREATE_TEAM",
+      "persona": "admin",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "operation": "SET_MANAGER",
+      "persona": "admin",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "operation": "MANAGE_MEMBER",
+      "persona": "manager",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "operation": "MANAGE_MEMBER",
+      "persona": "manager",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "operation": "UPDATE_TEAM",
+      "persona": "admin",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "operation": "SET_TEAM_PLAN",
+      "persona": "admin",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "operation": "SET_ROSTER_SLOT",
+      "persona": "manager",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "operation": "UPSERT_MY_CHAMPION",
+      "persona": "player",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "operation": "UPSERT_COACH_ASSESSMENT",
+      "persona": "coach",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "operation": "UPDATE_TEAM",
+      "persona": "admin",
+      "status": 403,
+      "expected": 403
+    },
+    {
+      "operation": "UPDATE_TEAM",
+      "persona": "admin",
+      "status": 403,
+      "expected": 403
+    }
+  ],
+  "cleanup": [
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-2B5B-Rehearsal-20261007-TeamRosterSlot",
+      "absent": true
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-2B5B-Rehearsal-20261007-Team",
+      "absent": true
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-2B5B-Rehearsal-20261007-TeamMembership",
+      "absent": true
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-2B5B-Rehearsal-20261007-PlayerChampionPoolEntry",
+      "absent": true
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-2B5B-Rehearsal-20261007-Journal",
+      "absent": true
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-2B5B-Rehearsal-20261007-Operational",
+      "absent": true
+    }
+  ],
+  "passed": true,
+  "candidate": "cc32b3eadc5f9f1613478b1fe5a657dda6513ec0bf847333ea33991d009ec319",
+  "atomicFreezeRaceDenied": true,
+  "auditIdempotencyUnaffected": true,
+  "reverse": {
+    "schemaVersion": "team-hub-state.v1",
+    "nativeDigest": "45123d17dbf654d51a0bb406df189cfe6f692d214845aa6106571944a94331a3",
+    "legacyDigest": "445ddbe59be01e6cda747a1557cca11cf5ca2f00f9acf6029060c8f323c332d3",
+    "counts": {
+      "Team": 1,
+      "TeamMembership": 3,
+      "TeamRosterSlot": 2,
+      "PlayerChampionPoolEntry": 1
+    },
+    "sourceSnapshotRequired": false,
+    "archiveRequired": [
+      "all native items including versions/epochs",
+      "audit",
+      "idempotency",
+      "authority transitions"
+    ],
+    "writes": 0
+  },
+  "journalRows": 19,
+  "journalDigest": "237661d51532cc3b33b1c7c9787d01cccab5d00f92b11e76b86be36a6d38f42c",
+  "nativeRows": 9,
+  "restoredCounts": {
+    "Team": 1,
+    "TeamMembership": 3,
+    "TeamRosterSlot": 2,
+    "PlayerChampionPoolEntry": 1
+  },
+  "reconciled": true,
+  "syntheticAuthority": "FROZEN",
+  "completedAt": "2026-10-07T08:34:16.413Z"
+}

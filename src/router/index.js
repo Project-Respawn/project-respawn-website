@@ -24,7 +24,7 @@ import NotFound from '../views/NotFound/NotFound.vue';
 import { refreshAccessContext } from '../composables/useAccessContext.js';
 import { ensureAuthReady, useAuth } from '../composables/useAuth.js';
 import { refreshInvestorAccess } from '../composables/useInvestorAccess.js';
-import { resolveTeamRouteAccess } from '../features/Team Hub/teamHub.service.js';
+const resolveTeamRouteAccess = async (...args) => (await import('../features/Team Hub/teamHub.service.js')).resolveTeamRouteAccess(...args);
 
 // ============================================================
 // ROUTES
@@ -205,6 +205,20 @@ router.beforeEach(async (to) => {
                     redirect: to.fullPath,
                 },
             };
+        }
+    }
+
+    if (to.name === 'AdminTeamAdministration') {
+        const mode = await import('../features/team-hub/services/migration-mode.mjs');
+        if (mode.usingIndependentTeamHub) {
+            try {
+                const capabilities = await mode.loadTeamCapabilities();
+                return capabilities.teamsAdmin === true
+                    ? true
+                    : { path: '/team-hub', query: { denied: '1' } };
+            } catch {
+                return { path: '/team-hub', query: { denied: '1' } };
+            }
         }
     }
 

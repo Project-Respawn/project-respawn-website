@@ -69,7 +69,9 @@ test('READ_PROOF has exactly 11+4 resources; full design stays 43+3; actual clos
   const inputs = proof.closure.flatMap(c => c.inputs);
   assert.doesNotMatch(inputs.join('\n'), /amplify\/|tournaments\/|creator|commerce|community|service\.mjs|repository\.mjs|storage-plan|command-entry|stack\.ts\n/);
   assert.deepEqual(proof.closure.find(c => c.name === 'read').inputs.sort(), ['domains/team-hub/auth.mjs', 'domains/team-hub/contracts.mjs', 'domains/team-hub/preview.mjs']);
-  for (const input of proof.inputs) assert.equal(createHash('sha256').update(fs.readFileSync(input.path)).digest('hex'), input.sha256, input.path);
+  const amendment=JSON.parse(fs.readFileSync('docs/architecture/team-hub-ef-evidence-2026-10-08/frontend-amendment.json'));
+  const expectedInputHash=input=>{const change=amendment.files.find(f=>f.path===input.path);if(!change)return input.sha256;assert.equal(input.sha256,change.previousSha256);assert.equal(amendment.liveActivation,false);return change.sha256;};
+  for (const input of proof.inputs) assert.equal(createHash('sha256').update(fs.readFileSync(input.path)).digest('hex'), expectedInputHash(input), input.path);
   const template = JSON.parse(fs.readFileSync(proof.templates.find(t => t.count === 11).path, 'utf8'));
   const resources = Object.values(template.Resources);
   const auth = resources.find(r => r.Type === 'AWS::ApiGatewayV2::Authorizer').Properties;

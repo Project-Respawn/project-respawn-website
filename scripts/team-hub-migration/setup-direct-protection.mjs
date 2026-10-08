@@ -1,0 +1,11 @@
+import fs from 'node:fs';
+const from='scripts/team-hub-migration/gate1',to='scripts/team-hub-migration/direct-protection';fs.mkdirSync(to,{recursive:true});
+const old='docs/architecture/team-hub-2b3-gate1-evidence-2026-10-05',next='docs/architecture/team-hub-2b3-direct-protection-evidence-2026-10-05';
+for(const name of ['read-only.mjs','verify-legacy.mjs','verify-team.mjs','verify-tournament.mjs'])fs.writeFileSync(`${to}/${name}`,fs.readFileSync(`${from}/${name}`,'utf8').replaceAll(old,next));
+let tables=fs.readFileSync(`${from}/table-postcheck.mjs`,'utf8');
+tables=tables.replace('tables.sort((a,b)=>a.table.localeCompare(b.table));assert.deepEqual(tables,before.tables);',`tables.sort((a,b)=>a.table.localeCompare(b.table));
+const exact=new Set(read('${old}/candidate.json').backups.map(t=>t.table));
+const expected=before.tables.map(t=>exact.has(t.table)?{...t,deletionProtection:true,pitr:'ENABLED'}:t);
+assert.deepEqual(tables,expected);`);
+tables=tables.replaceAll('unchanged:true','onlyFourApprovedProtectionsChanged:true');
+fs.writeFileSync(`${to}/table-postcheck.mjs`,tables);

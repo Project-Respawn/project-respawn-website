@@ -1,0 +1,45 @@
+{
+  "bucket": "amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+  "policy": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Deny",
+        "Principal": {
+          "AWS": "*"
+        },
+        "Action": "s3:*",
+        "Resource": [
+          "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+          "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/*"
+        ],
+        "Condition": {
+          "Bool": {
+            "aws:SecureTransport": "false"
+          }
+        }
+      },
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3"
+        },
+        "Action": [
+          "s3:PutBucketPolicy",
+          "s3:GetBucket*",
+          "s3:List*",
+          "s3:DeleteObject*"
+        ],
+        "Resource": [
+          "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+          "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/*"
+        ]
+      }
+    ]
+  },
+  "audit": {
+    "calls": 3,
+    "errors": [],
+    "writes": 0
+  }
+}

@@ -1,11 +1,11 @@
-import TherapistLayout from "./layouts/TherapistLayout/TherapistLayout.vue";
-import TherapistDashboard from "./views/TherapistDashboard/TherapistDashboard.vue";
-import TherapistClients from "./views/Clients/TherapistClients.vue";
-import TherapistQuests from "./views/Quests/TherapistQuests.vue";
-import TherapistQuestBuilder from "./views/QuestBuilder/TherapistQuestBuilder.vue";
-import TherapistInsights from "./views/Insights/TherapistInsights.vue";
-import TherapistReports from "./views/Reports/TherapistReports.vue";
-import TherapistSettings from "./views/Settings/TherapistSettings.vue";
+const TherapistLayout = () => import("./layouts/TherapistLayout/TherapistLayout.vue");
+const TherapistDashboard = () => import("./views/TherapistDashboard/TherapistDashboard.vue");
+const TherapistClients = () => import("./views/Clients/TherapistClients.vue");
+const TherapistQuests = () => import("./views/Quests/TherapistQuests.vue");
+const TherapistQuestBuilder = () => import("./views/QuestBuilder/TherapistQuestBuilder.vue");
+const TherapistInsights = () => import("./views/Insights/TherapistInsights.vue");
+const TherapistReports = () => import("./views/Reports/TherapistReports.vue");
+const TherapistSettings = () => import("./views/Settings/TherapistSettings.vue");
 
 const therapistRoutes = [
   {

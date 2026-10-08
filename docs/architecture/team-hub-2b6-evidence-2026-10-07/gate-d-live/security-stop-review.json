@@ -1,0 +1,94 @@
+{
+  "at": "2026-10-07T22:17:50.467Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "analyzer": [
+    {
+      "name": "executionBoundary",
+      "findings": []
+    },
+    {
+      "name": "executionIdentity",
+      "findings": []
+    },
+    {
+      "name": "caller",
+      "findings": []
+    },
+    {
+      "name": "command",
+      "findings": []
+    },
+    {
+      "name": "read",
+      "findings": []
+    }
+  ],
+  "checks": [
+    {
+      "kind": "live",
+      "role": "Read",
+      "action": "dynamodb:GetItem",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "live",
+      "role": "Command",
+      "action": "dynamodb:PutItem",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "candidate",
+      "role": "Read",
+      "action": "dynamodb:GetItem",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "candidate",
+      "role": "Command",
+      "action": "dynamodb:PutItem",
+      "decision": "allowed",
+      "missingContext": []
+    }
+  ],
+  "awsWrites": 0,
+  "alarms": [
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-ParityCommand-Errors",
+      "state": "OK",
+      "actions": []
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-ParityCommand-Throttles",
+      "state": "OK",
+      "actions": []
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-ParityRead-Errors",
+      "state": "OK",
+      "actions": []
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-ParityRead-Throttles",
+      "state": "OK",
+      "actions": []
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-ReadProof-ApiErrors",
+      "state": "OK",
+      "actions": []
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-ReadProof-ReadErrors",
+      "state": "OK",
+      "actions": []
+    }
+  ],
+  "complete": true
+}

@@ -1,0 +1,166 @@
+{
+  "Comment": "Fixed Ntgre C1 create only. Input discarded. No retries or authority transition.",
+  "StartAt": "DiscardInput",
+  "TimeoutSeconds": 120,
+  "States": {
+    "DiscardInput": {
+      "Type": "Pass",
+      "Result": {},
+      "Next": "ReadExisting"
+    },
+    "ReadExisting": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::dynamodb:getItem",
+      "Parameters": {
+        "TableName": "ProjectRespawn-TeamHub-Ntgre-Journal",
+        "Key": {
+          "PK": {
+            "S": "CONTROL#AUTHORITY"
+          },
+          "SK": {
+            "S": "STATE"
+          }
+        },
+        "ConsistentRead": true
+      },
+      "Next": "RequireAbsent"
+    },
+    "RequireAbsent": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.Item.PK",
+          "IsPresent": true,
+          "Next": "AlreadyExists"
+        }
+      ],
+      "Default": "CreateLegacy"
+    },
+    "AlreadyExists": {
+      "Type": "Fail",
+      "Error": "AuthorityAlreadyExists"
+    },
+    "CreateLegacy": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::dynamodb:putItem",
+      "Parameters": {
+        "TableName": "ProjectRespawn-TeamHub-Ntgre-Journal",
+        "Item": {
+          "PK": {
+            "S": "CONTROL#AUTHORITY"
+          },
+          "SK": {
+            "S": "STATE"
+          },
+          "schemaVersion": {
+            "S": "team-hub-authority.v1"
+          },
+          "mode": {
+            "S": "LEGACY_WRITER"
+          },
+          "epoch": {
+            "N": "1"
+          },
+          "version": {
+            "N": "1"
+          },
+          "changedAt": {
+            "S": "2026-10-07T22:32:12.867Z"
+          },
+          "changedBy": {
+            "S": "team-hub-c1-executor"
+          },
+          "gateDigest": {
+            "S": "2227a62a06992e9e09ff672ad6e2f09164e0304f3f68db491437a93577f1ab94"
+          }
+        },
+        "ConditionExpression": "attribute_not_exists(PK) AND attribute_not_exists(SK)",
+        "ReturnValues": "NONE"
+      },
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "CreateStopped"
+        }
+      ],
+      "Next": "Verify"
+    },
+    "CreateStopped": {
+      "Type": "Fail",
+      "Error": "ConditionalCreateNotConfirmed"
+    },
+    "Verify": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::dynamodb:getItem",
+      "Parameters": {
+        "TableName": "ProjectRespawn-TeamHub-Ntgre-Journal",
+        "Key": {
+          "PK": {
+            "S": "CONTROL#AUTHORITY"
+          },
+          "SK": {
+            "S": "STATE"
+          }
+        },
+        "ConsistentRead": true
+      },
+      "Next": "VerifyExact"
+    },
+    "VerifyExact": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "And": [
+            {
+              "Variable": "$.Item.PK.S",
+              "StringEquals": "CONTROL#AUTHORITY"
+            },
+            {
+              "Variable": "$.Item.SK.S",
+              "StringEquals": "STATE"
+            },
+            {
+              "Variable": "$.Item.schemaVersion.S",
+              "StringEquals": "team-hub-authority.v1"
+            },
+            {
+              "Variable": "$.Item.mode.S",
+              "StringEquals": "LEGACY_WRITER"
+            },
+            {
+              "Variable": "$.Item.epoch.N",
+              "StringEquals": "1"
+            },
+            {
+              "Variable": "$.Item.version.N",
+              "StringEquals": "1"
+            },
+            {
+              "Variable": "$.Item.changedAt.S",
+              "StringEquals": "2026-10-07T22:32:12.867Z"
+            },
+            {
+              "Variable": "$.Item.changedBy.S",
+              "StringEquals": "team-hub-c1-executor"
+            },
+            {
+              "Variable": "$.Item.gateDigest.S",
+              "StringEquals": "2227a62a06992e9e09ff672ad6e2f09164e0304f3f68db491437a93577f1ab94"
+            }
+          ],
+          "Next": "Done"
+        }
+      ],
+      "Default": "VerificationFailed"
+    },
+    "VerificationFailed": {
+      "Type": "Fail",
+      "Error": "AuthorityReadbackMismatch"
+    },
+    "Done": {
+      "Type": "Succeed"
+    }
+  }
+}

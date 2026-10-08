@@ -1,0 +1,74 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "OnlyDarkCoreIntegration",
+      "Effect": "Deny",
+      "NotAction": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "kms:Decrypt",
+        "lambda:InvokeFunction"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Deny",
+      "Action": "logs:*",
+      "NotResource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-command:*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-command:*"
+    },
+    {
+      "Effect": "Deny",
+      "Action": "kms:Decrypt",
+      "NotResource": "arn:aws:kms:eu-north-1:058264289478:key/*"
+    },
+    {
+      "Effect": "Deny",
+      "Action": "kms:Decrypt",
+      "Resource": "*",
+      "Condition": {
+        "ForAllValues:StringNotEquals": {
+          "kms:ResourceAliases": [
+            "alias/aws/lambda"
+          ]
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": "kms:Decrypt",
+      "Resource": "arn:aws:kms:eu-north-1:058264289478:key/*",
+      "Condition": {
+        "ForAnyValue:StringEquals": {
+          "kms:ResourceAliases": [
+            "alias/aws/lambda"
+          ]
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": "lambda:InvokeFunction",
+      "Resource": [
+        "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+        "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST"
+      ]
+    },
+    {
+      "Effect": "Deny",
+      "Action": "lambda:*",
+      "NotResource": [
+        "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+        "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST"
+      ]
+    }
+  ]
+}

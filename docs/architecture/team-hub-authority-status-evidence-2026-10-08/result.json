@@ -1,0 +1,253 @@
+{
+  "at": "2026-10-08T15:29:41.367Z",
+  "conclusion": "AUTHORITY STATUS ENDPOINT READY FOR DEPLOYMENT REVIEW",
+  "candidate": {
+    "status": "PREPARED_NOT_DEPLOYED",
+    "account": "058264289478",
+    "region": "eu-north-1",
+    "stack": "ProjectRespawn-TeamHub-Ntgre",
+    "securityStack": "ProjectRespawn-TeamHub-Ntgre-ReadProofSecurity",
+    "baseline": {
+      "productSha256": "cd11644cc163b2f06f486a6217127221109b26bd7dd8456726f63fd0dc307232",
+      "securitySha256": "90876a5b857beadb6f1e4e72603b30939685c33ce9f7647c86b850f1e0b01d6f",
+      "runtimeSha256": "a36406c42c727b4d8c262083e0cb95807f2404c4c8649b2eacc559915f4ba7d5",
+      "preservesC2": true,
+      "resources": 40,
+      "securityResources": 7
+    },
+    "runtimePath": ".tmp/team-hub-authority-status/runtime.zip",
+    "runtimeSha256": "cd58cc3553867f268af79bc9c710fe35e1bab07882d39b423e05b39626a7eedd",
+    "productSha256": "5a2d99f4919fd07c619f483e556a0464b9cbaad0be00665201438b0f4ec7d0e9",
+    "securitySha256": "503d08c93fddc869a11bc01c6ec57fe4e7449e618e0c9435e7bf2ed996351abc",
+    "bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+    "assetKey": "team-hub/as/cd58cc3553867f268af79bc9c710fe35e1bab07882d39b423e05b39626a7eedd.zip",
+    "templateKey": "team-hub/as/5a2d99f4919fd07c619f483e556a0464b9cbaad0be00665201438b0f4ec7d0e9.template.json",
+    "templateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/team-hub/as/5a2d99f4919fd07c619f483e556a0464b9cbaad0be00665201438b0f4ec7d0e9.template.json",
+    "policySizes": {
+      "PreviewBoundary": 923,
+      "ExecutionBoundary": 6086,
+      "PreparationCaller": 6053,
+      "ParityCommandBoundary": 1762,
+      "ParityReadBoundary": 1756
+    },
+    "removedHistoricalArtifact": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/core-integration/2992b5d6b736c90c3fc306654a38576cd861dc0e07068c92bf02c79c87948e6a.zip",
+    "preservedRollbackArtifact": "team-hub/d1-dark/a36406c42c727b4d8c262083e0cb95807f2404c4c8649b2eacc559915f4ba7d5.zip",
+    "productChanges": {
+      "add": [
+        "AuthorityStatusRoute",
+        "AuthorityStatusInvokePermission"
+      ],
+      "modify": [
+        "ParityReadFunction.Code"
+      ],
+      "delete": [],
+      "replace": [],
+      "resources": 42
+    },
+    "securityChanges": {
+      "modify": [
+        "ExecutionBoundary",
+        "ExecutionRole",
+        "PreparationCaller"
+      ],
+      "runtimePoliciesChanged": false,
+      "resources": 7
+    },
+    "synthesis": {
+      "tool": "CDK CfnInclude from exact accepted D1 template, sibling Team Hub root",
+      "cdk": "2.260.0",
+      "assembly": ".tmp/team-hub-authority-status/assembly",
+      "awsCalls": 0
+    },
+    "sourceHashes": [
+      {
+        "path": "config/domains/core/domain-endpoints.Ntgre.json",
+        "sha256": "73ccb94e6477198f9853bd90db9581e26f7d384836db0b8ba5dcace7b99a5c3b"
+      },
+      {
+        "path": "domains/team-hub/core-integration/manifest.mjs",
+        "sha256": "ad879c2a96d41b9f9ea3cce045a677e376d4cd976c38f4abe660309c8e0da5d1"
+      },
+      {
+        "path": "domains/team-hub/contracts.mjs",
+        "sha256": "5a9ea05b66210eb709e8bc9f4097f5680f405dc498a72b5f12ca8599273b592d"
+      },
+      {
+        "path": "domains/team-hub/cutover/core-client.mjs",
+        "sha256": "52b7e3049a85facfa2cfdb419e235359c491daf26a2da068f3f934984b9ce029"
+      },
+      {
+        "path": "domains/team-hub/auth.mjs",
+        "sha256": "f18932d8664eb3775d3ad1ff89d3e01b0d05b3d81f62822b51189993d500f622"
+      },
+      {
+        "path": "domains/team-hub/core-integration/handler.mjs",
+        "sha256": "cf2c48f1d871c34d7414d820c51e17f247bac0d319cc5844a84457cdc84a9a3b"
+      },
+      {
+        "path": "domains/team-hub/cutover/contracts.mjs",
+        "sha256": "8da47289f6fd1118461e9bb931b5c38fcc1d5196260e4a1b5e0a76611f686a8e"
+      },
+      {
+        "path": "domains/team-hub/cutover/observability.mjs",
+        "sha256": "e06956c377f92769f76495c9cd5b74d7800231bca50acdfe54cf23971e4ec382"
+      },
+      {
+        "path": "domains/team-hub/dark-monitoring/handler.mjs",
+        "sha256": "b230ab17e4045401c8ad0988f9c907104e490e36ebce550d549b9ef14e4bb5e2"
+      },
+      {
+        "path": "domains/team-hub/dark-monitoring/entry.mjs",
+        "sha256": "57080746038a1f50b46076639772348156aee34416d224ccd17df7d16ebf4398"
+      },
+      {
+        "path": "domains/team-hub/authority-contract/contract.mjs",
+        "sha256": "190ae44422d0be2743bb6a88c3936d1b87e1a6653faecf93c21e5e2849b8711a"
+      },
+      {
+        "path": "domains/team-hub/authority-contract/handler.mjs",
+        "sha256": "81f7e945a3e681b0eab1fc8efcbe01c6e37018869a1583c001feec1403819691"
+      },
+      {
+        "path": "domains/team-hub/authority-contract/router.mjs",
+        "sha256": "6318a15847e81ed9cefa382f2e93baaf7129bb7921f86aad20f740530b369490"
+      },
+      {
+        "path": "domains/team-hub/authority-contract/entry.mjs",
+        "sha256": "3353b68d7a9bd0ceb04611005baa2f7849446b860bed46eab4b6293b4fa21b20"
+      },
+      {
+        "path": "scripts/team-hub-authority-status/build.mjs",
+        "sha256": "b2b671a45c0f07d733d030b15a5ba7b852806aab92a106c11441f3e20c498d9b"
+      },
+      {
+        "path": "src/features/team-hub/api/cutover-client.mjs",
+        "sha256": "84dd485a00aea9e36797ebe7feb702912694a6e67422a74a66b8e31ad0b4193e"
+      },
+      {
+        "path": "config/domains/team-hub/frontend-cutover.PROPOSAL.json",
+        "sha256": "04284395dcae0d447df68e16981d4e7d877e3b5a7de93056b09467153eeff6df"
+      },
+      {
+        "path": "config/domains/team-hub/domain-endpoints.Ntgre.json",
+        "sha256": "c8ede7fca162d1549b34be6d70973ab53ddc024c973317b76c93b1af6009f0b5"
+      }
+    ],
+    "awsWrites": 0
+  },
+  "preservedAssembly": {
+    "candidateSha256": "30ac97e5b48f3867268403c13766e9439aa2e0821d87585a685cfdfae1b997d1",
+    "directory": "infrastructure/domains/team-hub/.build/authority-status/30ac97e5b48f3867268403c13766e9439aa2e0821d87585a685cfdfae1b997d1",
+    "files": [
+      {
+        "path": "infrastructure/domains/team-hub/.build/authority-status/30ac97e5b48f3867268403c13766e9439aa2e0821d87585a685cfdfae1b997d1/candidate.json",
+        "sha256": "30ac97e5b48f3867268403c13766e9439aa2e0821d87585a685cfdfae1b997d1",
+        "bytes": 5331
+      },
+      {
+        "path": "infrastructure/domains/team-hub/.build/authority-status/30ac97e5b48f3867268403c13766e9439aa2e0821d87585a685cfdfae1b997d1/product.template.json",
+        "sha256": "5a2d99f4919fd07c619f483e556a0464b9cbaad0be00665201438b0f4ec7d0e9",
+        "bytes": 35941
+      },
+      {
+        "path": "infrastructure/domains/team-hub/.build/authority-status/30ac97e5b48f3867268403c13766e9439aa2e0821d87585a685cfdfae1b997d1/security.template.json",
+        "sha256": "503d08c93fddc869a11bc01c6ec57fe4e7449e618e0c9435e7bf2ed996351abc",
+        "bytes": 44080
+      },
+      {
+        "path": "infrastructure/domains/team-hub/.build/authority-status/30ac97e5b48f3867268403c13766e9439aa2e0821d87585a685cfdfae1b997d1/runtime.zip",
+        "sha256": "cd58cc3553867f268af79bc9c710fe35e1bab07882d39b423e05b39626a7eedd",
+        "bytes": 1586789
+      }
+    ],
+    "rebuildPermittedForExecution": false,
+    "awsWrites": 0
+  },
+  "route": "GET /v1/authority",
+  "authentication": "Existing Ntgre API JWT authorizer + exact access-token claims",
+  "journal": {
+    "operation": "GetItem",
+    "consistent": true,
+    "table": "ProjectRespawn-TeamHub-Ntgre-Journal",
+    "PK": "CONTROL#AUTHORITY",
+    "SK": "STATE",
+    "runtimePermissionDelta": 0
+  },
+  "frontend": {
+    "activation": false,
+    "epoch": null,
+    "usesFreshServerEpoch": true,
+    "businessAuthorizationBypass": false
+  },
+  "browser": {
+    "complete": true,
+    "totals": {
+      "ui": 49,
+      "basePages": 14,
+      "routeVisits": 42,
+      "privacy": 346,
+      "contracts": 40,
+      "lazyIsolation": 24
+    },
+    "personas": [
+      "admin",
+      "ordinary",
+      "manager",
+      "coach",
+      "player"
+    ],
+    "liveCore": true,
+    "teamState": "ISOLATED_SYNTHETIC",
+    "liveStatusEndpoint": false,
+    "tokensPersisted": false
+  },
+  "validation": {
+    "offlineTests": 648,
+    "allPassed": true,
+    "runtimeIamDecisions": 68,
+    "deploymentIamDecisions": 62,
+    "accessAnalyzerPolicies": 7,
+    "typescript": true,
+    "builds": true
+  },
+  "preservation": {
+    "legacyResources": 2621,
+    "functionDirective": 167,
+    "teamHubLive": 40,
+    "teamHubSecurityLive": 7,
+    "core": "8+5",
+    "tournament": 11,
+    "authority": "LEGACY_WRITER",
+    "epoch": 1,
+    "version": 1,
+    "normalWrites": "DISABLED",
+    "d1Unchanged": true,
+    "c2Unchanged": true,
+    "productionChanges": 0
+  },
+  "localCleanup": {
+    "At": "2026-10-08T15:28:25.1084693Z",
+    "AuthenticatedContextsDisposed": true,
+    "IsolatedServerStopped": true,
+    "RemainingProfiles": [
+      "browser-profile-a15edb3f7885fa48"
+    ],
+    "ProfilesGitIgnored": true,
+    "AwsTemporaryResourcesCreated": 0,
+    "Note": "Exact task-owned profile cleanup attempted; any listed paths remain Windows-locked. Preserved .build candidate untouched."
+  },
+  "awsWrites": 0,
+  "changeSetsCreated": 0,
+  "liveAcceptance": false,
+  "requiredAuthorization": "Separate exact security/publication/product execution gate followed by live JWT/status/denial/monitoring/preservation acceptance; no business authority or frontend switch",
+  "secretScan": {
+    "at": "2026-10-08T15:30:32.978Z",
+    "filesScanned": 77,
+    "secretFindings": [],
+    "linksChecked": 110,
+    "brokenLinks": [],
+    "pinsVerified": true,
+    "temporaryAndPreservedBuildArtifactsIgnored": true,
+    "scope": "Current candidate source, sanitized evidence, reports and preserved runtime ZIP; no unrelated secrets/browser-profile inspection"
+  }
+}

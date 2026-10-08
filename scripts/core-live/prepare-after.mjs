@@ -1,0 +1,2 @@
+import fs from 'node:fs';
+const p='scripts/core-live/preflight.mjs';let source=fs.readFileSync(p,'utf8');const start=source.indexOf('const absent=[]'),end=source.indexOf('const environment=');source=source.slice(0,start)+source.slice(end);source=source.replace("save('identity',","save('identity-after',").replace("save('baseline',","assert.deepEqual(roots,read(E+'/baseline.json').roots,'Protected root state/timestamps changed');save('baseline-after',").replace('coreAbsent:true,','protectedCompared:true,');fs.writeFileSync('scripts/core-live/after-baseline.mjs',source);

@@ -1,0 +1,676 @@
+{
+  "at": "2026-10-05T20:25:33.809Z",
+  "api": "dxb2tdlulrch7hj2pts2mfijia",
+  "functions": [
+    {
+      "id": "25pm42wqyvg6vn44q4di7rarl4",
+      "name": "MutationupdateTeampostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "2ixizvz7iffhjkknuwx3ycpj6q",
+      "name": "MutationcreateTeamRosterSlotpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "2juiqmhsrzgkze2xcyb7mzkcge",
+      "name": "QuerylistPlayerChampionPoolEntryByTeamIdauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#set( $primaryFieldMap = {} )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n\n#end\n#if( !$isAuthorized && $util.isNull($ctx.stash.authFilter) )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "2ywliik2qrcgdcljjsvmvu3y4i",
+      "name": "QuerylistTeamMembershipspostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "33e2nrzupjd6vi7orq625k7v2u",
+      "name": "MutationcreatePlayerChampionPoolEntryauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $inputFields = $util.parseJson($util.toJson($ctx.args.input.keySet())) )\n#set( $isAuthorized = false )\n#set( $allowedFields = [] )\n#if( $util.authType() == \"API Key Authorization\" )\n$util.unauthorized()\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n\n#end\n#if( !$isAuthorized && $allowedFields.isEmpty() )\n$util.unauthorized()\n#end\n#if( !$isAuthorized )\n  #set( $deniedFields = $util.list.copyAndRemoveAll($inputFields, $allowedFields) )\n  #if( $deniedFields.size() > 0 )\n    $util.error(\"Unauthorized on ${deniedFields}\", \"Unauthorized\")\n  #end\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "3yo27hgkm5hydgfhs3esmi2gce",
+      "name": "QuerylistTeamMembershipsauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#set( $primaryFieldMap = {} )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n\n#end\n#if( !$isAuthorized && $util.isNull($ctx.stash.authFilter) )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "4yb6cg662ralnnxiwlrwrb5vqa",
+      "name": "MutationMutateTeamHubAuthFN",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Field Authorization Steps. **\n#set( $isAuthorized = false )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n  #set( $isAuthorized = true )\n#end\n#if( !$isAuthorized )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Field Authorization Steps. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "5pckndzh5zbhbfhch6v3nau3xu",
+      "name": "QuerygetPlayerChampionPoolEntryauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#set( $primaryFieldMap = {} )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n\n#end\n#if( !$isAuthorized && $util.isNull($ctx.stash.authFilter) )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "66bufnzhfna47pqcbsllxiag6e",
+      "name": "QueryGetPlayerChampionPoolEntryDataResolverFn",
+      "dataSource": "PlayerChampionPoolEntryTable",
+      "request": "## [Start] Get Request template. **\n#set( $GetRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"Query\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $expression = \"\" )\n  #set( $expressionNames = {} )\n  #set( $expressionValues = {} )\n  #foreach( $item in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    #set( $expression = \"$expression#keyCount$velocityCount = :valueCount$velocityCount AND \" )\n    $util.qr($expressionNames.put(\"#keyCount$velocityCount\", $item.key))\n    $util.qr($expressionValues.put(\":valueCount$velocityCount\", $item.value))\n  #end\n  #set( $expression = $expression.replaceAll(\"AND $\", \"\") )\n  #set( $query = {\n  \"expression\": $expression,\n  \"expressionNames\": $expressionNames,\n  \"expressionValues\": $expressionValues\n} )\n#else\n  #set( $query = {\n  \"expression\": \"id = :id\",\n  \"expressionValues\": {\n      \":id\":     $util.parseJson($util.dynamodb.toDynamoDBJson($ctx.args.id))\n  }\n} )\n#end\n$util.qr($GetRequest.put(\"query\", $query))\n#if( !$util.isNullOrEmpty($ctx.stash.authFilter) )\n  $util.qr($GetRequest.put(\"filter\", $util.parseJson($util.transform.toDynamoDBFilterExpression($ctx.stash.authFilter))))\n#end\n$util.toJson($GetRequest)\n## [End] Get Request template. **",
+      "responseDigest": "514f6609dc17faf5bde4d12df7e630a1a01252876f147f194f4e2e76747e5608"
+    },
+    {
+      "id": "67guecekl5gpfmswpu3wh7v4pe",
+      "name": "QuerylistTeamMembershipByUserIdpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "6egkm2nv6zgfpo3ytamrvzntla",
+      "name": "QuerylistTeamRosterSlotByMembershipIdauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#set( $primaryFieldMap = {} )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n\n#end\n#if( !$isAuthorized && $util.isNull($ctx.stash.authFilter) )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "6kn74x3ab5f6hnr6uew6mkkmye",
+      "name": "MutationcreateTeamMembershippostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "6q73scpmjvdjvlulekdmftpugi",
+      "name": "QuerylistPlayerChampionPoolEntriespostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "7hlakiy7fzhwhidtlxltmstq5i",
+      "name": "QueryReadTeamHubAuthFN",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Field Authorization Steps. **\n#set( $isAuthorized = false )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n  #set( $isAuthorized = true )\n#end\n#if( !$isAuthorized )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Field Authorization Steps. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "7jdwagecgjefbfkbivpsc47xju",
+      "name": "MutationupdateTeamRosterSlotauth0Function",
+      "dataSource": "TeamRosterSlotTable",
+      "request": "## [Start] Get Request template. **\n#set( $GetRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"GetItem\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $key = {\n  \"id\":   $util.dynamodb.toDynamoDB($ctx.args.input.id)\n} )\n#end\n$util.qr($GetRequest.put(\"key\", $key))\n$util.toJson($GetRequest)\n## [End] Get Request template. **",
+      "responseDigest": "43f6054d0f78930b0d51bae6f3c0765f93e6b3ca976e2d92963f938c35ed1c3f"
+    },
+    {
+      "id": "7kh6lahikzbtff2qindb5nxega",
+      "name": "QuerylistTeamRosterSlotsauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#set( $primaryFieldMap = {} )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n\n#end\n#if( !$isAuthorized && $util.isNull($ctx.stash.authFilter) )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "7kjronj7c5aknhvko2jjjpdcsu",
+      "name": "MutationDeleteTeamRosterSlotDataResolverFn",
+      "dataSource": "TeamRosterSlotTable",
+      "request": "## [Start] Delete Request template. **\n#set( $args = $util.defaultIfNull($ctx.stash.transformedArgs, $ctx.args) )\n#set( $DeleteRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"DeleteItem\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $Key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $Key = {\n  \"id\":   $util.dynamodb.toDynamoDB($args.input.id)\n} )\n#end\n$util.qr($DeleteRequest.put(\"key\", $Key))\n## Begin - key condition **\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $keyConditionExpr = {} )\n  #set( $keyConditionExprNames = {} )\n  #foreach( $entry in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    $util.qr($keyConditionExpr.put(\"keyCondition$velocityCount\", {\n  \"attributeExists\": true\n}))\n    $util.qr($keyConditionExprNames.put(\"#keyCondition$velocityCount\", \"$entry.key\"))\n  #end\n  $util.qr($ctx.stash.conditions.add($keyConditionExpr))\n#else\n  $util.qr($ctx.stash.conditions.add({\n  \"id\": {\n      \"attributeExists\": true\n  }\n}))\n#end\n## End - key condition **\n#if( $args.condition )\n  $util.qr($ctx.stash.conditions.add($args.condition))\n#end\n## Start condition block **\n#if( $ctx.stash.conditions && $ctx.stash.conditions.size() != 0 )\n  #set( $mergedConditions = {\n  \"and\": $ctx.stash.conditions\n} )\n  #set( $Conditions = $util.parseJson($util.transform.toDynamoDBConditionExpression($mergedConditions)) )\n  #if( $Conditions.expressionValues && $Conditions.expressionValues.size() == 0 )\n    #set( $Conditions = {\n  \"expression\": $Conditions.expression,\n  \"expressionNames\": $Conditions.expressionNames\n} )\n  #end\n  ## End condition block **\n#end\n#if( $Conditions )\n  #if( $keyConditionExprNames )\n    $util.qr($Conditions.expressionNames.putAll($keyConditionExprNames))\n  #end\n  $util.qr($DeleteRequest.put(\"condition\", $Conditions))\n#end\n$util.toJson($DeleteRequest)\n## [End] Delete Request template. **",
+      "responseDigest": "1cbc30872aca5f6071fee27c5dba83b98ca36595a6c3f1260d2d037068480fe9"
+    },
+    {
+      "id": "7kyysecebffh5j3exfhmccezuy",
+      "name": "QueryListTeamRosterSlotByMembershipIdDataResolverFn",
+      "dataSource": "TeamRosterSlotTable",
+      "request": "## [Start] Set query expression for key **\n#if( !$util.isNull($ctx.args.sortDirection) )\n  $util.error(\"sortDirection is not supported for List operations without a Sort key defined.\", \"InvalidArgumentsError\")\n#end\n#set( $modelQueryExpression = {} )\n#if( !$util.isNull($ctx.args.membershipId) )\n  #set( $modelQueryExpression.expression = \"#membershipId = :membershipId\" )\n  #set( $modelQueryExpression.expressionNames = {\n  \"#membershipId\": \"membershipId\"\n} )\n  #set( $modelQueryExpression.expressionValues = {\n  \":membershipId\": {\n      \"S\": \"$ctx.args.membershipId\"\n  }\n} )\n#end\n## [End] Set query expression for key **\n#set( $limit = $util.defaultIfNull($context.args.limit, 100) )\n#set( $QueryRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"Query\",\n  \"limit\": $limit,\n  \"query\": $modelQueryExpression,\n  \"index\": \"teamRosterSlotsByMembershipId\"\n} )\n#if( !$util.isNull($ctx.args.sortDirection)\n                  && $ctx.args.sortDirection == \"DESC\" )\n  #set( $QueryRequest.scanIndexForward = false )\n#else\n  #set( $QueryRequest.scanIndexForward = true )\n#end\n#if( $context.args.nextToken ) #set( $QueryRequest.nextToken = $context.args.nextToken ) #end\n#if( !$util.isNullOrEmpty($ctx.stash.authFilter) )\n  #set( $filter = $ctx.stash.authFilter )\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filter = {\n  \"and\":   [$filter, $ctx.args.filter]\n} )\n  #end\n#else\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filter = $ctx.args.filter )\n  #end\n#end\n#if( !$util.isNullOrEmpty($filter) )\n  #set( $filterExpression = $util.parseJson($util.transform.toDynamoDBFilterExpression($filter)) )\n  #if( $util.isNullOrEmpty($filterExpression) )\n    $util.error(\"Unable to process the filter expression\", \"Unrecognized Filter\")\n  #end\n  #if( !$util.isNullOrBlank($filterExpression.expression) )\n    #if( $filterExpression.expressionValues.size() == 0 )\n      $util.qr($filterExpression.remove(\"expressionValues\"))\n    #end\n    #set( $QueryRequest.filter = $filterExpression )\n  #end\n#end\n$util.toJson($QueryRequest)",
+      "responseDigest": "70c474ce1880b65e72c404f4bab78bc128afae949a5484d2d77af6a2828d1b90"
+    },
+    {
+      "id": "a2ryteiwojc3baqx2zdiw2f45y",
+      "name": "MutationUpdateTeamMembershipDataResolverFn",
+      "dataSource": "TeamMembershipTable",
+      "request": "## [Start] Mutation Update resolver. **\n#set( $args = $util.defaultIfNull($ctx.stash.transformedArgs, $ctx.args) )\n## Set the default values to put request **\n#set( $mergedValues = $util.defaultIfNull($ctx.stash.defaultValues, {}) )\n## copy the values from input **\n$util.qr($mergedValues.putAll($util.defaultIfNull($args.input, {})))\n## set the typename **\n## Initialize the vars for creating ddb expression **\n#set( $expNames = {} )\n#set( $expValues = {} )\n#set( $expSet = {} )\n#set( $expAdd = {} )\n#set( $expRemove = [] )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $Key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $Key = {\n  \"id\":   $util.dynamodb.toDynamoDB($args.input.id)\n} )\n#end\n## Model key **\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $keyFields = [] )\n  #foreach( $entry in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    $util.qr($keyFields.add(\"$entry.key\"))\n  #end\n#else\n  #set( $keyFields = [\"id\"] )\n#end\n#foreach( $entry in $util.map.copyAndRemoveAllKeys($mergedValues, $keyFields).entrySet() )\n  #if( !$util.isNull($ctx.stash.metadata.dynamodbNameOverrideMap) && $ctx.stash.metadata.dynamodbNameOverrideMap.containsKey(\"$entry.key\") )\n    #set( $entryKeyAttributeName = $ctx.stash.metadata.dynamodbNameOverrideMap.get(\"$entry.key\") )\n  #else\n    #set( $entryKeyAttributeName = $entry.key )\n  #end\n  #if( $util.isNull($entry.value) )\n    #set( $discard = $expRemove.add(\"#$entryKeyAttributeName\") )\n    $util.qr($expNames.put(\"#$entryKeyAttributeName\", \"$entry.key\"))\n  #else\n    $util.qr($expSet.put(\"#$entryKeyAttributeName\", \":$entryKeyAttributeName\"))\n    $util.qr($expNames.put(\"#$entryKeyAttributeName\", \"$entry.key\"))\n    $util.qr($expValues.put(\":$entryKeyAttributeName\", $util.dynamodb.toDynamoDB($entry.value)))\n  #end\n#end\n#set( $expression = \"\" )\n#if( !$expSet.isEmpty() )\n  #set( $expression = \"SET\" )\n  #foreach( $entry in $expSet.entrySet() )\n    #set( $expression = \"$expression $entry.key = $entry.value\" )\n    #if( $foreach.hasNext() )\n      #set( $expression = \"$expression,\" )\n    #end\n  #end\n#end\n#if( !$expAdd.isEmpty() )\n  #set( $expression = \"$expression ADD\" )\n  #foreach( $entry in $expAdd.entrySet() )\n    #set( $expression = \"$expression $entry.key $entry.value\" )\n    #if( $foreach.hasNext() )\n      #set( $expression = \"$expression,\" )\n    #end\n  #end\n#end\n#if( !$expRemove.isEmpty() )\n  #set( $expression = \"$expression REMOVE\" )\n  #foreach( $entry in $expRemove )\n    #set( $expression = \"$expression $entry\" )\n    #if( $foreach.hasNext() )\n      #set( $expression = \"$expression,\" )\n    #end\n  #end\n#end\n#set( $update = {} )\n$util.qr($update.put(\"expression\", \"$expression\"))\n#if( !$expNames.isEmpty() )\n  $util.qr($update.put(\"expressionNames\", $expNames))\n#end\n#if( !$expValues.isEmpty() )\n  $util.qr($update.put(\"expressionValues\", $expValues))\n#end\n## Begin - key condition **\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $keyConditionExpr = {} )\n  #set( $keyConditionExprNames = {} )\n  #foreach( $entry in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    $util.qr($keyConditionExpr.put(\"keyCondition$velocityCount\", {\n  \"attributeExists\": true\n}))\n    $util.qr($keyConditionExprNames.put(\"#keyCondition$velocityCount\", \"$entry.key\"))\n  #end\n  $util.qr($ctx.stash.conditions.add($keyConditionExpr))\n#else\n  $util.qr($ctx.stash.conditions.add({\n  \"id\": {\n      \"attributeExists\": true\n  }\n}))\n#end\n## End - key condition **\n#if( $args.condition )\n  $util.qr($ctx.stash.conditions.add($args.condition))\n#end\n## Start condition block **\n#if( $ctx.stash.conditions && $ctx.stash.conditions.size() != 0 )\n  #set( $mergedConditions = {\n  \"and\": $ctx.stash.conditions\n} )\n  #set( $Conditions = $util.parseJson($util.transform.toDynamoDBConditionExpression($mergedConditions)) )\n  #if( $Conditions.expressionValues && $Conditions.expressionValues.size() == 0 )\n    #set( $Conditions = {\n  \"expression\": $Conditions.expression,\n  \"expressionNames\": $Conditions.expressionNames\n} )\n  #end\n  ## End condition block **\n#end\n#set( $UpdateItem = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"UpdateItem\",\n  \"key\": $Key,\n  \"update\": $update\n} )\n#if( $Conditions )\n  #if( $keyConditionExprNames )\n    $util.qr($Conditions.expressionNames.putAll($keyConditionExprNames))\n  #end\n  $util.qr($UpdateItem.put(\"condition\", $Conditions))\n#end\n$util.toJson($UpdateItem)\n## [End] Mutation Update resolver. **",
+      "responseDigest": "1cbc30872aca5f6071fee27c5dba83b98ca36595a6c3f1260d2d037068480fe9"
+    },
+    {
+      "id": "al42527zqrczlod4qbqpise634",
+      "name": "QuerygetTeampostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "aqkte3zr6vg5pp2rqt2ku3aqme",
+      "name": "QuerylistTeamByStatuspostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "avr7jepsurblpm5f7onyrvbffu",
+      "name": "QuerylistTeamByStatusauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#set( $primaryFieldMap = {} )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n\n#end\n#if( !$isAuthorized && $util.isNull($ctx.stash.authFilter) )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "bevzo2dkfjfhldtm6nnyuh6wfm",
+      "name": "MutationdeletePlayerChampionPoolEntryauth0Function",
+      "dataSource": "PlayerChampionPoolEntryTable",
+      "request": "## [Start] Get Request template. **\n#set( $GetRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"GetItem\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $key = {\n  \"id\":   $util.dynamodb.toDynamoDB($ctx.args.input.id)\n} )\n#end\n$util.qr($GetRequest.put(\"key\", $key))\n$util.toJson($GetRequest)\n## [End] Get Request template. **",
+      "responseDigest": "37e3757a7d1ebd2d0c62b0aee55bed6eec79ef4529d781952c42f915533816cf"
+    },
+    {
+      "id": "bgvm7oobsnbvblgvje5vomxbsq",
+      "name": "QuerygetTeamRosterSlotpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "bvjmw5dfbfdcbfy4d3v2ohgpfq",
+      "name": "QuerygetTeamMembershippostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "cd3s4laagneilivpwhvqdqd5xa",
+      "name": "QuerylistTeamMembershipByTeamIdauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#set( $primaryFieldMap = {} )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n\n#end\n#if( !$isAuthorized && $util.isNull($ctx.stash.authFilter) )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "ceaupb67obfy7kaajwvjhr33rq",
+      "name": "QueryGetTeamMembershipDataResolverFn",
+      "dataSource": "TeamMembershipTable",
+      "request": "## [Start] Get Request template. **\n#set( $GetRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"Query\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $expression = \"\" )\n  #set( $expressionNames = {} )\n  #set( $expressionValues = {} )\n  #foreach( $item in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    #set( $expression = \"$expression#keyCount$velocityCount = :valueCount$velocityCount AND \" )\n    $util.qr($expressionNames.put(\"#keyCount$velocityCount\", $item.key))\n    $util.qr($expressionValues.put(\":valueCount$velocityCount\", $item.value))\n  #end\n  #set( $expression = $expression.replaceAll(\"AND $\", \"\") )\n  #set( $query = {\n  \"expression\": $expression,\n  \"expressionNames\": $expressionNames,\n  \"expressionValues\": $expressionValues\n} )\n#else\n  #set( $query = {\n  \"expression\": \"id = :id\",\n  \"expressionValues\": {\n      \":id\":     $util.parseJson($util.dynamodb.toDynamoDBJson($ctx.args.id))\n  }\n} )\n#end\n$util.qr($GetRequest.put(\"query\", $query))\n#if( !$util.isNullOrEmpty($ctx.stash.authFilter) )\n  $util.qr($GetRequest.put(\"filter\", $util.parseJson($util.transform.toDynamoDBFilterExpression($ctx.stash.authFilter))))\n#end\n$util.toJson($GetRequest)\n## [End] Get Request template. **",
+      "responseDigest": "514f6609dc17faf5bde4d12df7e630a1a01252876f147f194f4e2e76747e5608"
+    },
+    {
+      "id": "ck7byltdqzhehkssh6visgkmwi",
+      "name": "MutationUpdateTeamDataResolverFn",
+      "dataSource": "TeamTable",
+      "request": "## [Start] Mutation Update resolver. **\n#set( $args = $util.defaultIfNull($ctx.stash.transformedArgs, $ctx.args) )\n## Set the default values to put request **\n#set( $mergedValues = $util.defaultIfNull($ctx.stash.defaultValues, {}) )\n## copy the values from input **\n$util.qr($mergedValues.putAll($util.defaultIfNull($args.input, {})))\n## set the typename **\n## Initialize the vars for creating ddb expression **\n#set( $expNames = {} )\n#set( $expValues = {} )\n#set( $expSet = {} )\n#set( $expAdd = {} )\n#set( $expRemove = [] )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $Key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $Key = {\n  \"id\":   $util.dynamodb.toDynamoDB($args.input.id)\n} )\n#end\n## Model key **\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $keyFields = [] )\n  #foreach( $entry in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    $util.qr($keyFields.add(\"$entry.key\"))\n  #end\n#else\n  #set( $keyFields = [\"id\"] )\n#end\n#foreach( $entry in $util.map.copyAndRemoveAllKeys($mergedValues, $keyFields).entrySet() )\n  #if( !$util.isNull($ctx.stash.metadata.dynamodbNameOverrideMap) && $ctx.stash.metadata.dynamodbNameOverrideMap.containsKey(\"$entry.key\") )\n    #set( $entryKeyAttributeName = $ctx.stash.metadata.dynamodbNameOverrideMap.get(\"$entry.key\") )\n  #else\n    #set( $entryKeyAttributeName = $entry.key )\n  #end\n  #if( $util.isNull($entry.value) )\n    #set( $discard = $expRemove.add(\"#$entryKeyAttributeName\") )\n    $util.qr($expNames.put(\"#$entryKeyAttributeName\", \"$entry.key\"))\n  #else\n    $util.qr($expSet.put(\"#$entryKeyAttributeName\", \":$entryKeyAttributeName\"))\n    $util.qr($expNames.put(\"#$entryKeyAttributeName\", \"$entry.key\"))\n    $util.qr($expValues.put(\":$entryKeyAttributeName\", $util.dynamodb.toDynamoDB($entry.value)))\n  #end\n#end\n#set( $expression = \"\" )\n#if( !$expSet.isEmpty() )\n  #set( $expression = \"SET\" )\n  #foreach( $entry in $expSet.entrySet() )\n    #set( $expression = \"$expression $entry.key = $entry.value\" )\n    #if( $foreach.hasNext() )\n      #set( $expression = \"$expression,\" )\n    #end\n  #end\n#end\n#if( !$expAdd.isEmpty() )\n  #set( $expression = \"$expression ADD\" )\n  #foreach( $entry in $expAdd.entrySet() )\n    #set( $expression = \"$expression $entry.key $entry.value\" )\n    #if( $foreach.hasNext() )\n      #set( $expression = \"$expression,\" )\n    #end\n  #end\n#end\n#if( !$expRemove.isEmpty() )\n  #set( $expression = \"$expression REMOVE\" )\n  #foreach( $entry in $expRemove )\n    #set( $expression = \"$expression $entry\" )\n    #if( $foreach.hasNext() )\n      #set( $expression = \"$expression,\" )\n    #end\n  #end\n#end\n#set( $update = {} )\n$util.qr($update.put(\"expression\", \"$expression\"))\n#if( !$expNames.isEmpty() )\n  $util.qr($update.put(\"expressionNames\", $expNames))\n#end\n#if( !$expValues.isEmpty() )\n  $util.qr($update.put(\"expressionValues\", $expValues))\n#end\n## Begin - key condition **\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $keyConditionExpr = {} )\n  #set( $keyConditionExprNames = {} )\n  #foreach( $entry in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    $util.qr($keyConditionExpr.put(\"keyCondition$velocityCount\", {\n  \"attributeExists\": true\n}))\n    $util.qr($keyConditionExprNames.put(\"#keyCondition$velocityCount\", \"$entry.key\"))\n  #end\n  $util.qr($ctx.stash.conditions.add($keyConditionExpr))\n#else\n  $util.qr($ctx.stash.conditions.add({\n  \"id\": {\n      \"attributeExists\": true\n  }\n}))\n#end\n## End - key condition **\n#if( $args.condition )\n  $util.qr($ctx.stash.conditions.add($args.condition))\n#end\n## Start condition block **\n#if( $ctx.stash.conditions && $ctx.stash.conditions.size() != 0 )\n  #set( $mergedConditions = {\n  \"and\": $ctx.stash.conditions\n} )\n  #set( $Conditions = $util.parseJson($util.transform.toDynamoDBConditionExpression($mergedConditions)) )\n  #if( $Conditions.expressionValues && $Conditions.expressionValues.size() == 0 )\n    #set( $Conditions = {\n  \"expression\": $Conditions.expression,\n  \"expressionNames\": $Conditions.expressionNames\n} )\n  #end\n  ## End condition block **\n#end\n#set( $UpdateItem = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"UpdateItem\",\n  \"key\": $Key,\n  \"update\": $update\n} )\n#if( $Conditions )\n  #if( $keyConditionExprNames )\n    $util.qr($Conditions.expressionNames.putAll($keyConditionExprNames))\n  #end\n  $util.qr($UpdateItem.put(\"condition\", $Conditions))\n#end\n$util.toJson($UpdateItem)\n## [End] Mutation Update resolver. **",
+      "responseDigest": "1cbc30872aca5f6071fee27c5dba83b98ca36595a6c3f1260d2d037068480fe9"
+    },
+    {
+      "id": "cpac5y4xqveolbvfc5dnxttgdm",
+      "name": "MutationupdatePlayerChampionPoolEntrypostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "dmwzkroo2fbc5eizissybohm2y",
+      "name": "QueryListTeamMembershipByTeamIdDataResolverFn",
+      "dataSource": "TeamMembershipTable",
+      "request": "## [Start] Set query expression for key **\n#if( !$util.isNull($ctx.args.sortDirection) )\n  $util.error(\"sortDirection is not supported for List operations without a Sort key defined.\", \"InvalidArgumentsError\")\n#end\n#set( $modelQueryExpression = {} )\n#if( !$util.isNull($ctx.args.teamId) )\n  #set( $modelQueryExpression.expression = \"#teamId = :teamId\" )\n  #set( $modelQueryExpression.expressionNames = {\n  \"#teamId\": \"teamId\"\n} )\n  #set( $modelQueryExpression.expressionValues = {\n  \":teamId\": {\n      \"S\": \"$ctx.args.teamId\"\n  }\n} )\n#end\n## [End] Set query expression for key **\n#set( $limit = $util.defaultIfNull($context.args.limit, 100) )\n#set( $QueryRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"Query\",\n  \"limit\": $limit,\n  \"query\": $modelQueryExpression,\n  \"index\": \"teamMembershipsByTeamId\"\n} )\n#if( !$util.isNull($ctx.args.sortDirection)\n                  && $ctx.args.sortDirection == \"DESC\" )\n  #set( $QueryRequest.scanIndexForward = false )\n#else\n  #set( $QueryRequest.scanIndexForward = true )\n#end\n#if( $context.args.nextToken ) #set( $QueryRequest.nextToken = $context.args.nextToken ) #end\n#if( !$util.isNullOrEmpty($ctx.stash.authFilter) )\n  #set( $filter = $ctx.stash.authFilter )\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filter = {\n  \"and\":   [$filter, $ctx.args.filter]\n} )\n  #end\n#else\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filter = $ctx.args.filter )\n  #end\n#end\n#if( !$util.isNullOrEmpty($filter) )\n  #set( $filterExpression = $util.parseJson($util.transform.toDynamoDBFilterExpression($filter)) )\n  #if( $util.isNullOrEmpty($filterExpression) )\n    $util.error(\"Unable to process the filter expression\", \"Unrecognized Filter\")\n  #end\n  #if( !$util.isNullOrBlank($filterExpression.expression) )\n    #if( $filterExpression.expressionValues.size() == 0 )\n      $util.qr($filterExpression.remove(\"expressionValues\"))\n    #end\n    #set( $QueryRequest.filter = $filterExpression )\n  #end\n#end\n$util.toJson($QueryRequest)",
+      "responseDigest": "70c474ce1880b65e72c404f4bab78bc128afae949a5484d2d77af6a2828d1b90"
+    },
+    {
+      "id": "dxe45df33rdndgjpli4icvdg3u",
+      "name": "MutationcreateTeamauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $inputFields = $util.parseJson($util.toJson($ctx.args.input.keySet())) )\n#set( $isAuthorized = false )\n#set( $allowedFields = [] )\n#if( $util.authType() == \"API Key Authorization\" )\n$util.unauthorized()\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n\n#end\n#if( !$isAuthorized && $allowedFields.isEmpty() )\n$util.unauthorized()\n#end\n#if( !$isAuthorized )\n  #set( $deniedFields = $util.list.copyAndRemoveAll($inputFields, $allowedFields) )\n  #if( $deniedFields.size() > 0 )\n    $util.error(\"Unauthorized on ${deniedFields}\", \"Unauthorized\")\n  #end\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "e7tikdggjbdkrpm7ieedlhsoxy",
+      "name": "MutationDeleteTeamMembershipDataResolverFn",
+      "dataSource": "TeamMembershipTable",
+      "request": "## [Start] Delete Request template. **\n#set( $args = $util.defaultIfNull($ctx.stash.transformedArgs, $ctx.args) )\n#set( $DeleteRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"DeleteItem\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $Key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $Key = {\n  \"id\":   $util.dynamodb.toDynamoDB($args.input.id)\n} )\n#end\n$util.qr($DeleteRequest.put(\"key\", $Key))\n## Begin - key condition **\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $keyConditionExpr = {} )\n  #set( $keyConditionExprNames = {} )\n  #foreach( $entry in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    $util.qr($keyConditionExpr.put(\"keyCondition$velocityCount\", {\n  \"attributeExists\": true\n}))\n    $util.qr($keyConditionExprNames.put(\"#keyCondition$velocityCount\", \"$entry.key\"))\n  #end\n  $util.qr($ctx.stash.conditions.add($keyConditionExpr))\n#else\n  $util.qr($ctx.stash.conditions.add({\n  \"id\": {\n      \"attributeExists\": true\n  }\n}))\n#end\n## End - key condition **\n#if( $args.condition )\n  $util.qr($ctx.stash.conditions.add($args.condition))\n#end\n## Start condition block **\n#if( $ctx.stash.conditions && $ctx.stash.conditions.size() != 0 )\n  #set( $mergedConditions = {\n  \"and\": $ctx.stash.conditions\n} )\n  #set( $Conditions = $util.parseJson($util.transform.toDynamoDBConditionExpression($mergedConditions)) )\n  #if( $Conditions.expressionValues && $Conditions.expressionValues.size() == 0 )\n    #set( $Conditions = {\n  \"expression\": $Conditions.expression,\n  \"expressionNames\": $Conditions.expressionNames\n} )\n  #end\n  ## End condition block **\n#end\n#if( $Conditions )\n  #if( $keyConditionExprNames )\n    $util.qr($Conditions.expressionNames.putAll($keyConditionExprNames))\n  #end\n  $util.qr($DeleteRequest.put(\"condition\", $Conditions))\n#end\n$util.toJson($DeleteRequest)\n## [End] Delete Request template. **",
+      "responseDigest": "1cbc30872aca5f6071fee27c5dba83b98ca36595a6c3f1260d2d037068480fe9"
+    },
+    {
+      "id": "eomegjddwfa53e2kngljjqvn5m",
+      "name": "MutationupdateTeamMembershipinit0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Initialization default values. **\n$util.qr($ctx.stash.put(\"defaultValues\", $util.defaultIfNull($ctx.stash.defaultValues, {})))\n#set( $updatedAt = $util.time.nowISO8601() )\n$util.qr($ctx.stash.defaultValues.put(\"updatedAt\", $updatedAt))\n$util.toJson({\n  \"version\": \"2018-05-29\",\n  \"payload\": {}\n})\n## [End] Initialization default values. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "ffyplag4w5ehhbccmi2b7kuxou",
+      "name": "QueryListTeamRosterSlotByTeamIdDataResolverFn",
+      "dataSource": "TeamRosterSlotTable",
+      "request": "## [Start] Set query expression for key **\n#if( !$util.isNull($ctx.args.sortDirection) )\n  $util.error(\"sortDirection is not supported for List operations without a Sort key defined.\", \"InvalidArgumentsError\")\n#end\n#set( $modelQueryExpression = {} )\n#if( !$util.isNull($ctx.args.teamId) )\n  #set( $modelQueryExpression.expression = \"#teamId = :teamId\" )\n  #set( $modelQueryExpression.expressionNames = {\n  \"#teamId\": \"teamId\"\n} )\n  #set( $modelQueryExpression.expressionValues = {\n  \":teamId\": {\n      \"S\": \"$ctx.args.teamId\"\n  }\n} )\n#end\n## [End] Set query expression for key **\n#set( $limit = $util.defaultIfNull($context.args.limit, 100) )\n#set( $QueryRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"Query\",\n  \"limit\": $limit,\n  \"query\": $modelQueryExpression,\n  \"index\": \"teamRosterSlotsByTeamId\"\n} )\n#if( !$util.isNull($ctx.args.sortDirection)\n                  && $ctx.args.sortDirection == \"DESC\" )\n  #set( $QueryRequest.scanIndexForward = false )\n#else\n  #set( $QueryRequest.scanIndexForward = true )\n#end\n#if( $context.args.nextToken ) #set( $QueryRequest.nextToken = $context.args.nextToken ) #end\n#if( !$util.isNullOrEmpty($ctx.stash.authFilter) )\n  #set( $filter = $ctx.stash.authFilter )\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filter = {\n  \"and\":   [$filter, $ctx.args.filter]\n} )\n  #end\n#else\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filter = $ctx.args.filter )\n  #end\n#end\n#if( !$util.isNullOrEmpty($filter) )\n  #set( $filterExpression = $util.parseJson($util.transform.toDynamoDBFilterExpression($filter)) )\n  #if( $util.isNullOrEmpty($filterExpression) )\n    $util.error(\"Unable to process the filter expression\", \"Unrecognized Filter\")\n  #end\n  #if( !$util.isNullOrBlank($filterExpression.expression) )\n    #if( $filterExpression.expressionValues.size() == 0 )\n      $util.qr($filterExpression.remove(\"expressionValues\"))\n    #end\n    #set( $QueryRequest.filter = $filterExpression )\n  #end\n#end\n$util.toJson($QueryRequest)",
+      "responseDigest": "70c474ce1880b65e72c404f4bab78bc128afae949a5484d2d77af6a2828d1b90"
+    },
+    {
+      "id": "fnhiym653bf57f4wetzzyqsjfa",
+      "name": "MutationDeleteTeamDataResolverFn",
+      "dataSource": "TeamTable",
+      "request": "## [Start] Delete Request template. **\n#set( $args = $util.defaultIfNull($ctx.stash.transformedArgs, $ctx.args) )\n#set( $DeleteRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"DeleteItem\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $Key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $Key = {\n  \"id\":   $util.dynamodb.toDynamoDB($args.input.id)\n} )\n#end\n$util.qr($DeleteRequest.put(\"key\", $Key))\n## Begin - key condition **\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $keyConditionExpr = {} )\n  #set( $keyConditionExprNames = {} )\n  #foreach( $entry in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    $util.qr($keyConditionExpr.put(\"keyCondition$velocityCount\", {\n  \"attributeExists\": true\n}))\n    $util.qr($keyConditionExprNames.put(\"#keyCondition$velocityCount\", \"$entry.key\"))\n  #end\n  $util.qr($ctx.stash.conditions.add($keyConditionExpr))\n#else\n  $util.qr($ctx.stash.conditions.add({\n  \"id\": {\n      \"attributeExists\": true\n  }\n}))\n#end\n## End - key condition **\n#if( $args.condition )\n  $util.qr($ctx.stash.conditions.add($args.condition))\n#end\n## Start condition block **\n#if( $ctx.stash.conditions && $ctx.stash.conditions.size() != 0 )\n  #set( $mergedConditions = {\n  \"and\": $ctx.stash.conditions\n} )\n  #set( $Conditions = $util.parseJson($util.transform.toDynamoDBConditionExpression($mergedConditions)) )\n  #if( $Conditions.expressionValues && $Conditions.expressionValues.size() == 0 )\n    #set( $Conditions = {\n  \"expression\": $Conditions.expression,\n  \"expressionNames\": $Conditions.expressionNames\n} )\n  #end\n  ## End condition block **\n#end\n#if( $Conditions )\n  #if( $keyConditionExprNames )\n    $util.qr($Conditions.expressionNames.putAll($keyConditionExprNames))\n  #end\n  $util.qr($DeleteRequest.put(\"condition\", $Conditions))\n#end\n$util.toJson($DeleteRequest)\n## [End] Delete Request template. **",
+      "responseDigest": "1cbc30872aca5f6071fee27c5dba83b98ca36595a6c3f1260d2d037068480fe9"
+    },
+    {
+      "id": "fpd2o3fiinhvto7x3ipdpniq2y",
+      "name": "QuerylistTeamRosterSlotByMembershipIdpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "fs3lmhkdavboxlwjws3jvbkmoy",
+      "name": "QueryListPlayerChampionPoolEntryByMembershipIdDataResolverFn",
+      "dataSource": "PlayerChampionPoolEntryTable",
+      "request": "## [Start] Set query expression for key **\n#if( !$util.isNull($ctx.args.sortDirection) )\n  $util.error(\"sortDirection is not supported for List operations without a Sort key defined.\", \"InvalidArgumentsError\")\n#end\n#set( $modelQueryExpression = {} )\n#if( !$util.isNull($ctx.args.membershipId) )\n  #set( $modelQueryExpression.expression = \"#membershipId = :membershipId\" )\n  #set( $modelQueryExpression.expressionNames = {\n  \"#membershipId\": \"membershipId\"\n} )\n  #set( $modelQueryExpression.expressionValues = {\n  \":membershipId\": {\n      \"S\": \"$ctx.args.membershipId\"\n  }\n} )\n#end\n## [End] Set query expression for key **\n#set( $limit = $util.defaultIfNull($context.args.limit, 100) )\n#set( $QueryRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"Query\",\n  \"limit\": $limit,\n  \"query\": $modelQueryExpression,\n  \"index\": \"playerChampionPoolEntriesByMembershipId\"\n} )\n#if( !$util.isNull($ctx.args.sortDirection)\n                  && $ctx.args.sortDirection == \"DESC\" )\n  #set( $QueryRequest.scanIndexForward = false )\n#else\n  #set( $QueryRequest.scanIndexForward = true )\n#end\n#if( $context.args.nextToken ) #set( $QueryRequest.nextToken = $context.args.nextToken ) #end\n#if( !$util.isNullOrEmpty($ctx.stash.authFilter) )\n  #set( $filter = $ctx.stash.authFilter )\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filter = {\n  \"and\":   [$filter, $ctx.args.filter]\n} )\n  #end\n#else\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filter = $ctx.args.filter )\n  #end\n#end\n#if( !$util.isNullOrEmpty($filter) )\n  #set( $filterExpression = $util.parseJson($util.transform.toDynamoDBFilterExpression($filter)) )\n  #if( $util.isNullOrEmpty($filterExpression) )\n    $util.error(\"Unable to process the filter expression\", \"Unrecognized Filter\")\n  #end\n  #if( !$util.isNullOrBlank($filterExpression.expression) )\n    #if( $filterExpression.expressionValues.size() == 0 )\n      $util.qr($filterExpression.remove(\"expressionValues\"))\n    #end\n    #set( $QueryRequest.filter = $filterExpression )\n  #end\n#end\n$util.toJson($QueryRequest)",
+      "responseDigest": "70c474ce1880b65e72c404f4bab78bc128afae949a5484d2d77af6a2828d1b90"
+    },
+    {
+      "id": "ftsq6dyokjbshfvkckwwyoosde",
+      "name": "MutationUpdateTeamRosterSlotDataResolverFn",
+      "dataSource": "TeamRosterSlotTable",
+      "request": "## [Start] Mutation Update resolver. **\n#set( $args = $util.defaultIfNull($ctx.stash.transformedArgs, $ctx.args) )\n## Set the default values to put request **\n#set( $mergedValues = $util.defaultIfNull($ctx.stash.defaultValues, {}) )\n## copy the values from input **\n$util.qr($mergedValues.putAll($util.defaultIfNull($args.input, {})))\n## set the typename **\n## Initialize the vars for creating ddb expression **\n#set( $expNames = {} )\n#set( $expValues = {} )\n#set( $expSet = {} )\n#set( $expAdd = {} )\n#set( $expRemove = [] )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $Key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $Key = {\n  \"id\":   $util.dynamodb.toDynamoDB($args.input.id)\n} )\n#end\n## Model key **\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $keyFields = [] )\n  #foreach( $entry in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    $util.qr($keyFields.add(\"$entry.key\"))\n  #end\n#else\n  #set( $keyFields = [\"id\"] )\n#end\n#foreach( $entry in $util.map.copyAndRemoveAllKeys($mergedValues, $keyFields).entrySet() )\n  #if( !$util.isNull($ctx.stash.metadata.dynamodbNameOverrideMap) && $ctx.stash.metadata.dynamodbNameOverrideMap.containsKey(\"$entry.key\") )\n    #set( $entryKeyAttributeName = $ctx.stash.metadata.dynamodbNameOverrideMap.get(\"$entry.key\") )\n  #else\n    #set( $entryKeyAttributeName = $entry.key )\n  #end\n  #if( $util.isNull($entry.value) )\n    #set( $discard = $expRemove.add(\"#$entryKeyAttributeName\") )\n    $util.qr($expNames.put(\"#$entryKeyAttributeName\", \"$entry.key\"))\n  #else\n    $util.qr($expSet.put(\"#$entryKeyAttributeName\", \":$entryKeyAttributeName\"))\n    $util.qr($expNames.put(\"#$entryKeyAttributeName\", \"$entry.key\"))\n    $util.qr($expValues.put(\":$entryKeyAttributeName\", $util.dynamodb.toDynamoDB($entry.value)))\n  #end\n#end\n#set( $expression = \"\" )\n#if( !$expSet.isEmpty() )\n  #set( $expression = \"SET\" )\n  #foreach( $entry in $expSet.entrySet() )\n    #set( $expression = \"$expression $entry.key = $entry.value\" )\n    #if( $foreach.hasNext() )\n      #set( $expression = \"$expression,\" )\n    #end\n  #end\n#end\n#if( !$expAdd.isEmpty() )\n  #set( $expression = \"$expression ADD\" )\n  #foreach( $entry in $expAdd.entrySet() )\n    #set( $expression = \"$expression $entry.key $entry.value\" )\n    #if( $foreach.hasNext() )\n      #set( $expression = \"$expression,\" )\n    #end\n  #end\n#end\n#if( !$expRemove.isEmpty() )\n  #set( $expression = \"$expression REMOVE\" )\n  #foreach( $entry in $expRemove )\n    #set( $expression = \"$expression $entry\" )\n    #if( $foreach.hasNext() )\n      #set( $expression = \"$expression,\" )\n    #end\n  #end\n#end\n#set( $update = {} )\n$util.qr($update.put(\"expression\", \"$expression\"))\n#if( !$expNames.isEmpty() )\n  $util.qr($update.put(\"expressionNames\", $expNames))\n#end\n#if( !$expValues.isEmpty() )\n  $util.qr($update.put(\"expressionValues\", $expValues))\n#end\n## Begin - key condition **\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $keyConditionExpr = {} )\n  #set( $keyConditionExprNames = {} )\n  #foreach( $entry in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    $util.qr($keyConditionExpr.put(\"keyCondition$velocityCount\", {\n  \"attributeExists\": true\n}))\n    $util.qr($keyConditionExprNames.put(\"#keyCondition$velocityCount\", \"$entry.key\"))\n  #end\n  $util.qr($ctx.stash.conditions.add($keyConditionExpr))\n#else\n  $util.qr($ctx.stash.conditions.add({\n  \"id\": {\n      \"attributeExists\": true\n  }\n}))\n#end\n## End - key condition **\n#if( $args.condition )\n  $util.qr($ctx.stash.conditions.add($args.condition))\n#end\n## Start condition block **\n#if( $ctx.stash.conditions && $ctx.stash.conditions.size() != 0 )\n  #set( $mergedConditions = {\n  \"and\": $ctx.stash.conditions\n} )\n  #set( $Conditions = $util.parseJson($util.transform.toDynamoDBConditionExpression($mergedConditions)) )\n  #if( $Conditions.expressionValues && $Conditions.expressionValues.size() == 0 )\n    #set( $Conditions = {\n  \"expression\": $Conditions.expression,\n  \"expressionNames\": $Conditions.expressionNames\n} )\n  #end\n  ## End condition block **\n#end\n#set( $UpdateItem = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"UpdateItem\",\n  \"key\": $Key,\n  \"update\": $update\n} )\n#if( $Conditions )\n  #if( $keyConditionExprNames )\n    $util.qr($Conditions.expressionNames.putAll($keyConditionExprNames))\n  #end\n  $util.qr($UpdateItem.put(\"condition\", $Conditions))\n#end\n$util.toJson($UpdateItem)\n## [End] Mutation Update resolver. **",
+      "responseDigest": "1cbc30872aca5f6071fee27c5dba83b98ca36595a6c3f1260d2d037068480fe9"
+    },
+    {
+      "id": "fwtpfuiif5ccxly6ljdxrgovpi",
+      "name": "MutationdeleteTeamauth0Function",
+      "dataSource": "TeamTable",
+      "request": "## [Start] Get Request template. **\n#set( $GetRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"GetItem\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $key = {\n  \"id\":   $util.dynamodb.toDynamoDB($ctx.args.input.id)\n} )\n#end\n$util.qr($GetRequest.put(\"key\", $key))\n$util.toJson($GetRequest)\n## [End] Get Request template. **",
+      "responseDigest": "37e3757a7d1ebd2d0c62b0aee55bed6eec79ef4529d781952c42f915533816cf"
+    },
+    {
+      "id": "gmobi2r67zhenkulz7oyjss64q",
+      "name": "QuerylistTeamsauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#set( $primaryFieldMap = {} )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n\n#end\n#if( !$isAuthorized && $util.isNull($ctx.stash.authFilter) )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "hsgjnij5xfc6tj66orugqxjc2y",
+      "name": "MutationupdatePlayerChampionPoolEntryinit0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Initialization default values. **\n$util.qr($ctx.stash.put(\"defaultValues\", $util.defaultIfNull($ctx.stash.defaultValues, {})))\n#set( $updatedAt = $util.time.nowISO8601() )\n$util.qr($ctx.stash.defaultValues.put(\"updatedAt\", $updatedAt))\n$util.toJson({\n  \"version\": \"2018-05-29\",\n  \"payload\": {}\n})\n## [End] Initialization default values. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "i2vzi73dqjelfncyfyt3lwln2u",
+      "name": "QuerylistTeamBySlugauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#set( $primaryFieldMap = {} )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n\n#end\n#if( !$isAuthorized && $util.isNull($ctx.stash.authFilter) )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "ii3z75gzwvesbmgmmb2xjow3di",
+      "name": "MutationCreateTeamDataResolverFn",
+      "dataSource": "TeamTable",
+      "request": "## [Start] Create Request template. **\n#set( $args = $util.defaultIfNull($ctx.stash.transformedArgs, $ctx.args) )\n## Set the default values to put request **\n#set( $mergedValues = $util.defaultIfNull($ctx.stash.defaultValues, {}) )\n## copy the values from input **\n$util.qr($mergedValues.putAll($util.defaultIfNull($args.input, {})))\n## set the typename **\n$util.qr($mergedValues.put(\"__typename\", \"Team\"))\n#set( $nullIndexFields = [] )\n#set( $indexFields = [\"slug\", \"status\"] )\n#foreach( $entry in $util.map.copyAndRetainAllKeys($mergedValues, $indexFields).entrySet() )\n  #if( $util.isNull($entry.value) )\n    $util.qr($nullIndexFields.add($entry.key))\n  #end\n#end\n#set( $mergedValues = $util.map.copyAndRemoveAllKeys($mergedValues, $nullIndexFields) )\n#set( $PutObject = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"PutItem\",\n  \"attributeValues\":   $util.dynamodb.toMapValues($mergedValues),\n  \"condition\": $condition\n} )\n#if( $args.condition )\n  $util.qr($ctx.stash.conditions.add($args.condition))\n#end\n## Begin - key condition **\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $keyConditionExpr = {} )\n  #set( $keyConditionExprNames = {} )\n  #foreach( $entry in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    $util.qr($keyConditionExpr.put(\"keyCondition$velocityCount\", {\n  \"attributeExists\": false\n}))\n    $util.qr($keyConditionExprNames.put(\"#keyCondition$velocityCount\", \"$entry.key\"))\n  #end\n  $util.qr($ctx.stash.conditions.add($keyConditionExpr))\n#else\n  $util.qr($ctx.stash.conditions.add({\n  \"id\": {\n      \"attributeExists\": false\n  }\n}))\n#end\n## End - key condition **\n## Start condition block **\n#if( $ctx.stash.conditions && $ctx.stash.conditions.size() != 0 )\n  #set( $mergedConditions = {\n  \"and\": $ctx.stash.conditions\n} )\n  #set( $Conditions = $util.parseJson($util.transform.toDynamoDBConditionExpression($mergedConditions)) )\n  #if( $Conditions.expressionValues && $Conditions.expressionValues.size() == 0 )\n    #set( $Conditions = {\n  \"expression\": $Conditions.expression,\n  \"expressionNames\": $Conditions.expressionNames\n} )\n  #end\n  ## End condition block **\n#end\n#if( $Conditions )\n  #if( $keyConditionExprNames )\n    $util.qr($Conditions.expressionNames.putAll($keyConditionExprNames))\n  #end\n  $util.qr($PutObject.put(\"condition\", $Conditions))\n#end\n#if( $ctx.stash.metadata.modelObjectKey )\n  $util.qr($PutObject.put(\"key\", $ctx.stash.metadata.modelObjectKey))\n#else\n  #set( $Key = {\n  \"id\":   $util.dynamodb.toDynamoDB($mergedValues.id)\n} )\n  $util.qr($PutObject.put(\"key\", $Key))\n#end\n$util.toJson($PutObject)\n## [End] Create Request template. **",
+      "responseDigest": "1cbc30872aca5f6071fee27c5dba83b98ca36595a6c3f1260d2d037068480fe9"
+    },
+    {
+      "id": "iiuz4vvtbjfbfhqhlytzld6xfy",
+      "name": "MutationdeleteTeamRosterSlotauth0Function",
+      "dataSource": "TeamRosterSlotTable",
+      "request": "## [Start] Get Request template. **\n#set( $GetRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"GetItem\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $key = {\n  \"id\":   $util.dynamodb.toDynamoDB($ctx.args.input.id)\n} )\n#end\n$util.qr($GetRequest.put(\"key\", $key))\n$util.toJson($GetRequest)\n## [End] Get Request template. **",
+      "responseDigest": "37e3757a7d1ebd2d0c62b0aee55bed6eec79ef4529d781952c42f915533816cf"
+    },
+    {
+      "id": "iubpximlzzcchewbgnfnalbdaq",
+      "name": "MutationcreateTeaminit0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Initialization default values. **\n$util.qr($ctx.stash.put(\"defaultValues\", $util.defaultIfNull($ctx.stash.defaultValues, {})))\n$util.qr($ctx.stash.defaultValues.put(\"id\", $util.autoId()))\n#set( $createdAt = $util.time.nowISO8601() )\n$util.qr($ctx.stash.defaultValues.put(\"createdAt\", $createdAt))\n$util.qr($ctx.stash.defaultValues.put(\"updatedAt\", $createdAt))\n$util.toJson({\n  \"version\": \"2018-05-29\",\n  \"payload\": {}\n})\n## [End] Initialization default values. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "iv7pwfmxnrfc5lyoofmtlo24rq",
+      "name": "QueryListTeamMembershipsDataResolverFn",
+      "dataSource": "TeamMembershipTable",
+      "request": "## [Start] List Request. **\n#set( $args = $util.defaultIfNull($ctx.stash.transformedArgs, $ctx.args) )\n#set( $limit = $util.defaultIfNull($args.limit, 100) )\n#set( $ListRequest = {\n  \"version\": \"2018-05-29\",\n  \"limit\": $limit\n} )\n#if( $args.nextToken )\n  #set( $ListRequest.nextToken = $args.nextToken )\n#end\n#if( !$util.isNullOrEmpty($ctx.stash.authFilter) )\n  #set( $filter = $ctx.stash.authFilter )\n  #if( !$util.isNullOrEmpty($args.filter) )\n    #set( $filter = {\n  \"and\":   [$filter, $args.filter]\n} )\n  #end\n#else\n  #if( !$util.isNullOrEmpty($args.filter) )\n    #set( $filter = $args.filter )\n  #end\n#end\n#if( !$util.isNullOrEmpty($filter) )\n  #set( $filterExpression = $util.parseJson($util.transform.toDynamoDBFilterExpression($filter)) )\n  #if( $util.isNullOrEmpty($filterExpression) )\n    $util.error(\"Unable to process the filter expression\", \"Unrecognized Filter\")\n  #end\n  #if( !$util.isNullOrBlank($filterExpression.expression) )\n    #if( $filterExpression.expressionValues.size() == 0 )\n      $util.qr($filterExpression.remove(\"expressionValues\"))\n    #end\n    #set( $ListRequest.filter = $filterExpression )\n  #end\n#end\n#if( !$util.isNull($ctx.stash.modelQueryExpression) && !$util.isNullOrEmpty($ctx.stash.modelQueryExpression.expression) )\n  $util.qr($ListRequest.put(\"operation\", \"Query\"))\n  $util.qr($ListRequest.put(\"query\", $ctx.stash.modelQueryExpression))\n  #if( !$util.isNull($args.sortDirection) && $args.sortDirection == \"DESC\" )\n    #set( $ListRequest.scanIndexForward = false )\n  #else\n    #set( $ListRequest.scanIndexForward = true )\n  #end\n#else\n  $util.qr($ListRequest.put(\"operation\", \"Scan\"))\n#end\n#if( !$util.isNull($ctx.stash.metadata.index) )\n  #set( $ListRequest.index = $ctx.stash.metadata.index )\n#end\n$util.toJson($ListRequest)\n## [End] List Request. **",
+      "responseDigest": "93a63ee2c7038e62839c21818f7583eab3ad39128c1558c4e936e356de04617f"
+    },
+    {
+      "id": "j24ml2iez5cxngse34wexbdmfa",
+      "name": "MutationdeleteTeamRosterSlotpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "jevzeegtdbad3fzke3rdjiqjbe",
+      "name": "QueryListPlayerChampionPoolEntriesDataResolverFn",
+      "dataSource": "PlayerChampionPoolEntryTable",
+      "request": "## [Start] List Request. **\n#set( $args = $util.defaultIfNull($ctx.stash.transformedArgs, $ctx.args) )\n#set( $limit = $util.defaultIfNull($args.limit, 100) )\n#set( $ListRequest = {\n  \"version\": \"2018-05-29\",\n  \"limit\": $limit\n} )\n#if( $args.nextToken )\n  #set( $ListRequest.nextToken = $args.nextToken )\n#end\n#if( !$util.isNullOrEmpty($ctx.stash.authFilter) )\n  #set( $filter = $ctx.stash.authFilter )\n  #if( !$util.isNullOrEmpty($args.filter) )\n    #set( $filter = {\n  \"and\":   [$filter, $args.filter]\n} )\n  #end\n#else\n  #if( !$util.isNullOrEmpty($args.filter) )\n    #set( $filter = $args.filter )\n  #end\n#end\n#if( !$util.isNullOrEmpty($filter) )\n  #set( $filterExpression = $util.parseJson($util.transform.toDynamoDBFilterExpression($filter)) )\n  #if( $util.isNullOrEmpty($filterExpression) )\n    $util.error(\"Unable to process the filter expression\", \"Unrecognized Filter\")\n  #end\n  #if( !$util.isNullOrBlank($filterExpression.expression) )\n    #if( $filterExpression.expressionValues.size() == 0 )\n      $util.qr($filterExpression.remove(\"expressionValues\"))\n    #end\n    #set( $ListRequest.filter = $filterExpression )\n  #end\n#end\n#if( !$util.isNull($ctx.stash.modelQueryExpression) && !$util.isNullOrEmpty($ctx.stash.modelQueryExpression.expression) )\n  $util.qr($ListRequest.put(\"operation\", \"Query\"))\n  $util.qr($ListRequest.put(\"query\", $ctx.stash.modelQueryExpression))\n  #if( !$util.isNull($args.sortDirection) && $args.sortDirection == \"DESC\" )\n    #set( $ListRequest.scanIndexForward = false )\n  #else\n    #set( $ListRequest.scanIndexForward = true )\n  #end\n#else\n  $util.qr($ListRequest.put(\"operation\", \"Scan\"))\n#end\n#if( !$util.isNull($ctx.stash.metadata.index) )\n  #set( $ListRequest.index = $ctx.stash.metadata.index )\n#end\n$util.toJson($ListRequest)\n## [End] List Request. **",
+      "responseDigest": "93a63ee2c7038e62839c21818f7583eab3ad39128c1558c4e936e356de04617f"
+    },
+    {
+      "id": "jgc3n4yfp5fejp62j6v4puutda",
+      "name": "MutationupdateTeamMembershipauth0Function",
+      "dataSource": "TeamMembershipTable",
+      "request": "## [Start] Get Request template. **\n#set( $GetRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"GetItem\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $key = {\n  \"id\":   $util.dynamodb.toDynamoDB($ctx.args.input.id)\n} )\n#end\n$util.qr($GetRequest.put(\"key\", $key))\n$util.toJson($GetRequest)\n## [End] Get Request template. **",
+      "responseDigest": "43f6054d0f78930b0d51bae6f3c0765f93e6b3ca976e2d92963f938c35ed1c3f"
+    },
+    {
+      "id": "jgyr3dbbtzds5hkjfzmdimwimi",
+      "name": "QuerygetPlayerChampionPoolEntrypostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "jhbpv6y7h5f2ziko52qth2zydy",
+      "name": "MutationUpdatePlayerChampionPoolEntryDataResolverFn",
+      "dataSource": "PlayerChampionPoolEntryTable",
+      "request": "## [Start] Mutation Update resolver. **\n#set( $args = $util.defaultIfNull($ctx.stash.transformedArgs, $ctx.args) )\n## Set the default values to put request **\n#set( $mergedValues = $util.defaultIfNull($ctx.stash.defaultValues, {}) )\n## copy the values from input **\n$util.qr($mergedValues.putAll($util.defaultIfNull($args.input, {})))\n## set the typename **\n## Initialize the vars for creating ddb expression **\n#set( $expNames = {} )\n#set( $expValues = {} )\n#set( $expSet = {} )\n#set( $expAdd = {} )\n#set( $expRemove = [] )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $Key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $Key = {\n  \"id\":   $util.dynamodb.toDynamoDB($args.input.id)\n} )\n#end\n## Model key **\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $keyFields = [] )\n  #foreach( $entry in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    $util.qr($keyFields.add(\"$entry.key\"))\n  #end\n#else\n  #set( $keyFields = [\"id\"] )\n#end\n#foreach( $entry in $util.map.copyAndRemoveAllKeys($mergedValues, $keyFields).entrySet() )\n  #if( !$util.isNull($ctx.stash.metadata.dynamodbNameOverrideMap) && $ctx.stash.metadata.dynamodbNameOverrideMap.containsKey(\"$entry.key\") )\n    #set( $entryKeyAttributeName = $ctx.stash.metadata.dynamodbNameOverrideMap.get(\"$entry.key\") )\n  #else\n    #set( $entryKeyAttributeName = $entry.key )\n  #end\n  #if( $util.isNull($entry.value) )\n    #set( $discard = $expRemove.add(\"#$entryKeyAttributeName\") )\n    $util.qr($expNames.put(\"#$entryKeyAttributeName\", \"$entry.key\"))\n  #else\n    $util.qr($expSet.put(\"#$entryKeyAttributeName\", \":$entryKeyAttributeName\"))\n    $util.qr($expNames.put(\"#$entryKeyAttributeName\", \"$entry.key\"))\n    $util.qr($expValues.put(\":$entryKeyAttributeName\", $util.dynamodb.toDynamoDB($entry.value)))\n  #end\n#end\n#set( $expression = \"\" )\n#if( !$expSet.isEmpty() )\n  #set( $expression = \"SET\" )\n  #foreach( $entry in $expSet.entrySet() )\n    #set( $expression = \"$expression $entry.key = $entry.value\" )\n    #if( $foreach.hasNext() )\n      #set( $expression = \"$expression,\" )\n    #end\n  #end\n#end\n#if( !$expAdd.isEmpty() )\n  #set( $expression = \"$expression ADD\" )\n  #foreach( $entry in $expAdd.entrySet() )\n    #set( $expression = \"$expression $entry.key $entry.value\" )\n    #if( $foreach.hasNext() )\n      #set( $expression = \"$expression,\" )\n    #end\n  #end\n#end\n#if( !$expRemove.isEmpty() )\n  #set( $expression = \"$expression REMOVE\" )\n  #foreach( $entry in $expRemove )\n    #set( $expression = \"$expression $entry\" )\n    #if( $foreach.hasNext() )\n      #set( $expression = \"$expression,\" )\n    #end\n  #end\n#end\n#set( $update = {} )\n$util.qr($update.put(\"expression\", \"$expression\"))\n#if( !$expNames.isEmpty() )\n  $util.qr($update.put(\"expressionNames\", $expNames))\n#end\n#if( !$expValues.isEmpty() )\n  $util.qr($update.put(\"expressionValues\", $expValues))\n#end\n## Begin - key condition **\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $keyConditionExpr = {} )\n  #set( $keyConditionExprNames = {} )\n  #foreach( $entry in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    $util.qr($keyConditionExpr.put(\"keyCondition$velocityCount\", {\n  \"attributeExists\": true\n}))\n    $util.qr($keyConditionExprNames.put(\"#keyCondition$velocityCount\", \"$entry.key\"))\n  #end\n  $util.qr($ctx.stash.conditions.add($keyConditionExpr))\n#else\n  $util.qr($ctx.stash.conditions.add({\n  \"id\": {\n      \"attributeExists\": true\n  }\n}))\n#end\n## End - key condition **\n#if( $args.condition )\n  $util.qr($ctx.stash.conditions.add($args.condition))\n#end\n## Start condition block **\n#if( $ctx.stash.conditions && $ctx.stash.conditions.size() != 0 )\n  #set( $mergedConditions = {\n  \"and\": $ctx.stash.conditions\n} )\n  #set( $Conditions = $util.parseJson($util.transform.toDynamoDBConditionExpression($mergedConditions)) )\n  #if( $Conditions.expressionValues && $Conditions.expressionValues.size() == 0 )\n    #set( $Conditions = {\n  \"expression\": $Conditions.expression,\n  \"expressionNames\": $Conditions.expressionNames\n} )\n  #end\n  ## End condition block **\n#end\n#set( $UpdateItem = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"UpdateItem\",\n  \"key\": $Key,\n  \"update\": $update\n} )\n#if( $Conditions )\n  #if( $keyConditionExprNames )\n    $util.qr($Conditions.expressionNames.putAll($keyConditionExprNames))\n  #end\n  $util.qr($UpdateItem.put(\"condition\", $Conditions))\n#end\n$util.toJson($UpdateItem)\n## [End] Mutation Update resolver. **",
+      "responseDigest": "1cbc30872aca5f6071fee27c5dba83b98ca36595a6c3f1260d2d037068480fe9"
+    },
+    {
+      "id": "jle6d2saofh2jhj2ghdqj6nehu",
+      "name": "QueryListTeamRosterSlotsDataResolverFn",
+      "dataSource": "TeamRosterSlotTable",
+      "request": "## [Start] List Request. **\n#set( $args = $util.defaultIfNull($ctx.stash.transformedArgs, $ctx.args) )\n#set( $limit = $util.defaultIfNull($args.limit, 100) )\n#set( $ListRequest = {\n  \"version\": \"2018-05-29\",\n  \"limit\": $limit\n} )\n#if( $args.nextToken )\n  #set( $ListRequest.nextToken = $args.nextToken )\n#end\n#if( !$util.isNullOrEmpty($ctx.stash.authFilter) )\n  #set( $filter = $ctx.stash.authFilter )\n  #if( !$util.isNullOrEmpty($args.filter) )\n    #set( $filter = {\n  \"and\":   [$filter, $args.filter]\n} )\n  #end\n#else\n  #if( !$util.isNullOrEmpty($args.filter) )\n    #set( $filter = $args.filter )\n  #end\n#end\n#if( !$util.isNullOrEmpty($filter) )\n  #set( $filterExpression = $util.parseJson($util.transform.toDynamoDBFilterExpression($filter)) )\n  #if( $util.isNullOrEmpty($filterExpression) )\n    $util.error(\"Unable to process the filter expression\", \"Unrecognized Filter\")\n  #end\n  #if( !$util.isNullOrBlank($filterExpression.expression) )\n    #if( $filterExpression.expressionValues.size() == 0 )\n      $util.qr($filterExpression.remove(\"expressionValues\"))\n    #end\n    #set( $ListRequest.filter = $filterExpression )\n  #end\n#end\n#if( !$util.isNull($ctx.stash.modelQueryExpression) && !$util.isNullOrEmpty($ctx.stash.modelQueryExpression.expression) )\n  $util.qr($ListRequest.put(\"operation\", \"Query\"))\n  $util.qr($ListRequest.put(\"query\", $ctx.stash.modelQueryExpression))\n  #if( !$util.isNull($args.sortDirection) && $args.sortDirection == \"DESC\" )\n    #set( $ListRequest.scanIndexForward = false )\n  #else\n    #set( $ListRequest.scanIndexForward = true )\n  #end\n#else\n  $util.qr($ListRequest.put(\"operation\", \"Scan\"))\n#end\n#if( !$util.isNull($ctx.stash.metadata.index) )\n  #set( $ListRequest.index = $ctx.stash.metadata.index )\n#end\n$util.toJson($ListRequest)\n## [End] List Request. **",
+      "responseDigest": "93a63ee2c7038e62839c21818f7583eab3ad39128c1558c4e936e356de04617f"
+    },
+    {
+      "id": "jlghaqtxqjekho3n3qdmo2j77m",
+      "name": "QuerylistPlayerChampionPoolEntriesauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#set( $primaryFieldMap = {} )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n\n#end\n#if( !$isAuthorized && $util.isNull($ctx.stash.authFilter) )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "jzetqmo5dnge3cybidicvazyfy",
+      "name": "QueryListPlayerChampionPoolEntryByTeamIdDataResolverFn",
+      "dataSource": "PlayerChampionPoolEntryTable",
+      "request": "## [Start] Set query expression for key **\n#if( !$util.isNull($ctx.args.sortDirection) )\n  $util.error(\"sortDirection is not supported for List operations without a Sort key defined.\", \"InvalidArgumentsError\")\n#end\n#set( $modelQueryExpression = {} )\n#if( !$util.isNull($ctx.args.teamId) )\n  #set( $modelQueryExpression.expression = \"#teamId = :teamId\" )\n  #set( $modelQueryExpression.expressionNames = {\n  \"#teamId\": \"teamId\"\n} )\n  #set( $modelQueryExpression.expressionValues = {\n  \":teamId\": {\n      \"S\": \"$ctx.args.teamId\"\n  }\n} )\n#end\n## [End] Set query expression for key **\n#set( $limit = $util.defaultIfNull($context.args.limit, 100) )\n#set( $QueryRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"Query\",\n  \"limit\": $limit,\n  \"query\": $modelQueryExpression,\n  \"index\": \"playerChampionPoolEntriesByTeamId\"\n} )\n#if( !$util.isNull($ctx.args.sortDirection)\n                  && $ctx.args.sortDirection == \"DESC\" )\n  #set( $QueryRequest.scanIndexForward = false )\n#else\n  #set( $QueryRequest.scanIndexForward = true )\n#end\n#if( $context.args.nextToken ) #set( $QueryRequest.nextToken = $context.args.nextToken ) #end\n#if( !$util.isNullOrEmpty($ctx.stash.authFilter) )\n  #set( $filter = $ctx.stash.authFilter )\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filter = {\n  \"and\":   [$filter, $ctx.args.filter]\n} )\n  #end\n#else\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filter = $ctx.args.filter )\n  #end\n#end\n#if( !$util.isNullOrEmpty($filter) )\n  #set( $filterExpression = $util.parseJson($util.transform.toDynamoDBFilterExpression($filter)) )\n  #if( $util.isNullOrEmpty($filterExpression) )\n    $util.error(\"Unable to process the filter expression\", \"Unrecognized Filter\")\n  #end\n  #if( !$util.isNullOrBlank($filterExpression.expression) )\n    #if( $filterExpression.expressionValues.size() == 0 )\n      $util.qr($filterExpression.remove(\"expressionValues\"))\n    #end\n    #set( $QueryRequest.filter = $filterExpression )\n  #end\n#end\n$util.toJson($QueryRequest)",
+      "responseDigest": "70c474ce1880b65e72c404f4bab78bc128afae949a5484d2d77af6a2828d1b90"
+    },
+    {
+      "id": "kcu6w2yxfncwrdcynf5zhxu7xy",
+      "name": "QuerylistTeamRosterSlotByTeamIdpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "kgz4lwx475cdthrxmu7v5cavr4",
+      "name": "MutationcreatePlayerChampionPoolEntrypostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "kinx3d2bhvc7bcpofyprooxksy",
+      "name": "QuerylistPlayerChampionPoolEntryByTeamIdpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "kvhtekbxbzfyhnwwyuzuelpihm",
+      "name": "QueryListTeamsDataResolverFn",
+      "dataSource": "TeamTable",
+      "request": "## [Start] List Request. **\n#set( $args = $util.defaultIfNull($ctx.stash.transformedArgs, $ctx.args) )\n#set( $limit = $util.defaultIfNull($args.limit, 100) )\n#set( $ListRequest = {\n  \"version\": \"2018-05-29\",\n  \"limit\": $limit\n} )\n#if( $args.nextToken )\n  #set( $ListRequest.nextToken = $args.nextToken )\n#end\n#if( !$util.isNullOrEmpty($ctx.stash.authFilter) )\n  #set( $filter = $ctx.stash.authFilter )\n  #if( !$util.isNullOrEmpty($args.filter) )\n    #set( $filter = {\n  \"and\":   [$filter, $args.filter]\n} )\n  #end\n#else\n  #if( !$util.isNullOrEmpty($args.filter) )\n    #set( $filter = $args.filter )\n  #end\n#end\n#if( !$util.isNullOrEmpty($filter) )\n  #set( $filterExpression = $util.parseJson($util.transform.toDynamoDBFilterExpression($filter)) )\n  #if( $util.isNullOrEmpty($filterExpression) )\n    $util.error(\"Unable to process the filter expression\", \"Unrecognized Filter\")\n  #end\n  #if( !$util.isNullOrBlank($filterExpression.expression) )\n    #if( $filterExpression.expressionValues.size() == 0 )\n      $util.qr($filterExpression.remove(\"expressionValues\"))\n    #end\n    #set( $ListRequest.filter = $filterExpression )\n  #end\n#end\n#if( !$util.isNull($ctx.stash.modelQueryExpression) && !$util.isNullOrEmpty($ctx.stash.modelQueryExpression.expression) )\n  $util.qr($ListRequest.put(\"operation\", \"Query\"))\n  $util.qr($ListRequest.put(\"query\", $ctx.stash.modelQueryExpression))\n  #if( !$util.isNull($args.sortDirection) && $args.sortDirection == \"DESC\" )\n    #set( $ListRequest.scanIndexForward = false )\n  #else\n    #set( $ListRequest.scanIndexForward = true )\n  #end\n#else\n  $util.qr($ListRequest.put(\"operation\", \"Scan\"))\n#end\n#if( !$util.isNull($ctx.stash.metadata.index) )\n  #set( $ListRequest.index = $ctx.stash.metadata.index )\n#end\n$util.toJson($ListRequest)\n## [End] List Request. **",
+      "responseDigest": "93a63ee2c7038e62839c21818f7583eab3ad39128c1558c4e936e356de04617f"
+    },
+    {
+      "id": "lev4xkxdl5cszjd3xgyqs2yomm",
+      "name": "InvokeFnSubmitInvestorAccessRequestLambdaDataSource",
+      "dataSource": "FnSubmitInvestorAccessRequestLambdaDataSource",
+      "request": "## [Start] Invoke AWS Lambda data source: FnSubmitInvestorAccessRequestLambdaDataSource. **\n{\n  \"version\": \"2018-05-29\",\n  \"operation\": \"Invoke\",\n  \"payload\": {\n      \"typeName\": $util.toJson($ctx.stash.get(\"typeName\")),\n      \"fieldName\": $util.toJson($ctx.stash.get(\"fieldName\")),\n      \"arguments\": $util.toJson($ctx.arguments),\n      \"identity\": $util.toJson($ctx.identity),\n      \"source\": $util.toJson($ctx.source),\n      \"request\": $util.toJson($ctx.request),\n      \"prev\": $util.toJson($ctx.prev)\n  },\n  \"invocationType\": \"RequestResponse\"\n}\n## [End] Invoke AWS Lambda data source: FnSubmitInvestorAccessRequestLambdaDataSource. **",
+      "responseDigest": "b985054143ea8df11e57739455198dc70725e95be6ac7889b749fd2bf5481fc9"
+    },
+    {
+      "id": "md3i7bdfg5hcbpdx6stqiv5oiq",
+      "name": "QueryListTeamByStatusDataResolverFn",
+      "dataSource": "TeamTable",
+      "request": "## [Start] Set query expression for key **\n#if( !$util.isNull($ctx.args.sortDirection) )\n  $util.error(\"sortDirection is not supported for List operations without a Sort key defined.\", \"InvalidArgumentsError\")\n#end\n#set( $modelQueryExpression = {} )\n#if( !$util.isNull($ctx.args.status) )\n  #set( $modelQueryExpression.expression = \"#status = :status\" )\n  #set( $modelQueryExpression.expressionNames = {\n  \"#status\": \"status\"\n} )\n  #set( $modelQueryExpression.expressionValues = {\n  \":status\": {\n      \"S\": \"$ctx.args.status\"\n  }\n} )\n#end\n## [End] Set query expression for key **\n#set( $limit = $util.defaultIfNull($context.args.limit, 100) )\n#set( $QueryRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"Query\",\n  \"limit\": $limit,\n  \"query\": $modelQueryExpression,\n  \"index\": \"teamsByStatus\"\n} )\n#if( !$util.isNull($ctx.args.sortDirection)\n                  && $ctx.args.sortDirection == \"DESC\" )\n  #set( $QueryRequest.scanIndexForward = false )\n#else\n  #set( $QueryRequest.scanIndexForward = true )\n#end\n#if( $context.args.nextToken ) #set( $QueryRequest.nextToken = $context.args.nextToken ) #end\n#if( !$util.isNullOrEmpty($ctx.stash.authFilter) )\n  #set( $filter = $ctx.stash.authFilter )\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filter = {\n  \"and\":   [$filter, $ctx.args.filter]\n} )\n  #end\n#else\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filter = $ctx.args.filter )\n  #end\n#end\n#if( !$util.isNullOrEmpty($filter) )\n  #set( $filterExpression = $util.parseJson($util.transform.toDynamoDBFilterExpression($filter)) )\n  #if( $util.isNullOrEmpty($filterExpression) )\n    $util.error(\"Unable to process the filter expression\", \"Unrecognized Filter\")\n  #end\n  #if( !$util.isNullOrBlank($filterExpression.expression) )\n    #if( $filterExpression.expressionValues.size() == 0 )\n      $util.qr($filterExpression.remove(\"expressionValues\"))\n    #end\n    #set( $QueryRequest.filter = $filterExpression )\n  #end\n#end\n$util.toJson($QueryRequest)",
+      "responseDigest": "70c474ce1880b65e72c404f4bab78bc128afae949a5484d2d77af6a2828d1b90"
+    },
+    {
+      "id": "n4zadpn2r5civkgsul6zvomnwq",
+      "name": "MutationcreateTeamMembershipinit0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Initialization default values. **\n$util.qr($ctx.stash.put(\"defaultValues\", $util.defaultIfNull($ctx.stash.defaultValues, {})))\n$util.qr($ctx.stash.defaultValues.put(\"id\", $util.autoId()))\n#set( $createdAt = $util.time.nowISO8601() )\n$util.qr($ctx.stash.defaultValues.put(\"createdAt\", $createdAt))\n$util.qr($ctx.stash.defaultValues.put(\"updatedAt\", $createdAt))\n$util.toJson({\n  \"version\": \"2018-05-29\",\n  \"payload\": {}\n})\n## [End] Initialization default values. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "n6pmvdrewzfjtfjsfyuswgsfny",
+      "name": "QuerylistTeamspostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "od77khw425dwzbjj5cg3iz3b4i",
+      "name": "QueryListTeamMembershipByUserIdDataResolverFn",
+      "dataSource": "TeamMembershipTable",
+      "request": "## [Start] Set query expression for key **\n#if( !$util.isNull($ctx.args.sortDirection) )\n  $util.error(\"sortDirection is not supported for List operations without a Sort key defined.\", \"InvalidArgumentsError\")\n#end\n#set( $modelQueryExpression = {} )\n#if( !$util.isNull($ctx.args.userId) )\n  #set( $modelQueryExpression.expression = \"#userId = :userId\" )\n  #set( $modelQueryExpression.expressionNames = {\n  \"#userId\": \"userId\"\n} )\n  #set( $modelQueryExpression.expressionValues = {\n  \":userId\": {\n      \"S\": \"$ctx.args.userId\"\n  }\n} )\n#end\n## [End] Set query expression for key **\n#set( $limit = $util.defaultIfNull($context.args.limit, 100) )\n#set( $QueryRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"Query\",\n  \"limit\": $limit,\n  \"query\": $modelQueryExpression,\n  \"index\": \"teamMembershipsByUserId\"\n} )\n#if( !$util.isNull($ctx.args.sortDirection)\n                  && $ctx.args.sortDirection == \"DESC\" )\n  #set( $QueryRequest.scanIndexForward = false )\n#else\n  #set( $QueryRequest.scanIndexForward = true )\n#end\n#if( $context.args.nextToken ) #set( $QueryRequest.nextToken = $context.args.nextToken ) #end\n#if( !$util.isNullOrEmpty($ctx.stash.authFilter) )\n  #set( $filter = $ctx.stash.authFilter )\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filter = {\n  \"and\":   [$filter, $ctx.args.filter]\n} )\n  #end\n#else\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filter = $ctx.args.filter )\n  #end\n#end\n#if( !$util.isNullOrEmpty($filter) )\n  #set( $filterExpression = $util.parseJson($util.transform.toDynamoDBFilterExpression($filter)) )\n  #if( $util.isNullOrEmpty($filterExpression) )\n    $util.error(\"Unable to process the filter expression\", \"Unrecognized Filter\")\n  #end\n  #if( !$util.isNullOrBlank($filterExpression.expression) )\n    #if( $filterExpression.expressionValues.size() == 0 )\n      $util.qr($filterExpression.remove(\"expressionValues\"))\n    #end\n    #set( $QueryRequest.filter = $filterExpression )\n  #end\n#end\n$util.toJson($QueryRequest)",
+      "responseDigest": "70c474ce1880b65e72c404f4bab78bc128afae949a5484d2d77af6a2828d1b90"
+    },
+    {
+      "id": "ogypvarrz5etpls4twialqv7hu",
+      "name": "MutationupdateTeamMembershippostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "oiqsz7lwavajnacnobszfjclla",
+      "name": "QuerylistTeamRosterSlotspostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "oosgrzq6ijflpmcniy5gzlpnz4",
+      "name": "MutationDeletePlayerChampionPoolEntryDataResolverFn",
+      "dataSource": "PlayerChampionPoolEntryTable",
+      "request": "## [Start] Delete Request template. **\n#set( $args = $util.defaultIfNull($ctx.stash.transformedArgs, $ctx.args) )\n#set( $DeleteRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"DeleteItem\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $Key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $Key = {\n  \"id\":   $util.dynamodb.toDynamoDB($args.input.id)\n} )\n#end\n$util.qr($DeleteRequest.put(\"key\", $Key))\n## Begin - key condition **\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $keyConditionExpr = {} )\n  #set( $keyConditionExprNames = {} )\n  #foreach( $entry in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    $util.qr($keyConditionExpr.put(\"keyCondition$velocityCount\", {\n  \"attributeExists\": true\n}))\n    $util.qr($keyConditionExprNames.put(\"#keyCondition$velocityCount\", \"$entry.key\"))\n  #end\n  $util.qr($ctx.stash.conditions.add($keyConditionExpr))\n#else\n  $util.qr($ctx.stash.conditions.add({\n  \"id\": {\n      \"attributeExists\": true\n  }\n}))\n#end\n## End - key condition **\n#if( $args.condition )\n  $util.qr($ctx.stash.conditions.add($args.condition))\n#end\n## Start condition block **\n#if( $ctx.stash.conditions && $ctx.stash.conditions.size() != 0 )\n  #set( $mergedConditions = {\n  \"and\": $ctx.stash.conditions\n} )\n  #set( $Conditions = $util.parseJson($util.transform.toDynamoDBConditionExpression($mergedConditions)) )\n  #if( $Conditions.expressionValues && $Conditions.expressionValues.size() == 0 )\n    #set( $Conditions = {\n  \"expression\": $Conditions.expression,\n  \"expressionNames\": $Conditions.expressionNames\n} )\n  #end\n  ## End condition block **\n#end\n#if( $Conditions )\n  #if( $keyConditionExprNames )\n    $util.qr($Conditions.expressionNames.putAll($keyConditionExprNames))\n  #end\n  $util.qr($DeleteRequest.put(\"condition\", $Conditions))\n#end\n$util.toJson($DeleteRequest)\n## [End] Delete Request template. **",
+      "responseDigest": "1cbc30872aca5f6071fee27c5dba83b98ca36595a6c3f1260d2d037068480fe9"
+    },
+    {
+      "id": "p3e2b5idwjhbra6lobtsra4f3u",
+      "name": "QuerylistTeamRosterSlotByTeamIdauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#set( $primaryFieldMap = {} )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n\n#end\n#if( !$isAuthorized && $util.isNull($ctx.stash.authFilter) )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "p6iymqzicvespbwmhrnowsy54a",
+      "name": "MutationdeleteTeampostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "phj7o6m5kjek7d3k5cy4beqwde",
+      "name": "QuerylistPlayerChampionPoolEntryByMembershipIdpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "qiigqmt53je3fn6x4lfw3geyk4",
+      "name": "MutationdeletePlayerChampionPoolEntrypostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "qiqc7f6tdve73hmzfw53aax35y",
+      "name": "QuerygetTeamRosterSlotauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#set( $primaryFieldMap = {} )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n\n#end\n#if( !$isAuthorized && $util.isNull($ctx.stash.authFilter) )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "qrfxzprbobgdlnjs2phjirviba",
+      "name": "QueryGetTeamRosterSlotDataResolverFn",
+      "dataSource": "TeamRosterSlotTable",
+      "request": "## [Start] Get Request template. **\n#set( $GetRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"Query\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $expression = \"\" )\n  #set( $expressionNames = {} )\n  #set( $expressionValues = {} )\n  #foreach( $item in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    #set( $expression = \"$expression#keyCount$velocityCount = :valueCount$velocityCount AND \" )\n    $util.qr($expressionNames.put(\"#keyCount$velocityCount\", $item.key))\n    $util.qr($expressionValues.put(\":valueCount$velocityCount\", $item.value))\n  #end\n  #set( $expression = $expression.replaceAll(\"AND $\", \"\") )\n  #set( $query = {\n  \"expression\": $expression,\n  \"expressionNames\": $expressionNames,\n  \"expressionValues\": $expressionValues\n} )\n#else\n  #set( $query = {\n  \"expression\": \"id = :id\",\n  \"expressionValues\": {\n      \":id\":     $util.parseJson($util.dynamodb.toDynamoDBJson($ctx.args.id))\n  }\n} )\n#end\n$util.qr($GetRequest.put(\"query\", $query))\n#if( !$util.isNullOrEmpty($ctx.stash.authFilter) )\n  $util.qr($GetRequest.put(\"filter\", $util.parseJson($util.transform.toDynamoDBFilterExpression($ctx.stash.authFilter))))\n#end\n$util.toJson($GetRequest)\n## [End] Get Request template. **",
+      "responseDigest": "514f6609dc17faf5bde4d12df7e630a1a01252876f147f194f4e2e76747e5608"
+    },
+    {
+      "id": "rdmax4lw4faatp2n6icq7gij4u",
+      "name": "QuerylistTeamMembershipByUserIdauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#set( $primaryFieldMap = {} )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n\n#end\n#if( !$isAuthorized && $util.isNull($ctx.stash.authFilter) )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "rpiahqp5ozhnxololb6ivmdthu",
+      "name": "MutationCreateTeamMembershipDataResolverFn",
+      "dataSource": "TeamMembershipTable",
+      "request": "## [Start] Create Request template. **\n#set( $args = $util.defaultIfNull($ctx.stash.transformedArgs, $ctx.args) )\n## Set the default values to put request **\n#set( $mergedValues = $util.defaultIfNull($ctx.stash.defaultValues, {}) )\n## copy the values from input **\n$util.qr($mergedValues.putAll($util.defaultIfNull($args.input, {})))\n## set the typename **\n$util.qr($mergedValues.put(\"__typename\", \"TeamMembership\"))\n#set( $nullIndexFields = [] )\n#set( $indexFields = [\"teamId\", \"userId\"] )\n#foreach( $entry in $util.map.copyAndRetainAllKeys($mergedValues, $indexFields).entrySet() )\n  #if( $util.isNull($entry.value) )\n    $util.qr($nullIndexFields.add($entry.key))\n  #end\n#end\n#set( $mergedValues = $util.map.copyAndRemoveAllKeys($mergedValues, $nullIndexFields) )\n#set( $PutObject = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"PutItem\",\n  \"attributeValues\":   $util.dynamodb.toMapValues($mergedValues),\n  \"condition\": $condition\n} )\n#if( $args.condition )\n  $util.qr($ctx.stash.conditions.add($args.condition))\n#end\n## Begin - key condition **\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $keyConditionExpr = {} )\n  #set( $keyConditionExprNames = {} )\n  #foreach( $entry in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    $util.qr($keyConditionExpr.put(\"keyCondition$velocityCount\", {\n  \"attributeExists\": false\n}))\n    $util.qr($keyConditionExprNames.put(\"#keyCondition$velocityCount\", \"$entry.key\"))\n  #end\n  $util.qr($ctx.stash.conditions.add($keyConditionExpr))\n#else\n  $util.qr($ctx.stash.conditions.add({\n  \"id\": {\n      \"attributeExists\": false\n  }\n}))\n#end\n## End - key condition **\n## Start condition block **\n#if( $ctx.stash.conditions && $ctx.stash.conditions.size() != 0 )\n  #set( $mergedConditions = {\n  \"and\": $ctx.stash.conditions\n} )\n  #set( $Conditions = $util.parseJson($util.transform.toDynamoDBConditionExpression($mergedConditions)) )\n  #if( $Conditions.expressionValues && $Conditions.expressionValues.size() == 0 )\n    #set( $Conditions = {\n  \"expression\": $Conditions.expression,\n  \"expressionNames\": $Conditions.expressionNames\n} )\n  #end\n  ## End condition block **\n#end\n#if( $Conditions )\n  #if( $keyConditionExprNames )\n    $util.qr($Conditions.expressionNames.putAll($keyConditionExprNames))\n  #end\n  $util.qr($PutObject.put(\"condition\", $Conditions))\n#end\n#if( $ctx.stash.metadata.modelObjectKey )\n  $util.qr($PutObject.put(\"key\", $ctx.stash.metadata.modelObjectKey))\n#else\n  #set( $Key = {\n  \"id\":   $util.dynamodb.toDynamoDB($mergedValues.id)\n} )\n  $util.qr($PutObject.put(\"key\", $Key))\n#end\n$util.toJson($PutObject)\n## [End] Create Request template. **",
+      "responseDigest": "1cbc30872aca5f6071fee27c5dba83b98ca36595a6c3f1260d2d037068480fe9"
+    },
+    {
+      "id": "rpyksurb4bhm5ja5ix5sm4v7cm",
+      "name": "MutationupdatePlayerChampionPoolEntryauth0Function",
+      "dataSource": "PlayerChampionPoolEntryTable",
+      "request": "## [Start] Get Request template. **\n#set( $GetRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"GetItem\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $key = {\n  \"id\":   $util.dynamodb.toDynamoDB($ctx.args.input.id)\n} )\n#end\n$util.qr($GetRequest.put(\"key\", $key))\n$util.toJson($GetRequest)\n## [End] Get Request template. **",
+      "responseDigest": "43f6054d0f78930b0d51bae6f3c0765f93e6b3ca976e2d92963f938c35ed1c3f"
+    },
+    {
+      "id": "sah4dkxbsjaifhdovjqzwi7bre",
+      "name": "QuerylistTeamBySlugpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "sbzaqdp5ljcvxbzlha3fbpxlzu",
+      "name": "MutationupdateTeamRosterSlotpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "sd6zowiwcnhcrivislngfjnriq",
+      "name": "MutationcreateTeamRosterSlotauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $inputFields = $util.parseJson($util.toJson($ctx.args.input.keySet())) )\n#set( $isAuthorized = false )\n#set( $allowedFields = [] )\n#if( $util.authType() == \"API Key Authorization\" )\n$util.unauthorized()\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n\n#end\n#if( !$isAuthorized && $allowedFields.isEmpty() )\n$util.unauthorized()\n#end\n#if( !$isAuthorized )\n  #set( $deniedFields = $util.list.copyAndRemoveAll($inputFields, $allowedFields) )\n  #if( $deniedFields.size() > 0 )\n    $util.error(\"Unauthorized on ${deniedFields}\", \"Unauthorized\")\n  #end\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "sfzt4vwd3jea7d5xxz2mty4i24",
+      "name": "MutationcreateTeamRosterSlotinit0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Initialization default values. **\n$util.qr($ctx.stash.put(\"defaultValues\", $util.defaultIfNull($ctx.stash.defaultValues, {})))\n$util.qr($ctx.stash.defaultValues.put(\"id\", $util.autoId()))\n#set( $createdAt = $util.time.nowISO8601() )\n$util.qr($ctx.stash.defaultValues.put(\"createdAt\", $createdAt))\n$util.qr($ctx.stash.defaultValues.put(\"updatedAt\", $createdAt))\n$util.toJson({\n  \"version\": \"2018-05-29\",\n  \"payload\": {}\n})\n## [End] Initialization default values. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "sll6bcs2inakdh5546ex6pfu74",
+      "name": "QuerylistTeamMembershipByTeamIdpostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "snloogk7q5dpdhg7g6ct2slsuq",
+      "name": "MutationupdateTeamRosterSlotinit0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Initialization default values. **\n$util.qr($ctx.stash.put(\"defaultValues\", $util.defaultIfNull($ctx.stash.defaultValues, {})))\n#set( $updatedAt = $util.time.nowISO8601() )\n$util.qr($ctx.stash.defaultValues.put(\"updatedAt\", $updatedAt))\n$util.toJson({\n  \"version\": \"2018-05-29\",\n  \"payload\": {}\n})\n## [End] Initialization default values. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "sunjobjrhjfejkee6qns2t5jzq",
+      "name": "MutationupdateTeamauth0Function",
+      "dataSource": "TeamTable",
+      "request": "## [Start] Get Request template. **\n#set( $GetRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"GetItem\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $key = {\n  \"id\":   $util.dynamodb.toDynamoDB($ctx.args.input.id)\n} )\n#end\n$util.qr($GetRequest.put(\"key\", $key))\n$util.toJson($GetRequest)\n## [End] Get Request template. **",
+      "responseDigest": "43f6054d0f78930b0d51bae6f3c0765f93e6b3ca976e2d92963f938c35ed1c3f"
+    },
+    {
+      "id": "u5rntlqoivfutemedbrszz3vhq",
+      "name": "QuerygetTeamauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#set( $primaryFieldMap = {} )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n\n#end\n#if( !$isAuthorized && $util.isNull($ctx.stash.authFilter) )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "unkkie6vu5enpb6pz5a3x2epr4",
+      "name": "MutationcreatePlayerChampionPoolEntryinit0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Initialization default values. **\n$util.qr($ctx.stash.put(\"defaultValues\", $util.defaultIfNull($ctx.stash.defaultValues, {})))\n$util.qr($ctx.stash.defaultValues.put(\"id\", $util.autoId()))\n#set( $createdAt = $util.time.nowISO8601() )\n$util.qr($ctx.stash.defaultValues.put(\"createdAt\", $createdAt))\n$util.qr($ctx.stash.defaultValues.put(\"updatedAt\", $createdAt))\n$util.toJson({\n  \"version\": \"2018-05-29\",\n  \"payload\": {}\n})\n## [End] Initialization default values. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "vbtwqaucx5ev7nhu2hrvlpsxq4",
+      "name": "QuerygetTeamMembershipauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#set( $primaryFieldMap = {} )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n\n#end\n#if( !$isAuthorized && $util.isNull($ctx.stash.authFilter) )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "vortpg4iojhihgdp7gsahg6po4",
+      "name": "MutationCreatePlayerChampionPoolEntryDataResolverFn",
+      "dataSource": "PlayerChampionPoolEntryTable",
+      "request": "## [Start] Create Request template. **\n#set( $args = $util.defaultIfNull($ctx.stash.transformedArgs, $ctx.args) )\n## Set the default values to put request **\n#set( $mergedValues = $util.defaultIfNull($ctx.stash.defaultValues, {}) )\n## copy the values from input **\n$util.qr($mergedValues.putAll($util.defaultIfNull($args.input, {})))\n## set the typename **\n$util.qr($mergedValues.put(\"__typename\", \"PlayerChampionPoolEntry\"))\n#set( $nullIndexFields = [] )\n#set( $indexFields = [\"teamId\", \"membershipId\"] )\n#foreach( $entry in $util.map.copyAndRetainAllKeys($mergedValues, $indexFields).entrySet() )\n  #if( $util.isNull($entry.value) )\n    $util.qr($nullIndexFields.add($entry.key))\n  #end\n#end\n#set( $mergedValues = $util.map.copyAndRemoveAllKeys($mergedValues, $nullIndexFields) )\n#set( $PutObject = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"PutItem\",\n  \"attributeValues\":   $util.dynamodb.toMapValues($mergedValues),\n  \"condition\": $condition\n} )\n#if( $args.condition )\n  $util.qr($ctx.stash.conditions.add($args.condition))\n#end\n## Begin - key condition **\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $keyConditionExpr = {} )\n  #set( $keyConditionExprNames = {} )\n  #foreach( $entry in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    $util.qr($keyConditionExpr.put(\"keyCondition$velocityCount\", {\n  \"attributeExists\": false\n}))\n    $util.qr($keyConditionExprNames.put(\"#keyCondition$velocityCount\", \"$entry.key\"))\n  #end\n  $util.qr($ctx.stash.conditions.add($keyConditionExpr))\n#else\n  $util.qr($ctx.stash.conditions.add({\n  \"id\": {\n      \"attributeExists\": false\n  }\n}))\n#end\n## End - key condition **\n## Start condition block **\n#if( $ctx.stash.conditions && $ctx.stash.conditions.size() != 0 )\n  #set( $mergedConditions = {\n  \"and\": $ctx.stash.conditions\n} )\n  #set( $Conditions = $util.parseJson($util.transform.toDynamoDBConditionExpression($mergedConditions)) )\n  #if( $Conditions.expressionValues && $Conditions.expressionValues.size() == 0 )\n    #set( $Conditions = {\n  \"expression\": $Conditions.expression,\n  \"expressionNames\": $Conditions.expressionNames\n} )\n  #end\n  ## End condition block **\n#end\n#if( $Conditions )\n  #if( $keyConditionExprNames )\n    $util.qr($Conditions.expressionNames.putAll($keyConditionExprNames))\n  #end\n  $util.qr($PutObject.put(\"condition\", $Conditions))\n#end\n#if( $ctx.stash.metadata.modelObjectKey )\n  $util.qr($PutObject.put(\"key\", $ctx.stash.metadata.modelObjectKey))\n#else\n  #set( $Key = {\n  \"id\":   $util.dynamodb.toDynamoDB($mergedValues.id)\n} )\n  $util.qr($PutObject.put(\"key\", $Key))\n#end\n$util.toJson($PutObject)\n## [End] Create Request template. **",
+      "responseDigest": "1cbc30872aca5f6071fee27c5dba83b98ca36595a6c3f1260d2d037068480fe9"
+    },
+    {
+      "id": "vywcbczjaffyll4d4yosiqrdg4",
+      "name": "MutationdeleteTeamMembershipauth0Function",
+      "dataSource": "TeamMembershipTable",
+      "request": "## [Start] Get Request template. **\n#set( $GetRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"GetItem\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $key = {\n  \"id\":   $util.dynamodb.toDynamoDB($ctx.args.input.id)\n} )\n#end\n$util.qr($GetRequest.put(\"key\", $key))\n$util.toJson($GetRequest)\n## [End] Get Request template. **",
+      "responseDigest": "37e3757a7d1ebd2d0c62b0aee55bed6eec79ef4529d781952c42f915533816cf"
+    },
+    {
+      "id": "wyughbluljgs7pqab26wz4zf4i",
+      "name": "QuerylistPlayerChampionPoolEntryByMembershipIdauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#set( $primaryFieldMap = {} )\n#if( $util.authType() == \"API Key Authorization\" )\n\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n\n#end\n#if( !$isAuthorized && $util.isNull($ctx.stash.authFilter) )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "xporl4wkpvhxhi4m5ed3dk72mi",
+      "name": "QueryGetTeamDataResolverFn",
+      "dataSource": "TeamTable",
+      "request": "## [Start] Get Request template. **\n#set( $GetRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"Query\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $expression = \"\" )\n  #set( $expressionNames = {} )\n  #set( $expressionValues = {} )\n  #foreach( $item in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    #set( $expression = \"$expression#keyCount$velocityCount = :valueCount$velocityCount AND \" )\n    $util.qr($expressionNames.put(\"#keyCount$velocityCount\", $item.key))\n    $util.qr($expressionValues.put(\":valueCount$velocityCount\", $item.value))\n  #end\n  #set( $expression = $expression.replaceAll(\"AND $\", \"\") )\n  #set( $query = {\n  \"expression\": $expression,\n  \"expressionNames\": $expressionNames,\n  \"expressionValues\": $expressionValues\n} )\n#else\n  #set( $query = {\n  \"expression\": \"id = :id\",\n  \"expressionValues\": {\n      \":id\":     $util.parseJson($util.dynamodb.toDynamoDBJson($ctx.args.id))\n  }\n} )\n#end\n$util.qr($GetRequest.put(\"query\", $query))\n#if( !$util.isNullOrEmpty($ctx.stash.authFilter) )\n  $util.qr($GetRequest.put(\"filter\", $util.parseJson($util.transform.toDynamoDBFilterExpression($ctx.stash.authFilter))))\n#end\n$util.toJson($GetRequest)\n## [End] Get Request template. **",
+      "responseDigest": "514f6609dc17faf5bde4d12df7e630a1a01252876f147f194f4e2e76747e5608"
+    },
+    {
+      "id": "ydsceie6fjbalkc3xvv4ecwfy4",
+      "name": "MutationCreateTeamRosterSlotDataResolverFn",
+      "dataSource": "TeamRosterSlotTable",
+      "request": "## [Start] Create Request template. **\n#set( $args = $util.defaultIfNull($ctx.stash.transformedArgs, $ctx.args) )\n## Set the default values to put request **\n#set( $mergedValues = $util.defaultIfNull($ctx.stash.defaultValues, {}) )\n## copy the values from input **\n$util.qr($mergedValues.putAll($util.defaultIfNull($args.input, {})))\n## set the typename **\n$util.qr($mergedValues.put(\"__typename\", \"TeamRosterSlot\"))\n#set( $nullIndexFields = [] )\n#set( $indexFields = [\"teamId\", \"membershipId\"] )\n#foreach( $entry in $util.map.copyAndRetainAllKeys($mergedValues, $indexFields).entrySet() )\n  #if( $util.isNull($entry.value) )\n    $util.qr($nullIndexFields.add($entry.key))\n  #end\n#end\n#set( $mergedValues = $util.map.copyAndRemoveAllKeys($mergedValues, $nullIndexFields) )\n#set( $PutObject = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"PutItem\",\n  \"attributeValues\":   $util.dynamodb.toMapValues($mergedValues),\n  \"condition\": $condition\n} )\n#if( $args.condition )\n  $util.qr($ctx.stash.conditions.add($args.condition))\n#end\n## Begin - key condition **\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $keyConditionExpr = {} )\n  #set( $keyConditionExprNames = {} )\n  #foreach( $entry in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    $util.qr($keyConditionExpr.put(\"keyCondition$velocityCount\", {\n  \"attributeExists\": false\n}))\n    $util.qr($keyConditionExprNames.put(\"#keyCondition$velocityCount\", \"$entry.key\"))\n  #end\n  $util.qr($ctx.stash.conditions.add($keyConditionExpr))\n#else\n  $util.qr($ctx.stash.conditions.add({\n  \"id\": {\n      \"attributeExists\": false\n  }\n}))\n#end\n## End - key condition **\n## Start condition block **\n#if( $ctx.stash.conditions && $ctx.stash.conditions.size() != 0 )\n  #set( $mergedConditions = {\n  \"and\": $ctx.stash.conditions\n} )\n  #set( $Conditions = $util.parseJson($util.transform.toDynamoDBConditionExpression($mergedConditions)) )\n  #if( $Conditions.expressionValues && $Conditions.expressionValues.size() == 0 )\n    #set( $Conditions = {\n  \"expression\": $Conditions.expression,\n  \"expressionNames\": $Conditions.expressionNames\n} )\n  #end\n  ## End condition block **\n#end\n#if( $Conditions )\n  #if( $keyConditionExprNames )\n    $util.qr($Conditions.expressionNames.putAll($keyConditionExprNames))\n  #end\n  $util.qr($PutObject.put(\"condition\", $Conditions))\n#end\n#if( $ctx.stash.metadata.modelObjectKey )\n  $util.qr($PutObject.put(\"key\", $ctx.stash.metadata.modelObjectKey))\n#else\n  #set( $Key = {\n  \"id\":   $util.dynamodb.toDynamoDB($mergedValues.id)\n} )\n  $util.qr($PutObject.put(\"key\", $Key))\n#end\n$util.toJson($PutObject)\n## [End] Create Request template. **",
+      "responseDigest": "1cbc30872aca5f6071fee27c5dba83b98ca36595a6c3f1260d2d037068480fe9"
+    },
+    {
+      "id": "yrbhyofhnnhidpqrf574z5ubii",
+      "name": "MutationupdateTeaminit0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Initialization default values. **\n$util.qr($ctx.stash.put(\"defaultValues\", $util.defaultIfNull($ctx.stash.defaultValues, {})))\n#set( $updatedAt = $util.time.nowISO8601() )\n$util.qr($ctx.stash.defaultValues.put(\"updatedAt\", $updatedAt))\n$util.toJson({\n  \"version\": \"2018-05-29\",\n  \"payload\": {}\n})\n## [End] Initialization default values. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "yty3ubwbuzey3fqw57zxaiijea",
+      "name": "MutationdeleteTeamMembershippostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "ziacl7v67vef5ndrluhbdpkrlm",
+      "name": "MutationcreateTeampostAuth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "zv7d2mx6lffstaqpwc362fbcxq",
+      "name": "MutationcreateTeamMembershipauth0Function",
+      "dataSource": "NONE_DS",
+      "request": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $inputFields = $util.parseJson($util.toJson($ctx.args.input.keySet())) )\n#set( $isAuthorized = false )\n#set( $allowedFields = [] )\n#if( $util.authType() == \"API Key Authorization\" )\n$util.unauthorized()\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n\n#end\n#if( !$isAuthorized && $allowedFields.isEmpty() )\n$util.unauthorized()\n#end\n#if( !$isAuthorized )\n  #set( $deniedFields = $util.list.copyAndRemoveAll($inputFields, $allowedFields) )\n  #if( $deniedFields.size() > 0 )\n    $util.error(\"Unauthorized on ${deniedFields}\", \"Unauthorized\")\n  #end\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+      "responseDigest": "f91ff4ffdd5ad3362c3777babb37b8fae36c1f8a0c4412e7e69d84bf91a978e1"
+    },
+    {
+      "id": "zvop5uwvuvctxp6245fxzvov64",
+      "name": "QueryListTeamBySlugDataResolverFn",
+      "dataSource": "TeamTable",
+      "request": "## [Start] Set query expression for key **\n#if( !$util.isNull($ctx.args.sortDirection) )\n  $util.error(\"sortDirection is not supported for List operations without a Sort key defined.\", \"InvalidArgumentsError\")\n#end\n#set( $modelQueryExpression = {} )\n#if( !$util.isNull($ctx.args.slug) )\n  #set( $modelQueryExpression.expression = \"#slug = :slug\" )\n  #set( $modelQueryExpression.expressionNames = {\n  \"#slug\": \"slug\"\n} )\n  #set( $modelQueryExpression.expressionValues = {\n  \":slug\": {\n      \"S\": \"$ctx.args.slug\"\n  }\n} )\n#end\n## [End] Set query expression for key **\n#set( $limit = $util.defaultIfNull($context.args.limit, 100) )\n#set( $QueryRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"Query\",\n  \"limit\": $limit,\n  \"query\": $modelQueryExpression,\n  \"index\": \"teamsBySlug\"\n} )\n#if( !$util.isNull($ctx.args.sortDirection)\n                  && $ctx.args.sortDirection == \"DESC\" )\n  #set( $QueryRequest.scanIndexForward = false )\n#else\n  #set( $QueryRequest.scanIndexForward = true )\n#end\n#if( $context.args.nextToken ) #set( $QueryRequest.nextToken = $context.args.nextToken ) #end\n#if( !$util.isNullOrEmpty($ctx.stash.authFilter) )\n  #set( $filter = $ctx.stash.authFilter )\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filter = {\n  \"and\":   [$filter, $ctx.args.filter]\n} )\n  #end\n#else\n  #if( !$util.isNullOrEmpty($ctx.args.filter) )\n    #set( $filter = $ctx.args.filter )\n  #end\n#end\n#if( !$util.isNullOrEmpty($filter) )\n  #set( $filterExpression = $util.parseJson($util.transform.toDynamoDBFilterExpression($filter)) )\n  #if( $util.isNullOrEmpty($filterExpression) )\n    $util.error(\"Unable to process the filter expression\", \"Unrecognized Filter\")\n  #end\n  #if( !$util.isNullOrBlank($filterExpression.expression) )\n    #if( $filterExpression.expressionValues.size() == 0 )\n      $util.qr($filterExpression.remove(\"expressionValues\"))\n    #end\n    #set( $QueryRequest.filter = $filterExpression )\n  #end\n#end\n$util.toJson($QueryRequest)",
+      "responseDigest": "70c474ce1880b65e72c404f4bab78bc128afae949a5484d2d77af6a2828d1b90"
+    }
+  ],
+  "audit": {
+    "calls": 2,
+    "errors": [],
+    "writes": 0
+  }
+}

@@ -1,0 +1,8 @@
+import assert from 'node:assert/strict';import {aws,identity,pin,json,read,save,P,B,product,security,canonical} from './aws.mjs';
+const c=pin(),r={at:new Date().toISOString(),identity:await identity(),region:'eu-north-1',pins:c,complete:false};save('preflight',r);
+const req=json(P+'/c1-request.json'),key={PK:{S:'CONTROL#AUTHORITY'},SK:{S:'STATE'}};
+const row=await aws('dynamodb','get-item',{TableName:product+'-Journal',Key:key,ConsistentRead:true});assert.deepEqual(row.Item,req.Item);r.authority=row.Item;
+const q=await aws('dynamodb','query',{TableName:product+'-Journal',KeyConditionExpression:'PK = :pk',ExpressionAttributeValues:{':pk':key.PK},ConsistentRead:true});assert.equal(q.Count,1);assert.ok(!q.LastEvaluatedKey);
+for(const [s,a,i,code] of [['iam','get-role',{RoleName:product+'-C1Initialize'},'NoSuchEntity'],['stepfunctions','describe-state-machine',{stateMachineArn:'arn:aws:states:eu-north-1:058264289478:stateMachine:'+product+'-C1Initialize'},'StateMachineDoesNotExist']]){let absent=false;try{await aws(s,a,i);}catch(e){assert.ok(e.message.includes(code));absent=true;}assert.ok(absent);}
+r.c1ResourcesAbsent=true;r.templates=[];for(const [k,stack] of [['product',product],['security',security]]){const t=await aws('cloudformation','get-template',{StackName:stack});assert.equal(canonical(typeof t.TemplateBody==='string'?JSON.parse(t.TemplateBody):t.TemplateBody),canonical(json(B+'/'+k+'.template.json')));r.templates.push({stack,acceptedDarkMatch:true});}
+assert.equal(read('before/installed-iam').complete,true);r.complete=true;save('preflight',r);console.log(JSON.stringify({complete:true,authority:'LEGACY_WRITER',epoch:1,version:1,c1ResourcesAbsent:true}));

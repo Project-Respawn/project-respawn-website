@@ -1,0 +1,98 @@
+{
+  "at": "2026-10-06T15:26:39.639Z",
+  "api": {
+    "ApiEndpoint": "https://t54b88casf.execute-api.eu-north-1.amazonaws.com",
+    "ApiId": "t54b88casf",
+    "ApiKeySelectionExpression": "$request.header.x-api-key",
+    "CorsConfiguration": {
+      "AllowHeaders": [
+        "authorization"
+      ],
+      "AllowMethods": [
+        "GET"
+      ],
+      "AllowOrigins": [
+        "http://localhost:5174"
+      ]
+    },
+    "CreatedDate": "2026-10-05T15:03:54+00:00",
+    "DisableExecuteApiEndpoint": false,
+    "IpAddressType": "ipv4",
+    "Name": "ProjectRespawn-TeamHub-Ntgre",
+    "ProtocolType": "HTTP",
+    "RouteSelectionExpression": "$request.method $request.path",
+    "Tags": {
+      "Project": "ProjectRespawn",
+      "aws:cloudformation:stack-name": "ProjectRespawn-TeamHub-Ntgre",
+      "Environment": "Ntgre",
+      "aws:cloudformation:logical-id": "HttpApi",
+      "aws:cloudformation:stack-id": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/b66ad780-c0cd-11f1-91ba-0effc0d85417",
+      "Domain": "TeamHub"
+    }
+  },
+  "lambda": {
+    "FunctionName": "ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+    "FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+    "Runtime": "nodejs22.x",
+    "Role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+    "Handler": "index.handler",
+    "CodeSize": 4668,
+    "Description": "",
+    "Timeout": 5,
+    "MemorySize": 128,
+    "LastModified": "2026-10-05T15:04:21.533+0000",
+    "CodeSha256": "uROMTdppYqBarFWhso61iQVCTQdVRmm8vCNVR3KRWVA=",
+    "Version": "$LATEST",
+    "Environment": {
+      "Variables": {
+        "DOMAIN_ACCOUNT": "058264289478",
+        "EXPECTED_ISSUER": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE",
+        "DOMAIN_REGION": "eu-north-1",
+        "EXPECTED_POOL_ID": "eu-north-1_n24iLL7QE",
+        "DOMAIN_ENV": "Ntgre",
+        "EXPECTED_CLIENT_ID": "1iq7ovjaf7d16imdvbqgfgvf86"
+      }
+    },
+    "TracingConfig": {
+      "Mode": "PassThrough"
+    },
+    "RevisionId": "df35227a-b708-42a7-a327-c329d31c0e74",
+    "State": "Active",
+    "LastUpdateStatus": "Successful",
+    "PackageType": "Zip",
+    "Architectures": [
+      "arm64"
+    ],
+    "EphemeralStorage": {
+      "Size": 512
+    },
+    "SnapStart": {
+      "ApplyOn": "None",
+      "OptimizationStatus": "Off"
+    },
+    "RuntimeVersionConfig": {
+      "RuntimeVersionArn": "arn:aws:lambda:eu-north-1::runtime:775dab0d220a0b97f3ec34fe1692d7a07b5d13049153b00f03204c9543bd69e4"
+    },
+    "LoggingConfig": {
+      "LogFormat": "JSON",
+      "ApplicationLogLevel": "INFO",
+      "SystemLogLevel": "INFO",
+      "LogGroup": "/project-respawn/Ntgre/team-hub/preview"
+    }
+  },
+  "routes": {
+    "Items": [
+      {
+        "ApiKeyRequired": false,
+        "AuthorizationScopes": [],
+        "AuthorizationType": "JWT",
+        "AuthorizerId": "nvebda",
+        "RequestModels": {},
+        "RouteId": "thj3tql",
+        "RouteKey": "GET /v1/team-hub/preview",
+        "Target": "integrations/pb3fp80"
+      }
+    ]
+  },
+  "unchanged": true
+}

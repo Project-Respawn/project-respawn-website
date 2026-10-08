@@ -1,0 +1,37 @@
+// Candidate-only adapter. The live Legacy service does not import this module.
+// Explicit dependencies keep account state and activation outside the shared shell.
+export function createWebsiteAdapter({client,identity,newKey=()=>crypto.randomUUID()}){
+ const contexts=new Map(),entries=new Map(),assessments=new Map();let owner;
+ const clear=()=>{contexts.clear();entries.clear();assessments.clear();};
+ async function actor(){const current=await identity();if(!current?.subject)throw Error('UNAUTHENTICATED');if(owner!==current.subject){clear();owner=current.subject;}return current;}
+ const team=t=>({...t,membershipRevision:t.version,settingsRevision:t.version,rosterRevision:t.rosterVersion,logoUrl:'',entitlement:{storedPlan:t.settings.plan,isPro:t.settings.plan==='PRO',expiresAt:null}});
+ async function call(op,input){const before=(await actor()).subject;try{const result=await client.call(op,input);if((await actor()).subject!==before)throw Error('SESSION_CHANGED');return result;}catch(e){if(e.message==='CONFLICT')throw Error('Team Hub changed; refresh and try again');if(e.message==='FORBIDDEN')throw Error('Team Hub access denied');throw e;}}
+ async function getTeamHub(input){const a=await actor(),id=input.teamId??'team:'+input.teamSlug;const r=await call('GET_TEAM_HUB',{teamId:id});contexts.set(id,r);const member=r.memberships.find(m=>m.subject===a.subject&&m.status==='ACTIVE'),role=member?.role??null,admin=r.capabilities.teamsAdmin;return {team:team(r.team),members:r.memberships,roster:r.roster.map(s=>({...s,status:'ACTIVE',id:[s.membershipId,s.gameRoleKey,s.slotType].join(':')})),teamRole:role,myMembershipId:member?.id??null,membership:member??null,isPlatformAdmin:admin,capabilities:{canAdministerTeam:admin,canManageMembers:role==='MANAGER',canManageRoster:role==='MANAGER',canReviewChampionPools:['MANAGER','COACH'].includes(role),canEditChampionPool:role==='PLAYER',canEditCoachAssessments:role==='COACH',canManageBranding:false}};}
+ async function concurrency(id){const a=await actor(),r=contexts.get(id);if(!r)throw Error('Team Hub changed; refresh and try again');return {teamId:id,idempotencyKey:newKey(),expectedTeamVersion:r.team.version,expectedAuthorizationEpoch:r.team.authorizationEpoch,expectedMembershipVersion:r.memberships.find(m=>m.subject===a.subject)?.version??0};}
+ const targetVersion=(id,target)=>contexts.get(id)?.memberships.find(m=>m.id===target)?.version??0;
+ async function mutate(op,input){const id=input.teamId,r=await call(op,input);if(r.team){const context=contexts.get(id);if(context){context.team=r.team;if(r.membership){context.memberships=context.memberships.filter(m=>m.id!==r.membership.id);context.memberships.push(r.membership);}if(r.roster)context.roster=r.roster;}}return r;}
+ async function assign(op,input){const role=op==='SET_MANAGER'?'MANAGER':input.role;const target=input.targetMembershipId;
+  // A searched display name/subject is never converted into an invented email.
+  const account=input.targetEmail?.trim().toLowerCase();if(input.action==='ASSIGN'&&!account)throw Error('Enter the existing account email to assign.');
+  const resolved=input.action==='ASSIGN'?await call('RESOLVE_TEAM_ASSIGNABLE_USER',{teamId:input.teamId,account}):null;
+  return mutate(op,{...await concurrency(input.teamId),action:input.action,...(op==='MANAGE_MEMBER'?{role}:{}),...(input.action==='ASSIGN'?{targetAccount:account}:{targetMembershipId:target}),expectedTargetMembershipVersion:resolved?.membershipVersion??targetVersion(input.teamId,target)});
+ }
+ return Object.freeze({clear,getTeamHub,
+  async listMyTeams(input={}){const r=await call('LIST_MY_TEAMS',input);return {...r,items:await Promise.all(r.items.map(async item=>{const context=await getTeamHub({teamId:item.id});return {...team(item),role:context.teamRole??(context.isPlatformAdmin?'ADMIN':null)};}))};},
+  async createTeam(input){const r=await call('CREATE_TEAM',{...input,idempotencyKey:newKey()});return team(r.team);},
+  async updateTeam(input){const r=await mutate('UPDATE_TEAM',{...await concurrency(input.teamId),name:input.name,status:input.status});return team(r.team);},
+  setTeamManager:input=>assign('SET_MANAGER',input),manageTeamMember:input=>assign('MANAGE_MEMBER',input),
+  searchAssignableUsers:(query,teamId)=>{if(!teamId)throw Error('Select a Team before searching accounts.');return call('SEARCH_TEAM_ASSIGNABLE_USERS',{teamId,query,limit:10});},
+  async setTeamRosterSlot(input){const {teamId,membershipId,gameRoleKey,slotType,action}=input;return mutate('SET_ROSTER_SLOT',{...await concurrency(teamId),membershipId,gameRoleKey,slotType,action,expectedRosterVersion:contexts.get(teamId).team.rosterVersion,expectedTargetMembershipVersion:targetVersion(teamId,membershipId)});},
+  async listMyChampionPool(teamId,page={}){const r=await call('LIST_MY_CHAMPION_POOL',{teamId,...page});for(const e of r.items)entries.set(teamId+'|'+e.championId,e);return r;},
+  async upsertMyChampionPoolEntry(input){const {teamId,championId,gameRoleKey,comfortLevel,priority,competitiveReady}=input;const old=entries.get(teamId+'|'+championId);if(!gameRoleKey)throw Error('A roster position is required before saving the champion pool.');const r=await mutate('UPSERT_MY_CHAMPION',{...await concurrency(teamId),championId,gameRoleKey,comfortLevel,priority,competitiveReady,playerNotes:input.playerNotes??old?.playerNotes??'',expectedEntryVersion:old?.version??0});entries.set(teamId+'|'+championId,r.entry);return r.entry;},
+  async deleteMyChampionPoolEntry({teamId,championId}){const version=entries.get(teamId+'|'+championId)?.version;if(!version)throw Error('Team Hub changed; refresh and try again');const r=await mutate('DELETE_MY_CHAMPION',{...await concurrency(teamId),championId,expectedEntryVersion:version});entries.delete(teamId+'|'+championId);return r;},
+  async listTeamChampionPools(teamId,page={}){const r=await call('LIST_TEAM_CHAMPION_POOLS',{teamId,...page});for(const p of r.items)for(const a of p.assessments)assessments.set([teamId,p.membershipId,a.championId].join('|'),a.version);return {...r,items:r.items.flatMap(p=>p.entries.map(e=>({...e,coachAssessment:p.assessments.find(a=>a.championId===e.championId)?.teamVisible??''})))};},
+  getPlayerCompetitiveDetail:(teamId,membershipId)=>call('GET_PLAYER_COMPETITIVE_DETAIL',{teamId,membershipId}),
+  async upsertCoachAssessment({teamId,membershipId,championId,payload}){if(payload.privateNote||payload.coachTier||payload.coachRecommendation||payload.coachPriorityPractice)throw Error('Only team-visible assessment text is supported during cutover.');const result=await mutate('UPSERT_COACH_ASSESSMENT',{...await concurrency(teamId),membershipId,championId,teamVisible:payload.coachAssessment??'',privateNote:'',expectedAssessmentVersion:assessments.get([teamId,membershipId,championId].join('|'))??0,expectedTargetMembershipVersion:targetVersion(teamId,membershipId)});assessments.set([teamId,membershipId,championId].join('|'),result.assessment.version);return result;},
+  async setTeamPlan(teamId,{plan,expiresAt}){if(expiresAt)throw Error('Scheduled plan expiry is unavailable during cutover.');return mutate('SET_TEAM_PLAN',{...await concurrency(teamId),plan});},
+  async requestTeamLogoUpload(){throw Error('Team logo changes are disabled during migration.');},
+  async commitTeamLogo(){throw Error('Team logo changes are disabled during migration.');},
+  async removeTeamLogo(){throw Error('Team logo changes are disabled during migration.');}
+ });
+}

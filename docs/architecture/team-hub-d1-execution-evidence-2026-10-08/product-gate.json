@@ -1,0 +1,94 @@
+{
+  "at": "2026-10-08T13:18:57.388Z",
+  "ready": true,
+  "changeSetId": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/team-hub-d1-monitoring-product-20261008/c25ae498-2471-40b7-a244-c70f762d038e",
+  "changes": [
+    {
+      "Action": "Modify",
+      "LogicalResourceId": "ParityCommandFunction",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "ResourceType": "AWS::Lambda::Function",
+      "Replacement": "False",
+      "Scope": [
+        "Properties"
+      ],
+      "Details": [
+        {
+          "Target": {
+            "Attribute": "Properties",
+            "Name": "Code",
+            "RequiresRecreation": "Never",
+            "Path": "/Properties/Code/S3Key",
+            "BeforeValue": "team-hub/core-integration/2992b5d6b736c90c3fc306654a38576cd861dc0e07068c92bf02c79c87948e6a.zip",
+            "AfterValue": "team-hub/d1-dark/a36406c42c727b4d8c262083e0cb95807f2404c4c8649b2eacc559915f4ba7d5.zip",
+            "AttributeChangeType": "Modify"
+          },
+          "Evaluation": "Static",
+          "ChangeSource": "DirectModification"
+        }
+      ],
+      "BeforeContext": "{\"Properties\":{\"Role\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand\",\"FunctionName\":\"ProjectRespawn-TeamHub-Ntgre-ParityCommand\",\"MemorySize\":\"256\",\"Runtime\":\"nodejs22.x\",\"Timeout\":\"15\",\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"LogGroup\":\"/project-respawn/Ntgre/team-hub/parity-command\"},\"Handler\":\"index.handler\",\"Environment\":{\"Variables\":{\"TEAM_HUB_RUNTIME\":\"command\",\"TEAM_HUB_AUTHORITY\":\"LEGACY_WRITER\",\"TEAM_HUB_STAGE\":\"PRE_CUTOVER\",\"EXPECTED_ISSUER\":\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\",\"TEAM_HUB_NORMAL_WRITES\":\"DISABLED\",\"TEAM_HUB_VERIFICATION\":\"{\\\"mode\\\":\\\"DISABLED\\\",\\\"authority\\\":\\\"LEGACY_WRITER\\\"}\",\"EXPECTED_POOL_ID\":\"eu-north-1_n24iLL7QE\",\"EXPECTED_CLIENT_ID\":\"1iq7ovjaf7d16imdvbqgfgvf86\"}},\"Code\":{\"S3Bucket\":\"cdk-hnb659fds-assets-058264289478-eu-north-1\",\"S3Key\":\"team-hub/core-integration/2992b5d6b736c90c3fc306654a38576cd861dc0e07068c92bf02c79c87948e6a.zip\"},\"Architectures\":[\"arm64\"]}}",
+      "AfterContext": "{\"Properties\":{\"Role\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand\",\"FunctionName\":\"ProjectRespawn-TeamHub-Ntgre-ParityCommand\",\"MemorySize\":\"256\",\"Runtime\":\"nodejs22.x\",\"Timeout\":\"15\",\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"LogGroup\":\"/project-respawn/Ntgre/team-hub/parity-command\"},\"Handler\":\"index.handler\",\"Environment\":{\"Variables\":{\"TEAM_HUB_RUNTIME\":\"command\",\"TEAM_HUB_AUTHORITY\":\"LEGACY_WRITER\",\"TEAM_HUB_STAGE\":\"PRE_CUTOVER\",\"EXPECTED_ISSUER\":\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\",\"TEAM_HUB_NORMAL_WRITES\":\"DISABLED\",\"TEAM_HUB_VERIFICATION\":\"{\\\"mode\\\":\\\"DISABLED\\\",\\\"authority\\\":\\\"LEGACY_WRITER\\\"}\",\"EXPECTED_POOL_ID\":\"eu-north-1_n24iLL7QE\",\"EXPECTED_CLIENT_ID\":\"1iq7ovjaf7d16imdvbqgfgvf86\"}},\"Code\":{\"S3Bucket\":\"cdk-hnb659fds-assets-058264289478-eu-north-1\",\"S3Key\":\"team-hub/d1-dark/a36406c42c727b4d8c262083e0cb95807f2404c4c8649b2eacc559915f4ba7d5.zip\"},\"Architectures\":[\"arm64\"]}}"
+    },
+    {
+      "Action": "Modify",
+      "LogicalResourceId": "ParityReadFunction",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "ResourceType": "AWS::Lambda::Function",
+      "Replacement": "False",
+      "Scope": [
+        "Properties"
+      ],
+      "Details": [
+        {
+          "Target": {
+            "Attribute": "Properties",
+            "Name": "Code",
+            "RequiresRecreation": "Never",
+            "Path": "/Properties/Code/S3Key",
+            "BeforeValue": "team-hub/core-integration/2992b5d6b736c90c3fc306654a38576cd861dc0e07068c92bf02c79c87948e6a.zip",
+            "AfterValue": "team-hub/d1-dark/a36406c42c727b4d8c262083e0cb95807f2404c4c8649b2eacc559915f4ba7d5.zip",
+            "AttributeChangeType": "Modify"
+          },
+          "Evaluation": "Static",
+          "ChangeSource": "DirectModification"
+        }
+      ],
+      "BeforeContext": "{\"Properties\":{\"Role\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"FunctionName\":\"ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"MemorySize\":\"256\",\"Runtime\":\"nodejs22.x\",\"Timeout\":\"15\",\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"LogGroup\":\"/project-respawn/Ntgre/team-hub/parity-read\"},\"Handler\":\"index.handler\",\"Environment\":{\"Variables\":{\"TEAM_HUB_RUNTIME\":\"read\",\"TEAM_HUB_AUTHORITY\":\"LEGACY_WRITER\",\"TEAM_HUB_STAGE\":\"PRE_CUTOVER\",\"EXPECTED_ISSUER\":\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\",\"TEAM_HUB_NORMAL_WRITES\":\"DISABLED\",\"TEAM_HUB_VERIFICATION\":\"{\\\"mode\\\":\\\"DISABLED\\\",\\\"authority\\\":\\\"LEGACY_WRITER\\\"}\",\"EXPECTED_POOL_ID\":\"eu-north-1_n24iLL7QE\",\"EXPECTED_CLIENT_ID\":\"1iq7ovjaf7d16imdvbqgfgvf86\"}},\"Code\":{\"S3Bucket\":\"cdk-hnb659fds-assets-058264289478-eu-north-1\",\"S3Key\":\"team-hub/core-integration/2992b5d6b736c90c3fc306654a38576cd861dc0e07068c92bf02c79c87948e6a.zip\"},\"Architectures\":[\"arm64\"]}}",
+      "AfterContext": "{\"Properties\":{\"Role\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"FunctionName\":\"ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"MemorySize\":\"256\",\"Runtime\":\"nodejs22.x\",\"Timeout\":\"15\",\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"LogGroup\":\"/project-respawn/Ntgre/team-hub/parity-read\"},\"Handler\":\"index.handler\",\"Environment\":{\"Variables\":{\"TEAM_HUB_RUNTIME\":\"read\",\"TEAM_HUB_AUTHORITY\":\"LEGACY_WRITER\",\"TEAM_HUB_STAGE\":\"PRE_CUTOVER\",\"EXPECTED_ISSUER\":\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\",\"TEAM_HUB_NORMAL_WRITES\":\"DISABLED\",\"TEAM_HUB_VERIFICATION\":\"{\\\"mode\\\":\\\"DISABLED\\\",\\\"authority\\\":\\\"LEGACY_WRITER\\\"}\",\"EXPECTED_POOL_ID\":\"eu-north-1_n24iLL7QE\",\"EXPECTED_CLIENT_ID\":\"1iq7ovjaf7d16imdvbqgfgvf86\"}},\"Code\":{\"S3Bucket\":\"cdk-hnb659fds-assets-058264289478-eu-north-1\",\"S3Key\":\"team-hub/d1-dark/a36406c42c727b4d8c262083e0cb95807f2404c4c8649b2eacc559915f4ba7d5.zip\"},\"Architectures\":[\"arm64\"]}}"
+    },
+    {
+      "Action": "Modify",
+      "LogicalResourceId": "Stage",
+      "PhysicalResourceId": "$default",
+      "ResourceType": "AWS::ApiGatewayV2::Stage",
+      "Replacement": "False",
+      "Scope": [
+        "Properties"
+      ],
+      "Details": [
+        {
+          "Target": {
+            "Attribute": "Properties",
+            "Name": "DefaultRouteSettings",
+            "RequiresRecreation": "Never",
+            "Path": "/Properties/DefaultRouteSettings/DetailedMetricsEnabled",
+            "AfterValue": "true",
+            "AttributeChangeType": "Add"
+          },
+          "Evaluation": "Static",
+          "ChangeSource": "DirectModification"
+        }
+      ],
+      "BeforeContext": "{\"Properties\":{\"AutoDeploy\":\"true\",\"StageName\":\"$default\",\"ApiId\":\"t54b88casf\",\"DefaultRouteSettings\":{\"ThrottlingBurstLimit\":\"20\",\"ThrottlingRateLimit\":\"10\"}}}",
+      "AfterContext": "{\"Properties\":{\"AutoDeploy\":\"true\",\"StageName\":\"$default\",\"ApiId\":\"t54b88casf\",\"DefaultRouteSettings\":{\"ThrottlingBurstLimit\":\"20\",\"DetailedMetricsEnabled\":\"true\",\"ThrottlingRateLimit\":\"10\"}}}"
+    }
+  ],
+  "rollbackEnabled": true,
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "candidate": "cd11644cc163b2f06f486a6217127221109b26bd7dd8456726f63fd0dc307232"
+}

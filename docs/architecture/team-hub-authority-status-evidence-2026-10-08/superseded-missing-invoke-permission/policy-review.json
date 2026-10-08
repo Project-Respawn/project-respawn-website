@@ -1,0 +1,537 @@
+{
+  "at": "2026-10-08T15:06:57.081Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "analyzer": [
+    {
+      "id": "ExecutionBoundary",
+      "findings": []
+    },
+    {
+      "id": "PreparationCaller",
+      "findings": []
+    },
+    {
+      "id": "ExecutionRole",
+      "findings": []
+    }
+  ],
+  "installed": [
+    {
+      "id": "ExecutionRole",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofExecutionBoundary",
+      "version": "v8",
+      "inline": [
+        "ReadProofLifecycle"
+      ],
+      "attached": [],
+      "acceptedD1Match": true
+    },
+    {
+      "id": "DeploymentCaller",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Deploy",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofPreparation",
+      "version": "v11",
+      "inline": [],
+      "attached": [
+        "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofPreparation"
+      ],
+      "acceptedD1Match": true
+    }
+  ],
+  "checks": [
+    {
+      "label": "foreign-route",
+      "mode": "actual",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "apigateway:POST",
+          "resource": "arn:aws:apigateway:eu-north-1::/apis/msipnwy39j/routes",
+          "decision": "explicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "own-route",
+      "mode": "actual",
+      "expected": true,
+      "decisions": [
+        {
+          "action": "apigateway:POST",
+          "resource": "arn:aws:apigateway:eu-north-1::/apis/t54b88casf/routes",
+          "decision": "allowed"
+        }
+      ]
+    },
+    {
+      "label": "accepted-D1-rollback",
+      "mode": "actual",
+      "expected": true,
+      "decisions": [
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/d1-dark/a36406c42c727b4d8c262083e0cb95807f2404c4c8649b2eacc559915f4ba7d5.zip",
+          "decision": "allowed"
+        }
+      ]
+    },
+    {
+      "label": "foreign-route",
+      "mode": "candidate",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "apigateway:POST",
+          "resource": "arn:aws:apigateway:eu-north-1::/apis/msipnwy39j/routes",
+          "decision": "explicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "own-route",
+      "mode": "candidate",
+      "expected": true,
+      "decisions": [
+        {
+          "action": "apigateway:POST",
+          "resource": "arn:aws:apigateway:eu-north-1::/apis/t54b88casf/routes",
+          "decision": "allowed"
+        }
+      ]
+    },
+    {
+      "label": "accepted-D1-rollback",
+      "mode": "candidate",
+      "expected": true,
+      "decisions": [
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/d1-dark/a36406c42c727b4d8c262083e0cb95807f2404c4c8649b2eacc559915f4ba7d5.zip",
+          "decision": "allowed"
+        }
+      ]
+    },
+    {
+      "label": "execution-artifact",
+      "mode": "actual",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/as/cd58cc3553867f268af79bc9c710fe35e1bab07882d39b423e05b39626a7eedd.zip",
+          "decision": "explicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "unreviewed-artifact",
+      "mode": "actual",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/unreviewed.zip",
+          "decision": "explicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "removed-pre-D1-artifact",
+      "mode": "actual",
+      "expected": true,
+      "decisions": [
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/core-integration/2992b5d6b736c90c3fc306654a38576cd861dc0e07068c92bf02c79c87948e6a.zip",
+          "decision": "allowed"
+        }
+      ]
+    },
+    {
+      "label": "execution-artifact",
+      "mode": "candidate",
+      "expected": true,
+      "decisions": [
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/as/cd58cc3553867f268af79bc9c710fe35e1bab07882d39b423e05b39626a7eedd.zip",
+          "decision": "allowed"
+        }
+      ]
+    },
+    {
+      "label": "removed-pre-D1-artifact",
+      "mode": "candidate",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/core-integration/2992b5d6b736c90c3fc306654a38576cd861dc0e07068c92bf02c79c87948e6a.zip",
+          "decision": "explicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "unreviewed-artifact",
+      "mode": "candidate",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/unreviewed.zip",
+          "decision": "explicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "own-stage",
+      "mode": "actual",
+      "expected": true,
+      "decisions": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/apis/t54b88casf/stages/$default",
+          "decision": "allowed"
+        }
+      ]
+    },
+    {
+      "label": "foreign-code",
+      "mode": "actual",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "lambda:UpdateFunctionCode",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+          "decision": "implicitDeny"
+        },
+        {
+          "action": "lambda:UpdateFunctionCode",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre-Preview",
+          "decision": "implicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "own-code",
+      "mode": "actual",
+      "expected": true,
+      "decisions": [
+        {
+          "action": "lambda:UpdateFunctionCode",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "allowed"
+        },
+        {
+          "action": "lambda:UpdateFunctionCode",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+          "decision": "allowed"
+        }
+      ]
+    },
+    {
+      "label": "own-stage",
+      "mode": "candidate",
+      "expected": true,
+      "decisions": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/apis/t54b88casf/stages/$default",
+          "decision": "allowed"
+        }
+      ]
+    },
+    {
+      "label": "foreign-code",
+      "mode": "candidate",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "lambda:UpdateFunctionCode",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+          "decision": "implicitDeny"
+        },
+        {
+          "action": "lambda:UpdateFunctionCode",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre-Preview",
+          "decision": "implicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "own-code",
+      "mode": "candidate",
+      "expected": true,
+      "decisions": [
+        {
+          "action": "lambda:UpdateFunctionCode",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "allowed"
+        },
+        {
+          "action": "lambda:UpdateFunctionCode",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+          "decision": "allowed"
+        }
+      ]
+    },
+    {
+      "label": "foreign-api",
+      "mode": "actual",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/apis/msipnwy39j/stages/$default",
+          "decision": "explicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "private-services",
+      "mode": "actual",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "cognito-idp:AdminGetUser",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "secretsmanager:GetSecretValue",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "kms:Encrypt",
+          "resource": "*",
+          "decision": "implicitDeny"
+        },
+        {
+          "action": "kms:Decrypt",
+          "resource": "*",
+          "decision": "implicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "log-administration",
+      "mode": "actual",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "logs:PutResourcePolicy",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "logs:DeleteResourcePolicy",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "logs:CreateLogDelivery",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "logs:UpdateLogDelivery",
+          "resource": "*",
+          "decision": "explicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "private-services",
+      "mode": "candidate",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "cognito-idp:AdminGetUser",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "secretsmanager:GetSecretValue",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "kms:Encrypt",
+          "resource": "*",
+          "decision": "implicitDeny"
+        },
+        {
+          "action": "kms:Decrypt",
+          "resource": "*",
+          "decision": "implicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "log-administration",
+      "mode": "candidate",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "logs:PutResourcePolicy",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "logs:DeleteResourcePolicy",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "logs:CreateLogDelivery",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "logs:UpdateLogDelivery",
+          "resource": "*",
+          "decision": "explicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "foreign-api",
+      "mode": "candidate",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "apigateway:PATCH",
+          "resource": "arn:aws:apigateway:eu-north-1::/apis/msipnwy39j/stages/$default",
+          "decision": "explicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "caller-template",
+      "mode": "actual",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "cloudformation:CreateChangeSet",
+          "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*",
+          "decision": "implicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "caller-foreign-stack",
+      "mode": "actual",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "cloudformation:CreateChangeSet",
+          "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Tournaments-Ntgre/*",
+          "decision": "explicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "caller-object",
+      "mode": "actual",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/as/fa172d28fb6326a2c485ac2f733d9c87c69a125570d07ab514ecb143683e7dee.template.json",
+          "decision": "explicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "caller-template",
+      "mode": "candidate",
+      "expected": true,
+      "decisions": [
+        {
+          "action": "cloudformation:CreateChangeSet",
+          "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*",
+          "decision": "allowed"
+        }
+      ]
+    },
+    {
+      "label": "caller-foreign-stack",
+      "mode": "candidate",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "cloudformation:CreateChangeSet",
+          "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Tournaments-Ntgre/*",
+          "decision": "explicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "caller-object",
+      "mode": "candidate",
+      "expected": true,
+      "decisions": [
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/as/fa172d28fb6326a2c485ac2f733d9c87c69a125570d07ab514ecb143683e7dee.template.json",
+          "decision": "allowed"
+        }
+      ]
+    },
+    {
+      "label": "caller-pass-role",
+      "mode": "actual",
+      "expected": true,
+      "decisions": [
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+          "decision": "allowed"
+        }
+      ]
+    },
+    {
+      "label": "caller-foreign-role",
+      "mode": "actual",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-ReadProofExecution",
+          "decision": "explicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "caller-pass-role",
+      "mode": "candidate",
+      "expected": true,
+      "decisions": [
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+          "decision": "allowed"
+        }
+      ]
+    },
+    {
+      "label": "caller-foreign-role",
+      "mode": "candidate",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-ReadProofExecution",
+          "decision": "explicitDeny"
+        }
+      ]
+    }
+  ],
+  "complete": true
+}

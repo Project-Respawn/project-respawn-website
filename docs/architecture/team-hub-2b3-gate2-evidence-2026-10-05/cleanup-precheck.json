@@ -1,0 +1,510 @@
+{
+  "at": "2026-10-05T21:40:09.203Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "tables": [
+    {
+      "model": "PlayerChampionPoolEntry",
+      "sourceName": "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "sourceArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE/backup/01791235216394-994ee269",
+      "backupName": "ProjectRespawn-TeamHub-Ntgre-M4-PlayerChampionPoolEntry-20261005-Gate1",
+      "name": "ProjectRespawn-TeamHub-Ntgre-RestoreTest-PlayerChampionPoolEntry-20261005",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-RestoreTest-PlayerChampionPoolEntry-20261005",
+      "table": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "membershipId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "teamId",
+            "AttributeType": "S"
+          }
+        ],
+        "TableName": "ProjectRespawn-TeamHub-Ntgre-RestoreTest-PlayerChampionPoolEntry-20261005",
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "TableStatus": "ACTIVE",
+        "CreationDateTime": "2026-10-05T22:32:56.486000+01:00",
+        "ProvisionedThroughput": {
+          "NumberOfDecreasesToday": 0,
+          "ReadCapacityUnits": 0,
+          "WriteCapacityUnits": 0
+        },
+        "TableSizeBytes": 0,
+        "ItemCount": 0,
+        "TableArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-RestoreTest-PlayerChampionPoolEntry-20261005",
+        "TableId": "4d7b4443-2b55-4d9e-a2b7-bad8c26b923c",
+        "BillingModeSummary": {
+          "BillingMode": "PAY_PER_REQUEST",
+          "LastUpdateToPayPerRequestDateTime": "2026-10-05T22:36:50.451000+01:00"
+        },
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "playerChampionPoolEntriesByTeamId",
+            "KeySchema": [
+              {
+                "AttributeName": "teamId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "LastDecreaseDateTime": "2026-10-05T22:36:56.056000+01:00",
+              "NumberOfDecreasesToday": 1,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 0,
+            "ItemCount": 0,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-RestoreTest-PlayerChampionPoolEntry-20261005/index/playerChampionPoolEntriesByTeamId",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          },
+          {
+            "IndexName": "playerChampionPoolEntriesByMembershipId",
+            "KeySchema": [
+              {
+                "AttributeName": "membershipId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "LastDecreaseDateTime": "2026-10-05T22:36:56.829000+01:00",
+              "NumberOfDecreasesToday": 1,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 0,
+            "ItemCount": 0,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-RestoreTest-PlayerChampionPoolEntry-20261005/index/playerChampionPoolEntriesByMembershipId",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          }
+        ],
+        "DeletionProtectionEnabled": false,
+        "WarmThroughput": {
+          "ReadUnitsPerSecond": 12000,
+          "WriteUnitsPerSecond": 4000,
+          "Status": "ACTIVE"
+        }
+      },
+      "passes": [
+        {
+          "count": 0,
+          "pages": 1,
+          "readUnits": 7,
+          "complete": true,
+          "stronglyConsistent": true
+        },
+        {
+          "count": 0,
+          "pages": 1,
+          "readUnits": 7,
+          "complete": true,
+          "stronglyConsistent": true
+        }
+      ]
+    },
+    {
+      "model": "TeamMembership",
+      "sourceName": "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "sourceArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE/backup/01791235217751-89f39a2b",
+      "backupName": "ProjectRespawn-TeamHub-Ntgre-M4-TeamMembership-20261005-Gate1",
+      "name": "ProjectRespawn-TeamHub-Ntgre-RestoreTest-TeamMembership-20261005",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-RestoreTest-TeamMembership-20261005",
+      "table": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "teamId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "userId",
+            "AttributeType": "S"
+          }
+        ],
+        "TableName": "ProjectRespawn-TeamHub-Ntgre-RestoreTest-TeamMembership-20261005",
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "TableStatus": "ACTIVE",
+        "CreationDateTime": "2026-10-05T22:32:57.853000+01:00",
+        "ProvisionedThroughput": {
+          "NumberOfDecreasesToday": 0,
+          "ReadCapacityUnits": 0,
+          "WriteCapacityUnits": 0
+        },
+        "TableSizeBytes": 0,
+        "ItemCount": 0,
+        "TableArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-RestoreTest-TeamMembership-20261005",
+        "TableId": "913a9341-be2e-43ba-b68c-c10d739266a2",
+        "BillingModeSummary": {
+          "BillingMode": "PAY_PER_REQUEST",
+          "LastUpdateToPayPerRequestDateTime": "2026-10-05T22:36:52.480000+01:00"
+        },
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "teamMembershipsByTeamId",
+            "KeySchema": [
+              {
+                "AttributeName": "teamId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "LastDecreaseDateTime": "2026-10-05T22:36:58.882000+01:00",
+              "NumberOfDecreasesToday": 1,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 0,
+            "ItemCount": 0,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-RestoreTest-TeamMembership-20261005/index/teamMembershipsByTeamId",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          },
+          {
+            "IndexName": "teamMembershipsByUserId",
+            "KeySchema": [
+              {
+                "AttributeName": "userId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "LastDecreaseDateTime": "2026-10-05T22:36:58.872000+01:00",
+              "NumberOfDecreasesToday": 1,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 0,
+            "ItemCount": 0,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-RestoreTest-TeamMembership-20261005/index/teamMembershipsByUserId",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          }
+        ],
+        "DeletionProtectionEnabled": false,
+        "WarmThroughput": {
+          "ReadUnitsPerSecond": 12000,
+          "WriteUnitsPerSecond": 4000,
+          "Status": "ACTIVE"
+        }
+      },
+      "passes": [
+        {
+          "count": 0,
+          "pages": 1,
+          "readUnits": 7,
+          "complete": true,
+          "stronglyConsistent": true
+        },
+        {
+          "count": 0,
+          "pages": 1,
+          "readUnits": 7,
+          "complete": true,
+          "stronglyConsistent": true
+        }
+      ]
+    },
+    {
+      "model": "Team",
+      "sourceName": "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "sourceArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE/backup/01791235219062-e8ba36b4",
+      "backupName": "ProjectRespawn-TeamHub-Ntgre-M4-Team-20261005-Gate1",
+      "name": "ProjectRespawn-TeamHub-Ntgre-RestoreTest-Team-20261005",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-RestoreTest-Team-20261005",
+      "table": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "slug",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "status",
+            "AttributeType": "S"
+          }
+        ],
+        "TableName": "ProjectRespawn-TeamHub-Ntgre-RestoreTest-Team-20261005",
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "TableStatus": "ACTIVE",
+        "CreationDateTime": "2026-10-05T22:32:59.177000+01:00",
+        "ProvisionedThroughput": {
+          "NumberOfDecreasesToday": 0,
+          "ReadCapacityUnits": 0,
+          "WriteCapacityUnits": 0
+        },
+        "TableSizeBytes": 0,
+        "ItemCount": 0,
+        "TableArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-RestoreTest-Team-20261005",
+        "TableId": "b49689ca-c934-4baa-a36b-a4f9c9c33a4e",
+        "BillingModeSummary": {
+          "BillingMode": "PAY_PER_REQUEST",
+          "LastUpdateToPayPerRequestDateTime": "2026-10-05T22:35:58.474000+01:00"
+        },
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "teamsBySlug",
+            "KeySchema": [
+              {
+                "AttributeName": "slug",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "LastDecreaseDateTime": "2026-10-05T22:36:03.100000+01:00",
+              "NumberOfDecreasesToday": 1,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 0,
+            "ItemCount": 0,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-RestoreTest-Team-20261005/index/teamsBySlug",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          },
+          {
+            "IndexName": "teamsByStatus",
+            "KeySchema": [
+              {
+                "AttributeName": "status",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "LastDecreaseDateTime": "2026-10-05T22:36:03.625000+01:00",
+              "NumberOfDecreasesToday": 1,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 0,
+            "ItemCount": 0,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-RestoreTest-Team-20261005/index/teamsByStatus",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          }
+        ],
+        "DeletionProtectionEnabled": false,
+        "WarmThroughput": {
+          "ReadUnitsPerSecond": 12000,
+          "WriteUnitsPerSecond": 4000,
+          "Status": "ACTIVE"
+        }
+      },
+      "passes": [
+        {
+          "count": 0,
+          "pages": 1,
+          "readUnits": 7,
+          "complete": true,
+          "stronglyConsistent": true
+        },
+        {
+          "count": 0,
+          "pages": 1,
+          "readUnits": 7,
+          "complete": true,
+          "stronglyConsistent": true
+        }
+      ]
+    },
+    {
+      "model": "TeamRosterSlot",
+      "sourceName": "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "sourceArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE/backup/01791235220353-eb86c1ac",
+      "backupName": "ProjectRespawn-TeamHub-Ntgre-M4-TeamRosterSlot-20261005-Gate1",
+      "name": "ProjectRespawn-TeamHub-Ntgre-RestoreTest-TeamRosterSlot-20261005",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-RestoreTest-TeamRosterSlot-20261005",
+      "table": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "membershipId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "teamId",
+            "AttributeType": "S"
+          }
+        ],
+        "TableName": "ProjectRespawn-TeamHub-Ntgre-RestoreTest-TeamRosterSlot-20261005",
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "TableStatus": "ACTIVE",
+        "CreationDateTime": "2026-10-05T22:33:00.494000+01:00",
+        "ProvisionedThroughput": {
+          "NumberOfDecreasesToday": 0,
+          "ReadCapacityUnits": 0,
+          "WriteCapacityUnits": 0
+        },
+        "TableSizeBytes": 0,
+        "ItemCount": 0,
+        "TableArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-RestoreTest-TeamRosterSlot-20261005",
+        "TableId": "eefc3aaf-a182-4705-8a7f-ca9bd8fc19fe",
+        "BillingModeSummary": {
+          "BillingMode": "PAY_PER_REQUEST",
+          "LastUpdateToPayPerRequestDateTime": "2026-10-05T22:36:23.035000+01:00"
+        },
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "teamRosterSlotsByMembershipId",
+            "KeySchema": [
+              {
+                "AttributeName": "membershipId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "LastDecreaseDateTime": "2026-10-05T22:36:31.480000+01:00",
+              "NumberOfDecreasesToday": 1,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 0,
+            "ItemCount": 0,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-RestoreTest-TeamRosterSlot-20261005/index/teamRosterSlotsByMembershipId",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          },
+          {
+            "IndexName": "teamRosterSlotsByTeamId",
+            "KeySchema": [
+              {
+                "AttributeName": "teamId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "LastDecreaseDateTime": "2026-10-05T22:36:31.575000+01:00",
+              "NumberOfDecreasesToday": 1,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 0,
+            "ItemCount": 0,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-RestoreTest-TeamRosterSlot-20261005/index/teamRosterSlotsByTeamId",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          }
+        ],
+        "DeletionProtectionEnabled": false,
+        "WarmThroughput": {
+          "ReadUnitsPerSecond": 12000,
+          "WriteUnitsPerSecond": 4000,
+          "Status": "ACTIVE"
+        }
+      },
+      "passes": [
+        {
+          "count": 0,
+          "pages": 1,
+          "readUnits": 7,
+          "complete": true,
+          "stronglyConsistent": true
+        },
+        {
+          "count": 0,
+          "pages": 1,
+          "readUnits": 7,
+          "complete": true,
+          "stronglyConsistent": true
+        }
+      ]
+    }
+  ]
+}

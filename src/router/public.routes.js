@@ -1,21 +1,21 @@
-import Home from '../views/Home/Home.vue';
-import About from '../views/About/About.vue';
-import Contact from '../views/Contact/Contact.vue';
-import PrivacyPolicy from '../views/PrivacyPolicy/MainPrivacyPolicy.vue';
-import TeamTryouts from '../views/TeamTryouts/TeamTryouts.vue';
-import Merch from '../views/Merch/Merch.vue';
-import Events from '../views/Events/Events.vue';
-import Checkout from '../views/Checkout/Checkout.vue';
-import Join from '../views/Join/Join.vue';
-import Account from '../views/Account/Account.vue';
-import UserHomepage from '../views/UserHomepage/UserHomepage.vue';
-import Applications from '../views/Applications/Applications.vue';
-import Bookings from '../views/Bookings/Bookings.vue';
-import Investors from '../views/Investors/Investors.vue';
-import InvestorDataRoom from '../views/Investors/DataRoom/InvestorDataRoom.vue';
-import Careers from '../views/Careers/Careers.vue';
-import Creators from '../views/Creators/Creators.vue';
-import Partners from '../views/Partners/Partners.vue';
+const Home = () => import('../views/Home/Home.vue');
+const About = () => import('../views/About/About.vue');
+const Contact = () => import('../views/Contact/Contact.vue');
+const PrivacyPolicy = () => import('../views/PrivacyPolicy/MainPrivacyPolicy.vue');
+const TeamTryouts = () => import('../views/TeamTryouts/TeamTryouts.vue');
+const Merch = () => import('../views/Merch/Merch.vue');
+const Events = () => import('../views/Events/Events.vue');
+const Checkout = () => import('../views/Checkout/Checkout.vue');
+const Join = () => import('../views/Join/Join.vue');
+const Account = () => import('../views/Account/Account.vue');
+const UserHomepage = () => import('../views/UserHomepage/UserHomepage.vue');
+const Applications = () => import('../views/Applications/Applications.vue');
+const Bookings = () => import('../views/Bookings/Bookings.vue');
+const Investors = () => import('../views/Investors/Investors.vue');
+const InvestorDataRoom = () => import('../views/Investors/DataRoom/InvestorDataRoom.vue');
+const Careers = () => import('../views/Careers/Careers.vue');
+const Creators = () => import('../views/Creators/Creators.vue');
+const Partners = () => import('../views/Partners/Partners.vue');
 
 export default [
     // =========================================================

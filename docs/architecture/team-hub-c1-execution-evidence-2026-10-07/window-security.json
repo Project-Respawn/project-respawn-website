@@ -1,0 +1,88 @@
+{
+  "analyzer": {
+    "findings": []
+  },
+  "checks": [
+    {
+      "action": "dynamodb:GetItem",
+      "time": "2026-10-07T22:44:33.000Z",
+      "key": "CONTROL#AUTHORITY",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "action": "dynamodb:PutItem",
+      "time": "2026-10-07T22:44:33.000Z",
+      "key": "CONTROL#AUTHORITY",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "action": "dynamodb:GetItem",
+      "time": "2026-10-07T22:44:22.000Z",
+      "key": "CONTROL#AUTHORITY",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "action": "dynamodb:PutItem",
+      "time": "2026-10-07T22:44:22.000Z",
+      "key": "CONTROL#AUTHORITY",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "action": "dynamodb:GetItem",
+      "time": "2026-10-07T22:59:28.000Z",
+      "key": "CONTROL#AUTHORITY",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "action": "dynamodb:PutItem",
+      "time": "2026-10-07T22:59:28.000Z",
+      "key": "CONTROL#AUTHORITY",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "action": "dynamodb:GetItem",
+      "time": "2026-10-07T22:44:33.000Z",
+      "key": "AUDIT#other",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "action": "dynamodb:PutItem",
+      "time": "2026-10-07T22:44:33.000Z",
+      "key": "AUDIT#other",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "action": "dynamodb:GetItem",
+      "time": "2026-10-07T22:44:33.000Z",
+      "key": "CONTROL#AUTHORITY",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Core-Ntgre-Journal",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "action": "dynamodb:PutItem",
+      "time": "2026-10-07T22:44:33.000Z",
+      "key": "CONTROL#AUTHORITY",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Core-Ntgre-Journal",
+      "expected": false,
+      "decision": "explicitDeny"
+    }
+  ],
+  "complete": true
+}

@@ -1,11 +1,11 @@
 // src/features/trainer-hub/trainer-hub.routes.js
 
-import TrainerDashboard from './views/dashboard/TrainerDashboard.vue';
-import TrainerClients from './views/clients/TrainerClients.vue';
-import TrainerClientDetail from './views/clients/TrainerClientDetail.vue';
-import TrainerQuests from './views/quests/TrainerQuests.vue';
-import TrainerChallenges from './views/challenges/TrainerChallenges.vue';
-import TrainerEngagement from './views/engagement/TrainerEngagement.vue';
+const TrainerDashboard = () => import('./views/dashboard/TrainerDashboard.vue');
+const TrainerClients = () => import('./views/clients/TrainerClients.vue');
+const TrainerClientDetail = () => import('./views/clients/TrainerClientDetail.vue');
+const TrainerQuests = () => import('./views/quests/TrainerQuests.vue');
+const TrainerChallenges = () => import('./views/challenges/TrainerChallenges.vue');
+const TrainerEngagement = () => import('./views/engagement/TrainerEngagement.vue');
 
 const trainerHubRoutes = [
     {

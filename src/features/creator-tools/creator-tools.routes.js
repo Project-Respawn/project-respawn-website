@@ -1,34 +1,34 @@
-import CreatorLayout from './components/CreatorLayout.vue'
+const CreatorLayout = () => import('./components/CreatorLayout.vue');
 
-import CreatorDashboard from './views/dashboard/CreatorDashboard.vue'
-import CreatorProfile from './views/profile/CreatorProfile.vue'
-import CreatorDiscord from './views/discord/CreatorDiscord.vue'
-import CreatorCommunity from './views/community/CreatorCommunity.vue'
-import CreatorRewards from './views/rewards/CreatorRewards.vue'
-import CreatorAchievements from './views/achievements/CreatorAchievements.vue'
-import CreatorEvents from './views/events/CreatorEvents.vue'
-import CreatorMembers from './views/members/CreatorMembers.vue'
-import CreatorAnalytics from './views/analytics/CreatorAnalytics.vue'
-import CreatorSetup from './views/setup/CreatorSetup.vue'
-import CreatorChat from './views/chat/CreatorChat.vue'
+const CreatorDashboard = () => import('./views/dashboard/CreatorDashboard.vue');
+const CreatorProfile = () => import('./views/profile/CreatorProfile.vue');
+const CreatorDiscord = () => import('./views/discord/CreatorDiscord.vue');
+const CreatorCommunity = () => import('./views/community/CreatorCommunity.vue');
+const CreatorRewards = () => import('./views/rewards/CreatorRewards.vue');
+const CreatorAchievements = () => import('./views/achievements/CreatorAchievements.vue');
+const CreatorEvents = () => import('./views/events/CreatorEvents.vue');
+const CreatorMembers = () => import('./views/members/CreatorMembers.vue');
+const CreatorAnalytics = () => import('./views/analytics/CreatorAnalytics.vue');
+const CreatorSetup = () => import('./views/setup/CreatorSetup.vue');
+const CreatorChat = () => import('./views/chat/CreatorChat.vue');
 
-import BotsOverview from './views/bots/overview/BotsOverview.vue'
-import Automation from './views/bots/automation/Automation.vue'
+const BotsOverview = () => import('./views/bots/overview/BotsOverview.vue');
+const Automation = () => import('./views/bots/automation/Automation.vue');
 
-import TwitchOverview from './views/twitch/overview/TwitchOverview.vue'
-import BasicCommands from './views/twitch/commands/basic/BasicCommands.vue'
-import TwitchAlerts from './views/twitch/alerts/TwitchAlerts.vue'
-import TextToSpeech from './views/twitch/text-to-speech/TextToSpeech.vue'
-import TwitchModeration from './views/twitch/moderation/TwitchModeration.vue'
+const TwitchOverview = () => import('./views/twitch/overview/TwitchOverview.vue');
+const BasicCommands = () => import('./views/twitch/commands/basic/BasicCommands.vue');
+const TwitchAlerts = () => import('./views/twitch/alerts/TwitchAlerts.vue');
+const TextToSpeech = () => import('./views/twitch/text-to-speech/TextToSpeech.vue');
+const TwitchModeration = () => import('./views/twitch/moderation/TwitchModeration.vue');
 
-import Integrations from './views/integrations/Integrations.vue'
+const Integrations = () => import('./views/integrations/Integrations.vue');
 
-import OverlayManager from './views/overlays/OverlayManager.vue'
-import OverlayEditor from './views/overlays/OverlayEditor.vue'
-import OverlayEntry from './views/overlays/OverlayEntry.vue'
-import OverlayBrowserSource from './views/overlays/OverlayBrowserSource.vue'
+const OverlayManager = () => import('./views/overlays/OverlayManager.vue');
+const OverlayEditor = () => import('./views/overlays/OverlayEditor.vue');
+const OverlayEntry = () => import('./views/overlays/OverlayEntry.vue');
+const OverlayBrowserSource = () => import('./views/overlays/OverlayBrowserSource.vue');
 
-import Overlay from '../../views/Bot/OverlayEngine/Overlay.vue'
+const Overlay = () => import('../../views/Bot/OverlayEngine/Overlay.vue');
 
 
 const protectedCreatorRoute = {

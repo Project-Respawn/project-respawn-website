@@ -1,0 +1,4 @@
+import fs from 'node:fs';import assert from 'node:assert/strict';import {aws,identity,E} from './aws.mjs';
+await identity();const read=n=>JSON.parse(fs.readFileSync(`${E}/${n}.json`)),product=read('product.template'),security=read('security.template'),results=[];
+for(const [name,resource]of [['Runtime',product.Resources.Runtime],['Execution',security.Resources.Execution],['Caller',security.Resources.Caller]]){const policy=resource.Properties.AssumeRolePolicyDocument;const r=await aws('accessanalyzer','validate-policy',['--policy-document',JSON.stringify(policy),'--policy-type','RESOURCE_POLICY','--validate-policy-resource-type','AWS::IAM::AssumeRolePolicyDocument']);results.push({role:name,findings:r.findings});}
+fs.writeFileSync(E+'/trust-review.json',JSON.stringify({at:new Date().toISOString(),results,awsWrites:0},null,2)+'\n');assert.ok(results.every(r=>r.findings.length===0));console.log(JSON.stringify({trusts:results.length,findings:0}));

@@ -1,0 +1,856 @@
+{
+  "live": {
+    "at": "2026-10-05T19:52:10.703Z",
+    "stack": {
+      "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Tournaments-Ntgre/0bbf8810-bb52-11f1-8464-0ad1b20dfcbd",
+      "StackName": "ProjectRespawn-Tournaments-Ntgre",
+      "ChangeSetId": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/ntgre-tournaments-release1-kms-corrected-20261004/3e48f322-a2f0-4c65-b5a4-34e974db9996",
+      "Description": "Independent Ntgre Tournament fixture proof; no business state",
+      "Parameters": [
+        {
+          "ParameterKey": "BootstrapVersion",
+          "ParameterValue": "/cdk-bootstrap/hnb659fds/version",
+          "ResolvedValue": "30"
+        }
+      ],
+      "CreationTime": "2026-09-28T16:03:47.557000+00:00",
+      "LastUpdatedTime": "2026-10-04T13:34:34.859000+00:00",
+      "RollbackConfiguration": {},
+      "StackStatus": "UPDATE_COMPLETE",
+      "DisableRollback": false,
+      "NotificationARNs": [],
+      "Capabilities": [
+        "CAPABILITY_NAMED_IAM"
+      ],
+      "Outputs": [
+        {
+          "OutputKey": "Account",
+          "OutputValue": "058264289478"
+        },
+        {
+          "OutputKey": "Endpoint",
+          "OutputValue": "https://msipnwy39j.execute-api.eu-north-1.amazonaws.com"
+        },
+        {
+          "OutputKey": "Environment",
+          "OutputValue": "Ntgre"
+        },
+        {
+          "OutputKey": "Region",
+          "OutputValue": "eu-north-1"
+        },
+        {
+          "OutputKey": "CoreIdentitySha256",
+          "OutputValue": "9bea68ab5781eeb7265c363fd6baac78d1e3e032196f9aa209bc3780644a6b9e"
+        },
+        {
+          "OutputKey": "DeploymentRevision",
+          "OutputValue": "b75a91494c03606d825e234a65d295c184067820cd77dfc84e11a2c83484ae2f"
+        },
+        {
+          "OutputKey": "ApiId",
+          "OutputValue": "msipnwy39j"
+        },
+        {
+          "OutputKey": "ContractVersion",
+          "OutputValue": "tournament-preview.v1"
+        },
+        {
+          "OutputKey": "DomainOwner",
+          "OutputValue": "Tournaments"
+        }
+      ],
+      "RoleARN": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-CfnExecution",
+      "Tags": [],
+      "EnableTerminationProtection": false,
+      "DriftInformation": {
+        "StackDriftStatus": "NOT_CHECKED"
+      },
+      "LastOperations": [
+        {
+          "OperationType": "UPDATE_STACK",
+          "OperationId": "b730b1a9-1d0a-4524-9ddb-7fa307d67aa8"
+        }
+      ]
+    },
+    "resources": [
+      {
+        "LogicalResourceId": "DefaultStage",
+        "PhysicalResourceId": "$default",
+        "ResourceType": "AWS::ApiGatewayV2::Stage",
+        "LastUpdatedTimestamp": "2026-10-04T13:35:27.966000+00:00",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        }
+      },
+      {
+        "LogicalResourceId": "HttpApi",
+        "PhysicalResourceId": "msipnwy39j",
+        "ResourceType": "AWS::ApiGatewayV2::Api",
+        "LastUpdatedTimestamp": "2026-09-28T16:06:03.172000+00:00",
+        "ResourceStatus": "UPDATE_COMPLETE",
+        "DriftInformation": {
+          "StackResourceDriftStatus": "IN_SYNC"
+        }
+      },
+      {
+        "LogicalResourceId": "HttpErrors",
+        "PhysicalResourceId": "ProjectRespawn-Tournaments-Ntgre-HttpErrors-NLywnrF34Zb4",
+        "ResourceType": "AWS::CloudWatch::Alarm",
+        "LastUpdatedTimestamp": "2026-10-04T13:34:42.237000+00:00",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        }
+      },
+      {
+        "LogicalResourceId": "HttpInvoke",
+        "PhysicalResourceId": "ProjectRespawn-Tournaments-Ntgre-HttpInvoke-DTm4dxJNE81S",
+        "ResourceType": "AWS::Lambda::Permission",
+        "LastUpdatedTimestamp": "2026-10-04T13:35:24.081000+00:00",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        }
+      },
+      {
+        "LogicalResourceId": "JwtAuthorizer",
+        "PhysicalResourceId": "v78ib2",
+        "ResourceType": "AWS::ApiGatewayV2::Authorizer",
+        "LastUpdatedTimestamp": "2026-10-04T13:34:39.146000+00:00",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        }
+      },
+      {
+        "LogicalResourceId": "PreviewErrors",
+        "PhysicalResourceId": "ProjectRespawn-Tournaments-Ntgre-PreviewErrors-tVGBWEop0yku",
+        "ResourceType": "AWS::CloudWatch::Alarm",
+        "LastUpdatedTimestamp": "2026-10-04T13:35:26.454000+00:00",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        }
+      },
+      {
+        "LogicalResourceId": "PreviewFunction",
+        "PhysicalResourceId": "ProjectRespawn-Tournaments-Ntgre-PreviewFunction-Ao4o6udMacJV",
+        "ResourceType": "AWS::Lambda::Function",
+        "LastUpdatedTimestamp": "2026-10-04T13:35:22.382000+00:00",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        }
+      },
+      {
+        "LogicalResourceId": "PreviewIntegration",
+        "PhysicalResourceId": "xeys56k",
+        "ResourceType": "AWS::ApiGatewayV2::Integration",
+        "LastUpdatedTimestamp": "2026-10-04T13:35:24.223000+00:00",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        }
+      },
+      {
+        "LogicalResourceId": "PreviewLogs",
+        "PhysicalResourceId": "/project-respawn/Ntgre/tournaments/preview",
+        "ResourceType": "AWS::Logs::LogGroup",
+        "LastUpdatedTimestamp": "2026-10-04T13:34:51.761000+00:00",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        }
+      },
+      {
+        "LogicalResourceId": "PreviewRole",
+        "PhysicalResourceId": "ProjectRespawn-Tournaments-Ntgre-PreviewRole-o0HtDJVosSDO",
+        "ResourceType": "AWS::IAM::Role",
+        "LastUpdatedTimestamp": "2026-10-04T13:35:11.375000+00:00",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        }
+      },
+      {
+        "LogicalResourceId": "PreviewRoute",
+        "PhysicalResourceId": "0txbv4p",
+        "ResourceType": "AWS::ApiGatewayV2::Route",
+        "LastUpdatedTimestamp": "2026-10-04T13:35:26.025000+00:00",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        }
+      }
+    ],
+    "api": {
+      "ApiEndpoint": "https://msipnwy39j.execute-api.eu-north-1.amazonaws.com",
+      "ApiId": "msipnwy39j",
+      "ApiKeySelectionExpression": "$request.header.x-api-key",
+      "CorsConfiguration": {
+        "AllowHeaders": [
+          "authorization"
+        ],
+        "AllowMethods": [
+          "GET"
+        ],
+        "AllowOrigins": [
+          "http://localhost:5174"
+        ],
+        "MaxAge": 300
+      },
+      "CreatedDate": "2026-09-28T15:28:51+00:00",
+      "DisableExecuteApiEndpoint": false,
+      "IpAddressType": "ipv4",
+      "Name": "ProjectRespawn-Tournaments-Ntgre",
+      "ProtocolType": "HTTP",
+      "RouteSelectionExpression": "$request.method $request.path",
+      "Tags": {
+        "Domain": "Tournaments",
+        "Project": "ProjectRespawn",
+        "Environment": "Ntgre"
+      }
+    },
+    "stages": [
+      {
+        "AutoDeploy": true,
+        "CreatedDate": "2026-10-04T13:35:27+00:00",
+        "DefaultRouteSettings": {
+          "DetailedMetricsEnabled": false,
+          "ThrottlingBurstLimit": 20,
+          "ThrottlingRateLimit": 10
+        },
+        "DeploymentId": "65zsfb",
+        "LastDeploymentStatusMessage": "Successfully deployed stage with deployment ID '65zsfb'",
+        "LastUpdatedDate": "2026-10-04T13:35:28+00:00",
+        "RouteSettings": {},
+        "StageName": "$default",
+        "StageVariables": {},
+        "Tags": {
+          "aws:cloudformation:stack-id": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Tournaments-Ntgre/0bbf8810-bb52-11f1-8464-0ad1b20dfcbd",
+          "aws:cloudformation:stack-name": "ProjectRespawn-Tournaments-Ntgre",
+          "aws:cloudformation:logical-id": "DefaultStage"
+        }
+      }
+    ],
+    "authorizers": [
+      {
+        "AuthorizerId": "v78ib2",
+        "AuthorizerType": "JWT",
+        "IdentitySource": [
+          "$request.header.Authorization"
+        ],
+        "JwtConfiguration": {
+          "Audience": [
+            "1iq7ovjaf7d16imdvbqgfgvf86"
+          ],
+          "Issuer": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE"
+        },
+        "Name": "ExistingNtgreIdentity"
+      }
+    ],
+    "routes": [
+      {
+        "ApiKeyRequired": false,
+        "AuthorizationScopes": [],
+        "AuthorizationType": "JWT",
+        "AuthorizerId": "v78ib2",
+        "RequestModels": {},
+        "RouteId": "0txbv4p",
+        "RouteKey": "GET /v1/tournaments/preview",
+        "Target": "integrations/xeys56k"
+      }
+    ],
+    "integrations": [
+      {
+        "ConnectionType": "INTERNET",
+        "IntegrationId": "xeys56k",
+        "IntegrationMethod": "POST",
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre-PreviewFunction-Ao4o6udMacJV",
+        "PayloadFormatVersion": "2.0",
+        "TimeoutInMillis": 6000
+      }
+    ],
+    "lambda": {
+      "arn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre-PreviewFunction-Ao4o6udMacJV",
+      "name": "ProjectRespawn-Tournaments-Ntgre-PreviewFunction-Ao4o6udMacJV",
+      "codeSha256": "gTyfw4C6qweqYPT0x4LbmVW7ZpQy1g2OwPc1p56Dkpo=",
+      "state": "Active",
+      "revision": "b75a91494c03606d825e234a65d295c184067820cd77dfc84e11a2c83484ae2f",
+      "logging": {
+        "LogFormat": "JSON",
+        "ApplicationLogLevel": "INFO",
+        "SystemLogLevel": "INFO",
+        "LogGroup": "/project-respawn/Ntgre/tournaments/preview"
+      }
+    },
+    "permission": {
+      "Version": "2012-10-17",
+      "Id": "default",
+      "Statement": [
+        {
+          "Sid": "ProjectRespawn-Tournaments-Ntgre-HttpInvoke-DTm4dxJNE81S",
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "apigateway.amazonaws.com"
+          },
+          "Action": "lambda:InvokeFunction",
+          "Resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre-PreviewFunction-Ao4o6udMacJV",
+          "Condition": {
+            "StringEquals": {
+              "AWS:SourceAccount": "058264289478"
+            },
+            "ArnLike": {
+              "AWS:SourceArn": "arn:aws:execute-api:eu-north-1:058264289478:msipnwy39j/*/GET/v1/tournaments/preview"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "security": {
+    "runtime": {
+      "policy": {
+        "PolicyName": "ProjectRespawn-Tournaments-Ntgre-RuntimeBoundary",
+        "PolicyId": "ANPAQ3EGSQDDNJGFNHD24",
+        "Arn": "arn:aws:iam::058264289478:policy/ProjectRespawn-Tournaments-Ntgre-RuntimeBoundary",
+        "Path": "/",
+        "DefaultVersionId": "v2",
+        "AttachmentCount": 0,
+        "PermissionsBoundaryUsageCount": 1,
+        "IsAttachable": true,
+        "CreateDate": "2026-09-27T16:24:45+00:00",
+        "UpdateDate": "2026-10-04T13:55:58+00:00",
+        "Tags": []
+      },
+      "document": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Resource": "*",
+            "Effect": "Deny",
+            "NotAction": [
+              "logs:CreateLogStream",
+              "logs:PutLogEvents",
+              "kms:Decrypt"
+            ],
+            "Sid": "DenyEverythingExceptLoggingAndDefaultDecrypt"
+          },
+          {
+            "Action": "logs:*",
+            "Effect": "Deny",
+            "Sid": "DenyOtherLogs",
+            "NotResource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/tournaments/preview:*"
+          },
+          {
+            "Action": [
+              "logs:CreateLogStream",
+              "logs:PutLogEvents"
+            ],
+            "Resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/tournaments/preview:*",
+            "Effect": "Allow",
+            "Sid": "OnlyPreviewLogs"
+          },
+          {
+            "Sid": "DenyDecryptExceptExactLambdaServiceKey",
+            "Effect": "Deny",
+            "Action": "kms:Decrypt",
+            "NotResource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7"
+          }
+        ]
+      }
+    },
+    "execution": {
+      "policy": {
+        "PolicyName": "ProjectRespawn-Tournaments-Ntgre-ExecutionBoundary",
+        "PolicyId": "ANPAQ3EGSQDDPCVFSUWXH",
+        "Arn": "arn:aws:iam::058264289478:policy/ProjectRespawn-Tournaments-Ntgre-ExecutionBoundary",
+        "Path": "/",
+        "DefaultVersionId": "v8",
+        "AttachmentCount": 1,
+        "PermissionsBoundaryUsageCount": 1,
+        "IsAttachable": true,
+        "CreateDate": "2026-09-27T16:24:45+00:00",
+        "UpdateDate": "2026-10-04T13:30:37+00:00",
+        "Tags": []
+      },
+      "document": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Action": [
+              "lambda:CreateFunction",
+              "lambda:GetFunction",
+              "lambda:GetFunctionConfiguration",
+              "lambda:UpdateFunctionCode",
+              "lambda:UpdateFunctionConfiguration",
+              "lambda:DeleteFunction",
+              "lambda:ListTags",
+              "lambda:TagResource",
+              "lambda:UntagResource",
+              "lambda:GetPolicy",
+              "lambda:AddPermission",
+              "lambda:RemovePermission",
+              "lambda:GetRuntimeManagementConfig",
+              "lambda:GetFunctionRecursionConfig"
+            ],
+            "Resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre-PreviewFunction-*",
+            "Effect": "Allow"
+          },
+          {
+            "Action": [
+              "cloudwatch:PutMetricAlarm",
+              "cloudwatch:DeleteAlarms",
+              "cloudwatch:DescribeAlarms",
+              "cloudwatch:TagResource",
+              "cloudwatch:UntagResource",
+              "cloudwatch:ListTagsForResource"
+            ],
+            "Resource": [
+              "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-Tournaments-Ntgre-PreviewErrors-*",
+              "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-Tournaments-Ntgre-HttpErrors-*"
+            ],
+            "Effect": "Allow"
+          },
+          {
+            "Action": [
+              "logs:CreateLogGroup",
+              "logs:DeleteLogGroup",
+              "logs:PutRetentionPolicy",
+              "logs:DeleteRetentionPolicy",
+              "logs:TagResource",
+              "logs:UntagResource",
+              "logs:ListTagsForResource",
+              "logs:DescribeLogStreams",
+              "logs:GetDataProtectionPolicy"
+            ],
+            "Resource": [
+              "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/tournaments/preview",
+              "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/tournaments/preview:*"
+            ],
+            "Effect": "Allow"
+          },
+          {
+            "Action": "logs:DescribeLogGroups",
+            "Resource": "*",
+            "Effect": "Allow"
+          },
+          {
+            "Condition": {
+              "ArnEquals": {
+                "iam:PermissionsBoundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-Tournaments-Ntgre-RuntimeBoundary"
+              }
+            },
+            "Action": [
+              "iam:CreateRole",
+              "iam:PutRolePolicy"
+            ],
+            "Resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-PreviewRole-*",
+            "Effect": "Allow"
+          },
+          {
+            "Action": [
+              "iam:GetRole",
+              "iam:GetRolePolicy",
+              "iam:ListRolePolicies",
+              "iam:ListAttachedRolePolicies",
+              "iam:DeleteRole",
+              "iam:DeleteRolePolicy",
+              "iam:UpdateRole",
+              "iam:UpdateRoleDescription",
+              "iam:UpdateAssumeRolePolicy",
+              "iam:TagRole",
+              "iam:UntagRole",
+              "iam:ListRoleTags"
+            ],
+            "Resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-PreviewRole-*",
+            "Effect": "Allow"
+          },
+          {
+            "Condition": {
+              "StringEquals": {
+                "iam:PassedToService": "lambda.amazonaws.com"
+              }
+            },
+            "Action": "iam:PassRole",
+            "Resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-PreviewRole-*",
+            "Effect": "Allow"
+          },
+          {
+            "Action": [
+              "s3:GetObject",
+              "s3:GetObjectVersion"
+            ],
+            "Resource": [
+              "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/b9be81faba86a3a8e1949cca1c802720a7bf557cc74cd6cb7f5ee17423c35705.json",
+              "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/004def9c2189ea71a43cc3a05a796073327c0a084a7d896d0d6ee19aa8e54199.zip"
+            ],
+            "Effect": "Allow"
+          },
+          {
+            "Action": [
+              "ssm:GetParameter",
+              "ssm:GetParameters"
+            ],
+            "Resource": "arn:aws:ssm:eu-north-1:058264289478:parameter/cdk-bootstrap/hnb659fds/version",
+            "Effect": "Allow"
+          },
+          {
+            "Condition": {
+              "StringNotEquals": {
+                "aws:RequestedRegion": "eu-north-1"
+              }
+            },
+            "Action": [
+              "apigateway:*",
+              "lambda:*",
+              "logs:*",
+              "cloudwatch:*"
+            ],
+            "Resource": "*",
+            "Effect": "Deny"
+          },
+          {
+            "Action": [
+              "logs:PutResourcePolicy",
+              "logs:DeleteResourcePolicy",
+              "logs:CreateLogDelivery",
+              "logs:UpdateLogDelivery",
+              "logs:DeleteLogDelivery"
+            ],
+            "Resource": "*",
+            "Effect": "Deny"
+          },
+          {
+            "Effect": "Allow",
+            "Action": "apigateway:*",
+            "Resource": "*",
+            "Condition": {
+              "StringEquals": {
+                "aws:RequestedRegion": "eu-north-1"
+              }
+            }
+          },
+          {
+            "Effect": "Deny",
+            "Action": "apigateway:*",
+            "Resource": [
+              "arn:aws:apigateway:eu-north-1::/restapis*",
+              "arn:aws:apigateway:eu-north-1::*7sqhe1oq7f*",
+              "arn:aws:apigateway:eu-north-1::*96iei1y9x4*",
+              "arn:aws:apigateway:eu-north-1::*f7oxg5hy72*",
+              "arn:aws:apigateway:eu-north-1::*g9eoo6e1h2*",
+              "arn:aws:apigateway:eu-north-1::*jm15a0rmi0*",
+              "arn:aws:apigateway:eu-north-1::*mt6ctit5rf*",
+              "arn:aws:apigateway:eu-north-1::*n4yh7awecc*",
+              "arn:aws:apigateway:eu-north-1::*oc7oz18v8k*",
+              "arn:aws:apigateway:eu-north-1::*openg7joy6*",
+              "arn:aws:apigateway:eu-north-1::*pbbz0ux4ta*",
+              "arn:aws:apigateway:eu-north-1::*rwfv75jx2b*",
+              "arn:aws:apigateway:eu-north-1::*w0xfyjn6v7*",
+              "arn:aws:apigateway:eu-north-1::*ztevn4upnk*"
+            ]
+          },
+          {
+            "Effect": "Deny",
+            "Action": [
+              "cognito-idp:*",
+              "cognito-identity:*",
+              "appsync:*",
+              "dynamodb:*",
+              "secretsmanager:*",
+              "cloudformation:*",
+              "ecs:*",
+              "ec2:*",
+              "events:*",
+              "firehose:*"
+            ],
+            "Resource": "*"
+          },
+          {
+            "Effect": "Deny",
+            "Action": "s3:*",
+            "NotResource": [
+              "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/b9be81faba86a3a8e1949cca1c802720a7bf557cc74cd6cb7f5ee17423c35705.json",
+              "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/004def9c2189ea71a43cc3a05a796073327c0a084a7d896d0d6ee19aa8e54199.zip"
+            ]
+          },
+          {
+            "Effect": "Deny",
+            "Action": "iam:PassRole",
+            "NotResource": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-PreviewRole-*"
+          },
+          {
+            "Effect": "Deny",
+            "Action": "iam:PassRole",
+            "Resource": "*",
+            "Condition": {
+              "StringNotEquals": {
+                "iam:PassedToService": "lambda.amazonaws.com"
+              }
+            }
+          },
+          {
+            "Effect": "Deny",
+            "Action": [
+              "iam:DeleteRolePermissionsBoundary",
+              "iam:PutRolePermissionsBoundary",
+              "iam:CreatePolicyVersion",
+              "iam:SetDefaultPolicyVersion",
+              "iam:AttachRolePolicy"
+            ],
+            "Resource": "*"
+          },
+          {
+            "Effect": "Deny",
+            "Action": [
+              "iam:CreateRole",
+              "iam:PutRolePolicy"
+            ],
+            "Resource": "*",
+            "Condition": {
+              "ArnNotEquals": {
+                "iam:PermissionsBoundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-Tournaments-Ntgre-RuntimeBoundary"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "deploy": {
+      "policy": {
+        "PolicyName": "ProjectRespawn-Tournaments-Ntgre-DeployBoundary",
+        "PolicyId": "ANPAQ3EGSQDDJJ3YFV5P4",
+        "Arn": "arn:aws:iam::058264289478:policy/ProjectRespawn-Tournaments-Ntgre-DeployBoundary",
+        "Path": "/",
+        "DefaultVersionId": "v1",
+        "AttachmentCount": 1,
+        "PermissionsBoundaryUsageCount": 1,
+        "IsAttachable": true,
+        "CreateDate": "2026-09-27T16:24:44+00:00",
+        "UpdateDate": "2026-09-27T16:24:44+00:00",
+        "Tags": []
+      },
+      "document": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Resource": "*",
+            "Effect": "Deny",
+            "NotAction": [
+              "cloudformation:DescribeStacks",
+              "cloudformation:DescribeStackEvents",
+              "cloudformation:DescribeStackResources",
+              "cloudformation:ListStackResources",
+              "cloudformation:GetTemplate",
+              "cloudformation:GetTemplateSummary",
+              "cloudformation:DescribeChangeSet",
+              "cloudformation:ListChangeSets",
+              "cloudformation:CreateChangeSet",
+              "cloudformation:ExecuteChangeSet",
+              "cloudformation:DeleteChangeSet",
+              "iam:PassRole",
+              "sts:GetCallerIdentity",
+              "s3:GetObject",
+              "s3:GetObjectVersion",
+              "ssm:GetParameter",
+              "ssm:GetParameters"
+            ],
+            "Sid": "OnlyReviewedOperations"
+          },
+          {
+            "Action": "cloudformation:*",
+            "Effect": "Deny",
+            "Sid": "DenyEveryOtherStack",
+            "NotResource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Tournaments-Ntgre/*"
+          },
+          {
+            "Condition": {
+              "StringNotEquals": {
+                "aws:RequestedRegion": "eu-north-1"
+              }
+            },
+            "Action": "cloudformation:*",
+            "Resource": "*",
+            "Effect": "Deny",
+            "Sid": "DenyWrongCfnRegion"
+          },
+          {
+            "Action": [
+              "cloudformation:DescribeStacks",
+              "cloudformation:DescribeStackEvents",
+              "cloudformation:DescribeStackResources",
+              "cloudformation:ListStackResources",
+              "cloudformation:GetTemplate",
+              "cloudformation:GetTemplateSummary",
+              "cloudformation:DescribeChangeSet",
+              "cloudformation:ListChangeSets"
+            ],
+            "Resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Tournaments-Ntgre/*",
+            "Effect": "Allow",
+            "Sid": "InspectOnlyTournament"
+          },
+          {
+            "Condition": {
+              "StringEquals": {
+                "cloudformation:TemplateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/b9be81faba86a3a8e1949cca1c802720a7bf557cc74cd6cb7f5ee17423c35705.json"
+              },
+              "StringLike": {
+                "cloudformation:ChangeSetName": "ntgre-tournaments-*"
+              },
+              "ArnEquals": {
+                "cloudformation:RoleArn": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-CfnExecution"
+              }
+            },
+            "Action": "cloudformation:CreateChangeSet",
+            "Resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Tournaments-Ntgre/*",
+            "Effect": "Allow",
+            "Sid": "PrepareOnlyReviewedTemplate"
+          },
+          {
+            "Condition": {
+              "StringLike": {
+                "cloudformation:ChangeSetName": "ntgre-tournaments-*"
+              }
+            },
+            "Action": [
+              "cloudformation:ExecuteChangeSet",
+              "cloudformation:DeleteChangeSet"
+            ],
+            "Resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Tournaments-Ntgre/*",
+            "Effect": "Allow",
+            "Sid": "ManageOnlyTournamentChangeSets"
+          },
+          {
+            "Action": "iam:PassRole",
+            "Effect": "Deny",
+            "Sid": "DenyPassingOtherRoles",
+            "NotResource": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-CfnExecution"
+          },
+          {
+            "Condition": {
+              "StringNotEquals": {
+                "iam:PassedToService": "cloudformation.amazonaws.com"
+              }
+            },
+            "Action": "iam:PassRole",
+            "Resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-CfnExecution",
+            "Effect": "Deny",
+            "Sid": "DenyPassingToOtherServices"
+          },
+          {
+            "Condition": {
+              "StringEquals": {
+                "iam:PassedToService": "cloudformation.amazonaws.com"
+              }
+            },
+            "Action": "iam:PassRole",
+            "Resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-CfnExecution",
+            "Effect": "Allow",
+            "Sid": "PassOnlyTournamentExecution"
+          },
+          {
+            "Action": [
+              "s3:GetObject",
+              "s3:GetObjectVersion"
+            ],
+            "Resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/b9be81faba86a3a8e1949cca1c802720a7bf557cc74cd6cb7f5ee17423c35705.json",
+            "Effect": "Allow",
+            "Sid": "ReadOnlyApprovedTemplate"
+          },
+          {
+            "Action": "s3:*",
+            "Effect": "Deny",
+            "Sid": "DenyOtherArtifactReads",
+            "NotResource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/b9be81faba86a3a8e1949cca1c802720a7bf557cc74cd6cb7f5ee17423c35705.json"
+          },
+          {
+            "Action": [
+              "ssm:GetParameter",
+              "ssm:GetParameters"
+            ],
+            "Resource": "arn:aws:ssm:eu-north-1:058264289478:parameter/cdk-bootstrap/hnb659fds/version",
+            "Effect": "Allow",
+            "Sid": "ReadBootstrapVersion"
+          },
+          {
+            "Action": "sts:GetCallerIdentity",
+            "Resource": "*",
+            "Effect": "Allow",
+            "Sid": "CallerIdentity"
+          },
+          {
+            "Action": [
+              "cognito-idp:*",
+              "cognito-identity:*",
+              "appsync:*",
+              "dynamodb:*",
+              "kms:*",
+              "secretsmanager:*",
+              "ecs:*",
+              "ec2:*",
+              "events:*",
+              "firehose:*"
+            ],
+            "Resource": "*",
+            "Effect": "Deny"
+          },
+          {
+            "Action": [
+              "logs:PutResourcePolicy",
+              "logs:DeleteResourcePolicy",
+              "logs:CreateLogDelivery",
+              "logs:UpdateLogDelivery",
+              "logs:DeleteLogDelivery"
+            ],
+            "Resource": "*",
+            "Effect": "Deny"
+          }
+        ]
+      }
+    },
+    "role": {
+      "Path": "/",
+      "RoleName": "ProjectRespawn-Tournaments-Ntgre-PreviewRole-o0HtDJVosSDO",
+      "RoleId": "AROAQ3EGSQDDDEUHQT7YU",
+      "Arn": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-PreviewRole-o0HtDJVosSDO",
+      "CreateDate": "2026-10-04T13:34:52+00:00",
+      "AssumeRolePolicyDocument": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "lambda.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "Description": "",
+      "MaxSessionDuration": 3600,
+      "PermissionsBoundary": {
+        "PermissionsBoundaryType": "Policy",
+        "PermissionsBoundaryArn": "arn:aws:iam::058264289478:policy/ProjectRespawn-Tournaments-Ntgre-RuntimeBoundary"
+      }
+    },
+    "inline": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Action": [
+            "logs:CreateLogStream",
+            "logs:PutLogEvents"
+          ],
+          "Resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/tournaments/preview:*",
+          "Effect": "Allow"
+        }
+      ]
+    },
+    "attached": []
+  },
+  "issues": []
+}

@@ -1,0 +1,43 @@
+{
+  "analyzer": [
+    {
+      "name": "execution",
+      "findings": []
+    },
+    {
+      "name": "boundary",
+      "findings": []
+    },
+    {
+      "name": "caller",
+      "findings": []
+    },
+    {
+      "name": "read",
+      "findings": []
+    },
+    {
+      "name": "command",
+      "findings": []
+    }
+  ],
+  "checks": [
+    {
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/d1-dark/d7555839414279762886b236638c17e86000a35265bb507b67cf98c34e5b9169.zip",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/core-integration/2992b5d6b736c90c3fc306654a38576cd861dc0e07068c92bf02c79c87948e6a.zip",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/unreviewed.zip",
+      "expected": false,
+      "decision": "explicitDeny"
+    }
+  ],
+  "awsWrites": 0,
+  "complete": true
+}

@@ -1,0 +1,7 @@
+import fs from 'node:fs';import crypto from 'node:crypto';import assert from 'node:assert/strict';import {execFile} from 'node:child_process';import {promisify} from 'node:util';
+import {aws as readonly} from '../core-2b5a/aws.mjs';
+export const E='docs/architecture/core-release1-evidence-2026-10-06',P='docs/architecture/core-2b5a-evidence-2026-10-06',core='ProjectRespawn-Core-Ntgre';
+fs.mkdirSync(E,{recursive:true});export const read=p=>JSON.parse(fs.readFileSync(p));export const save=(n,v)=>fs.writeFileSync(E+'/'+n+'.json',JSON.stringify(v,null,2)+'\n');export const sha=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
+export function pin(){const c=read(P+'/candidate.json');assert.equal(c.productSha256,'89c712720e1fc09b9546865bd36b12a0123c8560ed8334d282918ac7cedbbaeb');assert.equal(c.securitySha256,'6b2afefb79172922e4338128a6b5fdab5e561e4055f8960650798acd4c4e8515');assert.equal(c.zipSha256,'4841f475dab09982d8ff5babc240c8a7d8809d05911de8e239ac9031e6fcefcf');assert.equal(sha(P+'/product.template.json'),c.productSha256);assert.equal(sha(P+'/security.template.json'),c.securitySha256);assert.equal(sha(c.zipPath),c.zipSha256);for(const f of read(P+'/source-manifest.json').files)assert.equal(sha(f.path),f.sha256,'Pinned source changed '+f.path);return c;}
+export async function identity(){const i=await readonly('sts','get-caller-identity');assert.equal(i.Account,'058264289478');assert.equal(i.Arn,'arn:aws:iam::058264289478:user/RavenTest');return i;}
+export const aws=readonly;

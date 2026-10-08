@@ -1,0 +1,202 @@
+{
+  "at": "2026-10-07T07:38:27.943Z",
+  "complete": true,
+  "checks": [
+    {
+      "role": "ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "allowed": true,
+      "results": [
+        {
+          "action": "lambda:InvokeFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+          "decision": "allowed"
+        },
+        {
+          "action": "lambda:InvokeFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST",
+          "decision": "allowed"
+        }
+      ]
+    },
+    {
+      "role": "ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "allowed": false,
+      "results": [
+        {
+          "action": "lambda:InvokeFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre-Preview",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "lambda:InvokeFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts",
+          "decision": "explicitDeny"
+        }
+      ]
+    },
+    {
+      "role": "ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "allowed": false,
+      "results": [
+        {
+          "action": "dynamodb:GetItem",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "dynamodb:PutItem",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "dynamodb:UpdateItem",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "dynamodb:DeleteItem",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "dynamodb:TransactWriteItems",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "cognito-idp:AdminGetUser",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "cognito-idp:ListUsers",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "cognito-idp:AdminAddUserToGroup",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "secretsmanager:GetSecretValue",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "appsync:GraphQL",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "s3:PutObject",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "iam:PassRole",
+          "resource": "*",
+          "decision": "explicitDeny"
+        }
+      ]
+    },
+    {
+      "role": "ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "allowed": true,
+      "results": [
+        {
+          "action": "lambda:InvokeFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+          "decision": "allowed"
+        },
+        {
+          "action": "lambda:InvokeFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST",
+          "decision": "allowed"
+        }
+      ]
+    },
+    {
+      "role": "ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "allowed": false,
+      "results": [
+        {
+          "action": "lambda:InvokeFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre-Preview",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "lambda:InvokeFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts",
+          "decision": "explicitDeny"
+        }
+      ]
+    },
+    {
+      "role": "ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "allowed": false,
+      "results": [
+        {
+          "action": "dynamodb:GetItem",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "dynamodb:PutItem",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "dynamodb:UpdateItem",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "dynamodb:DeleteItem",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "dynamodb:TransactWriteItems",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "cognito-idp:AdminGetUser",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "cognito-idp:ListUsers",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "cognito-idp:AdminAddUserToGroup",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "secretsmanager:GetSecretValue",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "appsync:GraphQL",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "s3:PutObject",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "iam:PassRole",
+          "resource": "*",
+          "decision": "explicitDeny"
+        }
+      ]
+    }
+  ]
+}

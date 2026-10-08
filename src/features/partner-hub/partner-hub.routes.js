@@ -1,10 +1,10 @@
 // src/features/partner-hub/partner-hub.routes.js
 
-import PartnerDashboard from './views/dashboard/PartnerDashboard.vue';
-import PartnerProfile from './views/profile/PartnerProfile.vue';
-import PartnerCampaigns from './views/campaigns/PartnerCampaigns.vue';
-import PartnerAnalytics from './views/analytics/PartnerAnalytics.vue';
-import CreatorDiscovery from './views/creator-discovery/CreatorDiscovery.vue';
+const PartnerDashboard = () => import('./views/dashboard/PartnerDashboard.vue');
+const PartnerProfile = () => import('./views/profile/PartnerProfile.vue');
+const PartnerCampaigns = () => import('./views/campaigns/PartnerCampaigns.vue');
+const PartnerAnalytics = () => import('./views/analytics/PartnerAnalytics.vue');
+const CreatorDiscovery = () => import('./views/creator-discovery/CreatorDiscovery.vue');
 
 const partnerHubRoutes = [
     {

@@ -1,0 +1,52 @@
+{
+  "at": "2026-10-07T19:09:58.263Z",
+  "status": "BLOCKED_NEW_ARCHITECTURE_SECURITY_DECISION",
+  "candidate": "docs/architecture/team-hub-2b5b-evidence-2026-10-07/fence-candidates.json",
+  "sha256": "7fb388365a03c2d553d01ca55c0d7da22fb5fdcc4b46e90bce208b2a42535eac",
+  "modes": [
+    {
+      "mode": "LEGACY_WRITER",
+      "statementsPerTable": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "writerDenyConditional": false
+    },
+    {
+      "mode": "FROZEN",
+      "statementsPerTable": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "writerDenyConditional": false
+    },
+    {
+      "mode": "TARGET_WRITER",
+      "statementsPerTable": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "writerDenyConditional": false
+    }
+  ],
+  "installed": false,
+  "actualAuthority": "LEGACY_WRITER",
+  "awsWrites": 0,
+  "conflict": "Reviewed LEGACY_WRITER policy has no write deny. Reviewed FROZEN policy immediately denies source writes unconditionally. Installing it to prove actual generated/manual/privileged denials would freeze Legacy before the separately authorized maintenance transition.",
+  "proofLimit": "Prior isolated direct-DynamoDB fence rehearsal does not prove actual generated AppSync or every privileged role path.",
+  "decisionRequired": [
+    "Keep current design and move installed all-path proof into a separately authorized FROZEN maintenance gate",
+    "Separately review a dormant/conditional fence architecture before any installation"
+  ],
+  "references": [
+    "docs/architecture/team-hub-2b5b-writer-fence-proof.md",
+    "docs/architecture/team-hub-2b6-cutover-runbook.md",
+    "scripts/team-hub-2b4/legacy-fence.mjs"
+  ]
+}

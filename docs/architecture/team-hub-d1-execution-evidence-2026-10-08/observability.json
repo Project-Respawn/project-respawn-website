@@ -1,0 +1,218 @@
+{
+  "at": "2026-10-08T13:20:50.381Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "complete": true,
+  "stage": {
+    "AutoDeploy": true,
+    "CreatedDate": "2026-10-05T15:04:34+00:00",
+    "DefaultRouteSettings": {
+      "DetailedMetricsEnabled": true,
+      "ThrottlingBurstLimit": 20,
+      "ThrottlingRateLimit": 10
+    },
+    "DeploymentId": "kucxug",
+    "LastDeploymentStatusMessage": "Successfully deployed stage with deployment ID 'kucxug'",
+    "LastUpdatedDate": "2026-10-08T13:19:25+00:00",
+    "RouteSettings": {},
+    "StageName": "$default",
+    "StageVariables": {},
+    "Tags": {
+      "Project": "ProjectRespawn",
+      "aws:cloudformation:stack-name": "ProjectRespawn-TeamHub-Ntgre",
+      "Environment": "Ntgre",
+      "aws:cloudformation:logical-id": "Stage",
+      "aws:cloudformation:stack-id": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/b66ad780-c0cd-11f1-91ba-0effc0d85417",
+      "Domain": "TeamHub"
+    }
+  },
+  "alarms": [
+    {
+      "AlarmName": "ProjectRespawn-TeamHub-Ntgre-ParityCommand-Errors",
+      "AlarmArn": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-TeamHub-Ntgre-ParityCommand-Errors",
+      "AlarmConfigurationUpdatedTimestamp": "2026-10-06T17:03:30.453000+01:00",
+      "ActionsEnabled": true,
+      "OKActions": [],
+      "AlarmActions": [],
+      "InsufficientDataActions": [],
+      "StateValue": "OK",
+      "StateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+      "StateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-06T16:04:49.577+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":1.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-06T16:03:00.000+0000\"}]}",
+      "StateUpdatedTimestamp": "2026-10-06T17:04:49.579000+01:00",
+      "MetricName": "Errors",
+      "Namespace": "AWS/Lambda",
+      "Statistic": "Sum",
+      "Dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-TeamHub-Ntgre-ParityCommand"
+        }
+      ],
+      "Period": 60,
+      "EvaluationPeriods": 1,
+      "Threshold": 1,
+      "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+      "TreatMissingData": "notBreaching",
+      "StateTransitionedTimestamp": "2026-10-06T17:04:49.579000+01:00"
+    },
+    {
+      "AlarmName": "ProjectRespawn-TeamHub-Ntgre-ParityCommand-Throttles",
+      "AlarmArn": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-TeamHub-Ntgre-ParityCommand-Throttles",
+      "AlarmConfigurationUpdatedTimestamp": "2026-10-06T17:03:30.310000+01:00",
+      "ActionsEnabled": true,
+      "OKActions": [],
+      "AlarmActions": [],
+      "InsufficientDataActions": [],
+      "StateValue": "OK",
+      "StateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+      "StateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-06T16:04:41.727+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":1.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-06T16:03:00.000+0000\"}]}",
+      "StateUpdatedTimestamp": "2026-10-06T17:04:41.729000+01:00",
+      "MetricName": "Throttles",
+      "Namespace": "AWS/Lambda",
+      "Statistic": "Sum",
+      "Dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-TeamHub-Ntgre-ParityCommand"
+        }
+      ],
+      "Period": 60,
+      "EvaluationPeriods": 1,
+      "Threshold": 1,
+      "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+      "TreatMissingData": "notBreaching",
+      "StateTransitionedTimestamp": "2026-10-06T17:04:41.729000+01:00"
+    },
+    {
+      "AlarmName": "ProjectRespawn-TeamHub-Ntgre-ParityRead-Errors",
+      "AlarmArn": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-TeamHub-Ntgre-ParityRead-Errors",
+      "AlarmConfigurationUpdatedTimestamp": "2026-10-06T17:03:30.405000+01:00",
+      "ActionsEnabled": true,
+      "OKActions": [],
+      "AlarmActions": [],
+      "InsufficientDataActions": [],
+      "StateValue": "OK",
+      "StateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+      "StateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-06T16:04:57.684+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":1.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-06T16:03:00.000+0000\"}]}",
+      "StateUpdatedTimestamp": "2026-10-06T17:04:57.687000+01:00",
+      "MetricName": "Errors",
+      "Namespace": "AWS/Lambda",
+      "Statistic": "Sum",
+      "Dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-TeamHub-Ntgre-ParityRead"
+        }
+      ],
+      "Period": 60,
+      "EvaluationPeriods": 1,
+      "Threshold": 1,
+      "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+      "TreatMissingData": "notBreaching",
+      "StateTransitionedTimestamp": "2026-10-06T17:04:57.687000+01:00"
+    },
+    {
+      "AlarmName": "ProjectRespawn-TeamHub-Ntgre-ParityRead-Throttles",
+      "AlarmArn": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-TeamHub-Ntgre-ParityRead-Throttles",
+      "AlarmConfigurationUpdatedTimestamp": "2026-10-06T17:03:30.546000+01:00",
+      "ActionsEnabled": true,
+      "OKActions": [],
+      "AlarmActions": [],
+      "InsufficientDataActions": [],
+      "StateValue": "OK",
+      "StateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+      "StateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-06T16:04:32.759+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":1.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-06T16:03:00.000+0000\"}]}",
+      "StateUpdatedTimestamp": "2026-10-06T17:04:32.761000+01:00",
+      "MetricName": "Throttles",
+      "Namespace": "AWS/Lambda",
+      "Statistic": "Sum",
+      "Dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-TeamHub-Ntgre-ParityRead"
+        }
+      ],
+      "Period": 60,
+      "EvaluationPeriods": 1,
+      "Threshold": 1,
+      "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+      "TreatMissingData": "notBreaching",
+      "StateTransitionedTimestamp": "2026-10-06T17:04:32.761000+01:00"
+    },
+    {
+      "AlarmName": "ProjectRespawn-TeamHub-Ntgre-ReadProof-ApiErrors",
+      "AlarmArn": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-TeamHub-Ntgre-ReadProof-ApiErrors",
+      "AlarmConfigurationUpdatedTimestamp": "2026-10-05T16:04:00.051000+01:00",
+      "ActionsEnabled": true,
+      "OKActions": [],
+      "AlarmActions": [],
+      "InsufficientDataActions": [],
+      "StateValue": "OK",
+      "StateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+      "StateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-05T15:04:14.736+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":1.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-05T15:03:00.000+0000\"}]}",
+      "StateUpdatedTimestamp": "2026-10-05T16:04:14.737000+01:00",
+      "MetricName": "5xx",
+      "Namespace": "AWS/ApiGateway",
+      "Statistic": "Sum",
+      "Dimensions": [
+        {
+          "Name": "ApiId",
+          "Value": "t54b88casf"
+        }
+      ],
+      "Period": 60,
+      "EvaluationPeriods": 1,
+      "Threshold": 1,
+      "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+      "TreatMissingData": "notBreaching",
+      "StateTransitionedTimestamp": "2026-10-05T16:04:14.737000+01:00"
+    },
+    {
+      "AlarmName": "ProjectRespawn-TeamHub-Ntgre-ReadProof-ReadErrors",
+      "AlarmArn": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-TeamHub-Ntgre-ReadProof-ReadErrors",
+      "AlarmConfigurationUpdatedTimestamp": "2026-10-05T16:04:34.371000+01:00",
+      "ActionsEnabled": true,
+      "OKActions": [],
+      "AlarmActions": [],
+      "InsufficientDataActions": [],
+      "StateValue": "OK",
+      "StateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+      "StateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-05T15:05:13.333+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":1.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-05T15:04:00.000+0000\"}]}",
+      "StateUpdatedTimestamp": "2026-10-05T16:05:13.334000+01:00",
+      "MetricName": "Errors",
+      "Namespace": "AWS/Lambda",
+      "Statistic": "Sum",
+      "Dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-TeamHub-Ntgre-PreviewRead"
+        }
+      ],
+      "Period": 60,
+      "EvaluationPeriods": 1,
+      "Threshold": 1,
+      "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+      "TreatMissingData": "notBreaching",
+      "StateTransitionedTimestamp": "2026-10-05T16:05:13.334000+01:00"
+    }
+  ],
+  "expectedAlarms": 6,
+  "operator": "Ntgre (user)",
+  "monitoring": "ATTENDED_MANUAL",
+  "notificationDelivery": "NOT_CONFIGURED_OR_PROVEN",
+  "accessLogs": "DEFERRED_OPTION_A_NO_DELIVERY_ADMINISTRATION",
+  "abort": [
+    "Unexpected authority, successful normal Team route or business write",
+    "Uncorrelated/missing required telemetry after bounded ingestion deadline",
+    "Core failure or unexpected error/throttle",
+    "Any protected-domain or resource drift"
+  ],
+  "limitations": [
+    "No live Core outage induced",
+    "Configuration-guard and business epoch failures remain offline-only at this stage",
+    "No installed source fence or transactional/business acceptance"
+  ]
+}

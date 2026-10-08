@@ -1,0 +1,145 @@
+{
+  "at": "2026-10-07T16:48:20.346Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "templates": [
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre",
+      "unchanged": true
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-ReadProofSecurity",
+      "unchanged": true
+    },
+    {
+      "name": "ProjectRespawn-Core-Ntgre",
+      "unchanged": true
+    },
+    {
+      "name": "ProjectRespawn-Core-Ntgre-Security",
+      "unchanged": true
+    }
+  ],
+  "runtimes": [
+    {
+      "kind": "Command",
+      "unchanged": true,
+      "authority": "LEGACY_WRITER",
+      "normalWrites": "DISABLED"
+    },
+    {
+      "kind": "Read",
+      "unchanged": true,
+      "authority": "LEGACY_WRITER",
+      "normalWrites": "DISABLED"
+    }
+  ],
+  "sources": [
+    {
+      "model": "PlayerChampionPoolEntry",
+      "passes": [
+        {
+          "count": 0,
+          "pages": 1,
+          "readUnits": 4,
+          "complete": true,
+          "stronglyConsistent": true
+        },
+        {
+          "count": 0,
+          "pages": 1,
+          "readUnits": 4,
+          "complete": true,
+          "stronglyConsistent": true
+        }
+      ]
+    },
+    {
+      "model": "TeamMembership",
+      "passes": [
+        {
+          "count": 0,
+          "pages": 1,
+          "readUnits": 4,
+          "complete": true,
+          "stronglyConsistent": true
+        },
+        {
+          "count": 0,
+          "pages": 1,
+          "readUnits": 4,
+          "complete": true,
+          "stronglyConsistent": true
+        }
+      ]
+    },
+    {
+      "model": "Team",
+      "passes": [
+        {
+          "count": 0,
+          "pages": 1,
+          "readUnits": 4,
+          "complete": true,
+          "stronglyConsistent": true
+        },
+        {
+          "count": 0,
+          "pages": 1,
+          "readUnits": 4,
+          "complete": true,
+          "stronglyConsistent": true
+        }
+      ]
+    },
+    {
+      "model": "TeamRosterSlot",
+      "passes": [
+        {
+          "count": 0,
+          "pages": 1,
+          "readUnits": 4,
+          "complete": true,
+          "stronglyConsistent": true
+        },
+        {
+          "count": 0,
+          "pages": 1,
+          "readUnits": 4,
+          "complete": true,
+          "stronglyConsistent": true
+        }
+      ]
+    }
+  ],
+  "target": [
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-Operational",
+      "count": 0,
+      "stronglyConsistent": true
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-Journal",
+      "count": 15,
+      "stronglyConsistent": true
+    }
+  ],
+  "temporaryTablesAbsent": [
+    "ProjectRespawn-TeamHub-Ntgre-2B5B-Rehearsal-20261007-Operational",
+    "ProjectRespawn-TeamHub-Ntgre-2B5B-Rehearsal-20261007-Journal",
+    "ProjectRespawn-TeamHub-Ntgre-2B5B-Rehearsal-20261007-PlayerChampionPoolEntry",
+    "ProjectRespawn-TeamHub-Ntgre-2B5B-Rehearsal-20261007-TeamMembership",
+    "ProjectRespawn-TeamHub-Ntgre-2B5B-Rehearsal-20261007-Team",
+    "ProjectRespawn-TeamHub-Ntgre-2B5B-Rehearsal-20261007-TeamRosterSlot",
+    "ProjectRespawn-TeamHub-Ntgre-2B5B-FenceRehearsal-20261007"
+  ],
+  "actualAuthority": "LEGACY_WRITER",
+  "frontendLiveCutover": false,
+  "productionTouched": false,
+  "complete": true,
+  "sourcePoliciesUnchanged": true,
+  "ledgerRowChanges": 0
+}

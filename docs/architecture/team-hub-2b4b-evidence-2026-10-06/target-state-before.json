@@ -1,0 +1,1421 @@
+{
+  "at": "2026-10-06T19:26:50.328Z",
+  "complete": true,
+  "verified": true,
+  "stack": {
+    "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/b66ad780-c0cd-11f1-91ba-0effc0d85417",
+    "StackName": "ProjectRespawn-TeamHub-Ntgre",
+    "ChangeSetId": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/team-hub-2b4a-product-20261006/71f320f3-e6a7-42de-b903-44cb03923fef",
+    "Description": "PROPOSAL ONLY: two dark Team Hub tables; branding deferred; no runtime writes",
+    "Parameters": [
+      {
+        "ParameterKey": "BootstrapVersion",
+        "ParameterValue": "/cdk-bootstrap/hnb659fds/version",
+        "ResolvedValue": "30"
+      }
+    ],
+    "CreationTime": "2026-10-05T15:01:58.836000+00:00",
+    "LastUpdatedTime": "2026-10-06T16:02:55.280000+00:00",
+    "RollbackConfiguration": {},
+    "StackStatus": "UPDATE_COMPLETE",
+    "DisableRollback": false,
+    "NotificationARNs": [],
+    "Capabilities": [
+      "CAPABILITY_NAMED_IAM"
+    ],
+    "RoleARN": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+    "Tags": [
+      {
+        "Key": "Project",
+        "Value": "ProjectRespawn"
+      },
+      {
+        "Key": "Environment",
+        "Value": "Ntgre"
+      },
+      {
+        "Key": "Domain",
+        "Value": "TeamHub"
+      }
+    ],
+    "EnableTerminationProtection": false,
+    "DriftInformation": {
+      "StackDriftStatus": "NOT_CHECKED"
+    },
+    "LastOperations": [
+      {
+        "OperationType": "UPDATE_STACK",
+        "OperationId": "a1b7f364-7306-4f3a-affd-f4461276f347"
+      }
+    ]
+  },
+  "resources": [
+    {
+      "LogicalResourceId": "ApiErrors",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-ReadProof-ApiErrors",
+      "ResourceType": "AWS::CloudWatch::Alarm",
+      "LastUpdatedTimestamp": "2026-10-05T15:04:00.873000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ApiInvoke",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-ApiInvoke-udDZcwx2P70z",
+      "ResourceType": "AWS::Lambda::Permission",
+      "LastUpdatedTimestamp": "2026-10-05T15:04:31.694000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "HttpApi",
+      "PhysicalResourceId": "t54b88casf",
+      "ResourceType": "AWS::ApiGatewayV2::Api",
+      "LastUpdatedTimestamp": "2026-10-05T15:03:55.662000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "JournalTable",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-Journal",
+      "ResourceType": "AWS::DynamoDB::Table",
+      "LastUpdatedTimestamp": "2026-10-05T21:57:16.558000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "JwtAuthorizer",
+      "PhysicalResourceId": "nvebda",
+      "ResourceType": "AWS::ApiGatewayV2::Authorizer",
+      "LastUpdatedTimestamp": "2026-10-05T15:03:57.773000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "OperationalTable",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-Operational",
+      "ResourceType": "AWS::DynamoDB::Table",
+      "LastUpdatedTimestamp": "2026-10-05T21:57:53.571000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityCommandErrors",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-ParityCommand-Errors",
+      "ResourceType": "AWS::CloudWatch::Alarm",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:31.057000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityCommandFunction",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "ResourceType": "AWS::Lambda::Function",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:27.938000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityCommandIntegration",
+      "PhysicalResourceId": "3ftdhsk",
+      "ResourceType": "AWS::ApiGatewayV2::Integration",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:29.822000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityCommandLogs",
+      "PhysicalResourceId": "/project-respawn/Ntgre/team-hub/parity-command",
+      "ResourceType": "AWS::Logs::LogGroup",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:07.838000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityCommandPermission",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-ParityCommandPermission-ERWLX02bHPSL",
+      "ResourceType": "AWS::Lambda::Permission",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:29.677000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityCommandRole",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "ResourceType": "AWS::IAM::Role",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:17.556000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityCommandThrottles",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-ParityCommand-Throttles",
+      "ResourceType": "AWS::CloudWatch::Alarm",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:30.875000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityReadErrors",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-ParityRead-Errors",
+      "ResourceType": "AWS::CloudWatch::Alarm",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:31.003000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityReadFunction",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "ResourceType": "AWS::Lambda::Function",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:27.961000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityReadIntegration",
+      "PhysicalResourceId": "7u4dwpa",
+      "ResourceType": "AWS::ApiGatewayV2::Integration",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:30.027000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityReadLogs",
+      "PhysicalResourceId": "/project-respawn/Ntgre/team-hub/parity-read",
+      "ResourceType": "AWS::Logs::LogGroup",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:07.925000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityReadPermission",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-ParityReadPermission-1d4e04ryDGhX",
+      "ResourceType": "AWS::Lambda::Permission",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:31.160000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityReadRole",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "ResourceType": "AWS::IAM::Role",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:17.663000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityReadThrottles",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-ParityRead-Throttles",
+      "ResourceType": "AWS::CloudWatch::Alarm",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:31.167000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityRouteCREATETEAM",
+      "PhysicalResourceId": "ps84k14",
+      "ResourceType": "AWS::ApiGatewayV2::Route",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:37.477000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityRouteDELETEMYCHAMPION",
+      "PhysicalResourceId": "55m6dxr",
+      "ResourceType": "AWS::ApiGatewayV2::Route",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:31.913000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityRouteGETPLAYERCOMPETITIVEDETAIL",
+      "PhysicalResourceId": "tnx6xqo",
+      "ResourceType": "AWS::ApiGatewayV2::Route",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:37.416000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityRouteGETTEAMHUB",
+      "PhysicalResourceId": "k5qsjh1",
+      "ResourceType": "AWS::ApiGatewayV2::Route",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:32.191000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityRouteLISTMYCHAMPIONPOOL",
+      "PhysicalResourceId": "jbd68gn",
+      "ResourceType": "AWS::ApiGatewayV2::Route",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:37.409000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityRouteLISTTEAMCHAMPIONPOOLS",
+      "PhysicalResourceId": "r0zigd7",
+      "ResourceType": "AWS::ApiGatewayV2::Route",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:32.012000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityRouteMANAGEMEMBER",
+      "PhysicalResourceId": "vf1rubd",
+      "ResourceType": "AWS::ApiGatewayV2::Route",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:31.814000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityRouteSETMANAGER",
+      "PhysicalResourceId": "nqby111",
+      "ResourceType": "AWS::ApiGatewayV2::Route",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:31.755000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityRouteSETROSTERSLOT",
+      "PhysicalResourceId": "jfz5iip",
+      "ResourceType": "AWS::ApiGatewayV2::Route",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:32.859000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityRouteSETTEAMPLAN",
+      "PhysicalResourceId": "jk453cg",
+      "ResourceType": "AWS::ApiGatewayV2::Route",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:32.196000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityRouteUPDATETEAM",
+      "PhysicalResourceId": "76fw18k",
+      "ResourceType": "AWS::ApiGatewayV2::Route",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:32.339000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityRouteUPSERTCOACHASSESSMENT",
+      "PhysicalResourceId": "1pmcxhe",
+      "ResourceType": "AWS::ApiGatewayV2::Route",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:37.156000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityRouteUPSERTMYCHAMPION",
+      "PhysicalResourceId": "nlf5po6",
+      "ResourceType": "AWS::ApiGatewayV2::Route",
+      "LastUpdatedTimestamp": "2026-10-06T16:03:32.168000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "PreviewRoute",
+      "PhysicalResourceId": "thj3tql",
+      "ResourceType": "AWS::ApiGatewayV2::Route",
+      "LastUpdatedTimestamp": "2026-10-05T15:04:33.803000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ReadErrors",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-ReadProof-ReadErrors",
+      "ResourceType": "AWS::CloudWatch::Alarm",
+      "LastUpdatedTimestamp": "2026-10-05T15:04:35.154000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ReadFunction",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+      "ResourceType": "AWS::Lambda::Function",
+      "LastUpdatedTimestamp": "2026-10-05T15:04:30.021000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ReadIntegration",
+      "PhysicalResourceId": "pb3fp80",
+      "ResourceType": "AWS::ApiGatewayV2::Integration",
+      "LastUpdatedTimestamp": "2026-10-05T15:04:31.868000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ReadLogs",
+      "PhysicalResourceId": "/project-respawn/Ntgre/team-hub/preview",
+      "ResourceType": "AWS::Logs::LogGroup",
+      "LastUpdatedTimestamp": "2026-10-05T15:04:05.972000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ReadRole",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+      "ResourceType": "AWS::IAM::Role",
+      "LastUpdatedTimestamp": "2026-10-05T15:04:15.997000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "Stage",
+      "PhysicalResourceId": "$default",
+      "ResourceType": "AWS::ApiGatewayV2::Stage",
+      "LastUpdatedTimestamp": "2026-10-05T15:04:35.770000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    }
+  ],
+  "tables": [
+    {
+      "table": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "PK",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "SK",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "StatusPK",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "StatusSK",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "SubjectPK",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "SubjectSK",
+            "AttributeType": "S"
+          }
+        ],
+        "TableName": "ProjectRespawn-TeamHub-Ntgre-Operational",
+        "KeySchema": [
+          {
+            "AttributeName": "PK",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "SK",
+            "KeyType": "RANGE"
+          }
+        ],
+        "TableStatus": "ACTIVE",
+        "CreationDateTime": "2026-10-05T22:57:07.424000+01:00",
+        "ProvisionedThroughput": {
+          "NumberOfDecreasesToday": 0,
+          "ReadCapacityUnits": 0,
+          "WriteCapacityUnits": 0
+        },
+        "TableSizeBytes": 0,
+        "ItemCount": 0,
+        "TableArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+        "TableId": "c85bdb6d-1f9a-4a75-b79d-86fbe74749ee",
+        "BillingModeSummary": {
+          "BillingMode": "PAY_PER_REQUEST",
+          "LastUpdateToPayPerRequestDateTime": "2026-10-05T22:57:07.424000+01:00"
+        },
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "BySubject",
+            "KeySchema": [
+              {
+                "AttributeName": "SubjectPK",
+                "KeyType": "HASH"
+              },
+              {
+                "AttributeName": "SubjectSK",
+                "KeyType": "RANGE"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "KEYS_ONLY"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "NumberOfDecreasesToday": 0,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 0,
+            "ItemCount": 0,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/BySubject",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          },
+          {
+            "IndexName": "ByTeamStatus",
+            "KeySchema": [
+              {
+                "AttributeName": "StatusPK",
+                "KeyType": "HASH"
+              },
+              {
+                "AttributeName": "StatusSK",
+                "KeyType": "RANGE"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "KEYS_ONLY"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "NumberOfDecreasesToday": 0,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 0,
+            "ItemCount": 0,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/ByTeamStatus",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          }
+        ],
+        "DeletionProtectionEnabled": true,
+        "WarmThroughput": {
+          "ReadUnitsPerSecond": 12000,
+          "WriteUnitsPerSecond": 4000,
+          "Status": "ACTIVE"
+        }
+      },
+      "pitr": {
+        "ContinuousBackupsStatus": "ENABLED",
+        "PointInTimeRecoveryDescription": {
+          "PointInTimeRecoveryStatus": "ENABLED",
+          "RecoveryPeriodInDays": 35,
+          "EarliestRestorableDateTime": "2026-10-05T22:57:52+01:00",
+          "LatestRestorableDateTime": "2026-10-06T20:21:31.221000+01:00"
+        }
+      },
+      "ttl": {
+        "TimeToLiveStatus": "DISABLED"
+      },
+      "tags": [
+        {
+          "Key": "Project",
+          "Value": "ProjectRespawn"
+        },
+        {
+          "Key": "Environment",
+          "Value": "Ntgre"
+        },
+        {
+          "Key": "Domain",
+          "Value": "TeamHub"
+        }
+      ],
+      "passes": [
+        {
+          "count": 0,
+          "pages": 1,
+          "stronglyConsistent": true,
+          "complete": true
+        },
+        {
+          "count": 0,
+          "pages": 1,
+          "stronglyConsistent": true,
+          "complete": true
+        }
+      ]
+    },
+    {
+      "table": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "PK",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "SK",
+            "AttributeType": "S"
+          }
+        ],
+        "TableName": "ProjectRespawn-TeamHub-Ntgre-Journal",
+        "KeySchema": [
+          {
+            "AttributeName": "PK",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "SK",
+            "KeyType": "RANGE"
+          }
+        ],
+        "TableStatus": "ACTIVE",
+        "CreationDateTime": "2026-10-05T22:57:05.132000+01:00",
+        "ProvisionedThroughput": {
+          "NumberOfDecreasesToday": 0,
+          "ReadCapacityUnits": 0,
+          "WriteCapacityUnits": 0
+        },
+        "TableSizeBytes": 0,
+        "ItemCount": 0,
+        "TableArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+        "TableId": "460751ad-cbd9-4d75-80b2-188f77daf479",
+        "BillingModeSummary": {
+          "BillingMode": "PAY_PER_REQUEST",
+          "LastUpdateToPayPerRequestDateTime": "2026-10-05T22:57:05.132000+01:00"
+        },
+        "DeletionProtectionEnabled": true,
+        "WarmThroughput": {
+          "ReadUnitsPerSecond": 12000,
+          "WriteUnitsPerSecond": 4000,
+          "Status": "ACTIVE"
+        }
+      },
+      "pitr": {
+        "ContinuousBackupsStatus": "ENABLED",
+        "PointInTimeRecoveryDescription": {
+          "PointInTimeRecoveryStatus": "ENABLED",
+          "RecoveryPeriodInDays": 35,
+          "EarliestRestorableDateTime": "2026-10-05T22:57:15+01:00",
+          "LatestRestorableDateTime": "2026-10-06T20:21:41.009000+01:00"
+        }
+      },
+      "ttl": {
+        "TimeToLiveStatus": "ENABLED",
+        "AttributeName": "expiresAt"
+      },
+      "tags": [
+        {
+          "Key": "Project",
+          "Value": "ProjectRespawn"
+        },
+        {
+          "Key": "Environment",
+          "Value": "Ntgre"
+        },
+        {
+          "Key": "Domain",
+          "Value": "TeamHub"
+        }
+      ],
+      "passes": [
+        {
+          "count": 0,
+          "pages": 1,
+          "stronglyConsistent": true,
+          "complete": true
+        },
+        {
+          "count": 0,
+          "pages": 1,
+          "stronglyConsistent": true,
+          "complete": true
+        }
+      ]
+    }
+  ],
+  "runtimeDenial": [
+    {
+      "EvaluationResults": [
+        {
+          "EvalActionName": "dynamodb:GetItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+              "SourcePolicyType": "Permissions Boundary Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 178
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "OrganizationsDecisionDetail": {
+            "AllowedByOrganizations": true
+          },
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": false
+          },
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+                  "SourcePolicyType": "Permissions Boundary Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 178
+                  }
+                }
+              ],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": false
+              }
+            }
+          ]
+        },
+        {
+          "EvalActionName": "dynamodb:Query",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+              "SourcePolicyType": "Permissions Boundary Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 178
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "OrganizationsDecisionDetail": {
+            "AllowedByOrganizations": true
+          },
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": false
+          },
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+                  "SourcePolicyType": "Permissions Boundary Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 178
+                  }
+                }
+              ],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": false
+              }
+            }
+          ]
+        },
+        {
+          "EvalActionName": "dynamodb:Scan",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+              "SourcePolicyType": "Permissions Boundary Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 178
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "OrganizationsDecisionDetail": {
+            "AllowedByOrganizations": true
+          },
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": false
+          },
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+                  "SourcePolicyType": "Permissions Boundary Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 178
+                  }
+                }
+              ],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": false
+              }
+            }
+          ]
+        },
+        {
+          "EvalActionName": "dynamodb:PutItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+              "SourcePolicyType": "Permissions Boundary Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 178
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "OrganizationsDecisionDetail": {
+            "AllowedByOrganizations": true
+          },
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": false
+          },
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+                  "SourcePolicyType": "Permissions Boundary Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 178
+                  }
+                }
+              ],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": false
+              }
+            }
+          ]
+        },
+        {
+          "EvalActionName": "dynamodb:UpdateItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+              "SourcePolicyType": "Permissions Boundary Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 178
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "OrganizationsDecisionDetail": {
+            "AllowedByOrganizations": true
+          },
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": false
+          },
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+                  "SourcePolicyType": "Permissions Boundary Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 178
+                  }
+                }
+              ],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": false
+              }
+            }
+          ]
+        },
+        {
+          "EvalActionName": "dynamodb:DeleteItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+              "SourcePolicyType": "Permissions Boundary Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 178
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "OrganizationsDecisionDetail": {
+            "AllowedByOrganizations": true
+          },
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": false
+          },
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+                  "SourcePolicyType": "Permissions Boundary Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 178
+                  }
+                }
+              ],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": false
+              }
+            }
+          ]
+        },
+        {
+          "EvalActionName": "dynamodb:ConditionCheckItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+              "SourcePolicyType": "Permissions Boundary Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 178
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "OrganizationsDecisionDetail": {
+            "AllowedByOrganizations": true
+          },
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": false
+          },
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+                  "SourcePolicyType": "Permissions Boundary Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 178
+                  }
+                }
+              ],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": false
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "EvaluationResults": [
+        {
+          "EvalActionName": "dynamodb:GetItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+              "SourcePolicyType": "Permissions Boundary Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 178
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "OrganizationsDecisionDetail": {
+            "AllowedByOrganizations": true
+          },
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": false
+          },
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+                  "SourcePolicyType": "Permissions Boundary Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 178
+                  }
+                }
+              ],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": false
+              }
+            }
+          ]
+        },
+        {
+          "EvalActionName": "dynamodb:Query",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+              "SourcePolicyType": "Permissions Boundary Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 178
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "OrganizationsDecisionDetail": {
+            "AllowedByOrganizations": true
+          },
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": false
+          },
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+                  "SourcePolicyType": "Permissions Boundary Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 178
+                  }
+                }
+              ],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": false
+              }
+            }
+          ]
+        },
+        {
+          "EvalActionName": "dynamodb:Scan",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+              "SourcePolicyType": "Permissions Boundary Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 178
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "OrganizationsDecisionDetail": {
+            "AllowedByOrganizations": true
+          },
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": false
+          },
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+                  "SourcePolicyType": "Permissions Boundary Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 178
+                  }
+                }
+              ],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": false
+              }
+            }
+          ]
+        },
+        {
+          "EvalActionName": "dynamodb:PutItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+              "SourcePolicyType": "Permissions Boundary Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 178
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "OrganizationsDecisionDetail": {
+            "AllowedByOrganizations": true
+          },
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": false
+          },
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+                  "SourcePolicyType": "Permissions Boundary Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 178
+                  }
+                }
+              ],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": false
+              }
+            }
+          ]
+        },
+        {
+          "EvalActionName": "dynamodb:UpdateItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+              "SourcePolicyType": "Permissions Boundary Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 178
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "OrganizationsDecisionDetail": {
+            "AllowedByOrganizations": true
+          },
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": false
+          },
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+                  "SourcePolicyType": "Permissions Boundary Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 178
+                  }
+                }
+              ],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": false
+              }
+            }
+          ]
+        },
+        {
+          "EvalActionName": "dynamodb:DeleteItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+              "SourcePolicyType": "Permissions Boundary Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 178
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "OrganizationsDecisionDetail": {
+            "AllowedByOrganizations": true
+          },
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": false
+          },
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+                  "SourcePolicyType": "Permissions Boundary Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 178
+                  }
+                }
+              ],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": false
+              }
+            }
+          ]
+        },
+        {
+          "EvalActionName": "dynamodb:ConditionCheckItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+              "SourcePolicyType": "Permissions Boundary Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 178
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "OrganizationsDecisionDetail": {
+            "AllowedByOrganizations": true
+          },
+          "PermissionsBoundaryDecisionDetail": {
+            "AllowedByPermissionsBoundary": false
+          },
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+                  "SourcePolicyType": "Permissions Boundary Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 178
+                  }
+                }
+              ],
+              "PermissionsBoundaryDecisionDetail": {
+                "AllowedByPermissionsBoundary": false
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "existingElevenPreserved": true,
+  "legacyAuthority": true,
+  "targetWriter": false,
+  "seedRecords": 0
+}

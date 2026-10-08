@@ -1,0 +1,39 @@
+{
+  "deployedZipSha256": "q+aRohk6Pue2C3rAv4iDrC4bq7c1afDEw+t8Pa8Utx4=",
+  "handlerSha256": "4f5589b3eb5bb964ebc642068f169c35e32a5409ba7c7ae79c093d8055d0b075",
+  "localMatchesDeployed": true,
+  "pureHelperResults": {
+    "pitrDesiredAbsent": {
+      "TableName": "SYNTHETIC",
+      "PointInTimeRecoverySpecification": {
+        "PointInTimeRecoveryEnabled": false
+      }
+    },
+    "deletionProtectionDesiredAbsent": {
+      "DeletionProtectionEnabled": false
+    },
+    "pitrDesiredTrue": null,
+    "deletionDesiredTrue": null
+  },
+  "lifecycle": {
+    "keyReplacement": "checks before protection update; rejects when destructive flag false",
+    "gsiReplacement": "requires both destructive and replace-GSI flags true",
+    "replacementWhenProtected": "throws before DeleteTable",
+    "deleteWhenProtected": "returns success without deleting; retained physical table may become unmanaged",
+    "pitrOob": "next Update with omitted/false desired setting disables PITR",
+    "deletionProtectionOob": "next Update with omitted desired setting disables protection",
+    "backup": "provider has no DeleteBackup call; independent on-demand backups not removed by its table update/replacement code"
+  },
+  "sourceLineReferences": {
+    "replacement": 145,
+    "pitrUpdate": 192,
+    "deletionUpdate": 199,
+    "delete": 260,
+    "replace": 345,
+    "deleteHelper": 620,
+    "pitrHelper": 672
+  },
+  "proposal": "Set desired PITR/deletion protection true, destructive/GSI replacement false, Retain/Retain; reject all identity/schema/index changes",
+  "providerModified": false,
+  "awsWrites": 0
+}

@@ -1,0 +1,38 @@
+# Shared/Core 2B5A independent contract plan
+
+**Current gate (6 October 2026): CORE TEMPLATE SECURITY CORRECTION READY FOR DEPLOYMENT REVIEW — NOT DEPLOYED.** Exact artifact references corrected; product/runtime preserved. [Authoritative correction report](core-template-security-correction.md) and [current candidate](core-artifact-evidence-2026-10-06/candidate.json). No AWS changes or deployment authorization.
+
+## Historical prior gate (superseded by the current report above)
+
+
+6 October 2026. **Revised Ntgre concurrency candidate; deployment blocked by unchanged exact-artifact security references. Do not deploy.** Read [migration control](README-PHASE2-MIGRATION.md), [domain standard](project-respawn-domain-architecture-standard.md), [security standard](domain-deployment-runtime-security.md) and [readiness](core-first-deployment-readiness.md).
+
+Domain: Shared/Core; accountable review operator: existing RavenTest workflow. Phase: M2 / Team Hub dependency 2B5A-1. Scope: independent contract foundation and read-only AWS review. Account 058264289478, eu-north-1, Ntgre. Approval: attached 2B5A request, explicitly stopping before AWS writes. Security custodian/rollback operator must be assigned at execution review. Evidence: [quota-corrected evidence](core-quota-evidence-2026-10-06/candidate.json). No expiry-based first-create API authority exists or is needed.
+
+Core owns environment identity, bounded identity-directory resolution and global capability decisions. Existing Cognito remains authoritative and physically Legacy-owned. Core does not own Team membership/roles, rosters, pools, assessments, plans or any other product state. No tables, identity migration, new pool/client, profile service, generic permission database or new public browser endpoint.
+
+## Chosen architecture and cost
+
+Keep environment.v1 static. One independently synthesized sibling root, `ProjectRespawn-Core-Ntgre`, provides authorization.decision.v1 and directory.assignment.v1 through synchronous **AWS Lambda Invoke**, authenticated by IAM plus an independently verified delegated Cognito access JWT. This deliberate transport variation from the standard's HTTP/GraphQL examples avoids a public directory and unnecessary API Gateway/JWT-authorizer resources. The actual consumer is a server-side Team service; a public HTTP endpoint adds no needed capability. Future domains need explicit owner-contract and exact invocation permission review, not implicit access.
+
+An HTTP API with JWT authentication was considered. It would require additional gateway/integration/routes/permissions/authorizer/stage resources and a solution for proving trusted service delegation of Team manager decisions. Browser JWT alone cannot prove Team resource authorization. We therefore retain the small server-to-server API from 2B5. No API first-create exception, broad apigateway authority or existing API update is proposed.
+
+Product has **8 resources**: one function, one runtime role, one log group, one generated cursor secret, four alarms. The previous six-resource estimate increases by two application-level denial/dependency alarms. Security has **5**: runtime boundary, execution boundary, caller boundary, execution role and restricted caller role. Runtime identity is separate from both deployment identities. No nested roots, custom providers, automatic assets, CDK bootstrap parameter or cross-stack exports/imports. [Isolated app](../../infrastructure/domains/core/app.ts) has its own package/lock and selection checks.
+
+Current reviewed subtotal: Legacy 2,621 + Team 40+7 + Tournament 11 = 2,679. Core adds 13: **planning peak 2,692**. This subtotal is not a full-account inventory and excludes existing Tournament security/other external resources. Team's uninstalled 2B5 product proposal is not counted as deployed. No Legacy savings, retirement or physical ownership transfer. Cursor secret/log retention may leave retained resources after failed deployment; inventory them before any retry, never recreate blindly.
+
+## Isolation, operations and rollback
+
+Runtime closure contains only `domains/shared-core` and its isolated pinned dependencies. No Legacy, Team implementation, Tournament or foreign database import. Pure Team client contract compatibility is tested without changing Team runtime. Website shell/router/client registration remain unchanged; this backend-only stage creates no browser bundle or product-client initialization.
+
+Ntgre reserved concurrency is UNSET: Core shares the account’s unreserved pool (currently 10), with no guaranteed reservation or dedicated upper bound. This is accepted only for low-volume sandbox usage with observable throttles, no production SLO, and fail-closed consumers. Production reserved/provisioned concurrency and account quotas require a separate capacity review; do not inherit the Ntgre choice. Request timeout ten seconds, SDK retries one. Directory has a best-effort per-subject per-warm-container brake, bounded queries/results and encrypted cursors. It is not a distributed per-user quota. No public function URL, API route, invocation resource Allow or browser IAM grant is created. Before Team integration, inspect all effective invocation principals and prove its Manager/admin pre-delegation checks; a same-account principal with pre-existing broad Lambda Invoke can otherwise call Core. Do not claim this is cryptographic identification of the Team role inside the payload.
+
+Lambda metrics plus sanitized embedded metrics track requests, denied decisions, dependency failures and throttles. Four alarms observe Errors, Throttles, DependencyFailures and Denied. Denial threshold 20/minute; other alarms one/minute, missing data not breaching. They deliberately contain no invented SNS recipient. Assign monitoring ownership/delivery before execution acceptance. There are no API Gateway metrics; function request correlation and contract/outcome logs serve this transport. Future HTTP adoption must separately decide route/access logging.
+
+First deployment uses rollback-enabled CloudFormation. Stop on failure, preserve events and retained secret/log identity, and review rather than patch permissions automatically. Do not delete Cognito or any existing domain. Future code rollback restores pinned compatible runtime/template and the same cursor secret. Rotation is separately reviewed: invalidate cursors deliberately or implement a versioned overlap; do not replace the secret during ordinary release rollback. First-create success alone will not prove update/rollback.
+
+Stage 2B5A-1 deploys/accepts only Core under later authorization. Stage 2B5A-2 is separately prepared Team integration, with LEGACY_WRITER and denied normal routes preserved. Neither stage implies Team cutover.
+
+## Historical source and current review
+
+The original reserved-concurrency template and documentation are preserved. The revised product differs only by removal of ReservedConcurrentExecutions=5. Runtime and security bytes are unchanged. Exact old-template URL/object permissions now block the revised template; stop for separately reviewed artifact-reference rebinding. See [current readiness](core-first-deployment-readiness.md). No AWS deployment or quota change occurred.

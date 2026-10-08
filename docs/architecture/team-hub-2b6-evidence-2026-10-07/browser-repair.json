@@ -1,0 +1,65 @@
+{
+  "at": "2026-10-07T18:09:34.016Z",
+  "status": "REPORTED_BROWSER_DEFECTS_REPAIRED",
+  "personas": [
+    {
+      "persona": "admin",
+      "pages": 3,
+      "contractChecks": true,
+      "consoleErrors": 0
+    },
+    {
+      "persona": "ordinary",
+      "pages": 1,
+      "contractChecks": true,
+      "consoleErrors": 0
+    },
+    {
+      "persona": "manager",
+      "pages": 4,
+      "contractChecks": true,
+      "consoleErrors": 0
+    },
+    {
+      "persona": "coach",
+      "pages": 3,
+      "contractChecks": true,
+      "consoleErrors": 0
+    },
+    {
+      "persona": "player",
+      "pages": 3,
+      "contractChecks": true,
+      "consoleErrors": 0
+    }
+  ],
+  "pages": 14,
+  "contractChecks": 40,
+  "tests": 587,
+  "typescript": "PASS",
+  "normalBuild": "PASS",
+  "candidateBuild": "PASS",
+  "clockDiagnosis": "Prior Core log at 17:16:33.005Z vs local 503 at 17:16:32.997Z is consistent with a laptop clock boundary; exact old decision payload was intentionally not retained. Bounded local wait reproduces and corrects this case without changing the decision or strict runtime checks.",
+  "fixes": [
+    "Plural Coach capability matches Vue consumer",
+    "Local-only wait for issue time up to 1000ms; expired and larger future decisions still rejected",
+    "Browser readiness waits for Coach context",
+    "Normalized Windows module paths; isolated built harness avoids development middleware stalls",
+    "Session capture teardown no longer waits on idle browser connections"
+  ],
+  "fullGateAAccepted": false,
+  "remaining": [
+    "Complete UI mutation/control and injected network/error acceptance",
+    "Complete homepage and all-route acceptance",
+    "Complete full browser privacy and built-chunk cross-domain isolation evidence",
+    "Gates B-F and final execution review"
+  ],
+  "awsInfrastructureWrites": 0,
+  "liveBusinessWrites": 0,
+  "authority": "LEGACY_WRITER",
+  "epoch": null,
+  "frontendLiveCutover": false,
+  "productionTouched": false,
+  "cleanup": "browser-cleanup.json",
+  "evidence": "automated-browser.json"
+}

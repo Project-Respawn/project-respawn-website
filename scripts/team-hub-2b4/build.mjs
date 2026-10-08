@@ -1,0 +1,52 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
+import {createRequire} from 'node:module';
+import {operations} from '../../domains/team-hub/contracts.mjs';
+import {commandOperations,readOperations} from '../../domains/team-hub/parity/handler.mjs';
+import {runtimePolicy,extendExecution,root} from '../../infrastructure/domains/team-hub/parity-security.mjs';
+import {singleFileZip} from './zip.mjs';
+const args=process.argv.slice(2);if(JSON.stringify(args)!==JSON.stringify(['--domain','team-hub','--env','Ntgre','--mode','MUTATION_PARITY','--offline']))throw Error('Explicit Team/Ntgre/MUTATION_PARITY/offline selection required');
+const require=createRequire(path.resolve('infrastructure/domains/team-hub/package.json')),esbuild=require('esbuild');
+const E='docs/architecture/team-hub-2b4-evidence-2026-10-06',B='.tmp/team-hub-2b4',P='docs/architecture/team-hub-2b3-gate3-evidence-2026-10-05';
+const read=p=>JSON.parse(fs.readFileSync(p,'utf8')),save=(n,v)=>fs.writeFileSync(E+'/'+n+'.json',JSON.stringify(v,null,2)+'\n'),sha=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
+fs.mkdirSync(B+'/asset',{recursive:true});
+const built=await esbuild.build({entryPoints:['domains/team-hub/parity/entry.mjs'],outfile:B+'/asset/index.js',bundle:true,platform:'node',format:'cjs',target:'node22',metafile:true,logLevel:'silent'});
+for(const input of Object.keys(built.metafile.inputs)){const p=input.replaceAll('\\','/');assert.ok(p.startsWith('domains/team-hub/'),'Foreign runtime import '+p);}
+save('bundle-closure',{inputs:Object.keys(built.metafile.inputs),bundleSha256:sha(B+'/asset/index.js'),bytes:fs.statSync(B+'/asset/index.js').size});
+const {App,Stack,BootstraplessSynthesizer}=require('aws-cdk-lib'),{CfnInclude}=require('aws-cdk-lib/cloudformation-include');
+const product=read(P+'/product.template.json'),security=read(P+'/security.template.json');
+fs.writeFileSync(B+'/runtime.zip',singleFileZip('index.js',fs.readFileSync(B+'/asset/index.js')));
+const assetKey='team-hub/parity/'+sha(B+'/runtime.zip')+'.zip';
+const core=read('config/environments/Ntgre.core.json');
+for(const [kind,ops]of [['Command',commandOperations],['Read',readOperations]]){
+ const policy=runtimePolicy(security.Resources.PreviewBoundary.Properties.PolicyDocument,kind);save(kind.toLowerCase()+'-policy',policy);
+ security.Resources['Parity'+kind+'Boundary']={Type:'AWS::IAM::ManagedPolicy',Properties:{ManagedPolicyName:root+'-Parity'+kind+'Boundary',PolicyDocument:policy}};
+ const r=product.Resources,prefix='Parity'+kind,log='/project-respawn/Ntgre/team-hub/parity-'+kind.toLowerCase();
+ r[prefix+'Logs']={Type:'AWS::Logs::LogGroup',Properties:{LogGroupName:log,RetentionInDays:14}};
+ r[prefix+'Role']={Type:'AWS::IAM::Role',Properties:{RoleName:root+'-'+prefix,PermissionsBoundary:`arn:aws:iam::058264289478:policy/${root}-${prefix}Boundary`,AssumeRolePolicyDocument:{Version:'2012-10-17',Statement:[{Effect:'Allow',Principal:{Service:'lambda.amazonaws.com'},Action:'sts:AssumeRole'}]},Policies:[{PolicyName:'ExactSyntheticTeamState',PolicyDocument:policy}]}};
+ r[prefix+'Function']={Type:'AWS::Lambda::Function',Properties:{FunctionName:root+'-'+prefix,Runtime:'nodejs22.x',Handler:'index.handler',Architectures:['arm64'],Timeout:15,MemorySize:256,Role:{'Fn::GetAtt':[prefix+'Role','Arn']},Code:{S3Bucket:'cdk-hnb659fds-assets-058264289478-eu-north-1',S3Key:assetKey},LoggingConfig:{LogGroup:{Ref:prefix+'Logs'},LogFormat:'JSON'},Environment:{Variables:{EXPECTED_ISSUER:core.issuer,EXPECTED_POOL_ID:core.poolId,EXPECTED_CLIENT_ID:core.clientId,TEAM_HUB_RUNTIME:kind.toLowerCase(),TEAM_HUB_VERIFICATION:JSON.stringify({mode:'DISABLED',authority:'LEGACY_WRITER'})}}}};
+ r[prefix+'Integration']={Type:'AWS::ApiGatewayV2::Integration',Properties:{ApiId:{Ref:'HttpApi'},IntegrationType:'AWS_PROXY',IntegrationUri:{'Fn::GetAtt':[prefix+'Function','Arn']},PayloadFormatVersion:'2.0',TimeoutInMillis:16000}};
+ r[prefix+'Permission']={Type:'AWS::Lambda::Permission',Properties:{Action:'lambda:InvokeFunction',FunctionName:{Ref:prefix+'Function'},Principal:'apigateway.amazonaws.com',SourceAccount:'058264289478',SourceArn:'arn:aws:execute-api:eu-north-1:058264289478:t54b88casf/*/*/v1/teams*'}};
+ for(const op of ops)r['ParityRoute'+op.replaceAll('_','')]={Type:'AWS::ApiGatewayV2::Route',Properties:{ApiId:{Ref:'HttpApi'},RouteKey:operations[op].method+' '+operations[op].path,AuthorizationType:'JWT',AuthorizerId:{Ref:'JwtAuthorizer'},Target:{'Fn::Join':['',['integrations/',{Ref:prefix+'Integration'}]]}}};
+ for(const metric of ['Errors','Throttles'])r[prefix+metric]={Type:'AWS::CloudWatch::Alarm',Properties:{AlarmName:root+'-'+prefix+'-'+metric,Namespace:'AWS/Lambda',MetricName:metric,Dimensions:[{Name:'FunctionName',Value:{Ref:prefix+'Function'}}],Statistic:'Sum',Period:60,EvaluationPeriods:1,Threshold:1,ComparisonOperator:'GreaterThanOrEqualToThreshold',TreatMissingData:'notBreaching'}};
+}
+const execution=extendExecution(security.Resources.ExecutionBoundary.Properties.PolicyDocument,'arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/'+assetKey);
+assert.ok(JSON.stringify(execution.boundary).length<=6144,'Managed boundary exceeds IAM limit');assert.ok(JSON.stringify(execution.identity).length<=10240,'Inline role policy exceeds IAM limit');
+security.Resources.ExecutionBoundary.Properties.PolicyDocument=execution.boundary;security.Resources.ExecutionRole.Properties.Policies[0].PolicyDocument=execution.identity;
+save('execution-identity',execution.identity);save('execution-boundary',execution.boundary);
+save('proposed-product.template',product);
+const hash=sha(E+'/proposed-product.template.json'),url=`https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/team-hub/parity/${hash}.template.json`;
+const caller=security.Resources.PreparationCaller.Properties.PolicyDocument,old=caller.Statement.find(s=>s.Action==='cloudformation:CreateChangeSet').Condition.StringEquals['cloudformation:TemplateUrl'];
+security.Resources.PreparationCaller.Properties.PolicyDocument=JSON.parse(JSON.stringify(caller).replaceAll(old,url).replaceAll(old.split('.amazonaws.com/')[1],url.split('.amazonaws.com/')[1]));
+save('proposed-security.template',security);
+const app=new App({outdir:path.resolve(B+'/assembly'),analyticsReporting:false});for(const [name,file]of [[root,'proposed-product.template'],[root+'-ReadProofSecurity','proposed-security.template']]){const stack=new Stack(app,name,{env:{account:'058264289478',region:'eu-north-1'},synthesizer:new BootstraplessSynthesizer()});new CfnInclude(stack,'Preserved',{templateFile:path.resolve(E+'/'+file+'.json'),preserveLogicalIds:true});}
+const assembly=app.synth();assert.equal(assembly.stacks.length,2);
+assert.deepEqual(assembly.stacks.find(s=>s.stackName===root).template.Resources,product.Resources,'Synthesized product differs from reviewed template');
+for(const [k,v]of Object.entries(read(P+'/product.template.json').Resources))assert.deepEqual(product.Resources[k],v);
+save('candidate',{at:new Date().toISOString(),productSha256:hash,securitySha256:sha(E+'/proposed-security.template.json'),assetKey,bundleSha256:sha(B+'/asset/index.js'),currentProduct:13,productAdditions:Object.keys(product.Resources).filter(k=>!read(P+'/product.template.json').Resources[k]),finalProduct:Object.keys(product.Resources).length,currentSecurity:5,finalSecurity:Object.keys(security.Resources).length,executionBoundaryBytes:JSON.stringify(execution.boundary).length,executionInlineBytes:JSON.stringify(execution.identity).length,verificationMode:'DISABLED_PENDING_EXACT_SUBJECT_AND_RUN_REVIEW',awsWrites:0,authority:'LEGACY_WRITER',legacySynthesized:false,tournamentSynthesized:false});
+const walk=p=>fs.readdirSync(p,{withFileTypes:true}).filter(e=>e.name!=='node_modules').flatMap(e=>e.isDirectory()?walk(p+'/'+e.name):[p+'/'+e.name]);
+const inputs=[...walk('domains/team-hub'),...walk('scripts/team-hub-2b4').filter(p=>!p.includes('/preflight/')),'infrastructure/domains/team-hub/parity-security.mjs','config/environments/Ntgre.core.json',P+'/product.template.json',P+'/security.template.json'];
+save('source-manifest',{files:inputs.map(p=>({path:p,sha256:sha(p)})),zipSha256:sha(B+'/runtime.zip'),bundleSha256:sha(B+'/asset/index.js'),legacyBackendSha256:sha('amplify/backend.ts'),awsWrites:0});
+console.log(JSON.stringify(read(E+'/candidate.json')));

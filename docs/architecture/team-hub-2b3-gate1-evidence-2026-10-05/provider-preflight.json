@@ -1,0 +1,228 @@
+{
+  "at": "2026-10-05T21:01:55.114Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "providers": [
+    {
+      "name": "amplify-projectrespawnweb-TableManagerCustomProvid-UvXMendxwsce",
+      "codeSha256": "q+aRohk6Pue2C3rAv4iDrC4bq7c1afDEw+t8Pa8Utx4=",
+      "roleName": "amplify-projectrespawnweb-AmplifyManagedTableOnEven-QvbafGiZcl6c",
+      "role": {
+        "Path": "/",
+        "RoleName": "amplify-projectrespawnweb-AmplifyManagedTableOnEven-QvbafGiZcl6c",
+        "RoleId": "AROAQ3EGSQDDPHMABNZM5",
+        "Arn": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-AmplifyManagedTableOnEven-QvbafGiZcl6c",
+        "CreateDate": "2026-09-21T14:22:01+00:00",
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "Description": "",
+        "MaxSessionDuration": 3600,
+        "Tags": [
+          {
+            "Key": "amplify:deployment-type",
+            "Value": "sandbox"
+          },
+          {
+            "Key": "created-by",
+            "Value": "amplify"
+          },
+          {
+            "Key": "amplify:friendly-name",
+            "Value": "amplifyData"
+          }
+        ],
+        "RoleLastUsed": {
+          "LastUsedDate": "2026-09-21T14:24:15+00:00",
+          "Region": "eu-north-1"
+        }
+      },
+      "policies": [
+        {
+          "RoleName": "amplify-projectrespawnweb-AmplifyManagedTableOnEven-QvbafGiZcl6c",
+          "PolicyName": "AmplifyManagedTableOnEventRoleDefaultPolicyF6DABCB6",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Action": "states:StartExecution",
+                "Resource": "arn:aws:states:eu-north-1:058264289478:stateMachine:AmplifyTableWaiterStateMachine060600BC-XkUg8gT0OKDB",
+                "Effect": "Allow"
+              }
+            ]
+          }
+        },
+        {
+          "RoleName": "amplify-projectrespawnweb-AmplifyManagedTableOnEven-QvbafGiZcl6c",
+          "PolicyName": "CreateUpdateDeleteTablesPolicy",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Action": [
+                  "dynamodb:CreateTable",
+                  "dynamodb:UpdateTable",
+                  "dynamodb:DeleteTable",
+                  "dynamodb:DescribeTable",
+                  "dynamodb:DescribeContinuousBackups",
+                  "dynamodb:DescribeTimeToLive",
+                  "dynamodb:UpdateContinuousBackups",
+                  "dynamodb:UpdateTimeToLive",
+                  "dynamodb:TagResource",
+                  "dynamodb:UntagResource",
+                  "dynamodb:ListTagsOfResource"
+                ],
+                "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/*-dxb2tdlulrch7hj2pts2mfijia-NONE",
+                "Effect": "Allow"
+              },
+              {
+                "Action": "lambda:ListTags",
+                "Resource": "arn:aws:lambda:eu-north-1:058264289478:function:*TableManager*",
+                "Effect": "Allow"
+              }
+            ]
+          }
+        },
+        {
+          "PolicyVersion": {
+            "Document": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": "*"
+                }
+              ]
+            },
+            "VersionId": "v1",
+            "IsDefaultVersion": true,
+            "CreateDate": "2015-04-09T15:03:43+00:00"
+          }
+        }
+      ],
+      "configurationHash": "e022daa6221d3782e7b0e22427d2477491dc0cbfa09b199afb4d38689dc9b8ff"
+    },
+    {
+      "name": "amplify-projectrespawnweb-TableManagerCustomProvid-tU7NFbChSvXB",
+      "codeSha256": "q+aRohk6Pue2C3rAv4iDrC4bq7c1afDEw+t8Pa8Utx4=",
+      "roleName": "amplify-projectrespawnweb-AmplifyManagedTableIsComp-i528Yre6Bga7",
+      "role": {
+        "Path": "/",
+        "RoleName": "amplify-projectrespawnweb-AmplifyManagedTableIsComp-i528Yre6Bga7",
+        "RoleId": "AROAQ3EGSQDDJRICF5Z4P",
+        "Arn": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-AmplifyManagedTableIsComp-i528Yre6Bga7",
+        "CreateDate": "2026-09-21T14:22:01+00:00",
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "Description": "",
+        "MaxSessionDuration": 3600,
+        "Tags": [
+          {
+            "Key": "amplify:deployment-type",
+            "Value": "sandbox"
+          },
+          {
+            "Key": "created-by",
+            "Value": "amplify"
+          },
+          {
+            "Key": "amplify:friendly-name",
+            "Value": "amplifyData"
+          }
+        ],
+        "RoleLastUsed": {
+          "LastUsedDate": "2026-09-21T14:24:35+00:00",
+          "Region": "eu-north-1"
+        }
+      },
+      "policies": [
+        {
+          "RoleName": "amplify-projectrespawnweb-AmplifyManagedTableIsComp-i528Yre6Bga7",
+          "PolicyName": "CreateUpdateDeleteTablesPolicy",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Action": [
+                  "dynamodb:CreateTable",
+                  "dynamodb:UpdateTable",
+                  "dynamodb:DeleteTable",
+                  "dynamodb:DescribeTable",
+                  "dynamodb:DescribeContinuousBackups",
+                  "dynamodb:DescribeTimeToLive",
+                  "dynamodb:UpdateContinuousBackups",
+                  "dynamodb:UpdateTimeToLive",
+                  "dynamodb:TagResource",
+                  "dynamodb:UntagResource",
+                  "dynamodb:ListTagsOfResource"
+                ],
+                "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/*-dxb2tdlulrch7hj2pts2mfijia-NONE",
+                "Effect": "Allow"
+              },
+              {
+                "Action": "lambda:ListTags",
+                "Resource": "arn:aws:lambda:eu-north-1:058264289478:function:*TableManager*",
+                "Effect": "Allow"
+              }
+            ]
+          }
+        },
+        {
+          "PolicyVersion": {
+            "Document": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": "*"
+                }
+              ]
+            },
+            "VersionId": "v1",
+            "IsDefaultVersion": true,
+            "CreateDate": "2015-04-09T15:03:43+00:00"
+          }
+        }
+      ],
+      "configurationHash": "1ef593e11f73d6669d9c47f305e5ed40a9634dc48e469c775494d5dd9311e49e"
+    }
+  ],
+  "audit": {
+    "calls": 16,
+    "retries": 0,
+    "errors": [],
+    "awsWrites": 0
+  }
+}

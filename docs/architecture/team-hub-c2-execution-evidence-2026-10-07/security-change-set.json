@@ -1,0 +1,136 @@
+{
+  "Changes": [
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Modify",
+        "LogicalResourceId": "ParityCommandBoundary",
+        "PhysicalResourceId": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+        "ResourceType": "AWS::IAM::ManagedPolicy",
+        "Replacement": "False",
+        "Scope": [
+          "Properties"
+        ],
+        "Details": [
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "PolicyDocument",
+              "RequiresRecreation": "Never",
+              "Path": "/Properties/PolicyDocument",
+              "BeforeValue": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"OnlyDarkCoreIntegration\",\"Effect\":\"Deny\",\"NotAction\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\",\"kms:Decrypt\",\"lambda:InvokeFunction\"],\"Resource\":\"*\"},{\"Effect\":\"Deny\",\"Action\":\"logs:*\",\"NotResource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-command:*\"},{\"Effect\":\"Allow\",\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Resource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-command:*\"},{\"Effect\":\"Deny\",\"Action\":\"kms:Decrypt\",\"NotResource\":\"arn:aws:kms:eu-north-1:058264289478:key/*\"},{\"Effect\":\"Deny\",\"Action\":\"kms:Decrypt\",\"Resource\":\"*\",\"Condition\":{\"ForAllValues:StringNotEquals\":{\"kms:ResourceAliases\":\"alias/aws/lambda\"}}},{\"Effect\":\"Allow\",\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/*\",\"Condition\":{\"ForAnyValue:StringEquals\":{\"kms:ResourceAliases\":\"alias/aws/lambda\"}}},{\"Effect\":\"Allow\",\"Action\":\"lambda:InvokeFunction\",\"Resource\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST\"]},{\"Effect\":\"Deny\",\"Action\":\"lambda:*\",\"NotResource\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST\"]}]}",
+              "AfterValue": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"OnlyDarkCoreIntegration\",\"Effect\":\"Deny\",\"NotAction\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\",\"kms:Decrypt\",\"lambda:InvokeFunction\",\"dynamodb:GetItem\"],\"Resource\":\"*\"},{\"Effect\":\"Deny\",\"Action\":\"logs:*\",\"NotResource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-command:*\"},{\"Effect\":\"Allow\",\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Resource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-command:*\"},{\"Effect\":\"Deny\",\"Action\":\"kms:Decrypt\",\"NotResource\":\"arn:aws:kms:eu-north-1:058264289478:key/*\"},{\"Effect\":\"Deny\",\"Action\":\"kms:Decrypt\",\"Resource\":\"*\",\"Condition\":{\"ForAllValues:StringNotEquals\":{\"kms:ResourceAliases\":\"alias/aws/lambda\"}}},{\"Effect\":\"Allow\",\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/*\",\"Condition\":{\"ForAnyValue:StringEquals\":{\"kms:ResourceAliases\":\"alias/aws/lambda\"}}},{\"Effect\":\"Allow\",\"Action\":\"lambda:InvokeFunction\",\"Resource\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST\"]},{\"Effect\":\"Deny\",\"Action\":\"lambda:*\",\"NotResource\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST\"]},{\"Sid\":\"ReadOnlyAuthorityPartition\",\"Effect\":\"Allow\",\"Action\":\"dynamodb:GetItem\",\"Resource\":\"arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal\",\"Condition\":{\"Null\":{\"dynamodb:LeadingKeys\":\"false\"},\"ForAllValues:StringEquals\":{\"dynamodb:LeadingKeys\":\"CONTROL#AUTHORITY\"}}}]}",
+              "AttributeChangeType": "Modify"
+            },
+            "Evaluation": "Static",
+            "ChangeSource": "DirectModification"
+          }
+        ],
+        "BeforeContext": "{\"Properties\":{\"ManagedPolicyName\":\"ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary\",\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Resource\":\"*\",\"Effect\":\"Deny\",\"NotAction\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\",\"kms:Decrypt\",\"lambda:InvokeFunction\"],\"Sid\":\"OnlyDarkCoreIntegration\"},{\"Action\":\"logs:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-command:*\"},{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Resource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-command:*\",\"Effect\":\"Allow\"},{\"Action\":\"kms:Decrypt\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:kms:eu-north-1:058264289478:key/*\"},{\"Condition\":{\"ForAllValues:StringNotEquals\":{\"kms:ResourceAliases\":[\"alias/aws/lambda\"]}},\"Action\":\"kms:Decrypt\",\"Resource\":\"*\",\"Effect\":\"Deny\"},{\"Condition\":{\"ForAnyValue:StringEquals\":{\"kms:ResourceAliases\":[\"alias/aws/lambda\"]}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/*\",\"Effect\":\"Allow\"},{\"Action\":\"lambda:InvokeFunction\",\"Resource\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST\"],\"Effect\":\"Allow\"},{\"Action\":\"lambda:*\",\"Effect\":\"Deny\",\"NotResource\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST\"]}]}}}",
+        "AfterContext": "{\"Properties\":{\"ManagedPolicyName\":\"ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary\",\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Resource\":\"*\",\"Effect\":\"Deny\",\"NotAction\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\",\"kms:Decrypt\",\"lambda:InvokeFunction\",\"dynamodb:GetItem\"],\"Sid\":\"OnlyDarkCoreIntegration\"},{\"Action\":\"logs:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-command:*\"},{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Resource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-command:*\",\"Effect\":\"Allow\"},{\"Action\":\"kms:Decrypt\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:kms:eu-north-1:058264289478:key/*\"},{\"Condition\":{\"ForAllValues:StringNotEquals\":{\"kms:ResourceAliases\":[\"alias/aws/lambda\"]}},\"Action\":\"kms:Decrypt\",\"Resource\":\"*\",\"Effect\":\"Deny\"},{\"Condition\":{\"ForAnyValue:StringEquals\":{\"kms:ResourceAliases\":[\"alias/aws/lambda\"]}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/*\",\"Effect\":\"Allow\"},{\"Action\":\"lambda:InvokeFunction\",\"Resource\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST\"],\"Effect\":\"Allow\"},{\"Action\":\"lambda:*\",\"Effect\":\"Deny\",\"NotResource\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST\"]},{\"Condition\":{\"Null\":{\"dynamodb:LeadingKeys\":\"false\"},\"ForAllValues:StringEquals\":{\"dynamodb:LeadingKeys\":[\"CONTROL#AUTHORITY\"]}},\"Action\":\"dynamodb:GetItem\",\"Resource\":\"arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal\",\"Effect\":\"Allow\",\"Sid\":\"ReadOnlyAuthorityPartition\"}]}}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Modify",
+        "LogicalResourceId": "ParityReadBoundary",
+        "PhysicalResourceId": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary",
+        "ResourceType": "AWS::IAM::ManagedPolicy",
+        "Replacement": "False",
+        "Scope": [
+          "Properties"
+        ],
+        "Details": [
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "PolicyDocument",
+              "RequiresRecreation": "Never",
+              "Path": "/Properties/PolicyDocument",
+              "BeforeValue": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"OnlyDarkCoreIntegration\",\"Effect\":\"Deny\",\"NotAction\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\",\"kms:Decrypt\",\"lambda:InvokeFunction\"],\"Resource\":\"*\"},{\"Effect\":\"Deny\",\"Action\":\"logs:*\",\"NotResource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read:*\"},{\"Effect\":\"Allow\",\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Resource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read:*\"},{\"Effect\":\"Deny\",\"Action\":\"kms:Decrypt\",\"NotResource\":\"arn:aws:kms:eu-north-1:058264289478:key/*\"},{\"Effect\":\"Deny\",\"Action\":\"kms:Decrypt\",\"Resource\":\"*\",\"Condition\":{\"ForAllValues:StringNotEquals\":{\"kms:ResourceAliases\":\"alias/aws/lambda\"}}},{\"Effect\":\"Allow\",\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/*\",\"Condition\":{\"ForAnyValue:StringEquals\":{\"kms:ResourceAliases\":\"alias/aws/lambda\"}}},{\"Effect\":\"Allow\",\"Action\":\"lambda:InvokeFunction\",\"Resource\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST\"]},{\"Effect\":\"Deny\",\"Action\":\"lambda:*\",\"NotResource\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST\"]}]}",
+              "AfterValue": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"OnlyDarkCoreIntegration\",\"Effect\":\"Deny\",\"NotAction\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\",\"kms:Decrypt\",\"lambda:InvokeFunction\",\"dynamodb:GetItem\"],\"Resource\":\"*\"},{\"Effect\":\"Deny\",\"Action\":\"logs:*\",\"NotResource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read:*\"},{\"Effect\":\"Allow\",\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Resource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read:*\"},{\"Effect\":\"Deny\",\"Action\":\"kms:Decrypt\",\"NotResource\":\"arn:aws:kms:eu-north-1:058264289478:key/*\"},{\"Effect\":\"Deny\",\"Action\":\"kms:Decrypt\",\"Resource\":\"*\",\"Condition\":{\"ForAllValues:StringNotEquals\":{\"kms:ResourceAliases\":\"alias/aws/lambda\"}}},{\"Effect\":\"Allow\",\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/*\",\"Condition\":{\"ForAnyValue:StringEquals\":{\"kms:ResourceAliases\":\"alias/aws/lambda\"}}},{\"Effect\":\"Allow\",\"Action\":\"lambda:InvokeFunction\",\"Resource\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST\"]},{\"Effect\":\"Deny\",\"Action\":\"lambda:*\",\"NotResource\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST\"]},{\"Sid\":\"ReadOnlyAuthorityPartition\",\"Effect\":\"Allow\",\"Action\":\"dynamodb:GetItem\",\"Resource\":\"arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal\",\"Condition\":{\"Null\":{\"dynamodb:LeadingKeys\":\"false\"},\"ForAllValues:StringEquals\":{\"dynamodb:LeadingKeys\":\"CONTROL#AUTHORITY\"}}}]}",
+              "AttributeChangeType": "Modify"
+            },
+            "Evaluation": "Static",
+            "ChangeSource": "DirectModification"
+          }
+        ],
+        "BeforeContext": "{\"Properties\":{\"ManagedPolicyName\":\"ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary\",\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Resource\":\"*\",\"Effect\":\"Deny\",\"NotAction\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\",\"kms:Decrypt\",\"lambda:InvokeFunction\"],\"Sid\":\"OnlyDarkCoreIntegration\"},{\"Action\":\"logs:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read:*\"},{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Resource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read:*\",\"Effect\":\"Allow\"},{\"Action\":\"kms:Decrypt\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:kms:eu-north-1:058264289478:key/*\"},{\"Condition\":{\"ForAllValues:StringNotEquals\":{\"kms:ResourceAliases\":[\"alias/aws/lambda\"]}},\"Action\":\"kms:Decrypt\",\"Resource\":\"*\",\"Effect\":\"Deny\"},{\"Condition\":{\"ForAnyValue:StringEquals\":{\"kms:ResourceAliases\":[\"alias/aws/lambda\"]}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/*\",\"Effect\":\"Allow\"},{\"Action\":\"lambda:InvokeFunction\",\"Resource\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST\"],\"Effect\":\"Allow\"},{\"Action\":\"lambda:*\",\"Effect\":\"Deny\",\"NotResource\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST\"]}]}}}",
+        "AfterContext": "{\"Properties\":{\"ManagedPolicyName\":\"ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary\",\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Resource\":\"*\",\"Effect\":\"Deny\",\"NotAction\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\",\"kms:Decrypt\",\"lambda:InvokeFunction\",\"dynamodb:GetItem\"],\"Sid\":\"OnlyDarkCoreIntegration\"},{\"Action\":\"logs:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read:*\"},{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Resource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read:*\",\"Effect\":\"Allow\"},{\"Action\":\"kms:Decrypt\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:kms:eu-north-1:058264289478:key/*\"},{\"Condition\":{\"ForAllValues:StringNotEquals\":{\"kms:ResourceAliases\":[\"alias/aws/lambda\"]}},\"Action\":\"kms:Decrypt\",\"Resource\":\"*\",\"Effect\":\"Deny\"},{\"Condition\":{\"ForAnyValue:StringEquals\":{\"kms:ResourceAliases\":[\"alias/aws/lambda\"]}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/*\",\"Effect\":\"Allow\"},{\"Action\":\"lambda:InvokeFunction\",\"Resource\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST\"],\"Effect\":\"Allow\"},{\"Action\":\"lambda:*\",\"Effect\":\"Deny\",\"NotResource\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST\"]},{\"Condition\":{\"Null\":{\"dynamodb:LeadingKeys\":\"false\"},\"ForAllValues:StringEquals\":{\"dynamodb:LeadingKeys\":[\"CONTROL#AUTHORITY\"]}},\"Action\":\"dynamodb:GetItem\",\"Resource\":\"arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal\",\"Effect\":\"Allow\",\"Sid\":\"ReadOnlyAuthorityPartition\"}]}}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Modify",
+        "LogicalResourceId": "PreparationCaller",
+        "PhysicalResourceId": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofPreparation",
+        "ResourceType": "AWS::IAM::ManagedPolicy",
+        "Replacement": "False",
+        "Scope": [
+          "Properties"
+        ],
+        "Details": [
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "PolicyDocument",
+              "RequiresRecreation": "Never",
+              "Path": "/Properties/PolicyDocument",
+              "BeforeValue": "(Truncated-Signature):4902c4da1c769e1eceea3074b888f552ae4b2b886cb53ea48db52c4fd7bce808",
+              "AfterValue": "(Truncated-Signature):c768e2cb210bebfbba56ca034e456dfcf95b6693a9e3fdd3cb5117dda7322bef",
+              "AttributeChangeType": "Modify"
+            },
+            "Evaluation": "Static",
+            "ChangeSource": "DirectModification"
+          }
+        ],
+        "BeforeContext": "{\"Properties\":{\"ManagedPolicyName\":\"ProjectRespawn-TeamHub-Ntgre-ReadProofPreparation\",\"PolicyDocument\":\"(Truncated-Signature):4902c4da1c769e1eceea3074b888f552ae4b2b886cb53ea48db52c4fd7bce808\"}}",
+        "AfterContext": "{\"Properties\":{\"ManagedPolicyName\":\"ProjectRespawn-TeamHub-Ntgre-ReadProofPreparation\",\"PolicyDocument\":\"(Truncated-Signature):c768e2cb210bebfbba56ca034e456dfcf95b6693a9e3fdd3cb5117dda7322bef\"}}"
+      }
+    }
+  ],
+  "ChangeSetName": "team-hub-c2-authority-security-20261007",
+  "ChangeSetId": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/team-hub-c2-authority-security-20261007/33163857-c4cc-45ea-81db-3feb800abc11",
+  "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-ReadProofSecurity/4a82aa00-c0ca-11f1-88d3-0efff9541601",
+  "StackName": "ProjectRespawn-TeamHub-Ntgre-ReadProofSecurity",
+  "Description": null,
+  "Parameters": [
+    {
+      "ParameterKey": "BootstrapVersion",
+      "ParameterValue": "/cdk-bootstrap/hnb659fds/version",
+      "ResolvedValue": "30"
+    }
+  ],
+  "CreationTime": "2026-10-07T23:08:16.801000+00:00",
+  "ExecutionStatus": "AVAILABLE",
+  "Status": "CREATE_COMPLETE",
+  "StatusReason": null,
+  "NotificationARNs": [],
+  "RollbackConfiguration": {},
+  "Capabilities": [
+    "CAPABILITY_NAMED_IAM"
+  ],
+  "Tags": [
+    {
+      "Key": "Project",
+      "Value": "ProjectRespawn"
+    },
+    {
+      "Key": "Environment",
+      "Value": "Ntgre"
+    },
+    {
+      "Key": "Domain",
+      "Value": "TeamHub"
+    }
+  ],
+  "ParentChangeSetId": null,
+  "IncludeNestedStacks": false,
+  "RootChangeSetId": null,
+  "OnStackFailure": null,
+  "ImportExistingResources": null,
+  "StackDriftStatus": null,
+  "DeploymentMode": null
+}

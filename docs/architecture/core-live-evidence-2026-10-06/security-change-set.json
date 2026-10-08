@@ -1,0 +1,82 @@
+{
+  "Changes": [
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "CallerBoundary",
+        "ResourceType": "AWS::IAM::ManagedPolicy",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"ManagedPolicyName\":\"ProjectRespawn-Core-Ntgre-CallerBoundary\",\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Resource\":\"*\",\"Effect\":\"Deny\",\"NotAction\":[\"cloudformation:DescribeStacks\",\"cloudformation:DescribeStackEvents\",\"cloudformation:ListStackResources\",\"cloudformation:GetTemplate\",\"cloudformation:DescribeChangeSet\",\"cloudformation:CreateChangeSet\",\"cloudformation:ExecuteChangeSet\",\"cloudformation:DeleteChangeSet\",\"iam:PassRole\",\"s3:GetObject\"]},{\"Action\":\"cloudformation:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre/*\"},{\"Action\":[\"cloudformation:DescribeStacks\",\"cloudformation:DescribeStackEvents\",\"cloudformation:ListStackResources\",\"cloudformation:GetTemplate\",\"cloudformation:DescribeChangeSet\"],\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre/*\",\"Effect\":\"Allow\"},{\"Condition\":{\"StringEquals\":{\"cloudformation:TemplateUrl\":\"https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/core/2b5a/4aad4b8df1b1272f12e93144b3a1e89a2addaab5e404950f924ff7d7b58b9e46/product.template.json\",\"cloudformation:RoleArn\":\"arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Execution\"}},\"Action\":\"cloudformation:CreateChangeSet\",\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre/*\",\"Effect\":\"Allow\"},{\"Action\":[\"cloudformation:ExecuteChangeSet\",\"cloudformation:DeleteChangeSet\"],\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre/*\",\"Effect\":\"Allow\"},{\"Condition\":{\"StringEquals\":{\"iam:PassedToService\":\"cloudformation.amazonaws.com\"}},\"Action\":\"iam:PassRole\",\"Resource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Execution\",\"Effect\":\"Allow\"},{\"Action\":\"s3:GetObject\",\"Resource\":[\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/core/2b5a/4841f475dab09982d8ff5babc240c8a7d8809d05911de8e239ac9031e6fcefcf/runtime.zip\",\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/core/2b5a/4aad4b8df1b1272f12e93144b3a1e89a2addaab5e404950f924ff7d7b58b9e46/product.template.json\"],\"Effect\":\"Allow\"}]}}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "Caller",
+        "ResourceType": "AWS::IAM::Role",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"MaxSessionDuration\":\"3600\",\"RoleName\":\"ProjectRespawn-Core-Ntgre-Deploy\",\"Policies\":[{\"PolicyName\":\"CoreDeployment\",\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Resource\":\"*\",\"Effect\":\"Deny\",\"NotAction\":[\"cloudformation:DescribeStacks\",\"cloudformation:DescribeStackEvents\",\"cloudformation:ListStackResources\",\"cloudformation:GetTemplate\",\"cloudformation:DescribeChangeSet\",\"cloudformation:CreateChangeSet\",\"cloudformation:ExecuteChangeSet\",\"cloudformation:DeleteChangeSet\",\"iam:PassRole\",\"s3:GetObject\"]},{\"Action\":\"cloudformation:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre/*\"},{\"Action\":[\"cloudformation:DescribeStacks\",\"cloudformation:DescribeStackEvents\",\"cloudformation:ListStackResources\",\"cloudformation:GetTemplate\",\"cloudformation:DescribeChangeSet\"],\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre/*\",\"Effect\":\"Allow\"},{\"Condition\":{\"StringEquals\":{\"cloudformation:TemplateUrl\":\"https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/core/2b5a/4aad4b8df1b1272f12e93144b3a1e89a2addaab5e404950f924ff7d7b58b9e46/product.template.json\",\"cloudformation:RoleArn\":\"arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Execution\"}},\"Action\":\"cloudformation:CreateChangeSet\",\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre/*\",\"Effect\":\"Allow\"},{\"Action\":[\"cloudformation:ExecuteChangeSet\",\"cloudformation:DeleteChangeSet\"],\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre/*\",\"Effect\":\"Allow\"},{\"Condition\":{\"StringEquals\":{\"iam:PassedToService\":\"cloudformation.amazonaws.com\"}},\"Action\":\"iam:PassRole\",\"Resource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Execution\",\"Effect\":\"Allow\"},{\"Action\":\"s3:GetObject\",\"Resource\":[\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/core/2b5a/4841f475dab09982d8ff5babc240c8a7d8809d05911de8e239ac9031e6fcefcf/runtime.zip\",\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/core/2b5a/4aad4b8df1b1272f12e93144b3a1e89a2addaab5e404950f924ff7d7b58b9e46/product.template.json\"],\"Effect\":\"Allow\"}]}}],\"AssumeRolePolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"AWS\":\"arn:aws:iam::058264289478:user/RavenTest\"}}]},\"PermissionsBoundary\":\"{{changeSet:KNOWN_AFTER_APPLY}}\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ExecutionBoundary",
+        "ResourceType": "AWS::IAM::ManagedPolicy",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"ManagedPolicyName\":\"ProjectRespawn-Core-Ntgre-ExecutionBoundary\",\"PolicyDocument\":\"(Truncated-Signature):2ba4a63268f8decb9586a83e25bdd3571b5d270b18e68d6e414f1c91d9fef531\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "Execution",
+        "ResourceType": "AWS::IAM::Role",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"RoleName\":\"ProjectRespawn-Core-Ntgre-Execution\",\"Policies\":\"(Truncated-Signature):c0a7195424484fba7c1bf6a0f166551db3a10d2d5efcdcd7753fbccb9eccf190\",\"AssumeRolePolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"cloudformation.amazonaws.com\"}}]},\"PermissionsBoundary\":\"{{changeSet:KNOWN_AFTER_APPLY}}\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "RuntimeBoundary",
+        "ResourceType": "AWS::IAM::ManagedPolicy",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"ManagedPolicyName\":\"ProjectRespawn-Core-Ntgre-RuntimeBoundary\",\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Resource\":\"*\",\"Effect\":\"Deny\",\"NotAction\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\",\"cognito-idp:AdminGetUser\",\"cognito-idp:AdminListGroupsForUser\",\"cognito-idp:ListUsers\",\"secretsmanager:GetSecretValue\",\"kms:Decrypt\"]},{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Resource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/core/contracts:*\",\"Effect\":\"Allow\"},{\"Action\":[\"cognito-idp:AdminGetUser\",\"cognito-idp:AdminListGroupsForUser\",\"cognito-idp:ListUsers\"],\"Resource\":\"arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE\",\"Effect\":\"Allow\"},{\"Action\":\"secretsmanager:GetSecretValue\",\"Resource\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-??????\",\"Effect\":\"Allow\"},{\"Action\":\"cognito-idp:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE\"},{\"Action\":\"logs:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/core/contracts:*\"},{\"Action\":\"secretsmanager:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-??????\"},{\"Action\":\"kms:Decrypt\",\"Effect\":\"Deny\",\"NotResource\":[\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\"]},{\"Action\":\"kms:Decrypt\",\"Resource\":[\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\"],\"Effect\":\"Allow\"}]}}}"
+      }
+    }
+  ],
+  "ChangeSetName": "core-security-pinned-20261006",
+  "ChangeSetId": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/core-security-pinned-20261006/0fdd61e0-698a-4e8a-bcc2-eafc37ea1349",
+  "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre-Security/05a2f1d0-c1cc-11f1-b1d2-0e6a3271965b",
+  "StackName": "ProjectRespawn-Core-Ntgre-Security",
+  "Description": null,
+  "Parameters": null,
+  "CreationTime": "2026-10-06T21:22:23.821000+00:00",
+  "ExecutionStatus": "AVAILABLE",
+  "Status": "CREATE_COMPLETE",
+  "StatusReason": null,
+  "NotificationARNs": [],
+  "RollbackConfiguration": {},
+  "Capabilities": [
+    "CAPABILITY_NAMED_IAM"
+  ],
+  "Tags": null,
+  "ParentChangeSetId": null,
+  "IncludeNestedStacks": false,
+  "RootChangeSetId": null,
+  "OnStackFailure": null,
+  "ImportExistingResources": null,
+  "StackDriftStatus": null,
+  "DeploymentMode": null
+}

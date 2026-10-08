@@ -1,0 +1,21 @@
+{
+  "at": "2026-10-08T16:28:04.059Z",
+  "complete": true,
+  "exactAuthorityGrant": {
+    "Sid": "ProjectRespawn-TeamHub-Ntgre-AuthorityStatusInvokePermission-koqiBO3Td6Qc",
+    "Effect": "Allow",
+    "Principal": {
+      "Service": "apigateway.amazonaws.com"
+    },
+    "Action": "lambda:InvokeFunction",
+    "Resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+    "Condition": {
+      "StringEquals": {
+        "AWS:SourceAccount": "058264289478"
+      },
+      "ArnLike": {
+        "AWS:SourceArn": "arn:aws:execute-api:eu-north-1:058264289478:t54b88casf/$default/GET/v1/authority"
+      }
+    }
+  }
+}

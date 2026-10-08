@@ -1,0 +1,188 @@
+{
+  "at": "2026-10-07T22:40:48.118Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "region": "eu-north-1",
+  "pinsVerified": true,
+  "manifestSha256": "d58034a8c638c1f02ac00c70639631f2ff3cfca3b3aa4ecc0faca480d110d3fd",
+  "c1": {
+    "requestSha256": "d73f65863eb5b344ff170d0209ceab2351054d30669c85d7259b6bb3f990c537",
+    "workflowSha256": "c084a6eaeac5f57ad3cd75c645daecf66ce4b39b893b4253cc87f40c0f70f25a",
+    "templateSha256": "bdd67e854b520f1099d070d3c599e2534fa3a845ce790f8f605ceeecbe620879",
+    "temporaryResources": 2,
+    "windowParameters": "REQUIRED_AT_REVIEW_NO_DEFAULT_MAXIMUM_15_MINUTES"
+  },
+  "referencedEvidence": [
+    {
+      "path": "docs/architecture/team-hub-c1-evidence-2026-10-07/candidate.json",
+      "sha256": "d58034a8c638c1f02ac00c70639631f2ff3cfca3b3aa4ecc0faca480d110d3fd"
+    },
+    {
+      "path": "docs/architecture/team-hub-c1-evidence-2026-10-07/c1-request.json",
+      "sha256": "d73f65863eb5b344ff170d0209ceab2351054d30669c85d7259b6bb3f990c537"
+    },
+    {
+      "path": "docs/architecture/team-hub-c1-evidence-2026-10-07/c1-template.json",
+      "sha256": "bdd67e854b520f1099d070d3c599e2534fa3a845ce790f8f605ceeecbe620879"
+    },
+    {
+      "path": "docs/architecture/team-hub-c1-evidence-2026-10-07/c1-workflow.json",
+      "sha256": "c084a6eaeac5f57ad3cd75c645daecf66ce4b39b893b4253cc87f40c0f70f25a"
+    },
+    {
+      "path": "docs/architecture/team-hub-c1-evidence-2026-10-07/c2-product.template.json",
+      "sha256": "46345d29a78166b1371792b42aebb922d73af45c69fbf4ba88bfad371f47ff01"
+    },
+    {
+      "path": "docs/architecture/team-hub-c1-evidence-2026-10-07/c2-security.template.json",
+      "sha256": "9db9889666146cc4f5529794b437c4b81117b0365a68c48d85b3ecb39669e622"
+    },
+    {
+      "path": "docs/architecture/team-hub-c1-evidence-2026-10-07/artifact-security-validation.json",
+      "sha256": "02aa1aa0c75969fb9cb2a4040dd652359f79ff16a3785fc39092a22fb4a62ea2"
+    }
+  ],
+  "checks": [
+    {
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-C1Initialize/*",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "cloudformation:ExecuteChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-C1Initialize/*",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "cloudformation:DeleteStack",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-C1Initialize/*",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "cloudformation:DescribeStacks",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-C1Initialize/*",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "cloudformation:DescribeChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-C1Initialize/*",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "cloudformation:GetTemplate",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-C1Initialize/*",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "iam:CreateRole",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-C1Initialize",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "iam:GetRole",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-C1Initialize",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "iam:PutRolePolicy",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-C1Initialize",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "iam:DeleteRolePolicy",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-C1Initialize",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "iam:DeleteRole",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-C1Initialize",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "iam:TagRole",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-C1Initialize",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "iam:PassRole",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-C1Initialize",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "states:CreateStateMachine",
+      "resource": "arn:aws:states:eu-north-1:058264289478:stateMachine:ProjectRespawn-TeamHub-Ntgre-C1Initialize",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "states:DescribeStateMachine",
+      "resource": "arn:aws:states:eu-north-1:058264289478:stateMachine:ProjectRespawn-TeamHub-Ntgre-C1Initialize",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "states:StartExecution",
+      "resource": "arn:aws:states:eu-north-1:058264289478:stateMachine:ProjectRespawn-TeamHub-Ntgre-C1Initialize",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "states:DeleteStateMachine",
+      "resource": "arn:aws:states:eu-north-1:058264289478:stateMachine:ProjectRespawn-TeamHub-Ntgre-C1Initialize",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "states:TagResource",
+      "resource": "arn:aws:states:eu-north-1:058264289478:stateMachine:ProjectRespawn-TeamHub-Ntgre-C1Initialize",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "states:DescribeExecution",
+      "resource": "arn:aws:states:eu-north-1:058264289478:execution:ProjectRespawn-TeamHub-Ntgre-C1Initialize:*",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "states:GetExecutionHistory",
+      "resource": "arn:aws:states:eu-north-1:058264289478:execution:ProjectRespawn-TeamHub-Ntgre-C1Initialize:*",
+      "decision": "allowed",
+      "missingContext": []
+    }
+  ],
+  "collisions": [
+    {
+      "service": "iam",
+      "exists": false
+    },
+    {
+      "service": "stepfunctions",
+      "exists": false
+    },
+    {
+      "service": "cloudformation",
+      "exists": false
+    }
+  ],
+  "awsWrites": 0,
+  "complete": true,
+  "authorityAbsent": true,
+  "operatorPermissionsPassed": true
+}

@@ -1,0 +1,93 @@
+[
+  {
+    "logicalId": "CursorSecret",
+    "type": "AWS::SecretsManager::Secret",
+    "properties": {
+      "Name": "ProjectRespawn-TeamHub-Ntgre-Cursor",
+      "GenerateSecretString": {
+        "PasswordLength": 64,
+        "ExcludePunctuation": true,
+        "RequireEachIncludedType": false
+      }
+    },
+    "disposition": "NOT_DEPLOYED_SECURITY_GATE_FAILED"
+  },
+  {
+    "logicalId": "CutoverListTeamsRoute",
+    "type": "AWS::ApiGatewayV2::Route",
+    "properties": {
+      "ApiId": {
+        "Ref": "HttpApi"
+      },
+      "RouteKey": "GET /v1/teams",
+      "AuthorizationType": "JWT",
+      "AuthorizerId": {
+        "Ref": "JwtAuthorizer"
+      },
+      "Target": {
+        "Fn::Join": [
+          "",
+          [
+            "integrations/",
+            {
+              "Ref": "ParityReadIntegration"
+            }
+          ]
+        ]
+      }
+    },
+    "disposition": "NOT_DEPLOYED_SECURITY_GATE_FAILED"
+  },
+  {
+    "logicalId": "CutoverAssignableSearchRoute",
+    "type": "AWS::ApiGatewayV2::Route",
+    "properties": {
+      "ApiId": {
+        "Ref": "HttpApi"
+      },
+      "RouteKey": "POST /v1/directory/assignable-search",
+      "AuthorizationType": "JWT",
+      "AuthorizerId": {
+        "Ref": "JwtAuthorizer"
+      },
+      "Target": {
+        "Fn::Join": [
+          "",
+          [
+            "integrations/",
+            {
+              "Ref": "ParityReadIntegration"
+            }
+          ]
+        ]
+      }
+    },
+    "disposition": "NOT_DEPLOYED_SECURITY_GATE_FAILED"
+  },
+  {
+    "logicalId": "CutoverAssignableResolveRoute",
+    "type": "AWS::ApiGatewayV2::Route",
+    "properties": {
+      "ApiId": {
+        "Ref": "HttpApi"
+      },
+      "RouteKey": "POST /v1/directory/assignable-resolve",
+      "AuthorizationType": "JWT",
+      "AuthorizerId": {
+        "Ref": "JwtAuthorizer"
+      },
+      "Target": {
+        "Fn::Join": [
+          "",
+          [
+            "integrations/",
+            {
+              "Ref": "ParityReadIntegration"
+            }
+          ]
+        ]
+      }
+    },
+    "disposition": "NOT_DEPLOYED_SECURITY_GATE_FAILED"
+  }
+]

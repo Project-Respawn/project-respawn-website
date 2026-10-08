@@ -1,0 +1,156 @@
+{
+  "at": "2026-10-07T17:28:45.768Z",
+  "decision": "NO_GO",
+  "authorization": "PRE_CUTOVER_ONLY_FINAL_AUTHORITY_SWITCH_NOT_EXECUTED",
+  "gates": [
+    {
+      "gate": "A",
+      "status": "FAILED",
+      "tests": [
+        "Admin: three pages and eight contract checks passed",
+        "Ordinary: one page and eight contract checks passed",
+        "Manager: four pages loaded; TEAM_ACCESS failed with GET_TEAM_HUB HTTP 503",
+        "Coach/Player not reached; full UI/privacy/failure/lazy coverage incomplete"
+      ],
+      "awsChanges": [],
+      "businessWrites": {
+        "live": 0,
+        "isolated": "In-memory fixture/Admin creation only"
+      },
+      "cleanup": {
+        "at": "2026-10-07T17:28:45.768Z",
+        "helperPid": 39912,
+        "helperCommandVerified": true,
+        "helperStopped": true,
+        "syntheticState": "IN_MEMORY_ONLY_DISCARDED_ON_PROCESS_EXIT",
+        "authenticatedContextsDisposed": true,
+        "disposableProfileRemoved": true,
+        "profileBasename": "browser-profile-796050917ca73bcd",
+        "temporaryAwsResourcesCreated": 0,
+        "liveBusinessWrites": 0,
+        "credentialsWritten": false
+      },
+      "evidence": [
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/automated-browser.json",
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/browser-admin.json",
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/browser-ordinary.json",
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/browser-manager.json",
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/browser-requests.json",
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/browser-core-diagnosis.json"
+      ],
+      "blockers": [
+        "Manager HTTP 503 unresolved",
+        "Coach capability name mismatch in adapter/page source",
+        "Full five-persona acceptance incomplete"
+      ]
+    },
+    {
+      "gate": "B",
+      "status": "NOT_EXECUTED",
+      "tests": [
+        "Prior writer inventory: unknown edges zero; no installed all-path proof"
+      ],
+      "awsChanges": [],
+      "businessWrites": {
+        "live": 0,
+        "isolated": 0
+      },
+      "cleanup": "No resources created in this gate",
+      "evidence": [
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/coverage-refresh.json",
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/edge-refresh.json",
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/preservation.json"
+      ],
+      "blockers": [
+        "Gate A failed; source fence not installed; generated and privileged path proof outstanding"
+      ]
+    },
+    {
+      "gate": "C",
+      "status": "NOT_EXECUTED",
+      "tests": [
+        "Accepted dark runtime preserved; normal writes disabled"
+      ],
+      "awsChanges": [],
+      "businessWrites": {
+        "live": 0,
+        "isolated": 0
+      },
+      "cleanup": "No resources created in this gate",
+      "evidence": [
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/preservation.json"
+      ],
+      "blockers": [
+        "Gate A failed; business candidate runtime not installed; target control not initialized"
+      ]
+    },
+    {
+      "gate": "D",
+      "status": "NOT_EXECUTED",
+      "tests": [
+        "Earlier six-alarm baseline OK; no notification actions",
+        "Core diagnostic window: no Lambda Errors/Throttles; custom metric datapoints absent"
+      ],
+      "awsChanges": [],
+      "businessWrites": {
+        "live": 0,
+        "isolated": 0
+      },
+      "cleanup": "No resources created in this gate",
+      "evidence": [
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/alarm-baseline.json",
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/browser-core-diagnosis.json"
+      ],
+      "blockers": [
+        "Gate A failed; additional cutover telemetry not installed or signal-tested"
+      ]
+    },
+    {
+      "gate": "E",
+      "status": "BLOCKED",
+      "tests": [
+        "Dormant candidate retains disabled activation; live frontend Legacy"
+      ],
+      "awsChanges": [],
+      "businessWrites": {
+        "live": 0,
+        "isolated": 0
+      },
+      "cleanup": "No resources created in this gate",
+      "evidence": [
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/automated-browser.json",
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/pins.json"
+      ],
+      "blockers": [
+        "Gate A failed; Coach edit capability mismatch; full routes/homepage/epoch binding acceptance outstanding"
+      ]
+    },
+    {
+      "gate": "F",
+      "status": "NOT_EXECUTED",
+      "tests": [
+        "Prior isolated rollback rehearsal retained; seven prior temporary table names absent"
+      ],
+      "awsChanges": [],
+      "businessWrites": {
+        "live": 0,
+        "isolated": 0
+      },
+      "cleanup": "No resources created in this gate",
+      "evidence": [
+        "docs/architecture/team-hub-2b6-evidence-2026-10-07/preservation.json"
+      ],
+      "blockers": [
+        "Gate A failed; final all-gates rehearsal not run"
+      ]
+    }
+  ],
+  "awsWrites": 0,
+  "authority": "LEGACY_WRITER",
+  "epoch": null,
+  "epochStatus": "NOT_INITIALIZED",
+  "frontend": "LEGACY",
+  "normalTeamWrites": "DISABLED",
+  "businessAuthorityChanged": false,
+  "productionTouched": false
+}

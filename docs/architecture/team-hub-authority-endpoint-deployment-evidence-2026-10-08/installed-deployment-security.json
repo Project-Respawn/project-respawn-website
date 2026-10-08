@@ -1,0 +1,33 @@
+{
+  "at": "2026-10-08T16:21:08.296Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "installed": [
+    {
+      "id": "ExecutionRole",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofExecutionBoundary",
+      "version": "v9",
+      "inline": [
+        "ReadProofLifecycle"
+      ],
+      "attached": [],
+      "acceptedAuthorityStatusMatch": true
+    },
+    {
+      "id": "DeploymentCaller",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Deploy",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofPreparation",
+      "version": "v12",
+      "inline": [],
+      "attached": [
+        "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofPreparation"
+      ],
+      "acceptedAuthorityStatusMatch": true
+    }
+  ],
+  "complete": true
+}
