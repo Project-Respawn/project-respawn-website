@@ -1,0 +1,4 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {localLinks} from './document-links.mjs';
+import fs from 'node:fs';import {checkLinks} from './document-links.mjs';import {sha256} from './deployment-checks.mjs';
+test('local documentation parser handles reference links and ignores code/external URLs',()=>{assert.deepEqual(localLinks('[a](file.md) [b](https://example.test)\n[r]: ../other.md\n```text\n[fake](not-real.md)\n```\n`[fake](not-real.md)`'),['file.md','../other.md']);});
+test('archive navigation tolerates recorded line-ending conversion but rejects altered content',()=>{const file=import.meta.filename,normalizedLfSha256=sha256(fs.readFileSync(file,'utf8').replaceAll('\r\n','\n')),origin={file,sha256:'0'.repeat(64),normalizedLfSha256};assert.equal(checkLinks([],fs.existsSync,[origin]).complete,true);assert.throws(()=>checkLinks([],fs.existsSync,[{...origin,normalizedLfSha256:'1'.repeat(64)}]));});

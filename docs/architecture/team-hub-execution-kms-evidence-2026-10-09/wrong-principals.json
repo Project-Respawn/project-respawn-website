@@ -1,0 +1,91 @@
+{
+  "at": "2026-10-09T05:57:27.214Z",
+  "checks": [
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Contracts",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+      "decision": "explicitDeny"
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Contracts",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "decision": "implicitDeny"
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Contracts",
+      "action": "lambda:UpdateFunctionConfiguration",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "decision": "explicitDeny"
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+      "decision": "explicitDeny"
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "decision": "explicitDeny"
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "action": "lambda:UpdateFunctionConfiguration",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "decision": "explicitDeny"
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Deploy",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+      "decision": "explicitDeny"
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Deploy",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "decision": "explicitDeny"
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Deploy",
+      "action": "lambda:UpdateFunctionConfiguration",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "decision": "explicitDeny"
+    },
+    {
+      "mode": "key-policy-condition-model-not-effective-role-simulation",
+      "label": "lambda-service",
+      "expected": "allowed",
+      "decision": "allowed"
+    },
+    {
+      "mode": "key-policy-condition-model-not-effective-role-simulation",
+      "label": "wrong-account",
+      "expected": "implicitDeny",
+      "decision": "implicitDeny"
+    },
+    {
+      "mode": "key-policy-condition-model-not-effective-role-simulation",
+      "label": "wrong-service",
+      "expected": "implicitDeny",
+      "decision": "implicitDeny"
+    },
+    {
+      "mode": "key-policy-condition-model-not-effective-role-simulation",
+      "label": "missing-context",
+      "expected": "implicitDeny",
+      "decision": "implicitDeny"
+    },
+    {
+      "mode": "key-policy-condition-model-not-effective-role-simulation",
+      "label": "same-account-ciphertext",
+      "expected": "allowed",
+      "decision": "allowed"
+    }
+  ],
+  "complete": true,
+  "awsWrites": 0
+}

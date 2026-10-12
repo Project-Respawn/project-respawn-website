@@ -1,0 +1,67 @@
+{
+  "complete": true,
+  "checks": [
+    {
+      "label": "reviewed service",
+      "principal": "states.amazonaws.com",
+      "account": "058264289478",
+      "source": "arn:aws:states:eu-north-1:058264289478:stateMachine:ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009",
+      "allowed": true
+    },
+    {
+      "label": "wrong principal",
+      "principal": "lambda.amazonaws.com",
+      "account": "058264289478",
+      "source": "arn:aws:states:eu-north-1:058264289478:stateMachine:ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009",
+      "allowed": false
+    },
+    {
+      "label": "wrong principal",
+      "principal": "ec2.amazonaws.com",
+      "account": "058264289478",
+      "source": "arn:aws:states:eu-north-1:058264289478:stateMachine:ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009",
+      "allowed": false
+    },
+    {
+      "label": "wrong principal",
+      "principal": "arn:aws:iam::058264289478:user/RavenTest",
+      "account": "058264289478",
+      "source": "arn:aws:states:eu-north-1:058264289478:stateMachine:ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009",
+      "allowed": false
+    },
+    {
+      "label": "wrong principal",
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "account": "058264289478",
+      "source": "arn:aws:states:eu-north-1:058264289478:stateMachine:ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009",
+      "allowed": false
+    },
+    {
+      "label": "wrong account",
+      "principal": "states.amazonaws.com",
+      "account": "000000000000",
+      "source": "arn:aws:states:eu-north-1:058264289478:stateMachine:ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009",
+      "allowed": false
+    },
+    {
+      "label": "wrong workflow",
+      "principal": "states.amazonaws.com",
+      "account": "058264289478",
+      "source": "arn:aws:states:eu-north-1:058264289478:stateMachine:ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009-other",
+      "allowed": false
+    },
+    {
+      "label": "missing source",
+      "principal": "states.amazonaws.com",
+      "account": "058264289478",
+      "allowed": false
+    },
+    {
+      "label": "missing account",
+      "principal": "states.amazonaws.com",
+      "source": "arn:aws:states:eu-north-1:058264289478:stateMachine:ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009",
+      "allowed": false
+    }
+  ],
+  "method": "Offline evaluation of unchanged single-statement exact service/account/source trust; not STS live proof or IAM service-principal trust simulation"
+}

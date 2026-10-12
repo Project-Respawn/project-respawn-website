@@ -1,0 +1,114 @@
+{
+  "at": "2026-10-11T23:51:37.225Z",
+  "status": "BLOCKED_KMS_DESCRIBEKEY_EXPLICIT_DENY",
+  "execution": {
+    "executionArn": "arn:aws:states:eu-north-1:058264289478:execution:ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009:window-recovery-20261011-once",
+    "startDate": "2026-10-12T00:48:53.493000+01:00"
+  },
+  "window": {
+    "at": "2026-10-11T22:48:36.874Z",
+    "start": "2026-10-11T23:48:37Z",
+    "end": "2026-10-12T00:03:37Z",
+    "parameters": [
+      {
+        "ParameterKey": "NotBefore",
+        "ParameterValue": "2026-10-11T23:48:37Z"
+      },
+      {
+        "ParameterKey": "ExpiresAt",
+        "ParameterValue": "2026-10-12T00:03:37Z"
+      }
+    ],
+    "maximumSeconds": 900,
+    "templateBytesUnchanged": true
+  },
+  "certification": {
+    "complete": true,
+    "cases": 210
+  },
+  "installedValidation": {
+    "complete": true,
+    "cases": 68
+  },
+  "denied": {
+    "eventID": "83108548-b392-4328-bc81-accdfe8124b9",
+    "eventTime": "2026-10-11T23:48:54Z",
+    "eventSource": "kms.amazonaws.com",
+    "eventName": "DescribeKey",
+    "requestID": "4384845a-3e6a-4f04-851d-3c48214ad201",
+    "errorCode": "AccessDenied",
+    "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009/jssDOPUlQRHryEYeQWibzIYQHjfNrCIg is not authorized to perform: kms:DescribeKey on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy",
+    "principal": "arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009/jssDOPUlQRHryEYeQWibzIYQHjfNrCIg"
+  },
+  "policyLocation": "FixedTwoFunctionRecovery inline identity policy Statement[2] (zero-based), Deny/NotAction; no permissions boundary",
+  "functions": [
+    {
+      "kind": "Read",
+      "revision": "4491176f-baaa-4180-8aa2-0e6e96bc51a8",
+      "codeSha256": "2oyiXo3iNWyd85QMjeUqHVreczBCX4ifw8PvmVj9Gz4=",
+      "environment": {
+        "Variables": {
+          "TEAM_HUB_RUNTIME": "read",
+          "TEAM_HUB_AUTHORITY": "LEGACY_WRITER",
+          "TEAM_HUB_STAGE": "PRE_CUTOVER",
+          "EXPECTED_ISSUER": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE",
+          "TEAM_HUB_NORMAL_WRITES": "DISABLED",
+          "TEAM_HUB_VERIFICATION": "{\"mode\":\"DISABLED\",\"authority\":\"LEGACY_WRITER\"}",
+          "EXPECTED_POOL_ID": "eu-north-1_n24iLL7QE",
+          "EXPECTED_CLIENT_ID": "1iq7ovjaf7d16imdvbqgfgvf86"
+        }
+      },
+      "state": "Active",
+      "lastUpdateStatus": "Successful",
+      "unchanged": true,
+      "drift": "MODIFIED"
+    },
+    {
+      "kind": "Command",
+      "revision": "50dc3a50-7388-467f-a302-1bf33cd051cf",
+      "codeSha256": "2oyiXo3iNWyd85QMjeUqHVreczBCX4ifw8PvmVj9Gz4=",
+      "environment": {
+        "Variables": {
+          "TEAM_HUB_RUNTIME": "command",
+          "TEAM_HUB_AUTHORITY": "LEGACY_WRITER",
+          "TEAM_HUB_STAGE": "PRE_CUTOVER",
+          "EXPECTED_ISSUER": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE",
+          "TEAM_HUB_NORMAL_WRITES": "DISABLED",
+          "TEAM_HUB_VERIFICATION": "{\"mode\":\"DISABLED\",\"authority\":\"LEGACY_WRITER\"}",
+          "EXPECTED_POOL_ID": "eu-north-1_n24iLL7QE",
+          "EXPECTED_CLIENT_ID": "1iq7ovjaf7d16imdvbqgfgvf86"
+        }
+      },
+      "state": "Active",
+      "lastUpdateStatus": "Successful",
+      "unchanged": true,
+      "drift": "MODIFIED"
+    }
+  ],
+  "workflowExecutions": 1,
+  "lambdaUpdateAttempts": 1,
+  "successfulLambdaUpdates": 0,
+  "commandAttempted": false,
+  "cleanup": {
+    "at": "2026-10-11T23:50:01.009Z",
+    "complete": true,
+    "stackStatus": "DELETE_COMPLETE",
+    "roleAbsent": true,
+    "workflowAbsent": true
+  },
+  "authority": {
+    "mode": "LEGACY_WRITER",
+    "epoch": 1,
+    "version": 1
+  },
+  "businessRecordsChanged": 0,
+  "permanentIamChanged": false,
+  "frontendActivated": false,
+  "sourceFenceActivated": false,
+  "productionChanges": 0,
+  "authorityHttpAcceptance": "NOT_RUN_AFTER_FAILED_RECOVERY",
+  "sixteenRouteAcceptance": "NOT_RUN_AFTER_FAILED_RECOVERY",
+  "monitoring": "CONFIGURATION_PRESERVED; POST_RECOVERY_LIVE_ACCEPTANCE_NOT_RUN",
+  "organizationVisibility": "USER_WAIVER_PRESERVED; NO_SCP_AUTHORIZATION_CLAIM",
+  "candidatePinsPreserved": true
+}

@@ -1,0 +1,7 @@
+import fs from 'node:fs';import path from 'node:path';import assert from 'node:assert/strict';import {execFileSync} from 'node:child_process';
+import {read,save,pin} from './execution.mjs';
+const c=pin();assert.equal(read('result').liveAccepted,false);assert.equal(read('secret-scan').complete,true);assert.equal(read('STOP').stage,'LIVE_ACCEPTANCE');
+const reports=['README-PHASE2-MIGRATION.md','team-hub-2b6-business-runtime-dark-deployment-result.md','team-hub-2b6-business-runtime-readiness.md','team-hub-2b6-cursor-security-resolution.md','team-hub-2b6-acceptance.md','team-hub-2b6-cutover-runbook.md'];let links=0;
+for(const name of reports){const file='docs/architecture/'+name;for(const m of fs.readFileSync(file,'utf8').matchAll(/\]\(([^)]+)\)/g)){if(/^https?:/.test(m[1]))continue;assert.ok(fs.existsSync(path.resolve(path.dirname(file),m[1].split('#')[0])),m[1]);links++;}}
+const branch=execFileSync('git',['branch','--show-current'],{encoding:'utf8'}).trim(),head=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();assert.equal(branch,'phase2/team-hub-extraction');assert.equal(head,'5c772296a791b8487a364f07682e17a5acbf7243');
+save('final-review',{at:new Date().toISOString(),complete:true,links,branch,head,candidate:c.productSha256,status:'DEPLOYED_INFRASTRUCTURE_LIVE_ACCEPTANCE_BLOCKED',committed:false,pushed:false,awsWrites:7,authority:'LEGACY_WRITER',epoch:1,version:1,frontendActivated:false,productionChanges:0});console.log(JSON.stringify({complete:true,links,branch,head,status:'BLOCKED'}));

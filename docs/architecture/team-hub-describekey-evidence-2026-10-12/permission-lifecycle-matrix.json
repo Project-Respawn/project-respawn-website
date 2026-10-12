@@ -1,0 +1,167 @@
+{
+  "at": "2026-10-12T05:51:59.216Z",
+  "matrix": [
+    {
+      "principal": "temporary recovery role",
+      "action": "lambda:GetFunctionConfiguration",
+      "resources": [
+        "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      ],
+      "conditions": "eu-north-1; approved <=900-second window",
+      "purpose": "Fresh revision/code precheck and stabilization/readback",
+      "status": "REQUIRED",
+      "evidence": "Pinned workflow; qualified failure and historical direct successes"
+    },
+    {
+      "principal": "temporary recovery role",
+      "action": "lambda:UpdateFunctionConfiguration",
+      "resources": [
+        "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+        "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead:$LATEST"
+      ],
+      "conditions": "eu-north-1; approved <=900-second window",
+      "purpose": "Fixed complete environment update with pinned RevisionId",
+      "status": "REQUIRED",
+      "evidence": "Pinned workflow; qualified failure and historical direct successes"
+    },
+    {
+      "principal": "temporary recovery role via Lambda",
+      "action": "kms:Encrypt",
+      "resources": [
+        "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7"
+      ],
+      "conditions": {
+        "ViaService": "lambda.eu-north-1.amazonaws.com",
+        "CallerAccount": "058264289478",
+        "FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+        "window": "<=900 seconds"
+      },
+      "status": "REQUIRED",
+      "evidence": "direct-success-history.json; encryption-history.json; Encrypt failure"
+    },
+    {
+      "principal": "temporary recovery role via Lambda",
+      "action": "kms:Decrypt",
+      "resources": [
+        "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7"
+      ],
+      "conditions": {
+        "ViaService": "lambda.eu-north-1.amazonaws.com",
+        "CallerAccount": "058264289478",
+        "FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+        "window": "<=900 seconds"
+      },
+      "status": "REQUIRED",
+      "evidence": "direct-success-history.json; encryption-history.json; Encrypt failure"
+    },
+    {
+      "principal": "temporary recovery role",
+      "action": "lambda:GetFunctionConfiguration",
+      "resources": [
+        "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand"
+      ],
+      "conditions": "eu-north-1; approved <=900-second window",
+      "purpose": "Fresh revision/code precheck and stabilization/readback",
+      "status": "REQUIRED",
+      "evidence": "Pinned workflow; qualified failure and historical direct successes"
+    },
+    {
+      "principal": "temporary recovery role",
+      "action": "lambda:UpdateFunctionConfiguration",
+      "resources": [
+        "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+        "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand:$LATEST"
+      ],
+      "conditions": "eu-north-1; approved <=900-second window",
+      "purpose": "Fixed complete environment update with pinned RevisionId",
+      "status": "REQUIRED",
+      "evidence": "Pinned workflow; qualified failure and historical direct successes"
+    },
+    {
+      "principal": "temporary recovery role via Lambda",
+      "action": "kms:Encrypt",
+      "resources": [
+        "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7"
+      ],
+      "conditions": {
+        "ViaService": "lambda.eu-north-1.amazonaws.com",
+        "CallerAccount": "058264289478",
+        "FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+        "window": "<=900 seconds"
+      },
+      "status": "REQUIRED",
+      "evidence": "direct-success-history.json; encryption-history.json; Encrypt failure"
+    },
+    {
+      "principal": "temporary recovery role via Lambda",
+      "action": "kms:Decrypt",
+      "resources": [
+        "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7"
+      ],
+      "conditions": {
+        "ViaService": "lambda.eu-north-1.amazonaws.com",
+        "CallerAccount": "058264289478",
+        "FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+        "window": "<=900 seconds"
+      },
+      "status": "REQUIRED",
+      "evidence": "direct-success-history.json; encryption-history.json; Encrypt failure"
+    },
+    {
+      "action": "kms:DescribeKey",
+      "principal": "temporary recovery role via Lambda",
+      "evidence": "../team-hub-window-recovery-evidence-2026-10-11/execution-cloudtrail.json; DescribeKey denial 4384845a-3e6a-4f04-851d-3c48214ad201",
+      "status": "REQUIRED",
+      "resources": [
+        "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7"
+      ],
+      "conditions": {
+        "ViaService": "lambda.eu-north-1.amazonaws.com",
+        "CallerAccount": "058264289478",
+        "region": "eu-north-1",
+        "window": "<=900 seconds",
+        "encryptionContext": "NOT_APPLICABLE_TO_DESCRIBEKEY"
+      }
+    },
+    {
+      "action": "kms:CreateGrant",
+      "principal": "customer-managed-key configuration caller",
+      "evidence": "Conditional for changing to a CMK; no KMSKeyArn change or matching Team Hub grant",
+      "status": "NOT_REQUIRED_FOR_SELECTED_PATH"
+    },
+    {
+      "action": "kms:GenerateDataKey",
+      "principal": "lambda.amazonaws.com",
+      "evidence": "AWS-managed key policy; historical DryRunOperationException is permission dry run, not completed key generation",
+      "status": "SERVICE_OWNED_NOT_CALLER_GRANT"
+    },
+    {
+      "action": "kms:Decrypt",
+      "principal": "existing runtime roles via Lambda",
+      "evidence": "Existing runtime and managed key policy; unchanged, live startup remains a gate",
+      "status": "PRESERVED"
+    },
+    {
+      "action": "lambda:GetFunctionCodeSigningConfig / GetFunctionScalingConfig",
+      "principal": "CloudFormation provider",
+      "evidence": "Not invoked by fixed direct recovery workflow",
+      "status": "NOT_REQUIRED_FOR_SELECTED_PATH"
+    },
+    {
+      "action": "IAM role lifecycle / PassRole / Step Functions lifecycle / CloudFormation temporary stack lifecycle",
+      "principal": "RavenTest security operator",
+      "evidence": "14 positive principal simulations; exact temporary role/machine/stack; fresh installed-role gate before start",
+      "status": "CUSTODY_GATE"
+    },
+    {
+      "action": "logs/metrics reads; DynamoDB baseline reads; function drift detection; authenticated HTTP probes",
+      "principal": "verification operator / existing Ntgre identity",
+      "evidence": "External acceptance only, no added temporary workflow permissions",
+      "status": "LIVE_ACCEPTANCE_REQUIRED"
+    }
+  ],
+  "scope": "Fixed direct configuration workflow, not arbitrary Lambda lifecycle",
+  "liveProof": false,
+  "awsWrites": 0,
+  "previousMatrixPreserved": true
+}

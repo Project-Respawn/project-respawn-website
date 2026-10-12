@@ -1,0 +1,1594 @@
+{
+  "cases": [
+    {
+      "id": "IAM-121",
+      "label": "Read kms:Decrypt missing service",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": null,
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-key-and-context",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-121",
+        "installedWitnesses": [
+          "IAM-110",
+          "IAM-111",
+          "IAM-112",
+          "IAM-113",
+          "IAM-114",
+          "IAM-115",
+          "IAM-116",
+          "IAM-118",
+          "IAM-119",
+          "IAM-152",
+          "IAM-153",
+          "IAM-154",
+          "IAM-155",
+          "IAM-156",
+          "IAM-157",
+          "IAM-158",
+          "IAM-160",
+          "IAM-161"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-122",
+      "label": "Read kms:Decrypt wrong service",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-key-and-context",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-122",
+        "installedWitnesses": [
+          "IAM-110",
+          "IAM-111",
+          "IAM-112",
+          "IAM-113",
+          "IAM-114",
+          "IAM-115",
+          "IAM-116",
+          "IAM-118",
+          "IAM-119",
+          "IAM-152",
+          "IAM-153",
+          "IAM-154",
+          "IAM-155",
+          "IAM-156",
+          "IAM-157",
+          "IAM-158",
+          "IAM-160",
+          "IAM-161"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-123",
+      "label": "Read kms:Decrypt wrong account",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "000000000000",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-key-and-context",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-123",
+        "installedWitnesses": [
+          "IAM-110",
+          "IAM-111",
+          "IAM-112",
+          "IAM-113",
+          "IAM-114",
+          "IAM-115",
+          "IAM-116",
+          "IAM-118",
+          "IAM-119",
+          "IAM-152",
+          "IAM-153",
+          "IAM-154",
+          "IAM-155",
+          "IAM-156",
+          "IAM-157",
+          "IAM-158",
+          "IAM-160",
+          "IAM-161"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-124",
+      "label": "Read kms:Decrypt missing account",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": null,
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-key-and-context",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-124",
+        "installedWitnesses": [
+          "IAM-110",
+          "IAM-111",
+          "IAM-112",
+          "IAM-113",
+          "IAM-114",
+          "IAM-115",
+          "IAM-116",
+          "IAM-118",
+          "IAM-119",
+          "IAM-152",
+          "IAM-153",
+          "IAM-154",
+          "IAM-155",
+          "IAM-156",
+          "IAM-157",
+          "IAM-158",
+          "IAM-160",
+          "IAM-161"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-125",
+      "label": "Read kms:Decrypt missing context",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": null
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-key-and-context",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-125",
+        "installedWitnesses": [
+          "IAM-110",
+          "IAM-111",
+          "IAM-112",
+          "IAM-113",
+          "IAM-114",
+          "IAM-115",
+          "IAM-116",
+          "IAM-118",
+          "IAM-119",
+          "IAM-152",
+          "IAM-153",
+          "IAM-154",
+          "IAM-155",
+          "IAM-156",
+          "IAM-157",
+          "IAM-158",
+          "IAM-160",
+          "IAM-161"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-126",
+      "label": "Read kms:Decrypt qualified context",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead:$LATEST"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-key-and-context",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-126",
+        "installedWitnesses": [
+          "IAM-110",
+          "IAM-111",
+          "IAM-112",
+          "IAM-113",
+          "IAM-114",
+          "IAM-115",
+          "IAM-116",
+          "IAM-118",
+          "IAM-119",
+          "IAM-152",
+          "IAM-153",
+          "IAM-154",
+          "IAM-155",
+          "IAM-156",
+          "IAM-157",
+          "IAM-158",
+          "IAM-160",
+          "IAM-161"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-127",
+      "label": "Read kms:Decrypt foreign context",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead-other"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-key-and-context",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-127",
+        "installedWitnesses": [
+          "IAM-110",
+          "IAM-111",
+          "IAM-112",
+          "IAM-113",
+          "IAM-114",
+          "IAM-115",
+          "IAM-116",
+          "IAM-118",
+          "IAM-119",
+          "IAM-152",
+          "IAM-153",
+          "IAM-154",
+          "IAM-155",
+          "IAM-156",
+          "IAM-157",
+          "IAM-158",
+          "IAM-160",
+          "IAM-161"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-128",
+      "label": "Read kms:Decrypt outside window",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:48:34Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "time-limit",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-128",
+        "installedWitnesses": [
+          "IAM-027",
+          "IAM-028",
+          "IAM-117",
+          "IAM-159"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-131",
+      "label": "Read no speculative lambda:GetFunction",
+      "action": "lambda:GetFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "lambda-lifecycle-denial",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-131",
+        "installedWitnesses": [
+          "IAM-016"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-132",
+      "label": "Read no speculative kms:DescribeKey",
+      "action": "kms:DescribeKey",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-administration-and-speculative",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": true,
+      "actualRoleRequired": true,
+      "coverage": {
+        "certification": "IAM-132",
+        "installedWitnesses": [
+          "IAM-132"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Run against actual installed role as well as full supplied-policy certification"
+      }
+    },
+    {
+      "id": "IAM-133",
+      "label": "Read no speculative kms:CreateGrant",
+      "action": "kms:CreateGrant",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-administration-and-speculative",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-133",
+        "installedWitnesses": [
+          "IAM-132"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-134",
+      "label": "Read no speculative kms:GenerateDataKey",
+      "action": "kms:GenerateDataKey",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-administration-and-speculative",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-134",
+        "installedWitnesses": [
+          "IAM-132"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-135",
+      "label": "Read no speculative kms:GenerateDataKeyWithoutPlaintext",
+      "action": "kms:GenerateDataKeyWithoutPlaintext",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-administration-and-speculative",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-135",
+        "installedWitnesses": [
+          "IAM-132"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-136",
+      "label": "Read no speculative kms:ReEncryptFrom",
+      "action": "kms:ReEncryptFrom",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-administration-and-speculative",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-136",
+        "installedWitnesses": [
+          "IAM-132"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-137",
+      "label": "Read no speculative kms:ReEncryptTo",
+      "action": "kms:ReEncryptTo",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-administration-and-speculative",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-137",
+        "installedWitnesses": [
+          "IAM-132"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-138",
+      "label": "Read no speculative kms:ScheduleKeyDeletion",
+      "action": "kms:ScheduleKeyDeletion",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-administration-and-speculative",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-138",
+        "installedWitnesses": [
+          "IAM-132"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-139",
+      "label": "Read no speculative kms:DisableKey",
+      "action": "kms:DisableKey",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-administration-and-speculative",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-139",
+        "installedWitnesses": [
+          "IAM-132"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-140",
+      "label": "Command mediated kms:Encrypt",
+      "action": "kms:Encrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand"
+      },
+      "expected": "allowed",
+      "requirement": "required-positive",
+      "risk": "RECOVERY_AVAILABILITY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": true,
+      "actualRoleRequired": true,
+      "coverage": {
+        "certification": "IAM-140",
+        "installedWitnesses": [
+          "IAM-001",
+          "IAM-002",
+          "IAM-003",
+          "IAM-004",
+          "IAM-030",
+          "IAM-031",
+          "IAM-041",
+          "IAM-075",
+          "IAM-109",
+          "IAM-120",
+          "IAM-140",
+          "IAM-151"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Run against actual installed role as well as full supplied-policy certification"
+      }
+    },
+    {
+      "id": "IAM-146",
+      "label": "Command kms:Encrypt qualified context",
+      "action": "kms:Encrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand:$LATEST"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-key-and-context",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-146",
+        "installedWitnesses": [
+          "IAM-110",
+          "IAM-111",
+          "IAM-112",
+          "IAM-113",
+          "IAM-114",
+          "IAM-115",
+          "IAM-116",
+          "IAM-118",
+          "IAM-119",
+          "IAM-152",
+          "IAM-153",
+          "IAM-154",
+          "IAM-155",
+          "IAM-156",
+          "IAM-157",
+          "IAM-158",
+          "IAM-160",
+          "IAM-161"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-147",
+      "label": "Command kms:Encrypt foreign context",
+      "action": "kms:Encrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand-other"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-key-and-context",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-147",
+        "installedWitnesses": [
+          "IAM-110",
+          "IAM-111",
+          "IAM-112",
+          "IAM-113",
+          "IAM-114",
+          "IAM-115",
+          "IAM-116",
+          "IAM-118",
+          "IAM-119",
+          "IAM-152",
+          "IAM-153",
+          "IAM-154",
+          "IAM-155",
+          "IAM-156",
+          "IAM-157",
+          "IAM-158",
+          "IAM-160",
+          "IAM-161"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-151",
+      "label": "Command mediated kms:Decrypt",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand"
+      },
+      "expected": "allowed",
+      "requirement": "required-positive",
+      "risk": "RECOVERY_AVAILABILITY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": true,
+      "actualRoleRequired": true,
+      "coverage": {
+        "certification": "IAM-151",
+        "installedWitnesses": [
+          "IAM-001",
+          "IAM-002",
+          "IAM-003",
+          "IAM-004",
+          "IAM-030",
+          "IAM-031",
+          "IAM-041",
+          "IAM-075",
+          "IAM-109",
+          "IAM-120",
+          "IAM-140",
+          "IAM-151"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Run against actual installed role as well as full supplied-policy certification"
+      }
+    },
+    {
+      "id": "IAM-152",
+      "label": "Command kms:Decrypt missing service",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": null,
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-key-and-context",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": true,
+      "actualRoleRequired": true,
+      "coverage": {
+        "certification": "IAM-152",
+        "installedWitnesses": [
+          "IAM-110",
+          "IAM-111",
+          "IAM-112",
+          "IAM-113",
+          "IAM-114",
+          "IAM-115",
+          "IAM-116",
+          "IAM-118",
+          "IAM-119",
+          "IAM-152",
+          "IAM-153",
+          "IAM-154",
+          "IAM-155",
+          "IAM-156",
+          "IAM-157",
+          "IAM-158",
+          "IAM-160",
+          "IAM-161"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Run against actual installed role as well as full supplied-policy certification"
+      }
+    },
+    {
+      "id": "IAM-153",
+      "label": "Command kms:Decrypt wrong service",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-key-and-context",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": true,
+      "actualRoleRequired": true,
+      "coverage": {
+        "certification": "IAM-153",
+        "installedWitnesses": [
+          "IAM-110",
+          "IAM-111",
+          "IAM-112",
+          "IAM-113",
+          "IAM-114",
+          "IAM-115",
+          "IAM-116",
+          "IAM-118",
+          "IAM-119",
+          "IAM-152",
+          "IAM-153",
+          "IAM-154",
+          "IAM-155",
+          "IAM-156",
+          "IAM-157",
+          "IAM-158",
+          "IAM-160",
+          "IAM-161"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Run against actual installed role as well as full supplied-policy certification"
+      }
+    },
+    {
+      "id": "IAM-154",
+      "label": "Command kms:Decrypt wrong account",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "000000000000",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-key-and-context",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": true,
+      "actualRoleRequired": true,
+      "coverage": {
+        "certification": "IAM-154",
+        "installedWitnesses": [
+          "IAM-110",
+          "IAM-111",
+          "IAM-112",
+          "IAM-113",
+          "IAM-114",
+          "IAM-115",
+          "IAM-116",
+          "IAM-118",
+          "IAM-119",
+          "IAM-152",
+          "IAM-153",
+          "IAM-154",
+          "IAM-155",
+          "IAM-156",
+          "IAM-157",
+          "IAM-158",
+          "IAM-160",
+          "IAM-161"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Run against actual installed role as well as full supplied-policy certification"
+      }
+    },
+    {
+      "id": "IAM-155",
+      "label": "Command kms:Decrypt missing account",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": null,
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-key-and-context",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": true,
+      "actualRoleRequired": true,
+      "coverage": {
+        "certification": "IAM-155",
+        "installedWitnesses": [
+          "IAM-110",
+          "IAM-111",
+          "IAM-112",
+          "IAM-113",
+          "IAM-114",
+          "IAM-115",
+          "IAM-116",
+          "IAM-118",
+          "IAM-119",
+          "IAM-152",
+          "IAM-153",
+          "IAM-154",
+          "IAM-155",
+          "IAM-156",
+          "IAM-157",
+          "IAM-158",
+          "IAM-160",
+          "IAM-161"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Run against actual installed role as well as full supplied-policy certification"
+      }
+    },
+    {
+      "id": "IAM-156",
+      "label": "Command kms:Decrypt missing context",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": null
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-key-and-context",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": true,
+      "actualRoleRequired": true,
+      "coverage": {
+        "certification": "IAM-156",
+        "installedWitnesses": [
+          "IAM-110",
+          "IAM-111",
+          "IAM-112",
+          "IAM-113",
+          "IAM-114",
+          "IAM-115",
+          "IAM-116",
+          "IAM-118",
+          "IAM-119",
+          "IAM-152",
+          "IAM-153",
+          "IAM-154",
+          "IAM-155",
+          "IAM-156",
+          "IAM-157",
+          "IAM-158",
+          "IAM-160",
+          "IAM-161"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Run against actual installed role as well as full supplied-policy certification"
+      }
+    },
+    {
+      "id": "IAM-157",
+      "label": "Command kms:Decrypt qualified context",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand:$LATEST"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-key-and-context",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": true,
+      "actualRoleRequired": true,
+      "coverage": {
+        "certification": "IAM-157",
+        "installedWitnesses": [
+          "IAM-110",
+          "IAM-111",
+          "IAM-112",
+          "IAM-113",
+          "IAM-114",
+          "IAM-115",
+          "IAM-116",
+          "IAM-118",
+          "IAM-119",
+          "IAM-152",
+          "IAM-153",
+          "IAM-154",
+          "IAM-155",
+          "IAM-156",
+          "IAM-157",
+          "IAM-158",
+          "IAM-160",
+          "IAM-161"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Run against actual installed role as well as full supplied-policy certification"
+      }
+    },
+    {
+      "id": "IAM-158",
+      "label": "Command kms:Decrypt foreign context",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand-other"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-key-and-context",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": true,
+      "actualRoleRequired": true,
+      "coverage": {
+        "certification": "IAM-158",
+        "installedWitnesses": [
+          "IAM-110",
+          "IAM-111",
+          "IAM-112",
+          "IAM-113",
+          "IAM-114",
+          "IAM-115",
+          "IAM-116",
+          "IAM-118",
+          "IAM-119",
+          "IAM-152",
+          "IAM-153",
+          "IAM-154",
+          "IAM-155",
+          "IAM-156",
+          "IAM-157",
+          "IAM-158",
+          "IAM-160",
+          "IAM-161"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Run against actual installed role as well as full supplied-policy certification"
+      }
+    },
+    {
+      "id": "IAM-159",
+      "label": "Command kms:Decrypt outside window",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:48:34Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "time-limit",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": true,
+      "actualRoleRequired": true,
+      "coverage": {
+        "certification": "IAM-159",
+        "installedWitnesses": [
+          "IAM-027",
+          "IAM-028",
+          "IAM-117",
+          "IAM-159"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Run against actual installed role as well as full supplied-policy certification"
+      }
+    },
+    {
+      "id": "IAM-162",
+      "label": "Command no speculative lambda:GetFunction",
+      "action": "lambda:GetFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "lambda-lifecycle-denial",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-162",
+        "installedWitnesses": [
+          "IAM-016"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-163",
+      "label": "Command no speculative kms:DescribeKey",
+      "action": "kms:DescribeKey",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-administration-and-speculative",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-163",
+        "installedWitnesses": [
+          "IAM-132"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-164",
+      "label": "Command no speculative kms:CreateGrant",
+      "action": "kms:CreateGrant",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-administration-and-speculative",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-164",
+        "installedWitnesses": [
+          "IAM-132"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-165",
+      "label": "Command no speculative kms:GenerateDataKey",
+      "action": "kms:GenerateDataKey",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-administration-and-speculative",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-165",
+        "installedWitnesses": [
+          "IAM-132"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-166",
+      "label": "Command no speculative kms:GenerateDataKeyWithoutPlaintext",
+      "action": "kms:GenerateDataKeyWithoutPlaintext",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-administration-and-speculative",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-166",
+        "installedWitnesses": [
+          "IAM-132"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-167",
+      "label": "Command no speculative kms:ReEncryptFrom",
+      "action": "kms:ReEncryptFrom",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-administration-and-speculative",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-167",
+        "installedWitnesses": [
+          "IAM-132"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-168",
+      "label": "Command no speculative kms:ReEncryptTo",
+      "action": "kms:ReEncryptTo",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-administration-and-speculative",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-168",
+        "installedWitnesses": [
+          "IAM-132"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-169",
+      "label": "Command no speculative kms:ScheduleKeyDeletion",
+      "action": "kms:ScheduleKeyDeletion",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-administration-and-speculative",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-169",
+        "installedWitnesses": [
+          "IAM-132"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-170",
+      "label": "Command no speculative kms:DisableKey",
+      "action": "kms:DisableKey",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "kms-administration-and-speculative",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-170",
+        "installedWitnesses": [
+          "IAM-132"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-203",
+      "label": "Legacy-Teamdynamodb:GetItem",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Legacy-Team",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "business-and-other-service-denial",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": true,
+      "actualRoleRequired": true,
+      "coverage": {
+        "certification": "IAM-203",
+        "installedWitnesses": [
+          "IAM-022",
+          "IAM-023",
+          "IAM-024",
+          "IAM-025",
+          "IAM-026",
+          "IAM-203",
+          "IAM-209"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Run against actual installed role as well as full supplied-policy certification"
+      }
+    },
+    {
+      "id": "IAM-204",
+      "label": "Legacy-Teamdynamodb:PutItem",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Legacy-Team",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "business-and-other-service-denial",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-204",
+        "installedWitnesses": [
+          "IAM-022",
+          "IAM-023",
+          "IAM-024",
+          "IAM-025",
+          "IAM-026",
+          "IAM-203",
+          "IAM-209"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-205",
+      "label": "ProjectRespawn-Core-Ntgre-Datadynamodb:GetItem",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Core-Ntgre-Data",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "business-and-other-service-denial",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-205",
+        "installedWitnesses": [
+          "IAM-022",
+          "IAM-023",
+          "IAM-024",
+          "IAM-025",
+          "IAM-026",
+          "IAM-203",
+          "IAM-209"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-206",
+      "label": "ProjectRespawn-Core-Ntgre-Datadynamodb:PutItem",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Core-Ntgre-Data",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "business-and-other-service-denial",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-206",
+        "installedWitnesses": [
+          "IAM-022",
+          "IAM-023",
+          "IAM-024",
+          "IAM-025",
+          "IAM-026",
+          "IAM-203",
+          "IAM-209"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-207",
+      "label": "ProjectRespawn-Tournaments-Ntgre-Datadynamodb:GetItem",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Tournaments-Ntgre-Data",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "business-and-other-service-denial",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-207",
+        "installedWitnesses": [
+          "IAM-022",
+          "IAM-023",
+          "IAM-024",
+          "IAM-025",
+          "IAM-026",
+          "IAM-203",
+          "IAM-209"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-208",
+      "label": "ProjectRespawn-Tournaments-Ntgre-Datadynamodb:PutItem",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Tournaments-Ntgre-Data",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "business-and-other-service-denial",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-208",
+        "installedWitnesses": [
+          "IAM-022",
+          "IAM-023",
+          "IAM-024",
+          "IAM-025",
+          "IAM-026",
+          "IAM-203",
+          "IAM-209"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    },
+    {
+      "id": "IAM-209",
+      "label": "ProjectRespawn-TeamHub-Ntgre-Operationaldynamodb:GetItem",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "business-and-other-service-denial",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": true,
+      "actualRoleRequired": true,
+      "coverage": {
+        "certification": "IAM-209",
+        "installedWitnesses": [
+          "IAM-022",
+          "IAM-023",
+          "IAM-024",
+          "IAM-025",
+          "IAM-026",
+          "IAM-203",
+          "IAM-209"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Run against actual installed role as well as full supplied-policy certification"
+      }
+    },
+    {
+      "id": "IAM-210",
+      "label": "ProjectRespawn-TeamHub-Ntgre-Operationaldynamodb:PutItem",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "aws:CurrentTime": "2026-10-11T22:34:34.000Z",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "expected": "explicitDeny",
+      "requirement": "business-and-other-service-denial",
+      "risk": "SECURITY_BOUNDARY_CRITICAL",
+      "previousInstalledResult": "UNFINISHED",
+      "critical": false,
+      "actualRoleRequired": false,
+      "coverage": {
+        "certification": "IAM-210",
+        "installedWitnesses": [
+          "IAM-022",
+          "IAM-023",
+          "IAM-024",
+          "IAM-025",
+          "IAM-026",
+          "IAM-203",
+          "IAM-209"
+        ],
+        "installationEquivalence": "INSTALL-EQUIVALENCE",
+        "rationale": "Exact case remains in full certification; installation equivalence plus actual-role category witnesses are mandatory. Not a claim that static certification models every external policy layer."
+      }
+    }
+  ]
+}

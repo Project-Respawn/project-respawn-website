@@ -1,0 +1,10 @@
+import fs from 'node:fs';import crypto from 'node:crypto';import {execFile} from 'node:child_process';import {promisify} from 'node:util';
+import {read,save} from './execution.mjs';
+const exec=promisify(execFile),secret=read('secret-metadata').secret.arn,start=read('product-executed').at;
+const r={at:new Date().toISOString(),start,secretArn:secret,events:[],complete:false,readRoleDecryptionProven:false,secretValueRead:false};
+let next,pages=0;
+do{const file='.tmp/team-hub-business-dark/'+crypto.randomUUID()+'.json';fs.writeFileSync(file,JSON.stringify({LookupAttributes:[{AttributeKey:'EventSource',AttributeValue:'kms.amazonaws.com'}],StartTime:start,MaxResults:50,...(next?{NextToken:next}:{})}));let response;try{const {stdout}=await exec('aws',['cloudtrail','lookup-events','--cli-input-json','file://'+file,'--profile','default','--region','eu-north-1','--output','json','--no-cli-pager','--no-paginate'],{windowsHide:true,maxBuffer:30e6,env:{...process.env,AWS_MAX_ATTEMPTS:'1'}});response=JSON.parse(stdout);}finally{fs.unlinkSync(file);}pages++;
+for(const item of response.Events??[]){const event=JSON.parse(item.CloudTrailEvent);if(event.requestParameters?.encryptionContext?.SecretARN!==secret)continue;r.events.push({eventId:event.eventID,eventTime:event.eventTime,eventName:event.eventName,region:event.awsRegion,identityArn:event.userIdentity?.arn,sessionIssuerArn:event.userIdentity?.sessionContext?.sessionIssuer?.arn,invokedBy:event.userIdentity?.invokedBy,keyId:event.requestParameters?.keyId,secretArn:event.requestParameters.encryptionContext.SecretARN,errorCode:event.errorCode??null});}
+next=response.NextToken;
+}while(next&&pages<10);
+r.pages=pages;r.complete=!next;r.executionGenerateDataKeyObserved=r.events.some(e=>e.eventName==='GenerateDataKey'&&!e.errorCode&&e.sessionIssuerArn?.endsWith(':role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution'));r.executionDecryptObserved=r.events.some(e=>e.eventName==='Decrypt'&&!e.errorCode&&e.sessionIssuerArn?.endsWith(':role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution'));save('kms-audit',r);console.log(JSON.stringify(r));

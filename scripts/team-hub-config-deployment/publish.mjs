@@ -1,0 +1,5 @@
+import assert from 'node:assert/strict';import {aws,pin,save,identity} from './execution.mjs';
+const kind=process.argv[2];assert.ok(['security','product'].includes(kind));const c=pin();await identity();const key=kind==='security'?c.securityKey:c.key,checksum=Buffer.from(c[kind+'Sha256'],'hex').toString('base64');let h,created=false;
+try{h=await aws('s3api','head-object',{Bucket:c.bucket,Key:key,ChecksumMode:'ENABLED'});}catch(e){assert.match(e.message,/404|NotFound/);}
+if(!h){await aws('s3api','put-object',{Bucket:c.bucket,Key:key,Body:c.root+'/'+kind+'.template.json',ServerSideEncryption:'AES256',ChecksumSHA256:checksum});created=true;h=await aws('s3api','head-object',{Bucket:c.bucket,Key:key,ChecksumMode:'ENABLED'});}
+assert.equal(h.ServerSideEncryption,'AES256');assert.equal(h.ChecksumSHA256,checksum);save(kind+'-publication',{at:new Date().toISOString(),verified:true,key,sha256:c[kind+'Sha256'],encryption:h.ServerSideEncryption,created});console.log(JSON.stringify({kind,verified:true,created,key}));

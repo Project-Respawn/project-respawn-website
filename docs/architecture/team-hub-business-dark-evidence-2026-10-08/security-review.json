@@ -1,0 +1,1275 @@
+{
+  "at": "2026-10-08T22:13:38.492Z",
+  "candidateSecuritySha256": "ff226268cf9221d6f3b42bcd06dbc1525d12cbe841bacd79ced0ac60bb016067",
+  "analyzer": [
+    {
+      "policy": "Read",
+      "kind": "identity",
+      "findings": []
+    },
+    {
+      "policy": "Read",
+      "kind": "boundary",
+      "findings": []
+    },
+    {
+      "policy": "Command",
+      "kind": "identity",
+      "findings": []
+    },
+    {
+      "policy": "Command",
+      "kind": "boundary",
+      "findings": []
+    },
+    {
+      "policy": "Execution",
+      "kind": "identity",
+      "findings": []
+    },
+    {
+      "policy": "Execution",
+      "kind": "boundary",
+      "findings": []
+    },
+    {
+      "policy": "Caller",
+      "kind": "identity",
+      "findings": []
+    },
+    {
+      "policy": "Caller",
+      "kind": "boundary",
+      "findings": []
+    }
+  ],
+  "baseline": [
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofExecutionBoundary",
+      "version": "v9",
+      "unchanged": true
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-Deploy",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofPreparation",
+      "version": "v12",
+      "unchanged": true
+    }
+  ],
+  "checks": [
+    {
+      "label": "direct-call",
+      "kind": "Read",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "wrong-suffix-length",
+      "kind": "Read",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123Z",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "wrong-service",
+      "kind": "Read",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "exact-service-secret",
+      "kind": "Read",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": true,
+      "mode": "candidate",
+      "decision": "allowed"
+    },
+    {
+      "label": "wrong-secret",
+      "kind": "Read",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "wrong-service-region",
+      "kind": "Read",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-west-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "foreign-key-alias/customer-business",
+      "kind": "Read",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/customer-business"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "missing-context",
+      "kind": "Read",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "wrong-region",
+      "kind": "Read",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-west-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "wrong-caller",
+      "kind": "Read",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "111122223333",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "foreign-key-alias/aws/s3",
+      "kind": "Read",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/s3"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "kms:Encrypt",
+      "kind": "Read",
+      "action": "kms:Encrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "kms:GenerateDataKey",
+      "kind": "Read",
+      "action": "kms:GenerateDataKey",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "foreign-key-alias/unknown",
+      "kind": "Read",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/unknown"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "kms:CreateGrant",
+      "kind": "Read",
+      "action": "kms:CreateGrant",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "kms:ScheduleKeyDeletion",
+      "kind": "Read",
+      "action": "kms:ScheduleKeyDeletion",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "kms:PutKeyPolicy",
+      "kind": "Read",
+      "action": "kms:PutKeyPolicy",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "own-secret",
+      "kind": "Read",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "expected": true,
+      "mode": "candidate",
+      "decision": "allowed"
+    },
+    {
+      "label": "wrong-name",
+      "kind": "Read",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-Extra-ABC123",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "foreign-secret",
+      "kind": "Read",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "wrong-secret",
+      "kind": "Command",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "direct-call",
+      "kind": "Command",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "exact-service-secret",
+      "kind": "Command",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "wrong-service",
+      "kind": "Command",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "wrong-suffix-length",
+      "kind": "Command",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123Z",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "wrong-region",
+      "kind": "Command",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-west-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "missing-context",
+      "kind": "Command",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "wrong-service-region",
+      "kind": "Command",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-west-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "wrong-caller",
+      "kind": "Command",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "111122223333",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "foreign-key-alias/customer-business",
+      "kind": "Command",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/customer-business"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "foreign-key-alias/aws/s3",
+      "kind": "Command",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/s3"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "kms:Encrypt",
+      "kind": "Command",
+      "action": "kms:Encrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "kms:GenerateDataKey",
+      "kind": "Command",
+      "action": "kms:GenerateDataKey",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "kms:CreateGrant",
+      "kind": "Command",
+      "action": "kms:CreateGrant",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "foreign-key-alias/unknown",
+      "kind": "Command",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/unknown"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "kms:PutKeyPolicy",
+      "kind": "Command",
+      "action": "kms:PutKeyPolicy",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "kms:ScheduleKeyDeletion",
+      "kind": "Command",
+      "action": "kms:ScheduleKeyDeletion",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "own-secret",
+      "kind": "Command",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "wrong-name",
+      "kind": "Command",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-Extra-ABC123",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "foreign-secret",
+      "kind": "Command",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "exact-service-secret",
+      "kind": "Execution",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": true,
+      "mode": "candidate",
+      "decision": "allowed"
+    },
+    {
+      "label": "wrong-secret",
+      "kind": "Execution",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "wrong-suffix-length",
+      "kind": "Execution",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123Z",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "wrong-service",
+      "kind": "Execution",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "direct-call",
+      "kind": "Execution",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "foreign-key-alias/customer-business",
+      "kind": "Execution",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/customer-business"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "wrong-service-region",
+      "kind": "Execution",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-west-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "missing-context",
+      "kind": "Execution",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "wrong-region",
+      "kind": "Execution",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-west-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "implicitDeny"
+    },
+    {
+      "label": "wrong-caller",
+      "kind": "Execution",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "111122223333",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "implicitDeny"
+    },
+    {
+      "label": "kms:GenerateDataKey",
+      "kind": "Execution",
+      "action": "kms:GenerateDataKey",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": true,
+      "mode": "candidate",
+      "decision": "allowed"
+    },
+    {
+      "label": "foreign-key-alias/unknown",
+      "kind": "Execution",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/unknown"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "foreign-key-alias/aws/s3",
+      "kind": "Execution",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/s3"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "kms:CreateGrant",
+      "kind": "Execution",
+      "action": "kms:CreateGrant",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "kms:Encrypt",
+      "kind": "Execution",
+      "action": "kms:Encrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "kms:PutKeyPolicy",
+      "kind": "Execution",
+      "action": "kms:PutKeyPolicy",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "wrong-name",
+      "kind": "Execution",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-Extra-ABC123",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "own-secret",
+      "kind": "Execution",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "expected": true,
+      "mode": "candidate",
+      "decision": "allowed"
+    },
+    {
+      "label": "foreign-secret",
+      "kind": "Execution",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "kms:ScheduleKeyDeletion",
+      "kind": "Execution",
+      "action": "kms:ScheduleKeyDeletion",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+        "kms:ResourceAliases": [
+          "alias/aws/secretsmanager"
+        ]
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "lambda-service-preserved",
+      "kind": "Command",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "context": {
+        "kms:ResourceAliases": [
+          "alias/aws/lambda"
+        ]
+      },
+      "expected": true,
+      "mode": "candidate",
+      "decision": "allowed"
+    },
+    {
+      "label": "lambda-service-preserved",
+      "kind": "Read",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "context": {
+        "kms:ResourceAliases": [
+          "alias/aws/lambda"
+        ]
+      },
+      "expected": true,
+      "mode": "candidate",
+      "decision": "allowed"
+    },
+    {
+      "label": "template-https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/team-hub/cursor-security/a48e15fa6dc9af763494ffbc9f7ee5a502c91b340351cfd550d39d442476bbad.template.json",
+      "kind": "Caller",
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "cloudformation:RoleArn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+        "cloudformation:TemplateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/team-hub/cursor-security/a48e15fa6dc9af763494ffbc9f7ee5a502c91b340351cfd550d39d442476bbad.template.json"
+      },
+      "expected": true,
+      "mode": "candidate",
+      "decision": "allowed"
+    },
+    {
+      "label": "foreign-api",
+      "kind": "Execution",
+      "action": "apigateway:POST",
+      "resource": "arn:aws:apigateway:eu-north-1::/apis/msipnwy39j/routes",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "own-api",
+      "kind": "Execution",
+      "action": "apigateway:POST",
+      "resource": "arn:aws:apigateway:eu-north-1::/apis/t54b88casf/routes",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "expected": true,
+      "mode": "candidate",
+      "decision": "allowed"
+    },
+    {
+      "label": "template-https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/team-hub/as/5a2d99f4919fd07c619f483e556a0464b9cbaad0be00665201438b0f4ec7d0e9.template.json",
+      "kind": "Caller",
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "cloudformation:RoleArn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+        "cloudformation:TemplateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/team-hub/as/5a2d99f4919fd07c619f483e556a0464b9cbaad0be00665201438b0f4ec7d0e9.template.json"
+      },
+      "expected": true,
+      "mode": "candidate",
+      "decision": "allowed"
+    },
+    {
+      "label": "template-https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/team-hub/business/eb1952c63f619d04a06dc6843ad1ba10e685cdeec6d7690a8ab3086ae50c3b8c.template.json",
+      "kind": "Caller",
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*",
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "cloudformation:RoleArn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+        "cloudformation:TemplateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/team-hub/business/eb1952c63f619d04a06dc6843ad1ba10e685cdeec6d7690a8ab3086ae50c3b8c.template.json"
+      },
+      "expected": false,
+      "mode": "candidate",
+      "decision": "implicitDeny"
+    },
+    {
+      "mode": "actual",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "decision": "explicitDeny",
+      "expected": false
+    },
+    {
+      "mode": "actual",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "decision": "explicitDeny",
+      "expected": false
+    },
+    {
+      "mode": "actual",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "decision": "explicitDeny",
+      "expected": false
+    },
+    {
+      "mode": "actual",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "decision": "explicitDeny",
+      "expected": false
+    },
+    {
+      "mode": "actual",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Contracts",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "decision": "explicitDeny",
+      "expected": false
+    },
+    {
+      "mode": "actual",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Contracts",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "decision": "implicitDeny",
+      "expected": false
+    },
+    {
+      "mode": "overgrant-negative-control",
+      "kind": "Read",
+      "label": "wrong-secret",
+      "decision": "explicitDeny"
+    },
+    {
+      "mode": "overgrant-negative-control",
+      "kind": "Read",
+      "label": "direct-call",
+      "decision": "explicitDeny"
+    },
+    {
+      "mode": "overgrant-negative-control",
+      "kind": "Read",
+      "label": "foreign-key-alias/customer-business",
+      "decision": "explicitDeny"
+    },
+    {
+      "mode": "overgrant-negative-control",
+      "kind": "Read",
+      "label": "kms:PutKeyPolicy",
+      "decision": "explicitDeny"
+    },
+    {
+      "mode": "overgrant-negative-control",
+      "kind": "Execution",
+      "label": "wrong-secret",
+      "decision": "explicitDeny"
+    },
+    {
+      "mode": "overgrant-negative-control",
+      "kind": "Execution",
+      "label": "direct-call",
+      "decision": "explicitDeny"
+    },
+    {
+      "mode": "overgrant-negative-control",
+      "kind": "Execution",
+      "label": "foreign-key-alias/customer-business",
+      "decision": "explicitDeny"
+    },
+    {
+      "mode": "overgrant-negative-control",
+      "kind": "Execution",
+      "label": "kms:PutKeyPolicy",
+      "decision": "explicitDeny"
+    }
+  ],
+  "complete": true,
+  "liveDecryptionProven": false,
+  "awsWrites": 0
+}

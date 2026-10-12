@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {aws,read,save} from './aws.mjs';
+import {verify} from './pins.mjs';
+const c=verify(),r={at:new Date().toISOString(),secretValueRead:false,liveReadRoleDecryptionProven:false,complete:false};
+const resources=(await aws('cloudformation','list-stack-resources',{StackName:'ProjectRespawn-TeamHub-Ntgre'})).StackResourceSummaries;
+assert.equal(resources.filter(x=>x.ResourceStatus!=='DELETE_COMPLETE').length,48);
+const physical=resources.find(x=>x.LogicalResourceId==='CursorSecret').PhysicalResourceId;
+const meta=await aws('secretsmanager','describe-secret',{SecretId:physical});assert.equal(meta.Name,c.secretName);assert.match(meta.ARN,/^arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-[A-Za-z0-9]{6}$/);assert.ok(!meta.DeletedDate);assert.ok(Object.values(meta.VersionIdsToStages??{}).some(v=>v.includes('AWSCURRENT')));
+const key=(await aws('kms','describe-key',{KeyId:meta.KmsKeyId??'alias/aws/secretsmanager'})).KeyMetadata;assert.equal(key.Arn,c.keyArn);assert.equal(key.KeyManager,'AWS');assert.equal(key.KeyState,'Enabled');
+r.secret={arn:meta.ARN,name:meta.Name,kmsKeyId:meta.KmsKeyId??'DEFAULT_ALIAS_AWS_SECRETSMANAGER',createdDate:meta.CreatedDate,versionCount:Object.keys(meta.VersionIdsToStages??{}).length,tags:meta.Tags};r.key={arn:key.Arn,keyManager:key.KeyManager,state:key.KeyState};r.complete=true;save('secret-metadata',r);console.log(JSON.stringify(r));

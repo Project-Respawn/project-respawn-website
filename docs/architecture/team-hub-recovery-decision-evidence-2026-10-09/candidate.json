@@ -1,0 +1,36 @@
+{
+  "recommendation": "B_FIXED_TEMPORARY_WORKFLOW_DIRECT_CONFIGURATION_RECOVERY",
+  "status": "PREPARED_NOT_EXECUTED",
+  "securityTemplateSha256": "9a61c017c98635553f710feee28a0b39aabdc2d49f6a68a1e15c4456fd37b164",
+  "workflowSha256": "862082291eb7052f069338212b552030678335afa93fc64ebeb2b28fea5a5376",
+  "requests": [
+    {
+      "kind": "Read",
+      "path": "docs/architecture/team-hub-recovery-decision-evidence-2026-10-09/read-request.json",
+      "sha256": "048e5028ea500173b3fdeed123d43dcb1d649590466fafd976f006308a5993b7",
+      "revisionId": "4491176f-baaa-4180-8aa2-0e6e96bc51a8"
+    },
+    {
+      "kind": "Command",
+      "path": "docs/architecture/team-hub-recovery-decision-evidence-2026-10-09/command-request.json",
+      "sha256": "b92e1d40d6a3dc068ff9ea71c25805f3d747eb87a35afba31eac32e5fd153c51",
+      "revisionId": "50dc3a50-7388-467f-a302-1bf33cd051cf"
+    }
+  ],
+  "productTemplateSha256": "a48e15fa6dc9af763494ffbc9f7ee5a502c91b340351cfd550d39d442476bbad",
+  "runtimeSha256": "da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e",
+  "installedSecurityUnchanged": "8ff956315649ea5741040f7da2347a0d84dea4af0f6b43226f8f027c6bd1db27",
+  "windowBinding": "Fresh UTC NotBefore/ExpiresAt, maximum 900 seconds. Validate and hash parameter receipt before execution authorization. No default window.",
+  "temporaryResources": 2,
+  "productResourcesUnchanged": 48,
+  "securityResourcesUnchanged": 7,
+  "executionAuthorized": false,
+  "noRetries": true,
+  "noAutomaticRollback": true,
+  "requiredExternalGates": [
+    "Fresh full configuration/RevisionId and non-environment equality",
+    "Authority LEGACY_WRITER epoch/version 1; empty target state; no fence/frontend activation",
+    "Security operator custody; exact two-resource security change-set inspection; validate definition and IAM; empty workflow input",
+    "Preserve history, remove only temporary role/workflow; compare complete maps/non-environment fields and fresh Lambda drift"
+  ]
+}

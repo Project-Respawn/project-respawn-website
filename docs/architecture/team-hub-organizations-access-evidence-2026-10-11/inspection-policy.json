@@ -1,0 +1,64 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "OrganizationMetadata",
+      "Effect": "Allow",
+      "Action": [
+        "organizations:DescribeOrganization",
+        "organizations:ListRoots"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:PrincipalAccount": "195275633034"
+        }
+      }
+    },
+    {
+      "Sid": "FindTargetAncestors",
+      "Effect": "Allow",
+      "Action": "organizations:ListParents",
+      "Resource": [
+        "arn:aws:organizations::195275633034:account/o-w6qzgozcgy/058264289478",
+        "arn:aws:organizations::195275633034:ou/o-w6qzgozcgy/*"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "aws:PrincipalAccount": "195275633034"
+        }
+      }
+    },
+    {
+      "Sid": "ListScpsOnTargetAndAncestors",
+      "Effect": "Allow",
+      "Action": "organizations:ListPoliciesForTarget",
+      "Resource": [
+        "arn:aws:organizations::195275633034:account/o-w6qzgozcgy/058264289478",
+        "arn:aws:organizations::195275633034:ou/o-w6qzgozcgy/*",
+        "arn:aws:organizations::195275633034:root/o-w6qzgozcgy/*"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "aws:PrincipalAccount": "195275633034",
+          "organizations:PolicyType": "SERVICE_CONTROL_POLICY"
+        }
+      }
+    },
+    {
+      "Sid": "ReadOrganizationScps",
+      "Effect": "Allow",
+      "Action": "organizations:DescribePolicy",
+      "Resource": [
+        "arn:aws:organizations::195275633034:policy/o-w6qzgozcgy/service_control_policy/*",
+        "arn:aws:organizations::aws:policy/service_control_policy/*"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "aws:PrincipalAccount": "195275633034",
+          "organizations:PolicyType": "SERVICE_CONTROL_POLICY"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "at": "2026-10-08T17:20:17.235Z",
+  "engine": "Amazon DynamoDB Local",
+  "imageDigest": "sha256:ff89bd48ff32cd8d9be5fee8873b65b8854dc408f1afe881be6eb00247bc0dab",
+  "endpoint": "loopback only",
+  "awsWrites": 0,
+  "liveAwsProof": false,
+  "core": "isolated contract fixture; not live Core acceptance",
+  "results": [
+    {
+      "name": "41 real-engine mutation/privacy/concurrency assertions",
+      "passed": true
+    },
+    {
+      "name": "LEGACY_WRITER denies without transaction",
+      "passed": true
+    },
+    {
+      "name": "FROZEN denies without transaction",
+      "passed": true
+    },
+    {
+      "name": "missing authority fails closed",
+      "passed": true
+    },
+    {
+      "name": "stale and missing client epochs fail closed",
+      "passed": true
+    },
+    {
+      "name": "freeze immediately before transaction cancels every write",
+      "passed": true
+    },
+    {
+      "name": "epoch change immediately before transaction cancels every write",
+      "passed": true
+    },
+    {
+      "name": "idempotent replay preserves business/audit counts and revoked admin denied",
+      "passed": true
+    }
+  ],
+  "transactions": 19,
+  "cleanup": "local tables deleted",
+  "complete": true
+}

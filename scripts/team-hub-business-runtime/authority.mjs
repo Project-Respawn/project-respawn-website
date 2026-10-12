@@ -1,0 +1,6 @@
+import assert from 'node:assert/strict';import {aws,identity,json,save,P,product} from './aws.mjs';
+const r={at:new Date().toISOString(),identity:await identity(),complete:false};const key={PK:{S:'CONTROL#AUTHORITY'},SK:{S:'STATE'}};
+r.read=await aws('dynamodb','get-item',{TableName:product+'-Journal',Key:key,ConsistentRead:true});assert.deepEqual(r.read.Item,json(P+'/c1-request.json').Item);
+const q=await aws('dynamodb','query',{TableName:product+'-Journal',KeyConditionExpression:'PK = :pk',ExpressionAttributeValues:{':pk':key.PK},ConsistentRead:true});assert.equal(q.Count,1);assert.ok(!q.LastEvaluatedKey);r.authorityPartitionCount=q.Count;
+for(const [s,a,input,code] of [['iam','get-role',{RoleName:product+'-C1Initialize'},'NoSuchEntity'],['stepfunctions','describe-state-machine',{stateMachineArn:'arn:aws:states:eu-north-1:058264289478:stateMachine:'+product+'-C1Initialize'},'StateMachineDoesNotExist']]){let absent=false;try{await aws(s,a,input);}catch(e){assert.ok(e.message.includes(code),e.message);absent=true;}assert.ok(absent);}
+r.c1ResourcesAbsent=true;r.complete=true;save('authority-after',r);console.log(JSON.stringify({complete:true,mode:r.read.Item.mode.S,epoch:1,version:1,c1ResourcesAbsent:true}));

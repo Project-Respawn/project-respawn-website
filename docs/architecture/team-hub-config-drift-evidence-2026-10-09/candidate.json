@@ -1,0 +1,26 @@
+{
+  "status": "BLOCKED_PROVIDER_READ_PERMISSION_REVIEW",
+  "mechanism": "REVERT_DRIFT; different reconciliation request, not retry of traditional whitespace-only change set",
+  "requestSha256": "fa436476679d2d2778bf9d6469336c39b84ac7e818da0ba808aed8b4eaeb4887",
+  "productSha256": "38ea59476109a3b16348fb789364462af43f2813ff3eec7f92bfadb9581d6a4f",
+  "securitySha256": "8ff956315649ea5741040f7da2347a0d84dea4af0f6b43226f8f027c6bd1db27",
+  "runtimeSha256": "da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e",
+  "rollbackProductSha256": "5a2d99f4919fd07c619f483e556a0464b9cbaad0be00665201438b0f4ec7d0e9",
+  "expectedChanges": {
+    "additions": 0,
+    "modifications": [
+      "ParityReadFunction.Environment",
+      "ParityCommandFunction.Environment"
+    ],
+    "deletions": 0,
+    "replacements": 0
+  },
+  "noTemplateRuntimeOrSecurityEdits": true,
+  "executionAuthorized": false,
+  "creationAuthorized": false,
+  "blockingReview": [
+    "Provider declares GetFunctionCodeSigningConfig and GetFunctionScalingConfig; current role has no Allow. Do not add IAM without separate review; determine actual required read path.",
+    "Whole-stack REVERT_DRIFT preview must include actual-state Environment changes for both functions and no unrelated changes; abort on empty/incomplete/unsupported/read failures."
+  ],
+  "liveProofRequired": true
+}

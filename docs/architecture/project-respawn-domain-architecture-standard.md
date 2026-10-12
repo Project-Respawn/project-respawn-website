@@ -1,5 +1,7 @@
 # Project Respawn domain architecture standard
 
+**Current consolidation — 12 October 2026:** [Migration control](README-PHASE2-MIGRATION.md) and [status JSON](domain-migration-status.json) select current domain gates. Core contracts are independently deployed (8+5), while existing Cognito remains protected in Legacy. Team Hub recovery is accepted (48+7), LEGACY_WRITER 1/1 and frontend unchanged; isolated AWS transaction/cursor proofs remain next. Tournament Release 2/rollback remains pending. Earlier dated milestones below describe historical context, not current sequencing authority. Apply the [deployment acceptance standard](project-respawn-aws-deployment-acceptance-standard.md) and [M0–M8 worksheet](domain-migration-template.md).
+
 Effective 4 October 2026. **Mandatory for every substantial new section and every extraction from LegacyPlatform.** This is a repository architecture decision, not deployment or migration authorization. Phase 2A Release 2 is paused. This task changes documentation only: no AWS operations, synthesis, deployment, implementation or data movement.
 
 **One website, one shared identity authority per environment, multiple independent product domains.** One login serves authorized products within that environment. Ntgre, staging and production identities are not interchangeable. No product gets its own Cognito pool merely because it gets an independent API.
@@ -26,7 +28,7 @@ Existing coupled code is recorded migration debt, not implied compliance. Do not
 
 ## 2. Shared/Core: a bounded responsibility
 
-Core physically remains within LegacyPlatform initially. Logical Core ownership does not imply a new Core stack, a pool move, or ownership of every currently shared Lambda/provider.
+Core has an accepted independent authorization/directory contract runtime. Existing Cognito and other shared state remain physically in LegacyPlatform; logical ownership does not authorize a pool move or claim every shared provider.
 
 | Core owns | Boundary |
 |---|---|
@@ -192,4 +194,4 @@ Use negative fixtures that deliberately violate each rule and positive fixtures 
 
 Complete the [new-domain checklist](new-domain-checklist.md) in the issue/PR, link evidence and name each unresolved decision. Apply it to existing-domain extensions proportionately and to each migration stage fully. Review ownership, identity, privacy, contracts, runtime permissions, lifecycle, growth, performance and reversibility together. An exception must be documented, scoped and explicitly approved; architecture approval never overrides the protected Ntgre rules or authorizes AWS actions.
 
-The immediate next stage is a separately authorized plan to finish Tournament-only Release 2 and independent rollback to Release 1. This standard does not resume or execute that paused work.
+The immediate Team Hub gate is isolated AWS transaction/cursor verification under separate approval. Tournament Release 2/rollback remains an independent pending milestone; this standard executes neither.

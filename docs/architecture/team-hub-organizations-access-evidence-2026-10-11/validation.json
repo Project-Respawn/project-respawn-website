@@ -1,0 +1,303 @@
+{
+  "at": "2026-10-11T22:18:00.706Z",
+  "policySha256": "d73d80c734a1f86fdb3b12b270a97827bfaddea81b8e6f9aead1dd8b61743975",
+  "awsWrites": 0,
+  "checks": [
+    {
+      "principal": "195275633034",
+      "action": "organizations:DescribeOrganization",
+      "resource": "*",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "principal": "195275633034",
+      "action": "organizations:ListRoots",
+      "resource": "*",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "principal": "195275633034",
+      "action": "organizations:ListParents",
+      "resource": "arn:aws:organizations::195275633034:account/o-w6qzgozcgy/058264289478",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "principal": "195275633034",
+      "action": "organizations:ListParents",
+      "resource": "arn:aws:organizations::195275633034:ou/o-w6qzgozcgy/ou-test-example",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "principal": "195275633034",
+      "action": "organizations:ListPoliciesForTarget",
+      "resource": "arn:aws:organizations::195275633034:account/o-w6qzgozcgy/058264289478",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "principal": "195275633034",
+      "action": "organizations:ListPoliciesForTarget",
+      "resource": "arn:aws:organizations::195275633034:root/o-w6qzgozcgy/r-test",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "principal": "195275633034",
+      "action": "organizations:DescribePolicy",
+      "resource": "arn:aws:organizations::195275633034:policy/o-w6qzgozcgy/service_control_policy/p-example",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "principal": "195275633034",
+      "action": "organizations:DescribePolicy",
+      "resource": "arn:aws:organizations::aws:policy/service_control_policy/p-FullAWSAccess",
+      "expected": "allowed",
+      "actual": "allowed"
+    },
+    {
+      "principal": "195275633034",
+      "action": "organizations:ListParents",
+      "resource": "arn:aws:organizations::195275633034:account/o-w6qzgozcgy/111111111111",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "195275633034",
+      "action": "organizations:DescribePolicy",
+      "resource": "arn:aws:organizations::195275633034:policy/o-other/service_control_policy/p-example",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "195275633034",
+      "action": "organizations:DescribePolicy",
+      "resource": "arn:aws:organizations::195275633034:policy/o-w6qzgozcgy/tag_policy/p-example",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "195275633034",
+      "action": "organizations:AttachPolicy",
+      "resource": "*",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "195275633034",
+      "action": "organizations:DetachPolicy",
+      "resource": "*",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "195275633034",
+      "action": "organizations:UpdatePolicy",
+      "resource": "*",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "195275633034",
+      "action": "organizations:CreatePolicy",
+      "resource": "*",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "195275633034",
+      "action": "organizations:PutResourcePolicy",
+      "resource": "*",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "195275633034",
+      "action": "organizations:RegisterDelegatedAdministrator",
+      "resource": "*",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "195275633034",
+      "action": "iam:PassRole",
+      "resource": "*",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "195275633034",
+      "action": "lambda:UpdateFunctionConfiguration",
+      "resource": "*",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "195275633034",
+      "action": "kms:Decrypt",
+      "resource": "*",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "058264289478",
+      "action": "organizations:DescribeOrganization",
+      "resource": "*",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "058264289478",
+      "action": "organizations:ListRoots",
+      "resource": "*",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "058264289478",
+      "action": "organizations:ListParents",
+      "resource": "arn:aws:organizations::195275633034:account/o-w6qzgozcgy/058264289478",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "058264289478",
+      "action": "organizations:ListParents",
+      "resource": "arn:aws:organizations::195275633034:ou/o-w6qzgozcgy/ou-test-example",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "058264289478",
+      "action": "organizations:ListPoliciesForTarget",
+      "resource": "arn:aws:organizations::195275633034:account/o-w6qzgozcgy/058264289478",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "058264289478",
+      "action": "organizations:ListPoliciesForTarget",
+      "resource": "arn:aws:organizations::195275633034:root/o-w6qzgozcgy/r-test",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "058264289478",
+      "action": "organizations:DescribePolicy",
+      "resource": "arn:aws:organizations::195275633034:policy/o-w6qzgozcgy/service_control_policy/p-example",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "058264289478",
+      "action": "organizations:DescribePolicy",
+      "resource": "arn:aws:organizations::aws:policy/service_control_policy/p-FullAWSAccess",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "058264289478",
+      "action": "organizations:ListParents",
+      "resource": "arn:aws:organizations::195275633034:account/o-w6qzgozcgy/111111111111",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "058264289478",
+      "action": "organizations:DescribePolicy",
+      "resource": "arn:aws:organizations::195275633034:policy/o-other/service_control_policy/p-example",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "058264289478",
+      "action": "organizations:DescribePolicy",
+      "resource": "arn:aws:organizations::195275633034:policy/o-w6qzgozcgy/tag_policy/p-example",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "058264289478",
+      "action": "organizations:AttachPolicy",
+      "resource": "*",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "058264289478",
+      "action": "organizations:DetachPolicy",
+      "resource": "*",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "058264289478",
+      "action": "organizations:UpdatePolicy",
+      "resource": "*",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "058264289478",
+      "action": "organizations:CreatePolicy",
+      "resource": "*",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "058264289478",
+      "action": "organizations:PutResourcePolicy",
+      "resource": "*",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "058264289478",
+      "action": "organizations:RegisterDelegatedAdministrator",
+      "resource": "*",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "058264289478",
+      "action": "iam:PassRole",
+      "resource": "*",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "058264289478",
+      "action": "lambda:UpdateFunctionConfiguration",
+      "resource": "*",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    },
+    {
+      "principal": "058264289478",
+      "action": "kms:Decrypt",
+      "resource": "*",
+      "expected": "implicitDeny",
+      "actual": "implicitDeny"
+    }
+  ],
+  "complete": true,
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "organization": {
+    "id": "o-w6qzgozcgy",
+    "managementAccountId": "195275633034",
+    "callerAccount": "058264289478",
+    "classification": "MEMBER"
+  },
+  "analyzer": {
+    "findings": []
+  },
+  "note": "Supplied-policy simulation only; not management identity availability, trust, SCP visibility or effective combined-role proof"
+}

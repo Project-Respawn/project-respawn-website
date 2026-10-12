@@ -1,0 +1,107 @@
+{
+  "at": "2026-10-09T05:58:11.592Z",
+  "checks": [
+    {
+      "action": "CreateSecret",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "action": "CreateSecret",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "action": "DescribeSecret",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "action": "DescribeSecret",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "action": "TagResource",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "action": "TagResource",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "action": "GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "action": "GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "action": "UpdateSecret",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "action": "UpdateSecret",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "action": "PutSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "action": "PutSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "action": "DeleteSecret",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "action": "DeleteSecret",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "action": "ReplicateSecretToRegions",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "action": "ReplicateSecretToRegions",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "action": "GetRandomPassword",
+      "decision": "allowed"
+    }
+  ],
+  "complete": true,
+  "awsWrites": 0
+}

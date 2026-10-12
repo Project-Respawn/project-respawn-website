@@ -1,0 +1,241 @@
+{
+  "events": [
+    {
+      "timestamp": "2026-10-10T07:32:22.311000+01:00",
+      "type": "ExecutionStarted",
+      "id": 1,
+      "previousEventId": 0,
+      "executionStartedEventDetails": {
+        "input": "{}",
+        "inputDetails": {
+          "truncated": false
+        },
+        "roleArn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009"
+      }
+    },
+    {
+      "timestamp": "2026-10-10T07:32:22.329000+01:00",
+      "type": "PassStateEntered",
+      "id": 2,
+      "previousEventId": 0,
+      "stateEnteredEventDetails": {
+        "name": "Input",
+        "input": "{}",
+        "inputDetails": {
+          "truncated": false
+        }
+      }
+    },
+    {
+      "timestamp": "2026-10-10T07:32:22.329000+01:00",
+      "type": "PassStateExited",
+      "id": 3,
+      "previousEventId": 2,
+      "stateExitedEventDetails": {
+        "name": "Input",
+        "output": "{\"serialized\":\"{}\"}",
+        "outputDetails": {
+          "truncated": false
+        }
+      }
+    },
+    {
+      "timestamp": "2026-10-10T07:32:22.329000+01:00",
+      "type": "ChoiceStateEntered",
+      "id": 4,
+      "previousEventId": 3,
+      "stateEnteredEventDetails": {
+        "name": "EmptyInput",
+        "input": "{\"serialized\":\"{}\"}",
+        "inputDetails": {
+          "truncated": false
+        }
+      }
+    },
+    {
+      "timestamp": "2026-10-10T07:32:22.329000+01:00",
+      "type": "ChoiceStateExited",
+      "id": 5,
+      "previousEventId": 4,
+      "stateExitedEventDetails": {
+        "name": "EmptyInput",
+        "output": "{\"serialized\":\"{}\"}",
+        "outputDetails": {
+          "truncated": false
+        }
+      }
+    },
+    {
+      "timestamp": "2026-10-10T07:32:22.329000+01:00",
+      "type": "TaskStateEntered",
+      "id": 6,
+      "previousEventId": 5,
+      "stateEnteredEventDetails": {
+        "name": "ReadBefore",
+        "input": "{\"serialized\":\"{}\"}",
+        "inputDetails": {
+          "truncated": false
+        }
+      }
+    },
+    {
+      "timestamp": "2026-10-10T07:32:22.329000+01:00",
+      "type": "TaskScheduled",
+      "id": 7,
+      "previousEventId": 6,
+      "taskScheduledEventDetails": {
+        "resourceType": "aws-sdk:lambda",
+        "resource": "getFunctionConfiguration",
+        "region": "eu-north-1",
+        "parameters": "{\"FunctionName\":\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead\"}"
+      }
+    },
+    {
+      "timestamp": "2026-10-10T07:32:22.381000+01:00",
+      "type": "TaskStarted",
+      "id": 8,
+      "previousEventId": 7,
+      "taskStartedEventDetails": {
+        "resourceType": "aws-sdk:lambda",
+        "resource": "getFunctionConfiguration"
+      }
+    },
+    {
+      "timestamp": "2026-10-10T07:32:22.541000+01:00",
+      "type": "TaskSucceeded",
+      "id": 9,
+      "previousEventId": 8,
+      "taskSucceededEventDetails": {
+        "resourceType": "aws-sdk:lambda",
+        "resource": "getFunctionConfiguration",
+        "output": "{\"Architectures\":[\"arm64\"],\"CodeSha256\":\"2oyiXo3iNWyd85QMjeUqHVreczBCX4ifw8PvmVj9Gz4=\",\"CodeSize\":1969650,\"Description\":\"\",\"Environment\":{\"Variables\":{\"TEAM_HUB_RUNTIME\":\"read\",\"TEAM_HUB_AUTHORITY\":\"LEGACY_WRITER\",\"TEAM_HUB_STAGE\":\"PRE_CUTOVER\",\"EXPECTED_ISSUER\":\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\",\"TEAM_HUB_NORMAL_WRITES\":\"DISABLED\",\"TEAM_HUB_VERIFICATION\":\"{\\\"mode\\\":\\\"DISABLED\\\",\\\"authority\\\":\\\"LEGACY_WRITER\\\"}\",\"EXPECTED_POOL_ID\":\"eu-north-1_n24iLL7QE\",\"EXPECTED_CLIENT_ID\":\"1iq7ovjaf7d16imdvbqgfgvf86\"}},\"EphemeralStorage\":{\"Size\":512},\"FunctionArn\":\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"FunctionName\":\"ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"Handler\":\"index.handler\",\"LastModified\":\"2026-10-08T22:25:10.000+0000\",\"LastUpdateStatus\":\"Successful\",\"LoggingConfig\":{\"ApplicationLogLevel\":\"INFO\",\"LogFormat\":\"JSON\",\"LogGroup\":\"/project-respawn/Ntgre/team-hub/parity-read\",\"SystemLogLevel\":\"INFO\"},\"MemorySize\":256,\"PackageType\":\"Zip\",\"RevisionId\":\"4491176f-baaa-4180-8aa2-0e6e96bc51a8\",\"Role\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"Runtime\":\"nodejs22.x\",\"RuntimeVersionConfig\":{\"RuntimeVersionArn\":\"arn:aws:lambda:eu-north-1::runtime:775dab0d220a0b97f3ec34fe1692d7a07b5d13049153b00f03204c9543bd69e4\"},\"SnapStart\":{\"ApplyOn\":\"None\",\"OptimizationStatus\":\"Off\"},\"State\":\"Active\",\"Timeout\":15,\"TracingConfig\":{\"Mode\":\"PassThrough\"},\"Version\":\"$LATEST\",\"VpcConfig\":{\"Ipv6AllowedForDualStack\":false,\"SecurityGroupIds\":[],\"SubnetIds\":[],\"VpcId\":\"\"}}",
+        "outputDetails": {
+          "truncated": false
+        }
+      }
+    },
+    {
+      "timestamp": "2026-10-10T07:32:22.559000+01:00",
+      "type": "TaskStateExited",
+      "id": 10,
+      "previousEventId": 9,
+      "stateExitedEventDetails": {
+        "name": "ReadBefore",
+        "output": "{\"serialized\":\"{}\",\"configuration\":{\"Architectures\":[\"arm64\"],\"CodeSha256\":\"2oyiXo3iNWyd85QMjeUqHVreczBCX4ifw8PvmVj9Gz4=\",\"CodeSize\":1969650,\"Description\":\"\",\"Environment\":{\"Variables\":{\"TEAM_HUB_RUNTIME\":\"read\",\"TEAM_HUB_AUTHORITY\":\"LEGACY_WRITER\",\"TEAM_HUB_STAGE\":\"PRE_CUTOVER\",\"EXPECTED_ISSUER\":\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\",\"TEAM_HUB_NORMAL_WRITES\":\"DISABLED\",\"TEAM_HUB_VERIFICATION\":\"{\\\"mode\\\":\\\"DISABLED\\\",\\\"authority\\\":\\\"LEGACY_WRITER\\\"}\",\"EXPECTED_POOL_ID\":\"eu-north-1_n24iLL7QE\",\"EXPECTED_CLIENT_ID\":\"1iq7ovjaf7d16imdvbqgfgvf86\"}},\"EphemeralStorage\":{\"Size\":512},\"FunctionArn\":\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"FunctionName\":\"ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"Handler\":\"index.handler\",\"LastModified\":\"2026-10-08T22:25:10.000+0000\",\"LastUpdateStatus\":\"Successful\",\"LoggingConfig\":{\"ApplicationLogLevel\":\"INFO\",\"LogFormat\":\"JSON\",\"LogGroup\":\"/project-respawn/Ntgre/team-hub/parity-read\",\"SystemLogLevel\":\"INFO\"},\"MemorySize\":256,\"PackageType\":\"Zip\",\"RevisionId\":\"4491176f-baaa-4180-8aa2-0e6e96bc51a8\",\"Role\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"Runtime\":\"nodejs22.x\",\"RuntimeVersionConfig\":{\"RuntimeVersionArn\":\"arn:aws:lambda:eu-north-1::runtime:775dab0d220a0b97f3ec34fe1692d7a07b5d13049153b00f03204c9543bd69e4\"},\"SnapStart\":{\"ApplyOn\":\"None\",\"OptimizationStatus\":\"Off\"},\"State\":\"Active\",\"Timeout\":15,\"TracingConfig\":{\"Mode\":\"PassThrough\"},\"Version\":\"$LATEST\",\"VpcConfig\":{\"Ipv6AllowedForDualStack\":false,\"SecurityGroupIds\":[],\"SubnetIds\":[],\"VpcId\":\"\"}}}",
+        "outputDetails": {
+          "truncated": false
+        }
+      }
+    },
+    {
+      "timestamp": "2026-10-10T07:32:22.559000+01:00",
+      "type": "ChoiceStateEntered",
+      "id": 11,
+      "previousEventId": 10,
+      "stateEnteredEventDetails": {
+        "name": "ReadRevision",
+        "input": "{\"serialized\":\"{}\",\"configuration\":{\"Architectures\":[\"arm64\"],\"CodeSha256\":\"2oyiXo3iNWyd85QMjeUqHVreczBCX4ifw8PvmVj9Gz4=\",\"CodeSize\":1969650,\"Description\":\"\",\"Environment\":{\"Variables\":{\"TEAM_HUB_RUNTIME\":\"read\",\"TEAM_HUB_AUTHORITY\":\"LEGACY_WRITER\",\"TEAM_HUB_STAGE\":\"PRE_CUTOVER\",\"EXPECTED_ISSUER\":\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\",\"TEAM_HUB_NORMAL_WRITES\":\"DISABLED\",\"TEAM_HUB_VERIFICATION\":\"{\\\"mode\\\":\\\"DISABLED\\\",\\\"authority\\\":\\\"LEGACY_WRITER\\\"}\",\"EXPECTED_POOL_ID\":\"eu-north-1_n24iLL7QE\",\"EXPECTED_CLIENT_ID\":\"1iq7ovjaf7d16imdvbqgfgvf86\"}},\"EphemeralStorage\":{\"Size\":512},\"FunctionArn\":\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"FunctionName\":\"ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"Handler\":\"index.handler\",\"LastModified\":\"2026-10-08T22:25:10.000+0000\",\"LastUpdateStatus\":\"Successful\",\"LoggingConfig\":{\"ApplicationLogLevel\":\"INFO\",\"LogFormat\":\"JSON\",\"LogGroup\":\"/project-respawn/Ntgre/team-hub/parity-read\",\"SystemLogLevel\":\"INFO\"},\"MemorySize\":256,\"PackageType\":\"Zip\",\"RevisionId\":\"4491176f-baaa-4180-8aa2-0e6e96bc51a8\",\"Role\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"Runtime\":\"nodejs22.x\",\"RuntimeVersionConfig\":{\"RuntimeVersionArn\":\"arn:aws:lambda:eu-north-1::runtime:775dab0d220a0b97f3ec34fe1692d7a07b5d13049153b00f03204c9543bd69e4\"},\"SnapStart\":{\"ApplyOn\":\"None\",\"OptimizationStatus\":\"Off\"},\"State\":\"Active\",\"Timeout\":15,\"TracingConfig\":{\"Mode\":\"PassThrough\"},\"Version\":\"$LATEST\",\"VpcConfig\":{\"Ipv6AllowedForDualStack\":false,\"SecurityGroupIds\":[],\"SubnetIds\":[],\"VpcId\":\"\"}}}",
+        "inputDetails": {
+          "truncated": false
+        }
+      }
+    },
+    {
+      "timestamp": "2026-10-10T07:32:22.559000+01:00",
+      "type": "ChoiceStateExited",
+      "id": 12,
+      "previousEventId": 11,
+      "stateExitedEventDetails": {
+        "name": "ReadRevision",
+        "output": "{\"serialized\":\"{}\",\"configuration\":{\"Architectures\":[\"arm64\"],\"CodeSha256\":\"2oyiXo3iNWyd85QMjeUqHVreczBCX4ifw8PvmVj9Gz4=\",\"CodeSize\":1969650,\"Description\":\"\",\"Environment\":{\"Variables\":{\"TEAM_HUB_RUNTIME\":\"read\",\"TEAM_HUB_AUTHORITY\":\"LEGACY_WRITER\",\"TEAM_HUB_STAGE\":\"PRE_CUTOVER\",\"EXPECTED_ISSUER\":\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\",\"TEAM_HUB_NORMAL_WRITES\":\"DISABLED\",\"TEAM_HUB_VERIFICATION\":\"{\\\"mode\\\":\\\"DISABLED\\\",\\\"authority\\\":\\\"LEGACY_WRITER\\\"}\",\"EXPECTED_POOL_ID\":\"eu-north-1_n24iLL7QE\",\"EXPECTED_CLIENT_ID\":\"1iq7ovjaf7d16imdvbqgfgvf86\"}},\"EphemeralStorage\":{\"Size\":512},\"FunctionArn\":\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"FunctionName\":\"ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"Handler\":\"index.handler\",\"LastModified\":\"2026-10-08T22:25:10.000+0000\",\"LastUpdateStatus\":\"Successful\",\"LoggingConfig\":{\"ApplicationLogLevel\":\"INFO\",\"LogFormat\":\"JSON\",\"LogGroup\":\"/project-respawn/Ntgre/team-hub/parity-read\",\"SystemLogLevel\":\"INFO\"},\"MemorySize\":256,\"PackageType\":\"Zip\",\"RevisionId\":\"4491176f-baaa-4180-8aa2-0e6e96bc51a8\",\"Role\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"Runtime\":\"nodejs22.x\",\"RuntimeVersionConfig\":{\"RuntimeVersionArn\":\"arn:aws:lambda:eu-north-1::runtime:775dab0d220a0b97f3ec34fe1692d7a07b5d13049153b00f03204c9543bd69e4\"},\"SnapStart\":{\"ApplyOn\":\"None\",\"OptimizationStatus\":\"Off\"},\"State\":\"Active\",\"Timeout\":15,\"TracingConfig\":{\"Mode\":\"PassThrough\"},\"Version\":\"$LATEST\",\"VpcConfig\":{\"Ipv6AllowedForDualStack\":false,\"SecurityGroupIds\":[],\"SubnetIds\":[],\"VpcId\":\"\"}}}",
+        "outputDetails": {
+          "truncated": false
+        }
+      }
+    },
+    {
+      "timestamp": "2026-10-10T07:32:22.559000+01:00",
+      "type": "TaskStateEntered",
+      "id": 13,
+      "previousEventId": 12,
+      "stateEnteredEventDetails": {
+        "name": "ReadUpdate",
+        "input": "{\"serialized\":\"{}\",\"configuration\":{\"Architectures\":[\"arm64\"],\"CodeSha256\":\"2oyiXo3iNWyd85QMjeUqHVreczBCX4ifw8PvmVj9Gz4=\",\"CodeSize\":1969650,\"Description\":\"\",\"Environment\":{\"Variables\":{\"TEAM_HUB_RUNTIME\":\"read\",\"TEAM_HUB_AUTHORITY\":\"LEGACY_WRITER\",\"TEAM_HUB_STAGE\":\"PRE_CUTOVER\",\"EXPECTED_ISSUER\":\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\",\"TEAM_HUB_NORMAL_WRITES\":\"DISABLED\",\"TEAM_HUB_VERIFICATION\":\"{\\\"mode\\\":\\\"DISABLED\\\",\\\"authority\\\":\\\"LEGACY_WRITER\\\"}\",\"EXPECTED_POOL_ID\":\"eu-north-1_n24iLL7QE\",\"EXPECTED_CLIENT_ID\":\"1iq7ovjaf7d16imdvbqgfgvf86\"}},\"EphemeralStorage\":{\"Size\":512},\"FunctionArn\":\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"FunctionName\":\"ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"Handler\":\"index.handler\",\"LastModified\":\"2026-10-08T22:25:10.000+0000\",\"LastUpdateStatus\":\"Successful\",\"LoggingConfig\":{\"ApplicationLogLevel\":\"INFO\",\"LogFormat\":\"JSON\",\"LogGroup\":\"/project-respawn/Ntgre/team-hub/parity-read\",\"SystemLogLevel\":\"INFO\"},\"MemorySize\":256,\"PackageType\":\"Zip\",\"RevisionId\":\"4491176f-baaa-4180-8aa2-0e6e96bc51a8\",\"Role\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"Runtime\":\"nodejs22.x\",\"RuntimeVersionConfig\":{\"RuntimeVersionArn\":\"arn:aws:lambda:eu-north-1::runtime:775dab0d220a0b97f3ec34fe1692d7a07b5d13049153b00f03204c9543bd69e4\"},\"SnapStart\":{\"ApplyOn\":\"None\",\"OptimizationStatus\":\"Off\"},\"State\":\"Active\",\"Timeout\":15,\"TracingConfig\":{\"Mode\":\"PassThrough\"},\"Version\":\"$LATEST\",\"VpcConfig\":{\"Ipv6AllowedForDualStack\":false,\"SecurityGroupIds\":[],\"SubnetIds\":[],\"VpcId\":\"\"}}}",
+        "inputDetails": {
+          "truncated": false
+        }
+      }
+    },
+    {
+      "timestamp": "2026-10-10T07:32:22.559000+01:00",
+      "type": "TaskScheduled",
+      "id": 14,
+      "previousEventId": 13,
+      "taskScheduledEventDetails": {
+        "resourceType": "aws-sdk:lambda",
+        "resource": "updateFunctionConfiguration",
+        "region": "eu-north-1",
+        "parameters": "{\"Environment\":{\"Variables\":{\"CORE_CONTRACT_ARN\":\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts\",\"CORE_ENVIRONMENT\":\"{\\\"contractVersion\\\":\\\"environment.v1\\\",\\\"environment\\\":\\\"Ntgre\\\",\\\"account\\\":\\\"058264289478\\\",\\\"region\\\":\\\"eu-north-1\\\",\\\"poolId\\\":\\\"eu-north-1_n24iLL7QE\\\",\\\"clientId\\\":\\\"1iq7ovjaf7d16imdvbqgfgvf86\\\",\\\"issuer\\\":\\\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\\\"}\",\"EXPECTED_CLIENT_ID\":\"1iq7ovjaf7d16imdvbqgfgvf86\",\"EXPECTED_ISSUER\":\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\",\"EXPECTED_POOL_ID\":\"eu-north-1_n24iLL7QE\",\"TEAM_CURSOR_SECRET_ARN\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV\",\"TEAM_HUB_AUTHORITY\":\"LEGACY_WRITER\",\"TEAM_HUB_BUSINESS_RUNTIME\":\"AUTHORITY_GATED_V1\",\"TEAM_HUB_NORMAL_WRITES\":\"DISABLED\",\"TEAM_HUB_RUNTIME\":\"read\",\"TEAM_HUB_STAGE\":\"PRE_CUTOVER\",\"TEAM_HUB_VERIFICATION\":\"{\\\"mode\\\":\\\"DISABLED\\\",\\\"authority\\\":\\\"LEGACY_WRITER\\\"}\"}},\"FunctionName\":\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"RevisionId\":\"4491176f-baaa-4180-8aa2-0e6e96bc51a8\"}"
+      }
+    },
+    {
+      "timestamp": "2026-10-10T07:32:22.682000+01:00",
+      "type": "TaskStarted",
+      "id": 15,
+      "previousEventId": 14,
+      "taskStartedEventDetails": {
+        "resourceType": "aws-sdk:lambda",
+        "resource": "updateFunctionConfiguration"
+      }
+    },
+    {
+      "timestamp": "2026-10-10T07:32:22.899000+01:00",
+      "type": "TaskFailed",
+      "id": 16,
+      "previousEventId": 15,
+      "taskFailedEventDetails": {
+        "resourceType": "aws-sdk:lambda",
+        "resource": "updateFunctionConfiguration",
+        "error": "Lambda.LambdaException",
+        "cause": "Lambda was unable to encrypt your environment variables because the KMS access was denied. Please check your KMS permissions. KMS Exception: AccessDeniedException KMS Message: User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009/BsSBZpwlomZPFrSFqRqIqNGkGPnbcUBz is not authorized to perform: kms:Encrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy (Service: Lambda, Status Code: 403, Request ID: 4dbe6fc5-8022-44c6-8fa1-08d6b1b9e973) (SDK Attempt Count: 1)"
+      }
+    },
+    {
+      "timestamp": "2026-10-10T07:32:22.912000+01:00",
+      "type": "TaskStateExited",
+      "id": 17,
+      "previousEventId": 16,
+      "stateExitedEventDetails": {
+        "name": "ReadUpdate",
+        "output": "{\"Error\":\"Lambda.LambdaException\",\"Cause\":\"Lambda was unable to encrypt your environment variables because the KMS access was denied. Please check your KMS permissions. KMS Exception: AccessDeniedException KMS Message: User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009/BsSBZpwlomZPFrSFqRqIqNGkGPnbcUBz is not authorized to perform: kms:Encrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy (Service: Lambda, Status Code: 403, Request ID: 4dbe6fc5-8022-44c6-8fa1-08d6b1b9e973) (SDK Attempt Count: 1)\"}",
+        "outputDetails": {
+          "truncated": false
+        }
+      }
+    },
+    {
+      "timestamp": "2026-10-10T07:32:22.912000+01:00",
+      "type": "FailStateEntered",
+      "id": 18,
+      "previousEventId": 17,
+      "stateEnteredEventDetails": {
+        "name": "Stop",
+        "input": "{\"Error\":\"Lambda.LambdaException\",\"Cause\":\"Lambda was unable to encrypt your environment variables because the KMS access was denied. Please check your KMS permissions. KMS Exception: AccessDeniedException KMS Message: User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009/BsSBZpwlomZPFrSFqRqIqNGkGPnbcUBz is not authorized to perform: kms:Encrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy (Service: Lambda, Status Code: 403, Request ID: 4dbe6fc5-8022-44c6-8fa1-08d6b1b9e973) (SDK Attempt Count: 1)\"}",
+        "inputDetails": {
+          "truncated": false
+        }
+      }
+    },
+    {
+      "timestamp": "2026-10-10T07:32:22.941000+01:00",
+      "type": "ExecutionFailed",
+      "id": 19,
+      "previousEventId": 18,
+      "executionFailedEventDetails": {
+        "error": "RecoveryStopped",
+        "cause": "No automatic retry or rollback; security operator must preserve evidence and inspect actual state."
+      }
+    }
+  ],
+  "complete": true
+}

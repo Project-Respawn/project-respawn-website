@@ -1,0 +1,108 @@
+{
+  "at": "2026-10-11T22:14:16.411Z",
+  "authorization": "Conditional exact-package recovery; stop on unavailable effective organization/IAM evidence",
+  "artifacts": [
+    {
+      "path": "docs/architecture/team-hub-complete-recovery-evidence-2026-10-11/candidate.json",
+      "sha256": "4b4e49d07629dbb7fd4fa982bba30a10c3685dd0f989e8ae54161a128dd5470e"
+    },
+    {
+      "path": "docs/architecture/team-hub-complete-recovery-evidence-2026-10-11/recovery-security.template.json",
+      "sha256": "b63d162ddf23d8fef1fe8e0f3ebbfa2096c8ffa655c3e93b15be39dac729830e"
+    },
+    {
+      "path": "docs/architecture/team-hub-complete-recovery-evidence-2026-10-11/recovery-policy.template.json",
+      "sha256": "06c4e9c0126ba4438acd87329442922a7d3b87eabf29092115b35db0979687fe"
+    },
+    {
+      "path": "docs/architecture/team-hub-recovery-decision-evidence-2026-10-09/recovery-workflow.json",
+      "sha256": "862082291eb7052f069338212b552030678335afa93fc64ebeb2b28fea5a5376"
+    }
+  ],
+  "functions": [
+    {
+      "kind": "Read",
+      "arn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "revisionId": "4491176f-baaa-4180-8aa2-0e6e96bc51a8",
+      "codeSha256": "2oyiXo3iNWyd85QMjeUqHVreczBCX4ifw8PvmVj9Gz4=",
+      "state": "Active",
+      "lastUpdateStatus": "Successful",
+      "completeSnapshotUnchanged": true,
+      "environmentKeys": [
+        "EXPECTED_CLIENT_ID",
+        "EXPECTED_ISSUER",
+        "EXPECTED_POOL_ID",
+        "TEAM_HUB_AUTHORITY",
+        "TEAM_HUB_NORMAL_WRITES",
+        "TEAM_HUB_RUNTIME",
+        "TEAM_HUB_STAGE",
+        "TEAM_HUB_VERIFICATION"
+      ],
+      "missingKeys": [
+        "TEAM_HUB_BUSINESS_RUNTIME",
+        "CORE_CONTRACT_ARN",
+        "CORE_ENVIRONMENT",
+        "TEAM_CURSOR_SECRET_ARN"
+      ]
+    },
+    {
+      "kind": "Command",
+      "arn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "revisionId": "50dc3a50-7388-467f-a302-1bf33cd051cf",
+      "codeSha256": "2oyiXo3iNWyd85QMjeUqHVreczBCX4ifw8PvmVj9Gz4=",
+      "state": "Active",
+      "lastUpdateStatus": "Successful",
+      "completeSnapshotUnchanged": true,
+      "environmentKeys": [
+        "EXPECTED_CLIENT_ID",
+        "EXPECTED_ISSUER",
+        "EXPECTED_POOL_ID",
+        "TEAM_HUB_AUTHORITY",
+        "TEAM_HUB_NORMAL_WRITES",
+        "TEAM_HUB_RUNTIME",
+        "TEAM_HUB_STAGE",
+        "TEAM_HUB_VERIFICATION"
+      ],
+      "missingKeys": [
+        "TEAM_HUB_BUSINESS_RUNTIME",
+        "CORE_CONTRACT_ARN",
+        "CORE_ENVIRONMENT"
+      ]
+    }
+  ],
+  "awsWrites": 0,
+  "workflowExecutions": 0,
+  "complete": false,
+  "preservedPinsVerified": true,
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "region": "eu-north-1",
+  "temporaryResources": [
+    {
+      "service": "iam",
+      "name": "ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009",
+      "absent": true
+    },
+    {
+      "service": "stepfunctions",
+      "name": "ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009",
+      "absent": true
+    }
+  ],
+  "organization": {
+    "targets": [
+      {
+        "id": "058264289478",
+        "policies": []
+      }
+    ],
+    "policies": [],
+    "complete": false
+  },
+  "failure": "organizations list-policies-for-target:  aws: [ERROR]: An error occurred (AccessDeniedException) when calling the ListPoliciesForTarget operation (reached max retries: 0): You don't have permissions to access this resource. ",
+  "failedGate": "EFFECTIVE_ORGANIZATION_PERMISSION_EVIDENCE_UNAVAILABLE",
+  "stoppedBeforeAwsWrites": true
+}

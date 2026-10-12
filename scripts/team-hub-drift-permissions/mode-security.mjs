@@ -1,0 +1,7 @@
+import {aws,read,save} from './aws.mjs';
+const s=read('docs/architecture/team-hub-execution-kms-evidence-2026-10-09/security.template.json'),r={at:new Date().toISOString(),checks:[],analyzer:[],awsWrites:0,complete:false};
+for(const kind of ['Read','Command']){
+ const result=await aws('iam','simulate-principal-policy',{PolicySourceArn:'arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution',ActionNames:['lambda:GetFunction','lambda:GetFunctionCodeSigningConfig','lambda:GetFunctionRecursionConfig','lambda:GetRuntimeManagementConfig','lambda:GetFunctionScalingConfig','lambda:UpdateFunctionConfiguration'],ResourceArns:['arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-Parity'+kind],ContextEntries:[{ContextKeyName:'aws:RequestedRegion',ContextKeyValues:['eu-north-1'],ContextKeyType:'string'}]});r.checks.push(...result.EvaluationResults.map(x=>({kind,action:x.EvalActionName,decision:x.EvalDecision,missingContext:x.MissingContextValues})));save('mode-security',r);
+}
+for(const id of ['ExecutionRole','ExecutionBoundary','PreparationCaller']){const doc=id==='ExecutionRole'?s.Resources[id].Properties.Policies[0].PolicyDocument:s.Resources[id].Properties.PolicyDocument;const result=await aws('accessanalyzer','validate-policy',{policyDocument:JSON.stringify(doc),policyType:'IDENTITY_POLICY'});r.analyzer.push({id,findings:result.findings??[]});}
+r.complete=true;save('mode-security',r);console.log(JSON.stringify(r));

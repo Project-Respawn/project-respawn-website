@@ -1,0 +1,7 @@
+import fs from 'node:fs';import assert from 'node:assert/strict';import {aws} from '../team-hub-window-recovery/aws.mjs';
+const E='docs/architecture/team-hub-describekey-evidence-2026-10-12',B='docs/architecture/team-hub-recovery-decision-evidence-2026-10-09',read=p=>JSON.parse(fs.readFileSync(p));
+const r={at:new Date().toISOString(),analyzer:[],awsWrites:0,complete:false};
+const policy=JSON.parse(JSON.stringify(read(E+'/recovery-policy.template.json')).replaceAll('${NotBefore}','2030-01-01T00:00:00Z').replaceAll('${ExpiresAt}','2030-01-01T00:15:00Z'));
+for(const [name,doc,policyType,resource]of [['identity',policy,'IDENTITY_POLICY'],['trust',read(B+'/recovery-trust.json'),'RESOURCE_POLICY','AWS::IAM::AssumeRolePolicyDocument']]){const a=await aws('accessanalyzer','validate-policy',{policyDocument:JSON.stringify(doc),policyType,...(resource?{validatePolicyResourceType:resource}:{})});assert.ok(!a.nextToken);r.analyzer.push({name,findings:a.findings??[]});assert.ok(!(a.findings??[]).some(f=>['ERROR','SECURITY_WARNING'].includes(f.findingType)));}
+r.workflow=await aws('stepfunctions','validate-state-machine-definition',{definition:JSON.stringify(read(B+'/recovery-workflow.json')),type:'STANDARD',severity:'WARNING'});assert.equal(r.workflow.result,'OK');
+r.template=await aws('cloudformation','validate-template',{TemplateBody:JSON.stringify(read(E+'/recovery-security.template.json'))});r.complete=true;fs.writeFileSync(E+'/service-validation.json',JSON.stringify(r,null,2)+'\n');console.log(JSON.stringify(r));

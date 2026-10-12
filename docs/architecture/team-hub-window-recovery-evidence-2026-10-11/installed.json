@@ -1,0 +1,193 @@
+{
+  "at": "2026-10-11T23:45:34.029Z",
+  "complete": true,
+  "role": {
+    "Path": "/",
+    "RoleName": "ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009",
+    "RoleId": "AROAQ3EGSQDDNPGNV6OUS",
+    "Arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009",
+    "CreateDate": "2026-10-11T23:03:42+00:00",
+    "AssumeRolePolicyDocument": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "states.amazonaws.com"
+          },
+          "Action": "sts:AssumeRole",
+          "Condition": {
+            "StringEquals": {
+              "aws:SourceAccount": "058264289478"
+            },
+            "ArnEquals": {
+              "aws:SourceArn": "arn:aws:states:eu-north-1:058264289478:stateMachine:ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009"
+            }
+          }
+        }
+      ]
+    },
+    "Description": "",
+    "MaxSessionDuration": 3600,
+    "RoleLastUsed": {}
+  },
+  "policy": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Action": [
+          "lambda:GetFunctionConfiguration",
+          "lambda:UpdateFunctionConfiguration"
+        ],
+        "Resource": [
+          "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand"
+        ],
+        "Effect": "Allow"
+      },
+      {
+        "Condition": {
+          "StringEquals": {
+            "kms:EncryptionContext:aws:lambda:FunctionArn": [
+              "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand"
+            ],
+            "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+            "kms:CallerAccount": "058264289478"
+          }
+        },
+        "Action": [
+          "kms:Encrypt",
+          "kms:Decrypt"
+        ],
+        "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+        "Effect": "Allow"
+      },
+      {
+        "Resource": "*",
+        "Effect": "Deny",
+        "NotAction": [
+          "lambda:GetFunctionConfiguration",
+          "lambda:UpdateFunctionConfiguration",
+          "kms:Decrypt",
+          "kms:Encrypt"
+        ]
+      },
+      {
+        "Action": "lambda:*",
+        "Effect": "Deny",
+        "NotResource": [
+          "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+          "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead:$LATEST",
+          "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand:$LATEST"
+        ]
+      },
+      {
+        "Action": "kms:*",
+        "Effect": "Deny",
+        "NotResource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7"
+      },
+      {
+        "Condition": {
+          "StringNotEquals": {
+            "kms:ViaService": "lambda.eu-north-1.amazonaws.com"
+          }
+        },
+        "Action": [
+          "kms:Encrypt",
+          "kms:Decrypt"
+        ],
+        "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+        "Effect": "Deny"
+      },
+      {
+        "Condition": {
+          "StringNotEquals": {
+            "kms:CallerAccount": "058264289478"
+          }
+        },
+        "Action": [
+          "kms:Encrypt",
+          "kms:Decrypt"
+        ],
+        "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+        "Effect": "Deny"
+      },
+      {
+        "Condition": {
+          "StringNotEquals": {
+            "kms:EncryptionContext:aws:lambda:FunctionArn": [
+              "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand"
+            ]
+          }
+        },
+        "Action": [
+          "kms:Encrypt",
+          "kms:Decrypt"
+        ],
+        "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+        "Effect": "Deny"
+      },
+      {
+        "Condition": {
+          "StringNotEquals": {
+            "aws:RequestedRegion": "eu-north-1"
+          }
+        },
+        "Action": "*",
+        "Resource": "*",
+        "Effect": "Deny"
+      },
+      {
+        "Condition": {
+          "DateLessThan": {
+            "aws:CurrentTime": "2026-10-11T23:48:37Z"
+          }
+        },
+        "Action": "*",
+        "Resource": "*",
+        "Effect": "Deny"
+      },
+      {
+        "Condition": {
+          "DateGreaterThanEquals": {
+            "aws:CurrentTime": "2026-10-12T00:03:37Z"
+          }
+        },
+        "Action": "*",
+        "Resource": "*",
+        "Effect": "Deny"
+      },
+      {
+        "Action": "lambda:UpdateFunctionConfiguration",
+        "Resource": [
+          "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead:$LATEST",
+          "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand:$LATEST"
+        ],
+        "Effect": "Allow",
+        "Sid": "UpdateOnlyExactUnpublishedFunctions"
+      }
+    ]
+  },
+  "workflow": {
+    "stateMachineArn": "arn:aws:states:eu-north-1:058264289478:stateMachine:ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009",
+    "name": "ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009",
+    "status": "ACTIVE",
+    "definition": "{\n  \"Comment\" : \"Fixed environment-only recovery. Empty input. One write attempt per function. Security-owned temporary identity.\",\n  \"StartAt\" : \"Input\",\n  \"States\" : {\n    \"CommandBefore\" : {\n      \"Catch\" : [ {\n        \"ErrorEquals\" : [ \"States.ALL\" ],\n        \"Next\" : \"Stop\"\n      } ],\n      \"Next\" : \"CommandRevision\",\n      \"Parameters\" : {\n        \"FunctionName\" : \"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand\"\n      },\n      \"Resource\" : \"arn:aws:states:::aws-sdk:lambda:getFunctionConfiguration\",\n      \"ResultPath\" : \"$.configuration\",\n      \"Type\" : \"Task\"\n    },\n    \"CommandPoll\" : {\n      \"Catch\" : [ {\n        \"ErrorEquals\" : [ \"States.ALL\" ],\n        \"Next\" : \"Stop\"\n      } ],\n      \"Next\" : \"CommandStatus\",\n      \"Parameters\" : {\n        \"FunctionName\" : \"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand\"\n      },\n      \"Resource\" : \"arn:aws:states:::aws-sdk:lambda:getFunctionConfiguration\",\n      \"ResultPath\" : \"$.configuration\",\n      \"Type\" : \"Task\"\n    },\n    \"CommandRevision\" : {\n      \"Choices\" : [ {\n        \"And\" : [ {\n          \"StringEquals\" : \"50dc3a50-7388-467f-a302-1bf33cd051cf\",\n          \"Variable\" : \"$.configuration.RevisionId\"\n        }, {\n          \"StringEquals\" : \"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand\",\n          \"Variable\" : \"$.configuration.FunctionArn\"\n        }, {\n          \"StringEquals\" : \"2oyiXo3iNWyd85QMjeUqHVreczBCX4ifw8PvmVj9Gz4=\",\n          \"Variable\" : \"$.configuration.CodeSha256\"\n        }, {\n          \"StringEquals\" : \"Active\",\n          \"Variable\" : \"$.configuration.State\"\n        }, {\n          \"StringEquals\" : \"Successful\",\n          \"Variable\" : \"$.configuration.LastUpdateStatus\"\n        } ],\n        \"Next\" : \"CommandUpdate\"\n      } ],\n      \"Default\" : \"Stop\",\n      \"Type\" : \"Choice\"\n    },\n    \"CommandStatus\" : {\n      \"Choices\" : [ {\n        \"Next\" : \"CommandWait\",\n        \"StringEquals\" : \"InProgress\",\n        \"Variable\" : \"$.configuration.LastUpdateStatus\"\n      }, {\n        \"And\" : [ {\n          \"StringEquals\" : \"Successful\",\n          \"Variable\" : \"$.configuration.LastUpdateStatus\"\n        }, {\n          \"StringEquals\" : \"Active\",\n          \"Variable\" : \"$.configuration.State\"\n        }, {\n          \"StringEquals\" : \"2oyiXo3iNWyd85QMjeUqHVreczBCX4ifw8PvmVj9Gz4=\",\n          \"Variable\" : \"$.configuration.CodeSha256\"\n        }, {\n          \"StringEquals\" : \"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand\",\n          \"Variable\" : \"$.configuration.FunctionArn\"\n        }, {\n          \"StringEquals\" : \"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand\",\n          \"Variable\" : \"$.configuration.Role\"\n        }, {\n          \"StringEquals\" : \"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\",\n          \"Variable\" : \"$.configuration.Environment.Variables.EXPECTED_ISSUER\"\n        }, {\n          \"StringEquals\" : \"eu-north-1_n24iLL7QE\",\n          \"Variable\" : \"$.configuration.Environment.Variables.EXPECTED_POOL_ID\"\n        }, {\n          \"StringEquals\" : \"1iq7ovjaf7d16imdvbqgfgvf86\",\n          \"Variable\" : \"$.configuration.Environment.Variables.EXPECTED_CLIENT_ID\"\n        }, {\n          \"StringEquals\" : \"command\",\n          \"Variable\" : \"$.configuration.Environment.Variables.TEAM_HUB_RUNTIME\"\n        }, {\n          \"StringEquals\" : \"{\\\"mode\\\":\\\"DISABLED\\\",\\\"authority\\\":\\\"LEGACY_WRITER\\\"}\",\n          \"Variable\" : \"$.configuration.Environment.Variables.TEAM_HUB_VERIFICATION\"\n        }, {\n          \"StringEquals\" : \"LEGACY_WRITER\",\n          \"Variable\" : \"$.configuration.Environment.Variables.TEAM_HUB_AUTHORITY\"\n        }, {\n          \"StringEquals\" : \"PRE_CUTOVER\",\n          \"Variable\" : \"$.configuration.Environment.Variables.TEAM_HUB_STAGE\"\n        }, {\n          \"StringEquals\" : \"DISABLED\",\n          \"Variable\" : \"$.configuration.Environment.Variables.TEAM_HUB_NORMAL_WRITES\"\n        }, {\n          \"StringEquals\" : \"AUTHORITY_GATED_V1\",\n          \"Variable\" : \"$.configuration.Environment.Variables.TEAM_HUB_BUSINESS_RUNTIME\"\n        }, {\n          \"StringEquals\" : \"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts\",\n          \"Variable\" : \"$.configuration.Environment.Variables.CORE_CONTRACT_ARN\"\n        }, {\n          \"StringEquals\" : \"{\\\"contractVersion\\\":\\\"environment.v1\\\",\\\"environment\\\":\\\"Ntgre\\\",\\\"account\\\":\\\"058264289478\\\",\\\"region\\\":\\\"eu-north-1\\\",\\\"poolId\\\":\\\"eu-north-1_n24iLL7QE\\\",\\\"clientId\\\":\\\"1iq7ovjaf7d16imdvbqgfgvf86\\\",\\\"issuer\\\":\\\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\\\"}\",\n          \"Variable\" : \"$.configuration.Environment.Variables.CORE_ENVIRONMENT\"\n        } ],\n        \"Next\" : \"Done\"\n      } ],\n      \"Default\" : \"Stop\",\n      \"Type\" : \"Choice\"\n    },\n    \"CommandUpdate\" : {\n      \"Catch\" : [ {\n        \"ErrorEquals\" : [ \"States.ALL\" ],\n        \"Next\" : \"Stop\"\n      } ],\n      \"Next\" : \"CommandWait\",\n      \"Parameters\" : {\n        \"Environment\" : {\n          \"Variables\" : {\n            \"CORE_CONTRACT_ARN\" : \"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts\",\n            \"CORE_ENVIRONMENT\" : \"{\\\"contractVersion\\\":\\\"environment.v1\\\",\\\"environment\\\":\\\"Ntgre\\\",\\\"account\\\":\\\"058264289478\\\",\\\"region\\\":\\\"eu-north-1\\\",\\\"poolId\\\":\\\"eu-north-1_n24iLL7QE\\\",\\\"clientId\\\":\\\"1iq7ovjaf7d16imdvbqgfgvf86\\\",\\\"issuer\\\":\\\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\\\"}\",\n            \"EXPECTED_CLIENT_ID\" : \"1iq7ovjaf7d16imdvbqgfgvf86\",\n            \"EXPECTED_ISSUER\" : \"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\",\n            \"EXPECTED_POOL_ID\" : \"eu-north-1_n24iLL7QE\",\n            \"TEAM_HUB_AUTHORITY\" : \"LEGACY_WRITER\",\n            \"TEAM_HUB_BUSINESS_RUNTIME\" : \"AUTHORITY_GATED_V1\",\n            \"TEAM_HUB_NORMAL_WRITES\" : \"DISABLED\",\n            \"TEAM_HUB_RUNTIME\" : \"command\",\n            \"TEAM_HUB_STAGE\" : \"PRE_CUTOVER\",\n            \"TEAM_HUB_VERIFICATION\" : \"{\\\"mode\\\":\\\"DISABLED\\\",\\\"authority\\\":\\\"LEGACY_WRITER\\\"}\"\n          }\n        },\n        \"FunctionName\" : \"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand\",\n        \"RevisionId\" : \"50dc3a50-7388-467f-a302-1bf33cd051cf\"\n      },\n      \"Resource\" : \"arn:aws:states:::aws-sdk:lambda:updateFunctionConfiguration\",\n      \"ResultPath\" : \"$.update\",\n      \"Type\" : \"Task\"\n    },\n    \"CommandWait\" : {\n      \"Next\" : \"CommandPoll\",\n      \"Seconds\" : 3,\n      \"Type\" : \"Wait\"\n    },\n    \"Done\" : {\n      \"Type\" : \"Succeed\"\n    },\n    \"EmptyInput\" : {\n      \"Choices\" : [ {\n        \"Next\" : \"ReadBefore\",\n        \"StringEquals\" : \"{}\",\n        \"Variable\" : \"$.serialized\"\n      } ],\n      \"Default\" : \"Stop\",\n      \"Type\" : \"Choice\"\n    },\n    \"Input\" : {\n      \"Next\" : \"EmptyInput\",\n      \"Parameters\" : {\n        \"serialized.$\" : \"States.JsonToString($)\"\n      },\n      \"Type\" : \"Pass\"\n    },\n    \"ReadBefore\" : {\n      \"Catch\" : [ {\n        \"ErrorEquals\" : [ \"States.ALL\" ],\n        \"Next\" : \"Stop\"\n      } ],\n      \"Next\" : \"ReadRevision\",\n      \"Parameters\" : {\n        \"FunctionName\" : \"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead\"\n      },\n      \"Resource\" : \"arn:aws:states:::aws-sdk:lambda:getFunctionConfiguration\",\n      \"ResultPath\" : \"$.configuration\",\n      \"Type\" : \"Task\"\n    },\n    \"ReadPoll\" : {\n      \"Catch\" : [ {\n        \"ErrorEquals\" : [ \"States.ALL\" ],\n        \"Next\" : \"Stop\"\n      } ],\n      \"Next\" : \"ReadStatus\",\n      \"Parameters\" : {\n        \"FunctionName\" : \"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead\"\n      },\n      \"Resource\" : \"arn:aws:states:::aws-sdk:lambda:getFunctionConfiguration\",\n      \"ResultPath\" : \"$.configuration\",\n      \"Type\" : \"Task\"\n    },\n    \"ReadRevision\" : {\n      \"Choices\" : [ {\n        \"And\" : [ {\n          \"StringEquals\" : \"4491176f-baaa-4180-8aa2-0e6e96bc51a8\",\n          \"Variable\" : \"$.configuration.RevisionId\"\n        }, {\n          \"StringEquals\" : \"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead\",\n          \"Variable\" : \"$.configuration.FunctionArn\"\n        }, {\n          \"StringEquals\" : \"2oyiXo3iNWyd85QMjeUqHVreczBCX4ifw8PvmVj9Gz4=\",\n          \"Variable\" : \"$.configuration.CodeSha256\"\n        }, {\n          \"StringEquals\" : \"Active\",\n          \"Variable\" : \"$.configuration.State\"\n        }, {\n          \"StringEquals\" : \"Successful\",\n          \"Variable\" : \"$.configuration.LastUpdateStatus\"\n        } ],\n        \"Next\" : \"ReadUpdate\"\n      } ],\n      \"Default\" : \"Stop\",\n      \"Type\" : \"Choice\"\n    },\n    \"ReadStatus\" : {\n      \"Choices\" : [ {\n        \"Next\" : \"ReadWait\",\n        \"StringEquals\" : \"InProgress\",\n        \"Variable\" : \"$.configuration.LastUpdateStatus\"\n      }, {\n        \"And\" : [ {\n          \"StringEquals\" : \"Successful\",\n          \"Variable\" : \"$.configuration.LastUpdateStatus\"\n        }, {\n          \"StringEquals\" : \"Active\",\n          \"Variable\" : \"$.configuration.State\"\n        }, {\n          \"StringEquals\" : \"2oyiXo3iNWyd85QMjeUqHVreczBCX4ifw8PvmVj9Gz4=\",\n          \"Variable\" : \"$.configuration.CodeSha256\"\n        }, {\n          \"StringEquals\" : \"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead\",\n          \"Variable\" : \"$.configuration.FunctionArn\"\n        }, {\n          \"StringEquals\" : \"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead\",\n          \"Variable\" : \"$.configuration.Role\"\n        }, {\n          \"StringEquals\" : \"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\",\n          \"Variable\" : \"$.configuration.Environment.Variables.EXPECTED_ISSUER\"\n        }, {\n          \"StringEquals\" : \"eu-north-1_n24iLL7QE\",\n          \"Variable\" : \"$.configuration.Environment.Variables.EXPECTED_POOL_ID\"\n        }, {\n          \"StringEquals\" : \"1iq7ovjaf7d16imdvbqgfgvf86\",\n          \"Variable\" : \"$.configuration.Environment.Variables.EXPECTED_CLIENT_ID\"\n        }, {\n          \"StringEquals\" : \"read\",\n          \"Variable\" : \"$.configuration.Environment.Variables.TEAM_HUB_RUNTIME\"\n        }, {\n          \"StringEquals\" : \"{\\\"mode\\\":\\\"DISABLED\\\",\\\"authority\\\":\\\"LEGACY_WRITER\\\"}\",\n          \"Variable\" : \"$.configuration.Environment.Variables.TEAM_HUB_VERIFICATION\"\n        }, {\n          \"StringEquals\" : \"LEGACY_WRITER\",\n          \"Variable\" : \"$.configuration.Environment.Variables.TEAM_HUB_AUTHORITY\"\n        }, {\n          \"StringEquals\" : \"PRE_CUTOVER\",\n          \"Variable\" : \"$.configuration.Environment.Variables.TEAM_HUB_STAGE\"\n        }, {\n          \"StringEquals\" : \"DISABLED\",\n          \"Variable\" : \"$.configuration.Environment.Variables.TEAM_HUB_NORMAL_WRITES\"\n        }, {\n          \"StringEquals\" : \"AUTHORITY_GATED_V1\",\n          \"Variable\" : \"$.configuration.Environment.Variables.TEAM_HUB_BUSINESS_RUNTIME\"\n        }, {\n          \"StringEquals\" : \"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts\",\n          \"Variable\" : \"$.configuration.Environment.Variables.CORE_CONTRACT_ARN\"\n        }, {\n          \"StringEquals\" : \"{\\\"contractVersion\\\":\\\"environment.v1\\\",\\\"environment\\\":\\\"Ntgre\\\",\\\"account\\\":\\\"058264289478\\\",\\\"region\\\":\\\"eu-north-1\\\",\\\"poolId\\\":\\\"eu-north-1_n24iLL7QE\\\",\\\"clientId\\\":\\\"1iq7ovjaf7d16imdvbqgfgvf86\\\",\\\"issuer\\\":\\\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\\\"}\",\n          \"Variable\" : \"$.configuration.Environment.Variables.CORE_ENVIRONMENT\"\n        }, {\n          \"StringEquals\" : \"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV\",\n          \"Variable\" : \"$.configuration.Environment.Variables.TEAM_CURSOR_SECRET_ARN\"\n        } ],\n        \"Next\" : \"CommandBefore\"\n      } ],\n      \"Default\" : \"Stop\",\n      \"Type\" : \"Choice\"\n    },\n    \"ReadUpdate\" : {\n      \"Catch\" : [ {\n        \"ErrorEquals\" : [ \"States.ALL\" ],\n        \"Next\" : \"Stop\"\n      } ],\n      \"Next\" : \"ReadWait\",\n      \"Parameters\" : {\n        \"Environment\" : {\n          \"Variables\" : {\n            \"CORE_CONTRACT_ARN\" : \"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts\",\n            \"CORE_ENVIRONMENT\" : \"{\\\"contractVersion\\\":\\\"environment.v1\\\",\\\"environment\\\":\\\"Ntgre\\\",\\\"account\\\":\\\"058264289478\\\",\\\"region\\\":\\\"eu-north-1\\\",\\\"poolId\\\":\\\"eu-north-1_n24iLL7QE\\\",\\\"clientId\\\":\\\"1iq7ovjaf7d16imdvbqgfgvf86\\\",\\\"issuer\\\":\\\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\\\"}\",\n            \"EXPECTED_CLIENT_ID\" : \"1iq7ovjaf7d16imdvbqgfgvf86\",\n            \"EXPECTED_ISSUER\" : \"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\",\n            \"EXPECTED_POOL_ID\" : \"eu-north-1_n24iLL7QE\",\n            \"TEAM_CURSOR_SECRET_ARN\" : \"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV\",\n            \"TEAM_HUB_AUTHORITY\" : \"LEGACY_WRITER\",\n            \"TEAM_HUB_BUSINESS_RUNTIME\" : \"AUTHORITY_GATED_V1\",\n            \"TEAM_HUB_NORMAL_WRITES\" : \"DISABLED\",\n            \"TEAM_HUB_RUNTIME\" : \"read\",\n            \"TEAM_HUB_STAGE\" : \"PRE_CUTOVER\",\n            \"TEAM_HUB_VERIFICATION\" : \"{\\\"mode\\\":\\\"DISABLED\\\",\\\"authority\\\":\\\"LEGACY_WRITER\\\"}\"\n          }\n        },\n        \"FunctionName\" : \"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead\",\n        \"RevisionId\" : \"4491176f-baaa-4180-8aa2-0e6e96bc51a8\"\n      },\n      \"Resource\" : \"arn:aws:states:::aws-sdk:lambda:updateFunctionConfiguration\",\n      \"ResultPath\" : \"$.update\",\n      \"Type\" : \"Task\"\n    },\n    \"ReadWait\" : {\n      \"Next\" : \"ReadPoll\",\n      \"Seconds\" : 3,\n      \"Type\" : \"Wait\"\n    },\n    \"Stop\" : {\n      \"Cause\" : \"No automatic retry or rollback; security operator must preserve evidence and inspect actual state.\",\n      \"Error\" : \"RecoveryStopped\",\n      \"Type\" : \"Fail\"\n    }\n  },\n  \"TimeoutSeconds\" : 600\n}",
+    "roleArn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009",
+    "type": "STANDARD",
+    "creationDate": "2026-10-12T00:04:00.583000+01:00",
+    "loggingConfiguration": {
+      "level": "OFF",
+      "includeExecutionData": false
+    },
+    "tracingConfiguration": {
+      "enabled": false
+    },
+    "encryptionConfiguration": {
+      "type": "AWS_OWNED_KEY"
+    }
+  }
+}

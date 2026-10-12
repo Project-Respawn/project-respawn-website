@@ -1,0 +1,62 @@
+{
+  "previousAcceptedEndpointSha256": "5a2d99f4919fd07c619f483e556a0464b9cbaad0be00665201438b0f4ec7d0e9",
+  "previousSource": "Preserved accepted rollback artifact, not inferred from current GetTemplate",
+  "previousEndpointEnvironments": {
+    "ParityCommandFunction": {
+      "Variables": {
+        "EXPECTED_ISSUER": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE",
+        "EXPECTED_POOL_ID": "eu-north-1_n24iLL7QE",
+        "EXPECTED_CLIENT_ID": "1iq7ovjaf7d16imdvbqgfgvf86",
+        "TEAM_HUB_RUNTIME": "command",
+        "TEAM_HUB_VERIFICATION": "{\"mode\":\"DISABLED\",\"authority\":\"LEGACY_WRITER\"}",
+        "TEAM_HUB_AUTHORITY": "LEGACY_WRITER",
+        "TEAM_HUB_STAGE": "PRE_CUTOVER",
+        "TEAM_HUB_NORMAL_WRITES": "DISABLED"
+      }
+    },
+    "ParityReadFunction": {
+      "Variables": {
+        "EXPECTED_ISSUER": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE",
+        "EXPECTED_POOL_ID": "eu-north-1_n24iLL7QE",
+        "EXPECTED_CLIENT_ID": "1iq7ovjaf7d16imdvbqgfgvf86",
+        "TEAM_HUB_RUNTIME": "read",
+        "TEAM_HUB_VERIFICATION": "{\"mode\":\"DISABLED\",\"authority\":\"LEGACY_WRITER\"}",
+        "TEAM_HUB_AUTHORITY": "LEGACY_WRITER",
+        "TEAM_HUB_STAGE": "PRE_CUTOVER",
+        "TEAM_HUB_NORMAL_WRITES": "DISABLED"
+      }
+    }
+  },
+  "currentDesiredMatchesAcceptedBusinessTemplate": true,
+  "preparedMatchesPreviouslyReturnedTemplate": true,
+  "templateChangedResources": [
+    "ParityCommandFunction",
+    "ParityReadFunction"
+  ],
+  "changeOnlyCoreEnvironmentWhitespace": true,
+  "liveMissingVariables": [
+    {
+      "id": "ParityReadFunction",
+      "missing": [
+        "TEAM_HUB_BUSINESS_RUNTIME",
+        "CORE_CONTRACT_ARN",
+        "CORE_ENVIRONMENT",
+        "TEAM_CURSOR_SECRET_ARN"
+      ]
+    },
+    {
+      "id": "ParityCommandFunction",
+      "missing": [
+        "TEAM_HUB_BUSINESS_RUNTIME",
+        "CORE_CONTRACT_ARN",
+        "CORE_ENVIRONMENT"
+      ]
+    }
+  ],
+  "runtimeCodeUnchanged": true,
+  "resourceCounts": {
+    "product": 48,
+    "security": 7
+  },
+  "allHistoricalManifestArtifactsVerified": true
+}

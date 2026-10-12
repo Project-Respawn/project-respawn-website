@@ -1,0 +1,526 @@
+{
+  "at": "2026-10-09T07:10:47.080Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "keys": [
+    {
+      "alias": "alias/aws/lambda",
+      "metadata": {
+        "AWSAccountId": "058264289478",
+        "KeyId": "13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+        "Arn": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+        "CreationDate": "2026-03-31T13:31:31.492000+01:00",
+        "Enabled": true,
+        "Description": "Default key that protects my Lambda functions when no other key is defined",
+        "KeyUsage": "ENCRYPT_DECRYPT",
+        "KeyState": "Enabled",
+        "Origin": "AWS_KMS",
+        "KeyManager": "AWS",
+        "CustomerMasterKeySpec": "SYMMETRIC_DEFAULT",
+        "KeySpec": "SYMMETRIC_DEFAULT",
+        "EncryptionAlgorithms": [
+          "SYMMETRIC_DEFAULT"
+        ],
+        "MultiRegion": false,
+        "CurrentKeyMaterialId": "930f1e3a8e20fe3ba32201a4a74e99d141cfead7c144753fce47eb96352d7366"
+      },
+      "policy": {
+        "Version": "2012-10-17",
+        "Id": "auto-awslambda-3",
+        "Statement": [
+          {
+            "Sid": "Allow access through AWS Lambda for all principals in the account that are authorized to use AWS Lambda",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "*"
+            },
+            "Action": [
+              "kms:Encrypt",
+              "kms:Decrypt",
+              "kms:ReEncrypt*",
+              "kms:GenerateDataKey*",
+              "kms:CreateGrant",
+              "kms:DescribeKey"
+            ],
+            "Resource": "*",
+            "Condition": {
+              "StringEquals": {
+                "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+                "kms:CallerAccount": "058264289478"
+              }
+            }
+          },
+          {
+            "Sid": "Allow all principals in the account to decrypt ciphertexts for Lambda functions in the account",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "*"
+            },
+            "Action": "kms:Decrypt",
+            "Resource": "*",
+            "Condition": {
+              "StringEquals": {
+                "kms:CallerAccount": "058264289478"
+              },
+              "ArnLike": {
+                "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:*:lambda:eu-north-1:058264289478:function:*"
+              }
+            }
+          },
+          {
+            "Sid": "Allow Lambda service access",
+            "Effect": "Allow",
+            "Principal": {
+              "Service": [
+                "lambda.eu-north-1.amazonaws.com",
+                "lambda.amazonaws.com"
+              ]
+            },
+            "Action": "kms:GenerateDataKey",
+            "Resource": "*",
+            "Condition": {
+              "ArnLike": {
+                "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:*:lambda:eu-north-1:058264289478:function:*"
+              }
+            }
+          },
+          {
+            "Sid": "Allow Lambda to directly describe the key and list its grants",
+            "Effect": "Allow",
+            "Principal": {
+              "Service": [
+                "lambda.eu-north-1.amazonaws.com",
+                "lambda.amazonaws.com"
+              ]
+            },
+            "Action": [
+              "kms:Describe*",
+              "kms:Get*",
+              "kms:List*"
+            ],
+            "Resource": "*"
+          },
+          {
+            "Sid": "Allow direct access to key metadata to the account",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": [
+              "kms:Describe*",
+              "kms:Get*",
+              "kms:List*",
+              "kms:RevokeGrant"
+            ],
+            "Resource": "*"
+          }
+        ]
+      }
+    },
+    {
+      "alias": "alias/aws/secretsmanager",
+      "metadata": {
+        "AWSAccountId": "058264289478",
+        "KeyId": "8802a37a-f981-4384-b538-fdb4f7aba74a",
+        "Arn": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+        "CreationDate": "2026-08-21T19:16:43.332000+01:00",
+        "Enabled": true,
+        "Description": "Default key that protects my Secrets Manager data when no other key is defined",
+        "KeyUsage": "ENCRYPT_DECRYPT",
+        "KeyState": "Enabled",
+        "Origin": "AWS_KMS",
+        "KeyManager": "AWS",
+        "CustomerMasterKeySpec": "SYMMETRIC_DEFAULT",
+        "KeySpec": "SYMMETRIC_DEFAULT",
+        "EncryptionAlgorithms": [
+          "SYMMETRIC_DEFAULT"
+        ],
+        "MultiRegion": false,
+        "CurrentKeyMaterialId": "0bbd002e204233c70c483442e639701c7975ff7e9309af89b03470e2c9eab687"
+      },
+      "policy": {
+        "Version": "2012-10-17",
+        "Id": "auto-secretsmanager-2",
+        "Statement": [
+          {
+            "Sid": "Allow access through AWS Secrets Manager for all principals in the account that are authorized to use AWS Secrets Manager",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "*"
+            },
+            "Action": [
+              "kms:Encrypt",
+              "kms:Decrypt",
+              "kms:ReEncrypt*",
+              "kms:CreateGrant",
+              "kms:DescribeKey"
+            ],
+            "Resource": "*",
+            "Condition": {
+              "StringEquals": {
+                "kms:CallerAccount": "058264289478",
+                "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com"
+              }
+            }
+          },
+          {
+            "Sid": "Allow access through AWS Secrets Manager for all principals in the account that are authorized to use AWS Secrets Manager",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "*"
+            },
+            "Action": "kms:GenerateDataKey*",
+            "Resource": "*",
+            "Condition": {
+              "StringEquals": {
+                "kms:CallerAccount": "058264289478"
+              },
+              "StringLike": {
+                "kms:ViaService": "secretsmanager.*.amazonaws.com"
+              }
+            }
+          },
+          {
+            "Sid": "Allow direct access to key metadata to the account",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": [
+              "kms:Describe*",
+              "kms:Get*",
+              "kms:List*",
+              "kms:RevokeGrant"
+            ],
+            "Resource": "*"
+          }
+        ]
+      }
+    }
+  ],
+  "awsWrites": 0,
+  "comparisonNote": "Service-principal lists compared as unordered sets; only presentation order differed. No effective policy change.",
+  "tournamentPolicyUnchanged": true,
+  "denials": [
+    {
+      "service": "kms.amazonaws.com",
+      "eventId": "25c74d1a-cf05-47f0-b670-bd40b392ba45",
+      "time": "2026-10-08T22:25:16Z",
+      "eventName": "Decrypt",
+      "issuer": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "requestEnvironmentType": "undefined",
+      "requestEnvironmentRedacted": false,
+      "requestEnvironmentKeys": [],
+      "requestVariableKeys": [],
+      "responseEnvironmentError": null,
+      "errorCode": "AccessDenied",
+      "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution/AWSCloudFormation is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy",
+      "contextKeys": []
+    },
+    {
+      "service": "kms.amazonaws.com",
+      "eventId": "64324e2d-5211-4880-ba78-40b36ae895ab",
+      "time": "2026-10-08T22:25:16Z",
+      "eventName": "Decrypt",
+      "issuer": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "requestEnvironmentType": "undefined",
+      "requestEnvironmentRedacted": false,
+      "requestEnvironmentKeys": [],
+      "requestVariableKeys": [],
+      "responseEnvironmentError": null,
+      "errorCode": "AccessDenied",
+      "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution/AWSCloudFormation is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy",
+      "contextKeys": []
+    },
+    {
+      "service": "kms.amazonaws.com",
+      "eventId": "cb51f062-c28e-4454-b06c-5561109c715d",
+      "time": "2026-10-08T22:25:16Z",
+      "eventName": "Decrypt",
+      "issuer": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "requestEnvironmentType": "undefined",
+      "requestEnvironmentRedacted": false,
+      "requestEnvironmentKeys": [],
+      "requestVariableKeys": [],
+      "responseEnvironmentError": null,
+      "errorCode": "AccessDenied",
+      "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution/AWSCloudFormation is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy",
+      "contextKeys": []
+    },
+    {
+      "service": "kms.amazonaws.com",
+      "eventId": "915c140f-1bf8-4062-9d2e-40b5ce3422ce",
+      "time": "2026-10-08T22:25:15Z",
+      "eventName": "Decrypt",
+      "issuer": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "requestEnvironmentType": "undefined",
+      "requestEnvironmentRedacted": false,
+      "requestEnvironmentKeys": [],
+      "requestVariableKeys": [],
+      "responseEnvironmentError": null,
+      "errorCode": "AccessDenied",
+      "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution/AWSCloudFormation is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy",
+      "contextKeys": []
+    },
+    {
+      "service": "kms.amazonaws.com",
+      "eventId": "09ec5d54-11dd-45c6-91ed-ac697ec8ed17",
+      "time": "2026-10-08T22:25:10Z",
+      "eventName": "Decrypt",
+      "issuer": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "requestEnvironmentType": "undefined",
+      "requestEnvironmentRedacted": false,
+      "requestEnvironmentKeys": [],
+      "requestVariableKeys": [],
+      "responseEnvironmentError": null,
+      "errorCode": "AccessDenied",
+      "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution/AWSCloudFormation is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy",
+      "contextKeys": []
+    },
+    {
+      "service": "kms.amazonaws.com",
+      "eventId": "443c5e80-a17d-47c6-bcdd-acf36c0c8172",
+      "time": "2026-10-08T22:25:10Z",
+      "eventName": "Decrypt",
+      "issuer": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "requestEnvironmentType": "undefined",
+      "requestEnvironmentRedacted": false,
+      "requestEnvironmentKeys": [],
+      "requestVariableKeys": [],
+      "responseEnvironmentError": null,
+      "errorCode": "AccessDenied",
+      "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution/AWSCloudFormation is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy",
+      "contextKeys": []
+    },
+    {
+      "service": "kms.amazonaws.com",
+      "eventId": "61fedb7c-31e9-461e-abed-b8bebf7a8909",
+      "time": "2026-10-08T22:25:10Z",
+      "eventName": "Decrypt",
+      "issuer": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "requestEnvironmentType": "undefined",
+      "requestEnvironmentRedacted": false,
+      "requestEnvironmentKeys": [],
+      "requestVariableKeys": [],
+      "responseEnvironmentError": null,
+      "errorCode": "AccessDenied",
+      "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution/AWSCloudFormation is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy",
+      "contextKeys": []
+    },
+    {
+      "service": "kms.amazonaws.com",
+      "eventId": "9639651d-20a2-4005-a830-6abea29e5d84",
+      "time": "2026-10-08T22:25:10Z",
+      "eventName": "Decrypt",
+      "issuer": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "requestEnvironmentType": "undefined",
+      "requestEnvironmentRedacted": false,
+      "requestEnvironmentKeys": [],
+      "requestVariableKeys": [],
+      "responseEnvironmentError": null,
+      "errorCode": "AccessDenied",
+      "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution/AWSCloudFormation is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy",
+      "contextKeys": []
+    },
+    {
+      "service": "kms.amazonaws.com",
+      "eventId": "96bec5e4-6519-4c78-b4a2-b5400e6f1e3c",
+      "time": "2026-10-08T22:25:10Z",
+      "eventName": "Decrypt",
+      "issuer": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "requestEnvironmentType": "undefined",
+      "requestEnvironmentRedacted": false,
+      "requestEnvironmentKeys": [],
+      "requestVariableKeys": [],
+      "responseEnvironmentError": null,
+      "errorCode": "AccessDenied",
+      "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution/AWSCloudFormation is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy",
+      "contextKeys": []
+    },
+    {
+      "service": "kms.amazonaws.com",
+      "eventId": "e67215c3-2f52-42b2-9e1a-fef14c5609ae",
+      "time": "2026-10-08T22:25:10Z",
+      "eventName": "Decrypt",
+      "issuer": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "requestEnvironmentType": "undefined",
+      "requestEnvironmentRedacted": false,
+      "requestEnvironmentKeys": [],
+      "requestVariableKeys": [],
+      "responseEnvironmentError": null,
+      "errorCode": "AccessDenied",
+      "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution/AWSCloudFormation is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy",
+      "contextKeys": []
+    },
+    {
+      "service": "kms.amazonaws.com",
+      "eventId": "19c9ee21-06b2-4625-adfa-a5bca68c6561",
+      "time": "2026-10-08T22:25:04Z",
+      "eventName": "Decrypt",
+      "issuer": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "requestEnvironmentType": "undefined",
+      "requestEnvironmentRedacted": false,
+      "requestEnvironmentKeys": [],
+      "requestVariableKeys": [],
+      "responseEnvironmentError": null,
+      "errorCode": "AccessDenied",
+      "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution/AWSCloudFormation is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy",
+      "contextKeys": []
+    },
+    {
+      "service": "kms.amazonaws.com",
+      "eventId": "1e622b6f-6919-43e8-858f-8413173e71a3",
+      "time": "2026-10-08T22:25:04Z",
+      "eventName": "Decrypt",
+      "issuer": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "requestEnvironmentType": "undefined",
+      "requestEnvironmentRedacted": false,
+      "requestEnvironmentKeys": [],
+      "requestVariableKeys": [],
+      "responseEnvironmentError": null,
+      "errorCode": "AccessDenied",
+      "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution/AWSCloudFormation is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy",
+      "contextKeys": []
+    },
+    {
+      "service": "kms.amazonaws.com",
+      "eventId": "22ccfe9c-f237-4912-9902-a3e72e2783bd",
+      "time": "2026-10-08T22:25:04Z",
+      "eventName": "Decrypt",
+      "issuer": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "requestEnvironmentType": "undefined",
+      "requestEnvironmentRedacted": false,
+      "requestEnvironmentKeys": [],
+      "requestVariableKeys": [],
+      "responseEnvironmentError": null,
+      "errorCode": "AccessDenied",
+      "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution/AWSCloudFormation is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy",
+      "contextKeys": []
+    },
+    {
+      "service": "kms.amazonaws.com",
+      "eventId": "337a640d-c440-4952-9de7-c77239a57336",
+      "time": "2026-10-08T22:25:04Z",
+      "eventName": "Decrypt",
+      "issuer": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "requestEnvironmentType": "undefined",
+      "requestEnvironmentRedacted": false,
+      "requestEnvironmentKeys": [],
+      "requestVariableKeys": [],
+      "responseEnvironmentError": null,
+      "errorCode": "AccessDenied",
+      "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution/AWSCloudFormation is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy",
+      "contextKeys": []
+    },
+    {
+      "service": "kms.amazonaws.com",
+      "eventId": "6e71830d-0ff5-4af4-b164-f8bd5e02f7b3",
+      "time": "2026-10-08T22:25:04Z",
+      "eventName": "Decrypt",
+      "issuer": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "requestEnvironmentType": "undefined",
+      "requestEnvironmentRedacted": false,
+      "requestEnvironmentKeys": [],
+      "requestVariableKeys": [],
+      "responseEnvironmentError": null,
+      "errorCode": "AccessDenied",
+      "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution/AWSCloudFormation is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy",
+      "contextKeys": []
+    },
+    {
+      "service": "kms.amazonaws.com",
+      "eventId": "90182d7a-2425-4b1c-a944-dd009969e005",
+      "time": "2026-10-08T22:25:04Z",
+      "eventName": "Decrypt",
+      "issuer": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "requestEnvironmentType": "undefined",
+      "requestEnvironmentRedacted": false,
+      "requestEnvironmentKeys": [],
+      "requestVariableKeys": [],
+      "responseEnvironmentError": null,
+      "errorCode": "AccessDenied",
+      "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution/AWSCloudFormation is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy",
+      "contextKeys": []
+    },
+    {
+      "service": "kms.amazonaws.com",
+      "eventId": "b6976b29-2ba9-4b0e-8f63-dab2b7732b92",
+      "time": "2026-10-08T22:25:04Z",
+      "eventName": "Decrypt",
+      "issuer": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "requestEnvironmentType": "undefined",
+      "requestEnvironmentRedacted": false,
+      "requestEnvironmentKeys": [],
+      "requestVariableKeys": [],
+      "responseEnvironmentError": null,
+      "errorCode": "AccessDenied",
+      "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution/AWSCloudFormation is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy",
+      "contextKeys": []
+    },
+    {
+      "service": "kms.amazonaws.com",
+      "eventId": "d6a5d3ee-40bb-4e92-87c0-ec736f319be2",
+      "time": "2026-10-08T22:25:04Z",
+      "eventName": "Decrypt",
+      "issuer": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "requestEnvironmentType": "undefined",
+      "requestEnvironmentRedacted": false,
+      "requestEnvironmentKeys": [],
+      "requestVariableKeys": [],
+      "responseEnvironmentError": null,
+      "errorCode": "AccessDenied",
+      "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution/AWSCloudFormation is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy",
+      "contextKeys": []
+    },
+    {
+      "service": "kms.amazonaws.com",
+      "eventId": "6351f5b5-a4fa-4af5-8a13-cff01aeb55bf",
+      "time": "2026-10-08T22:25:03Z",
+      "eventName": "Decrypt",
+      "issuer": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "requestEnvironmentType": "undefined",
+      "requestEnvironmentRedacted": false,
+      "requestEnvironmentKeys": [],
+      "requestVariableKeys": [],
+      "responseEnvironmentError": null,
+      "errorCode": "AccessDenied",
+      "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution/AWSCloudFormation is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy",
+      "contextKeys": []
+    },
+    {
+      "service": "kms.amazonaws.com",
+      "eventId": "a88ecc6f-4789-45ab-8575-c5abf86d6341",
+      "time": "2026-10-08T22:25:03Z",
+      "eventName": "Decrypt",
+      "issuer": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "requestEnvironmentType": "undefined",
+      "requestEnvironmentRedacted": false,
+      "requestEnvironmentKeys": [],
+      "requestVariableKeys": [],
+      "responseEnvironmentError": null,
+      "errorCode": "AccessDenied",
+      "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution/AWSCloudFormation is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy",
+      "contextKeys": []
+    },
+    {
+      "service": "kms.amazonaws.com",
+      "eventId": "847e48a8-72a2-4210-a766-c6dcd937936e",
+      "time": "2026-10-08T22:24:01Z",
+      "eventName": "Decrypt",
+      "issuer": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "requestEnvironmentType": "undefined",
+      "requestEnvironmentRedacted": false,
+      "requestEnvironmentKeys": [],
+      "requestVariableKeys": [],
+      "responseEnvironmentError": null,
+      "errorCode": "AccessDenied",
+      "errorMessage": "User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution/AWSCloudFormation is not authorized to perform: kms:Decrypt on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy",
+      "contextKeys": []
+    }
+  ],
+  "auditSha256": "8d5a8f5ecae109ab37800faa1b21072792f9cb80348e923e9bb1a5b08c4d0e9d",
+  "complete": true
+}

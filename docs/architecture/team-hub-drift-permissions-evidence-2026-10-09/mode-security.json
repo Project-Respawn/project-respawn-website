@@ -1,0 +1,113 @@
+{
+  "at": "2026-10-09T17:51:58.406Z",
+  "checks": [
+    {
+      "kind": "Read",
+      "action": "lambda:GetFunction",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "action": "lambda:GetFunctionCodeSigningConfig",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ViaService",
+        "kms:CallerAccount",
+        "kms:EncryptionContext:SecretARN",
+        "iam:PassedToService"
+      ]
+    },
+    {
+      "kind": "Read",
+      "action": "lambda:GetFunctionRecursionConfig",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "action": "lambda:GetRuntimeManagementConfig",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "action": "lambda:GetFunctionScalingConfig",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ViaService",
+        "kms:CallerAccount",
+        "kms:EncryptionContext:SecretARN",
+        "iam:PassedToService"
+      ]
+    },
+    {
+      "kind": "Read",
+      "action": "lambda:UpdateFunctionConfiguration",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "action": "lambda:GetFunction",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "action": "lambda:GetFunctionCodeSigningConfig",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ViaService",
+        "kms:CallerAccount",
+        "kms:EncryptionContext:SecretARN",
+        "iam:PassedToService"
+      ]
+    },
+    {
+      "kind": "Command",
+      "action": "lambda:GetFunctionRecursionConfig",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "action": "lambda:GetRuntimeManagementConfig",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "action": "lambda:GetFunctionScalingConfig",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ViaService",
+        "kms:CallerAccount",
+        "kms:EncryptionContext:SecretARN",
+        "iam:PassedToService"
+      ]
+    },
+    {
+      "kind": "Command",
+      "action": "lambda:UpdateFunctionConfiguration",
+      "decision": "allowed",
+      "missingContext": []
+    }
+  ],
+  "analyzer": [
+    {
+      "id": "ExecutionRole",
+      "findings": []
+    },
+    {
+      "id": "ExecutionBoundary",
+      "findings": []
+    },
+    {
+      "id": "PreparationCaller",
+      "findings": []
+    }
+  ],
+  "awsWrites": 0,
+  "complete": true
+}

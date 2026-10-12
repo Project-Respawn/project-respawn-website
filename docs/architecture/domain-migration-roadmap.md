@@ -1,5 +1,7 @@
 # Project Respawn domain migration roadmap
 
+**Current consolidation — 12 October 2026:** [Migration control](README-PHASE2-MIGRATION.md) and [status JSON](domain-migration-status.json) select current domain gates. Core contracts are independently deployed (8+5), while existing Cognito remains protected in Legacy. Team Hub recovery is accepted (48+7), LEGACY_WRITER 1/1 and frontend unchanged; isolated AWS transaction/cursor proofs remain next. Tournament Release 2/rollback remains pending. Earlier dated milestones below describe historical context, not current sequencing authority. Apply the [deployment acceptance standard](project-respawn-aws-deployment-acceptance-standard.md) and [M0–M8 worksheet](domain-migration-template.md).
+
 Date: 4 October 2026. Applies the [mandatory architecture standard](project-respawn-domain-architecture-standard.md), [current classification](project-respawn-domain-classification.md) and [new-domain checklist](new-domain-checklist.md). **Planning only. Release 2 is paused; no deployment, AWS change or migration is authorized by this roadmap.**
 
 ## Starting point and limits
@@ -10,7 +12,7 @@ Most other products still depend on LegacyPlatform, which remains **2,621 resour
 
 The [website audit](full-website-domain-audit-2026-09-30.md) found broad frontend coupling, demo-heavy areas, unverified authenticated workflows and external SWG ownership gaps. Its historical Tournament blockers are superseded by [Release 1 acceptance](phase2a-tournament-runtime-kms-release1-acceptance-2026-10-04.md). Its unresolved product/health findings are not all resolved by Tournament success.
 
-## Status register
+## Historical 4 October status register
 
 | Target | Status | Evidence / limitation |
 |---|---|---|
@@ -38,7 +40,7 @@ Once the paused Phase 2A proof is separately authorized and completed, prepare t
 
 These are prerequisites for claiming end-to-end independence, not a big-bang rewrite. Implement proposed guardrails in an approved task with negative fixtures and an explicit existing-debt register. No hidden budget pin refresh or wholesale allowlist is acceptable.
 
-## Recommended extraction order
+## Recommended extraction order (original rationale; current gates in migration control)
 
 Rankings are recommendations from recorded coupling, business relevance, growth, loading benefit and state risk. They are not execution approvals or fixed dates. Reorder a later domain only through an updated evidence-based decision; security/recovery gates cannot be skipped for priority.
 

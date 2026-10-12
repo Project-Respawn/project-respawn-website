@@ -1,0 +1,58 @@
+{
+  "Changes": [
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "RecoveryRole",
+        "ResourceType": "AWS::IAM::Role",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"MaxSessionDuration\":\"3600\",\"RoleName\":\"ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009\",\"Policies\":[{\"PolicyName\":\"FixedTwoFunctionRecovery\",\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"lambda:GetFunctionConfiguration\",\"lambda:UpdateFunctionConfiguration\"],\"Resource\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand\"],\"Effect\":\"Allow\"},{\"Condition\":{\"StringEquals\":{\"kms:EncryptionContext:aws:lambda:FunctionArn\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand\"],\"kms:ViaService\":\"lambda.eu-north-1.amazonaws.com\",\"kms:CallerAccount\":\"058264289478\"}},\"Action\":[\"kms:Encrypt\",\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Allow\"},{\"Resource\":\"*\",\"Effect\":\"Deny\",\"NotAction\":[\"lambda:GetFunctionConfiguration\",\"lambda:UpdateFunctionConfiguration\",\"kms:Decrypt\",\"kms:Encrypt\",\"kms:DescribeKey\"]},{\"Action\":\"lambda:*\",\"Effect\":\"Deny\",\"NotResource\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead:$LATEST\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand:$LATEST\"]},{\"Action\":\"kms:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\"},{\"Condition\":{\"StringNotEquals\":{\"kms:ViaService\":\"lambda.eu-north-1.amazonaws.com\"}},\"Action\":[\"kms:Encrypt\",\"kms:Decrypt\",\"kms:DescribeKey\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:CallerAccount\":\"058264289478\"}},\"Action\":[\"kms:Encrypt\",\"kms:Decrypt\",\"kms:DescribeKey\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:EncryptionContext:aws:lambda:FunctionArn\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand\"]}},\"Action\":[\"kms:Encrypt\",\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"aws:RequestedRegion\":\"eu-north-1\"}},\"Action\":\"*\",\"Resource\":\"*\",\"Effect\":\"Deny\"},{\"Condition\":{\"DateLessThan\":{\"aws:CurrentTime\":\"2026-10-12T15:17:52Z\"}},\"Action\":\"*\",\"Resource\":\"*\",\"Effect\":\"Deny\"},{\"Condition\":{\"DateGreaterThanEquals\":{\"aws:CurrentTime\":\"2026-10-12T15:32:52Z\"}},\"Action\":\"*\",\"Resource\":\"*\",\"Effect\":\"Deny\"},{\"Action\":\"lambda:UpdateFunctionConfiguration\",\"Resource\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead:$LATEST\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand:$LATEST\"],\"Effect\":\"Allow\",\"Sid\":\"UpdateOnlyExactUnpublishedFunctions\"},{\"Condition\":{\"StringEquals\":{\"kms:ViaService\":\"lambda.eu-north-1.amazonaws.com\",\"kms:CallerAccount\":\"058264289478\"}},\"Action\":\"kms:DescribeKey\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Allow\",\"Sid\":\"DescribeOnlyLambdaManagedKeyViaLambda\"}]}}],\"AssumeRolePolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Condition\":{\"StringEquals\":{\"aws:SourceAccount\":\"058264289478\"},\"ArnEquals\":{\"aws:SourceArn\":\"arn:aws:states:eu-north-1:058264289478:stateMachine:ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009\"}},\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"states.amazonaws.com\"}}]}}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "RecoveryWorkflow",
+        "ResourceType": "AWS::StepFunctions::StateMachine",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"Definition\":\"(Truncated-Signature):97c8838dacaa412bd80a45f51e319030a79c838d368657c5a561d37601b3bb4b\",\"StateMachineName\":\"ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009\",\"RoleArn\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"LoggingConfiguration\":{\"Level\":\"OFF\"},\"StateMachineType\":\"STANDARD\",\"TracingConfiguration\":{\"Enabled\":\"false\"}}}"
+      }
+    }
+  ],
+  "ChangeSetName": "describekey-recovery-20261012",
+  "ChangeSetId": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/describekey-recovery-20261012/14574bca-8a5e-42f5-8dfd-a695662f4964",
+  "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009/12718640-c64c-11f1-af5c-0605414287c7",
+  "StackName": "ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009",
+  "Description": "Reviewed fixed two-function environment recovery; temporary executor only",
+  "Parameters": [
+    {
+      "ParameterKey": "NotBefore",
+      "ParameterValue": "2026-10-12T15:17:52Z"
+    },
+    {
+      "ParameterKey": "ExpiresAt",
+      "ParameterValue": "2026-10-12T15:32:52Z"
+    }
+  ],
+  "CreationTime": "2026-10-12T14:49:05.554000+00:00",
+  "ExecutionStatus": "AVAILABLE",
+  "Status": "CREATE_COMPLETE",
+  "StatusReason": null,
+  "NotificationARNs": [],
+  "RollbackConfiguration": {},
+  "Capabilities": [
+    "CAPABILITY_NAMED_IAM"
+  ],
+  "Tags": null,
+  "ParentChangeSetId": null,
+  "IncludeNestedStacks": false,
+  "RootChangeSetId": null,
+  "OnStackFailure": null,
+  "ImportExistingResources": null,
+  "StackDriftStatus": null,
+  "DeploymentMode": null
+}

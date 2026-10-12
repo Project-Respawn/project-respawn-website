@@ -1,0 +1,855 @@
+{
+  "at": "2026-10-08T22:26:22.637Z",
+  "roles": [
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary",
+      "version": "v7",
+      "exactPinnedPolicies": true
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "version": "v7",
+      "exactPinnedPolicies": true
+    }
+  ],
+  "checks": [
+    {
+      "kind": "Read",
+      "label": "authority-read",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "kind": "Read",
+      "label": "operational-read",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "kind": "Read",
+      "label": "operational-query",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "kind": "Read",
+      "label": "index-query",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/BySubject",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "kind": "Read",
+      "label": "authority-condition",
+      "action": "dynamodb:ConditionCheckItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "transaction-put",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "transaction-delete",
+      "action": "dynamodb:DeleteItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "direct-put-denied",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "idempotency-read",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "audit-put",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "authority-immutable-dynamodb:PutItem",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "idempotency-put",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "journal-query-denied",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "other-control-denied",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "authority-immutable-dynamodb:UpdateItem",
+      "action": "dynamodb:UpdateItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "authority-immutable-dynamodb:DeleteItem",
+      "action": "dynamodb:DeleteItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "missing-key-denied",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "mixed-key-denied",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "foreign-Tournament",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Tournament-Ntgre-Operational",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "foreign-Legacy",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Legacy-Ntgre-Operational",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "foreign-Creator",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Creator-Ntgre-Operational",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "business-update-denied",
+      "action": "dynamodb:UpdateItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "scan-denied",
+      "action": "dynamodb:Scan",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "foreign-Commerce",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Commerce-Ntgre-Operational",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "core-preserved",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "kind": "Read",
+      "label": "own-secret-api",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "kind": "Read",
+      "label": "foreign-lambda-denied",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre-Preview",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "cognito-admin-denied",
+      "action": "cognito-idp:AdminGetUser",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "foreign-secret",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "cursor-kms-explicit-denial",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "business-kms-denied",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "authority-read",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "kind": "Command",
+      "label": "operational-read",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "kind": "Command",
+      "label": "operational-query",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "kind": "Command",
+      "label": "transaction-put",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "kind": "Command",
+      "label": "index-query",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/BySubject",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "audit-put",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "kind": "Command",
+      "label": "transaction-delete",
+      "action": "dynamodb:DeleteItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "kind": "Command",
+      "label": "direct-put-denied",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "authority-condition",
+      "action": "dynamodb:ConditionCheckItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "kind": "Command",
+      "label": "authority-immutable-dynamodb:PutItem",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "idempotency-put",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "kind": "Command",
+      "label": "idempotency-read",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "kind": "Command",
+      "label": "authority-immutable-dynamodb:DeleteItem",
+      "action": "dynamodb:DeleteItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "other-control-denied",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "journal-query-denied",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "authority-immutable-dynamodb:UpdateItem",
+      "action": "dynamodb:UpdateItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "missing-key-denied",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "mixed-key-denied",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "foreign-Creator",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Creator-Ntgre-Operational",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "foreign-Legacy",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Legacy-Ntgre-Operational",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "foreign-Tournament",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Tournament-Ntgre-Operational",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "business-update-denied",
+      "action": "dynamodb:UpdateItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "scan-denied",
+      "action": "dynamodb:Scan",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "core-preserved",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "kind": "Command",
+      "label": "foreign-Commerce",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Commerce-Ntgre-Operational",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "foreign-lambda-denied",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre-Preview",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "cognito-admin-denied",
+      "action": "cognito-idp:AdminGetUser",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "own-secret-api",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "foreign-secret",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "business-kms-denied",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "cursor-kms-explicit-denial",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "wrong-suffix-length",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "direct-call",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "wrong-secret",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "exact-service-secret",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "kind": "Read",
+      "label": "wrong-service",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "wrong-service-region",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "missing-context",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "wrong-caller",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "wrong-region",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "foreign-key-alias/customer-business",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "kms:CreateGrant",
+      "action": "kms:CreateGrant",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "foreign-key-alias/aws/s3",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "foreign-key-alias/unknown",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "kms:Encrypt",
+      "action": "kms:Encrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "kms:GenerateDataKey",
+      "action": "kms:GenerateDataKey",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "kms:PutKeyPolicy",
+      "action": "kms:PutKeyPolicy",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "own-secret",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "kind": "Read",
+      "label": "kms:ScheduleKeyDeletion",
+      "action": "kms:ScheduleKeyDeletion",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "wrong-name",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-Extra-ABC123",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Read",
+      "label": "foreign-secret",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "wrong-service",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "wrong-suffix-length",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "wrong-secret",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "exact-service-secret",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "direct-call",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "wrong-caller",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "wrong-service-region",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "foreign-key-alias/customer-business",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "missing-context",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "wrong-region",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "foreign-key-alias/aws/s3",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "kms:Encrypt",
+      "action": "kms:Encrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "kms:CreateGrant",
+      "action": "kms:CreateGrant",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "foreign-key-alias/unknown",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "kms:GenerateDataKey",
+      "action": "kms:GenerateDataKey",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "own-secret",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "kms:ScheduleKeyDeletion",
+      "action": "kms:ScheduleKeyDeletion",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "kms:PutKeyPolicy",
+      "action": "kms:PutKeyPolicy",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "foreign-secret",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "wrong-name",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-Extra-ABC123",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "kind": "Command",
+      "label": "lambda-service-preserved",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "kind": "Read",
+      "label": "lambda-service-preserved",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "expected": true,
+      "decision": "allowed"
+    }
+  ],
+  "complete": true,
+  "liveDecryptionProven": false
+}

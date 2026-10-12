@@ -1,0 +1,193 @@
+{
+  "status": "BLOCKED_CURSOR_KMS_SECURITY_DECISION_NOT_DEPLOYABLE",
+  "account": "058264289478",
+  "region": "eu-north-1",
+  "stack": "ProjectRespawn-TeamHub-Ntgre",
+  "api": "t54b88casf",
+  "checkpoint": "5c772296a791b8487a364f07682e17a5acbf7243",
+  "baseline": {
+    "manifestSha256": "30ac97e5b48f3867268403c13766e9439aa2e0821d87585a685cfdfae1b997d1",
+    "productSha256": "5a2d99f4919fd07c619f483e556a0464b9cbaad0be00665201438b0f4ec7d0e9",
+    "securitySha256": "503d08c93fddc869a11bc01c6ec57fe4e7449e618e0c9435e7bf2ed996351abc",
+    "runtimeSha256": "cd58cc3553867f268af79bc9c710fe35e1bab07882d39b423e05b39626a7eedd"
+  },
+  "runtimePath": ".tmp/team-hub-business-runtime/runtime.zip",
+  "runtimeSha256": "da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e",
+  "productSha256": "eb1952c63f619d04a06dc6843ad1ba10e685cdeec6d7690a8ab3086ae50c3b8c",
+  "securitySha256": "a4c9c99a516a110a92355708c9e8b74e07cf08cf67aaaf1f3f55c736421c5153",
+  "bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+  "assetKey": "team-hub/business/da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e.zip",
+  "templateKey": "team-hub/business/eb1952c63f619d04a06dc6843ad1ba10e685cdeec6d7690a8ab3086ae50c3b8c.template.json",
+  "templateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/team-hub/business/eb1952c63f619d04a06dc6843ad1ba10e685cdeec6d7690a8ab3086ae50c3b8c.template.json",
+  "policySizes": {
+    "PreviewBoundary": 923,
+    "ExecutionBoundary": 5772,
+    "PreparationCaller": 3238,
+    "ParityCommandBoundary": 3958,
+    "ParityReadBoundary": 3128
+  },
+  "productChanges": {
+    "add": [
+      "CursorSecret",
+      "ListMyTeamsRoute",
+      "DirectorySearchRoute",
+      "DirectorySearchRouteInvokePermission",
+      "DirectoryResolveRoute",
+      "DirectoryResolveRouteInvokePermission"
+    ],
+    "modify": [
+      "HttpApi",
+      "ParityCommandRole",
+      "ParityCommandFunction",
+      "ParityReadRole",
+      "ParityReadFunction"
+    ],
+    "delete": [],
+    "replace": [],
+    "classification": "offline structural comparison; AWS change set required"
+  },
+  "securityChanges": {
+    "add": [],
+    "modify": [
+      "ExecutionBoundary",
+      "ExecutionRole",
+      "PreparationCaller",
+      "ParityCommandBoundary",
+      "ParityReadBoundary"
+    ],
+    "delete": [],
+    "replace": [],
+    "classification": "offline structural comparison; AWS change set required"
+  },
+  "resources": {
+    "product": 48,
+    "security": 7
+  },
+  "sourceHashes": [
+    {
+      "path": "config/domains/core/domain-endpoints.Ntgre.json",
+      "sha256": "73ccb94e6477198f9853bd90db9581e26f7d384836db0b8ba5dcace7b99a5c3b"
+    },
+    {
+      "path": "domains/team-hub/core-integration/manifest.mjs",
+      "sha256": "ad879c2a96d41b9f9ea3cce045a677e376d4cd976c38f4abe660309c8e0da5d1"
+    },
+    {
+      "path": "domains/team-hub/contracts.mjs",
+      "sha256": "5a9ea05b66210eb709e8bc9f4097f5680f405dc498a72b5f12ca8599273b592d"
+    },
+    {
+      "path": "domains/team-hub/auth.mjs",
+      "sha256": "f18932d8664eb3775d3ad1ff89d3e01b0d05b3d81f62822b51189993d500f622"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/contracts.mjs",
+      "sha256": "8da47289f6fd1118461e9bb931b5c38fcc1d5196260e4a1b5e0a76611f686a8e"
+    },
+    {
+      "path": "domains/team-hub/storage-plan.mjs",
+      "sha256": "aa6923a380b5a0426cd33fab605d7606c6a6b7e5b3d00e25e2971bdb8f72e491"
+    },
+    {
+      "path": "domains/team-hub/repository.mjs",
+      "sha256": "4a84ee6b60ab625293545d2dd1be0dc863ab2f8c343b1e11e8cafeaf4bd921ca"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/service.mjs",
+      "sha256": "18d42e2cb974f1dd4dc864153d5293e14628e2341124e9cb41a4a08fe464c13c"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/http.mjs",
+      "sha256": "ae0e9dfbae9f59bc34f76c44c03949b823a0225c58cefa5a5bdada1384add8ec"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/authority.mjs",
+      "sha256": "46b2a75c857f74ef8802565f2c75b0c6c006945f95fb9dbc65e5a79a7bdc7d27"
+    },
+    {
+      "path": "domains/team-hub/parity/state-schema.json",
+      "sha256": "bf7fffcba70af3fea79e051e73c1f62ab6cb1cee492a78947e97b9b71b32a429"
+    },
+    {
+      "path": "domains/team-hub/parity/codec.mjs",
+      "sha256": "25d71ad9a7b7e7aa79cef7d44082c2d97a4da11961c58aa8bc67c204a8d21826"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/repository.mjs",
+      "sha256": "20c118e3ee2d020899d5773da693ad32bfbc0748cdda657624c0acb50e7c4890"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/core-client.mjs",
+      "sha256": "52b7e3049a85facfa2cfdb419e235359c491daf26a2da068f3f934984b9ce029"
+    },
+    {
+      "path": "domains/team-hub/cutover/contracts.mjs",
+      "sha256": "8da47289f6fd1118461e9bb931b5c38fcc1d5196260e4a1b5e0a76611f686a8e"
+    },
+    {
+      "path": "domains/team-hub/cutover/observability.mjs",
+      "sha256": "e06956c377f92769f76495c9cd5b74d7800231bca50acdfe54cf23971e4ec382"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/observability.mjs",
+      "sha256": "fcff3c7d3b199e8508fcf59d8530a694a8eb1cbb725b043d5f7066a4fa81bca5"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/handler.mjs",
+      "sha256": "7a3a046bba637c18317b29c79d4bb5317214cff72aff9e23950f7ea5f9947905"
+    },
+    {
+      "path": "domains/team-hub/authority-contract/contract.mjs",
+      "sha256": "190ae44422d0be2743bb6a88c3936d1b87e1a6653faecf93c21e5e2849b8711a"
+    },
+    {
+      "path": "domains/team-hub/authority-contract/handler.mjs",
+      "sha256": "81f7e945a3e681b0eab1fc8efcbe01c6e37018869a1583c001feec1403819691"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/router.mjs",
+      "sha256": "60c5721658df6127d521fad534d10154c77b7d91ab20f3855dd29d0f60dcebc9"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/entry.mjs",
+      "sha256": "f9ae8b43dcdcda0648c665d840681fc8bd7cd5128570bb1c2fd26b05189bafb9"
+    },
+    {
+      "path": "scripts/team-hub-business-runtime/build.mjs",
+      "sha256": "14db151a73f0f9d3b4df39e2665023c6a24811519216d648b2d40f5e980d2db1"
+    },
+    {
+      "path": "scripts/team-hub-business-runtime/policy.mjs",
+      "sha256": "387a5a43f0a0eb4df1e39fb8369aabce43017734a4fb1a650c12f7888c06d4a5"
+    },
+    {
+      "path": "config/domains/team-hub/domain-endpoints.Ntgre.json",
+      "sha256": "c8ede7fca162d1549b34be6d70973ab53ddc024c973317b76c93b1af6009f0b5"
+    }
+  ],
+  "rollback": {
+    "product": "docs/architecture/team-hub-authority-status-evidence-2026-10-08/product.template.json",
+    "security": "docs/architecture/team-hub-authority-status-evidence-2026-10-08/security.template.json",
+    "runtime": ".tmp/team-hub-authority-status/runtime.zip",
+    "commandRuntime": {
+      "S3Bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+      "S3Key": "team-hub/d1-dark/a36406c42c727b4d8c262083e0cb95807f2404c4c8649b2eacc559915f4ba7d5.zip"
+    },
+    "sequence": "Restore accepted product while candidate security retains old artifacts; then restore accepted security. Only before target business writes. Secret retained; no data deletion."
+  },
+  "synthesis": {
+    "awsCalls": 0,
+    "cdk": "2.260.0",
+    "assembly": ".tmp/team-hub-business-runtime/assembly"
+  },
+  "awsWrites": 0,
+  "blockers": [
+    "Read cursor secret uses aws/secretsmanager but preserved explicit KMS deny permits only alias/aws/lambda. GetSecretValue API allow is not end-to-end decryption proof; no secret retrieved and no deny relaxed. Separate approved solution required."
+  ],
+  "validation": {
+    "regressionPassed": 670,
+    "businessPassed": 21,
+    "localDynamoDb": true,
+    "isolatedAwsTransactions": false
+  }
+}

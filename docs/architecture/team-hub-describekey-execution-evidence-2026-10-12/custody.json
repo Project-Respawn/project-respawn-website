@@ -1,0 +1,94 @@
+{
+  "at": "2026-10-12T14:32:03.666Z",
+  "absent": [
+    {
+      "service": "iam",
+      "name": "ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009"
+    },
+    {
+      "service": "stepfunctions",
+      "name": "ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009"
+    },
+    {
+      "service": "cloudformation",
+      "name": "ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009"
+    }
+  ],
+  "checks": [
+    {
+      "action": "iam:CreateRole",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009",
+      "decision": "allowed"
+    },
+    {
+      "action": "iam:GetRole",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009",
+      "decision": "allowed"
+    },
+    {
+      "action": "iam:PutRolePolicy",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009",
+      "decision": "allowed"
+    },
+    {
+      "action": "iam:DeleteRolePolicy",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009",
+      "decision": "allowed"
+    },
+    {
+      "action": "iam:DeleteRole",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009",
+      "decision": "allowed"
+    },
+    {
+      "action": "iam:PassRole",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009",
+      "decision": "allowed"
+    },
+    {
+      "action": "states:CreateStateMachine",
+      "resource": "arn:aws:states:eu-north-1:058264289478:stateMachine:ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009",
+      "decision": "allowed"
+    },
+    {
+      "action": "states:DescribeStateMachine",
+      "resource": "arn:aws:states:eu-north-1:058264289478:stateMachine:ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009",
+      "decision": "allowed"
+    },
+    {
+      "action": "states:StartExecution",
+      "resource": "arn:aws:states:eu-north-1:058264289478:stateMachine:ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009",
+      "decision": "allowed"
+    },
+    {
+      "action": "states:DeleteStateMachine",
+      "resource": "arn:aws:states:eu-north-1:058264289478:stateMachine:ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009",
+      "decision": "allowed"
+    },
+    {
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009/*",
+      "decision": "allowed"
+    },
+    {
+      "action": "cloudformation:ExecuteChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009/*",
+      "decision": "allowed"
+    },
+    {
+      "action": "cloudformation:DescribeChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009/*",
+      "decision": "allowed"
+    },
+    {
+      "action": "cloudformation:DeleteStack",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009/*",
+      "decision": "allowed"
+    }
+  ],
+  "complete": true,
+  "identity": {
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest",
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5"
+  }
+}

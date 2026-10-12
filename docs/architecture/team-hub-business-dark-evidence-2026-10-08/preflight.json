@@ -1,0 +1,547 @@
+{
+  "at": "2026-10-08T22:11:35.938Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "blockedManifestVerified": "2f523b4f8f0e7429968b72dddf88c1f1fcfb4a74d34677fc3f52928881f52b59",
+  "roles": [
+    {
+      "kind": "Read",
+      "name": "ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "inline": [
+        {
+          "name": "ExactSyntheticTeamState",
+          "document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Resource": "*",
+                "Effect": "Deny",
+                "NotAction": [
+                  "logs:CreateLogStream",
+                  "logs:PutLogEvents",
+                  "kms:Decrypt",
+                  "lambda:InvokeFunction",
+                  "dynamodb:GetItem"
+                ],
+                "Sid": "OnlyDarkCoreIntegration"
+              },
+              {
+                "Action": "logs:*",
+                "Effect": "Deny",
+                "NotResource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read:*"
+              },
+              {
+                "Action": [
+                  "logs:CreateLogStream",
+                  "logs:PutLogEvents"
+                ],
+                "Resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read:*",
+                "Effect": "Allow"
+              },
+              {
+                "Action": "kms:Decrypt",
+                "Effect": "Deny",
+                "NotResource": "arn:aws:kms:eu-north-1:058264289478:key/*"
+              },
+              {
+                "Condition": {
+                  "ForAllValues:StringNotEquals": {
+                    "kms:ResourceAliases": [
+                      "alias/aws/lambda"
+                    ]
+                  }
+                },
+                "Action": "kms:Decrypt",
+                "Resource": "*",
+                "Effect": "Deny"
+              },
+              {
+                "Condition": {
+                  "ForAnyValue:StringEquals": {
+                    "kms:ResourceAliases": [
+                      "alias/aws/lambda"
+                    ]
+                  }
+                },
+                "Action": "kms:Decrypt",
+                "Resource": "arn:aws:kms:eu-north-1:058264289478:key/*",
+                "Effect": "Allow"
+              },
+              {
+                "Action": "lambda:InvokeFunction",
+                "Resource": [
+                  "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+                  "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST"
+                ],
+                "Effect": "Allow"
+              },
+              {
+                "Action": "lambda:*",
+                "Effect": "Deny",
+                "NotResource": [
+                  "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+                  "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST"
+                ]
+              },
+              {
+                "Condition": {
+                  "Null": {
+                    "dynamodb:LeadingKeys": "false"
+                  },
+                  "ForAllValues:StringEquals": {
+                    "dynamodb:LeadingKeys": [
+                      "CONTROL#AUTHORITY"
+                    ]
+                  }
+                },
+                "Action": "dynamodb:GetItem",
+                "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+                "Effect": "Allow",
+                "Sid": "ReadOnlyAuthorityPartition"
+              }
+            ]
+          }
+        }
+      ],
+      "attached": [],
+      "boundary": {
+        "arn": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary",
+        "version": "v6",
+        "document": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Resource": "*",
+              "Effect": "Deny",
+              "NotAction": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "kms:Decrypt",
+                "lambda:InvokeFunction",
+                "dynamodb:GetItem"
+              ],
+              "Sid": "OnlyDarkCoreIntegration"
+            },
+            {
+              "Action": "logs:*",
+              "Effect": "Deny",
+              "NotResource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read:*"
+            },
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read:*",
+              "Effect": "Allow"
+            },
+            {
+              "Action": "kms:Decrypt",
+              "Effect": "Deny",
+              "NotResource": "arn:aws:kms:eu-north-1:058264289478:key/*"
+            },
+            {
+              "Condition": {
+                "ForAllValues:StringNotEquals": {
+                  "kms:ResourceAliases": [
+                    "alias/aws/lambda"
+                  ]
+                }
+              },
+              "Action": "kms:Decrypt",
+              "Resource": "*",
+              "Effect": "Deny"
+            },
+            {
+              "Condition": {
+                "ForAnyValue:StringEquals": {
+                  "kms:ResourceAliases": [
+                    "alias/aws/lambda"
+                  ]
+                }
+              },
+              "Action": "kms:Decrypt",
+              "Resource": "arn:aws:kms:eu-north-1:058264289478:key/*",
+              "Effect": "Allow"
+            },
+            {
+              "Action": "lambda:InvokeFunction",
+              "Resource": [
+                "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+                "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST"
+              ],
+              "Effect": "Allow"
+            },
+            {
+              "Action": "lambda:*",
+              "Effect": "Deny",
+              "NotResource": [
+                "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+                "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST"
+              ]
+            },
+            {
+              "Condition": {
+                "Null": {
+                  "dynamodb:LeadingKeys": "false"
+                },
+                "ForAllValues:StringEquals": {
+                  "dynamodb:LeadingKeys": [
+                    "CONTROL#AUTHORITY"
+                  ]
+                }
+              },
+              "Action": "dynamodb:GetItem",
+              "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+              "Effect": "Allow",
+              "Sid": "ReadOnlyAuthorityPartition"
+            }
+          ]
+        }
+      },
+      "unchanged": true
+    },
+    {
+      "kind": "Command",
+      "name": "ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+      "inline": [
+        {
+          "name": "ExactSyntheticTeamState",
+          "document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Resource": "*",
+                "Effect": "Deny",
+                "NotAction": [
+                  "logs:CreateLogStream",
+                  "logs:PutLogEvents",
+                  "kms:Decrypt",
+                  "lambda:InvokeFunction",
+                  "dynamodb:GetItem"
+                ],
+                "Sid": "OnlyDarkCoreIntegration"
+              },
+              {
+                "Action": "logs:*",
+                "Effect": "Deny",
+                "NotResource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-command:*"
+              },
+              {
+                "Action": [
+                  "logs:CreateLogStream",
+                  "logs:PutLogEvents"
+                ],
+                "Resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-command:*",
+                "Effect": "Allow"
+              },
+              {
+                "Action": "kms:Decrypt",
+                "Effect": "Deny",
+                "NotResource": "arn:aws:kms:eu-north-1:058264289478:key/*"
+              },
+              {
+                "Condition": {
+                  "ForAllValues:StringNotEquals": {
+                    "kms:ResourceAliases": [
+                      "alias/aws/lambda"
+                    ]
+                  }
+                },
+                "Action": "kms:Decrypt",
+                "Resource": "*",
+                "Effect": "Deny"
+              },
+              {
+                "Condition": {
+                  "ForAnyValue:StringEquals": {
+                    "kms:ResourceAliases": [
+                      "alias/aws/lambda"
+                    ]
+                  }
+                },
+                "Action": "kms:Decrypt",
+                "Resource": "arn:aws:kms:eu-north-1:058264289478:key/*",
+                "Effect": "Allow"
+              },
+              {
+                "Action": "lambda:InvokeFunction",
+                "Resource": [
+                  "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+                  "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST"
+                ],
+                "Effect": "Allow"
+              },
+              {
+                "Action": "lambda:*",
+                "Effect": "Deny",
+                "NotResource": [
+                  "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+                  "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST"
+                ]
+              },
+              {
+                "Condition": {
+                  "Null": {
+                    "dynamodb:LeadingKeys": "false"
+                  },
+                  "ForAllValues:StringEquals": {
+                    "dynamodb:LeadingKeys": [
+                      "CONTROL#AUTHORITY"
+                    ]
+                  }
+                },
+                "Action": "dynamodb:GetItem",
+                "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+                "Effect": "Allow",
+                "Sid": "ReadOnlyAuthorityPartition"
+              }
+            ]
+          }
+        }
+      ],
+      "attached": [],
+      "boundary": {
+        "arn": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+        "version": "v6",
+        "document": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Resource": "*",
+              "Effect": "Deny",
+              "NotAction": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "kms:Decrypt",
+                "lambda:InvokeFunction",
+                "dynamodb:GetItem"
+              ],
+              "Sid": "OnlyDarkCoreIntegration"
+            },
+            {
+              "Action": "logs:*",
+              "Effect": "Deny",
+              "NotResource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-command:*"
+            },
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-command:*",
+              "Effect": "Allow"
+            },
+            {
+              "Action": "kms:Decrypt",
+              "Effect": "Deny",
+              "NotResource": "arn:aws:kms:eu-north-1:058264289478:key/*"
+            },
+            {
+              "Condition": {
+                "ForAllValues:StringNotEquals": {
+                  "kms:ResourceAliases": [
+                    "alias/aws/lambda"
+                  ]
+                }
+              },
+              "Action": "kms:Decrypt",
+              "Resource": "*",
+              "Effect": "Deny"
+            },
+            {
+              "Condition": {
+                "ForAnyValue:StringEquals": {
+                  "kms:ResourceAliases": [
+                    "alias/aws/lambda"
+                  ]
+                }
+              },
+              "Action": "kms:Decrypt",
+              "Resource": "arn:aws:kms:eu-north-1:058264289478:key/*",
+              "Effect": "Allow"
+            },
+            {
+              "Action": "lambda:InvokeFunction",
+              "Resource": [
+                "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+                "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST"
+              ],
+              "Effect": "Allow"
+            },
+            {
+              "Action": "lambda:*",
+              "Effect": "Deny",
+              "NotResource": [
+                "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+                "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts:$LATEST"
+              ]
+            },
+            {
+              "Condition": {
+                "Null": {
+                  "dynamodb:LeadingKeys": "false"
+                },
+                "ForAllValues:StringEquals": {
+                  "dynamodb:LeadingKeys": [
+                    "CONTROL#AUTHORITY"
+                  ]
+                }
+              },
+              "Action": "dynamodb:GetItem",
+              "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+              "Effect": "Allow",
+              "Sid": "ReadOnlyAuthorityPartition"
+            }
+          ]
+        }
+      },
+      "unchanged": true
+    }
+  ],
+  "stacks": [
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre",
+      "count": 42,
+      "status": "UPDATE_COMPLETE"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-ReadProofSecurity",
+      "count": 7,
+      "status": "UPDATE_COMPLETE"
+    },
+    {
+      "name": "ProjectRespawn-Core-Ntgre",
+      "count": 8,
+      "status": "CREATE_COMPLETE"
+    },
+    {
+      "name": "ProjectRespawn-Core-Ntgre-Security",
+      "count": 5,
+      "status": "CREATE_COMPLETE"
+    },
+    {
+      "name": "ProjectRespawn-Tournaments-Ntgre",
+      "count": 11,
+      "status": "UPDATE_COMPLETE"
+    }
+  ],
+  "awsWrites": 0,
+  "complete": true,
+  "secret": {
+    "name": "ProjectRespawn-TeamHub-Ntgre-Cursor",
+    "exists": false,
+    "arn": "Not allocated until separately authorized creation"
+  },
+  "key": {
+    "AWSAccountId": "058264289478",
+    "KeyId": "8802a37a-f981-4384-b538-fdb4f7aba74a",
+    "Arn": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+    "CreationDate": "2026-08-21T19:16:43.332000+01:00",
+    "Enabled": true,
+    "Description": "Default key that protects my Secrets Manager data when no other key is defined",
+    "KeyUsage": "ENCRYPT_DECRYPT",
+    "KeyState": "Enabled",
+    "Origin": "AWS_KMS",
+    "KeyManager": "AWS",
+    "CustomerMasterKeySpec": "SYMMETRIC_DEFAULT",
+    "KeySpec": "SYMMETRIC_DEFAULT",
+    "EncryptionAlgorithms": [
+      "SYMMETRIC_DEFAULT"
+    ],
+    "MultiRegion": false,
+    "CurrentKeyMaterialId": "0bbd002e204233c70c483442e639701c7975ff7e9309af89b03470e2c9eab687"
+  },
+  "keyPolicy": {
+    "Version": "2012-10-17",
+    "Id": "auto-secretsmanager-2",
+    "Statement": [
+      {
+        "Sid": "Allow access through AWS Secrets Manager for all principals in the account that are authorized to use AWS Secrets Manager",
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": "*"
+        },
+        "Action": [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:CreateGrant",
+          "kms:DescribeKey"
+        ],
+        "Resource": "*",
+        "Condition": {
+          "StringEquals": {
+            "kms:CallerAccount": "058264289478",
+            "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com"
+          }
+        }
+      },
+      {
+        "Sid": "Allow access through AWS Secrets Manager for all principals in the account that are authorized to use AWS Secrets Manager",
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": "*"
+        },
+        "Action": "kms:GenerateDataKey*",
+        "Resource": "*",
+        "Condition": {
+          "StringEquals": {
+            "kms:CallerAccount": "058264289478"
+          },
+          "StringLike": {
+            "kms:ViaService": "secretsmanager.*.amazonaws.com"
+          }
+        }
+      },
+      {
+        "Sid": "Allow direct access to key metadata to the account",
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": "arn:aws:iam::058264289478:root"
+        },
+        "Action": [
+          "kms:Describe*",
+          "kms:Get*",
+          "kms:List*",
+          "kms:RevokeGrant"
+        ],
+        "Resource": "*"
+      }
+    ]
+  },
+  "authority": {
+    "epoch": {
+      "N": "1"
+    },
+    "changedAt": {
+      "S": "2026-10-07T22:32:12.867Z"
+    },
+    "version": {
+      "N": "1"
+    },
+    "mode": {
+      "S": "LEGACY_WRITER"
+    },
+    "schemaVersion": {
+      "S": "team-hub-authority.v1"
+    },
+    "PK": {
+      "S": "CONTROL#AUTHORITY"
+    },
+    "changedBy": {
+      "S": "team-hub-c1-executor"
+    },
+    "gateDigest": {
+      "S": "2227a62a06992e9e09ff672ad6e2f09164e0304f3f68db491437a93577f1ab94"
+    },
+    "SK": {
+      "S": "STATE"
+    }
+  }
+}

@@ -1,93 +1,71 @@
-# PROJECT RESPAWN PHASE 2 MIGRATION — START HERE
+# Project Respawn Phase 2 migration — START HERE
 
-**Checkpoint / final execution review (8 October 2026):** accepted endpoint and read-only baselines preserved. Business transactional runtime is NOT deployed; its separately reviewed installation and all safe verification must finish BEFORE Legacy freeze. Source-fence installation/proof, TARGET authority transfer and frontend activation are distinct authorization gates. [Ordered plan, aborts and recovery](team-hub-2b6-checkpoint-cutover-readiness.md).
+Authoritative migration entrypoint, consolidated 12 October 2026. **One website, one shared login per environment, independently deployable product domains.** Read this file, [current status](domain-migration-status.json), [ownership ledger summary](legacy-resource-ownership-summary.md) and [M0–M8 template](domain-migration-template.md) before migration work. Standards are requirements, not AWS authorization.
 
-<!-- TEAM 2B6 START -->
-**Latest authority endpoint (8 October 2026): ACCEPTED LIVE ? READY FOR FINAL PRE-CUTOVER REVIEW.** Pinned security/product updates are UPDATE_COMPLETE; Team Hub 42+7. Authenticated GET /v1/authority returns the real LEGACY_WRITER epoch/version 1; dormant live browser binding passes, all 13 business routes remain denied. C2 runtime IAM and D1 monitoring preserved. No authority/frontend/fence/production change. [Deployment and live acceptance](team-hub-authority-endpoint-deployment-result.md). Gate B installed fence and Gate C business transactional epoch proof remain separate; earlier entries below are historical.
-<!-- TEAM 2B6 END -->
+This checkpoint uses accepted repository evidence, including the [12 October Team Hub recovery](team-hub-2b6-describekey-recovery-result.md); it performs no fresh AWS verification or writes. Previous chronology is preserved in the [historical control record](phase2-migration-control-history-2026-10-12.md). Historical failed policies and superseded candidates are not deployment instructions.
 
-<!-- TEAM 2B5B START -->
-**Current Team Hub 2B5B (7 October 2026): CUTOVER PREPARATION BLOCKED.** Isolated rollback and policy-fence rehearsals passed and all temporary tables were removed. Candidate/frontend/security work is prepared; browser acceptance and execution gates remain open. LEGACY_WRITER, deployed dark runtime and normal-write denial remain unchanged. No business cutover or retirement. [Final preparation report](team-hub-2b5b-final-cutover-readiness.md) ? [2B6 runbook](team-hub-2b6-cutover-runbook.md). Earlier accepted deployment entries remain historical baselines.
-<!-- TEAM 2B5B END -->
+## Why separate domains
 
-<!-- TEAM CORE INTEGRATION START -->
-**Current Team Hub Core integration (7 October 2026): ACCEPTED — DARK LIVE CORE INTEGRATION.** Both Team runtimes call the accepted Core contracts; 29 live checks and 32 actual-role checks passed. All 13 deployed normal routes deny. Product/security remain 40+7, UPDATE_COMPLETE. LEGACY_WRITER / PRE_CUTOVER retained; normal writes and frontend cutover disabled. [Integration report](team-hub-2b5a2-live-core-integration.md). Earlier Team entries below are historical.
-<!-- TEAM CORE INTEGRATION END -->
+LegacyPlatform couples product schema, handlers, IAM and release risk in a large Amplify Gen 2 hierarchy. Independent domains provide bounded ownership, permission scope, deployment/rollback and growth budgets. This does not promise lower costs or remove Legacy resources automatically. A nested stack or backend.createStack() remains part of its parent deployment; justified domains use sibling CloudFormation roots with their own app, dependency closure and artifacts. Do not create a root for every page or small feature.
 
-<!-- CORE LIVE START -->
-**Current Core Release 1 (6 October 2026): INDEPENDENT_CONTRACT_RELEASE_1_ACCEPTED.** Existing 8 product +5 security resources; ordinary/admin contracts, required cursors and privacy accepted; manifest generated and validated. No redeployment or IAM/user changes during final acceptance. Team remains PRE_CUTOVER / LEGACY_WRITER. [Acceptance report](core-release1-acceptance.md). Earlier Core entries below are historical.
-<!-- CORE LIVE END -->
+## Permanent architecture requirements
 
+- **Identity/Core:** keep the existing same-environment Cognito pool and stable issuer/subject identity. The accepted independent Core contract runtime supplies global authorization and bounded directory contracts; Cognito ownership remains protected in Legacy. No per-domain pool, product Cognito administration or localhost-to-production switch.
+- **Domain API/data:** each domain owns its API, authorization and business state. Use versioned owner contracts rather than foreign database access. Deployment of a new table/API does not transfer business authority. Record exactly one authoritative writer.
+- **Independent roots:** isolated app/synthesis, immutable template/runtime/configuration manifest, explicit account/region/root selector and prior compatible rollback artifacts. Do not synthesize unrelated domains or Legacy by default. Hosted pipeline isolation must be proven separately from local selection.
+- **Frontend:** lazy major layouts/pages and clients; shared shell/login stay global. Consume accepted endpoint manifests and a token-provider callback. Preserve URLs, privacy and account switching; prove import, initialization and network isolation. Publishing a manifest is not live frontend activation. Keep genuine amplify_outputs.json for Legacy.
+- **IAM:** security operator, restricted deployment caller, CloudFormation execution role and product runtime have distinct jobs. Review identity policies, boundaries, trust, PassRole, resource/key policies and organization limitations. Exact artifact binding and cross-domain negatives are mandatory. No administrator shortcut.
+- **State/authority:** source protections, restore/reconciliation, current membership, revision/idempotency/audit and transactional authority/epoch enforcement precede cutover. Frontend status is never a mutation security boundary. Empty-source migrations still require exact counts, writer coverage and recovery proof.
+- **Evidence:** separate prepared, deployed, offline/simulated and live-accepted states. UPDATE_COMPLETE is not runtime acceptance. Read complete actual configuration and compare to the declared template, code hashes, identities, drift where supported, endpoints and telemetry.
 
+Required companions: [architecture standard](project-respawn-domain-architecture-standard.md), [new-domain checklist](new-domain-checklist.md), [deployment acceptance/security](project-respawn-aws-deployment-acceptance-standard.md), [runtime/deployment separation](domain-deployment-runtime-security.md), [restricted callers](independent-domain-deployment-callers.md), [selection rules](domain-deployment-selection.md), [data ownership](data-ownership.md), [resource budgets](cloudformation-boundaries.md).
 
-**Current Core artifact-security gate (6 October 2026): READY FOR DEPLOYMENT REVIEW — NOT DEPLOYED.** Six exact artifact references corrected; product/runtime unchanged; 8+5 resources; quota 10/10, reservation NONE. Zero AWS changes. [Authoritative report](core-template-security-correction.md). Earlier Core gate entries below are historical.
+## Current accepted state
 
-**Latest Core quota correction (6 October 2026): PRODUCT CORRECTED; SECURITY ARTIFACT REBIND REVIEW REQUIRED.** Ntgre reserved concurrency removed; runtime/security unchanged, 8+5 resources. The old exact template URL/object permissions deny the new product. No AWS or quota changes. [Current readiness](core-first-deployment-readiness.md).
+Ntgre account 058264289478, eu-north-1. Counts below are accepted evidence, not a new cloud scan. Production migration is not implied.
 
-**Latest Core Release 1 result (6 October 2026): PREFLIGHT BLOCKED — NOTHING DEPLOYED.** Logging discrepancy classified through unconditional simulator controls. Account Lambda concurrency is 10; the pinned reservation of 5 cannot retain AWS’s required 100 unreserved. No artifact publication, security/product change set, quota change or Team integration. [Release result](core-release1-acceptance.md).
+| Domain | Deployed independent infrastructure | Business-data authority / frontend | Remaining gate |
+| --- | --- | --- | --- |
+| Shared Core | 8 product + 5 security; accepted authorization/directory contracts | Existing Cognito preserved; no general Core state migration | Preserve bounded contracts and consumer isolation |
+| Tournament | 11 resources, API msipnwy39j; Release 1 authenticated preview accepted | Stateless proof; no business-data or frontend cutover | Separately authorize Release 2 and restore-to-Release-1 proof |
+| Team Hub | 48 product + 7 security, API t54b88casf; complete business runtime configuration recovered | LEGACY_WRITER epoch/version 1/1; target business records 0; frontend Legacy | Isolated AWS transaction/cursor proofs, then remaining cutover gates |
+| Creator | No accepted independent extraction; Legacy/external runtimes remain | Legacy/external ownership retained | Paused; resume M0 ownership/dependency evidence only when authorized |
+| Commerce | No extracted root/API accepted | Legacy authoritative; no cutover | Inventory payment/provider/idempotency and recovery risks |
+| Community/Events | No extracted root/API accepted | Legacy authoritative; no cutover | Ownership, moderation and reader/writer contracts |
+| Applications/Intake | No extracted root/API accepted | Legacy authoritative; no cutover | Privacy, intake lifecycle and real/demo scope |
+| Investor Access | No extracted root/API accepted | Legacy authoritative; no cutover | Revocation, NDA/private documents and identity dependencies |
 
-**Latest 2B5A result (6 October 2026): CORE CANDIDATE READY FOR AWS REVIEW — NOT DEPLOYED.** Independent Core contracts, eight product/five security resources, fresh protected baseline and policy review prepared. No AWS changes, Team authority switch or frontend cutover. [Core readiness](core-first-deployment-readiness.md). Next: CORE FIRST DEPLOYMENT REVIEW.
+Core: [accepted release](core-release1-acceptance.md). Tournament: [accepted release](phase2a-tournament-runtime-kms-release1-acceptance-2026-10-04.md). Team Hub: [current acceptance](team-hub-2b6-acceptance.md), [runbook](team-hub-2b6-cutover-runbook.md), [recovery evidence](team-hub-describekey-execution-evidence-2026-10-12/accepted.json).
 
-**Latest 2B5 result (6 October 2026): OFFLINE CUTOVER PREPARATION — BLOCKED.** Core contracts, ordinary-authority runtime, policy fences and dormant client candidates are prepared/tested. Core deployment security/live acceptance, full Vue/shell integration, installed fence proof and live rollback rehearsal remain open. No AWS calls, authority switch or frontend cutover. [2B5 dependency review](team-hub-2b5-cutover-dependency-review.md).
+### Accepted Team Hub recovery and remaining dependencies
 
-**Latest 2B4B result (6 October 2026): SYNTHETIC MUTATION PARITY VERIFIED.** All nine commands and 41 live sequence checks passed. Verification explicitly disabled; Operational 0, Journal 15 retained synthetic audits. Legacy remains LEGACY_WRITER; no ordinary-user or frontend cutover. [2B4B report](team-hub-2b4b-synthetic-mutation-verification.md). Next: Team Hub 2B5 Core contracts / writer-fence and cutover preparation.
+Both Lambda environments match CloudFormation, Active/Successful and function drift IN_SYNC; runtime ZIPs and permanent IAM unchanged. Authority returns HTTP 200; all 16 normal business routes return 403. Live KMS DescribeKey/Encrypt/Decrypt succeeded; temporary role/workflow removed. No business records changed, frontend cutover, source fence, authority transition or Legacy retirement. The 222 certification/82 installed-role counts are specific to this package, not universal domain requirements. Company SCP visibility remains a documented, explicitly waived limitation; successful recovery is not a complete organization-policy audit.
 
-**Latest 2B4A result (6 October 2026): DARK MUTATION INFRASTRUCTURE DEPLOYED.** Team Hub has 40 product +7 security resources; API t54b88casf unchanged. Nine commands and four reads deny authenticated requests with verification DISABLED. Legacy remains LEGACY_WRITER; both target tables remain empty. No synthetic verification, frontend cutover or retirement. [2B4A report](team-hub-2b4a-dark-mutation-runtime.md). Next: separately authorized 2B4B synthetic verification review.
+Next: separately review isolated real AWS transactional enforcement and Read-role cursor decryption/signing. Finish safe runtime/frontend/rollback proof **before** freezing Legacy. Prepare a dormant source fence without denying current writes; reserve installed live denial proof for separately authorized FROZEN maintenance. Source-fence activation, reconciled target authority and frontend publication are distinct gates. Never replay the consumed recovery workflow or restore known-unhealthy environment maps.
 
-**Latest Gate 3 result (5 October 2026): DARK TARGET CREATED.** Team Hub now has two empty, protected, non-authoritative tables; 13 product +5 security resources. Legacy remains authoritative; no copy, fence, frontend cutover or retirement. [Gate 3 report](team-hub-2b3-gate3-dark-target.md). Next: Phase 2B4 mutation parity / writer-fence preparation. Earlier preparation statements below are historical.
+## Repeatable migration workflow
 
-**Latest 2B4 preparation (6 October 2026):** Nine core mutations and restricted verification infrastructure prepared offline; three branding commands deferred. No deployment, test records or authority switch. Live remains 13 product +5 security; proposed 40+7 is uninstalled. [2B4 readiness](team-hub-2b4-mutation-parity-readiness.md). Next: live mutation-parity deployment review.
+1. Classify the domain/module and owner; inventory Legacy/external consumers and unresolved shared resources (M0).
+2. Define Core contracts, API/data/authorization/privacy and independent-root boundaries (M1).
+3. Build the isolated foundation and least-privilege caller/execution/runtime models; pin artifacts and rollback inputs (M2).
+4. Separately review and deploy a dark stateless/read path; inspect actual AWS changes and prove live isolation (M3).
+5. Prepare owned state, source protection, exact inventory, export/transform/reconciliation and isolated restore (M4).
+6. Prove real business runtime, transactional epochs, membership, revisions and idempotency; prepare dormant writer fences and frontend isolation (M5).
+7. Conduct separately authorized freeze/fence proof, final reconciliation, single-writer transfer and frontend activation with abort monitoring (M6).
+8. Observe and reconcile; prove independent update and compatible code/state rollback (M7; explicitly approved stateless reordering is allowed).
+9. Review Legacy consumers and exact retirement effects; remove nothing without separate authorization, then recount (M8).
 
-**TEMPORARY CONTROL DOCUMENT**
+Every gate uses the [required evidence worksheet](domain-migration-template.md) and [deployment lifecycle safeguards](project-respawn-aws-deployment-acceptance-standard.md). Failure stops the affected gate; independent authorized offline work may continue. No speculative permission patch or ambiguous workflow retry.
 
-**DO NOT REMOVE UNTIL LEGACY RESOURCE OWNERSHIP = 100% RESOLVED**
+## Reusable automation
 
-This is the required starting point for Phase 2 architecture/migration work until LegacyPlatform decomposition is complete. Read the [machine-readable domain status](domain-migration-status.json), [ownership summary](legacy-resource-ownership-summary.md), then the [required migration template](domain-migration-template.md). The initial repository checkpoint made no AWS calls. The current Team Hub M4 task performed separately authorized, scoped read-only AWS inventory on 5 October 2026; no deployment, data migration or production changes occurred. See the [M4 inventory](team-hub-2b3-state-inventory.md) and [final preparation gate](team-hub-2b3-dark-target-readiness.md).
+[Shared deterministic checks](../../scripts/migration/deployment-checks.mjs) validate hashes, full environment recovery, domain-defined IAM coverage and deployment acceptance. [Shared IAM scheduler entrypoint](../../scripts/migration/iam-validation.mjs) reuses the accepted rate-limited harness without changing pinned Team scripts. [Tooling guide](migration-tooling.md) defines inputs, limitations and offline commands. Domain-specific AWS adapters, expected permission cases and live evidence remain required; these helpers do not deploy or grant permissions.
 
-## CURRENT OBJECTIVE
+## Legacy ownership and accounting
 
-Decompose LegacyPlatform into independently deployable product domains. The target is **ONE PROJECT RESPAWN WEBSITE · ONE SHARED LOGIN · MULTIPLE INDEPENDENT PRODUCT DOMAINS**. Existing website shell/navigation remain shared; extraction does not mean rebuilding the website as separate websites.
+Accepted Legacy baseline: **2,621 declarations / FunctionDirectiveStack 167**, one root plus 61 nested stacks. [Complete ledger](legacy-resource-ownership.json): **2,430 assigned, 191 unresolved shared, 0 unassigned**, 100% inventory and 92.71% ownership resolution. Stateful/protected dimensions overlap (61/62). No migrated or retired Legacy rows are inferred from independent deployment.
 
-Creator implementation/planning is paused for this maintenance checkpoint. Do not infer authorization to start it from its presence in the roadmap. The accepted Team Hub read proof is complete; its business state and frontend still use LegacyPlatform.
-
-## Required standards
-
-- **Identity:** existing Cognito remains Shared/Core in the same environment. Domains consume that identity; do not create per-domain pools, migrate local users or repoint localhost to production.
-- **Domain ownership:** substantial independent domains own their frontend boundary, lazy routes, API/client, business logic, business data, runtime IAM, sibling CloudFormation/CDK root, deployment lifecycle, rollback, endpoint manifest and observability. A nested stack is not an independent deployment unit. No root per small feature.
-- **Data:** normal cross-domain direct database access is prohibited. Use versioned owner contracts/APIs. Keep current writer authority explicit until separately accepted reconciliation/cutover; equivalent new resources do not transfer authority.
-- **Deployment:** operator → restricted domain deployment caller → domain CloudFormation execution role → domain resources. Runtime role stays separate and strict. A policy without an attached, bounded caller is not a deployment workflow. [Proven caller pattern](independent-domain-deployment-callers.md).
-- **First API creation:** reviewed temporary first-create authority → protect every existing API → create the domain API → verify ownership/tags and actual ID → install exact-ID steady-state identity and boundary → deny CreateApi and other APIs → remove effective temporary authority. Preserve adequate expiry margin for rollback/lockdown. Team Hub used at least six hours.
-- **KMS:** do not use blanket execution `kms:*` denies that break AWS-managed Lambda encryption. Do not grant broad business-key access. Inspect the actual default service path, customer-key policies/grants and runtime boundary separately; zero new KMS Allow was needed in the accepted Team execution correction.
-- **Artifacts:** use the reviewed publication/encryption model. Where needed to avoid a shared bucket's SSE-KMS dependency, explicitly publish AES256/SSE-S3 and verify uploaded checksums and encryption headers. Never assume the bucket default is safe or add broad KMS decrypt to compensate.
-- **Configuration:** independent domains publish accepted endpoint manifests. Do not repurpose `amplify_outputs.json` or switch the existing sandbox.
-- **Frontend:** major domain routes/clients lazy-load. Shared shell/login stay global. Publishing a manifest is not frontend cutover.
-
-The [Domain Architecture Standard](project-respawn-domain-architecture-standard.md), [new-domain checklist](new-domain-checklist.md), [deployment security standard](domain-deployment-runtime-security.md), [selection rules](domain-deployment-selection.md) and [data ownership](data-ownership.md) remain required. Earlier dated inventories/reports are evidence, not current deployment instructions. The [documentation inventory and navigation](phase2-documentation-index.md) identifies current, historical and superseded materials without moving their paths.
-
-## Current domain status
-
-| Domain | Accepted state | Remaining work / next gate |
-|---|---|---|
-| Shared/Core | INDEPENDENT_CONTRACT_RELEASE_1_ACCEPTED; Core 8 product +5 security, CREATE_COMPLETE; same-environment Cognito preserved | Team Hub dark integration accepted; writer-fence/frontend/rollback gates remain separate |
-| Tournament | PROVEN_INDEPENDENT_ARCHITECTURE; Release 1 ACCEPTED; `ProjectRespawn-Tournaments-Ntgre`, UPDATE_COMPLETE, 11 resources, API `msipnwy39j`; Git `98dc1230dfadebbbcc1756823c85c866956ceadc` | Release 2 and restore Release 1 proof remain pending. **Phase 2A is not fully complete.** |
-| Team Hub | SECOND INDEPENDENT DOMAIN PROVEN; 2B2 read proof ACCEPTED; `ProjectRespawn-TeamHub-Ntgre`, UPDATE_COMPLETE, 42 product resources, API `t54b88casf`; shared Cognito/runtime acceptance passed | 2B3/M4 Gate 1 direct protection and Gate 2 empty-source restore rehearsal accepted; four temporary tables cleaned up. Gate 3 dark targets created (13 product +5 security); 2B4A dark runtime deployed (40 product +7 security); 2B4B synthetic verification passed and disabled; 2B5 offline candidates prepared; cutover blocked pending dependency/security/frontend/rehearsal acceptance. Fence/cutover NOT performed. Business data migrated: NO; frontend cutover: NO; Legacy authority: YES |
-| Creator | Logical ownership identified; existing Legacy/external-runtime dependencies remain | Paused; M0 evidence/ownership review only when separately resumed; no new implementation/planning in this checkpoint |
-| Commerce | Legacy-authoritative; no extracted target stack/API | M0/M1 inventory/design, including financial/provider and single-writer risks |
-| Community/Events | Legacy-authoritative; no extracted target stack/API | M0/M1 ownership, reader/writer and module boundaries |
-| Applications/Intake | Legacy-authoritative; no extracted target stack/API | M0/M1 inventory, privacy and intake lifecycle |
-| Investor Access | Legacy-authoritative; no extracted target stack/API | M0/M1 access/revocation, private documents and shared-identity dependencies |
-
-Team Hub security: caller `ProjectRespawn-TeamHub-Ntgre-Deploy`; execution role `ProjectRespawn-TeamHub-Ntgre-ReadProofExecution`; exact steady API `t54b88casf`; broad first-create authority removed/no longer effective. Seven security resources are separate from the forty-two current product resources; Gate 3 had thirteen product +five security and Release 1 had eleven product resources. The [Team Hub acceptance report](team-hub-2b2-read-path-release1-2026-10-05.md) and [Tournament acceptance report](phase2a-tournament-runtime-kms-release1-acceptance-2026-10-04.md) state their evidence and limits. Team Hub source checkpoint is the containing commit on `phase2/team-hub-extraction`; resolve its SHA with `git log -1 -- config/domains/team-hub/domain-endpoints.Ntgre.json`.
-
-## Legacy ownership and resource accounting
-
-Accepted Legacy baseline: **UPDATE_COMPLETE · 2,621 declarations · FunctionDirectiveStack 167 · one root and 61 nested stacks**. The [ledger](legacy-resource-ownership.json) contains each declaration exactly once, including nested handles and metadata; the root is not an invented extra row. [Human-readable ledger](legacy-resource-ownership.md).
-
-Inventory coverage is **100%**, while future-owner resolution is **92.71%**: 2,430 assigned, 0 UNASSIGNED and **191 UNRESOLVED_SHARED**. There are 61 source-defined stateful declarations and 62 protected identities. Zero resources are marked migrated, retired or retirement candidates. Shared/stateful/protected dimensions overlap. Mixed providers, shared handlers/APIs, IAM and storage need evidence, not guessed ownership. Full-account external-resource coverage and production are not implied by the Ntgre recursive ledger.
-
-The independent previews have **not reduced the 2,621 Legacy resources**. Never delete a resource because equivalent domain resources now exist. Approximate DynamoDB counts do not prove a table empty. Retain source identifiers, backup/restore artifacts and compatibility consumers until an exact, separately authorized retirement review.
-
-Maintain the ledger through reviewed row changes; `node scripts/migration/ledger.mjs check` validates exact inventory reconciliation and uniqueness, and `node scripts/migration/ledger.mjs summary` refreshes derived views. `init` refuses to overwrite an existing ledger. Update domain status and milestone evidence after each accepted change; do not regenerate away unresolved decisions.
+The 191 mixed shared providers, APIs/handlers, IAM and storage declarations need exact consumer, lifecycle, key and ownership evidence. Do not delete or guess these rows. The Ntgre recursive ledger does not establish full-account/external or production coverage. Run node scripts/migration/ledger.mjs check; update rows only with accepted ownership/transfer evidence, retaining unresolved entries and recovery records.
 
 ## Migration completion and retirement of this control document
 

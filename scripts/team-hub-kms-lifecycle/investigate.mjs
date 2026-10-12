@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';import {aws,save} from './aws.mjs';
+const key='arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7',r={at:new Date().toISOString(),identity:await aws('sts','get-caller-identity'),key,windows:[],limitations:[],complete:false,awsWrites:0};assert.equal(r.identity.Account,'058264289478');
+r.metadata=(await aws('kms','describe-key',{KeyId:key})).KeyMetadata;assert.equal(r.metadata.KeyManager,'AWS');r.keyPolicy=JSON.parse((await aws('kms','get-key-policy',{KeyId:key,PolicyName:'default'})).Policy);
+try{r.grants=[];let marker;do{const page=await aws('kms','list-grants',{KeyId:key,...(marker?{Marker:marker}:{})});r.grants.push(...page.Grants);marker=page.Truncated?page.NextMarker:undefined;}while(marker);}catch(e){r.limitations.push({operation:'kms:ListGrants',error:e.message});}
+try{r.organization=await aws('organizations','describe-organization');delete r.organization.Organization.MasterAccountEmail;}catch(e){r.limitations.push({operation:'organizations:DescribeOrganization',error:e.message});}
+r.lambdaPolicies=[];for(const kind of ['Read','Command']){try{const p=await aws('lambda','get-policy',{FunctionName:'ProjectRespawn-TeamHub-Ntgre-Parity'+kind});r.lambdaPolicies.push({kind,policy:JSON.parse(p.Policy),revision:p.RevisionId});}catch(e){r.limitations.push({operation:'lambda:GetPolicy '+kind,error:e.message});}}
+save('lifecycle-inspection',r);
+for(const [label,start,end] of [['successful-same-functions','2026-10-07T07:12:30Z','2026-10-07T07:15:00Z'],['original-deployment','2026-10-08T22:24:00Z','2026-10-08T22:27:00Z'],['qualified-attempt','2026-10-09T22:07:40Z','2026-10-09T22:08:10Z'],['encrypt-attempt','2026-10-10T06:32:15Z','2026-10-10T06:33:00Z']]){
+ const w={label,start,end,events:[],pages:0,complete:false};r.windows.push(w);
+ for(const service of ['kms.amazonaws.com','lambda.amazonaws.com','sts.amazonaws.com']){let token;do{
+ const page=await aws('cloudtrail','lookup-events',{LookupAttributes:[{AttributeKey:'EventSource',AttributeValue:service}],StartTime:start,EndTime:end,...(token?{NextToken:token}:{})});w.pages++;
+ for(const item of page.Events??[]){const e=JSON.parse(item.CloudTrailEvent),text=JSON.stringify(e);if(!text.includes('TeamHub-Ntgre')&&!(service==='kms.amazonaws.com'&&text.includes(key.split('/').at(-1))))continue;
+ const p=e.requestParameters??{};w.events.push({eventID:e.eventID,eventTime:e.eventTime,eventSource:e.eventSource,eventName:e.eventName,awsRegion:e.awsRegion,requestID:e.requestID,errorCode:e.errorCode,errorMessage:e.errorMessage,userIdentity:{type:e.userIdentity?.type,arn:e.userIdentity?.arn,invokedBy:e.userIdentity?.invokedBy,sessionIssuer:e.userIdentity?.sessionContext?.sessionIssuer},userAgent:e.userAgent,sourceIPAddress:e.sourceIPAddress,resources:e.resources,requestParameters:{keyId:p.keyId,encryptionContext:p.encryptionContext,encryptionAlgorithm:p.encryptionAlgorithm,functionName:p.functionName,qualifier:p.qualifier,granteePrincipal:p.granteePrincipal,operations:p.operations,constraints:p.constraints,roleArn:p.roleArn,roleSessionName:p.roleSessionName,hasSessionPolicy:!!p.policy,sessionPolicyArns:p.policyArns},requestParametersOmitted:e.requestParameters==null,responseError:e.responseElements?.environment?.error});}
+ token=page.NextToken;save('lifecycle-inspection',r);
+ }while(token);}
+ w.complete=true;save('lifecycle-inspection',r);
+}
+r.complete=true;save('lifecycle-inspection',r);console.log(JSON.stringify({complete:true,keyManager:r.metadata.KeyManager,grants:r.grants?.length,limitations:r.limitations,windows:r.windows.map(w=>({label:w.label,events:w.events.length,operations:[...new Set(w.events.map(e=>e.eventName))]}))}));

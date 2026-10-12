@@ -1,0 +1,195 @@
+{
+  "at": "2026-10-08T17:27:50.337Z",
+  "checks": [
+    {
+      "label": "secret-update-delete-replicate",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "secretsmanager:UpdateSecret",
+          "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+          "decision": "implicitDeny"
+        },
+        {
+          "action": "secretsmanager:DeleteSecret",
+          "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+          "decision": "implicitDeny"
+        },
+        {
+          "action": "secretsmanager:ReplicateSecretToRegions",
+          "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+          "decision": "implicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "own-secret",
+      "expected": true,
+      "decisions": [
+        {
+          "action": "secretsmanager:CreateSecret",
+          "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+          "decision": "allowed"
+        },
+        {
+          "action": "secretsmanager:DescribeSecret",
+          "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+          "decision": "allowed"
+        },
+        {
+          "action": "secretsmanager:GetSecretValue",
+          "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+          "decision": "allowed"
+        },
+        {
+          "action": "secretsmanager:TagResource",
+          "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+          "decision": "allowed"
+        }
+      ]
+    },
+    {
+      "label": "foreign-secret",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "secretsmanager:CreateSecret",
+          "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+          "decision": "implicitDeny"
+        },
+        {
+          "action": "secretsmanager:GetSecretValue",
+          "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+          "decision": "implicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "random-generation",
+      "expected": true,
+      "decisions": [
+        {
+          "action": "secretsmanager:GetRandomPassword",
+          "resource": "*",
+          "decision": "allowed"
+        }
+      ]
+    },
+    {
+      "label": "foreign-function",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "lambda:UpdateFunctionCode",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+          "decision": "implicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "no-role-replacement",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "iam:CreateRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "implicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "exact-current-new-rollback-archives",
+      "expected": true,
+      "decisions": [
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/business/da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e.zip",
+          "decision": "allowed"
+        },
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/as/cd58cc3553867f268af79bc9c710fe35e1bab07882d39b423e05b39626a7eedd.zip",
+          "decision": "allowed"
+        },
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/d1-dark/a36406c42c727b4d8c262083e0cb95807f2404c4c8649b2eacc559915f4ba7d5.zip",
+          "decision": "allowed"
+        }
+      ]
+    },
+    {
+      "label": "unreviewed-archive",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/unreviewed.zip",
+          "decision": "explicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "rollback-template",
+      "expected": true,
+      "decisions": [
+        {
+          "action": "cloudformation:CreateChangeSet",
+          "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*",
+          "decision": "allowed"
+        }
+      ]
+    },
+    {
+      "label": "broad-log-admin",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "logs:PutResourcePolicy",
+          "resource": "*",
+          "decision": "explicitDeny"
+        },
+        {
+          "action": "logs:CreateLogDelivery",
+          "resource": "*",
+          "decision": "explicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "candidate-template",
+      "expected": true,
+      "decisions": [
+        {
+          "action": "cloudformation:CreateChangeSet",
+          "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*",
+          "decision": "allowed"
+        }
+      ]
+    },
+    {
+      "label": "foreign-stack",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "cloudformation:CreateChangeSet",
+          "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Tournaments-Ntgre/*",
+          "decision": "explicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "foreign-passrole",
+      "expected": false,
+      "decisions": [
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-ReadProofExecution",
+          "decision": "explicitDeny"
+        }
+      ]
+    }
+  ],
+  "complete": true,
+  "awsWrites": 0
+}

@@ -1,0 +1,3589 @@
+{
+  "at": "2026-10-08T17:13:58.309Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "analyzer": [
+    {
+      "id": "PreviewBoundary",
+      "findings": []
+    },
+    {
+      "id": "ExecutionBoundary",
+      "findings": []
+    },
+    {
+      "id": "PreparationCaller",
+      "findings": []
+    },
+    {
+      "id": "ParityCommandBoundary",
+      "findings": []
+    },
+    {
+      "id": "ParityReadBoundary",
+      "findings": []
+    },
+    {
+      "id": "ExecutionRole",
+      "findings": []
+    }
+  ],
+  "installedDeployment": [
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofExecutionBoundary",
+      "version": "v9",
+      "acceptedMatch": true
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-Deploy",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofPreparation",
+      "version": "v12",
+      "acceptedMatch": true
+    }
+  ],
+  "checks": [
+    {
+      "kind": "Read",
+      "label": "authority-read",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": true,
+      "after": true,
+      "mode": "actual",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "operational-read",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": true,
+      "mode": "actual",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "kind": "Read",
+      "label": "index-query",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/BySubject",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "SUBJECT#proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": true,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "operational-query",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": true,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "authority-read",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": true,
+      "after": true,
+      "mode": "candidate",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "operational-read",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": true,
+      "mode": "candidate",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "operational-query",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": true,
+      "mode": "candidate",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "index-query",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/BySubject",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "SUBJECT#proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": true,
+      "mode": "candidate",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "authority-condition",
+      "action": "dynamodb:ConditionCheckItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "transaction-delete",
+      "action": "dynamodb:DeleteItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "direct-put-denied",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "transaction-put",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "authority-condition",
+      "action": "dynamodb:ConditionCheckItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "transaction-put",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "transaction-delete",
+      "action": "dynamodb:DeleteItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "direct-put-denied",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "idempotency-read",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "IDEMP#proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "kind": "Read",
+      "label": "audit-put",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "authority-immutable-dynamodb:PutItem",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "idempotency-put",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "IDEMP#proof"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "idempotency-read",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "IDEMP#proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "kind": "Read",
+      "label": "audit-put",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "authority-immutable-dynamodb:PutItem",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "idempotency-put",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "IDEMP#proof"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "authority-immutable-dynamodb:UpdateItem",
+      "action": "dynamodb:UpdateItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "other-control-denied",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#OTHER"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "kind": "Read",
+      "label": "journal-query-denied",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "authority-immutable-dynamodb:DeleteItem",
+      "action": "dynamodb:DeleteItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "journal-query-denied",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "kind": "Read",
+      "label": "other-control-denied",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#OTHER"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "kind": "Read",
+      "label": "authority-immutable-dynamodb:UpdateItem",
+      "action": "dynamodb:UpdateItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "authority-immutable-dynamodb:DeleteItem",
+      "action": "dynamodb:DeleteItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "mixed-key-denied",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "IDEMP#proof",
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "missing-key-denied",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases",
+        "dynamodb:LeadingKeys"
+      ]
+    },
+    {
+      "kind": "Read",
+      "label": "foreign-Legacy",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Legacy-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "kind": "Read",
+      "label": "foreign-Tournament",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Tournament-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "kind": "Read",
+      "label": "missing-key-denied",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases",
+        "dynamodb:LeadingKeys"
+      ]
+    },
+    {
+      "kind": "Read",
+      "label": "mixed-key-denied",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "IDEMP#proof",
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "foreign-Tournament",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Tournament-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "foreign-Legacy",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Legacy-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "foreign-Creator",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Creator-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "kind": "Read",
+      "label": "scan-denied",
+      "action": "dynamodb:Scan",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "business-update-denied",
+      "action": "dynamodb:UpdateItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "foreign-Commerce",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Commerce-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "kind": "Read",
+      "label": "foreign-Creator",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Creator-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "business-update-denied",
+      "action": "dynamodb:UpdateItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "scan-denied",
+      "action": "dynamodb:Scan",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "foreign-Commerce",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Commerce-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "cognito-admin-denied",
+      "action": "cognito-idp:AdminGetUser",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "foreign-lambda-denied",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre-Preview",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "core-preserved",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": true,
+      "after": true,
+      "mode": "actual",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "own-secret-api",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": true,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "core-preserved",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": true,
+      "after": true,
+      "mode": "candidate",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "own-secret-api",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": true,
+      "mode": "candidate",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "foreign-lambda-denied",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre-Preview",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "cognito-admin-denied",
+      "action": "cognito-idp:AdminGetUser",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "foreign-secret",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "cursor-kms-explicit-denial",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "kms:ResourceAliases",
+          "ContextKeyValues": [
+            "alias/aws/secretsmanager"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "kms:ViaService",
+          "ContextKeyValues": [
+            "secretsmanager.eu-north-1.amazonaws.com"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "kms:EncryptionContext:SecretARN",
+          "ContextKeyValues": [
+            "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "authority-read",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": true,
+      "after": true,
+      "mode": "actual",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "business-kms-denied",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "kms:ResourceAliases",
+          "ContextKeyValues": [
+            "alias/team-business"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "foreign-secret",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases",
+        "dynamodb:LeadingKeys"
+      ]
+    },
+    {
+      "kind": "Read",
+      "label": "cursor-kms-explicit-denial",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "kms:ResourceAliases",
+          "ContextKeyValues": [
+            "alias/aws/secretsmanager"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "kms:ViaService",
+          "ContextKeyValues": [
+            "secretsmanager.eu-north-1.amazonaws.com"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "kms:EncryptionContext:SecretARN",
+          "ContextKeyValues": [
+            "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Read",
+      "label": "business-kms-denied",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "kms:ResourceAliases",
+          "ContextKeyValues": [
+            "alias/team-business"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "authority-read",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": true,
+      "after": true,
+      "mode": "candidate",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "operational-read",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": true,
+      "mode": "actual",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "kind": "Command",
+      "label": "operational-query",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": true,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "transaction-put",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": true,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "index-query",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/BySubject",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "SUBJECT#proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "operational-read",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": true,
+      "mode": "candidate",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "operational-query",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": true,
+      "mode": "candidate",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "transaction-put",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": true,
+      "mode": "candidate",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "index-query",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational/index/BySubject",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "SUBJECT#proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "transaction-delete",
+      "action": "dynamodb:DeleteItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": true,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "direct-put-denied",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "audit-put",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": true,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "audit-put",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": true,
+      "mode": "candidate",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "transaction-delete",
+      "action": "dynamodb:DeleteItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": true,
+      "mode": "candidate",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "direct-put-denied",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "dynamodb:EnclosingOperation",
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "kind": "Command",
+      "label": "authority-condition",
+      "action": "dynamodb:ConditionCheckItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": true,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "authority-condition",
+      "action": "dynamodb:ConditionCheckItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": true,
+      "mode": "candidate",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "idempotency-read",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "IDEMP#proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": true,
+      "mode": "actual",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "kind": "Command",
+      "label": "idempotency-put",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "IDEMP#proof"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": true,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "authority-immutable-dynamodb:PutItem",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "authority-immutable-dynamodb:DeleteItem",
+      "action": "dynamodb:DeleteItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "authority-immutable-dynamodb:PutItem",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "kind": "Command",
+      "label": "idempotency-put",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "IDEMP#proof"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": true,
+      "mode": "candidate",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "idempotency-read",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "IDEMP#proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": true,
+      "mode": "candidate",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "authority-immutable-dynamodb:DeleteItem",
+      "action": "dynamodb:DeleteItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "kind": "Command",
+      "label": "journal-query-denied",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "other-control-denied",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#OTHER"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "kind": "Command",
+      "label": "missing-key-denied",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases",
+        "dynamodb:LeadingKeys"
+      ]
+    },
+    {
+      "kind": "Command",
+      "label": "authority-immutable-dynamodb:UpdateItem",
+      "action": "dynamodb:UpdateItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "other-control-denied",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#OTHER"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "dynamodb:EnclosingOperation",
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "kind": "Command",
+      "label": "journal-query-denied",
+      "action": "dynamodb:Query",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "dynamodb:EnclosingOperation",
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "kind": "Command",
+      "label": "authority-immutable-dynamodb:UpdateItem",
+      "action": "dynamodb:UpdateItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "missing-key-denied",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "dynamodb:EnclosingOperation",
+        "kms:ResourceAliases",
+        "dynamodb:LeadingKeys"
+      ]
+    },
+    {
+      "kind": "Command",
+      "label": "mixed-key-denied",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "IDEMP#proof",
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "foreign-Creator",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Creator-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "kind": "Command",
+      "label": "foreign-Tournament",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Tournament-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "kind": "Command",
+      "label": "foreign-Legacy",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Legacy-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "kind": "Command",
+      "label": "mixed-key-denied",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "IDEMP#proof",
+            "CONTROL#AUTHORITY"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "kind": "Command",
+      "label": "foreign-Creator",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Creator-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "foreign-Legacy",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Legacy-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "foreign-Tournament",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Tournament-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "foreign-Commerce",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Commerce-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:ResourceAliases"
+      ]
+    },
+    {
+      "kind": "Command",
+      "label": "scan-denied",
+      "action": "dynamodb:Scan",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "business-update-denied",
+      "action": "dynamodb:UpdateItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "core-preserved",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": true,
+      "after": true,
+      "mode": "actual",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "business-update-denied",
+      "action": "dynamodb:UpdateItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "dynamodb:EnclosingOperation",
+          "ContextKeyValues": [
+            "TransactWriteItems"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "scan-denied",
+      "action": "dynamodb:Scan",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "core-preserved",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": true,
+      "after": true,
+      "mode": "candidate",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "foreign-Commerce",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Commerce-Ntgre-Operational",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "dynamodb:LeadingKeys",
+          "ContextKeyValues": [
+            "TEAM#team:proof"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "own-secret-api",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "foreign-secret",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "foreign-lambda-denied",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre-Preview",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "cognito-admin-denied",
+      "action": "cognito-idp:AdminGetUser",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "foreign-lambda-denied",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre-Preview",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "cognito-admin-denied",
+      "action": "cognito-idp:AdminGetUser",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "own-secret-api",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "foreign-secret",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-ABC123",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "cursor-kms-explicit-denial",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "kms:ResourceAliases",
+          "ContextKeyValues": [
+            "alias/aws/secretsmanager"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "kms:ViaService",
+          "ContextKeyValues": [
+            "secretsmanager.eu-north-1.amazonaws.com"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "kms:EncryptionContext:SecretARN",
+          "ContextKeyValues": [
+            "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "business-kms-denied",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "kms:ResourceAliases",
+          "ContextKeyValues": [
+            "alias/team-business"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "actual",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "business-kms-denied",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "kms:ResourceAliases",
+          "ContextKeyValues": [
+            "alias/team-business"
+          ],
+          "ContextKeyType": "stringList"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "kind": "Command",
+      "label": "cursor-kms-explicit-denial",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "context": [
+        {
+          "ContextKeyName": "aws:RequestedRegion",
+          "ContextKeyValues": [
+            "eu-north-1"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "kms:ResourceAliases",
+          "ContextKeyValues": [
+            "alias/aws/secretsmanager"
+          ],
+          "ContextKeyType": "stringList"
+        },
+        {
+          "ContextKeyName": "kms:ViaService",
+          "ContextKeyValues": [
+            "secretsmanager.eu-north-1.amazonaws.com"
+          ],
+          "ContextKeyType": "string"
+        },
+        {
+          "ContextKeyName": "kms:EncryptionContext:SecretARN",
+          "ContextKeyValues": [
+            "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-ABC123"
+          ],
+          "ContextKeyType": "string"
+        }
+      ],
+      "before": false,
+      "after": false,
+      "mode": "candidate",
+      "decision": "explicitDeny",
+      "missingContext": []
+    }
+  ],
+  "blockers": [
+    "Read cursor secret uses aws/secretsmanager but preserved explicit KMS deny permits only alias/aws/lambda. GetSecretValue API allow is not end-to-end decryption proof; no secret retrieved and no deny relaxed. Separate approved solution required."
+  ],
+  "awsWrites": 0,
+  "complete": true,
+  "readOnlyRetry": {
+    "reason": "IAM endpoint connect timeout; retry only missing read-only evaluations",
+    "at": "2026-10-08T17:30:50.872Z"
+  },
+  "candidateSecuritySha256": "a4c9c99a516a110a92355708c9e8b74e07cf08cf67aaaf1f3f55c736421c5153"
+}

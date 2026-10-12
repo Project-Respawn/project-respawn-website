@@ -1,0 +1,23 @@
+# Phase 2 migration standard consolidation and checkpoint
+
+12 October 2026. Repository-only consolidation from accepted checkpoint 5c772296a791b8487a364f07682e17a5acbf7243 on phase2/team-hub-extraction. No AWS calls/writes, deployment, authority/frontend transition, production change or Legacy retirement in this task.
+
+The [migration README](README-PHASE2-MIGRATION.md) is the sole entrypoint. It separates deployed infrastructure, accepted behavior, business migration and frontend activation. The prior chronology is preserved in [history](phase2-migration-control-history-2026-10-12.md). The [M0–M8 template](domain-migration-template.md) now requires a full per-gate permission/change/runtime/recovery/evidence worksheet for both empty and stateful sources.
+
+The [deployment acceptance standard](project-respawn-aws-deployment-acceptance-standard.md) covers full IAM/KMS lifecycle, exact Lambda ARN forms, NotAction/explicit denies, boundaries, PassRole, artifact binding, simulator/SCP limits, time-separated rate-limited certification and actual configuration/drift acceptance. The [tooling guide](migration-tooling.md) exposes deterministic shared checks and reuses the accepted scheduler without refactoring pinned deployment scripts.
+
+Accepted [Team Hub recovery](team-hub-2b6-describekey-recovery-result.md) remains the latest live evidence: both complete environments, IN_SYNC, unchanged runtime/permanent IAM, authority 200 at LEGACY_WRITER 1/1, sixteen business 403 denials, live KMS lifecycle and temporary cleanup. This task does not refresh or expand that acceptance. Minimum exact cached recovery/rollback inputs are intentionally retained in the [portable archive](team-hub-accepted-recovery-artifacts/README.md); original manifests and hashes remain unchanged. Other deployment caches are excluded.
+
+The Legacy ledger was validated without modification: 2,621 resources, FunctionDirectiveStack 167, 2,430 assigned, 191 unresolved shared, zero migrated/retired. Remaining mixed-provider/API/IAM/storage ownership needs consumer and lifecycle evidence. Domain deployment is not business ownership transfer.
+
+Documentation audit found no missing current top-level targets. Archived snapshots retain historical relative links; [corrected navigation](phase2-archive-navigation.md) and a hash-verified original-location register resolve them without altering historical bytes. Fragment anchors and external URLs are outside this offline link check.
+
+Validation before checkpoint: 114 focused migration/recovery/security/cursor/configuration tests + 437 Team/Core/authority/isolation regression tests + 41 resource-accounting tests passed (592 total). Team Hub and Core TypeScript passed. Ledger and 75 exact pin checks passed. One additional archive line-ending regression also passed (593 distinct tests total). Exact staged-tree build and secret scan passed. [Validation receipt](phase2-checkpoint-evidence-2026-10-12/validation.json) records configuration inputs, nonblocking build warnings and exclusions. Final remote SHA verification is reported after push.
+
+Only reviewed migration source, tooling, tests, standards and sanitized evidence belong in this checkpoint. Two unrelated SWG Buff Builder files remain in the user's working tree and are excluded. Credentials, tokens, browser sessions, local environment files, node_modules and normal deployment caches remain excluded. Existing .gitignore and byte-preserving .gitattributes already cover these requirements.
+
+Remaining Team Hub gates: separately reviewed isolated AWS transactional business-runtime and Read cursor-secret proofs; remaining frontend/rollback acceptance; separately authorized FROZEN fence proof, reconciled TARGET_WRITER transfer and frontend activation. No next-domain deployment readiness is claimed. Creator remains paused; its next authorized M0 review must reuse these standards and inspect external/Legacy ownership. Tournament Release 2/rollback remains pending.
+
+Resolve the checkpoint commit with git log -1 -- docs/architecture/phase2-migration-standard-checkpoint.md. Commit identity cannot be embedded in the same commit without changing it. The final task response supplies the exact pushed/remote-verified SHA; no merge or force push is permitted.
+
+Clean-export link review additionally identified 196 historical references to 88 paths already excluded by repository policy. [Retention navigation](phase2-local-evidence-retention.md) makes their absence explicit; no cache/raw-log restoration or historical-byte rewrite was performed. Current artifact pins remain fully portable and byte-verified.

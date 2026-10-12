@@ -1,0 +1,112 @@
+{
+  "at": "2026-10-12T15:21:52.829Z",
+  "complete": true,
+  "proof": {
+    "readConfiguration": true,
+    "commandConfiguration": true,
+    "functionDrift": [
+      "IN_SYNC",
+      "IN_SYNC"
+    ],
+    "authority": {
+      "status": 200,
+      "mode": "LEGACY_WRITER",
+      "epoch": 1,
+      "version": 1
+    },
+    "routes": [
+      {
+        "route": "POST /v1/teams",
+        "status": 403
+      },
+      {
+        "route": "PATCH /v1/teams/{teamId}",
+        "status": 403
+      },
+      {
+        "route": "PUT /v1/teams/{teamId}/manager",
+        "status": 403
+      },
+      {
+        "route": "POST /v1/teams/{teamId}/members",
+        "status": 403
+      },
+      {
+        "route": "POST /v1/teams/{teamId}/roster-slots",
+        "status": 403
+      },
+      {
+        "route": "PUT /v1/teams/{teamId}/me/champions/{championId}",
+        "status": 403
+      },
+      {
+        "route": "DELETE /v1/teams/{teamId}/me/champions/{championId}",
+        "status": 403
+      },
+      {
+        "route": "PUT /v1/teams/{teamId}/players/{membershipId}/assessments/{championId}",
+        "status": 403
+      },
+      {
+        "route": "PUT /v1/teams/{teamId}/plan",
+        "status": 403
+      },
+      {
+        "route": "GET /v1/teams/{teamId}",
+        "status": 403
+      },
+      {
+        "route": "GET /v1/teams/{teamId}/me/champions",
+        "status": 403
+      },
+      {
+        "route": "GET /v1/teams/{teamId}/champion-pools",
+        "status": 403
+      },
+      {
+        "route": "GET /v1/teams/{teamId}/players/{membershipId}/competitive",
+        "status": 403
+      },
+      {
+        "route": "GET /v1/teams",
+        "status": 403
+      },
+      {
+        "route": "POST /v1/directory/assignable-search",
+        "status": 403
+      },
+      {
+        "route": "POST /v1/directory/assignable-resolve",
+        "status": 403
+      }
+    ],
+    "expectedRoutes": [
+      "POST /v1/teams",
+      "PATCH /v1/teams/{teamId}",
+      "PUT /v1/teams/{teamId}/manager",
+      "POST /v1/teams/{teamId}/members",
+      "POST /v1/teams/{teamId}/roster-slots",
+      "PUT /v1/teams/{teamId}/me/champions/{championId}",
+      "DELETE /v1/teams/{teamId}/me/champions/{championId}",
+      "PUT /v1/teams/{teamId}/players/{membershipId}/assessments/{championId}",
+      "PUT /v1/teams/{teamId}/plan",
+      "GET /v1/teams/{teamId}",
+      "GET /v1/teams/{teamId}/me/champions",
+      "GET /v1/teams/{teamId}/champion-pools",
+      "GET /v1/teams/{teamId}/players/{membershipId}/competitive",
+      "GET /v1/teams",
+      "POST /v1/directory/assignable-search",
+      "POST /v1/directory/assignable-resolve"
+    ],
+    "monitoring": true,
+    "businessDataUnchanged": true,
+    "protectedDomains": true,
+    "cleanup": true
+  },
+  "workflow": "arn:aws:states:eu-north-1:058264289478:execution:ProjectRespawn-TeamHub-Ntgre-ConfigRecovery-20261009:describekey-recovery-20261012-once",
+  "permanentIamPreservationEvidence": "installed-security-audit.json",
+  "organizationInspectionWaiverPreserved": true,
+  "frontendActivated": false,
+  "authorityTransition": false,
+  "productionChanges": 0
+}

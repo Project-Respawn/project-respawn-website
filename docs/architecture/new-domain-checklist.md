@@ -1,5 +1,7 @@
 # Mandatory new-domain and migration checklist
 
+**Current consolidation — 12 October 2026:** [Migration control](README-PHASE2-MIGRATION.md) and [status JSON](domain-migration-status.json) select current domain gates. Core contracts are independently deployed (8+5), while existing Cognito remains protected in Legacy. Team Hub recovery is accepted (48+7), LEGACY_WRITER 1/1 and frontend unchanged; isolated AWS transaction/cursor proofs remain next. Tournament Release 2/rollback remains pending. Earlier dated milestones below describe historical context, not current sequencing authority. Apply the [deployment acceptance standard](project-respawn-aws-deployment-acceptance-standard.md) and [M0–M8 worksheet](domain-migration-template.md).
+
 Effective 4 October 2026. Use with the [architecture standard](project-respawn-domain-architecture-standard.md), [classification](project-respawn-domain-classification.md) and [roadmap](domain-migration-roadmap.md). Required for every substantial new product area, substantial existing-domain extension, and migration stage. These are review requirements, not implemented automation or execution authorization.
 
 Copy the checklist into the issue/PR and link evidence beside every completed item. Mark an item N/A only with a specific reason: a stateless domain needs no speculative data store, a module may reuse its existing independent root, and a frontend-only section needs no backend. An unchecked migration/security/lifecycle item prevents readiness claims. Do not silently mark a planned capability deployed.
@@ -68,4 +70,4 @@ For an existing product, READY_TO_EXTRACT requires an owner-approved bounded sta
 
 Attach evidence paths and results to the PR; identify which checks exist and which require manual review. The guardrail design in the standard must be implemented later through its own approved task. For each temporary exception, document the exact violated rule, owner, narrow access/dependency, compensating control, exit milestone and explicit review approval. An exception cannot authorize production, protected resource replacement, migration or an AWS write.
 
-For this documentation task all execution steps are out of scope. Release 2 stays paused. The next work item is a separately authorized Tournament-only Release 2/rollback plan, not automatic execution of this checklist.
+All execution steps require their own authorization. Current domain sequencing comes from the migration README/status; this checklist does not resume Tournament Release 2 or perform Team Hub cutover.

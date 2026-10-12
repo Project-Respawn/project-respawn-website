@@ -1,0 +1,3 @@
+import fs from 'node:fs';import {spawnSync} from 'node:child_process';
+const E='docs/architecture/team-hub-business-runtime-evidence-2026-10-08',B='.tmp/team-hub-business-runtime/validation';fs.mkdirSync(B,{recursive:true});
+const r=spawnSync(process.execPath,['--test','scripts/team-hub-business-runtime/tests/*.test.mjs'],{encoding:'utf8',windowsHide:true,maxBuffer:10e6}),output=(r.stdout??'')+(r.stderr??'');fs.writeFileSync(B+'/business-runtime.log',output);fs.writeFileSync(E+'/business-validation.json',JSON.stringify({at:new Date().toISOString(),exit:r.status,passed:Number(output.match(/pass (\d+)/)?.[1]??0),failed:Number(output.match(/fail (\d+)/)?.[1]??0),awsWrites:0},null,2)+'\n');console.log(output);if(r.status)process.exitCode=1;

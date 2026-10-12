@@ -1,0 +1,110 @@
+{
+  "at": "2026-10-09T07:17:27.946Z",
+  "stopReason": "AWS product change set has zero changes; required environment modifications absent",
+  "productExecuted": false,
+  "functions": [
+    {
+      "kind": "Read",
+      "environment": {
+        "TEAM_HUB_RUNTIME": "read",
+        "TEAM_HUB_AUTHORITY": "LEGACY_WRITER",
+        "TEAM_HUB_STAGE": "PRE_CUTOVER",
+        "EXPECTED_ISSUER": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE",
+        "TEAM_HUB_NORMAL_WRITES": "DISABLED",
+        "TEAM_HUB_VERIFICATION": "{\"mode\":\"DISABLED\",\"authority\":\"LEGACY_WRITER\"}",
+        "EXPECTED_POOL_ID": "eu-north-1_n24iLL7QE",
+        "EXPECTED_CLIENT_ID": "1iq7ovjaf7d16imdvbqgfgvf86"
+      },
+      "missing": [
+        "TEAM_HUB_BUSINESS_RUNTIME",
+        "CORE_CONTRACT_ARN",
+        "CORE_ENVIRONMENT",
+        "TEAM_CURSOR_SECRET_ARN"
+      ],
+      "state": "Active",
+      "lastUpdateStatus": "Successful",
+      "environmentError": null,
+      "runtimeSha256": "da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e"
+    },
+    {
+      "kind": "Command",
+      "environment": {
+        "TEAM_HUB_RUNTIME": "command",
+        "TEAM_HUB_AUTHORITY": "LEGACY_WRITER",
+        "TEAM_HUB_STAGE": "PRE_CUTOVER",
+        "EXPECTED_ISSUER": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE",
+        "TEAM_HUB_NORMAL_WRITES": "DISABLED",
+        "TEAM_HUB_VERIFICATION": "{\"mode\":\"DISABLED\",\"authority\":\"LEGACY_WRITER\"}",
+        "EXPECTED_POOL_ID": "eu-north-1_n24iLL7QE",
+        "EXPECTED_CLIENT_ID": "1iq7ovjaf7d16imdvbqgfgvf86"
+      },
+      "missing": [
+        "TEAM_HUB_BUSINESS_RUNTIME",
+        "CORE_CONTRACT_ARN",
+        "CORE_ENVIRONMENT"
+      ],
+      "state": "Active",
+      "lastUpdateStatus": "Successful",
+      "environmentError": null,
+      "runtimeSha256": "da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e"
+    }
+  ],
+  "stacks": [
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre",
+      "count": 48,
+      "status": "UPDATE_COMPLETE"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Ntgre-ReadProofSecurity",
+      "count": 7,
+      "status": "UPDATE_COMPLETE"
+    },
+    {
+      "name": "ProjectRespawn-Core-Ntgre",
+      "count": 8,
+      "status": "CREATE_COMPLETE"
+    },
+    {
+      "name": "ProjectRespawn-Core-Ntgre-Security",
+      "count": 5,
+      "status": "CREATE_COMPLETE"
+    },
+    {
+      "name": "ProjectRespawn-Tournaments-Ntgre",
+      "count": 11,
+      "status": "UPDATE_COMPLETE"
+    }
+  ],
+  "complete": true,
+  "returnedTemplateMatchesPin": true,
+  "authority": {
+    "epoch": {
+      "N": "1"
+    },
+    "changedAt": {
+      "S": "2026-10-07T22:32:12.867Z"
+    },
+    "version": {
+      "N": "1"
+    },
+    "mode": {
+      "S": "LEGACY_WRITER"
+    },
+    "schemaVersion": {
+      "S": "team-hub-authority.v1"
+    },
+    "PK": {
+      "S": "CONTROL#AUTHORITY"
+    },
+    "changedBy": {
+      "S": "team-hub-c1-executor"
+    },
+    "gateDigest": {
+      "S": "2227a62a06992e9e09ff672ad6e2f09164e0304f3f68db491437a93577f1ab94"
+    },
+    "SK": {
+      "S": "STATE"
+    }
+  }
+}

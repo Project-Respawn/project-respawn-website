@@ -1,0 +1,50 @@
+{
+  "failures": [
+    {
+      "stage": "Initial business deployment",
+      "date": "2026-10-08",
+      "result": "CFN complete, actual environments incomplete, authority 503",
+      "cause": "Observed execution-role Decrypt denies; provider-internal causality not fully observable",
+      "evidence": "../team-hub-config-repair-evidence-2026-10-09/provider-audit.json"
+    },
+    {
+      "stage": "Narrow configuration template repair",
+      "date": "2026-10-09",
+      "result": "Zero product changes; not executed",
+      "cause": "Desired CloudFormation template already contains complete maps",
+      "evidence": "../team-hub-config-deployment-evidence-2026-10-09/product-change-set.json"
+    },
+    {
+      "stage": "Drift-aware recovery",
+      "date": "2026-10-09",
+      "result": "Preparation blocked",
+      "cause": "Template binding and whole-stack provider discovery requirements; UNKNOWN logs not proven drift",
+      "evidence": "../team-hub-2b6-drift-recovery-permission-result.md"
+    },
+    {
+      "stage": "First fixed direct workflow",
+      "date": "2026-10-09",
+      "result": "Read denied; Command not attempted",
+      "cause": "Explicit NotResource denial excludes qualified $LATEST form",
+      "requestId": "b4cc1abf-61d4-4e15-908b-8794271d85d7",
+      "evidence": "../team-hub-recovery-execution-evidence-2026-10-09/workflow-history.json"
+    },
+    {
+      "stage": "Qualified ARN correction",
+      "date": "2026-10-09",
+      "result": "Prepared and separately authorized, not itself runtime acceptance",
+      "cause": "Qualified path corrected; KMS lifecycle incomplete",
+      "evidence": "../team-hub-qualified-recovery-evidence-2026-10-09/security-validation.json"
+    },
+    {
+      "stage": "Qualified recovery execution",
+      "date": "2026-10-10",
+      "result": "Read Encrypt denied; Command not attempted; executor removed",
+      "cause": "Inline policy Statement[2] NotAction explicit denial of kms:Encrypt; no boundary",
+      "requestId": "4dbe6fc5-8022-44c6-8fa1-08d6b1b9e973",
+      "kmsRequestId": "99600710-949a-4a11-9726-22ebd57a145c",
+      "evidence": "../team-hub-corrected-recovery-evidence-2026-10-10/execution-cloudtrail.json"
+    }
+  ],
+  "note": "Historical pointers retained; dates do not imply each stage executed AWS writes. Provider causality is bounded by available CloudTrail evidence."
+}

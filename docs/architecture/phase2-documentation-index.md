@@ -1,5 +1,25 @@
 # Phase 2 documentation index
 
+## Current navigation — 12 October 2026
+
+The [sole migration entrypoint](README-PHASE2-MIGRATION.md) selects current gates. Standards: [M0–M8 worksheet](domain-migration-template.md), [architecture](project-respawn-domain-architecture-standard.md), [deployment acceptance/security](project-respawn-aws-deployment-acceptance-standard.md), [reusable checks](migration-tooling.md) and [checklist](new-domain-checklist.md).
+
+Current status: [status JSON](domain-migration-status.json), [Team Hub acceptance](team-hub-2b6-acceptance.md), [runbook](team-hub-2b6-cutover-runbook.md), [accepted recovery](team-hub-2b6-describekey-recovery-result.md), [Core acceptance](core-release1-acceptance.md), [Tournament Release 1](phase2a-tournament-runtime-kms-release1-acceptance-2026-10-04.md). Team Hub isolated AWS transaction/cursor proofs and cutover remain pending; Tournament Release 2/restore remains pending.
+
+Accepted recovery evidence: [machine receipt](team-hub-describekey-execution-evidence-2026-10-12/accepted.json), [configurations/drift](team-hub-describekey-execution-evidence-2026-10-12/configuration.json), [CloudTrail](team-hub-describekey-execution-evidence-2026-10-12/execution-cloudtrail.json), [cleanup](team-hub-describekey-execution-evidence-2026-10-12/cleanup.json). Exact candidate manifests retain their bytes. Generated templates intentionally retained as evidence are distinct from excluded deployment caches.
+
+Historical failures/drafts: [archived control chronology](phase2-migration-control-history-2026-10-12.md), [DescribeKey failure](team-hub-2b6-window-recovery-result.md), [throttling failure](team-hub-2b6-final-recovery-result.md) and earlier reports remain provenance, never current execution authority. Consumed revisions/windows and diagnostic policies must not be replayed.
+
+[Corrected archive navigation](phase2-archive-navigation.md) repairs access to relative links in archived copies while preserving their exact bytes. The [origin/hash register](phase2-archive-link-origins.json) records their original context for validation. No history or unresolved ownership rows were deleted.
+
+Navigation identity permits existing Git CRLF/LF checkout conversion through an explicitly recorded normalized-text hash. This applies only to archived prose link resolution; approved candidate, code and security hashes remain exact byte checks.
+
+[Historical local-only evidence register](phase2-local-evidence-retention.md) records 196 references to 88 log/diagnostic/cache paths intentionally excluded by existing repository policy. These are explicitly unavailable on a clean clone, not accepted as portable evidence. The checker reports them separately and verifies their tracked navigation; no current recovery pin is exempted.
+
+## Historical inventory below
+
+The following counts and domain pointers describe the earlier inventory snapshot; current authority is the navigation above and status JSON.
+
 [Required START HERE](README-PHASE2-MIGRATION.md) · [Machine inventory](phase2-document-inventory.json) · [Retention review](../maintenance/phase2-document-retention.md)
 
 820 existing Markdown references target 612 architecture paths. No paths were moved, preserving links and byte-pinned evidence. Status here separates current authority from historical instructions.

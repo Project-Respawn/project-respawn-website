@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "team-hub-execution-kms.v1",
+  "previousManifestSha256": "b00d5846b65555d46dd49b0b355231fd48152f92b58750602bfeaa1fa0180b3d",
+  "securitySha256": "8ff956315649ea5741040f7da2347a0d84dea4af0f6b43226f8f027c6bd1db27",
+  "productSha256": "38ea59476109a3b16348fb789364462af43f2813ff3eec7f92bfadb9581d6a4f",
+  "runtimeSha256": "da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e",
+  "lambdaKey": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+  "secretKey": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+  "kmsAllowsAdded": 0,
+  "compression": [
+    {
+      "id": "ExecutionBoundary",
+      "removedSid": "ExactCursorServiceKey"
+    },
+    {
+      "id": "ExecutionBoundary",
+      "mergedUnconditionalResourceStarAllows": [
+        "logs:DescribeLogGroups",
+        "secretsmanager:GetRandomPassword"
+      ]
+    }
+  ],
+  "limits": [
+    {
+      "id": "PreviewBoundary",
+      "characters": 923,
+      "limit": 6144
+    },
+    {
+      "id": "ExecutionBoundary",
+      "characters": 6120,
+      "limit": 6144
+    },
+    {
+      "id": "PreparationCaller",
+      "characters": 3253,
+      "limit": 6144
+    },
+    {
+      "id": "ParityCommandBoundary",
+      "characters": 3958,
+      "limit": 6144
+    },
+    {
+      "id": "ParityReadBoundary",
+      "characters": 4778,
+      "limit": 6144
+    }
+  ],
+  "securityChanges": [
+    "ExecutionBoundary",
+    "ExecutionRole",
+    "PreparationCaller"
+  ],
+  "securityResourceCount": 7,
+  "productResourceCount": 48,
+  "productChanges": {
+    "additions": 0,
+    "modifications": 2,
+    "deletions": 0,
+    "replacements": 0
+  },
+  "productObjectKey": "team-hub/config-repair/38ea59476109a3b16348fb789364462af43f2813ff3eec7f92bfadb9581d6a4f.template.json",
+  "previousProductObjectKey": "team-hub/cursor-security/a48e15fa6dc9af763494ffbc9f7ee5a502c91b340351cfd550d39d442476bbad.template.json",
+  "runtimeChanged": false,
+  "runtimeIamChanged": false,
+  "awsWrites": 0
+}

@@ -1,0 +1,32 @@
+{
+  "status": "BLOCKED_INCOMPLETE_DRIFT_AND_PERMISSION_REVIEW",
+  "securitySha256": "8ff956315649ea5741040f7da2347a0d84dea4af0f6b43226f8f027c6bd1db27",
+  "securityDelta": [],
+  "securityReason": "No new Lambda read permission proven necessary; no speculative grants.",
+  "productSha256": "a48e15fa6dc9af763494ffbc9f7ee5a502c91b340351cfd550d39d442476bbad",
+  "runtimeSha256": "da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e",
+  "requestSha256": "8148e6e1613935b9a980cd5e6d885fecf105e5f07ca94333bc89ec3f8bdbbdca",
+  "environmentContract": "Existing deployed desired Environment maps byte-for-byte; no whitespace repair substitution",
+  "expected": {
+    "additions": 0,
+    "modifications": [
+      "ParityReadFunction.Environment",
+      "ParityCommandFunction.Environment"
+    ],
+    "deletions": 0,
+    "replacements": 0
+  },
+  "countsAreNotAwsConfirmed": true,
+  "creationAuthorized": false,
+  "executionAuthorized": false,
+  "blockers": [
+    "Three Logs::LogGroup UNKNOWN due DescribeIndexPolicies denial; whole-stack coverage incomplete",
+    "Code-signing discovery is conditional/optional-property read; exact REVERT_DRIFT provider path not established",
+    "UsePreviousTemplate draft does not satisfy current caller TemplateUrl condition; separately review exact desired artifact binding, do not remove condition"
+  ],
+  "unsupportedResources": [
+    "ParityCommandIntegration",
+    "ParityReadIntegration",
+    "ReadIntegration"
+  ]
+}
