@@ -1,0 +1,123 @@
+{
+  "template": {
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Prepared restricted diagnostic helper; no existing role reuse or permanent IAM changes",
+    "Resources": {
+      "RestrictedRole": {
+        "Type": "AWS::IAM::Role",
+        "Properties": {
+          "RoleName": "ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+          "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Principal": {
+                  "Service": "lambda.amazonaws.com"
+                },
+                "Action": "sts:AssumeRole"
+              }
+            ]
+          },
+          "Policies": [
+            {
+              "PolicyName": "OnlyOwnedDiagnosticKeys",
+              "PolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Sid": "OnlyOwnedConditionalDiagnostics",
+                    "Effect": "Allow",
+                    "Action": [
+                      "dynamodb:PutItem",
+                      "dynamodb:UpdateItem",
+                      "dynamodb:DeleteItem"
+                    ],
+                    "Resource": [
+                      "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+                      "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+                      "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+                      "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE"
+                    ],
+                    "Condition": {
+                      "ForAllValues:StringEquals": {
+                        "dynamodb:LeadingKeys": [
+                          "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+                        ]
+                      },
+                      "Null": {
+                        "dynamodb:LeadingKeys": "false"
+                      }
+                    }
+                  },
+                  {
+                    "Sid": "OnlyOwnedLogoDiagnostic",
+                    "Effect": "Allow",
+                    "Action": [
+                      "s3:PutObject",
+                      "s3:DeleteObject",
+                      "s3:DeleteObjectVersion",
+                      "s3:AbortMultipartUpload"
+                    ],
+                    "Resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png"
+                  },
+                  {
+                    "Sid": "ExistingLogStreamsOnly",
+                    "Effect": "Allow",
+                    "Action": [
+                      "logs:CreateLogStream",
+                      "logs:PutLogEvents"
+                    ],
+                    "Resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/aws/lambda/amplify-projectrespawnweb-myFunctionrebuildlambdaF-LwVW5TljICgV:log-stream:*"
+                  },
+                  {
+                    "Sid": "NoPolicyOrPrivilegeAdministration",
+                    "Effect": "Deny",
+                    "Action": [
+                      "iam:*",
+                      "sts:AssumeRole",
+                      "s3:PutBucketPolicy",
+                      "s3:DeleteBucketPolicy",
+                      "s3:PutBucketAcl",
+                      "lambda:*",
+                      "kms:*",
+                      "ssm:*",
+                      "secretsmanager:*",
+                      "cognito-idp:*"
+                    ],
+                    "Resource": "*"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "RestrictedProbe": {
+        "Type": "AWS::Lambda::Function",
+        "Properties": {
+          "FunctionName": "ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+          "Runtime": "nodejs22.x",
+          "Handler": "index.handler",
+          "Role": {
+            "Fn::GetAtt": [
+              "RestrictedRole",
+              "Arn"
+            ]
+          },
+          "MemorySize": 128,
+          "Timeout": 120,
+          "Code": {
+            "S3Bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+            "S3Key": "team-hub/restricted-fence-proof/78b0259181e985f2488e379d210374834a0725e60bffe16b10a884f5839c9364.zip"
+          },
+          "LoggingConfig": {
+            "LogFormat": "Text",
+            "LogGroup": "/aws/lambda/amplify-projectrespawnweb-myFunctionrebuildlambdaF-LwVW5TljICgV"
+          }
+        }
+      }
+    }
+  },
+  "exactSemanticMatch": true
+}

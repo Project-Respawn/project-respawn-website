@@ -1,0 +1,54 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "PROPOSED fixed Ntgre source-fence proof helpers; no runtime IAM changes",
+  "Resources": {
+    "sharedProbe": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "FunctionName": "ProjectRespawn-TeamHub-Ntgre-FenceProof-shared",
+        "Runtime": "nodejs22.x",
+        "Handler": "index.handler",
+        "Role": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+        "MemorySize": 128,
+        "Timeout": 120,
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+          "S3Key": "team-hub/fence-proof/2b66e845b9ee02dccfc203d8c418b2dd9ac367bcd3f12348bf17099e2e1ede89.zip"
+        },
+        "Environment": {
+          "Variables": {
+            "FIXED_PROBE_PROFILE": "shared"
+          }
+        },
+        "LoggingConfig": {
+          "LogFormat": "Text",
+          "LogGroup": "/aws/lambda/amplify-projectrespawnweb-myFunctionrebuildlambdaF-LwVW5TljICgV"
+        }
+      }
+    },
+    "cleanupProbe": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "FunctionName": "ProjectRespawn-TeamHub-Ntgre-FenceProof-cleanup",
+        "Runtime": "nodejs22.x",
+        "Handler": "index.handler",
+        "Role": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3",
+        "MemorySize": 128,
+        "Timeout": 120,
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+          "S3Key": "team-hub/fence-proof/2b66e845b9ee02dccfc203d8c418b2dd9ac367bcd3f12348bf17099e2e1ede89.zip"
+        },
+        "Environment": {
+          "Variables": {
+            "FIXED_PROBE_PROFILE": "cleanup"
+          }
+        },
+        "LoggingConfig": {
+          "LogFormat": "Text",
+          "LogGroup": "/aws/lambda/amplify-projectrespawnweb-CustomS3AutoDeleteObject-WcVQibn0g7Qd"
+        }
+      }
+    }
+  }
+}

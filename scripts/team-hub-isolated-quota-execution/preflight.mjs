@@ -1,0 +1,30 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
+import {build} from 'esbuild';
+import {spawn} from 'node:child_process';
+const E='docs/architecture/team-hub-isolated-quota-execution-evidence-2026-10-12';
+const Q='docs/architecture/team-hub-isolated-quota-evidence-2026-10-12';
+const P='docs/architecture/team-hub-isolated-verification-evidence-2026-10-12';
+const B='.tmp/team-hub-isolated-quota-execution';
+fs.mkdirSync(E,{recursive:true});fs.mkdirSync(B,{recursive:true});
+const read=p=>JSON.parse(fs.readFileSync(p));
+const sha=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
+const manifest=read(Q+'/execution-manifest.json');
+assert.equal(manifest.candidate.sha256,'13db6824ce0f661a4b271a38108c706204b886edb5c7e6e39eea68fc2e492a4b');
+assert.equal(manifest.template.sha256,'62a06af84531336c4067d5a4158575d7a84b2ed9029a4f51765fe34b878a7c9f');
+const artifacts=[manifest.candidate,manifest.template,manifest.policy,manifest.probe,manifest.sourceClosure,manifest.previous,...manifest.sourceHashes];
+for(const a of artifacts)assert.equal(sha(a.path),a.sha256,a.path);
+const closure=read(manifest.sourceClosure.path);
+for(const a of closure.sources)assert.equal(sha(a.path),a.sha256,a.path);
+assert.equal(sha('package-lock.json'),closure.dependencyLockSha256);
+const template=read(manifest.template.path);
+assert.equal(Object.keys(template.Resources).length,4);
+assert.equal(Object.hasOwn(template.Resources.CursorProbe.Properties,'ReservedConcurrentExecutions'),false);
+fs.writeFileSync(E+'/pins.json',JSON.stringify({at:new Date().toISOString(),artifacts,sourceClosureVerified:true,complete:true},null,2)+'\n');
+fs.copyFileSync(manifest.template.path,E+'/isolated.template.json');
+for(const name of ['baseline','security','proposal-security']){
+ const outfile=B+'/'+name+'.mjs';
+ await build({entryPoints:['scripts/team-hub-isolated-verification/'+name+'.mjs'],outfile,bundle:true,platform:'node',format:'esm',packages:'external',logLevel:'silent',plugins:[{name:'new-receipts-only',setup(b){b.onLoad({filter:/\.mjs$/},({path})=>({contents:fs.readFileSync(path,'utf8').replaceAll(P,E),loader:'js'}));}}]});
+ await new Promise((resolve,reject)=>{const child=spawn(process.execPath,[outfile],{windowsHide:true,stdio:'inherit'});child.on('exit',code=>code===0?resolve():reject(Error(name+' failed '+code)));});
+}

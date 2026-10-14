@@ -1,0 +1,366 @@
+{
+  "at": "2026-10-13T20:04:00.440Z",
+  "checks": [
+    {
+      "label": "missing-token",
+      "passed": true
+    },
+    {
+      "label": "invalid-token",
+      "passed": true
+    },
+    {
+      "label": "admin-valid",
+      "passed": true
+    },
+    {
+      "label": "admin-query-input-denied",
+      "passed": true
+    },
+    {
+      "label": "admin-id-token-denied",
+      "passed": true
+    },
+    {
+      "label": "admin-wrong-issuer-tampered-signature",
+      "passed": true
+    },
+    {
+      "label": "admin-wrong-client-tampered-signature",
+      "passed": true
+    },
+    {
+      "label": "admin-live-client-rejects-legacy-no-business-request",
+      "passed": true
+    },
+    {
+      "label": "ordinary-valid",
+      "passed": true
+    },
+    {
+      "label": "ordinary-query-input-denied",
+      "passed": true
+    },
+    {
+      "label": "ordinary-id-token-denied",
+      "passed": true
+    },
+    {
+      "label": "ordinary-wrong-issuer-tampered-signature",
+      "passed": true
+    },
+    {
+      "label": "ordinary-wrong-client-tampered-signature",
+      "passed": true
+    },
+    {
+      "label": "ordinary-live-client-rejects-legacy-no-business-request",
+      "passed": true
+    }
+  ],
+  "requests": [
+    {
+      "label": "missing-token",
+      "status": 401,
+      "requestId": "FMs86jJcgi0EPiw=",
+      "path": "/v1/authority",
+      "method": "GET",
+      "handlerExpected": false,
+      "at": "2026-10-13T20:04:08.252Z"
+    },
+    {
+      "label": "invalid-token",
+      "status": 401,
+      "requestId": "FMs88ijmAi0EPgA=",
+      "path": "/v1/authority",
+      "method": "GET",
+      "handlerExpected": false,
+      "at": "2026-10-13T20:04:08.504Z"
+    },
+    {
+      "label": "admin-valid",
+      "status": 200,
+      "requestId": "FMs89ipGAi0EQig=",
+      "path": "/v1/authority",
+      "method": "GET",
+      "handlerExpected": true,
+      "at": "2026-10-13T20:04:09.515Z",
+      "response": {
+        "contractVersion": "team-hub.authority-status.v1",
+        "domain": "TeamHub",
+        "environment": "Ntgre",
+        "account": "058264289478",
+        "region": "eu-north-1",
+        "mode": "LEGACY_WRITER",
+        "epoch": 1,
+        "version": 1,
+        "observedAt": "2026-10-13T20:04:09.796Z"
+      }
+    },
+    {
+      "label": "admin-query-input-denied",
+      "status": 400,
+      "requestId": "FMs9HjWDgi0EPmQ=",
+      "path": "/v1/authority?epoch=2",
+      "method": "GET",
+      "handlerExpected": true,
+      "errorCode": "INVALID_REQUEST",
+      "at": "2026-10-13T20:04:09.644Z"
+    },
+    {
+      "label": "admin-id-token-denied",
+      "status": 401,
+      "requestId": "FMs9Iil0gi0EPgA=",
+      "path": "/v1/authority",
+      "method": "GET",
+      "handlerExpected": true,
+      "errorCode": "UNAUTHENTICATED",
+      "at": "2026-10-13T20:04:09.763Z"
+    },
+    {
+      "label": "admin-wrong-issuer-tampered-signature",
+      "status": 401,
+      "requestId": "FMs9KjMRAi0EPiw=",
+      "path": "/v1/authority",
+      "method": "GET",
+      "handlerExpected": false,
+      "at": "2026-10-13T20:04:09.859Z"
+    },
+    {
+      "label": "admin-wrong-client-tampered-signature",
+      "status": 401,
+      "requestId": "FMs9Ljh_gi0EQTw=",
+      "path": "/v1/authority",
+      "method": "GET",
+      "handlerExpected": false,
+      "at": "2026-10-13T20:04:09.974Z"
+    },
+    {
+      "label": "admin-frontend-binding",
+      "requestId": "FMs9Mgcdgi0EPkg=",
+      "status": 200,
+      "path": "/v1/authority",
+      "method": "GET",
+      "handlerExpected": true,
+      "at": "2026-10-13T20:04:10.118Z"
+    },
+    {
+      "label": "ordinary-valid",
+      "status": 200,
+      "requestId": "FMs9NgcsAi0EPkg=",
+      "path": "/v1/authority",
+      "method": "GET",
+      "handlerExpected": true,
+      "at": "2026-10-13T20:04:10.195Z",
+      "response": {
+        "contractVersion": "team-hub.authority-status.v1",
+        "domain": "TeamHub",
+        "environment": "Ntgre",
+        "account": "058264289478",
+        "region": "eu-north-1",
+        "mode": "LEGACY_WRITER",
+        "epoch": 1,
+        "version": 1,
+        "observedAt": "2026-10-13T20:04:10.496Z"
+      }
+    },
+    {
+      "label": "ordinary-query-input-denied",
+      "status": 400,
+      "requestId": "FMs9OjXPgi0EPmQ=",
+      "path": "/v1/authority?epoch=2",
+      "method": "GET",
+      "handlerExpected": true,
+      "errorCode": "INVALID_REQUEST",
+      "at": "2026-10-13T20:04:10.260Z"
+    },
+    {
+      "label": "ordinary-id-token-denied",
+      "status": 401,
+      "requestId": "FMs9PjNSgi0EPiw=",
+      "path": "/v1/authority",
+      "method": "GET",
+      "handlerExpected": true,
+      "errorCode": "UNAUTHENTICATED",
+      "at": "2026-10-13T20:04:10.383Z"
+    },
+    {
+      "label": "ordinary-wrong-issuer-tampered-signature",
+      "status": 401,
+      "requestId": "FMs9Qim_gi0EPgA=",
+      "path": "/v1/authority",
+      "method": "GET",
+      "handlerExpected": false,
+      "at": "2026-10-13T20:04:10.475Z"
+    },
+    {
+      "label": "ordinary-wrong-client-tampered-signature",
+      "status": 401,
+      "requestId": "FMs9RgO-Ai0EPig=",
+      "path": "/v1/authority",
+      "method": "GET",
+      "handlerExpected": false,
+      "at": "2026-10-13T20:04:10.583Z"
+    },
+    {
+      "label": "ordinary-frontend-binding",
+      "requestId": "FMs9ShH3Ai0EP4g=",
+      "status": 200,
+      "path": "/v1/authority",
+      "method": "GET",
+      "handlerExpected": true,
+      "at": "2026-10-13T20:04:10.740Z"
+    },
+    {
+      "label": "business-denial-ParityRouteCREATETEAM",
+      "requestId": "FMs9Uin1gi0EPgA=",
+      "status": 403,
+      "path": "/v1/teams",
+      "method": "POST",
+      "runtime": "command",
+      "at": "2026-10-13T20:04:11.691Z"
+    },
+    {
+      "label": "business-denial-ParityRouteUPDATETEAM",
+      "requestId": "FMs9dipiAi0EPgA=",
+      "status": 403,
+      "path": "/v1/teams/{teamId}",
+      "method": "PATCH",
+      "runtime": "command",
+      "at": "2026-10-13T20:04:11.790Z"
+    },
+    {
+      "label": "business-denial-ParityRouteSETMANAGER",
+      "requestId": "FMs9ejlwAi0EQTw=",
+      "status": 403,
+      "path": "/v1/teams/{teamId}/manager",
+      "method": "PUT",
+      "runtime": "command",
+      "at": "2026-10-13T20:04:11.873Z"
+    },
+    {
+      "label": "business-denial-ParityRouteMANAGEMEMBER",
+      "requestId": "FMs9fij2Ai0EPxg=",
+      "status": 403,
+      "path": "/v1/teams/{teamId}/members",
+      "method": "POST",
+      "runtime": "command",
+      "at": "2026-10-13T20:04:11.993Z"
+    },
+    {
+      "label": "business-denial-ParityRouteSETROSTERSLOT",
+      "requestId": "FMs9gggSgi0EPkg=",
+      "status": 403,
+      "path": "/v1/teams/{teamId}/roster-slots",
+      "method": "POST",
+      "runtime": "command",
+      "at": "2026-10-13T20:04:12.074Z"
+    },
+    {
+      "label": "business-denial-ParityRouteUPSERTMYCHAMPION",
+      "requestId": "FMs9hjQfgi0EPiw=",
+      "status": 403,
+      "path": "/v1/teams/{teamId}/me/champions/{championId}",
+      "method": "PUT",
+      "runtime": "command",
+      "at": "2026-10-13T20:04:12.175Z"
+    },
+    {
+      "label": "business-denial-ParityRouteDELETEMYCHAMPION",
+      "requestId": "FMs9iikXgi0EPxg=",
+      "status": 403,
+      "path": "/v1/teams/{teamId}/me/champions/{championId}",
+      "method": "DELETE",
+      "runtime": "command",
+      "at": "2026-10-13T20:04:12.258Z"
+    },
+    {
+      "label": "business-denial-ParityRouteUPSERTCOACHASSESSMENT",
+      "requestId": "FMs9jjmigi0EQTw=",
+      "status": 403,
+      "path": "/v1/teams/{teamId}/players/{membershipId}/assessments/{championId}",
+      "method": "PUT",
+      "runtime": "command",
+      "at": "2026-10-13T20:04:12.331Z"
+    },
+    {
+      "label": "business-denial-ParityRouteSETTEAMPLAN",
+      "requestId": "FMs9lg-JAi0EPMg=",
+      "status": 403,
+      "path": "/v1/teams/{teamId}/plan",
+      "method": "PUT",
+      "runtime": "command",
+      "at": "2026-10-13T20:04:12.671Z"
+    },
+    {
+      "label": "business-denial-ParityRouteGETTEAMHUB",
+      "requestId": "FMs9njnfgi0EQTw=",
+      "status": 403,
+      "path": "/v1/teams/{teamId}",
+      "method": "GET",
+      "runtime": "read",
+      "at": "2026-10-13T20:04:12.798Z"
+    },
+    {
+      "label": "business-denial-ParityRouteLISTMYCHAMPIONPOOL",
+      "requestId": "FMs9ogTcAi0EPig=",
+      "status": 403,
+      "path": "/v1/teams/{teamId}/me/champions",
+      "method": "GET",
+      "runtime": "read",
+      "at": "2026-10-13T20:04:12.876Z"
+    },
+    {
+      "label": "business-denial-ParityRouteLISTTEAMCHAMPIONPOOLS",
+      "requestId": "FMs9pixggi0EQig=",
+      "status": 403,
+      "path": "/v1/teams/{teamId}/champion-pools",
+      "method": "GET",
+      "runtime": "read",
+      "at": "2026-10-13T20:04:12.955Z"
+    },
+    {
+      "label": "business-denial-ParityRouteGETPLAYERCOMPETITIVEDETAIL",
+      "requestId": "FMs9qjcOAi0EPmQ=",
+      "status": 403,
+      "path": "/v1/teams/{teamId}/players/{membershipId}/competitive",
+      "method": "GET",
+      "runtime": "read",
+      "at": "2026-10-13T20:04:13.027Z"
+    },
+    {
+      "label": "business-denial-ListMyTeamsRoute",
+      "requestId": "FMs9qil9Ai0EPxg=",
+      "status": 403,
+      "path": "/v1/teams",
+      "method": "GET",
+      "runtime": "read",
+      "at": "2026-10-13T20:04:13.133Z"
+    },
+    {
+      "label": "business-denial-DirectorySearchRoute",
+      "requestId": "FMs9rhMwAi0EP4g=",
+      "status": 403,
+      "path": "/v1/directory/assignable-search",
+      "method": "POST",
+      "runtime": "read",
+      "at": "2026-10-13T20:04:13.215Z"
+    },
+    {
+      "label": "business-denial-DirectoryResolveRoute",
+      "requestId": "FMs9sjSvgi0EPiw=",
+      "status": 403,
+      "path": "/v1/directory/assignable-resolve",
+      "method": "POST",
+      "runtime": "read",
+      "at": "2026-10-13T20:04:13.296Z"
+    }
+  ],
+  "complete": true,
+  "tokensPersisted": false,
+  "metricWindow": {
+    "start": "2026-10-13T20:04:00.000Z",
+    "end": "2026-10-13T20:05:00.000Z"
+  },
+  "businessRoutesDenied": 16
+}

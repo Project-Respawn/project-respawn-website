@@ -1,0 +1,379 @@
+{
+  "at": "2026-10-12T19:17:25.425Z",
+  "schemaSha256": "0ae65a54e8028365c4f85932a504dfd95471e1a7f81e72e488175b21b116638a",
+  "schemaRequestId": "6bf4d64e-fa57-481b-9957-1c2a2f38233f",
+  "api": "dxb2tdlulrch7hj2pts2mfijia",
+  "probes": [
+    {
+      "operation": "createTeam",
+      "document": "mutation FenceProbe($input: CreateTeamInput!, $condition: ModelTeamConditionInput) { createTeam(input: $input, condition: $condition) { id } }",
+      "variables": {
+        "input": {
+          "id": "__team_hub_fence_probe_20261012_Team",
+          "slug": "fence-probe",
+          "name": "fence-probe",
+          "gameKey": "fence-probe",
+          "status": "fence-probe",
+          "createdByUserId": "fence-probe",
+          "updatedByUserId": "fence-probe",
+          "rosterRevision": 0,
+          "membershipRevision": 0
+        },
+        "condition": {
+          "and": [
+            {
+              "slug": {
+                "attributeExists": true
+              }
+            },
+            {
+              "slug": {
+                "attributeExists": false
+              }
+            }
+          ]
+        }
+      },
+      "authentication": "AWS_IAM SigV4 using reviewed existing RavenTest identity; Cognito rejection is not fence proof",
+      "guard": "Contradictory condition cannot succeed, including on an existing item",
+      "beforeFenceExpected": "Underlying conditional-check failure, not authorization/input error; requires separate probe authorization",
+      "afterFenceRequired": "Underlying DynamoDB policy AccessDenied correlated to exact AppSync datasource role/request; a conditional/validation/auth error alone FAILS fence proof",
+      "executed": false
+    },
+    {
+      "operation": "updateTeam",
+      "document": "mutation FenceProbe($input: UpdateTeamInput!, $condition: ModelTeamConditionInput) { updateTeam(input: $input, condition: $condition) { id } }",
+      "variables": {
+        "input": {
+          "id": "__team_hub_fence_probe_20261012_Team"
+        },
+        "condition": {
+          "and": [
+            {
+              "slug": {
+                "attributeExists": true
+              }
+            },
+            {
+              "slug": {
+                "attributeExists": false
+              }
+            }
+          ]
+        }
+      },
+      "authentication": "AWS_IAM SigV4 using reviewed existing RavenTest identity; Cognito rejection is not fence proof",
+      "guard": "Contradictory condition cannot succeed, including on an existing item",
+      "beforeFenceExpected": "Underlying conditional-check failure, not authorization/input error; requires separate probe authorization",
+      "afterFenceRequired": "Underlying DynamoDB policy AccessDenied correlated to exact AppSync datasource role/request; a conditional/validation/auth error alone FAILS fence proof",
+      "executed": false
+    },
+    {
+      "operation": "deleteTeam",
+      "document": "mutation FenceProbe($input: DeleteTeamInput!, $condition: ModelTeamConditionInput) { deleteTeam(input: $input, condition: $condition) { id } }",
+      "variables": {
+        "input": {
+          "id": "__team_hub_fence_probe_20261012_Team"
+        },
+        "condition": {
+          "and": [
+            {
+              "slug": {
+                "attributeExists": true
+              }
+            },
+            {
+              "slug": {
+                "attributeExists": false
+              }
+            }
+          ]
+        }
+      },
+      "authentication": "AWS_IAM SigV4 using reviewed existing RavenTest identity; Cognito rejection is not fence proof",
+      "guard": "Contradictory condition cannot succeed, including on an existing item",
+      "beforeFenceExpected": "Underlying conditional-check failure, not authorization/input error; requires separate probe authorization",
+      "afterFenceRequired": "Underlying DynamoDB policy AccessDenied correlated to exact AppSync datasource role/request; a conditional/validation/auth error alone FAILS fence proof",
+      "executed": false
+    },
+    {
+      "operation": "createTeamMembership",
+      "document": "mutation FenceProbe($input: CreateTeamMembershipInput!, $condition: ModelTeamMembershipConditionInput) { createTeamMembership(input: $input, condition: $condition) { id } }",
+      "variables": {
+        "input": {
+          "id": "__team_hub_fence_probe_20261012_TeamMembership",
+          "teamId": "fence-probe",
+          "userId": "fence-probe",
+          "displayName": "fence-probe",
+          "role": "fence-probe",
+          "status": "fence-probe",
+          "addedByUserId": "fence-probe"
+        },
+        "condition": {
+          "and": [
+            {
+              "teamId": {
+                "attributeExists": true
+              }
+            },
+            {
+              "teamId": {
+                "attributeExists": false
+              }
+            }
+          ]
+        }
+      },
+      "authentication": "AWS_IAM SigV4 using reviewed existing RavenTest identity; Cognito rejection is not fence proof",
+      "guard": "Contradictory condition cannot succeed, including on an existing item",
+      "beforeFenceExpected": "Underlying conditional-check failure, not authorization/input error; requires separate probe authorization",
+      "afterFenceRequired": "Underlying DynamoDB policy AccessDenied correlated to exact AppSync datasource role/request; a conditional/validation/auth error alone FAILS fence proof",
+      "executed": false
+    },
+    {
+      "operation": "updateTeamMembership",
+      "document": "mutation FenceProbe($input: UpdateTeamMembershipInput!, $condition: ModelTeamMembershipConditionInput) { updateTeamMembership(input: $input, condition: $condition) { id } }",
+      "variables": {
+        "input": {
+          "id": "__team_hub_fence_probe_20261012_TeamMembership"
+        },
+        "condition": {
+          "and": [
+            {
+              "teamId": {
+                "attributeExists": true
+              }
+            },
+            {
+              "teamId": {
+                "attributeExists": false
+              }
+            }
+          ]
+        }
+      },
+      "authentication": "AWS_IAM SigV4 using reviewed existing RavenTest identity; Cognito rejection is not fence proof",
+      "guard": "Contradictory condition cannot succeed, including on an existing item",
+      "beforeFenceExpected": "Underlying conditional-check failure, not authorization/input error; requires separate probe authorization",
+      "afterFenceRequired": "Underlying DynamoDB policy AccessDenied correlated to exact AppSync datasource role/request; a conditional/validation/auth error alone FAILS fence proof",
+      "executed": false
+    },
+    {
+      "operation": "deleteTeamMembership",
+      "document": "mutation FenceProbe($input: DeleteTeamMembershipInput!, $condition: ModelTeamMembershipConditionInput) { deleteTeamMembership(input: $input, condition: $condition) { id } }",
+      "variables": {
+        "input": {
+          "id": "__team_hub_fence_probe_20261012_TeamMembership"
+        },
+        "condition": {
+          "and": [
+            {
+              "teamId": {
+                "attributeExists": true
+              }
+            },
+            {
+              "teamId": {
+                "attributeExists": false
+              }
+            }
+          ]
+        }
+      },
+      "authentication": "AWS_IAM SigV4 using reviewed existing RavenTest identity; Cognito rejection is not fence proof",
+      "guard": "Contradictory condition cannot succeed, including on an existing item",
+      "beforeFenceExpected": "Underlying conditional-check failure, not authorization/input error; requires separate probe authorization",
+      "afterFenceRequired": "Underlying DynamoDB policy AccessDenied correlated to exact AppSync datasource role/request; a conditional/validation/auth error alone FAILS fence proof",
+      "executed": false
+    },
+    {
+      "operation": "createTeamRosterSlot",
+      "document": "mutation FenceProbe($input: CreateTeamRosterSlotInput!, $condition: ModelTeamRosterSlotConditionInput) { createTeamRosterSlot(input: $input, condition: $condition) { id } }",
+      "variables": {
+        "input": {
+          "id": "__team_hub_fence_probe_20261012_TeamRosterSlot",
+          "teamId": "fence-probe",
+          "membershipId": "fence-probe",
+          "playerUserId": "fence-probe",
+          "gameRoleKey": "fence-probe",
+          "slotType": "fence-probe",
+          "status": "fence-probe",
+          "assignedByUserId": "fence-probe"
+        },
+        "condition": {
+          "and": [
+            {
+              "teamId": {
+                "attributeExists": true
+              }
+            },
+            {
+              "teamId": {
+                "attributeExists": false
+              }
+            }
+          ]
+        }
+      },
+      "authentication": "AWS_IAM SigV4 using reviewed existing RavenTest identity; Cognito rejection is not fence proof",
+      "guard": "Contradictory condition cannot succeed, including on an existing item",
+      "beforeFenceExpected": "Underlying conditional-check failure, not authorization/input error; requires separate probe authorization",
+      "afterFenceRequired": "Underlying DynamoDB policy AccessDenied correlated to exact AppSync datasource role/request; a conditional/validation/auth error alone FAILS fence proof",
+      "executed": false
+    },
+    {
+      "operation": "updateTeamRosterSlot",
+      "document": "mutation FenceProbe($input: UpdateTeamRosterSlotInput!, $condition: ModelTeamRosterSlotConditionInput) { updateTeamRosterSlot(input: $input, condition: $condition) { id } }",
+      "variables": {
+        "input": {
+          "id": "__team_hub_fence_probe_20261012_TeamRosterSlot"
+        },
+        "condition": {
+          "and": [
+            {
+              "teamId": {
+                "attributeExists": true
+              }
+            },
+            {
+              "teamId": {
+                "attributeExists": false
+              }
+            }
+          ]
+        }
+      },
+      "authentication": "AWS_IAM SigV4 using reviewed existing RavenTest identity; Cognito rejection is not fence proof",
+      "guard": "Contradictory condition cannot succeed, including on an existing item",
+      "beforeFenceExpected": "Underlying conditional-check failure, not authorization/input error; requires separate probe authorization",
+      "afterFenceRequired": "Underlying DynamoDB policy AccessDenied correlated to exact AppSync datasource role/request; a conditional/validation/auth error alone FAILS fence proof",
+      "executed": false
+    },
+    {
+      "operation": "deleteTeamRosterSlot",
+      "document": "mutation FenceProbe($input: DeleteTeamRosterSlotInput!, $condition: ModelTeamRosterSlotConditionInput) { deleteTeamRosterSlot(input: $input, condition: $condition) { id } }",
+      "variables": {
+        "input": {
+          "id": "__team_hub_fence_probe_20261012_TeamRosterSlot"
+        },
+        "condition": {
+          "and": [
+            {
+              "teamId": {
+                "attributeExists": true
+              }
+            },
+            {
+              "teamId": {
+                "attributeExists": false
+              }
+            }
+          ]
+        }
+      },
+      "authentication": "AWS_IAM SigV4 using reviewed existing RavenTest identity; Cognito rejection is not fence proof",
+      "guard": "Contradictory condition cannot succeed, including on an existing item",
+      "beforeFenceExpected": "Underlying conditional-check failure, not authorization/input error; requires separate probe authorization",
+      "afterFenceRequired": "Underlying DynamoDB policy AccessDenied correlated to exact AppSync datasource role/request; a conditional/validation/auth error alone FAILS fence proof",
+      "executed": false
+    },
+    {
+      "operation": "createPlayerChampionPoolEntry",
+      "document": "mutation FenceProbe($input: CreatePlayerChampionPoolEntryInput!, $condition: ModelPlayerChampionPoolEntryConditionInput) { createPlayerChampionPoolEntry(input: $input, condition: $condition) { id } }",
+      "variables": {
+        "input": {
+          "id": "__team_hub_fence_probe_20261012_PlayerChampionPoolEntry",
+          "teamId": "fence-probe",
+          "membershipId": "fence-probe",
+          "playerUserId": "fence-probe",
+          "championId": "fence-probe",
+          "comfortLevel": "fence-probe",
+          "priority": "fence-probe",
+          "competitiveReady": false
+        },
+        "condition": {
+          "and": [
+            {
+              "teamId": {
+                "attributeExists": true
+              }
+            },
+            {
+              "teamId": {
+                "attributeExists": false
+              }
+            }
+          ]
+        }
+      },
+      "authentication": "AWS_IAM SigV4 using reviewed existing RavenTest identity; Cognito rejection is not fence proof",
+      "guard": "Contradictory condition cannot succeed, including on an existing item",
+      "beforeFenceExpected": "Underlying conditional-check failure, not authorization/input error; requires separate probe authorization",
+      "afterFenceRequired": "Underlying DynamoDB policy AccessDenied correlated to exact AppSync datasource role/request; a conditional/validation/auth error alone FAILS fence proof",
+      "executed": false
+    },
+    {
+      "operation": "updatePlayerChampionPoolEntry",
+      "document": "mutation FenceProbe($input: UpdatePlayerChampionPoolEntryInput!, $condition: ModelPlayerChampionPoolEntryConditionInput) { updatePlayerChampionPoolEntry(input: $input, condition: $condition) { id } }",
+      "variables": {
+        "input": {
+          "id": "__team_hub_fence_probe_20261012_PlayerChampionPoolEntry"
+        },
+        "condition": {
+          "and": [
+            {
+              "teamId": {
+                "attributeExists": true
+              }
+            },
+            {
+              "teamId": {
+                "attributeExists": false
+              }
+            }
+          ]
+        }
+      },
+      "authentication": "AWS_IAM SigV4 using reviewed existing RavenTest identity; Cognito rejection is not fence proof",
+      "guard": "Contradictory condition cannot succeed, including on an existing item",
+      "beforeFenceExpected": "Underlying conditional-check failure, not authorization/input error; requires separate probe authorization",
+      "afterFenceRequired": "Underlying DynamoDB policy AccessDenied correlated to exact AppSync datasource role/request; a conditional/validation/auth error alone FAILS fence proof",
+      "executed": false
+    },
+    {
+      "operation": "deletePlayerChampionPoolEntry",
+      "document": "mutation FenceProbe($input: DeletePlayerChampionPoolEntryInput!, $condition: ModelPlayerChampionPoolEntryConditionInput) { deletePlayerChampionPoolEntry(input: $input, condition: $condition) { id } }",
+      "variables": {
+        "input": {
+          "id": "__team_hub_fence_probe_20261012_PlayerChampionPoolEntry"
+        },
+        "condition": {
+          "and": [
+            {
+              "teamId": {
+                "attributeExists": true
+              }
+            },
+            {
+              "teamId": {
+                "attributeExists": false
+              }
+            }
+          ]
+        }
+      },
+      "authentication": "AWS_IAM SigV4 using reviewed existing RavenTest identity; Cognito rejection is not fence proof",
+      "guard": "Contradictory condition cannot succeed, including on an existing item",
+      "beforeFenceExpected": "Underlying conditional-check failure, not authorization/input error; requires separate probe authorization",
+      "afterFenceRequired": "Underlying DynamoDB policy AccessDenied correlated to exact AppSync datasource role/request; a conditional/validation/auth error alone FAILS fence proof",
+      "executed": false
+    }
+  ],
+  "complete": true,
+  "awsWrites": 0,
+  "limitations": [
+    "No guarded request executed",
+    "Service-only Lambda/cleanup paths must use actual supported invocation or reviewed no-path proof; never relax trust",
+    "Presigned/logo probes require separately reviewed signed request and non-business key; no token persisted"
+  ]
+}

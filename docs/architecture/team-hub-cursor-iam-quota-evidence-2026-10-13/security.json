@@ -1,0 +1,1983 @@
+{
+  "at": "2026-10-13T21:31:12.489Z",
+  "awsWrites": 0,
+  "securitySha256": "5cf68f36b3e4e3f95ba8a3cb1444eacc82e382ae214e0cee58d5382409974c23",
+  "installed": [
+    {
+      "id": "ExecutionRole",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "cloudformation.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofExecutionBoundary",
+      "version": "v11",
+      "matchesAccepted": true,
+      "inlineNames": [
+        "ReadProofLifecycle"
+      ],
+      "attached": []
+    },
+    {
+      "id": "DeploymentCaller",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Deploy",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:user/RavenTest"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofPreparation",
+      "version": "v14",
+      "matchesAccepted": true,
+      "inlineNames": [],
+      "attached": [
+        {
+          "PolicyName": "ProjectRespawn-TeamHub-Ntgre-ReadProofPreparation",
+          "PolicyArn": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofPreparation"
+        }
+      ]
+    }
+  ],
+  "analyzer": [
+    {
+      "id": "ExecutionRole",
+      "findings": []
+    },
+    {
+      "id": "ExecutionBoundary",
+      "findings": []
+    },
+    {
+      "id": "PreparationCaller",
+      "findings": []
+    }
+  ],
+  "comparisons": [
+    {
+      "name": "artifact-access",
+      "overgrant": false,
+      "results": [
+        {
+          "action": "s3:DeleteObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/da4d9e570523cbbdcff21572d059f18227d03c12482620e916752f2863b87da1.zip",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:DeleteObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/as/cd58cc3553867f268af79bc9c710fe35e1bab07882d39b423e05b39626a7eedd.zip",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:DeleteObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/business/da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e.zip",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:DeleteObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zip",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:DeleteObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zipwrong",
+          "decision": "explicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:DeleteObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/d1-dark/a36406c42c727b4d8c262083e0cb95807f2404c4c8649b2eacc559915f4ba7d5.zip",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:DeleteObject",
+          "resource": "arn:aws:s3:::foreign-domain/private",
+          "decision": "explicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/da4d9e570523cbbdcff21572d059f18227d03c12482620e916752f2863b87da1.zip",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/as/cd58cc3553867f268af79bc9c710fe35e1bab07882d39b423e05b39626a7eedd.zip",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/business/da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e.zip",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zip",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zipwrong",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/d1-dark/a36406c42c727b4d8c262083e0cb95807f2404c4c8649b2eacc559915f4ba7d5.zip",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::foreign-domain/private",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObjectVersion",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/da4d9e570523cbbdcff21572d059f18227d03c12482620e916752f2863b87da1.zip",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObjectVersion",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/as/cd58cc3553867f268af79bc9c710fe35e1bab07882d39b423e05b39626a7eedd.zip",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObjectVersion",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/business/da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e.zip",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObjectVersion",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zip",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObjectVersion",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zipwrong",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObjectVersion",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/d1-dark/a36406c42c727b4d8c262083e0cb95807f2404c4c8649b2eacc559915f4ba7d5.zip",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObjectVersion",
+          "resource": "arn:aws:s3:::foreign-domain/private",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "s3:PutObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/da4d9e570523cbbdcff21572d059f18227d03c12482620e916752f2863b87da1.zip",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:PutObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/as/cd58cc3553867f268af79bc9c710fe35e1bab07882d39b423e05b39626a7eedd.zip",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:PutObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/business/da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e.zip",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:PutObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zip",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:PutObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zipwrong",
+          "decision": "explicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:PutObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/d1-dark/a36406c42c727b4d8c262083e0cb95807f2404c4c8649b2eacc559915f4ba7d5.zip",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:PutObject",
+          "resource": "arn:aws:s3:::foreign-domain/private",
+          "decision": "explicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "PassRole-correct-service",
+      "overgrant": false,
+      "results": [
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Contracts",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Foreign",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:iam::111122223333:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "explicitDeny",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "PassRole-wrong-service",
+      "overgrant": false,
+      "results": [
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN"
+          ]
+        },
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN"
+          ]
+        },
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "lambda-lifecycle-isolation",
+      "overgrant": false,
+      "results": [
+        {
+          "action": "lambda:CreateFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:Legacy-TeamWriter",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:CreateFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:CreateFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+          "decision": "allowed",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:CreateFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "allowed",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:CreateFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Production-ParityRead",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:CreateFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:DeleteFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:Legacy-TeamWriter",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:DeleteFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:DeleteFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+          "decision": "allowed",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:DeleteFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "allowed",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:DeleteFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Production-ParityRead",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:DeleteFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:GetFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:Legacy-TeamWriter",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:GetFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:GetFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+          "decision": "allowed",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:GetFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "allowed",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:GetFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Production-ParityRead",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:GetFunction",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:GetFunctionConfiguration",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:Legacy-TeamWriter",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:GetFunctionConfiguration",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:GetFunctionConfiguration",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+          "decision": "allowed",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:GetFunctionConfiguration",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "allowed",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:GetFunctionConfiguration",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Production-ParityRead",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:GetFunctionConfiguration",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:UpdateFunctionCode",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:Legacy-TeamWriter",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:UpdateFunctionCode",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:UpdateFunctionCode",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+          "decision": "allowed",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:UpdateFunctionCode",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "allowed",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:UpdateFunctionCode",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Production-ParityRead",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:UpdateFunctionCode",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:UpdateFunctionConfiguration",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:Legacy-TeamWriter",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:UpdateFunctionConfiguration",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:UpdateFunctionConfiguration",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+          "decision": "allowed",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:UpdateFunctionConfiguration",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "allowed",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:UpdateFunctionConfiguration",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Production-ParityRead",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:UpdateFunctionConfiguration",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournaments-Ntgre",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "kms-correct-context",
+      "overgrant": false,
+      "results": [
+        {
+          "action": "kms:CreateGrant",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-4000-8000-000000000001",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:CreateGrant",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:CreateGrant",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:Decrypt",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-4000-8000-000000000001",
+          "decision": "explicitDeny",
+          "missing": [
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "kms:Decrypt",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+          "decision": "implicitDeny",
+          "missing": [
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "kms:Decrypt",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+          "decision": "allowed",
+          "missing": [
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "kms:DescribeKey",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-4000-8000-000000000001",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:DescribeKey",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:DescribeKey",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:Encrypt",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-4000-8000-000000000001",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:Encrypt",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:Encrypt",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:GenerateDataKey",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-4000-8000-000000000001",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:GenerateDataKey",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:GenerateDataKey",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "kms:PutKeyPolicy",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-4000-8000-000000000001",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:PutKeyPolicy",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:PutKeyPolicy",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:ScheduleKeyDeletion",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-4000-8000-000000000001",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:ScheduleKeyDeletion",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:ScheduleKeyDeletion",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+          "decision": "explicitDeny",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "kms-wrong-secret",
+      "overgrant": false,
+      "results": [
+        {
+          "action": "kms:Decrypt",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:GenerateDataKey",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+          "decision": "explicitDeny",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "kms-wrong-service",
+      "overgrant": false,
+      "results": [
+        {
+          "action": "kms:Decrypt",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:GenerateDataKey",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+          "decision": "explicitDeny",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "secret-scope",
+      "overgrant": false,
+      "results": [
+        {
+          "action": "secretsmanager:DescribeSecret",
+          "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-wbclUV",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "secretsmanager:DescribeSecret",
+          "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+          "decision": "allowed",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "secretsmanager:GetSecretValue",
+          "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-wbclUV",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "secretsmanager:GetSecretValue",
+          "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "secretsmanager:PutSecretValue",
+          "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Ntgre-Cursor-wbclUV",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "secretsmanager:PutSecretValue",
+          "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "IAM-administration",
+      "overgrant": false,
+      "results": [
+        {
+          "action": "iam:AttachRolePolicy",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Contracts",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:AttachRolePolicy",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:CreatePolicyVersion",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Contracts",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:CreatePolicyVersion",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:DeleteRolePermissionsBoundary",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Contracts",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:DeleteRolePermissionsBoundary",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:PutRolePermissionsBoundary",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Contracts",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:PutRolePermissionsBoundary",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:SetDefaultPolicyVersion",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Contracts",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:SetDefaultPolicyVersion",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "CloudFormation-isolation",
+      "overgrant": false,
+      "results": [
+        {
+          "action": "cloudformation:ExecuteChangeSet",
+          "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/LegacyPlatform/test",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "cloudformation:ExecuteChangeSet",
+          "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/test",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "cloudformation:UpdateStack",
+          "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/LegacyPlatform/test",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "cloudformation:UpdateStack",
+          "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/test",
+          "decision": "explicitDeny",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "outside-region",
+      "overgrant": false,
+      "results": [
+        {
+          "action": "lambda:UpdateFunctionCode",
+          "resource": "*",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "lambda:UpdateFunctionCode",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "logs:DescribeLogGroups",
+          "resource": "*",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "logs:DescribeLogGroups",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "secretsmanager:GetRandomPassword",
+          "resource": "*",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "secretsmanager:GetRandomPassword",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "logs-native-isolation",
+      "overgrant": false,
+      "results": [
+        {
+          "action": "logs:CreateLogDelivery",
+          "resource": "*",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "logs:CreateLogDelivery",
+          "resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/foreign/domain",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "logs:CreateLogDelivery",
+          "resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "logs:CreateLogGroup",
+          "resource": "*",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "logs:CreateLogGroup",
+          "resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/foreign/domain",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "logs:CreateLogGroup",
+          "resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read",
+          "decision": "allowed",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "logs:DeleteResourcePolicy",
+          "resource": "*",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "logs:DeleteResourcePolicy",
+          "resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/foreign/domain",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "logs:DeleteResourcePolicy",
+          "resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "logs:DescribeLogGroups",
+          "resource": "*",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "logs:DescribeLogGroups",
+          "resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/foreign/domain",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "logs:DescribeLogGroups",
+          "resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "logs:PutResourcePolicy",
+          "resource": "*",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "logs:PutResourcePolicy",
+          "resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/foreign/domain",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "logs:PutResourcePolicy",
+          "resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/parity-read",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "DynamoDB-lifecycle-not-business",
+      "overgrant": false,
+      "results": [
+        {
+          "action": "dynamodb:DeleteTable",
+          "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Legacy-Team",
+          "decision": "explicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "dynamodb:DeleteTable",
+          "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "dynamodb:DeleteTable",
+          "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "dynamodb:DeleteTable",
+          "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Tournaments-Ntgre",
+          "decision": "explicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "dynamodb:DescribeTable",
+          "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Legacy-Team",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "dynamodb:DescribeTable",
+          "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "dynamodb:DescribeTable",
+          "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "dynamodb:DescribeTable",
+          "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Tournaments-Ntgre",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "dynamodb:GetItem",
+          "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Legacy-Team",
+          "decision": "explicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "dynamodb:GetItem",
+          "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "dynamodb:GetItem",
+          "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "dynamodb:GetItem",
+          "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Tournaments-Ntgre",
+          "decision": "explicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "dynamodb:PutItem",
+          "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Legacy-Team",
+          "decision": "explicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "dynamodb:PutItem",
+          "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "dynamodb:PutItem",
+          "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "dynamodb:PutItem",
+          "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Tournaments-Ntgre",
+          "decision": "explicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "dynamodb:UpdateTable",
+          "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Legacy-Team",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "dynamodb:UpdateTable",
+          "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "dynamodb:UpdateTable",
+          "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "dynamodb:UpdateTable",
+          "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Tournaments-Ntgre",
+          "decision": "explicitDeny",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "artifact-access",
+      "overgrant": true,
+      "results": [
+        {
+          "action": "s3:DeleteObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/da4d9e570523cbbdcff21572d059f18227d03c12482620e916752f2863b87da1.zip",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:DeleteObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/as/cd58cc3553867f268af79bc9c710fe35e1bab07882d39b423e05b39626a7eedd.zip",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:DeleteObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/business/da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e.zip",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:DeleteObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zip",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:DeleteObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zipwrong",
+          "decision": "explicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:DeleteObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/d1-dark/a36406c42c727b4d8c262083e0cb95807f2404c4c8649b2eacc559915f4ba7d5.zip",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:DeleteObject",
+          "resource": "arn:aws:s3:::foreign-domain/private",
+          "decision": "explicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/da4d9e570523cbbdcff21572d059f18227d03c12482620e916752f2863b87da1.zip",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/as/cd58cc3553867f268af79bc9c710fe35e1bab07882d39b423e05b39626a7eedd.zip",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/business/da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e.zip",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zip",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zipwrong",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/d1-dark/a36406c42c727b4d8c262083e0cb95807f2404c4c8649b2eacc559915f4ba7d5.zip",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::foreign-domain/private",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObjectVersion",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/da4d9e570523cbbdcff21572d059f18227d03c12482620e916752f2863b87da1.zip",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObjectVersion",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/as/cd58cc3553867f268af79bc9c710fe35e1bab07882d39b423e05b39626a7eedd.zip",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObjectVersion",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/business/da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e.zip",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObjectVersion",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zip",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObjectVersion",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zipwrong",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObjectVersion",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/d1-dark/a36406c42c727b4d8c262083e0cb95807f2404c4c8649b2eacc559915f4ba7d5.zip",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObjectVersion",
+          "resource": "arn:aws:s3:::foreign-domain/private",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "s3:PutObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/da4d9e570523cbbdcff21572d059f18227d03c12482620e916752f2863b87da1.zip",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:PutObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/as/cd58cc3553867f268af79bc9c710fe35e1bab07882d39b423e05b39626a7eedd.zip",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:PutObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/business/da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e.zip",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:PutObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zip",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:PutObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zipwrong",
+          "decision": "explicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:PutObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/d1-dark/a36406c42c727b4d8c262083e0cb95807f2404c4c8649b2eacc559915f4ba7d5.zip",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:PutObject",
+          "resource": "arn:aws:s3:::foreign-domain/private",
+          "decision": "explicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "PassRole-correct-service",
+      "overgrant": true,
+      "results": [
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Contracts",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Foreign",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "allowed",
+          "missing": []
+        },
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:iam::111122223333:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "explicitDeny",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "PassRole-wrong-service",
+      "overgrant": true,
+      "results": [
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN"
+          ]
+        },
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN"
+          ]
+        },
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "kms-wrong-secret",
+      "overgrant": true,
+      "results": [
+        {
+          "action": "kms:Decrypt",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:GenerateDataKey",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+          "decision": "explicitDeny",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "kms-wrong-service",
+      "overgrant": true,
+      "results": [
+        {
+          "action": "kms:Decrypt",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:GenerateDataKey",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+          "decision": "explicitDeny",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "IAM-administration",
+      "overgrant": true,
+      "results": [
+        {
+          "action": "iam:AttachRolePolicy",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Contracts",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:AttachRolePolicy",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:CreatePolicyVersion",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Contracts",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:CreatePolicyVersion",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:DeleteRolePermissionsBoundary",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Contracts",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:DeleteRolePermissionsBoundary",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:PutRolePermissionsBoundary",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Contracts",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:PutRolePermissionsBoundary",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:SetDefaultPolicyVersion",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Contracts",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:SetDefaultPolicyVersion",
+          "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "name": "wrong-principal-Read",
+      "results": [
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zip",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "lambda:UpdateFunctionCode",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "lambda:UpdateFunctionCode",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zip",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zip",
+          "decision": "explicitDeny",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "wrong-principal-Command",
+      "results": [
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zip",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "lambda:UpdateFunctionCode",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "lambda:UpdateFunctionCode",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zip",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zip",
+          "decision": "explicitDeny",
+          "missing": []
+        }
+      ]
+    }
+  ],
+  "retries": [],
+  "complete": true,
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "caseCount": 222
+}

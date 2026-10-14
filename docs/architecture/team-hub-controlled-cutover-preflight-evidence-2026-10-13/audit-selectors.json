@@ -1,0 +1,35 @@
+{
+    "TrailARN": "arn:aws:cloudtrail:eu-north-1:058264289478:trail/ProjectRespawn-TeamHub-Ntgre-LogoQuarantineAudit",
+    "AdvancedEventSelectors": [
+        {
+            "Name": "OnlyOwnedLogoWrites",
+            "FieldSelectors": [
+                {
+                    "Field": "eventCategory",
+                    "Equals": [
+                        "Data"
+                    ]
+                },
+                {
+                    "Field": "resources.ARN",
+                    "StartsWith": [
+                        "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/",
+                        "arn:aws:s3:::respawn-teamhub-fence-race-058264289478-20261012-5dc9b348/team-logos/"
+                    ]
+                },
+                {
+                    "Field": "readOnly",
+                    "Equals": [
+                        "false"
+                    ]
+                },
+                {
+                    "Field": "resources.type",
+                    "Equals": [
+                        "AWS::S3::Object"
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,290 @@
+{
+  "at": "2026-10-13T14:29:41.318Z",
+  "roles": [
+    {
+      "arn": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "lambda.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "policies": [
+        {
+          "name": "GraphqlAccessPolicy11EF5618C",
+          "document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Action": "appsync:GraphQL",
+                "Resource": [
+                  "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/types/Query/*",
+                  "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/types/Mutation/*"
+                ],
+                "Effect": "Allow"
+              },
+              {
+                "Action": "s3:GetObject",
+                "Resource": "arn:aws:s3:::amplify-projectrespawnweb-modelintrospectionschema-fqestze7l6h1/modelIntrospectionSchema.json",
+                "Effect": "Allow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "myFunctionrebuildlambdaServiceRoleDefaultPolicy67EF0A34",
+          "document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Action": [
+                  "s3:GetObject*",
+                  "s3:GetBucket*",
+                  "s3:List*"
+                ],
+                "Resource": [
+                  "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+                  "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/investor-data-room/*"
+                ],
+                "Effect": "Allow"
+              },
+              {
+                "Action": [
+                  "kms:Decrypt",
+                  "kms:Encrypt",
+                  "kms:ReEncrypt*",
+                  "kms:GenerateDataKey*"
+                ],
+                "Resource": "arn:aws:kms:eu-north-1:058264289478:key/8656fcfe-9dfc-4cdf-b345-12665950f337",
+                "Effect": "Allow"
+              },
+              {
+                "Action": [
+                  "dynamodb:PutItem",
+                  "dynamodb:UpdateItem"
+                ],
+                "Resource": [
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+                ],
+                "Effect": "Allow"
+              },
+              {
+                "Action": [
+                  "s3:GetObject",
+                  "s3:PutObject",
+                  "s3:DeleteObject"
+                ],
+                "Resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/*",
+                "Effect": "Allow"
+              },
+              {
+                "Action": "cognito-idp:ListUsers",
+                "Resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+                "Effect": "Allow"
+              },
+              {
+                "Action": "ssm:GetParameters",
+                "Resource": [
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/projectrespawnwebsite/Ntgre-sandbox-8bd9d02332/PRINTFUL_API_KEY",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/shared/project-respawn-website/PRINTFUL_API_KEY",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/projectrespawnwebsite/Ntgre-sandbox-8bd9d02332/REVOLUT_API_KEY",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/shared/project-respawn-website/REVOLUT_API_KEY",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/projectrespawnwebsite/Ntgre-sandbox-8bd9d02332/REVOLUT_API_SECRET",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/shared/project-respawn-website/REVOLUT_API_SECRET",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/projectrespawnwebsite/Ntgre-sandbox-8bd9d02332/REVOLUT_WEBHOOK_SIGNING_SECRET",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/shared/project-respawn-website/REVOLUT_WEBHOOK_SIGNING_SECRET",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/projectrespawnwebsite/Ntgre-sandbox-8bd9d02332/TWITCH_CLIENT_ID",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/shared/project-respawn-website/TWITCH_CLIENT_ID",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/projectrespawnwebsite/Ntgre-sandbox-8bd9d02332/TWITCH_CLIENT_SECRET",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/shared/project-respawn-website/TWITCH_CLIENT_SECRET",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/projectrespawnwebsite/Ntgre-sandbox-8bd9d02332/TWITCH_OAUTH_STATE_SECRET",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/shared/project-respawn-website/TWITCH_OAUTH_STATE_SECRET",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/projectrespawnwebsite/Ntgre-sandbox-8bd9d02332/ALPHA_REWARD_EVENT_AUTH_SECRET",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/shared/project-respawn-website/ALPHA_REWARD_EVENT_AUTH_SECRET",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/resource_reference/projectrespawnwebsite/Ntgre-sandbox-8bd9d02332/AMPLIFY_DATA_GRAPHQL_ENDPOINT",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/resource_reference/projectrespawnwebsite/Ntgre-sandbox-8bd9d02332/AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAME",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/resource_reference/projectrespawnwebsite/Ntgre-sandbox-8bd9d02332/AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_KEY",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/resource_reference/projectrespawnwebsite/Ntgre-sandbox-8bd9d02332/AMPLIFY_DATA_DEFAULT_NAME"
+                ],
+                "Effect": "Allow"
+              }
+            ]
+          }
+        },
+        {
+          "arn": "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+          "version": "v1",
+          "document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "logs:CreateLogGroup",
+                  "logs:CreateLogStream",
+                  "logs:PutLogEvents"
+                ],
+                "Resource": "*"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "lambda.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "policies": [
+        {
+          "arn": "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+          "version": "v1",
+          "document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "logs:CreateLogGroup",
+                  "logs:CreateLogStream",
+                  "logs:PutLogEvents"
+                ],
+                "Resource": "*"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "action": "s3:PutObject",
+      "resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/__fence-proof.png",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "action": "s3:PutBucketPolicy",
+      "resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+      "decision": "implicitDeny",
+      "missingContext": []
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "action": "s3:DeleteBucketPolicy",
+      "resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+      "decision": "implicitDeny",
+      "missingContext": []
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "action": "iam:PassRole",
+      "resource": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "decision": "implicitDeny",
+      "missingContext": []
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "action": "lambda:UpdateFunctionCode",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-FenceProof-shared",
+      "decision": "implicitDeny",
+      "missingContext": []
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "action": "cognito-idp:AdminCreateUser",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "decision": "implicitDeny",
+      "missingContext": []
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3",
+      "action": "s3:PutObject",
+      "resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/__fence-proof.png",
+      "decision": "implicitDeny",
+      "missingContext": []
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3",
+      "action": "s3:PutBucketPolicy",
+      "resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+      "decision": "implicitDeny",
+      "missingContext": []
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3",
+      "action": "s3:DeleteBucketPolicy",
+      "resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+      "decision": "implicitDeny",
+      "missingContext": []
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3",
+      "action": "iam:PassRole",
+      "resource": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3",
+      "decision": "implicitDeny",
+      "missingContext": []
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3",
+      "action": "lambda:UpdateFunctionCode",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-FenceProof-shared",
+      "decision": "implicitDeny",
+      "missingContext": []
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3",
+      "action": "cognito-idp:AdminCreateUser",
+      "resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_n24iLL7QE",
+      "decision": "implicitDeny",
+      "missingContext": []
+    }
+  ],
+  "awsWrites": 0,
+  "complete": true,
+  "analyzer": [
+    {
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "policy": "GraphqlAccessPolicy11EF5618C",
+      "findings": []
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "policy": "myFunctionrebuildlambdaServiceRoleDefaultPolicy67EF0A34",
+      "findings": []
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "policy": "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+      "findings": []
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3",
+      "policy": "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+      "findings": []
+    }
+  ]
+}

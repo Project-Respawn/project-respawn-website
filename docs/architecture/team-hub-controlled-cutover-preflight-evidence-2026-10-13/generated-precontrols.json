@@ -1,0 +1,52 @@
+{
+  "at": "2026-10-13T19:47:59.582Z",
+  "phase": "PRE_FENCE",
+  "principal": "arn:aws:iam::058264289478:user/RavenTest",
+  "receipts": [
+    {
+      "operation": "createTeam",
+      "status": 200,
+      "requestId": "6c4b9d97-2675-4cc6-b1e8-166bfcc83288",
+      "errors": [
+        {
+          "type": "DynamoDB:ConditionalCheckFailedException",
+          "message": "The conditional request failed (Service: DynamoDb, Status Code: 400, Request ID: NP8UM6K03H3AVDKCHI80LB8J4JVV4KQNSO5AEMVJF66Q9ASUAAJG) (SDK Attempt Count: 1)"
+        }
+      ],
+      "data": {
+        "createTeam": null
+      },
+      "guarded": true,
+      "validControl": true
+    },
+    {
+      "operation": "updateTeam",
+      "status": 200,
+      "requestId": "87ac4bd6-0a91-4083-9150-630cd3d24245",
+      "errors": [
+        {
+          "type": "DynamoDB:ConditionalCheckFailedException",
+          "message": "The conditional request failed (Service: DynamoDb, Status Code: 400, Request ID: QARA20939JFSVPQO843579PC7JVV4KQNSO5AEMVJF66Q9ASUAAJG) (SDK Attempt Count: 1)"
+        }
+      ],
+      "data": {
+        "updateTeam": null
+      },
+      "guarded": true,
+      "validControl": true
+    },
+    {
+      "operation": "deleteTeam",
+      "status": 200,
+      "requestId": "29a7a14d-2a8d-4d89-98ee-82fcb7aa30c9",
+      "data": {
+        "deleteTeam": null
+      },
+      "guarded": true,
+      "validControl": false
+    }
+  ],
+  "complete": false,
+  "credentialsRecorded": false,
+  "stop": "GENERATED_ORIGINAL_PRINCIPAL_SERVICE_CONTROL_FAILED"
+}

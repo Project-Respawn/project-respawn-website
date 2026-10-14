@@ -1,0 +1,41 @@
+{
+  "complete": true,
+  "checks": [
+    {
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zip",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/business/da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e.zip",
+      "expected": true,
+      "decision": "allowed"
+    },
+    {
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zipwrong",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "action": "iam:PassRole",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Ntgre-Contracts",
+      "expected": false,
+      "decision": "explicitDeny"
+    },
+    {
+      "action": "lambda:UpdateFunctionCode",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+      "expected": false,
+      "decision": "implicitDeny"
+    },
+    {
+      "action": "kms:PutKeyPolicy",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "expected": false,
+      "decision": "explicitDeny"
+    }
+  ]
+}

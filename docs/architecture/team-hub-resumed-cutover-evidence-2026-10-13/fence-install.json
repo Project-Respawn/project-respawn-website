@@ -1,0 +1,68 @@
+{
+  "at": "2026-10-13T20:06:30.802Z",
+  "tables": [
+    {
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "revision": "1791921991334",
+      "requestId": "SRBRUPF926DSN8127G41OHL99JVV4KQNSO5AEMVJF66Q9ASUAAJG"
+    },
+    {
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "revision": "1791921991483",
+      "requestId": "VKH2LHPGO8EAGAMM7UDVRGVVHFVV4KQNSO5AEMVJF66Q9ASUAAJG"
+    },
+    {
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "revision": "1791921991628",
+      "requestId": "5I5C0QEF72E8U6K415OSDSRLUJVV4KQNSO5AEMVJF66Q9ASUAAJG"
+    },
+    {
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "revision": "1791921991779",
+      "requestId": "P8OF1DD7CCKA5I93IITP2BPTGRVV4KQNSO5AEMVJF66Q9ASUAAJG"
+    }
+  ],
+  "logo": {
+    "requestId": "9R66TE4KCXKMVWBQ",
+    "policyDigest": "c4805f598a41d7abca57264585b10adf9c96dc5e4bd3d16ffc91ac25f39fcd18"
+  },
+  "gateways": [
+    {
+      "field": "readTeamHub",
+      "resolver": {
+        "typeName": "Query",
+        "fieldName": "readTeamHub",
+        "resolverArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/types/Query/resolvers/readTeamHub",
+        "requestMappingTemplate": "$util.error(\"TEAM_HUB_MAINTENANCE\", \"TeamHubMigration\")",
+        "responseMappingTemplate": "$util.toJson($ctx.prev.result)",
+        "kind": "PIPELINE",
+        "pipelineConfig": {
+          "functions": [
+            "7hlakiy7fzhwhidtlxltmstq5i",
+            "lev4xkxdl5cszjd3xgyqs2yomm"
+          ]
+        },
+        "maxBatchSize": 0
+      }
+    },
+    {
+      "field": "mutateTeamHub",
+      "resolver": {
+        "typeName": "Mutation",
+        "fieldName": "mutateTeamHub",
+        "resolverArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/types/Mutation/resolvers/mutateTeamHub",
+        "requestMappingTemplate": "$util.error(\"TEAM_HUB_MAINTENANCE\", \"TeamHubMigration\")",
+        "responseMappingTemplate": "$util.toJson($ctx.prev.result)",
+        "kind": "PIPELINE",
+        "pipelineConfig": {
+          "functions": [
+            "4yb6cg662ralnnxiwlrwrb5vqa",
+            "lev4xkxdl5cszjd3xgyqs2yomm"
+          ]
+        },
+        "maxBatchSize": 0
+      }
+    }
+  ],
+  "complete": true
+}

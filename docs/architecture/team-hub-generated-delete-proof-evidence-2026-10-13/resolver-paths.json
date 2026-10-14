@@ -1,0 +1,206 @@
+[
+  {
+    "resolver": {
+      "typeName": "Mutation",
+      "fieldName": "deleteTeam",
+      "resolverArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/types/Mutation/resolvers/deleteTeam",
+      "requestMappingTemplate": "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"deleteTeam\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"dxb2tdlulrch7hj2pts2mfijia\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"Team-dxb2tdlulrch7hj2pts2mfijia-NONE\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthauthenticatedU-U29LVCPfkFsl/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthunauthenticate-y8Sz5XK5OfBN/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"eu-north-1:a3621b12-4773-4295-b232-b55863c37fd3\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})",
+      "responseMappingTemplate": "$util.toJson($ctx.prev.result)",
+      "kind": "PIPELINE",
+      "pipelineConfig": {
+        "functions": [
+          "fwtpfuiif5ccxly6ljdxrgovpi",
+          "p6iymqzicvespbwmhrnowsy54a",
+          "fnhiym653bf57f4wetzzyqsjfa"
+        ]
+      },
+      "maxBatchSize": 0
+    },
+    "functions": [
+      {
+        "functionId": "fwtpfuiif5ccxly6ljdxrgovpi",
+        "functionArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/functions/fwtpfuiif5ccxly6ljdxrgovpi",
+        "name": "MutationdeleteTeamauth0Function",
+        "dataSourceName": "TeamTable",
+        "requestMappingTemplate": "## [Start] Get Request template. **\n#set( $GetRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"GetItem\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $key = {\n  \"id\":   $util.dynamodb.toDynamoDB($ctx.args.input.id)\n} )\n#end\n$util.qr($GetRequest.put(\"key\", $key))\n$util.toJson($GetRequest)\n## [End] Get Request template. **",
+        "responseMappingTemplate": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#if( $util.authType() == \"API Key Authorization\" )\n$util.unauthorized()\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n\n#end\n#if( !$isAuthorized )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+        "functionVersion": "2018-05-29",
+        "maxBatchSize": 0
+      },
+      {
+        "functionId": "p6iymqzicvespbwmhrnowsy54a",
+        "functionArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/functions/p6iymqzicvespbwmhrnowsy54a",
+        "name": "MutationdeleteTeampostAuth0Function",
+        "dataSourceName": "NONE_DS",
+        "requestMappingTemplate": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+        "responseMappingTemplate": "$util.toJson({})",
+        "functionVersion": "2018-05-29",
+        "maxBatchSize": 0
+      },
+      {
+        "functionId": "fnhiym653bf57f4wetzzyqsjfa",
+        "functionArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/functions/fnhiym653bf57f4wetzzyqsjfa",
+        "name": "MutationDeleteTeamDataResolverFn",
+        "dataSourceName": "TeamTable",
+        "requestMappingTemplate": "## [Start] Delete Request template. **\n#set( $args = $util.defaultIfNull($ctx.stash.transformedArgs, $ctx.args) )\n#set( $DeleteRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"DeleteItem\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $Key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $Key = {\n  \"id\":   $util.dynamodb.toDynamoDB($args.input.id)\n} )\n#end\n$util.qr($DeleteRequest.put(\"key\", $Key))\n## Begin - key condition **\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $keyConditionExpr = {} )\n  #set( $keyConditionExprNames = {} )\n  #foreach( $entry in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    $util.qr($keyConditionExpr.put(\"keyCondition$velocityCount\", {\n  \"attributeExists\": true\n}))\n    $util.qr($keyConditionExprNames.put(\"#keyCondition$velocityCount\", \"$entry.key\"))\n  #end\n  $util.qr($ctx.stash.conditions.add($keyConditionExpr))\n#else\n  $util.qr($ctx.stash.conditions.add({\n  \"id\": {\n      \"attributeExists\": true\n  }\n}))\n#end\n## End - key condition **\n#if( $args.condition )\n  $util.qr($ctx.stash.conditions.add($args.condition))\n#end\n## Start condition block **\n#if( $ctx.stash.conditions && $ctx.stash.conditions.size() != 0 )\n  #set( $mergedConditions = {\n  \"and\": $ctx.stash.conditions\n} )\n  #set( $Conditions = $util.parseJson($util.transform.toDynamoDBConditionExpression($mergedConditions)) )\n  #if( $Conditions.expressionValues && $Conditions.expressionValues.size() == 0 )\n    #set( $Conditions = {\n  \"expression\": $Conditions.expression,\n  \"expressionNames\": $Conditions.expressionNames\n} )\n  #end\n  ## End condition block **\n#end\n#if( $Conditions )\n  #if( $keyConditionExprNames )\n    $util.qr($Conditions.expressionNames.putAll($keyConditionExprNames))\n  #end\n  $util.qr($DeleteRequest.put(\"condition\", $Conditions))\n#end\n$util.toJson($DeleteRequest)\n## [End] Delete Request template. **",
+        "responseMappingTemplate": "## [Start] ResponseTemplate. **\n$util.qr($ctx.result.put(\"__operation\", \"Mutation\"))\n#if( $ctx.error )\n  $util.error($ctx.error.message, $ctx.error.type)\n#else\n  $util.toJson($ctx.result)\n#end\n## [End] ResponseTemplate. **",
+        "functionVersion": "2018-05-29",
+        "maxBatchSize": 0
+      }
+    ],
+    "model": "Team"
+  },
+  {
+    "resolver": {
+      "typeName": "Mutation",
+      "fieldName": "deleteTeamMembership",
+      "resolverArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/types/Mutation/resolvers/deleteTeamMembership",
+      "requestMappingTemplate": "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"deleteTeamMembership\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"dxb2tdlulrch7hj2pts2mfijia\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthauthenticatedU-U29LVCPfkFsl/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthunauthenticate-y8Sz5XK5OfBN/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"eu-north-1:a3621b12-4773-4295-b232-b55863c37fd3\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})",
+      "responseMappingTemplate": "$util.toJson($ctx.prev.result)",
+      "kind": "PIPELINE",
+      "pipelineConfig": {
+        "functions": [
+          "vywcbczjaffyll4d4yosiqrdg4",
+          "yty3ubwbuzey3fqw57zxaiijea",
+          "e7tikdggjbdkrpm7ieedlhsoxy"
+        ]
+      },
+      "maxBatchSize": 0
+    },
+    "functions": [
+      {
+        "functionId": "vywcbczjaffyll4d4yosiqrdg4",
+        "functionArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/functions/vywcbczjaffyll4d4yosiqrdg4",
+        "name": "MutationdeleteTeamMembershipauth0Function",
+        "dataSourceName": "TeamMembershipTable",
+        "requestMappingTemplate": "## [Start] Get Request template. **\n#set( $GetRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"GetItem\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $key = {\n  \"id\":   $util.dynamodb.toDynamoDB($ctx.args.input.id)\n} )\n#end\n$util.qr($GetRequest.put(\"key\", $key))\n$util.toJson($GetRequest)\n## [End] Get Request template. **",
+        "responseMappingTemplate": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#if( $util.authType() == \"API Key Authorization\" )\n$util.unauthorized()\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n\n#end\n#if( !$isAuthorized )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+        "functionVersion": "2018-05-29",
+        "maxBatchSize": 0
+      },
+      {
+        "functionId": "yty3ubwbuzey3fqw57zxaiijea",
+        "functionArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/functions/yty3ubwbuzey3fqw57zxaiijea",
+        "name": "MutationdeleteTeamMembershippostAuth0Function",
+        "dataSourceName": "NONE_DS",
+        "requestMappingTemplate": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+        "responseMappingTemplate": "$util.toJson({})",
+        "functionVersion": "2018-05-29",
+        "maxBatchSize": 0
+      },
+      {
+        "functionId": "e7tikdggjbdkrpm7ieedlhsoxy",
+        "functionArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/functions/e7tikdggjbdkrpm7ieedlhsoxy",
+        "name": "MutationDeleteTeamMembershipDataResolverFn",
+        "dataSourceName": "TeamMembershipTable",
+        "requestMappingTemplate": "## [Start] Delete Request template. **\n#set( $args = $util.defaultIfNull($ctx.stash.transformedArgs, $ctx.args) )\n#set( $DeleteRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"DeleteItem\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $Key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $Key = {\n  \"id\":   $util.dynamodb.toDynamoDB($args.input.id)\n} )\n#end\n$util.qr($DeleteRequest.put(\"key\", $Key))\n## Begin - key condition **\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $keyConditionExpr = {} )\n  #set( $keyConditionExprNames = {} )\n  #foreach( $entry in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    $util.qr($keyConditionExpr.put(\"keyCondition$velocityCount\", {\n  \"attributeExists\": true\n}))\n    $util.qr($keyConditionExprNames.put(\"#keyCondition$velocityCount\", \"$entry.key\"))\n  #end\n  $util.qr($ctx.stash.conditions.add($keyConditionExpr))\n#else\n  $util.qr($ctx.stash.conditions.add({\n  \"id\": {\n      \"attributeExists\": true\n  }\n}))\n#end\n## End - key condition **\n#if( $args.condition )\n  $util.qr($ctx.stash.conditions.add($args.condition))\n#end\n## Start condition block **\n#if( $ctx.stash.conditions && $ctx.stash.conditions.size() != 0 )\n  #set( $mergedConditions = {\n  \"and\": $ctx.stash.conditions\n} )\n  #set( $Conditions = $util.parseJson($util.transform.toDynamoDBConditionExpression($mergedConditions)) )\n  #if( $Conditions.expressionValues && $Conditions.expressionValues.size() == 0 )\n    #set( $Conditions = {\n  \"expression\": $Conditions.expression,\n  \"expressionNames\": $Conditions.expressionNames\n} )\n  #end\n  ## End condition block **\n#end\n#if( $Conditions )\n  #if( $keyConditionExprNames )\n    $util.qr($Conditions.expressionNames.putAll($keyConditionExprNames))\n  #end\n  $util.qr($DeleteRequest.put(\"condition\", $Conditions))\n#end\n$util.toJson($DeleteRequest)\n## [End] Delete Request template. **",
+        "responseMappingTemplate": "## [Start] ResponseTemplate. **\n$util.qr($ctx.result.put(\"__operation\", \"Mutation\"))\n#if( $ctx.error )\n  $util.error($ctx.error.message, $ctx.error.type)\n#else\n  $util.toJson($ctx.result)\n#end\n## [End] ResponseTemplate. **",
+        "functionVersion": "2018-05-29",
+        "maxBatchSize": 0
+      }
+    ],
+    "model": "TeamMembership"
+  },
+  {
+    "resolver": {
+      "typeName": "Mutation",
+      "fieldName": "deleteTeamRosterSlot",
+      "resolverArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/types/Mutation/resolvers/deleteTeamRosterSlot",
+      "requestMappingTemplate": "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"deleteTeamRosterSlot\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"dxb2tdlulrch7hj2pts2mfijia\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthauthenticatedU-U29LVCPfkFsl/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthunauthenticate-y8Sz5XK5OfBN/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"eu-north-1:a3621b12-4773-4295-b232-b55863c37fd3\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})",
+      "responseMappingTemplate": "$util.toJson($ctx.prev.result)",
+      "kind": "PIPELINE",
+      "pipelineConfig": {
+        "functions": [
+          "iiuz4vvtbjfbfhqhlytzld6xfy",
+          "j24ml2iez5cxngse34wexbdmfa",
+          "7kjronj7c5aknhvko2jjjpdcsu"
+        ]
+      },
+      "maxBatchSize": 0
+    },
+    "functions": [
+      {
+        "functionId": "iiuz4vvtbjfbfhqhlytzld6xfy",
+        "functionArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/functions/iiuz4vvtbjfbfhqhlytzld6xfy",
+        "name": "MutationdeleteTeamRosterSlotauth0Function",
+        "dataSourceName": "TeamRosterSlotTable",
+        "requestMappingTemplate": "## [Start] Get Request template. **\n#set( $GetRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"GetItem\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $key = {\n  \"id\":   $util.dynamodb.toDynamoDB($ctx.args.input.id)\n} )\n#end\n$util.qr($GetRequest.put(\"key\", $key))\n$util.toJson($GetRequest)\n## [End] Get Request template. **",
+        "responseMappingTemplate": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#if( $util.authType() == \"API Key Authorization\" )\n$util.unauthorized()\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n\n#end\n#if( !$isAuthorized )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+        "functionVersion": "2018-05-29",
+        "maxBatchSize": 0
+      },
+      {
+        "functionId": "j24ml2iez5cxngse34wexbdmfa",
+        "functionArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/functions/j24ml2iez5cxngse34wexbdmfa",
+        "name": "MutationdeleteTeamRosterSlotpostAuth0Function",
+        "dataSourceName": "NONE_DS",
+        "requestMappingTemplate": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+        "responseMappingTemplate": "$util.toJson({})",
+        "functionVersion": "2018-05-29",
+        "maxBatchSize": 0
+      },
+      {
+        "functionId": "7kjronj7c5aknhvko2jjjpdcsu",
+        "functionArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/functions/7kjronj7c5aknhvko2jjjpdcsu",
+        "name": "MutationDeleteTeamRosterSlotDataResolverFn",
+        "dataSourceName": "TeamRosterSlotTable",
+        "requestMappingTemplate": "## [Start] Delete Request template. **\n#set( $args = $util.defaultIfNull($ctx.stash.transformedArgs, $ctx.args) )\n#set( $DeleteRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"DeleteItem\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $Key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $Key = {\n  \"id\":   $util.dynamodb.toDynamoDB($args.input.id)\n} )\n#end\n$util.qr($DeleteRequest.put(\"key\", $Key))\n## Begin - key condition **\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $keyConditionExpr = {} )\n  #set( $keyConditionExprNames = {} )\n  #foreach( $entry in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    $util.qr($keyConditionExpr.put(\"keyCondition$velocityCount\", {\n  \"attributeExists\": true\n}))\n    $util.qr($keyConditionExprNames.put(\"#keyCondition$velocityCount\", \"$entry.key\"))\n  #end\n  $util.qr($ctx.stash.conditions.add($keyConditionExpr))\n#else\n  $util.qr($ctx.stash.conditions.add({\n  \"id\": {\n      \"attributeExists\": true\n  }\n}))\n#end\n## End - key condition **\n#if( $args.condition )\n  $util.qr($ctx.stash.conditions.add($args.condition))\n#end\n## Start condition block **\n#if( $ctx.stash.conditions && $ctx.stash.conditions.size() != 0 )\n  #set( $mergedConditions = {\n  \"and\": $ctx.stash.conditions\n} )\n  #set( $Conditions = $util.parseJson($util.transform.toDynamoDBConditionExpression($mergedConditions)) )\n  #if( $Conditions.expressionValues && $Conditions.expressionValues.size() == 0 )\n    #set( $Conditions = {\n  \"expression\": $Conditions.expression,\n  \"expressionNames\": $Conditions.expressionNames\n} )\n  #end\n  ## End condition block **\n#end\n#if( $Conditions )\n  #if( $keyConditionExprNames )\n    $util.qr($Conditions.expressionNames.putAll($keyConditionExprNames))\n  #end\n  $util.qr($DeleteRequest.put(\"condition\", $Conditions))\n#end\n$util.toJson($DeleteRequest)\n## [End] Delete Request template. **",
+        "responseMappingTemplate": "## [Start] ResponseTemplate. **\n$util.qr($ctx.result.put(\"__operation\", \"Mutation\"))\n#if( $ctx.error )\n  $util.error($ctx.error.message, $ctx.error.type)\n#else\n  $util.toJson($ctx.result)\n#end\n## [End] ResponseTemplate. **",
+        "functionVersion": "2018-05-29",
+        "maxBatchSize": 0
+      }
+    ],
+    "model": "TeamRosterSlot"
+  },
+  {
+    "resolver": {
+      "typeName": "Mutation",
+      "fieldName": "deletePlayerChampionPoolEntry",
+      "resolverArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/types/Mutation/resolvers/deletePlayerChampionPoolEntry",
+      "requestMappingTemplate": "$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"deletePlayerChampionPoolEntry\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"dxb2tdlulrch7hj2pts2mfijia\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthauthenticatedU-U29LVCPfkFsl/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthunauthenticate-y8Sz5XK5OfBN/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"eu-north-1:a3621b12-4773-4295-b232-b55863c37fd3\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n$util.toJson({})",
+      "responseMappingTemplate": "$util.toJson($ctx.prev.result)",
+      "kind": "PIPELINE",
+      "pipelineConfig": {
+        "functions": [
+          "bevzo2dkfjfhldtm6nnyuh6wfm",
+          "qiigqmt53je3fn6x4lfw3geyk4",
+          "oosgrzq6ijflpmcniy5gzlpnz4"
+        ]
+      },
+      "maxBatchSize": 0
+    },
+    "functions": [
+      {
+        "functionId": "bevzo2dkfjfhldtm6nnyuh6wfm",
+        "functionArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/functions/bevzo2dkfjfhldtm6nnyuh6wfm",
+        "name": "MutationdeletePlayerChampionPoolEntryauth0Function",
+        "dataSourceName": "PlayerChampionPoolEntryTable",
+        "requestMappingTemplate": "## [Start] Get Request template. **\n#set( $GetRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"GetItem\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $key = {\n  \"id\":   $util.dynamodb.toDynamoDB($ctx.args.input.id)\n} )\n#end\n$util.qr($GetRequest.put(\"key\", $key))\n$util.toJson($GetRequest)\n## [End] Get Request template. **",
+        "responseMappingTemplate": "## [Start] Authorization Steps. **\n$util.qr($ctx.stash.put(\"hasAuth\", true))\n#set( $isAuthorized = false )\n#if( $util.authType() == \"API Key Authorization\" )\n$util.unauthorized()\n#end\n#if( $util.authType() == \"IAM Authorization\" )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    $util.qr($ctx.stash.put(\"hasAuth\", true))\n    #set( $isAuthorized = true )\n  #else\n$util.unauthorized()\n  #end\n#end\n#if( $util.authType() == \"User Pool Authorization\" )\n\n#end\n#if( !$isAuthorized )\n$util.unauthorized()\n#end\n$util.toJson({\"version\":\"2018-05-29\",\"payload\":{}})\n## [End] Authorization Steps. **",
+        "functionVersion": "2018-05-29",
+        "maxBatchSize": 0
+      },
+      {
+        "functionId": "qiigqmt53je3fn6x4lfw3geyk4",
+        "functionArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/functions/qiigqmt53je3fn6x4lfw3geyk4",
+        "name": "MutationdeletePlayerChampionPoolEntrypostAuth0Function",
+        "dataSourceName": "NONE_DS",
+        "requestMappingTemplate": "## [Start] Sandbox Mode Disabled, IAM Access Enabled. **\n#if( !$ctx.stash.get(\"hasAuth\") )\n  #if( $util.authType() == \"IAM Authorization\" && $util.isNull($ctx.identity.cognitoIdentityPoolId) && $util.isNull($ctx.identity.cognitoIdentityId) )\n    #return($util.toJson({}))\n  #end\n  $util.unauthorized()\n#end\n$util.toJson({})\n## [End] Sandbox Mode Disabled, IAM Access Enabled. **",
+        "responseMappingTemplate": "$util.toJson({})",
+        "functionVersion": "2018-05-29",
+        "maxBatchSize": 0
+      },
+      {
+        "functionId": "oosgrzq6ijflpmcniy5gzlpnz4",
+        "functionArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/functions/oosgrzq6ijflpmcniy5gzlpnz4",
+        "name": "MutationDeletePlayerChampionPoolEntryDataResolverFn",
+        "dataSourceName": "PlayerChampionPoolEntryTable",
+        "requestMappingTemplate": "## [Start] Delete Request template. **\n#set( $args = $util.defaultIfNull($ctx.stash.transformedArgs, $ctx.args) )\n#set( $DeleteRequest = {\n  \"version\": \"2018-05-29\",\n  \"operation\": \"DeleteItem\"\n} )\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $Key = $ctx.stash.metadata.modelObjectKey )\n#else\n  #set( $Key = {\n  \"id\":   $util.dynamodb.toDynamoDB($args.input.id)\n} )\n#end\n$util.qr($DeleteRequest.put(\"key\", $Key))\n## Begin - key condition **\n#if( $ctx.stash.metadata.modelObjectKey )\n  #set( $keyConditionExpr = {} )\n  #set( $keyConditionExprNames = {} )\n  #foreach( $entry in $ctx.stash.metadata.modelObjectKey.entrySet() )\n    $util.qr($keyConditionExpr.put(\"keyCondition$velocityCount\", {\n  \"attributeExists\": true\n}))\n    $util.qr($keyConditionExprNames.put(\"#keyCondition$velocityCount\", \"$entry.key\"))\n  #end\n  $util.qr($ctx.stash.conditions.add($keyConditionExpr))\n#else\n  $util.qr($ctx.stash.conditions.add({\n  \"id\": {\n      \"attributeExists\": true\n  }\n}))\n#end\n## End - key condition **\n#if( $args.condition )\n  $util.qr($ctx.stash.conditions.add($args.condition))\n#end\n## Start condition block **\n#if( $ctx.stash.conditions && $ctx.stash.conditions.size() != 0 )\n  #set( $mergedConditions = {\n  \"and\": $ctx.stash.conditions\n} )\n  #set( $Conditions = $util.parseJson($util.transform.toDynamoDBConditionExpression($mergedConditions)) )\n  #if( $Conditions.expressionValues && $Conditions.expressionValues.size() == 0 )\n    #set( $Conditions = {\n  \"expression\": $Conditions.expression,\n  \"expressionNames\": $Conditions.expressionNames\n} )\n  #end\n  ## End condition block **\n#end\n#if( $Conditions )\n  #if( $keyConditionExprNames )\n    $util.qr($Conditions.expressionNames.putAll($keyConditionExprNames))\n  #end\n  $util.qr($DeleteRequest.put(\"condition\", $Conditions))\n#end\n$util.toJson($DeleteRequest)\n## [End] Delete Request template. **",
+        "responseMappingTemplate": "## [Start] ResponseTemplate. **\n$util.qr($ctx.result.put(\"__operation\", \"Mutation\"))\n#if( $ctx.error )\n  $util.error($ctx.error.message, $ctx.error.type)\n#else\n  $util.toJson($ctx.result)\n#end\n## [End] ResponseTemplate. **",
+        "functionVersion": "2018-05-29",
+        "maxBatchSize": 0
+      }
+    ],
+    "model": "PlayerChampionPoolEntry"
+  }
+]

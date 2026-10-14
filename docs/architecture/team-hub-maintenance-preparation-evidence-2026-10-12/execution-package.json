@@ -1,0 +1,123 @@
+{
+  "at": "2026-10-12T21:11:08.357Z",
+  "scope": "PREPARED_ONLY_NTGRE; no AWS writes, publication or authority transition",
+  "artifacts": [
+    {
+      "path": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/activation-manifest.json",
+      "sha256": "f97453b3393db657964fe0149bba11ae0d7cf9b8663c53b9fac65a9868a866a1"
+    },
+    {
+      "path": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/rollback-manifest.json",
+      "sha256": "e4b8f8f8a53ed4a2dd0e821fa4e0745f4d9ed3657a072cb7fec28cd531194801"
+    },
+    {
+      "path": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/activation.PROPOSED.json",
+      "sha256": "36c7e8cc1fbd97f161407317062f4840103d991550e02f7fddf702ebc57e32e5"
+    },
+    {
+      "path": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/fence-helper-candidate.json",
+      "sha256": "4dfa45eeafba0aaa410cc7c377d8710cb596a5a34c8e771fbc1dbeb4d9883e58"
+    },
+    {
+      "path": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/fence-helper.PROPOSED.template.json",
+      "sha256": "36f5d9e1c708b93d61309b6d678d10c5e26b2f2244f5a0902495b41c14daaeaf"
+    },
+    {
+      "path": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/fence-probes.json",
+      "sha256": "f28b406a106c94580291023f9235543eba0595dc7d65fe79ae39fb58da3665b0"
+    },
+    {
+      "path": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/writer-coverage.json",
+      "sha256": "ecac3ce2703776d35918e421707f883a08a9283361c697e3d126726a578b8cf5"
+    },
+    {
+      "path": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/business-acceptance.json",
+      "sha256": "e731da5732aeec13c87feb63d616add77fb2a70965553621f02c85435303f348"
+    },
+    {
+      "path": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/monitoring-checklist.json",
+      "sha256": "b641427ae02edf78c71ca755765e4c036cab772cab36a91f20bba6b69ff519ce"
+    },
+    {
+      "path": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/s3-inflight.PROPOSED.template.json",
+      "sha256": "85f7b289c31dbff4f260be8999197a7b19ffa3b3504c4cb22dad539486d4791e"
+    },
+    {
+      "path": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/s3-inflight-review-plan.json",
+      "sha256": "ba1d889f1d6ac0cb3d4f46e1c8aa75cddc28e4077cbdc2d1ba1c40790e35a136"
+    }
+  ],
+  "frontend": [
+    {
+      "kind": "activation",
+      "manifest": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/activation-manifest.json",
+      "sha256": "f97453b3393db657964fe0149bba11ae0d7cf9b8663c53b9fac65a9868a866a1",
+      "files": 315,
+      "artifactDirectory": ".tmp/team-hub-maintenance-preparation/activation-website",
+      "preservedArtifactDirectory": ".tmp/team-hub-maintenance-preparation/pinned/activation-f97453b3393db657964fe0149bba11ae0d7cf9b8663c53b9fac65a9868a866a1"
+    },
+    {
+      "kind": "rollback",
+      "manifest": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/rollback-manifest.json",
+      "sha256": "e4b8f8f8a53ed4a2dd0e821fa4e0745f4d9ed3657a072cb7fec28cd531194801",
+      "files": 462,
+      "artifactDirectory": ".tmp/team-hub-maintenance-preparation/rollback-website",
+      "preservedArtifactDirectory": ".tmp/team-hub-maintenance-preparation/pinned/rollback-e4b8f8f8a53ed4a2dd0e821fa4e0745f4d9ed3657a072cb7fec28cd531194801"
+    }
+  ],
+  "helper": {
+    "prepared": true,
+    "deployed": false,
+    "resourceCount": 2,
+    "newIamResources": 0,
+    "rolePolicyChanges": 0,
+    "trustChanges": 0,
+    "resourceTypes": [
+      "AWS::Lambda::Function"
+    ],
+    "runtimePath": ".tmp/team-hub-maintenance-preparation/fence-probe-862b496d427dcb6b04e4d17f00d971fbe20e65a031a80a89e26512cfa67ffaa6.zip",
+    "runtimeSha256": "862b496d427dcb6b04e4d17f00d971fbe20e65a031a80a89e26512cfa67ffaa6",
+    "templateSha256": "36f5d9e1c708b93d61309b6d678d10c5e26b2f2244f5a0902495b41c14daaeaf",
+    "sourceHashes": [
+      {
+        "path": "scripts/team-hub-maintenance-preparation/probe-config.mjs",
+        "sha256": "599b316d0901d22d07860d297b360cb58838560b2939e72be94c1a0c59ac35e7"
+      },
+      {
+        "path": "scripts/team-hub-maintenance-preparation/probe-requests.mjs",
+        "sha256": "a0667ec63b1a9aa13f96df12768ffd0a34f20034404145388acdf7656dec15ba"
+      },
+      {
+        "path": "scripts/team-hub-maintenance-preparation/probe-runtime.mjs",
+        "sha256": "a1a604e1015d879329d15b7297846e23666fd0b8652e48668bafb0cf8ae9a83b"
+      }
+    ],
+    "permissions": "Existing approved security operator only, exact future PassRole for the two named Legacy service roles to lambda.amazonaws.com; normal Team deployment caller is not broadened. This candidate has NOT passed an AWS change-set or installed-role gate.",
+    "cleanup": "Delete only the two exact temporary functions and uploaded object version; retain existing roles/log groups; verify absence. No automatic business-row cleanup.",
+    "remaining": [
+      "Separately authorize exact temporary helper/artifact lifecycle and approve same-role proof scope; no original destructive provider invocation",
+      "Live positive/negative guarded service controls"
+    ],
+    "awsWrites": 0
+  },
+  "businessRequestCompiler": {
+    "path": "scripts/team-hub-maintenance-preparation/business-requests.mjs",
+    "sha256": "e43d796916c9cbae8101571bad16108959e4bdaa410c0c5b8f4a8edb0fd471c7"
+  },
+  "writerComparison": {
+    "principals": 19,
+    "resolvers": 30,
+    "functions": 131,
+    "unknownEdges": 0,
+    "unchanged": true
+  },
+  "authorizationRequired": [
+    "Security-owned exact two-helper and artifact lifecycle; existing-role reuse proof design and guarded requests",
+    "Reserved diagnostic PartiQL insert/failure cleanup",
+    "FROZEN authority and source-fence installation/live proof",
+    "TARGET transfer and exact synthetic business fixtures/retention",
+    "Ntgre localhost frontend activation; Master remains separately reviewed production intent"
+  ],
+  "historicalEvidence": "Accepted runtime/template/policy pins and isolated AWS evidence preserved. The prior preparation validation.json was refreshed by the existing test runner at its actual rerun timestamp; no backdating was performed. New validation.json is a separate copy.",
+  "awsWrites": 0
+}

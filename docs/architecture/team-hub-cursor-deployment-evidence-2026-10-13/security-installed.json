@@ -1,0 +1,54 @@
+{
+  "at": "2026-10-13T21:56:47.554Z",
+  "policies": [
+    {
+      "id": "PreviewBoundary",
+      "arn": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-PreviewBoundary",
+      "version": "v1",
+      "exact": true
+    },
+    {
+      "id": "ExecutionBoundary",
+      "arn": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofExecutionBoundary",
+      "version": "v12",
+      "exact": true
+    },
+    {
+      "id": "PreparationCaller",
+      "arn": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofPreparation",
+      "version": "v15",
+      "exact": true
+    },
+    {
+      "id": "ParityCommandBoundary",
+      "arn": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityCommandBoundary",
+      "version": "v7",
+      "exact": true
+    },
+    {
+      "id": "ParityReadBoundary",
+      "arn": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary",
+      "version": "v7",
+      "exact": true
+    }
+  ],
+  "roles": [
+    {
+      "id": "ExecutionRole",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "trust": true,
+      "inline": true,
+      "attached": true,
+      "boundary": true
+    },
+    {
+      "id": "DeploymentCaller",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Deploy",
+      "trust": true,
+      "inline": true,
+      "attached": true,
+      "boundary": true
+    }
+  ],
+  "complete": true
+}

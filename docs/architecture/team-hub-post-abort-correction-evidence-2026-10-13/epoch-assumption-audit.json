@@ -1,0 +1,2951 @@
+{
+  "hits": [
+    {
+      "file": "domains/team-hub/business-runtime/repository.mjs",
+      "line": 40,
+      "text": "  tx.push({Put:{TableName:this.journal,Item:{PK:'TEAM#'+c.teamId,SK:`AUDIT#${now}#${auditId}`,actorIssuer:c.actor.issuer,actorSubject:c.actor.subject,operation:c.operation,teamId:c.teamId,requestId:c.requestId,resultingVersion:state.teams[c.teamId].team.version,authorizationEpoch:state.teams[c.teamId].team.authorizationEpoch,at:now,expiresAt:c.now+365*86400},ConditionExpression:'attribute_not_exists(PK)'}});",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/business-runtime/service.mjs",
+      "line": 103,
+      "text": "        state.teams[teamId] = { team: { id: teamId, slug: req.slug, name: req.name, gameKey: req.gameKey, status: 'ACTIVE', version: 1, authorizationEpoch: 0, rosterVersion: 0, settings: { plan: 'FREE', logoAssetId: '' } }, memberships: {}, roster: [], entries: {}, assessments: {}, privateNotes: {}, intents: {} };",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/contracts.mjs",
+      "line": 24,
+      "text": "export const playerDTO = object({ teamId: s.teamId, membershipId: s.membershipId, ...playerFields, version: integer(1) });",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/contracts.mjs",
+      "line": 25,
+      "text": "export const assessmentDTO = object({ championId: s.championId, teamVisible: assessmentText, version: integer(1) });",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/contracts.mjs",
+      "line": 26,
+      "text": "export const privateNoteDTO = object({ championId: s.championId, privateNote: assessmentText, version: integer(1) });",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/contracts.mjs",
+      "line": 27,
+      "text": "export const membershipDTO = object({ id: s.membershipId, subject: s.subject, displayName: str(100), role: s.role, status: s.status, version: integer(1) });",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/contracts.mjs",
+      "line": 29,
+      "text": "export const teamDTO = object({ id: s.teamId, slug: s.slug, name: str(100), gameKey: enumeration('LEAGUE_OF_LEGENDS'), status: s.status, version: integer(1), authorizationEpoch: integer(), rosterVersion: integer(), settings: object({ plan: enumeration('FREE', 'PRO'), logoAssetId: str(180, undefined, 0) }) });",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/contracts.mjs",
+      "line": 35,
+      "text": "const concurrency = { idempotencyKey: s.idempotencyKey, expectedTeamVersion: integer(1), expectedAuthorizationEpoch: integer(), expectedMembershipVersion: integer() };",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/contracts.mjs",
+      "line": 51,
+      "text": "  SET_ROSTER_SLOT: spec('POST', '/v1/teams/{teamId}/roster-slots', 'command', command({ membershipId: s.membershipId, gameRoleKey: s.gameRoleKey, slotType: enumeration('STARTER', 'SUBSTITUTE'), action: enumeration('ASSIGN', 'REMOVE'), expectedRosterVersion: integer(), expectedTargetMembershipVersion: integer(1) }), object({ roster: array(rosterDTO, 20), team: teamDTO }), 'MANAGER'),",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/contracts.mjs",
+      "line": 53,
+      "text": "  DELETE_MY_CHAMPION: spec('DELETE', '/v1/teams/{teamId}/me/champions/{championId}', 'command', command({ championId: s.championId, expectedEntryVersion: integer(1) }), object({ deleted: { const: true }, championId: s.championId, team: teamDTO }), 'PLAYER'),",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/contracts.mjs",
+      "line": 54,
+      "text": "  UPSERT_COACH_ASSESSMENT: spec('PUT', '/v1/teams/{teamId}/players/{membershipId}/assessments/{championId}', 'command', command({ membershipId: s.membershipId, championId: s.championId, teamVisible: assessmentText, privateNote: assessmentText, expectedAssessmentVersion: integer(), expectedTargetMembershipVersion: integer(1) }), object({ assessment: assessmentDTO, privateNote: privateNoteDTO, team: teamDTO }), 'COACH'),",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/contracts.mjs",
+      "line": 93,
+      "text": "export const eligibilityContract = Object.freeze({ version: 'eligibility.v1', owner: 'TeamHub', status: 'CONTRACT_ONLY', auth: 'Authenticated allowlisted service AND verified delegated subject; same environment; purpose tournament-registration or roster-lock; expiry and replay check required', request: object({ teamId: s.teamId, expectedRosterVersion: integer(), purpose: enumeration('tournament-registration', 'roster-lock') }), response: object({ teamId: s.teamId, rosterVersion: integer(), teamV",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 3,
+      "text": "  \"version\": \"0.1.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 4,
+      "text": "  \"lockfileVersion\": 3,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 8,
+      "text": "      \"version\": \"5.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 23,
+      "text": "      \"version\": \"5.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 37,
+      "text": "      \"version\": \"5.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 46,
+      "text": "      \"version\": \"5.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 57,
+      "text": "      \"version\": \"3.1047.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 88,
+      "text": "      \"version\": \"3.1073.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 109,
+      "text": "      \"version\": \"3.1098.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 128,
+      "text": "      \"version\": \"3.978.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 147,
+      "text": "      \"version\": \"3.972.72\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 163,
+      "text": "      \"version\": \"3.972.74\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 181,
+      "text": "      \"version\": \"3.973.17\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 205,
+      "text": "      \"version\": \"3.972.79\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 222,
+      "text": "      \"version\": \"3.972.84\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 244,
+      "text": "      \"version\": \"3.972.72\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 260,
+      "text": "      \"version\": \"3.973.16\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 278,
+      "text": "      \"version\": \"3.972.78\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 295,
+      "text": "      \"version\": \"3.973.46\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 310,
+      "text": "      \"version\": \"3.972.11\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 323,
+      "text": "      \"version\": \"3.1047.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 342,
+      "text": "      \"version\": \"3.996.9\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 357,
+      "text": "      \"version\": \"3.972.31\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 373,
+      "text": "      \"version\": \"3.972.47\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 386,
+      "text": "      \"version\": \"3.972.46\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 399,
+      "text": "      \"version\": \"3.972.48\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 412,
+      "text": "      \"version\": \"3.972.76\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 425,
+      "text": "      \"version\": \"3.997.46\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 444,
+      "text": "      \"version\": \"3.972.50\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 457,
+      "text": "      \"version\": \"3.996.47\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 472,
+      "text": "      \"version\": \"3.1138.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 489,
+      "text": "      \"version\": \"3.974.6\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 502,
+      "text": "      \"version\": \"3.996.45\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 516,
+      "text": "      \"version\": \"3.965.10\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 528,
+      "text": "      \"version\": \"3.972.47\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 538,
+      "text": "      \"version\": \"3.973.62\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 551,
+      "text": "      \"version\": \"3.972.41\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 564,
+      "text": "      \"version\": \"0.3.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 573,
+      "text": "      \"version\": \"3.35.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 586,
+      "text": "      \"version\": \"4.5.2\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 600,
+      "text": "      \"version\": \"5.8.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 614,
+      "text": "      \"version\": \"2.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 626,
+      "text": "      \"version\": \"4.12.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 640,
+      "text": "      \"version\": \"5.7.4\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 654,
+      "text": "      \"version\": \"4.19.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 666,
+      "text": "      \"version\": \"2.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 679,
+      "text": "      \"version\": \"2.3.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 692,
+      "text": "      \"version\": \"2.14.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 698,
+      "text": "      \"version\": \"0.38.3\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 707,
+      "text": "      \"version\": \"1.6.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/.package-lock.json",
+      "line": 713,
+      "text": "      \"version\": \"2.8.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws/lambda-invoke-store/package.json",
+      "line": 3,
+      "text": "  \"version\": \"0.3.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-crypto/sha256-browser/package.json",
+      "line": 3,
+      "text": "  \"version\": \"5.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-crypto/sha256-js/package.json",
+      "line": 3,
+      "text": "  \"version\": \"5.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-crypto/supports-web-crypto/package.json",
+      "line": 3,
+      "text": "  \"version\": \"5.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-crypto/util/package.json",
+      "line": 3,
+      "text": "  \"version\": \"5.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-dynamodb/dist-cjs/runtimeConfig.shared.js",
+      "line": 16,
+      "text": "        apiVersion: \"2012-08-10\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-dynamodb/dist-cjs/runtimeConfig.shared.js",
+      "line": 36,
+      "text": "            version: \"2012-08-10\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-dynamodb/dist-es/runtimeConfig.shared.js",
+      "line": 13,
+      "text": "        apiVersion: \"2012-08-10\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-dynamodb/dist-es/runtimeConfig.shared.js",
+      "line": 33,
+      "text": "            version: \"2012-08-10\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-dynamodb/package.json",
+      "line": 4,
+      "text": "  \"version\": \"3.1047.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/runtimeConfig.shared.js",
+      "line": 11,
+      "text": "        apiVersion: \"2015-03-31\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/runtimeConfig.shared.js",
+      "line": 30,
+      "text": "            version: \"2015-03-31\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/schemas/schemas_0.js",
+      "line": 964,
+      "text": "const NoPublishedVersionException$ = [-3, n0, _NPVE,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/schemas/schemas_0.js",
+      "line": 1161,
+      "text": "const AddLayerVersionPermissionRequest$ = [3, n0, _ALVPR,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/schemas/schemas_0.js",
+      "line": 1167,
+      "text": "const AddLayerVersionPermissionResponse$ = [3, n0, _ALVPRd,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/schemas/schemas_0.js",
+      "line": 1521,
+      "text": "const DeleteLayerVersionRequest$ = [3, n0, _DLVR,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/schemas/schemas_0.js",
+      "line": 1899,
+      "text": "const GetLayerVersionByArnRequest$ = [3, n0, _GLVBAR,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/schemas/schemas_0.js",
+      "line": 1905,
+      "text": "const GetLayerVersionPolicyRequest$ = [3, n0, _GLVPR,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/schemas/schemas_0.js",
+      "line": 1911,
+      "text": "const GetLayerVersionPolicyResponse$ = [3, n0, _GLVPRe,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/schemas/schemas_0.js",
+      "line": 1917,
+      "text": "const GetLayerVersionRequest$ = [3, n0, _GLVR,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/schemas/schemas_0.js",
+      "line": 1923,
+      "text": "const GetLayerVersionResponse$ = [3, n0, _GLVRe,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/schemas/schemas_0.js",
+      "line": 2079,
+      "text": "const LayerVersionContentInput$ = [3, n0, _LVCI,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/schemas/schemas_0.js",
+      "line": 2085,
+      "text": "const LayerVersionContentOutput$ = [3, n0, _LVCO,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/schemas/schemas_0.js",
+      "line": 2091,
+      "text": "const LayerVersionsListItem$ = [3, n0, _LVLI,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/schemas/schemas_0.js",
+      "line": 2229,
+      "text": "const ListLayerVersionsRequest$ = [3, n0, _LLVR,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/schemas/schemas_0.js",
+      "line": 2235,
+      "text": "const ListLayerVersionsResponse$ = [3, n0, _LLVRi,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/schemas/schemas_0.js",
+      "line": 2265,
+      "text": "const ListVersionsByFunctionRequest$ = [3, n0, _LVBFR,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/schemas/schemas_0.js",
+      "line": 2325,
+      "text": "const PublishLayerVersionRequest$ = [3, n0, _PLVR,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/schemas/schemas_0.js",
+      "line": 2331,
+      "text": "const PublishLayerVersionResponse$ = [3, n0, _PLVRu,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/schemas/schemas_0.js",
+      "line": 2337,
+      "text": "const PublishVersionRequest$ = [3, n0, _PVR,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/schemas/schemas_0.js",
+      "line": 2415,
+      "text": "const RemoveLayerVersionPermissionRequest$ = [3, n0, _RLVPR,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/schemas/schemas_0.js",
+      "line": 2433,
+      "text": "const RuntimeVersionConfig$ = [3, n0, _RVC,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/schemas/schemas_0.js",
+      "line": 2439,
+      "text": "const RuntimeVersionError$ = [3, n0, _RVE,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/schemas/schemas_0.js",
+      "line": 2784,
+      "text": "var LayerVersionsList = [1, n0, _LVL,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/schemas/schemas_0.js",
+      "line": 2800,
+      "text": "var SigningProfileVersionArns = 64 | 0;",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-cjs/schemas/schemas_0.js",
+      "line": 2815,
+      "text": "var AdditionalVersionWeights = 128 | 1;",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/runtimeConfig.shared.js",
+      "line": 11,
+      "text": "        apiVersion: \"2015-03-31\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/runtimeConfig.shared.js",
+      "line": 30,
+      "text": "            version: \"2015-03-31\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/schemas/schemas_0.js",
+      "line": 931,
+      "text": "export var NoPublishedVersionException$ = [-3, n0, _NPVE,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/schemas/schemas_0.js",
+      "line": 1102,
+      "text": "export var AddLayerVersionPermissionRequest$ = [3, n0, _ALVPR,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/schemas/schemas_0.js",
+      "line": 1107,
+      "text": "export var AddLayerVersionPermissionResponse$ = [3, n0, _ALVPRd,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/schemas/schemas_0.js",
+      "line": 1402,
+      "text": "export var DeleteLayerVersionRequest$ = [3, n0, _DLVR,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/schemas/schemas_0.js",
+      "line": 1717,
+      "text": "export var GetLayerVersionByArnRequest$ = [3, n0, _GLVBAR,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/schemas/schemas_0.js",
+      "line": 1722,
+      "text": "export var GetLayerVersionPolicyRequest$ = [3, n0, _GLVPR,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/schemas/schemas_0.js",
+      "line": 1727,
+      "text": "export var GetLayerVersionPolicyResponse$ = [3, n0, _GLVPRe,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/schemas/schemas_0.js",
+      "line": 1732,
+      "text": "export var GetLayerVersionRequest$ = [3, n0, _GLVR,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/schemas/schemas_0.js",
+      "line": 1737,
+      "text": "export var GetLayerVersionResponse$ = [3, n0, _GLVRe,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/schemas/schemas_0.js",
+      "line": 1867,
+      "text": "export var LayerVersionContentInput$ = [3, n0, _LVCI,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/schemas/schemas_0.js",
+      "line": 1872,
+      "text": "export var LayerVersionContentOutput$ = [3, n0, _LVCO,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/schemas/schemas_0.js",
+      "line": 1877,
+      "text": "export var LayerVersionsListItem$ = [3, n0, _LVLI,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/schemas/schemas_0.js",
+      "line": 1992,
+      "text": "export var ListLayerVersionsRequest$ = [3, n0, _LLVR,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/schemas/schemas_0.js",
+      "line": 1997,
+      "text": "export var ListLayerVersionsResponse$ = [3, n0, _LLVRi,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/schemas/schemas_0.js",
+      "line": 2022,
+      "text": "export var ListVersionsByFunctionRequest$ = [3, n0, _LVBFR,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/schemas/schemas_0.js",
+      "line": 2072,
+      "text": "export var PublishLayerVersionRequest$ = [3, n0, _PLVR,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/schemas/schemas_0.js",
+      "line": 2077,
+      "text": "export var PublishLayerVersionResponse$ = [3, n0, _PLVRu,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/schemas/schemas_0.js",
+      "line": 2082,
+      "text": "export var PublishVersionRequest$ = [3, n0, _PVR,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/schemas/schemas_0.js",
+      "line": 2147,
+      "text": "export var RemoveLayerVersionPermissionRequest$ = [3, n0, _RLVPR,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/schemas/schemas_0.js",
+      "line": 2162,
+      "text": "export var RuntimeVersionConfig$ = [3, n0, _RVC,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/schemas/schemas_0.js",
+      "line": 2167,
+      "text": "export var RuntimeVersionError$ = [3, n0, _RVE,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/schemas/schemas_0.js",
+      "line": 2466,
+      "text": "var LayerVersionsList = [1, n0, _LVL,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/schemas/schemas_0.js",
+      "line": 2482,
+      "text": "var SigningProfileVersionArns = 64 | 0;",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/dist-es/schemas/schemas_0.js",
+      "line": 2497,
+      "text": "var AdditionalVersionWeights = 128 | 1;",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-lambda/package.json",
+      "line": 4,
+      "text": "  \"version\": \"3.1073.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-secrets-manager/dist-cjs/index.js",
+      "line": 72,
+      "text": "var version = \"3.1097.0\";",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-secrets-manager/dist-cjs/index.js",
+      "line": 709,
+      "text": "var ListSecretVersionIdsRequest$ = [3, n0, _LSVIR,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-secrets-manager/dist-cjs/index.js",
+      "line": 714,
+      "text": "var ListSecretVersionIdsResponse$ = [3, n0, _LSVIRi,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-secrets-manager/dist-cjs/index.js",
+      "line": 804,
+      "text": "var SecretVersionsListEntry$ = [3, n0, _SVLE,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-secrets-manager/dist-cjs/index.js",
+      "line": 844,
+      "text": "var UpdateSecretVersionStageRequest$ = [3, n0, _USVSR,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-secrets-manager/dist-cjs/index.js",
+      "line": 849,
+      "text": "var UpdateSecretVersionStageResponse$ = [3, n0, _USVSRp,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-secrets-manager/dist-cjs/index.js",
+      "line": 892,
+      "text": "var SecretVersionsListType = [1, n0, _SVLT,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-secrets-manager/dist-es/schemas/schemas_0.js",
+      "line": 392,
+      "text": "export var ListSecretVersionIdsRequest$ = [3, n0, _LSVIR,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-secrets-manager/dist-es/schemas/schemas_0.js",
+      "line": 397,
+      "text": "export var ListSecretVersionIdsResponse$ = [3, n0, _LSVIRi,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-secrets-manager/dist-es/schemas/schemas_0.js",
+      "line": 487,
+      "text": "export var SecretVersionsListEntry$ = [3, n0, _SVLE,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-secrets-manager/dist-es/schemas/schemas_0.js",
+      "line": 527,
+      "text": "export var UpdateSecretVersionStageRequest$ = [3, n0, _USVSR,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-secrets-manager/dist-es/schemas/schemas_0.js",
+      "line": 532,
+      "text": "export var UpdateSecretVersionStageResponse$ = [3, n0, _USVSRp,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-secrets-manager/dist-es/schemas/schemas_0.js",
+      "line": 579,
+      "text": "var SecretVersionsListType = [1, n0, _SVLT,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-secrets-manager/dist-es/schemas/schemas_0.js",
+      "line": 582,
+      "text": "var SecretVersionStagesType = 64 | 0;",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-secrets-manager/dist-es/schemas/schemas_0.js",
+      "line": 590,
+      "text": "var SecretVersionsToStagesMapType = [2, n0, _SVTSMT,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/client-secrets-manager/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.1098.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/core/dist-cjs/submodules/client/index.js",
+      "line": 539,
+      "text": "    \"version\": \"1.1\"",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/core/dist-cjs/submodules/protocols/index.js",
+      "line": 2805,
+      "text": "            request.body = '<?xml version=\"1.0\" encoding=\"UTF-8\"?>' + request.body;",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/core/dist-es/submodules/client/util-endpoints/lib/aws/partitions.js",
+      "line": 275,
+      "text": "    \"version\": \"1.1\"",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/core/dist-es/submodules/protocols/xml/AwsRestXmlProtocol.js",
+      "line": 45,
+      "text": "            request.body = '<?xml version=\"1.0\" encoding=\"UTF-8\"?>' + request.body;",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/core/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.978.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/credential-provider-env/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.72\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/credential-provider-http/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.74\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/credential-provider-ini/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.973.17\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/credential-provider-login/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.79\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/credential-provider-node/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.84\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/credential-provider-process/dist-cjs/index.js",
+      "line": 7,
+      "text": "    if (data.Version !== 1) {",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/credential-provider-process/dist-es/getValidatedProcessCredentials.js",
+      "line": 3,
+      "text": "    if (data.Version !== 1) {",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/credential-provider-process/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.72\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/credential-provider-sso/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.973.16\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/credential-provider-web-identity/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.78\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/dynamodb-codec/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.973.46\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/endpoint-cache/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.11\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/lib-dynamodb/node_modules/@aws-sdk/util-dynamodb/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.996.9\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/lib-dynamodb/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.1047.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/middleware-endpoint-discovery/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.31\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/middleware-host-header/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.47\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/middleware-logger/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.46\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/middleware-recursion-detection/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.48\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/middleware-user-agent/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.76\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/nested-clients/dist-cjs/submodules/cognito-identity/index.js",
+      "line": 86,
+      "text": "var version = \"3.997.45\";",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/nested-clients/dist-cjs/submodules/cognito-identity/index.js",
+      "line": 418,
+      "text": "        apiVersion: \"2014-06-30\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/nested-clients/dist-cjs/submodules/cognito-identity/index.js",
+      "line": 443,
+      "text": "            version: \"2014-06-30\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/nested-clients/dist-cjs/submodules/signin/index.js",
+      "line": 81,
+      "text": "var version = \"3.997.45\";",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/nested-clients/dist-cjs/submodules/signin/index.js",
+      "line": 383,
+      "text": "        apiVersion: \"2023-01-01\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/nested-clients/dist-cjs/submodules/signin/index.js",
+      "line": 407,
+      "text": "            version: \"2023-01-01\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/nested-clients/dist-cjs/submodules/sso/index.js",
+      "line": 81,
+      "text": "var version = \"3.997.45\";",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/nested-clients/dist-cjs/submodules/sso-oidc/index.js",
+      "line": 81,
+      "text": "var version = \"3.997.45\";",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/nested-clients/dist-cjs/submodules/sts/index.js",
+      "line": 261,
+      "text": "var version = \"3.997.45\";",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/nested-clients/dist-cjs/submodules/sts/index.js",
+      "line": 535,
+      "text": "        apiVersion: \"2011-06-15\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/nested-clients/dist-cjs/submodules/sts/index.js",
+      "line": 565,
+      "text": "            version: \"2011-06-15\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/nested-clients/dist-es/submodules/cognito-identity/runtimeConfig.shared.js",
+      "line": 13,
+      "text": "        apiVersion: \"2014-06-30\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/nested-clients/dist-es/submodules/cognito-identity/runtimeConfig.shared.js",
+      "line": 38,
+      "text": "            version: \"2014-06-30\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/nested-clients/dist-es/submodules/signin/runtimeConfig.shared.js",
+      "line": 13,
+      "text": "        apiVersion: \"2023-01-01\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/nested-clients/dist-es/submodules/signin/runtimeConfig.shared.js",
+      "line": 37,
+      "text": "            version: \"2023-01-01\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/nested-clients/dist-es/submodules/sts/runtimeConfig.shared.js",
+      "line": 14,
+      "text": "        apiVersion: \"2011-06-15\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/nested-clients/dist-es/submodules/sts/runtimeConfig.shared.js",
+      "line": 44,
+      "text": "            version: \"2011-06-15\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/nested-clients/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.997.46\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/region-config-resolver/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.50\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/signature-v4-multi-region/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.996.47\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/token-providers/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.1138.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/types/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.974.6\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/util-endpoints/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.996.45\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/util-locate-window/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.965.10\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/util-user-agent-browser/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.47\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/util-user-agent-node/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.973.62\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@aws-sdk/xml-builder/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.41\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@smithy/core/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.35.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@smithy/credential-provider-imds/package.json",
+      "line": 3,
+      "text": "  \"version\": \"4.5.2\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@smithy/fetch-http-handler/package.json",
+      "line": 3,
+      "text": "  \"version\": \"5.8.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@smithy/is-array-buffer/package.json",
+      "line": 3,
+      "text": "  \"version\": \"2.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@smithy/node-http-handler/package.json",
+      "line": 3,
+      "text": "  \"version\": \"4.12.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@smithy/signature-v4/package.json",
+      "line": 3,
+      "text": "  \"version\": \"5.7.4\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@smithy/types/package.json",
+      "line": 3,
+      "text": "  \"version\": \"4.19.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@smithy/util-buffer-from/package.json",
+      "line": 3,
+      "text": "  \"version\": \"2.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/@smithy/util-utf8/package.json",
+      "line": 3,
+      "text": "  \"version\": \"2.3.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/bowser/bundled.js",
+      "line": 1,
+      "text": "!function(t,e){\"object\"==typeof exports&&\"object\"==typeof module?module.exports=e():\"function\"==typeof define&&define.amd?define([],e):\"object\"==typeof exports?exports.bowser=e():t.bowser=e()}(this,(function(){return function(t){var e={};function n(r){if(e[r])return e[r].exports;var i=e[r]={i:r,l:!1,exports:{}};return t[r].call(i.exports,i,i.exports,n),i.l=!0,i.exports}return n.m=t,n.c=e,n.d=function(t,e,r){n.o(t,e)||Object.defineProperty(t,e,{enumerable:!0,get:r})},n.r=function(t){\"undefined\"!=",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/bowser/package.json",
+      "line": 92,
+      "text": "  \"version\": \"2.14.1\"",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/bowser/src/parser-platforms.js",
+      "line": 465,
+      "text": "      return parser.getOSName(true) === 'android' && (osMajorVersion >= 3);",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/bowser/src/parser.js",
+      "line": 231,
+      "text": "   *   version: '10.11.12'",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/mnemonist/package.json",
+      "line": 3,
+      "text": "  \"version\": \"0.38.3\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/obliterator/package.json",
+      "line": 3,
+      "text": "  \"version\": \"1.6.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/node_modules/tslib/package.json",
+      "line": 5,
+      "text": "    \"version\": \"2.8.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 3,
+      "text": "  \"version\": \"0.1.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 4,
+      "text": "  \"lockfileVersion\": 3,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 9,
+      "text": "      \"version\": \"0.1.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 18,
+      "text": "      \"version\": \"5.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 33,
+      "text": "      \"version\": \"5.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 47,
+      "text": "      \"version\": \"5.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 56,
+      "text": "      \"version\": \"5.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 67,
+      "text": "      \"version\": \"3.1047.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 98,
+      "text": "      \"version\": \"3.1073.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 119,
+      "text": "      \"version\": \"3.1098.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 138,
+      "text": "      \"version\": \"3.978.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 157,
+      "text": "      \"version\": \"3.972.72\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 173,
+      "text": "      \"version\": \"3.972.74\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 191,
+      "text": "      \"version\": \"3.973.17\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 215,
+      "text": "      \"version\": \"3.972.79\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 232,
+      "text": "      \"version\": \"3.972.84\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 254,
+      "text": "      \"version\": \"3.972.72\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 270,
+      "text": "      \"version\": \"3.973.16\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 288,
+      "text": "      \"version\": \"3.972.78\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 305,
+      "text": "      \"version\": \"3.973.46\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 320,
+      "text": "      \"version\": \"3.972.11\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 333,
+      "text": "      \"version\": \"3.1047.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 352,
+      "text": "      \"version\": \"3.996.9\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 367,
+      "text": "      \"version\": \"3.972.31\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 383,
+      "text": "      \"version\": \"3.972.47\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 396,
+      "text": "      \"version\": \"3.972.46\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 409,
+      "text": "      \"version\": \"3.972.48\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 422,
+      "text": "      \"version\": \"3.972.76\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 435,
+      "text": "      \"version\": \"3.997.46\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 454,
+      "text": "      \"version\": \"3.972.50\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 467,
+      "text": "      \"version\": \"3.996.47\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 482,
+      "text": "      \"version\": \"3.1138.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 499,
+      "text": "      \"version\": \"3.974.6\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 512,
+      "text": "      \"version\": \"3.996.45\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 526,
+      "text": "      \"version\": \"3.965.10\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 538,
+      "text": "      \"version\": \"3.972.47\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 548,
+      "text": "      \"version\": \"3.973.62\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 561,
+      "text": "      \"version\": \"3.972.41\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 574,
+      "text": "      \"version\": \"0.3.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 583,
+      "text": "      \"version\": \"3.35.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 596,
+      "text": "      \"version\": \"4.5.2\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 610,
+      "text": "      \"version\": \"5.8.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 624,
+      "text": "      \"version\": \"2.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 636,
+      "text": "      \"version\": \"4.12.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 650,
+      "text": "      \"version\": \"5.7.4\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 664,
+      "text": "      \"version\": \"4.19.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 676,
+      "text": "      \"version\": \"2.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 689,
+      "text": "      \"version\": \"2.3.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 702,
+      "text": "      \"version\": \"2.14.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 708,
+      "text": "      \"version\": \"0.38.3\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 717,
+      "text": "      \"version\": \"1.6.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package-lock.json",
+      "line": 723,
+      "text": "      \"version\": \"2.8.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/package.json",
+      "line": 1,
+      "text": "{\"name\":\"@project-respawn/team-hub-cutover-candidate\",\"private\":true,\"version\":\"0.1.0\",\"type\":\"module\",\"dependencies\":{\"@aws-sdk/client-lambda\":\"3.1073.0\",\"@aws-sdk/client-secrets-manager\":\"3.1098.0\",\"@aws-sdk/client-dynamodb\":\"3.1047.0\",\"@aws-sdk/lib-dynamodb\":\"3.1047.0\"}}",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/repository.mjs",
+      "line": 40,
+      "text": "  tx.push({Put:{TableName:this.journal,Item:{PK:'TEAM#'+c.teamId,SK:`AUDIT#${now}#${auditId}`,actorIssuer:c.actor.issuer,actorSubject:c.actor.subject,operation:c.operation,teamId:c.teamId,requestId:c.requestId,resultingVersion:state.teams[c.teamId].team.version,authorizationEpoch:state.teams[c.teamId].team.authorizationEpoch,at:now,expiresAt:c.now+365*86400},ConditionExpression:'attribute_not_exists(PK)'}});",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/cutover/service.mjs",
+      "line": 102,
+      "text": "        state.teams[teamId] = { team: { id: teamId, slug: req.slug, name: req.name, gameKey: req.gameKey, status: 'ACTIVE', version: 1, authorizationEpoch: 0, rosterVersion: 0, settings: { plan: 'FREE', logoAssetId: '' } }, memberships: {}, roster: [], entries: {}, assessments: {}, privateNotes: {}, intents: {} };",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 3,
+      "text": "  \"lockfileVersion\": 3,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 7,
+      "text": "      \"version\": \"5.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 22,
+      "text": "      \"version\": \"5.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 36,
+      "text": "      \"version\": \"5.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 45,
+      "text": "      \"version\": \"5.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 56,
+      "text": "      \"version\": \"3.1047.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 87,
+      "text": "      \"version\": \"3.978.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 106,
+      "text": "      \"version\": \"3.972.72\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 122,
+      "text": "      \"version\": \"3.972.74\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 140,
+      "text": "      \"version\": \"3.973.17\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 164,
+      "text": "      \"version\": \"3.972.79\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 181,
+      "text": "      \"version\": \"3.972.84\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 203,
+      "text": "      \"version\": \"3.972.72\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 219,
+      "text": "      \"version\": \"3.973.16\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 237,
+      "text": "      \"version\": \"3.972.78\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 254,
+      "text": "      \"version\": \"3.973.46\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 269,
+      "text": "      \"version\": \"3.972.11\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 282,
+      "text": "      \"version\": \"3.1047.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 301,
+      "text": "      \"version\": \"3.996.9\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 316,
+      "text": "      \"version\": \"3.972.31\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 332,
+      "text": "      \"version\": \"3.972.47\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 345,
+      "text": "      \"version\": \"3.972.46\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 358,
+      "text": "      \"version\": \"3.972.48\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 371,
+      "text": "      \"version\": \"3.972.76\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 384,
+      "text": "      \"version\": \"3.997.46\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 403,
+      "text": "      \"version\": \"3.972.50\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 416,
+      "text": "      \"version\": \"3.996.47\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 431,
+      "text": "      \"version\": \"3.1138.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 448,
+      "text": "      \"version\": \"3.974.6\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 461,
+      "text": "      \"version\": \"3.996.45\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 475,
+      "text": "      \"version\": \"3.965.10\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 487,
+      "text": "      \"version\": \"3.972.47\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 497,
+      "text": "      \"version\": \"3.973.62\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 510,
+      "text": "      \"version\": \"3.972.41\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 523,
+      "text": "      \"version\": \"0.3.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 532,
+      "text": "      \"version\": \"3.35.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 545,
+      "text": "      \"version\": \"4.5.2\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 559,
+      "text": "      \"version\": \"5.8.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 573,
+      "text": "      \"version\": \"2.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 585,
+      "text": "      \"version\": \"4.12.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 599,
+      "text": "      \"version\": \"5.7.4\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 613,
+      "text": "      \"version\": \"4.19.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 625,
+      "text": "      \"version\": \"2.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 638,
+      "text": "      \"version\": \"2.3.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 651,
+      "text": "      \"version\": \"2.14.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 657,
+      "text": "      \"version\": \"0.38.3\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 666,
+      "text": "      \"version\": \"1.6.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/.package-lock.json",
+      "line": 672,
+      "text": "      \"version\": \"2.8.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws/lambda-invoke-store/package.json",
+      "line": 3,
+      "text": "  \"version\": \"0.3.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-crypto/sha256-browser/package.json",
+      "line": 3,
+      "text": "  \"version\": \"5.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-crypto/sha256-js/package.json",
+      "line": 3,
+      "text": "  \"version\": \"5.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-crypto/supports-web-crypto/package.json",
+      "line": 3,
+      "text": "  \"version\": \"5.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-crypto/util/package.json",
+      "line": 3,
+      "text": "  \"version\": \"5.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/client-dynamodb/dist-cjs/runtimeConfig.shared.js",
+      "line": 16,
+      "text": "        apiVersion: \"2012-08-10\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/client-dynamodb/dist-cjs/runtimeConfig.shared.js",
+      "line": 36,
+      "text": "            version: \"2012-08-10\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/client-dynamodb/dist-es/runtimeConfig.shared.js",
+      "line": 13,
+      "text": "        apiVersion: \"2012-08-10\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/client-dynamodb/dist-es/runtimeConfig.shared.js",
+      "line": 33,
+      "text": "            version: \"2012-08-10\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/client-dynamodb/package.json",
+      "line": 4,
+      "text": "  \"version\": \"3.1047.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/core/dist-cjs/submodules/client/index.js",
+      "line": 539,
+      "text": "    \"version\": \"1.1\"",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/core/dist-cjs/submodules/protocols/index.js",
+      "line": 2805,
+      "text": "            request.body = '<?xml version=\"1.0\" encoding=\"UTF-8\"?>' + request.body;",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/core/dist-es/submodules/client/util-endpoints/lib/aws/partitions.js",
+      "line": 275,
+      "text": "    \"version\": \"1.1\"",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/core/dist-es/submodules/protocols/xml/AwsRestXmlProtocol.js",
+      "line": 45,
+      "text": "            request.body = '<?xml version=\"1.0\" encoding=\"UTF-8\"?>' + request.body;",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/core/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.978.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/credential-provider-env/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.72\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/credential-provider-http/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.74\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/credential-provider-ini/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.973.17\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/credential-provider-login/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.79\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/credential-provider-node/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.84\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/credential-provider-process/dist-cjs/index.js",
+      "line": 7,
+      "text": "    if (data.Version !== 1) {",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/credential-provider-process/dist-es/getValidatedProcessCredentials.js",
+      "line": 3,
+      "text": "    if (data.Version !== 1) {",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/credential-provider-process/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.72\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/credential-provider-sso/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.973.16\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/credential-provider-web-identity/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.78\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/dynamodb-codec/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.973.46\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/endpoint-cache/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.11\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/lib-dynamodb/node_modules/@aws-sdk/util-dynamodb/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.996.9\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/lib-dynamodb/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.1047.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/middleware-endpoint-discovery/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.31\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/middleware-host-header/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.47\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/middleware-logger/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.46\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/middleware-recursion-detection/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.48\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/middleware-user-agent/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.76\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/nested-clients/dist-cjs/submodules/cognito-identity/index.js",
+      "line": 86,
+      "text": "var version = \"3.997.45\";",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/nested-clients/dist-cjs/submodules/cognito-identity/index.js",
+      "line": 418,
+      "text": "        apiVersion: \"2014-06-30\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/nested-clients/dist-cjs/submodules/cognito-identity/index.js",
+      "line": 443,
+      "text": "            version: \"2014-06-30\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/nested-clients/dist-cjs/submodules/signin/index.js",
+      "line": 81,
+      "text": "var version = \"3.997.45\";",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/nested-clients/dist-cjs/submodules/signin/index.js",
+      "line": 383,
+      "text": "        apiVersion: \"2023-01-01\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/nested-clients/dist-cjs/submodules/signin/index.js",
+      "line": 407,
+      "text": "            version: \"2023-01-01\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/nested-clients/dist-cjs/submodules/sso/index.js",
+      "line": 81,
+      "text": "var version = \"3.997.45\";",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/nested-clients/dist-cjs/submodules/sso-oidc/index.js",
+      "line": 81,
+      "text": "var version = \"3.997.45\";",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/nested-clients/dist-cjs/submodules/sts/index.js",
+      "line": 261,
+      "text": "var version = \"3.997.45\";",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/nested-clients/dist-cjs/submodules/sts/index.js",
+      "line": 535,
+      "text": "        apiVersion: \"2011-06-15\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/nested-clients/dist-cjs/submodules/sts/index.js",
+      "line": 565,
+      "text": "            version: \"2011-06-15\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/nested-clients/dist-es/submodules/cognito-identity/runtimeConfig.shared.js",
+      "line": 13,
+      "text": "        apiVersion: \"2014-06-30\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/nested-clients/dist-es/submodules/cognito-identity/runtimeConfig.shared.js",
+      "line": 38,
+      "text": "            version: \"2014-06-30\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/nested-clients/dist-es/submodules/signin/runtimeConfig.shared.js",
+      "line": 13,
+      "text": "        apiVersion: \"2023-01-01\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/nested-clients/dist-es/submodules/signin/runtimeConfig.shared.js",
+      "line": 37,
+      "text": "            version: \"2023-01-01\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/nested-clients/dist-es/submodules/sts/runtimeConfig.shared.js",
+      "line": 14,
+      "text": "        apiVersion: \"2011-06-15\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/nested-clients/dist-es/submodules/sts/runtimeConfig.shared.js",
+      "line": 44,
+      "text": "            version: \"2011-06-15\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/nested-clients/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.997.46\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/region-config-resolver/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.50\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/signature-v4-multi-region/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.996.47\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/token-providers/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.1138.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/types/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.974.6\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/util-endpoints/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.996.45\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/util-locate-window/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.965.10\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/util-user-agent-browser/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.47\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/util-user-agent-node/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.973.62\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@aws-sdk/xml-builder/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.972.41\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@smithy/core/package.json",
+      "line": 3,
+      "text": "  \"version\": \"3.35.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@smithy/credential-provider-imds/package.json",
+      "line": 3,
+      "text": "  \"version\": \"4.5.2\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@smithy/fetch-http-handler/package.json",
+      "line": 3,
+      "text": "  \"version\": \"5.8.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@smithy/is-array-buffer/package.json",
+      "line": 3,
+      "text": "  \"version\": \"2.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@smithy/node-http-handler/package.json",
+      "line": 3,
+      "text": "  \"version\": \"4.12.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@smithy/signature-v4/package.json",
+      "line": 3,
+      "text": "  \"version\": \"5.7.4\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@smithy/types/package.json",
+      "line": 3,
+      "text": "  \"version\": \"4.19.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@smithy/util-buffer-from/package.json",
+      "line": 3,
+      "text": "  \"version\": \"2.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/@smithy/util-utf8/package.json",
+      "line": 3,
+      "text": "  \"version\": \"2.3.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/bowser/bundled.js",
+      "line": 1,
+      "text": "!function(t,e){\"object\"==typeof exports&&\"object\"==typeof module?module.exports=e():\"function\"==typeof define&&define.amd?define([],e):\"object\"==typeof exports?exports.bowser=e():t.bowser=e()}(this,(function(){return function(t){var e={};function n(r){if(e[r])return e[r].exports;var i=e[r]={i:r,l:!1,exports:{}};return t[r].call(i.exports,i,i.exports,n),i.l=!0,i.exports}return n.m=t,n.c=e,n.d=function(t,e,r){n.o(t,e)||Object.defineProperty(t,e,{enumerable:!0,get:r})},n.r=function(t){\"undefined\"!=",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/bowser/package.json",
+      "line": 92,
+      "text": "  \"version\": \"2.14.1\"",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/bowser/src/parser-platforms.js",
+      "line": 465,
+      "text": "      return parser.getOSName(true) === 'android' && (osMajorVersion >= 3);",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/bowser/src/parser.js",
+      "line": 231,
+      "text": "   *   version: '10.11.12'",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/mnemonist/package.json",
+      "line": 3,
+      "text": "  \"version\": \"0.38.3\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/obliterator/package.json",
+      "line": 3,
+      "text": "  \"version\": \"1.6.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/node_modules/tslib/package.json",
+      "line": 5,
+      "text": "    \"version\": \"2.8.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 3,
+      "text": "  \"lockfileVersion\": 3,",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 14,
+      "text": "      \"version\": \"5.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 29,
+      "text": "      \"version\": \"5.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 43,
+      "text": "      \"version\": \"5.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 52,
+      "text": "      \"version\": \"5.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 63,
+      "text": "      \"version\": \"3.1047.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 94,
+      "text": "      \"version\": \"3.978.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 113,
+      "text": "      \"version\": \"3.972.72\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 129,
+      "text": "      \"version\": \"3.972.74\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 147,
+      "text": "      \"version\": \"3.973.17\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 171,
+      "text": "      \"version\": \"3.972.79\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 188,
+      "text": "      \"version\": \"3.972.84\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 210,
+      "text": "      \"version\": \"3.972.72\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 226,
+      "text": "      \"version\": \"3.973.16\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 244,
+      "text": "      \"version\": \"3.972.78\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 261,
+      "text": "      \"version\": \"3.973.46\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 276,
+      "text": "      \"version\": \"3.972.11\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 289,
+      "text": "      \"version\": \"3.1047.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 308,
+      "text": "      \"version\": \"3.996.9\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 323,
+      "text": "      \"version\": \"3.972.31\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 339,
+      "text": "      \"version\": \"3.972.47\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 352,
+      "text": "      \"version\": \"3.972.46\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 365,
+      "text": "      \"version\": \"3.972.48\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 378,
+      "text": "      \"version\": \"3.972.76\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 391,
+      "text": "      \"version\": \"3.997.46\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 410,
+      "text": "      \"version\": \"3.972.50\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 423,
+      "text": "      \"version\": \"3.996.47\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 438,
+      "text": "      \"version\": \"3.1138.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 455,
+      "text": "      \"version\": \"3.974.6\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 468,
+      "text": "      \"version\": \"3.996.45\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 482,
+      "text": "      \"version\": \"3.965.10\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 494,
+      "text": "      \"version\": \"3.972.47\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 504,
+      "text": "      \"version\": \"3.973.62\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 517,
+      "text": "      \"version\": \"3.972.41\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 530,
+      "text": "      \"version\": \"0.3.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 539,
+      "text": "      \"version\": \"3.35.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 552,
+      "text": "      \"version\": \"4.5.2\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 566,
+      "text": "      \"version\": \"5.8.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 580,
+      "text": "      \"version\": \"2.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 592,
+      "text": "      \"version\": \"4.12.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 606,
+      "text": "      \"version\": \"5.7.4\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 620,
+      "text": "      \"version\": \"4.19.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 632,
+      "text": "      \"version\": \"2.2.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 645,
+      "text": "      \"version\": \"2.3.0\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 658,
+      "text": "      \"version\": \"2.14.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 664,
+      "text": "      \"version\": \"0.38.3\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 673,
+      "text": "      \"version\": \"1.6.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/package-lock.json",
+      "line": 679,
+      "text": "      \"version\": \"2.8.1\",",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/parity/repository.mjs",
+      "line": 35,
+      "text": "  tx.push({Put:{TableName:this.journal,Item:{PK:'TEAM#'+c.teamId,SK:`AUDIT#${now}#${auditId}`,actorIssuer:c.actor.issuer,actorSubject:c.actor.subject,operation:c.operation,teamId:c.teamId,requestId:c.requestId,resultingVersion:state.teams[c.teamId].team.version,authorizationEpoch:state.teams[c.teamId].team.authorizationEpoch,at:now,expiresAt:c.now+365*86400},ConditionExpression:'attribute_not_exists(PK)'}});",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "domains/team-hub/service.mjs",
+      "line": 99,
+      "text": "        state.teams[teamId] = { team: { id: teamId, slug: req.slug, name: req.name, gameKey: req.gameKey, status: 'ACTIVE', version: 1, authorizationEpoch: 0, rosterVersion: 0, settings: { plan: 'FREE', logoAssetId: '' } }, memberships: {}, roster: [], entries: {}, assessments: {}, privateNotes: {}, intents: {} };",
+      "classification": "RUNTIME_CONTRACT_OR_SYNTHETIC_FIXTURE_REVIEW"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/authenticated-preflight.mjs",
+      "line": 8,
+      "text": "for(const persona of ['admin','ordinary']){const s=auth.sessions.get(persona),token=s[Object.keys(s).find(k=>k.endsWith('.accessToken'))],id=s[Object.keys(s).find(k=>k.endsWith('.idToken'))];assert.ok(token);await request(persona+'-valid',token,'/v1/authority',200);await request(persona+'-query-input-denied',token,'/v1/authority?epoch=2',400);if(id)await request(persona+'-id-token-denied',id);",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/authenticated-preflight.mjs",
+      "line": 10,
+      "text": "let calls=0;const client=createCutoverClient({manifest,core:acceptedCore.environmentContract,activation:{mode:'TARGET_WRITER',epoch:1,reviewed:true},tokenProvider:async()=>token,fetcher:async(url,init)=>{calls++;assert.equal(new URL(url).pathname,'/v1/authority');const response=await fetch(url,init);const copy=await response.clone().json();validateAuthority(copy,acceptedCore.environmentContract,Date.now());r.requests.push({label:persona+'-frontend-binding',requestId:response.headers.get('apigw-r",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/authenticated-preflight.mjs",
+      "line": 13,
+      "text": "r.businessRoutesDenied=16;r.metricWindow.end=new Date(Math.ceil((Date.now()+1)/60000)*60000).toISOString();r.complete=true;save();console.log(JSON.stringify({complete:true,checks:r.checks.length,businessRoutesDenied:16,authority:'LEGACY_WRITER',epoch:1}));",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/business-requests.test.mjs",
+      "line": 3,
+      "text": "const context={team:{id:teamId,version:7,authorizationEpoch:4,rosterVersion:2},membership:{version:3},target:{id:'team-membership:'+teamId+':00000000-0000-0000-0000-000000000001',version:2,membershipVersion:0},account:'existing-test-account@example.invalid',runKey:'reviewed_run_12345678',entryVersion:1,assessmentVersion:0};",
+      "classification": "SYNTHETIC_TEST_OR_ENTITY_REVISION"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/document.mjs",
+      "line": 127,
+      "text": "p=D+'domain-migration-status.json';const status=JSON.parse(fs.readFileSync(p));status.scope='Final offline maintenance preparation and read-only verification; no AWS writes';status.currentPhase='M5 / 2B6 FINAL_MAINTENANCE_PREPARATION_BLOCKED';status.awsChanges=0;const team=status.domains.find(x=>x.domain==='Team Hub');team.phase='M5_2B6_FINAL_MAINTENANCE_PREPARATION_BLOCKED';team.nextStep='Review source S3 in-flight quiescence proof and proposed same-role probe lifecycle; do not enter real FROZE",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/drain-plan.mjs",
+      "line": 5,
+      "text": "const ssl={Version:'2012-10-17',Statement:[{Sid:'RequireTLS',Effect:'Deny',Principal:'*',Action:'s3:*',Resource:[arn,arn+'/*'],Condition:{Bool:{'aws:SecureTransport':'false'}}}]};",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/frontend.mjs",
+      "line": 22,
+      "text": "const activation={mode:'TARGET_WRITER',epoch:3,reviewed:true};",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/frontend.mjs",
+      "line": 23,
+      "text": "fs.writeFileSync(E+'/activation.PROPOSED.json',JSON.stringify({scope:'Ntgre only; NOT PUBLISHED OR AUTHORIZED FOR ACTIVATION',releaseBinding:activation,requiredLiveGate:{previousMode:'FROZEN',previousEpoch:2,targetMode:'TARGET_WRITER',targetEpoch:3,targetVersion:3},onMismatch:'STOP; do not alter this pin or adopt a browser value',serverSideTransactionsRequired:true},null,2)+'\\n');",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/frontend.test.mjs",
+      "line": 6,
+      "text": " if(mode==='TARGET_WRITER'&&epoch===3){await c.call('LIST_MY_TEAMS',{});assert.equal(business,1);}else{await assert.rejects(c.call('LIST_MY_TEAMS',{}));assert.equal(business,0);}",
+      "classification": "SYNTHETIC_TEST_OR_ENTITY_REVISION"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/post-abort-authenticated.mjs",
+      "line": 7,
+      "text": "r.complete=true;save();console.log(JSON.stringify({complete:true,authority:'LEGACY_WRITER',epoch:3,version:3,routesDenied:16}));}finally{for(const s of auth.sessions.values())for(const k of Object.keys(s))delete s[k];auth.sessions.clear();}",
+      "classification": "CURRENT_REVIEWED_DERIVED_CANDIDATE"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/post-abort-contracts.mjs",
+      "line": 12,
+      "text": " return {expected:{mode:row.mode,epoch:row.epoch,version:row.version,gateDigest:row.gateDigest},next:{...row,mode:next,epoch:row.epoch+1,version:row.version+1}};",
+      "classification": "CURRENT_REVIEWED_DERIVED_CANDIDATE"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/post-abort-contracts.test.mjs",
+      "line": 3,
+      "text": "const row={schemaVersion:'team-hub-authority.v1',mode:'LEGACY_WRITER',epoch:3,version:3,gateDigest:'a'.repeat(64)};",
+      "classification": "SYNTHETIC_TEST_OR_ENTITY_REVISION"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/post-abort-contracts.test.mjs",
+      "line": 6,
+      "text": "for(const [name,patch]of [['stale epoch',{epoch:1}],['wrong authority',{mode:'TARGET_WRITER'}],['wrong version',{version:2}],['changed gate receipt',{gateDigest:'c'.repeat(64)}]])test(name+' prevents request rendering',()=>assert.throws(()=>authorityUpdateRequest({...row,...patch},'FROZEN',metadata)));",
+      "classification": "SYNTHETIC_TEST_OR_ENTITY_REVISION"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/post-abort-contracts.test.mjs",
+      "line": 15,
+      "text": "test('Diagnostic deny preserves unrelated policy and covers exact key only',()=>{const base={Version:'2012-10-17',Statement:[{Sid:'Unrelated',Effect:'Allow',Action:'s3:GetObject',Resource:'other'}]};const p=exactDiagnosticDeny(base);assert.deepEqual(p.Statement[0],base.Statement[0]);assert.equal(p.Statement[1].Resource,'arn:aws:s3:::'+sourceBucket+'/'+diagnosticKey);assert.equal(base.Statement.length,1);assert(!p.Statement[1].Resource.endsWith('*'));});",
+      "classification": "SYNTHETIC_TEST_OR_ENTITY_REVISION"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/post-abort-frontend.mjs",
+      "line": 22,
+      "text": "const activation={mode:'TARGET_WRITER',epoch:5,reviewed:true};",
+      "classification": "CURRENT_REVIEWED_DERIVED_CANDIDATE"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/post-abort-frontend.mjs",
+      "line": 23,
+      "text": "fs.writeFileSync(E+'/activation.PROPOSED.json',JSON.stringify({scope:'Ntgre only; NOT PUBLISHED OR AUTHORIZED FOR ACTIVATION',releaseBinding:activation,requiredLiveGate:{previousMode:'FROZEN',previousEpoch:4,targetMode:'TARGET_WRITER',targetEpoch:5,targetVersion:5},onMismatch:'STOP; do not alter this pin or adopt a browser value',serverSideTransactionsRequired:true},null,2)+'\\n');",
+      "classification": "CURRENT_REVIEWED_DERIVED_CANDIDATE"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/post-abort-frontend.test.mjs",
+      "line": 6,
+      "text": " if(mode==='TARGET_WRITER'&&epoch===5){await c.call('LIST_MY_TEAMS',{});assert.equal(business,1);}else{await assert.rejects(c.call('LIST_MY_TEAMS',{}));assert.equal(business,0);}",
+      "classification": "SYNTHETIC_TEST_OR_ENTITY_REVISION"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/post-abort-multipart-plan.mjs",
+      "line": 6,
+      "text": "  phase:'SEPARATELY_AUTHORIZED_PRE_MAINTENANCE_ONLY',requiredAuthority:{mode:'LEGACY_WRITER',epoch:3,version:3},requiresFullWriterFenceAbsent:true,",
+      "classification": "CURRENT_REVIEWED_DERIVED_CANDIDATE"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/quarantine-packet.mjs",
+      "line": 7,
+      "text": "const audit={AWSTemplateFormatVersion:'2010-09-09',Description:'PROPOSED account-local Ntgre logo-write trail; no company trail/source bucket modification',Resources:{AuditBucket:{Type:'AWS::S3::Bucket',DeletionPolicy:'Retain',UpdateReplacePolicy:'Retain',Properties:{BucketName:auditBucket,VersioningConfiguration:{Status:'Enabled'},BucketEncryption:{ServerSideEncryptionConfiguration:[{ServerSideEncryptionByDefault:{SSEAlgorithm:'AES256'}}]},PublicAccessBlockConfiguration:{BlockPublicAcls:true,Ig",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/quarantine.test.mjs",
+      "line": 16,
+      "text": "test('real website adapter discards source logo URL even if upstream supplies it',async()=>{const a=createWebsiteAdapter({identity:async()=>({subject:'admin'}),client:{call:async()=>({team:{id:'team:synthetic',version:1,rosterVersion:0,settings:{plan:'FREE',logoAssetId:late.key},logoUrl:'https://legacy.example/late.png'},memberships:[],roster:[],capabilities:{teamsAdmin:true}})}});assert.equal((await a.getTeamHub({teamId:'team:synthetic'})).team.logoUrl,'');});",
+      "classification": "SYNTHETIC_TEST_OR_ENTITY_REVISION"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/quarantine.test.mjs",
+      "line": 22,
+      "text": "const update={teamId:'team:synthetic',idempotencyKey:'quarantine-proof-0001',expectedTeamVersion:1,expectedAuthorizationEpoch:0,expectedMembershipVersion:0,name:'Synthetic Team',status:'ACTIVE'};",
+      "classification": "SYNTHETIC_TEST_OR_ENTITY_REVISION"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/resumed-execution.mjs",
+      "line": 30,
+      "text": "  const out=await d.send(new db.UpdateItemCommand(p.authorityRequest));save('frozen',{at:new Date().toISOString(),requestId:out.$metadata.requestId,authority:out.Attributes});const actual=await authority();assert.equal(actual.mode.S,'FROZEN');assert.equal(actual.epoch.N,'2');assert.equal(actual.version.N,'2');console.log(JSON.stringify({frozen:true,epoch:2,version:2,requestId:out.$metadata.requestId}));",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/resumed-post-recovery.mjs",
+      "line": 7,
+      "text": "r.complete=true;save();console.log(JSON.stringify({complete:true,authority:'LEGACY_WRITER',epoch:3,version:3,routesDenied:16}));}finally{for(const s of auth.sessions.values())for(const k of Object.keys(s))delete s[k];auth.sessions.clear();}",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/resumed-prewrite-recovery.mjs",
+      "line": 21,
+      "text": " const final=(await d.send(new db.GetItemCommand({TableName:'ProjectRespawn-TeamHub-Ntgre-Journal',Key:{PK:{S:'CONTROL#AUTHORITY'},SK:{S:'STATE'}},ConsistentRead:true}))).Item;assert.equal(final.mode.S,'LEGACY_WRITER');assert.equal(final.epoch.N,'3');assert.equal(final.version.N,'3');result.complete=true;save();console.log(JSON.stringify({recovered:true,authority:'LEGACY_WRITER',epoch:3,version:3,tables:4,logoRestored:true,gatewaysRestored:2}));",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/service-inspection.mjs",
+      "line": 17,
+      "text": "r.bucket.versioning=await s3.send(new GetBucketVersioningCommand({Bucket:bucket,ExpectedBucketOwner:'058264289478'}));",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/two-blockers.mjs",
+      "line": 10,
+      "text": "const policy={Version:'2012-10-17',Statement:[{Sid:'OnlyOwnedConditionalDiagnostics',Effect:'Allow',Action:['dynamodb:PutItem','dynamodb:UpdateItem','dynamodb:DeleteItem','dynamodb:BatchWriteItem','dynamodb:PartiQLUpdate','dynamodb:PartiQLDelete'],Resource:tables.map(t=>'arn:aws:dynamodb:'+region+':'+account+':table/'+t),Condition:partition},{Sid:'OnlyOwnedLogoDiagnostic',Effect:'Allow',Action:['s3:PutObject','s3:DeleteObject','s3:DeleteObjectVersion','s3:AbortMultipartUpload'],Resource:'arn:aws",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-maintenance-preparation/two-blockers.mjs",
+      "line": 11,
+      "text": "return {schemaVersion:'team-hub-restricted-probe-review.v1',prepared:true,executed:false,resourceInventory:[{logicalId:'RestrictedRole',type:'AWS::IAM::Role',name:role},{logicalId:'RestrictedProbe',type:'AWS::Lambda::Function',name:fn}],policy,trust:{Version:'2012-10-17',Statement:[{Effect:'Allow',Principal:{Service:'lambda.amazonaws.com'},Action:'sts:AssumeRole'}]},runtime:'Requires a new reviewed fixed runtime: original ZIP checks original function name/profile and must NOT be substituted',lim",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-2b6/authority-bootstrap.test.mjs",
+      "line": 5,
+      "text": "for(const runtime of ['read','command'])for(const state of ['missing','legacy'])test('initialization never enables '+runtime+' with '+state+' authority',async()=>{let writes=0,core=0;const events=[];const run=createCutoverHandler({runtime,environment,clock:()=>now,cursorSecret:'offline-only',transport:{get:async()=>({Item:state==='legacy'?initialize(meta).Item:undefined}),query:async()=>assert.fail('Business read unreachable'),transactWrite:async()=>{writes++;assert.fail('Write unreachable')}},i",
+      "classification": "SYNTHETIC_TEST_OR_ENTITY_REVISION"
+    },
+    {
+      "file": "scripts/team-hub-2b6/browser-built.mjs",
+      "line": 16,
+      "text": "function transport(subject,persona,run='baseline'){assert.ok(run==='baseline'||/^[a-f0-9]{32}$/.test(run));const key=crypto.createHash('sha256').update(subject+'|'+persona+'|'+run).digest('hex');if(sessions.has(key))return sessions.get(key);const t=new LocalTransport();let rows=nativeFixture();const i=['manager','coach','player'].indexOf(persona);if(i>=0){const old='00000000-0000-4000-8000-'+String(i+1).padStart(12,'0');rows=JSON.parse(JSON.stringify(rows).replaceAll(old,subject));}for(const row",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-2b6/browser-checks.mjs",
+      "line": 21,
+      "text": "  await check('INVALID_TOKEN_DENIED',async()=>{const r=await fetch(__TEAM_HUB_REHEARSAL_BASE__+'/v1/teams',{headers:{Authorization:'Bearer invalid-gate-a-token','X-Rehearsal-Persona':persona,'X-Team-Authority-Epoch':'2'}});if(r.status!==403)throw Error('INVALID_TOKEN_ACCEPTED');});",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-2b6/browser-fixture.mjs",
+      "line": 7,
+      "text": " const rows=[{entityType:'TEAM',id:teamId,slug:'native-alpha',name:'Native Alpha',gameKey:'LEAGUE_OF_LEGENDS',status:'ACTIVE',authorizationEpoch:8,rosterVersion:3,membershipRevision:3,settingsRevision:1,managerMembershipId:mid(subjects[0]),coachMembershipId:mid(subjects[1]),createdByUserId:subjects[0],updatedByUserId:subjects[0],settings:{plan:'FREE',logoAssetId:null},StatusPK:'STATUS#ACTIVE',StatusSK:'TEAM#'+teamId},{entityType:'SLUG',teamId}];",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-2b6/browser-fixture.mjs",
+      "line": 12,
+      "text": " return rows.map(r=>{const [PK,SK]=keys(r.entityType==='SLUG'?{...r,slug:'native-alpha'}:r);return {...r,PK,SK,schemaVersion,version:1,createdAt:at,updatedAt:at};});",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-2b6/browser-local.mjs",
+      "line": 16,
+      "text": "function transport(subject,persona,run='baseline'){assert.ok(run==='baseline'||/^[a-f0-9]{32}$/.test(run));const key=crypto.createHash('sha256').update(subject+'|'+persona+'|'+run).digest('hex');if(sessions.has(key))return sessions.get(key);const t=new LocalTransport();let rows=nativeFixture();const i=['manager','coach','player'].indexOf(persona);if(i>=0){const old='00000000-0000-4000-8000-'+String(i+1).padStart(12,'0');rows=JSON.parse(JSON.stringify(rows).replaceAll(old,subject));}for(const row",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-2b6/browser-service.mjs",
+      "line": 9,
+      "text": "const client=createCutoverClient({manifest,core:coreManifest.environmentContract,activation:{mode:'TARGET_WRITER',epoch:2,reviewed:true},tokenProvider:async()=> (await session()).tokens?.accessToken?.toString(),fetcher:(url,init)=>{",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-2b6/core-timing.test.mjs",
+      "line": 5,
+      "text": "function setup(delta){let time=1000997;const result={ok:true,data:{contractVersion:'authorization.decision.v1',subject:actor.subject,environment:'Ntgre',capability:'teams.admin',allowed:false,decisionVersion:1,evaluatedAt:1001+delta,expiresAt:1006+delta}};const waits=[];return {result,waits,client:realCore({actor,environment:{environment:'Ntgre'},accessToken:'fixture',clock:()=>Math.floor(time/1000),invoke:async()=>waitForIssueTime(result,{now:()=>time,sleep:async ms=>{waits.push(ms);time+=ms;}}",
+      "classification": "SYNTHETIC_TEST_OR_ENTITY_REVISION"
+    },
+    {
+      "file": "scripts/team-hub-2b6/fence-sequencing.mjs",
+      "line": 19,
+      "text": "      candidate.existing[table.arn] ?? { Version: '2012-10-17', Statement: [] });",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-2b6/isolated-rehearsal.mjs",
+      "line": 29,
+      "text": "const invokeCore=async r=>r.contractVersion==='authorization.decision.v1'?{ok:true,data:{contractVersion:r.contractVersion,subject:subjects[r.accessToken],capability:r.capability,environment:'Ntgre',allowed:r.accessToken==='admin'&&r.capability==='teams.admin',decisionVersion:1,evaluatedAt:now,expiresAt:now+5}}:{ok:true,data:{contractVersion:r.contractVersion,subject:subjects[r.account.split('@')[0]],displayName:r.account.split('@')[0]}};",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-2b6/isolated-rehearsal.mjs",
+      "line": 31,
+      "text": "let expectedEpoch=2,sequence=0;",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-2b6/isolated-rehearsal.mjs",
+      "line": 48,
+      "text": " const control={PK:'CONTROL#AUTHORITY',SK:'STATE',schemaVersion:'team-hub-authority.v1',mode:'TARGET_WRITER',epoch:2,version:2,changedAt:new Date().toISOString(),changedBy:'ISOLATED_REHEARSAL',gateDigest:crypto.createHash('sha256').update('2B5B isolated only').digest('hex')};",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-2b6/isolated-rehearsal.mjs",
+      "line": 59,
+      "text": " expectedEpoch=2;await call('player','CREATE_TEAM',{...probe,slug:'phase2b4-test-abcdefgh-denied'},403);",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-2b6/isolated-rehearsal.mjs",
+      "line": 68,
+      "text": " await call('manager','SET_ROSTER_SLOT',{...await concurrency('manager'),action:'ASSIGN',membershipId:member('player'),gameRoleKey:'MID',slotType:'STARTER',expectedRosterVersion:0,expectedTargetMembershipVersion:1});",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-2b6/isolated-rehearsal.mjs",
+      "line": 70,
+      "text": " await call('coach','UPSERT_COACH_ASSESSMENT',{...await concurrency('coach'),membershipId:member('player'),championId:'Ahri',teamVisible:'Synthetic team-visible review',privateNote:'',expectedAssessmentVersion:0,expectedTargetMembershipVersion:1});",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-2b6/isolated-rehearsal.mjs",
+      "line": 76,
+      "text": " expectedEpoch=3;await call('admin','UPDATE_TEAM',stale,403);",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-2b6/prepare-authority-plan.mjs",
+      "line": 8,
+      "text": "const metadata={changedAt:new Date().toISOString(),changedBy:'team-hub-authority-bootstrap',gateDigest:hash(D+'/candidate.json')};const request=initialize(metadata);const item=Object.fromEntries(Object.entries(request.Item).map(([k,v])=>[k,typeof v==='number'?{N:String(v)}:{S:v}]));save('c1-put-item.PROPOSAL',{TableName:request.TableName,Item:item,ConditionExpression:request.ConditionExpression,ReturnValues:'NONE'});save('c1-review',{reviewed:false,executed:false,mode:'LEGACY_WRITER',epoch:1,ver",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-2b6/prepare-authority-plan.mjs",
+      "line": 9,
+      "text": "const journal='arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal';save('c1-initializer-policy.PROPOSAL',{Version:'2012-10-17',Statement:[{Effect:'Allow',Action:['dynamodb:GetItem','dynamodb:PutItem'],Resource:journal,Condition:{'ForAllValues:StringEquals':{'dynamodb:LeadingKeys':['CONTROL#AUTHORITY']},Null:{'dynamodb:LeadingKeys':'false'}}},{Effect:'Deny',NotAction:['dynamodb:GetItem','dynamodb:PutItem'],Resource:'*'},{Effect:'Deny',Action:'dynamodb:*',NotResour",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-2b6/review-dormant-fence.mjs",
+      "line": 27,
+      "text": "const frozen={Version:'2012-10-17',Statement:bundle.future.tables.flatMap(t=>denialProjection(t.policy).Statement)};",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-2b6/review-dormant-fence.mjs",
+      "line": 30,
+      "text": "  const allow={Version:'2012-10-17',Statement:[{Effect:'Allow',Action:actions,Resource:resources}]};",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-2b6/telemetry-acceptance.test.mjs",
+      "line": 8,
+      "text": "async function deniedRequest({ dependencyFailure = false, coreFailure=false, mode='TARGET_WRITER', epoch=2, missingAuthority=false, success=false } = {}) {",
+      "classification": "SYNTHETIC_TEST_OR_ENTITY_REVISION"
+    },
+    {
+      "file": "scripts/team-hub-2b6/telemetry-acceptance.test.mjs",
+      "line": 11,
+      "text": "    mode, epoch:2, version:2, changedAt:'2026-10-07T00:00:00Z',",
+      "classification": "SYNTHETIC_TEST_OR_ENTITY_REVISION"
+    },
+    {
+      "file": "scripts/team-hub-2b6/telemetry-acceptance.test.mjs",
+      "line": 24,
+      "text": "    decisionVersion:1, evaluatedAt:now, expiresAt:now+5 } });};",
+      "classification": "SYNTHETIC_TEST_OR_ENTITY_REVISION"
+    },
+    {
+      "file": "scripts/team-hub-2b6/ui-acceptance.mjs",
+      "line": 2,
+      "text": "export const browserProbe=`(()=>{window.__teamProof=JSON.parse(sessionStorage.getItem('team-hub-proof')||'[]');const push=window.__teamProof.push.bind(window.__teamProof);window.__teamProof.push=(...items)=>{const n=push(...items);sessionStorage.setItem('team-hub-proof',JSON.stringify(window.__teamProof));return n;};const original=window.fetch;window.fetch=async(input,init)=>{const url=String(input instanceof Request?input.url:input);if(!url.includes('/__team-hub-2b6-'))return original(input,ini",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    },
+    {
+      "file": "scripts/team-hub-2b6/validate-authority-iam.mjs",
+      "line": 5,
+      "text": "for(const role of installed.roles)for(const version of ['installed','minimal-c2']){const policy=version==='installed'?role.inline[0].document:read('c2-'+role.kind.toLowerCase()+'-identity.PROPOSAL'),boundary=version==='installed'?role.boundary.document:read('c2-'+role.kind.toLowerCase()+'-boundary.PROPOSAL');for(const [action,resource,key,expected]of [['dynamodb:GetItem',own,'CONTROL#AUTHORITY',version==='minimal-c2'],['dynamodb:GetItem',own,'IDEMP#test',false],['dynamodb:GetItem',own.replace('-",
+      "classification": "HISTORICAL_EXECUTION_OR_PREPARATION_NOT_REUSED"
+    }
+  ],
+  "review": "Runtime authority reads actual row and transaction checks actual mode/epoch/version. Active browser reads endpoint and matches pinned epoch 5. Team entity authorizationEpoch is independent. Old 1/2/3 executors and fixtures preserved historically; not part of new execution pins. No backend changes required."
+}

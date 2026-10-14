@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "team-hub-corrected-maintenance-execution.v1",
+  "prepared": true,
+  "executed": false,
+  "scope": "Account 058264289478, eu-north-1, Ntgre localhost only",
+  "parentCandidate": {
+    "path": "docs/architecture/team-hub-post-abort-correction-evidence-2026-10-13/candidate-58a168cf2f4e370e7b5ceb7044c6e957bd30085212efcac179caecc45b11f895.json",
+    "sha256": "58a168cf2f4e370e7b5ceb7044c6e957bd30085212efcac179caecc45b11f895",
+    "componentHashes": [
+      {
+        "path": "docs/architecture/team-hub-post-abort-correction-evidence-2026-10-13/multipart-lifecycle.PROPOSED.json",
+        "sha256": "3cbd60bb46a0f001ba94b52b8679abd5d88c2219d4d091e596a02a919a195ffa"
+      },
+      {
+        "path": "docs/architecture/team-hub-post-abort-correction-evidence-2026-10-13/multipart-diagnostic.PROPOSED.policy.json",
+        "sha256": "8e2397f3c570b0db7b7c5e732c38ee4624a7a824a7e06e478ffed5555469bd2f"
+      },
+      {
+        "path": "docs/architecture/team-hub-post-abort-correction-evidence-2026-10-13/authority-transition.PROPOSED.json",
+        "sha256": "4e590b9f93fa2a29b26aaba1dad30615e01d1fb21e6feb665c2df4538c9ac4e7"
+      },
+      {
+        "path": "docs/architecture/team-hub-post-abort-correction-evidence-2026-10-13/activation.PROPOSED.json",
+        "sha256": "dd415dfb6ef4880aa7bcf87ba2bb30877fd0abadfa6b6e1d3c4ade874cc7efea"
+      },
+      {
+        "path": "docs/architecture/team-hub-post-abort-correction-evidence-2026-10-13/activation-manifest.json",
+        "sha256": "3c4a04c630636d11a3235314c87699aa406b2451fd15a29e1d7be1cd5ba01bdf"
+      },
+      {
+        "path": "docs/architecture/team-hub-post-abort-correction-evidence-2026-10-13/rollback-reuse-manifest.json",
+        "sha256": "65cf08822ea849bee4fc5b4d7371f50f4a06d8ee6db9fbeb255ad2a93b512a0a"
+      },
+      {
+        "path": "docs/architecture/team-hub-post-abort-correction-evidence-2026-10-13/frontend-final-pins.json",
+        "sha256": "f4994f55ebffc5805fa3f76ec1ac3c37c854704f4043c1b148e6356341c6a31f"
+      }
+    ]
+  },
+  "amendment": "docs/architecture/team-hub-multipart-diagnostic-execution-evidence-2026-10-13/approval-amendment.json",
+  "multipartPrerequisite": "docs/architecture/team-hub-multipart-diagnostic-execution-evidence-2026-10-13/accepted.json",
+  "startingAuthority": {
+    "mode": "LEGACY_WRITER",
+    "epoch": 3,
+    "version": 3
+  },
+  "frozenAuthority": {
+    "mode": "FROZEN",
+    "epoch": 4,
+    "version": 4
+  },
+  "targetAuthority": {
+    "mode": "TARGET_WRITER",
+    "epoch": 5,
+    "version": 5
+  },
+  "authorityPlan": "docs/architecture/team-hub-post-abort-correction-evidence-2026-10-13/authority-transition.PROPOSED.json",
+  "requestRenderer": "scripts/team-hub-maintenance-preparation/post-abort-contracts.mjs#authorityUpdateRequest",
+  "sourceFenceBundle": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/gate-b/dormant-bundle.json",
+  "generatedDeleteCandidateSha256": "cd335b6f16a422715388d31e30ffe54798be5fe45698754e96f13ed0a93ab351",
+  "originalOperatorCoverage": {
+    "liveDuringFrozen": 35,
+    "preMaintenanceAbortProof": 1,
+    "preMaintenanceAbortRequestId": "FMNH2DH4K7JDGHG5",
+    "missingUpload404NeverCounts": true
+  },
+  "generatedProofsRequired": 12,
+  "frontend": [
+    {
+      "kind": "activation",
+      "manifest": "docs/architecture/team-hub-post-abort-correction-evidence-2026-10-13/activation-manifest.json",
+      "sha256": "3c4a04c630636d11a3235314c87699aa406b2451fd15a29e1d7be1cd5ba01bdf",
+      "files": 315,
+      "artifactDirectory": ".tmp/team-hub-post-abort-correction/activation-website"
+    },
+    {
+      "kind": "rollback",
+      "manifest": "docs/architecture/team-hub-post-abort-correction-evidence-2026-10-13/rollback-reuse-manifest.json",
+      "sha256": "65cf08822ea849bee4fc5b4d7371f50f4a06d8ee6db9fbeb255ad2a93b512a0a",
+      "files": 462,
+      "artifactDirectory": ".tmp/team-hub-maintenance-preparation/rollback-website",
+      "originalArtifactBytesReused": true
+    }
+  ],
+  "durationMinutes": 150,
+  "observationMinutes": 30,
+  "targetMinimumRemainingMinutes": 60,
+  "prohibited": "Do not rerun historical epoch-1/2 executors, use the old epoch-3 activation or unsafe same-role helpers; no automatic retries or permanent IAM changes",
+  "gates": [
+    "Fresh baselines, attendance/custody and hashes",
+    "Conditional FROZEN 4/4",
+    "Exact fence/gateway install and actual original-principal proofs",
+    "Source/target/quarantine reconcile",
+    "Conditional TARGET_WRITER 5/5",
+    "Five distinct real personas and nine mutations/four reads",
+    "Pinned local frontend activation",
+    "Observation and state-aware recovery"
+  ],
+  "executionAuthorizedInThisTask": false
+}

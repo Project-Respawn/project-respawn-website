@@ -1,0 +1,136 @@
+{
+  "Changes": [
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Modify",
+        "LogicalResourceId": "ExecutionBoundary",
+        "PhysicalResourceId": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofExecutionBoundary",
+        "ResourceType": "AWS::IAM::ManagedPolicy",
+        "Replacement": "False",
+        "Scope": [
+          "Properties"
+        ],
+        "Details": [
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "PolicyDocument",
+              "RequiresRecreation": "Never",
+              "Path": "/Properties/PolicyDocument",
+              "BeforeValue": "(Truncated-Signature):645aad8afd6ab8f7474a7aae7a6ff02fccdd94831042ea8f023331fda9ac37a5",
+              "AfterValue": "(Truncated-Signature):9df23a4ca8c753262deb17c9606fe36c316f46b2c1ef9b5b6d99c58d4925534a",
+              "AttributeChangeType": "Modify"
+            },
+            "Evaluation": "Static",
+            "ChangeSource": "DirectModification"
+          }
+        ],
+        "BeforeContext": "{\"Properties\":{\"ManagedPolicyName\":\"ProjectRespawn-TeamHub-Ntgre-ReadProofExecutionBoundary\",\"PolicyDocument\":\"(Truncated-Signature):645aad8afd6ab8f7474a7aae7a6ff02fccdd94831042ea8f023331fda9ac37a5\"}}",
+        "AfterContext": "{\"Properties\":{\"ManagedPolicyName\":\"ProjectRespawn-TeamHub-Ntgre-ReadProofExecutionBoundary\",\"PolicyDocument\":\"(Truncated-Signature):9df23a4ca8c753262deb17c9606fe36c316f46b2c1ef9b5b6d99c58d4925534a\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Modify",
+        "LogicalResourceId": "ExecutionRole",
+        "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+        "ResourceType": "AWS::IAM::Role",
+        "Replacement": "False",
+        "Scope": [
+          "Properties"
+        ],
+        "Details": [
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "Policies",
+              "RequiresRecreation": "Never",
+              "Path": "/Properties/Policies",
+              "BeforeValue": "(Truncated-Signature):bb702ee1995e067d0ed723953817c02360406e7177a718e871ea869b9c102fb8",
+              "AfterValue": "(Truncated-Signature):d1e12f66ac0098518c2172064ce8556c6b93db81ec9f3420667dd4975654bad4",
+              "AttributeChangeType": "Modify"
+            },
+            "Evaluation": "Static",
+            "ChangeSource": "DirectModification"
+          }
+        ],
+        "BeforeContext": "{\"Properties\":{\"RoleName\":\"ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\",\"Policies\":\"(Truncated-Signature):bb702ee1995e067d0ed723953817c02360406e7177a718e871ea869b9c102fb8\",\"AssumeRolePolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"cloudformation.amazonaws.com\"}}]},\"PermissionsBoundary\":\"arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofExecutionBoundary\"}}",
+        "AfterContext": "{\"Properties\":{\"RoleName\":\"ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\",\"Policies\":\"(Truncated-Signature):d1e12f66ac0098518c2172064ce8556c6b93db81ec9f3420667dd4975654bad4\",\"AssumeRolePolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"cloudformation.amazonaws.com\"}}]},\"PermissionsBoundary\":\"arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofExecutionBoundary\"}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Modify",
+        "LogicalResourceId": "PreparationCaller",
+        "PhysicalResourceId": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofPreparation",
+        "ResourceType": "AWS::IAM::ManagedPolicy",
+        "Replacement": "False",
+        "Scope": [
+          "Properties"
+        ],
+        "Details": [
+          {
+            "Target": {
+              "Attribute": "Properties",
+              "Name": "PolicyDocument",
+              "RequiresRecreation": "Never",
+              "Path": "/Properties/PolicyDocument",
+              "BeforeValue": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Deny\",\"NotAction\":[\"cloudformation:DescribeChangeSet\",\"cloudformation:DeleteChangeSet\",\"cloudformation:DescribeStacks\",\"cloudformation:DescribeStackEvents\",\"cloudformation:GetTemplate\",\"cloudformation:CreateChangeSet\",\"cloudformation:ExecuteChangeSet\",\"iam:PassRole\",\"cloudformation:ListStackResources\",\"cloudformation:DescribeStackResource\",\"cloudformation:ListChangeSets\",\"s3:GetObject\",\"s3:GetObjectVersion\"],\"Resource\":\"*\"},{\"Effect\":\"Allow\",\"Action\":[\"cloudformation:DescribeChangeSet\",\"cloudformation:DeleteChangeSet\",\"cloudformation:DescribeStacks\",\"cloudformation:DescribeStackEvents\",\"cloudformation:GetTemplate\",\"cloudformation:ListStackResources\",\"cloudformation:DescribeStackResource\",\"cloudformation:ListChangeSets\"],\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\"},{\"Effect\":\"Allow\",\"Action\":\"cloudformation:CreateChangeSet\",\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\",\"Condition\":{\"StringEquals\":{\"cloudformation:RoleArn\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\",\"cloudformation:TemplateUrl\":[\"https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/team-hub/as/5a2d99f4919fd07c619f483e556a0464b9cbaad0be00665201438b0f4ec7d0e9.template.json\",\"https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/team-hub/config-repair/38ea59476109a3b16348fb789364462af43f2813ff3eec7f92bfadb9581d6a4f.template.json\"]}}},{\"Effect\":\"Allow\",\"Action\":\"cloudformation:ExecuteChangeSet\",\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\"},{\"Effect\":\"Deny\",\"Action\":\"cloudformation:*\",\"NotResource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\"},{\"Effect\":\"Deny\",\"Action\":\"cloudformation:*\",\"Resource\":\"*\",\"Condition\":{\"StringNotEquals\":{\"aws:RequestedRegion\":\"eu-north-1\"}}},{\"Effect\":\"Allow\",\"Action\":\"iam:PassRole\",\"Resource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\",\"Condition\":{\"StringEquals\":{\"iam:PassedToService\":\"cloudformation.amazonaws.com\"}}},{\"Effect\":\"Deny\",\"Action\":\"iam:PassRole\",\"NotResource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\"},{\"Effect\":\"Deny\",\"Action\":\"iam:PassRole\",\"Resource\":\"*\",\"Condition\":{\"StringNotEquals\":{\"iam:PassedToService\":\"cloudformation.amazonaws.com\"}}},{\"Effect\":\"Allow\",\"Action\":[\"s3:GetObject\",\"s3:GetObjectVersion\"],\"Resource\":[\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/as/5a2d99f4919fd07c619f483e556a0464b9cbaad0be00665201438b0f4ec7d0e9.template.json\",\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/config-repair/38ea59476109a3b16348fb789364462af43f2813ff3eec7f92bfadb9581d6a4f.template.json\"]},{\"Effect\":\"Deny\",\"Action\":\"s3:*\",\"NotResource\":[\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/as/5a2d99f4919fd07c619f483e556a0464b9cbaad0be00665201438b0f4ec7d0e9.template.json\",\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/config-repair/38ea59476109a3b16348fb789364462af43f2813ff3eec7f92bfadb9581d6a4f.template.json\"]}]}",
+              "AfterValue": "(Truncated-Signature):fea89f904ace8faabbfa11520794a6e2a013bbbb732dc252522f4477b61d37c7",
+              "AttributeChangeType": "Modify"
+            },
+            "Evaluation": "Static",
+            "ChangeSource": "DirectModification"
+          }
+        ],
+        "BeforeContext": "{\"Properties\":{\"ManagedPolicyName\":\"ProjectRespawn-TeamHub-Ntgre-ReadProofPreparation\",\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Resource\":\"*\",\"Effect\":\"Deny\",\"NotAction\":[\"cloudformation:DescribeChangeSet\",\"cloudformation:DeleteChangeSet\",\"cloudformation:DescribeStacks\",\"cloudformation:DescribeStackEvents\",\"cloudformation:GetTemplate\",\"cloudformation:CreateChangeSet\",\"cloudformation:ExecuteChangeSet\",\"iam:PassRole\",\"cloudformation:ListStackResources\",\"cloudformation:DescribeStackResource\",\"cloudformation:ListChangeSets\",\"s3:GetObject\",\"s3:GetObjectVersion\"]},{\"Action\":[\"cloudformation:DescribeChangeSet\",\"cloudformation:DeleteChangeSet\",\"cloudformation:DescribeStacks\",\"cloudformation:DescribeStackEvents\",\"cloudformation:GetTemplate\",\"cloudformation:ListStackResources\",\"cloudformation:DescribeStackResource\",\"cloudformation:ListChangeSets\"],\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\",\"Effect\":\"Allow\"},{\"Condition\":{\"StringEquals\":{\"cloudformation:TemplateUrl\":[\"https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/team-hub/as/5a2d99f4919fd07c619f483e556a0464b9cbaad0be00665201438b0f4ec7d0e9.template.json\",\"https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/team-hub/config-repair/38ea59476109a3b16348fb789364462af43f2813ff3eec7f92bfadb9581d6a4f.template.json\"],\"cloudformation:RoleArn\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\"}},\"Action\":\"cloudformation:CreateChangeSet\",\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\",\"Effect\":\"Allow\"},{\"Action\":\"cloudformation:ExecuteChangeSet\",\"Resource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\",\"Effect\":\"Allow\"},{\"Action\":\"cloudformation:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*\"},{\"Condition\":{\"StringNotEquals\":{\"aws:RequestedRegion\":\"eu-north-1\"}},\"Action\":\"cloudformation:*\",\"Resource\":\"*\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringEquals\":{\"iam:PassedToService\":\"cloudformation.amazonaws.com\"}},\"Action\":\"iam:PassRole\",\"Resource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\",\"Effect\":\"Allow\"},{\"Action\":\"iam:PassRole\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution\"},{\"Condition\":{\"StringNotEquals\":{\"iam:PassedToService\":\"cloudformation.amazonaws.com\"}},\"Action\":\"iam:PassRole\",\"Resource\":\"*\",\"Effect\":\"Deny\"},{\"Action\":[\"s3:GetObject\",\"s3:GetObjectVersion\"],\"Resource\":[\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/as/5a2d99f4919fd07c619f483e556a0464b9cbaad0be00665201438b0f4ec7d0e9.template.json\",\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/config-repair/38ea59476109a3b16348fb789364462af43f2813ff3eec7f92bfadb9581d6a4f.template.json\"],\"Effect\":\"Allow\"},{\"Action\":\"s3:*\",\"Effect\":\"Deny\",\"NotResource\":[\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/as/5a2d99f4919fd07c619f483e556a0464b9cbaad0be00665201438b0f4ec7d0e9.template.json\",\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/config-repair/38ea59476109a3b16348fb789364462af43f2813ff3eec7f92bfadb9581d6a4f.template.json\"]}]}}}",
+        "AfterContext": "{\"Properties\":{\"ManagedPolicyName\":\"ProjectRespawn-TeamHub-Ntgre-ReadProofPreparation\",\"PolicyDocument\":\"(Truncated-Signature):fea89f904ace8faabbfa11520794a6e2a013bbbb732dc252522f4477b61d37c7\"}}"
+      }
+    }
+  ],
+  "ChangeSetName": "team-hub-cursor-security-20261013-369c5017",
+  "ChangeSetId": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/team-hub-cursor-security-20261013-369c5017/1b399ee2-b6ca-4957-91e3-e23d34694736",
+  "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-ReadProofSecurity/4a82aa00-c0ca-11f1-88d3-0efff9541601",
+  "StackName": "ProjectRespawn-TeamHub-Ntgre-ReadProofSecurity",
+  "Description": null,
+  "Parameters": [
+    {
+      "ParameterKey": "BootstrapVersion",
+      "ParameterValue": "/cdk-bootstrap/hnb659fds/version",
+      "ResolvedValue": "30"
+    }
+  ],
+  "CreationTime": "2026-10-13T21:55:42.231000+00:00",
+  "ExecutionStatus": "AVAILABLE",
+  "Status": "CREATE_COMPLETE",
+  "StatusReason": null,
+  "NotificationARNs": [],
+  "RollbackConfiguration": {},
+  "Capabilities": [
+    "CAPABILITY_NAMED_IAM"
+  ],
+  "Tags": [
+    {
+      "Key": "Project",
+      "Value": "ProjectRespawn"
+    },
+    {
+      "Key": "Environment",
+      "Value": "Ntgre"
+    },
+    {
+      "Key": "Domain",
+      "Value": "TeamHub"
+    }
+  ],
+  "ParentChangeSetId": null,
+  "IncludeNestedStacks": false,
+  "RootChangeSetId": null,
+  "OnStackFailure": null,
+  "ImportExistingResources": null,
+  "StackDriftStatus": null,
+  "DeploymentMode": null
+}

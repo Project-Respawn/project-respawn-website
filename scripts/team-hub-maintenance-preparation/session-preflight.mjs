@@ -1,0 +1,2 @@
+import fs from 'node:fs';import {reuseSessions} from '../team-hub-2b6/reuse-sessions.mjs';
+const r=await reuseSessions();const out={at:new Date().toISOString(),availablePersonas:[...r.sessions.keys()],attempts:r.attempts,credentialsRecorded:false};for(const s of r.sessions.values())for(const k of Object.keys(s))delete s[k];r.sessions.clear();fs.writeFileSync('docs/architecture/team-hub-controlled-cutover-preflight-evidence-2026-10-13/session-availability.json',JSON.stringify(out,null,2)+'\n');console.log(JSON.stringify(out));

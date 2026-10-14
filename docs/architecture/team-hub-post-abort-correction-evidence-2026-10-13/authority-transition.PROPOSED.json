@@ -1,0 +1,143 @@
+{
+  "schemaVersion": "team-hub-monotonic-authority-plan.v1",
+  "initial": {
+    "PK": "CONTROL#AUTHORITY",
+    "changedAt": "2026-10-13T20:09:48.029Z",
+    "changedBy": "arn:aws:iam::058264289478:user/RavenTest",
+    "epoch": 3,
+    "gateDigest": "6f527a0c73577743c368a333c30436b669c6ec25a9e216c865c4d9a964785502",
+    "mode": "LEGACY_WRITER",
+    "schemaVersion": "team-hub-authority.v1",
+    "version": 3,
+    "SK": "STATE"
+  },
+  "initialRecord": {
+    "PK": {
+      "S": "CONTROL#AUTHORITY"
+    },
+    "changedAt": {
+      "S": "2026-10-13T20:09:48.029Z"
+    },
+    "changedBy": {
+      "S": "arn:aws:iam::058264289478:user/RavenTest"
+    },
+    "epoch": {
+      "N": "3"
+    },
+    "gateDigest": {
+      "S": "6f527a0c73577743c368a333c30436b669c6ec25a9e216c865c4d9a964785502"
+    },
+    "mode": {
+      "S": "LEGACY_WRITER"
+    },
+    "schemaVersion": {
+      "S": "team-hub-authority.v1"
+    },
+    "version": {
+      "N": "3"
+    },
+    "SK": {
+      "S": "STATE"
+    }
+  },
+  "steps": [
+    {
+      "expected": {
+        "mode": "LEGACY_WRITER",
+        "epoch": 3,
+        "version": 3,
+        "gateDigest": "6f527a0c73577743c368a333c30436b669c6ec25a9e216c865c4d9a964785502"
+      },
+      "next": {
+        "PK": "CONTROL#AUTHORITY",
+        "changedAt": "2026-10-13T20:09:48.029Z",
+        "changedBy": "arn:aws:iam::058264289478:user/RavenTest",
+        "epoch": 4,
+        "gateDigest": "RENDERED_FROZEN_GATE_RECEIPT_SHA256",
+        "mode": "FROZEN",
+        "schemaVersion": "team-hub-authority.v1",
+        "version": 4,
+        "SK": "STATE"
+      }
+    },
+    {
+      "expected": {
+        "mode": "FROZEN",
+        "epoch": 4,
+        "version": 4,
+        "gateDigest": "EXACT_VERIFIED_FROZEN_RECEIPT_SHA256"
+      },
+      "next": {
+        "PK": "CONTROL#AUTHORITY",
+        "changedAt": "2026-10-13T20:09:48.029Z",
+        "changedBy": "arn:aws:iam::058264289478:user/RavenTest",
+        "epoch": 5,
+        "gateDigest": "RENDERED_TARGET_GATE_RECEIPT_SHA256",
+        "mode": "TARGET_WRITER",
+        "schemaVersion": "team-hub-authority.v1",
+        "version": 5,
+        "SK": "STATE"
+      }
+    }
+  ],
+  "preWriteRecovery": {
+    "expected": {
+      "mode": "FROZEN",
+      "epoch": 4,
+      "version": 4,
+      "gateDigest": "EXACT_VERIFIED_FROZEN_RECEIPT_SHA256"
+    },
+    "next": {
+      "PK": "CONTROL#AUTHORITY",
+      "changedAt": "2026-10-13T20:09:48.029Z",
+      "changedBy": "arn:aws:iam::058264289478:user/RavenTest",
+      "epoch": 5,
+      "gateDigest": "6f527a0c73577743c368a333c30436b669c6ec25a9e216c865c4d9a964785502",
+      "mode": "LEGACY_WRITER",
+      "schemaVersion": "team-hub-authority.v1",
+      "version": 5,
+      "SK": "STATE"
+    }
+  },
+  "postWriteContainment": {
+    "expected": {
+      "mode": "TARGET_WRITER",
+      "epoch": 5,
+      "version": 5,
+      "gateDigest": "EXACT_VERIFIED_TARGET_RECEIPT_SHA256"
+    },
+    "next": {
+      "PK": "CONTROL#AUTHORITY",
+      "changedAt": "2026-10-13T20:09:48.029Z",
+      "changedBy": "arn:aws:iam::058264289478:user/RavenTest",
+      "epoch": 6,
+      "gateDigest": "6f527a0c73577743c368a333c30436b669c6ec25a9e216c865c4d9a964785502",
+      "mode": "FROZEN",
+      "schemaVersion": "team-hub-authority.v1",
+      "version": 6,
+      "SK": "STATE"
+    }
+  },
+  "parameterization": {
+    "changedAt": "Fresh actual UTC time at each separately authorized operation",
+    "changedBy": "Verified approved operator ARN",
+    "gateDigest": "SHA-256 of actual accepted gate evidence receipt; capture and hash before write"
+  },
+  "condition": "Exact schema/key and expected mode/epoch/version/prior gateDigest; no blind retry or refresh on conflict",
+  "freshness": "Fresh strongly consistent row must exactly match pinned initialRecord before execution; mismatch requires review/repin, never reset",
+  "frontend": {
+    "targetMode": "TARGET_WRITER",
+    "targetEpoch": 5,
+    "targetVersion": 5
+  },
+  "serverMutation": "Existing runtime transaction conditions actual Journal mode, epoch and version; no runtime ZIP/config/IAM changes",
+  "entityAuthorizationEpoch": "Team/membership/entity counters are independent of Journal authority epoch; read actual returned revisions, never replace with global epoch 5",
+  "historicalEvidencePreserved": true,
+  "symbolicFields": "These gateDigest strings are parameter references, never submitted to AWS. Render only actual 64-character hashes and compare against predecessor receipts and fresh row before each operation.",
+  "renderer": "scripts/team-hub-maintenance-preparation/post-abort-contracts.mjs#authorityUpdateRequest",
+  "rollbackRelease": {
+    "mode": "LEGACY",
+    "authorityRequirement": "Verified LEGACY_WRITER plus actual monotonic recovery epoch/version; no fixed epoch 1/3/5 assumption",
+    "postWriteRecovery": "Target freeze/export/reconciliation; no automatic authority return or source-data restore"
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "template": {
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "PROPOSED account-local Ntgre logo-write trail; no company trail/source bucket modification",
+    "Resources": {
+      "AuditBucket": {
+        "Type": "AWS::S3::Bucket",
+        "DeletionPolicy": "Retain",
+        "UpdateReplacePolicy": "Retain",
+        "Properties": {
+          "BucketName": "respawn-teamhub-quarantine-audit-058264289478-20261013",
+          "VersioningConfiguration": {
+            "Status": "Enabled"
+          },
+          "BucketEncryption": {
+            "ServerSideEncryptionConfiguration": [
+              {
+                "ServerSideEncryptionByDefault": {
+                  "SSEAlgorithm": "AES256"
+                }
+              }
+            ]
+          },
+          "PublicAccessBlockConfiguration": {
+            "BlockPublicAcls": true,
+            "IgnorePublicAcls": true,
+            "BlockPublicPolicy": true,
+            "RestrictPublicBuckets": true
+          }
+        }
+      },
+      "AuditPolicy": {
+        "Type": "AWS::S3::BucketPolicy",
+        "Properties": {
+          "Bucket": {
+            "Ref": "AuditBucket"
+          },
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Sid": "CloudTrailAclCheck",
+                "Effect": "Allow",
+                "Principal": {
+                  "Service": "cloudtrail.amazonaws.com"
+                },
+                "Action": "s3:GetBucketAcl",
+                "Resource": "arn:aws:s3:::respawn-teamhub-quarantine-audit-058264289478-20261013",
+                "Condition": {
+                  "StringEquals": {
+                    "aws:SourceArn": "arn:aws:cloudtrail:eu-north-1:058264289478:trail/ProjectRespawn-TeamHub-Ntgre-LogoQuarantineAudit"
+                  }
+                }
+              },
+              {
+                "Sid": "CloudTrailOwnedAccountLogs",
+                "Effect": "Allow",
+                "Principal": {
+                  "Service": "cloudtrail.amazonaws.com"
+                },
+                "Action": "s3:PutObject",
+                "Resource": "arn:aws:s3:::respawn-teamhub-quarantine-audit-058264289478-20261013/AWSLogs/058264289478/*",
+                "Condition": {
+                  "StringEquals": {
+                    "aws:SourceArn": "arn:aws:cloudtrail:eu-north-1:058264289478:trail/ProjectRespawn-TeamHub-Ntgre-LogoQuarantineAudit",
+                    "s3:x-amz-acl": "bucket-owner-full-control"
+                  }
+                }
+              },
+              {
+                "Sid": "RequireTLS",
+                "Effect": "Deny",
+                "Principal": "*",
+                "Action": "s3:*",
+                "Resource": [
+                  "arn:aws:s3:::respawn-teamhub-quarantine-audit-058264289478-20261013",
+                  "arn:aws:s3:::respawn-teamhub-quarantine-audit-058264289478-20261013/*"
+                ],
+                "Condition": {
+                  "Bool": {
+                    "aws:SecureTransport": "false"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      "LogoWriteAudit": {
+        "Type": "AWS::CloudTrail::Trail",
+        "DependsOn": "AuditPolicy",
+        "Properties": {
+          "TrailName": "ProjectRespawn-TeamHub-Ntgre-LogoQuarantineAudit",
+          "S3BucketName": {
+            "Ref": "AuditBucket"
+          },
+          "IsLogging": true,
+          "IsMultiRegionTrail": false,
+          "IncludeGlobalServiceEvents": false,
+          "IsOrganizationTrail": false,
+          "EnableLogFileValidation": true,
+          "AdvancedEventSelectors": [
+            {
+              "Name": "OnlyOwnedLogoWrites",
+              "FieldSelectors": [
+                {
+                  "Field": "eventCategory",
+                  "Equals": [
+                    "Data"
+                  ]
+                },
+                {
+                  "Field": "resources.type",
+                  "Equals": [
+                    "AWS::S3::Object"
+                  ]
+                },
+                {
+                  "Field": "resources.ARN",
+                  "StartsWith": [
+                    "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/",
+                    "arn:aws:s3:::respawn-teamhub-fence-race-058264289478-20261012-5dc9b348/team-logos/"
+                  ]
+                },
+                {
+                  "Field": "readOnly",
+                  "Equals": [
+                    "false"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "exactSemanticMatch": true
+}

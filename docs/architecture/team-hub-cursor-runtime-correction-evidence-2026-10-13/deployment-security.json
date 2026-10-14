@@ -1,0 +1,86 @@
+{
+  "awsWrites": 0,
+  "analyzer": [
+    {
+      "id": "ExecutionRole",
+      "findings": [
+        {
+          "findingDetails": "The 10395 characters in the identity policy, excluding whitespace, exceed the 10240 character maximum for inline and managed policies. We recommend that you use multiple granular policies.",
+          "findingType": "WARNING",
+          "issueCode": "POLICY_SIZE_EXCEEDS_IDENTITY_POLICY_QUOTA",
+          "learnMoreLink": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-reference-policy-checks.html#access-analyzer-reference-policy-checks-general-warning-policy-size-exceeds-identity-policy-quota",
+          "locations": [
+            {
+              "path": [],
+              "span": {
+                "start": {
+                  "line": 1,
+                  "column": 0,
+                  "offset": 0
+                },
+                "end": {
+                  "line": 1,
+                  "column": 10394,
+                  "offset": 10394
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ExecutionBoundary",
+      "findings": []
+    },
+    {
+      "id": "PreparationCaller",
+      "findings": []
+    }
+  ],
+  "checks": [
+    {
+      "label": "new-runtime",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zip",
+      "decision": "allowed"
+    },
+    {
+      "label": "old-runtime",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/business/da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e.zip",
+      "decision": "allowed"
+    },
+    {
+      "label": "wrong-runtime",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/foreign/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zip",
+      "decision": "explicitDeny"
+    },
+    {
+      "label": "new-template",
+      "decision": "allowed"
+    },
+    {
+      "label": "wrong-template",
+      "decision": "implicitDeny"
+    }
+  ],
+  "complete": true,
+  "policySizeGate": {
+    "managedLimit": 6144,
+    "inlineRoleAggregateLimit": 10240,
+    "policySizes": {
+      "PreviewBoundary": 923,
+      "ExecutionBoundary": 6273,
+      "PreparationCaller": 4304,
+      "ParityCommandBoundary": 3958,
+      "ParityReadBoundary": 4778
+    },
+    "executionInlineSize": 10394,
+    "passed": false,
+    "blockingPolicies": [
+      "ExecutionBoundary",
+      "ExecutionRole"
+    ],
+    "securityDeploymentAllowed": false
+  },
+  "deployable": false
+}

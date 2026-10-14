@@ -1,0 +1,89 @@
+{
+  "at": "2026-10-13T15:29:43.186Z",
+  "decisions": [
+    {
+      "action": "cloudtrail:CreateTrail",
+      "resource": "arn:aws:cloudtrail:eu-north-1:058264289478:trail/ProjectRespawn-TeamHub-Ntgre-LogoQuarantineAudit",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "cloudtrail:StartLogging",
+      "resource": "arn:aws:cloudtrail:eu-north-1:058264289478:trail/ProjectRespawn-TeamHub-Ntgre-LogoQuarantineAudit",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "cloudtrail:GetTrailStatus",
+      "resource": "arn:aws:cloudtrail:eu-north-1:058264289478:trail/ProjectRespawn-TeamHub-Ntgre-LogoQuarantineAudit",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "iam:CreateRole",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "iam:PutRolePolicy",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "iam:PassRole",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "lambda:CreateFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "s3:CreateBucket",
+      "resource": "arn:aws:s3:::respawn-teamhub-quarantine-audit-058264289478-20261013",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "s3:PutBucketPolicy",
+      "resource": "arn:aws:s3:::respawn-teamhub-fence-race-058264289478-20261012-5dc9b348",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::respawn-teamhub-quarantine-audit-058264289478-20261013/AWSLogs/058264289478/CloudTrail/eu-north-1/owned-log.json.gz",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-S3Audit/reviewed-candidate",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe/reviewed-candidate",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-S3Race/reviewed-candidate",
+      "decision": "allowed",
+      "missingContext": []
+    }
+  ],
+  "analysis": {
+    "findings": []
+  },
+  "complete": true,
+  "awsWrites": 0,
+  "limitations": "Sampled required owner permissions under current identity/boundary. Not complete provider lifecycle/SCP/RCP/live authorization proof. Existing company visibility limitation remains documented; unexpected live denial stops without broadening."
+}

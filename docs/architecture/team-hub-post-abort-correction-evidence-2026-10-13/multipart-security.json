@@ -1,0 +1,67 @@
+{
+  "at": "2026-10-13T20:21:20.063Z",
+  "principal": "arn:aws:iam::058264289478:user/RavenTest",
+  "cases": [
+    {
+      "name": "actual-owned-operations",
+      "action": "s3:PutObject",
+      "resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "name": "actual-owned-operations",
+      "action": "s3:AbortMultipartUpload",
+      "resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "name": "actual-owned-operations",
+      "action": "s3:ListMultipartUploadParts",
+      "resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "name": "actual-policy-custody",
+      "action": "s3:GetBucketPolicy",
+      "resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "name": "actual-policy-custody",
+      "action": "s3:PutBucketPolicy",
+      "resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "name": "actual-policy-custody",
+      "action": "s3:ListBucketMultipartUploads",
+      "resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "name": "diagnostic-abort-explicit-deny",
+      "action": "s3:AbortMultipartUpload",
+      "resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png",
+      "decision": "explicitDeny",
+      "missingContext": []
+    },
+    {
+      "name": "other-key-unaffected",
+      "action": "s3:AbortMultipartUpload",
+      "resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/unrelated-review-control.png",
+      "decision": "allowed",
+      "missingContext": []
+    }
+  ],
+  "awsChanges": 0,
+  "analyzer": {
+    "findings": []
+  },
+  "complete": true
+}

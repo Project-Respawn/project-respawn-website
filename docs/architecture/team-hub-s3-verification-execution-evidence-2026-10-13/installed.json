@@ -1,0 +1,253 @@
+{
+  "at": "2026-10-13T16:00:41.230Z",
+  "trail": {
+    "Name": "ProjectRespawn-TeamHub-Ntgre-LogoQuarantineAudit",
+    "S3BucketName": "respawn-teamhub-quarantine-audit-058264289478-20261013",
+    "IncludeGlobalServiceEvents": false,
+    "IsMultiRegionTrail": false,
+    "HomeRegion": "eu-north-1",
+    "TrailARN": "arn:aws:cloudtrail:eu-north-1:058264289478:trail/ProjectRespawn-TeamHub-Ntgre-LogoQuarantineAudit",
+    "LogFileValidationEnabled": true,
+    "HasCustomEventSelectors": true,
+    "HasInsightSelectors": false,
+    "IsOrganizationTrail": false
+  },
+  "status": {
+    "IsLogging": true,
+    "StartLoggingTime": "2026-10-13T16:57:42.096000+01:00",
+    "LatestDeliveryAttemptTime": "",
+    "LatestNotificationAttemptTime": "",
+    "LatestNotificationAttemptSucceeded": "",
+    "LatestDeliveryAttemptSucceeded": "",
+    "TimeLoggingStarted": "2026-10-13T15:57:42Z",
+    "TimeLoggingStopped": ""
+  },
+  "selectors": {
+    "TrailARN": "arn:aws:cloudtrail:eu-north-1:058264289478:trail/ProjectRespawn-TeamHub-Ntgre-LogoQuarantineAudit",
+    "AdvancedEventSelectors": [
+      {
+        "Name": "OnlyOwnedLogoWrites",
+        "FieldSelectors": [
+          {
+            "Field": "eventCategory",
+            "Equals": [
+              "Data"
+            ]
+          },
+          {
+            "Field": "resources.ARN",
+            "StartsWith": [
+              "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/",
+              "arn:aws:s3:::respawn-teamhub-fence-race-058264289478-20261012-5dc9b348/team-logos/"
+            ]
+          },
+          {
+            "Field": "readOnly",
+            "Equals": [
+              "false"
+            ]
+          },
+          {
+            "Field": "resources.type",
+            "Equals": [
+              "AWS::S3::Object"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "auditPolicy": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "CloudTrailAclCheck",
+        "Effect": "Allow",
+        "Principal": {
+          "Service": "cloudtrail.amazonaws.com"
+        },
+        "Action": "s3:GetBucketAcl",
+        "Resource": "arn:aws:s3:::respawn-teamhub-quarantine-audit-058264289478-20261013",
+        "Condition": {
+          "StringEquals": {
+            "aws:SourceArn": "arn:aws:cloudtrail:eu-north-1:058264289478:trail/ProjectRespawn-TeamHub-Ntgre-LogoQuarantineAudit"
+          }
+        }
+      },
+      {
+        "Sid": "CloudTrailOwnedAccountLogs",
+        "Effect": "Allow",
+        "Principal": {
+          "Service": "cloudtrail.amazonaws.com"
+        },
+        "Action": "s3:PutObject",
+        "Resource": "arn:aws:s3:::respawn-teamhub-quarantine-audit-058264289478-20261013/AWSLogs/058264289478/*",
+        "Condition": {
+          "StringEquals": {
+            "aws:SourceArn": "arn:aws:cloudtrail:eu-north-1:058264289478:trail/ProjectRespawn-TeamHub-Ntgre-LogoQuarantineAudit",
+            "s3:x-amz-acl": "bucket-owner-full-control"
+          }
+        }
+      },
+      {
+        "Sid": "RequireTLS",
+        "Effect": "Deny",
+        "Principal": "*",
+        "Action": "s3:*",
+        "Resource": [
+          "arn:aws:s3:::respawn-teamhub-quarantine-audit-058264289478-20261013",
+          "arn:aws:s3:::respawn-teamhub-quarantine-audit-058264289478-20261013/*"
+        ],
+        "Condition": {
+          "Bool": {
+            "aws:SecureTransport": "false"
+          }
+        }
+      }
+    ]
+  },
+  "auditPublicAccess": {
+    "BlockPublicAcls": true,
+    "IgnorePublicAcls": true,
+    "BlockPublicPolicy": true,
+    "RestrictPublicBuckets": true
+  },
+  "role": {
+    "Path": "/",
+    "RoleName": "ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+    "RoleId": "AROAQ3EGSQDDEQAU2S5J7",
+    "Arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+    "CreateDate": "2026-10-13T15:58:24.000Z",
+    "AssumeRolePolicyDocument": "%7B%22Version%22%3A%222012-10-17%22%2C%22Statement%22%3A%5B%7B%22Effect%22%3A%22Allow%22%2C%22Principal%22%3A%7B%22Service%22%3A%22lambda.amazonaws.com%22%7D%2C%22Action%22%3A%22sts%3AAssumeRole%22%7D%5D%7D",
+    "Description": "",
+    "MaxSessionDuration": 3600,
+    "RoleLastUsed": {}
+  },
+  "inlinePolicy": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Condition": {
+          "Null": {
+            "dynamodb:LeadingKeys": "false"
+          },
+          "ForAllValues:StringEquals": {
+            "dynamodb:LeadingKeys": [
+              "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+            ]
+          }
+        },
+        "Action": [
+          "dynamodb:PutItem",
+          "dynamodb:UpdateItem",
+          "dynamodb:DeleteItem"
+        ],
+        "Resource": [
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE"
+        ],
+        "Effect": "Allow",
+        "Sid": "OnlyOwnedConditionalDiagnostics"
+      },
+      {
+        "Action": [
+          "s3:PutObject",
+          "s3:DeleteObject",
+          "s3:DeleteObjectVersion",
+          "s3:AbortMultipartUpload"
+        ],
+        "Resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png",
+        "Effect": "Allow",
+        "Sid": "OnlyOwnedLogoDiagnostic"
+      },
+      {
+        "Action": [
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ],
+        "Resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/aws/lambda/amplify-projectrespawnweb-myFunctionrebuildlambdaF-LwVW5TljICgV:log-stream:*",
+        "Effect": "Allow",
+        "Sid": "ExistingLogStreamsOnly"
+      },
+      {
+        "Action": [
+          "iam:*",
+          "sts:AssumeRole",
+          "s3:PutBucketPolicy",
+          "s3:DeleteBucketPolicy",
+          "s3:PutBucketAcl",
+          "lambda:*",
+          "kms:*",
+          "ssm:*",
+          "secretsmanager:*",
+          "cognito-idp:*"
+        ],
+        "Resource": "*",
+        "Effect": "Deny",
+        "Sid": "NoPolicyOrPrivilegeAdministration"
+      }
+    ]
+  },
+  "functionConfig": {
+    "FunctionName": "ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+    "FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+    "Runtime": "nodejs22.x",
+    "Role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+    "Handler": "index.handler",
+    "CodeSize": 1946674,
+    "Description": "",
+    "Timeout": 120,
+    "MemorySize": 128,
+    "LastModified": "2026-10-13T15:58:44.909+0000",
+    "CodeSha256": "eLAlkYHphfJIjjedIQN0g0oHJeYL/+FrEKiE9YOck2Q=",
+    "Version": "$LATEST",
+    "TracingConfig": {
+      "Mode": "PassThrough"
+    },
+    "RevisionId": "eb945235-e3a3-498a-8657-f1bd7cbdaa87",
+    "State": "Active",
+    "LastUpdateStatus": "Successful",
+    "PackageType": "Zip",
+    "Architectures": [
+      "x86_64"
+    ],
+    "EphemeralStorage": {
+      "Size": 512
+    },
+    "SnapStart": {
+      "ApplyOn": "None",
+      "OptimizationStatus": "Off"
+    },
+    "RuntimeVersionConfig": {
+      "RuntimeVersionArn": "arn:aws:lambda:eu-north-1::runtime:fcbc591235a4e3989a2616147843a9d1214dfe36ccdcfe556551b0c1bb3010e9"
+    },
+    "LoggingConfig": {
+      "LogFormat": "Text",
+      "LogGroup": "/aws/lambda/amplify-projectrespawnweb-myFunctionrebuildlambdaF-LwVW5TljICgV"
+    }
+  },
+  "racePolicy": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "RequireTLS",
+        "Effect": "Deny",
+        "Principal": "*",
+        "Action": "s3:*",
+        "Resource": [
+          "arn:aws:s3:::respawn-teamhub-fence-race-058264289478-20261012-5dc9b348",
+          "arn:aws:s3:::respawn-teamhub-fence-race-058264289478-20261012-5dc9b348/*"
+        ],
+        "Condition": {
+          "Bool": {
+            "aws:SecureTransport": "false"
+          }
+        }
+      }
+    ]
+  },
+  "complete": true,
+  "helperInvoked": false
+}

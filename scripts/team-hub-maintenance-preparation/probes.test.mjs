@@ -1,0 +1,11 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {directRequests,logoRequests,requireProbeResult,tables,reserved,logoKey} from './probe-requests.mjs';
+for(const table of tables)for(const api of ['PutItem','UpdateItem','DeleteItem','TransactWriteItems'])test(table+' '+api+' cannot write even with an effective Allow',()=>{
+ const row=directRequests().find(x=>x.api===api&&(x.input.TableName??x.input.TransactItems[0].Put.TableName)===table),p=row.input.TransactItems?.[0].Put??row.input;
+ assert.equal(p.ConditionExpression,'attribute_exists(#id) AND attribute_not_exists(#id)');for(const exists of [false,true])assert.equal(exists&&!exists,false);assert.equal((p.Key??p.Item).id.S,reserved);
+});
+test('unconditional batch contains only an absent-key deletion',()=>{for(const c of directRequests().filter(x=>x.api==='BatchWriteItem')){assert.equal(c.safe,'RESERVED_ABSENT_KEY_REQUIRED');for(const a of Object.values(c.input.RequestItems).flat()){assert.deepEqual(Object.keys(a),['DeleteRequest']);assert.equal(a.DeleteRequest.Key.id.S,reserved);}}});
+test('PartiQL guard cannot simultaneously satisfy equal and unequal predicates',()=>{for(const c of directRequests().filter(x=>x.api==='ExecuteStatement')){assert.ok(c.input.Statement.includes('"proof"=? AND "proof"<>?'));assert.deepEqual(c.input.Parameters.at(-1),c.input.Parameters.at(-2));assert.ok(c.safe.includes('SYNTAX_CONTROL'));}});
+test('all logo actions use reserved absent keys and complete guards',()=>{for(const c of logoRequests())assert.equal(c.input.Key,logoKey);assert.equal(logoRequests()[0].input.IfMatch,'"00000000000000000000000000000000"');assert.equal(logoRequests()[1].input.IfMatch,'*');assert.equal(logoRequests()[2].input.VersionId,'null');});
+for(const bad of [{policyDenied:false},{validationDenied:true},{identityOnlyDenied:true},{requestId:null},{principal:null}])test('no false installed fence proof '+JSON.stringify(bad),()=>assert.throws(()=>requireProbeResult('FROZEN',{policyDenied:true,requestId:'receipt',principal:'actual-service-role',...bad}),/FENCE_NOT_PROVEN/));
+test('correlated actual policy denial accepted',()=>assert.equal(requireProbeResult('FROZEN',{policyDenied:true,requestId:'receipt',principal:'actual-service-role'}),true));

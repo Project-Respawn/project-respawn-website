@@ -1,0 +1,434 @@
+{
+  "at": "2026-10-13T20:06:06.055Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "scope": "Ntgre only",
+  "correction": {
+    "path": "docs/architecture/team-hub-generated-delete-proof-evidence-2026-10-13/candidate-cd335b6f16a422715388d31e30ffe54798be5fe45698754e96f13ed0a93ab351.json",
+    "sha256": "cd335b6f16a422715388d31e30ffe54798be5fe45698754e96f13ed0a93ab351"
+  },
+  "authorityBefore": {
+    "epoch": {
+      "N": "1"
+    },
+    "changedAt": {
+      "S": "2026-10-07T22:32:12.867Z"
+    },
+    "version": {
+      "N": "1"
+    },
+    "mode": {
+      "S": "LEGACY_WRITER"
+    },
+    "schemaVersion": {
+      "S": "team-hub-authority.v1"
+    },
+    "PK": {
+      "S": "CONTROL#AUTHORITY"
+    },
+    "changedBy": {
+      "S": "team-hub-c1-executor"
+    },
+    "gateDigest": {
+      "S": "2227a62a06992e9e09ff672ad6e2f09164e0304f3f68db491437a93577f1ab94"
+    },
+    "SK": {
+      "S": "STATE"
+    }
+  },
+  "authorityRequest": {
+    "TableName": "ProjectRespawn-TeamHub-Ntgre-Journal",
+    "Key": {
+      "PK": {
+        "S": "CONTROL#AUTHORITY"
+      },
+      "SK": {
+        "S": "STATE"
+      }
+    },
+    "UpdateExpression": "SET #m = :next, #e = :two, #v = :two, changedAt = :at, changedBy = :by, gateDigest = :digest",
+    "ConditionExpression": "#schema = :schema AND #m = :old AND #e = :one AND #v = :one AND gateDigest = :prior",
+    "ExpressionAttributeNames": {
+      "#m": "mode",
+      "#e": "epoch",
+      "#v": "version",
+      "#schema": "schemaVersion"
+    },
+    "ExpressionAttributeValues": {
+      ":next": {
+        "S": "FROZEN"
+      },
+      ":old": {
+        "S": "LEGACY_WRITER"
+      },
+      ":two": {
+        "N": "2"
+      },
+      ":one": {
+        "N": "1"
+      },
+      ":schema": {
+        "S": "team-hub-authority.v1"
+      },
+      ":prior": {
+        "S": "2227a62a06992e9e09ff672ad6e2f09164e0304f3f68db491437a93577f1ab94"
+      },
+      ":at": {
+        "S": "SET_AT_WINDOW_START"
+      },
+      ":by": {
+        "S": "arn:aws:iam::058264289478:user/RavenTest"
+      },
+      ":digest": {
+        "S": "6f527a0c73577743c368a333c30436b669c6ec25a9e216c865c4d9a964785502"
+      }
+    },
+    "ReturnValues": "ALL_NEW"
+  },
+  "tables": [
+    {
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "beforeRevision": "NO_POLICY",
+      "policy": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Sid": "TeamHubMigrationWriterFence",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": [
+              "dynamodb:PutItem",
+              "dynamodb:UpdateItem",
+              "dynamodb:DeleteItem",
+              "dynamodb:BatchWriteItem",
+              "dynamodb:PartiQLInsert",
+              "dynamodb:PartiQLUpdate",
+              "dynamodb:PartiQLDelete"
+            ],
+            "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE"
+          }
+        ]
+      }
+    },
+    {
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "beforeRevision": "NO_POLICY",
+      "policy": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Sid": "TeamHubMigrationWriterFence",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": [
+              "dynamodb:PutItem",
+              "dynamodb:UpdateItem",
+              "dynamodb:DeleteItem",
+              "dynamodb:BatchWriteItem",
+              "dynamodb:PartiQLInsert",
+              "dynamodb:PartiQLUpdate",
+              "dynamodb:PartiQLDelete"
+            ],
+            "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE"
+          }
+        ]
+      }
+    },
+    {
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "beforeRevision": "NO_POLICY",
+      "policy": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Sid": "TeamHubMigrationWriterFence",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": [
+              "dynamodb:PutItem",
+              "dynamodb:UpdateItem",
+              "dynamodb:DeleteItem",
+              "dynamodb:BatchWriteItem",
+              "dynamodb:PartiQLInsert",
+              "dynamodb:PartiQLUpdate",
+              "dynamodb:PartiQLDelete"
+            ],
+            "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE"
+          }
+        ]
+      }
+    },
+    {
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "beforeRevision": "NO_POLICY",
+      "policy": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Sid": "TeamHubMigrationWriterFence",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": [
+              "dynamodb:PutItem",
+              "dynamodb:UpdateItem",
+              "dynamodb:DeleteItem",
+              "dynamodb:BatchWriteItem",
+              "dynamodb:PartiQLInsert",
+              "dynamodb:PartiQLUpdate",
+              "dynamodb:PartiQLDelete"
+            ],
+            "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+          }
+        ]
+      }
+    }
+  ],
+  "logo": {
+    "name": "amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+    "before": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Deny",
+          "Principal": {
+            "AWS": "*"
+          },
+          "Action": "s3:*",
+          "Resource": [
+            "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+            "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/*"
+          ],
+          "Condition": {
+            "Bool": {
+              "aws:SecureTransport": "false"
+            }
+          }
+        },
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "AWS": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3"
+          },
+          "Action": [
+            "s3:PutBucketPolicy",
+            "s3:GetBucket*",
+            "s3:List*",
+            "s3:DeleteObject*"
+          ],
+          "Resource": [
+            "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+            "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/*"
+          ]
+        }
+      ]
+    },
+    "after": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Deny",
+          "Principal": {
+            "AWS": "*"
+          },
+          "Action": "s3:*",
+          "Resource": [
+            "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+            "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/*"
+          ],
+          "Condition": {
+            "Bool": {
+              "aws:SecureTransport": "false"
+            }
+          }
+        },
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "AWS": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3"
+          },
+          "Action": [
+            "s3:PutBucketPolicy",
+            "s3:GetBucket*",
+            "s3:List*",
+            "s3:DeleteObject*"
+          ],
+          "Resource": [
+            "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+            "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/*"
+          ]
+        },
+        {
+          "Sid": "TeamHubMigrationLogoFence",
+          "Effect": "Deny",
+          "Principal": "*",
+          "Action": [
+            "s3:PutObject",
+            "s3:DeleteObject",
+            "s3:DeleteObjectVersion",
+            "s3:AbortMultipartUpload"
+          ],
+          "Resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/*"
+        }
+      ]
+    }
+  },
+  "gateways": [
+    {
+      "api": "dxb2tdlulrch7hj2pts2mfijia",
+      "type": "Query",
+      "field": "readTeamHub",
+      "before": {
+        "typeName": "Query",
+        "fieldName": "readTeamHub",
+        "resolverArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/types/Query/resolvers/readTeamHub",
+        "requestMappingTemplate": "## [Start] Stash resolver specific context.. **\n$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"readTeamHub\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthauthenticatedU-U29LVCPfkFsl/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthunauthenticate-y8Sz5XK5OfBN/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"eu-north-1:a3621b12-4773-4295-b232-b55863c37fd3\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n{}\n## [End] Stash resolver specific context.. **",
+        "responseMappingTemplate": "$util.toJson($ctx.prev.result)",
+        "kind": "PIPELINE",
+        "pipelineConfig": {
+          "functions": [
+            "7hlakiy7fzhwhidtlxltmstq5i",
+            "lev4xkxdl5cszjd3xgyqs2yomm"
+          ]
+        },
+        "maxBatchSize": 0
+      },
+      "beforeSha256": "f90024ffeffc959a5faef7a0e892e4015207436e042bbd731022ec5d4ee484fb",
+      "frozenRequest": "$util.error(\"TEAM_HUB_MAINTENANCE\", \"TeamHubMigration\")",
+      "targetRequest": "$util.error(\"TEAM_HUB_DOMAIN_MOVED\", \"TeamHubMigration\")",
+      "preserve": [
+        "kind",
+        "pipelineConfig",
+        "responseMappingTemplate",
+        "cachingConfig",
+        "syncConfig",
+        "runtime",
+        "code"
+      ],
+      "install": false,
+      "actual": {
+        "typeName": "Query",
+        "fieldName": "readTeamHub",
+        "resolverArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/types/Query/resolvers/readTeamHub",
+        "requestMappingTemplate": "## [Start] Stash resolver specific context.. **\n$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"readTeamHub\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthauthenticatedU-U29LVCPfkFsl/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthunauthenticate-y8Sz5XK5OfBN/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"eu-north-1:a3621b12-4773-4295-b232-b55863c37fd3\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n{}\n## [End] Stash resolver specific context.. **",
+        "responseMappingTemplate": "$util.toJson($ctx.prev.result)",
+        "kind": "PIPELINE",
+        "pipelineConfig": {
+          "functions": [
+            "7hlakiy7fzhwhidtlxltmstq5i",
+            "lev4xkxdl5cszjd3xgyqs2yomm"
+          ]
+        },
+        "maxBatchSize": 0
+      }
+    },
+    {
+      "api": "dxb2tdlulrch7hj2pts2mfijia",
+      "type": "Mutation",
+      "field": "mutateTeamHub",
+      "before": {
+        "typeName": "Mutation",
+        "fieldName": "mutateTeamHub",
+        "resolverArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/types/Mutation/resolvers/mutateTeamHub",
+        "requestMappingTemplate": "## [Start] Stash resolver specific context.. **\n$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"mutateTeamHub\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthauthenticatedU-U29LVCPfkFsl/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthunauthenticate-y8Sz5XK5OfBN/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"eu-north-1:a3621b12-4773-4295-b232-b55863c37fd3\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n{}\n## [End] Stash resolver specific context.. **",
+        "responseMappingTemplate": "$util.toJson($ctx.prev.result)",
+        "kind": "PIPELINE",
+        "pipelineConfig": {
+          "functions": [
+            "4yb6cg662ralnnxiwlrwrb5vqa",
+            "lev4xkxdl5cszjd3xgyqs2yomm"
+          ]
+        },
+        "maxBatchSize": 0
+      },
+      "beforeSha256": "3c1f93e32397ec85fd26e9f20b19f23db4a6b577d7149caf8acf188cd48d24fd",
+      "frozenRequest": "$util.error(\"TEAM_HUB_MAINTENANCE\", \"TeamHubMigration\")",
+      "targetRequest": "$util.error(\"TEAM_HUB_DOMAIN_MOVED\", \"TeamHubMigration\")",
+      "preserve": [
+        "kind",
+        "pipelineConfig",
+        "responseMappingTemplate",
+        "cachingConfig",
+        "syncConfig",
+        "runtime",
+        "code"
+      ],
+      "install": false,
+      "actual": {
+        "typeName": "Mutation",
+        "fieldName": "mutateTeamHub",
+        "resolverArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/types/Mutation/resolvers/mutateTeamHub",
+        "requestMappingTemplate": "## [Start] Stash resolver specific context.. **\n$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"mutateTeamHub\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthauthenticatedU-U29LVCPfkFsl/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthunauthenticate-y8Sz5XK5OfBN/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"eu-north-1:a3621b12-4773-4295-b232-b55863c37fd3\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n{}\n## [End] Stash resolver specific context.. **",
+        "responseMappingTemplate": "$util.toJson($ctx.prev.result)",
+        "kind": "PIPELINE",
+        "pipelineConfig": {
+          "functions": [
+            "4yb6cg662ralnnxiwlrwrb5vqa",
+            "lev4xkxdl5cszjd3xgyqs2yomm"
+          ]
+        },
+        "maxBatchSize": 0
+      }
+    }
+  ],
+  "trail": {
+    "IsLogging": true,
+    "LatestDeliveryTime": "2026-10-13T20:51:53.768000+01:00",
+    "StartLoggingTime": "2026-10-13T16:57:42.096000+01:00",
+    "LatestDigestDeliveryTime": "2026-10-13T20:16:36.574000+01:00",
+    "LatestDeliveryAttemptTime": "2026-10-13T19:51:53Z",
+    "LatestNotificationAttemptTime": "",
+    "LatestNotificationAttemptSucceeded": "",
+    "LatestDeliveryAttemptSucceeded": "2026-10-13T19:51:53Z",
+    "TimeLoggingStarted": "2026-10-13T15:57:42Z",
+    "TimeLoggingStopped": ""
+  },
+  "selectors": {
+    "TrailARN": "arn:aws:cloudtrail:eu-north-1:058264289478:trail/ProjectRespawn-TeamHub-Ntgre-LogoQuarantineAudit",
+    "AdvancedEventSelectors": [
+      {
+        "Name": "OnlyOwnedLogoWrites",
+        "FieldSelectors": [
+          {
+            "Field": "eventCategory",
+            "Equals": [
+              "Data"
+            ]
+          },
+          {
+            "Field": "resources.ARN",
+            "StartsWith": [
+              "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/",
+              "arn:aws:s3:::respawn-teamhub-fence-race-058264289478-20261012-5dc9b348/team-logos/"
+            ]
+          },
+          {
+            "Field": "readOnly",
+            "Equals": [
+              "false"
+            ]
+          },
+          {
+            "Field": "resources.type",
+            "Equals": [
+              "AWS::S3::Object"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "resourceChanges": {
+    "existingTablePolicies": 4,
+    "existingBucketPolicy": 1,
+    "existingGatewayRequests": 2,
+    "authorityRecord": 1,
+    "resourceAdditions": 0,
+    "resourceDeletions": 0,
+    "replacements": 0
+  },
+  "approvedScopeUnchanged": true,
+  "awsWrites": 0
+}

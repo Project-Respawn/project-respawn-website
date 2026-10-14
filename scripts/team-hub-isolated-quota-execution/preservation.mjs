@@ -1,0 +1,4 @@
+import fs from 'node:fs';import {build} from 'esbuild';import {spawn} from 'node:child_process';
+const E='docs/architecture/team-hub-isolated-quota-execution-evidence-2026-10-12/final',P='docs/architecture/team-hub-isolated-verification-evidence-2026-10-12',out='.tmp/team-hub-isolated-quota-execution/final-baseline.mjs';
+await build({entryPoints:['scripts/team-hub-isolated-verification/baseline.mjs'],outfile:out,bundle:true,platform:'node',format:'esm',packages:'external',logLevel:'silent',plugins:[{name:'final-receipts-only',setup(b){b.onLoad({filter:/\.mjs$/},({path})=>({contents:fs.readFileSync(path,'utf8').replaceAll(P,E),loader:'js'}));}}]});
+await new Promise((resolve,reject)=>{const c=spawn(process.execPath,[out],{windowsHide:true,stdio:'inherit'});c.on('exit',code=>code===0?resolve():reject(Error('Final preservation failed '+code)));});

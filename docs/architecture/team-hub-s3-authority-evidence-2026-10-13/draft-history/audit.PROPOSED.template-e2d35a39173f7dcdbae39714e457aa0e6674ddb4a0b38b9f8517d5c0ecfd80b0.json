@@ -1,0 +1,49 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "PROPOSED account-local Ntgre Legacy logo write-event evidence; no company trail or bucket modification",
+  "Resources": {
+    "LogoWriteAudit": {
+      "Type": "AWS::CloudTrail::EventDataStore",
+      "Properties": {
+        "Name": "ProjectRespawn-TeamHub-Ntgre-LogoQuarantineAudit",
+        "BillingMode": "EXTENDABLE_RETENTION_PRICING",
+        "RetentionPeriod": 7,
+        "MultiRegionEnabled": false,
+        "OrganizationEnabled": false,
+        "IngestionEnabled": true,
+        "TerminationProtectionEnabled": true,
+        "AdvancedEventSelectors": [
+          {
+            "Name": "OnlyNtgreLegacyLogoWrites",
+            "FieldSelectors": [
+              {
+                "Field": "eventCategory",
+                "Equals": [
+                  "Data"
+                ]
+              },
+              {
+                "Field": "resources.type",
+                "Equals": [
+                  "AWS::S3::Object"
+                ]
+              },
+              {
+                "Field": "resources.ARN",
+                "StartsWith": [
+                  "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/"
+                ]
+              },
+              {
+                "Field": "readOnly",
+                "Equals": [
+                  "false"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

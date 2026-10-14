@@ -1,0 +1,61 @@
+{
+  "acceptedAt": "2026-10-13T20:48:33.998Z",
+  "status": "MULTIPART_DIAGNOSTIC_ACCEPTED_READY_FOR_CONTROLLED_CUTOVER",
+  "candidateSha256": "58a168cf2f4e370e7b5ceb7044c6e957bd30085212efcac179caecc45b11f895",
+  "approval": "docs/architecture/team-hub-multipart-diagnostic-execution-evidence-2026-10-13/approval-amendment.json",
+  "uploads": [
+    {
+      "label": "MPU_A",
+      "uploadIdSha256": "1d6bd1e18facf26c91cd9dcbdeb7cbef1f5e3dfe404edb09b6fab8b742922f0c",
+      "createdAt": "2026-10-13T20:40:23.570Z",
+      "creationRequestId": "M0QZBXJCYSVGHB6G",
+      "creationStatus": 200,
+      "parts": 0,
+      "terminal": true,
+      "abortStatus": 204,
+      "abortRequestId": "92K65DR1MS8S11EA"
+    },
+    {
+      "label": "MPU_B",
+      "uploadIdSha256": "21f9b946e9b6d9f7d84767a289a35028bff2b918673c347d6be5e4a320739890",
+      "createdAt": "2026-10-13T20:40:27.754Z",
+      "creationRequestId": "MB4E2222XPY7WJ1G",
+      "creationStatus": 200,
+      "parts": 0,
+      "terminal": true,
+      "abortStatus": 204,
+      "abortRequestId": "Z24VEB8D3PHDKP9M"
+    }
+  ],
+  "denial": {
+    "id": "owned-abort-denial",
+    "at": "2026-10-13T20:42:22.978Z",
+    "status": 403,
+    "error": "AccessDenied",
+    "message": "User: arn:aws:iam::058264289478:user/RavenTest is not authorized to perform: s3:AbortMultipartUpload on resource: \"arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png\" with an explicit deny in a resource-based policy",
+    "requestId": "FMNH2DH4K7JDGHG5",
+    "ownedUploadStillExists": true,
+    "uploadIdSha256": "21f9b946e9b6d9f7d84767a289a35028bff2b918673c347d6be5e4a320739890"
+  },
+  "sourcePolicyRestored": true,
+  "terminalCleanup": true,
+  "auditRequestsCorrelated": 7,
+  "auditDataRequests": 5,
+  "auditManagementRequests": 2,
+  "authority": {
+    "mode": "LEGACY_WRITER",
+    "epoch": 3,
+    "version": 3
+  },
+  "normalBusinessRoutesDenied": 16,
+  "newResources": 0,
+  "policyMutations": 2,
+  "partsUploaded": 0,
+  "objectsCompleted": 0,
+  "businessDataChanges": 0,
+  "productionChanges": 0,
+  "fullMaintenancePerformed": false,
+  "frontendActivated": false,
+  "rawUploadIdsPublic": false,
+  "remainingScope": "Separate resumption instruction and fresh attended 150-minute maintenance window; FROZEN 4/4, live final fence proofs, reconciliation, TARGET 5/5, real personas, epoch-5 frontend and observation remain mandatory"
+}

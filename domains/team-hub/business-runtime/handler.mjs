@@ -18,7 +18,7 @@ export function createCutoverHandler({runtime,transport,invokeCore,environment,c
    await core.allows(actor,'teams.admin');
    const repository=new DynamoRepository({transport,operational:'ProjectRespawn-TeamHub-Ntgre-Operational',journal:'ProjectRespawn-TeamHub-Ntgre-Journal',scope:id=>{if(!/^team:[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id))fail('INVALID_INPUT');},clock,log});
    repository.isAdmin=a=>core.allows(a,'teams.admin');repository.authority=authority;
-   const pagination=['LIST_MY_CHAMPION_POOL','LIST_TEAM_CHAMPION_POOLS'].includes(op);
+   const pagination=['LIST_MY_TEAMS','LIST_MY_CHAMPION_POOL','LIST_TEAM_CHAMPION_POOLS'].includes(op);
    let signing=cursorSecret; if(pagination&&!signing){try{signing=await loadCursorSecret();if(typeof signing!=='string'||signing.length<32)throw Error('INVALID_SIGNING_MATERIAL');}catch{fail('DEPENDENCY_UNAVAILABLE');}}
    const response=await createHandler(runtime,{repository,core,environment,cursorSecret:signing,clock})(event);
    const finalControl=await observedAuthority();if(finalControl.mode!=='TARGET_WRITER')log({event:'WRITER_NOT_AUTHORITATIVE',operation:op,requestId});const final=requireTarget(finalControl);if(final.epoch!==authority.epoch||final.version!==authority.version){log({event:'AUTHORITY_EPOCH_MISMATCH',operation:op,requestId});fail('CONFLICT');}

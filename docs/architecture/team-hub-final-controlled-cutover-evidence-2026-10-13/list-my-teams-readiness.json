@@ -1,0 +1,18 @@
+{
+  "proof": "OFFLINE_PINNED_ROUTER_ONLY",
+  "runtimeSha256": "da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e",
+  "sourcePinsVerified": true,
+  "response": {
+    "contractVersion": "team-hub.v1",
+    "requestId": "isolated-list-teams-readiness",
+    "error": {
+      "code": "DEPENDENCY_UNAVAILABLE"
+    }
+  },
+  "statusCode": 503,
+  "secretLoads": 0,
+  "queries": 2,
+  "writes": 0,
+  "actualAuthorityChanged": false,
+  "diagnosis": "LIST_MY_TEAMS calls TeamService.page but handler pagination predicate excludes this operation, so signing material is never loaded."
+}

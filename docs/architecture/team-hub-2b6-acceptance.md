@@ -1,5 +1,91 @@
 ﻿# Project Respawn Team Hub 2B6 — final cutover gate
 
+## Ntgre cutover accepted — 14 October 2026
+
+Actual authority **TARGET_WRITER epoch/version 5/5**. Legacy fences remain installed; Ntgre localhost epoch-5 frontend and five-persona business/browser acceptance passed, followed by full continuous observation and API-only fixture cleanup. Protected counts remain Legacy 2,621/167, Team 48+7, Core 8+5, Tournament 11. [Authoritative result](team-hub-2b6-final-preflight-cutover-result-2026-10-14.md). Earlier snapshots below are historical. No Master publication or Legacy retirement; post-write rollback requires target containment and state reconciliation, never frontend-only source reopening.
+
+## Cursor correction deployed and dark runtime accepted ? current
+
+[Actual deployment result](team-hub-2b6-cursor-runtime-deployment-result.md): exact security 5cf68f36b3e4e3f95ba8a3cb1444eacc82e382ae214e0cee58d5382409974c23 (three modifications) and product caa0a68384990438196ed7720f1a24062641e03220f6092c1b4a2340d2417241 (Read Code only) reached UPDATE_COMPLETE with rollback enabled. Read ZIP ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e; Command remains da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e. Both functions healthy/IN_SYNC, complete environments and runtime IAM preserved. Authority 200 at LEGACY_WRITER 3/3; sixteen routes denied for both personas (32/32), 34 handler receipts correlated, zero errors/throttles/5xx, six alarms OK. Actual downloaded ZIPs passed 41 business scenarios plus 23 extra offline checks. Source/target business state unchanged, Legacy frontend active, protected counts preserved. No FROZEN/target/frontend/production/retirement. Future maintenance must use the new accepted deployment baseline; earlier blocked/offline-only snapshots below are historical.
+
+## Cursor IAM quotas resolved offline ? deployment review ready
+
+[Quota correction and exact security pin](team-hub-2b6-cursor-iam-quota-correction.md): execution inline 10,166 / 10,240 and boundary 5,992 / 6,144; equivalent intended permissions proven, 503 IAM rows and zero Analyzer findings. Security SHA 5cf68f36b3e4e3f95ba8a3cb1444eacc82e382ae214e0cee58d5382409974c23. Read ZIP ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e and product caa0a68384990438196ed7720f1a24062641e03220f6092c1b4a2340d2417241 are unchanged. No AWS writes. Separately authorize and inspect security-first/product-second dark deployment; require live acceptance at LEGACY_WRITER 3/3 before maintenance. Existing approvals and epoch-5 frontend/rollback pins remain preserved. Earlier oversized-candidate entries below are historical.
+
+## Cursor runtime corrected offline ? deployment security blocked
+
+[Cursor correction and final pins](team-hub-2b6-cursor-runtime-correction.md): all four routed reads pass; LIST_MY_TEAMS now uses the accepted lazy cursor loader with a bounded secret request. Runtime IAM unchanged; fresh protected state remains LEGACY_WRITER 3/3. Proposed exact artifact bindings exceed execution boundary (6,273 / 6,144) and inline-role (10,394 / 10,240) quotas. Do not deploy this security candidate or resume FROZEN. Resolve policy representation, separately authorize the final dark Read deployment, and complete live acceptance first. Existing approvals, S3 evidence and epoch-5 frontend/rollback bytes remain preserved.
+
+## Final resumption blocked before FROZEN ? current
+
+[Final controlled-cutover result](team-hub-2b6-final-controlled-cutover-result.md): fresh preflight passed at LEGACY_WRITER 3/3, but exact pinned business-router verification reproduced GET /v1/teams HTTP 503 because LIST_MY_TEAMS never loads required cursor-signing material. Offline proof only; no AWS writes or authority/frontend change. Prepare and separately review a minimal runtime correction before resuming maintenance. Preserve accepted approvals, multipart evidence and historical pins.
+
+## Owned multipart diagnostic accepted ? current
+
+[Actual result](team-hub-2b6-multipart-diagnostic-result.md): amendment accepted for candidate 58a168cf2f4e370e7b5ceb7044c6e957bd30085212efcac179caecc45b11f895; exactly two owned zero-part uploads created and terminally aborted. RavenTest received actual explicit resource-policy Abort AccessDenied on the known second upload (FMNH2DH4K7JDGHG5). Exact source policy restored; zero logo objects/pending uploads. Audit correlation **5/5 data + 2/2 management** complete. IDs protected privately, public fingerprints only. Authority remains **LEGACY_WRITER 3/3**, sixteen business routes denied; protected counts/code/IAM/D1 unchanged. Corrected maintenance manifest e3e5f5d7877830cfaa258e135beca78d369da337fdc88b44f8560d3d599dbbac prepares 4/4 -> 5/5 and epoch-5 local frontend. No full maintenance, frontend/production change or retirement. Amendment need not be requested again; require separate resumption direction and fresh attended window/live gates. Older blocked/amendment-pending entries below are historical.
+
+## Post-abort corrections prepared ? current
+
+[Reviewed preparation](team-hub-2b6-post-abort-correction-readiness.md) verifies recovered **LEGACY_WRITER 3/3**, restored source policies/gateways, empty business state, healthy auditing, protected counts/config/IAM and sixteen denied target routes. New candidate **58a168cf2f4e370e7b5ceb7044c6e957bd30085212efcac179caecc45b11f895** proposes a separately authorized, owned zero-part source-key multipart lifecycle before maintenance, plus monotonic 3/3 -> FROZEN 4/4 -> TARGET 5/5 and epoch-5 frontend activation. Exact accepted rollback bytes reused. Existing pins/approvals preserved; a narrow amendment is required for multipart state/proof timing and new release pins. No AWS writes or activation in preparation. After amendment and diagnostic cleanup/audit correlation, retain the 150-minute maintenance sequence and all live gates. Earlier 1/2/3 execution entries are historical and must not be rerun.
+
+## Resumed maintenance aborted and recovered ? current
+
+[Actual execution and recovery](team-hub-2b6-resumed-controlled-cutover-result.md): conditional FROZEN 2/2, all seven source fence/gateway changes and all twelve original generated proofs succeeded. Thirty-one operator denials passed; AbortMultipartUpload on the nonexistent diagnostic ID returned 404 NoSuchUpload (2YAMA4GF3MQJHB6H), failing the mandatory proof. Pre-write recovery restored exact source policies/gateways and **LEGACY_WRITER epoch/version 3/3**. Source and target business state unchanged; authenticated authority 200 and all sixteen target routes 403 after recovery. Protected counts/code/IAM/D1 preserved. No TARGET, independent frontend activation, production change or retirement. Next attempt needs corrected multipart diagnostic and reviewed FROZEN 4/4 -> TARGET 5/5 epoch/frontend bindings; preserve old pins and approvals. Earlier 1/1 readiness snapshots below are historical, not current authority.
+
+## Generated-delete proof corrected ? execution review pending
+
+[Correction and exact supplemental pin](team-hub-2b6-generated-delete-proof-correction.md) explain documented AppSync absent-delete condition reconciliation. Installed pipelines map to guarded DeleteItem; eight read-only mapping evaluations, twelve actual-role IAM cases, four Analyzer validations and sixteen focused tests pass. Candidate SHA cd335b6f16a422715388d31e30ffe54798be5fe45698754e96f13ed0a93ab351. All existing pins and approvals remain unchanged. Before-fence null is not standalone write proof; after-fence exact original-role/table DeleteItem resource-policy AccessDenied remains mandatory. No AWS mutation or authority/frontend change. Review the new verification candidate before resuming maintenance.
+
+## Controlled cutover stopped before FROZEN ? current
+
+[Actual result](team-hub-2b6-controlled-cutover-result.md): approvals/attendance remain recorded; Admin and ordinary authentication, authority 200, sixteen route denials, protected preflight and 32 operator controls passed. The pinned generated deleteTeam pre-control returned null without the required underlying conditional failure (request 29a7a14d-2a8d-4d89-98ee-82fcb7aa30c9). Stop before FROZEN; prepare/review a service-reaching deletion proof, without changing accepted pins or silently extending the shared/cleanup alternative criterion. Source/target business state remains empty and authority LEGACY_WRITER 1/1. No source fence, independent frontend activation or production change. Earlier pending-Admin/approval entries are historical.
+
+## Explicit approvals recorded ? current execution gate
+
+The user explicitly approved both security-owner and maintenance-operator statements and confirmed 150-minute attendance, monitoring/recovery custody and rollback availability. [Approval receipt](team-hub-maintenance-authorization-evidence-2026-10-13/authorization-approvals.json) records actual receipt time without inventing a user-message signature timestamp. [Fresh preflight](team-hub-controlled-cutover-preflight-evidence-2026-10-13/current-result.json) confirms protected counts/configurations, empty business state, LEGACY_WRITER 1/1, exact package/frontend hashes and active S3 audit. Existing ordinary session was verified through Core; Admin session was unavailable. Pending normal Admin sign-in and authenticated acceptance readiness; no maintenance window started, AWS resource write, FROZEN, target transfer or frontend activation occurred. Older pending-approval statements below are historical.
+
+## Original-principal security decision ? current
+
+**TEAM HUB READY FOR CONTROLLED MAINTENANCE AUTHORIZATION**, conditional on explicit named security-owner acceptance of the original-role alternative proof criterion and real-cutover logical quarantine. [Decision, exact authorization and residual risks](team-hub-2b6-original-principal-security-decision.md) supersede earlier unresolved preparation verdicts below; historical evidence remains preserved. Fresh original-role/bucket grants are unchanged; 12 identity controls and four Access Analyzer validations completed. These are not live installed-fence proof.
+
+Reject both same-role helpers and destructive cleanup. Preserve actual AppSync/operator live proof during separately authorized FROZEN; shared/cleanup direct service-role receipts remain explicitly unavailable. Unknown late objects remain non-authoritative and preserved; branding stays disabled, audit/reconciliation continues and no universal physical revocation is claimed. No AWS writes, authority change, frontend switch or retirement occurred in this review. Security decision and maintenance approval are not yet granted.
+
+Final two-blocker review (13 October): original cleanup helper is NOT approved: its actual bucket resource policy grants PutBucketPolicy despite identity-only implicit denial. Shared-role reuse also exposes existing foreign secret/KMS grants. Restricted two-resource alternative is prepared, not deployed, and not original-principal proof. Strict single-part upload quiescence remains unproven; logical quarantine requires an explicit residual-risk decision. See [current engineering verdict](team-hub-2b6-final-cutover-execution-readiness.md#current-two-blocker-engineering-verdict--13-october-2026). No AWS writes or authority/frontend changes.
+
+
+13 October priority review: live protected/runtime/IAM/data/protection refresh completed without resource writes; 61 preparation tests and 11 package hashes passed. Upload quiescence and same-role helper review remain prerequisites. Ntgre-local frontend pins do not authorize Master publication. See [final execution readiness](team-hub-2b6-final-cutover-execution-readiness.md).
+
+
+## Final maintenance preparation — 12 October 2026 (current)
+
+**TEAM HUB MAINTENANCE PREPARATION BLOCKED — EXACT REMAINING ITEMS.** Frontend activation/rollback artifacts and guarded probe/business/monitoring packets are pinned. Remaining decision: supported source S3 in-flight upload quiescence; URL expiry or a fixed wait does not certify completion. The new two-function same-role helper proposal also requires explicit security-owner design/lifecycle approval. No AWS writes, freeze, target transfer or frontend activation occurred.
+
+[Consolidated current report and 150-minute sequence](team-hub-2b6-final-maintenance-preparation.md) is the authoritative current operational plan. It supersedes the earlier 300-second-only drain assumption and old unpinned frontend/probe status. Earlier entries remain historical, not executable instructions.
+
+Fresh Legacy 2,621/167, Team Hub 48+7, Core 8+5, Tournament 11; LEGACY_WRITER epoch/version 1/1; empty business state; complete healthy IN_SYNC functions and preserved IAM. Accepted 48 AWS transactions/nine cursor checks remain accepted. Master remains eventual production intent only.
+
+
+## Final pre-cutover review — 12 October 2026 (current)
+
+**TEAM HUB CUTOVER BLOCKED — SPECIFIC REMAINING GATES.** Fresh protected baselines pass; accepted 48 AWS transactions, nine cursor checks, recovery, authority endpoint, D1 and synthetic rollback remain valid. 316 local tests, TypeScript, accounting/ledger and pinned-source checks pass. No AWS writes or authority/frontend changes occurred.
+
+The [consolidated current runbook](team-hub-2b6-cutover-runbook.md#final-pre-cutover-review--12-october-2026-current) contains the A–F evidence matrix, 150-minute proposed window, monotonic epochs, explicit abort/rollback steps and separate authorization gates. Two preparation gaps remain: exact safe service-only/shared Legacy writer/logo live probe procedures, and the pinned final Ntgre frontend activation/compatible rollback release. Five real business-persona acceptance remains a future target-stage gate, not a claim supported by isolated Team browser fixtures. Master is eventual production intent only.
+
+Fresh baseline: Legacy 2,621/167, Team Hub 48+7, Core 8+5, Tournament 11; LEGACY_WRITER epoch/version 1/1; source/target business state empty; complete healthy IN_SYNC functions; protections intact; frontend Legacy, fence absent. Six monitoring alarms have no action destinations, requiring attended manual operator monitoring. [Read-only receipts](team-hub-final-readiness-evidence-2026-10-12/baseline.json); [evidence compatibility](team-hub-final-readiness-evidence-2026-10-12/evidence-review.json); [tests](team-hub-final-readiness-evidence-2026-10-12/validation.json). Earlier entries are historical.
+
+
+**Quota-corrected isolated AWS verification (12 October 2026): ACCEPTED — READY FOR FINAL CUTOVER REVIEW.** 48/48 real isolated DynamoDB scenarios and nine actual-Read-role cursor checks passed; CloudTrail retrieval/decryption, native metrics, cleanup and final preservation verified. Four temporary resources and exact artifact removed. Real LEGACY_WRITER epoch/version 1, empty permanent business state, permanent IAM/code, Legacy frontend and protected domains preserved. No cutover or retirement. [Authoritative result and evidence](team-hub-2b6-quota-corrected-isolated-aws-verification-result.md). Earlier entries are historical.
+
+
+**Quota correction (12 October 2026): QUOTA-CORRECTED ISOLATED VERIFICATION READY FOR EXECUTION REVIEW — NOT DEPLOYED.** Only the temporary probe reservation was removed; it is unset, not zero. Four resources, original policy/ZIP/source pins and all 48/nine scenarios preserved. Fresh capacity, protected baselines, 65 actual-role and 36 runner-policy controls pass; Analyzer zero findings. Sequential bounded execution and a separate AWS change-set/execution gate remain required. [Current corrected candidate and lifecycle](team-hub-2b6-isolated-aws-business-verification.md#quota-corrected-candidate--current). Earlier failed-quota evidence remains historical.
+
+
+**Isolated AWS verification execution (12 October 2026): BLOCKED BEFORE AWS WRITES — PINNED CURSOR PROBE RESERVED-CONCURRENCY GATE.** The exact reviewed probe reserves 1 execution, but fresh AWS limits report 10 total/unreserved; AWS requires 100 left unreserved. Candidate pins and protected baselines verified. No artifact upload, change set, resource creation, transaction/cursor invocation, authority/frontend change or cleanup write occurred. Prior preparation missed this quota constraint. [Actual stop evidence and remaining gates](team-hub-2b6-isolated-aws-verification-result.md). Earlier readiness entries are superseded for execution.
+
+
+**Isolated AWS business verification (12 October 2026): PREPARED — READY FOR EXECUTION REVIEW, NOT EXECUTED.** Fresh baselines, healthy/IN_SYNC Lambdas, LEGACY_WRITER epoch/version 1 and empty business state preserved. 65 actual-runtime IAM and 36 proposed-runner controls pass; Analyzer zero findings. Four temporary resources proposed for separately authorized real DynamoDB and actual-Read-role cursor proofs. No AWS resource/IAM/business writes, frontend activation or source fence. [Authoritative plan, proof limits and execution gates](team-hub-2b6-isolated-aws-business-verification.md). Earlier entries are historical.
+
+
 **DescribeKey-corrected recovery (12 October 2026): ACCEPTED — READY FOR ISOLATED AWS BUSINESS RUNTIME VERIFICATION.** One fixed execution succeeded; both complete Lambda environments match CloudFormation, Active/Successful and IN_SYNC. 222 certification + 82 actual-role checks passed. Authority HTTP 200 at LEGACY_WRITER 1/1, all 16 business routes HTTP 403, monitoring accepted, business state empty. Temporary role/workflow removed; permanent IAM/code and protected domains preserved. No frontend, fence or authority transition. Isolated AWS transaction/cursor proofs remain separate. [Actual receipts and remaining gates](team-hub-2b6-describekey-recovery-result.md). Earlier entries are historical.
 
 

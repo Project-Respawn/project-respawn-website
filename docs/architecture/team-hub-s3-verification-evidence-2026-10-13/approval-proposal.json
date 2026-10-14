@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "team-hub-s3-verification-approval.v1",
+  "prepared": true,
+  "authorized": false,
+  "account": "058264289478",
+  "region": "eu-north-1",
+  "operator": "arn:aws:iam::058264289478:user/RavenTest",
+  "resourceUnits": [
+    {
+      "kind": "audit",
+      "stack": "ProjectRespawn-TeamHub-Ntgre-S3Audit",
+      "changeSet": "ntgre-s3-audit-create-20261013",
+      "template": "docs/architecture/team-hub-s3-authority-evidence-2026-10-13/audit.PROPOSED.template.json",
+      "expectedAdditions": 3,
+      "retained": true,
+      "logicalResources": [
+        {
+          "logicalId": "AuditBucket",
+          "type": "AWS::S3::Bucket"
+        },
+        {
+          "logicalId": "AuditPolicy",
+          "type": "AWS::S3::BucketPolicy"
+        },
+        {
+          "logicalId": "LogoWriteAudit",
+          "type": "AWS::CloudTrail::Trail"
+        }
+      ]
+    },
+    {
+      "kind": "helper",
+      "stack": "ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "changeSet": "ntgre-restricted-fence-probe-create-20261013",
+      "template": "docs/architecture/team-hub-s3-authority-evidence-2026-10-13/restricted-template.json",
+      "expectedAdditions": 2,
+      "retained": false,
+      "logicalResources": [
+        {
+          "logicalId": "RestrictedRole",
+          "type": "AWS::IAM::Role"
+        },
+        {
+          "logicalId": "RestrictedProbe",
+          "type": "AWS::Lambda::Function"
+        }
+      ]
+    },
+    {
+      "kind": "race",
+      "stack": "ProjectRespawn-TeamHub-Ntgre-S3Race",
+      "changeSet": "ntgre-s3-race-create-20261013",
+      "template": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/s3-inflight.PROPOSED.template.json",
+      "expectedAdditions": 2,
+      "retained": false,
+      "logicalResources": [
+        {
+          "logicalId": "Bucket",
+          "type": "AWS::S3::Bucket"
+        },
+        {
+          "logicalId": "Policy",
+          "type": "AWS::S3::BucketPolicy"
+        }
+      ]
+    }
+  ],
+  "totalAdditions": 7,
+  "expectedModifications": 0,
+  "expectedDeletions": 0,
+  "expectedReplacements": 0,
+  "helperExistingRoleReuse": false,
+  "helperInvocation": "NOT authorized before real source-fence installation; install/readback/validate only. Invocation belongs to separately authorized maintenance.",
+  "allowedRealSourceRequest": "Exactly one request-correlated PutObject canary on the existing reserved absent diagnostic key with IfMatch mismatch and owner guard; no source-object creation/deletion or policy change.",
+  "allowedIsolatedOperations": [
+    "Exact owned canary Put/Get/Delete",
+    "One held 64-KiB zero-body stream",
+    "Isolated policy initial/fence/initial transitions",
+    "Preissued URL denial control",
+    "If held request is denied: one separately labeled synthetic late-arrival injection",
+    "Exact digest/terminal-owned cleanup"
+  ],
+  "realAuthorityChanges": false,
+  "realSourceFenceChanges": false,
+  "frontendChanges": false,
+  "productionChanges": false,
+  "originalPrincipalProofDecision": "NOT discharged by this package. Original generated/manual controls are reviewed for later maintenance; original shared/cleanup safe path remains a separate security decision.",
+  "residualRiskAcceptanceRequired": [
+    "Physical admitted upload may complete late",
+    "No fixed CloudTrail delivery/completeness deadline or complete historical coverage",
+    "Canary demonstrates exact path/delivery only, not universal arrival census",
+    "Unversioned source loses overwritten/deleted historical bodies",
+    "Race may show denied rather than late completion; report actual outcome without retry until desired result"
+  ],
+  "retention": {
+    "custodian": "Ntgre",
+    "auditResources": 3,
+    "minimumEvidenceDays": 90,
+    "policy": "No automatic lifecycle/deletion. Keep trail active for continuing logo quarantine; later authorized stop/retirement after exports/reconciliation.",
+    "temporaryCleanupResources": 4,
+    "asset": "Delete only owned uploaded helper artifact version after Lambda removed; retain local immutable pins and sanitized receipts"
+  },
+  "cost": {
+    "expectedBoundedRehearsalUSD": "less than 1, estimate not a cap",
+    "assumptions": "at most 1000 selected data events, 64 KiB synthetic objects, no repeated race, no helper invocations in this package",
+    "dataEventRateUSDPer100000": 0.1,
+    "ongoing": "Actual additional CloudTrail events, versioned S3 storage/requests and existing log ingestion continue to accrue; operator owns review",
+    "pricingSources": [
+      "https://aws.amazon.com/cloudtrail/pricing/",
+      "https://aws.amazon.com/s3/pricing/",
+      "https://aws.amazon.com/lambda/pricing/"
+    ]
+  },
+  "stop": [
+    "Unexpected drift/collision/permissions/data",
+    "Any unexpected real-source write or adoption",
+    "Unexpected change-set action/count/replacement",
+    "Wrong installed trust/role/code/selector",
+    "Ambiguous terminal or incomplete event correlation",
+    "Cleanup ownership/content mismatch",
+    "No automatic write retry, role broadening or real-source cleanup"
+  ],
+  "awsWritesPerformed": 0
+}

@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "team-hub-cursor-iam-quota.v1",
+  "account": "058264289478",
+  "region": "eu-north-1",
+  "intendedSecuritySha256": "3dee5dad57dd229e7d7bf9f6a7024722c88061f646ee5c71b2bd368ef5f7a9d4",
+  "securitySha256": "5cf68f36b3e4e3f95ba8a3cb1444eacc82e382ae214e0cee58d5382409974c23",
+  "securityPath": "docs/architecture/team-hub-cursor-iam-quota-evidence-2026-10-13/5cf68f36b3e4e3f95ba8a3cb1444eacc82e382ae214e0cee58d5382409974c23.security.template.json",
+  "productSha256": "caa0a68384990438196ed7720f1a24062641e03220f6092c1b4a2340d2417241",
+  "productPath": "docs/architecture/team-hub-cursor-runtime-correction-evidence-2026-10-13/product.template.json",
+  "runtimeSha256": "ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e",
+  "runtimePath": "docs/architecture/team-hub-cursor-runtime-correction-evidence-2026-10-13/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.read.runtime.zip",
+  "priorCandidateSha256": "856a8f54e00c0508a6bac36b01b65e919c7df3298dd4cf363052c7a97c3a4723",
+  "originalSizes": {
+    "inlineAggregate": 10394,
+    "boundary": 6273
+  },
+  "optimizedSizes": {
+    "inlineAggregate": 10166,
+    "boundary": 5992
+  },
+  "changes": [
+    {
+      "kind": "REMOVE_LABEL",
+      "oldIndex": 16,
+      "sid": "ExactDarkTeamTableLifecycle"
+    },
+    {
+      "kind": "REMOVE_LABEL",
+      "oldIndex": 17,
+      "sid": "DenyOtherDynamoResources"
+    },
+    {
+      "kind": "REMOVE_LABEL",
+      "oldIndex": 20,
+      "sid": "ExactCursorServiceKey"
+    },
+    {
+      "kind": "UNION_IDENTICAL_PREDICATES",
+      "oldIndex": 14,
+      "effect": "Deny",
+      "resource": "*",
+      "condition": null
+    },
+    {
+      "kind": "UNION_IDENTICAL_PREDICATES",
+      "oldIndex": 15,
+      "effect": "Deny",
+      "resource": "*",
+      "condition": null
+    },
+    {
+      "kind": "UNION_IDENTICAL_PREDICATES",
+      "oldIndex": 19,
+      "effect": "Allow",
+      "resource": "*",
+      "condition": null
+    },
+    {
+      "kind": "REMOVE_REDUNDANT_BOUNDARY_DENY",
+      "statement": {
+        "Effect": "Deny",
+        "Action": "iam:PassRole",
+        "NotResource": [
+          "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-PreviewRead",
+          "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+          "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead"
+        ]
+      },
+      "retainedIdentityDeny": true,
+      "retainedBoundaryExactAllow": true,
+      "standaloneBoundaryForeignDecision": "implicitDeny",
+      "pairedForeignDecision": "explicitDeny"
+    }
+  ],
+  "resources": {
+    "product": 48,
+    "security": 7
+  },
+  "rollback": {
+    "templateSha256": "a48e15fa6dc9af763494ffbc9f7ee5a502c91b340351cfd550d39d442476bbad",
+    "templateKey": "team-hub/cursor-runtime/rollback-a48e15fa6dc9af763494ffbc9f7ee5a502c91b340351cfd550d39d442476bbad.template.json",
+    "templateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/team-hub/cursor-runtime/rollback-a48e15fa6dc9af763494ffbc9f7ee5a502c91b340351cfd550d39d442476bbad.template.json",
+    "product": "docs/architecture/team-hub-cursor-security-evidence-2026-10-08/product.template.json",
+    "security": "docs/architecture/team-hub-cursor-runtime-correction-evidence-2026-10-13/previous/security.template.json",
+    "readRuntime": ".tmp/team-hub-business-runtime/runtime.zip",
+    "readCode": {
+      "S3Bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+      "S3Key": "team-hub/business/da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e.zip"
+    },
+    "commandCode": {
+      "S3Bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+      "S3Key": "team-hub/business/da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e.zip"
+    }
+  },
+  "templateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/team-hub/cursor-runtime/caa0a68384990438196ed7720f1a24062641e03220f6092c1b4a2340d2417241.template.json",
+  "assetArn": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e.zip",
+  "templateArn": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/cursor-runtime/caa0a68384990438196ed7720f1a24062641e03220f6092c1b4a2340d2417241.template.json",
+  "sourceHashes": [
+    {
+      "path": "scripts/team-hub-cursor-iam-quota/optimize.mjs",
+      "sha256": "ede157d460c5bd2af2bad7e1d252cdd2867887c039eb728edff622241c55a57b"
+    },
+    {
+      "path": "scripts/team-hub-cursor-iam-quota/build.mjs",
+      "sha256": "2f72e4f68d2b00b9fe62f85efe5a5c06fc6a1a196a6bd1e7dbe978641ff13769"
+    }
+  ],
+  "awsWrites": 0,
+  "deploymentAuthorized": false
+}

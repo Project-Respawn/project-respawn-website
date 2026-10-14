@@ -1,0 +1,49 @@
+{
+  "TableName": "ProjectRespawn-TeamHub-Ntgre-Journal",
+  "Key": {
+    "PK": {
+      "S": "CONTROL#AUTHORITY"
+    },
+    "SK": {
+      "S": "STATE"
+    }
+  },
+  "UpdateExpression": "SET #m = :next, #e = :two, #v = :two, changedAt = :at, changedBy = :by, gateDigest = :digest",
+  "ConditionExpression": "#schema = :schema AND #m = :old AND #e = :one AND #v = :one AND gateDigest = :prior",
+  "ExpressionAttributeNames": {
+    "#m": "mode",
+    "#e": "epoch",
+    "#v": "version",
+    "#schema": "schemaVersion"
+  },
+  "ExpressionAttributeValues": {
+    ":next": {
+      "S": "FROZEN"
+    },
+    ":old": {
+      "S": "LEGACY_WRITER"
+    },
+    ":two": {
+      "N": "2"
+    },
+    ":one": {
+      "N": "1"
+    },
+    ":schema": {
+      "S": "team-hub-authority.v1"
+    },
+    ":prior": {
+      "S": "2227a62a06992e9e09ff672ad6e2f09164e0304f3f68db491437a93577f1ab94"
+    },
+    ":at": {
+      "S": "2026-10-13T20:06:20.475Z"
+    },
+    ":by": {
+      "S": "arn:aws:iam::058264289478:user/RavenTest"
+    },
+    ":digest": {
+      "S": "6f527a0c73577743c368a333c30436b669c6ec25a9e216c865c4d9a964785502"
+    }
+  },
+  "ReturnValues": "ALL_NEW"
+}

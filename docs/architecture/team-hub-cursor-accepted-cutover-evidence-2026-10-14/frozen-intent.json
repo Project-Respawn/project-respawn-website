@@ -1,0 +1,59 @@
+{
+  "at": "2026-10-14T15:04:08.073Z",
+  "request": {
+    "TableName": "ProjectRespawn-TeamHub-Ntgre-Journal",
+    "Key": {
+      "PK": {
+        "S": "CONTROL#AUTHORITY"
+      },
+      "SK": {
+        "S": "STATE"
+      }
+    },
+    "UpdateExpression": "SET #mode = :next, #epoch = :nextEpoch, #version = :nextVersion, changedAt = :at, changedBy = :by, gateDigest = :digest",
+    "ConditionExpression": "#schema = :schema AND #mode = :priorMode AND #epoch = :priorEpoch AND #version = :priorVersion AND gateDigest = :priorDigest",
+    "ExpressionAttributeNames": {
+      "#mode": "mode",
+      "#epoch": "epoch",
+      "#version": "version",
+      "#schema": "schemaVersion"
+    },
+    "ExpressionAttributeValues": {
+      ":schema": {
+        "S": "team-hub-authority.v1"
+      },
+      ":next": {
+        "S": "FROZEN"
+      },
+      ":nextEpoch": {
+        "N": "4"
+      },
+      ":nextVersion": {
+        "N": "4"
+      },
+      ":priorMode": {
+        "S": "LEGACY_WRITER"
+      },
+      ":priorEpoch": {
+        "N": "3"
+      },
+      ":priorVersion": {
+        "N": "3"
+      },
+      ":priorDigest": {
+        "S": "6f527a0c73577743c368a333c30436b669c6ec25a9e216c865c4d9a964785502"
+      },
+      ":digest": {
+        "S": "99ac91a1920027aa389bdd2bdb88676b8d506f8bd413316e5bade5d4f6c44730"
+      },
+      ":at": {
+        "S": "2026-10-14T15:04:08.073Z"
+      },
+      ":by": {
+        "S": "arn:aws:iam::058264289478:user/RavenTest"
+      }
+    },
+    "ReturnValues": "ALL_NEW"
+  },
+  "noAutomaticRetry": true
+}

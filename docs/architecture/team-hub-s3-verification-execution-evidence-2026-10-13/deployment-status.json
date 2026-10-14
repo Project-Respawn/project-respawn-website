@@ -1,0 +1,99 @@
+{
+  "at": "2026-10-13T15:59:35.954Z",
+  "result": [
+    {
+      "kind": "audit",
+      "stackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-S3Audit/8c9b4b90-c71e-11f1-a606-0effef32395f",
+      "status": "CREATE_COMPLETE",
+      "disableRollback": false,
+      "resources": [
+        {
+          "LogicalResourceId": "AuditBucket",
+          "PhysicalResourceId": "respawn-teamhub-quarantine-audit-058264289478-20261013",
+          "ResourceType": "AWS::S3::Bucket",
+          "LastUpdatedTimestamp": "2026-10-13T15:57:38.875000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "AuditPolicy",
+          "PhysicalResourceId": "respawn-teamhub-quarantine-audit-058264289478-20261013",
+          "ResourceType": "AWS::S3::BucketPolicy",
+          "LastUpdatedTimestamp": "2026-10-13T15:57:40.670000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "LogoWriteAudit",
+          "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-LogoQuarantineAudit",
+          "ResourceType": "AWS::CloudTrail::Trail",
+          "LastUpdatedTimestamp": "2026-10-13T15:57:42.977000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "helper",
+      "stackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe/8d80c990-c71e-11f1-8332-0affe29d48d3",
+      "status": "CREATE_COMPLETE",
+      "disableRollback": false,
+      "resources": [
+        {
+          "LogicalResourceId": "RestrictedProbe",
+          "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+          "ResourceType": "AWS::Lambda::Function",
+          "LastUpdatedTimestamp": "2026-10-13T15:58:50.661000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "RestrictedRole",
+          "PhysicalResourceId": "ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+          "ResourceType": "AWS::IAM::Role",
+          "LastUpdatedTimestamp": "2026-10-13T15:58:40.886000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "race",
+      "stackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-S3Race/8e670ae0-c71e-11f1-b3b4-0a00fe57ed85",
+      "status": "CREATE_COMPLETE",
+      "disableRollback": false,
+      "resources": [
+        {
+          "LogicalResourceId": "Bucket",
+          "PhysicalResourceId": "respawn-teamhub-fence-race-058264289478-20261012-5dc9b348",
+          "ResourceType": "AWS::S3::Bucket",
+          "LastUpdatedTimestamp": "2026-10-13T15:58:44.518000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "Policy",
+          "PhysicalResourceId": "respawn-teamhub-fence-race-058264289478-20261012-5dc9b348",
+          "ResourceType": "AWS::S3::BucketPolicy",
+          "LastUpdatedTimestamp": "2026-10-13T15:58:46.665000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        }
+      ]
+    }
+  ]
+}

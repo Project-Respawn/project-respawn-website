@@ -1,0 +1,10 @@
+import fs from 'node:fs';import assert from 'node:assert/strict';
+import {DynamoDBClient,DescribeTableCommand,DescribeContinuousBackupsCommand,DescribeTimeToLiveCommand} from '@aws-sdk/client-dynamodb';
+import {LambdaClient,GetFunctionConfigurationCommand,GetFunctionEventInvokeConfigCommand} from '@aws-sdk/client-lambda';
+import {fromIni} from '@aws-sdk/credential-providers';
+const options={region:'eu-north-1',credentials:fromIni({profile:'default'}),maxAttempts:1},ddb=new DynamoDBClient(options),lambda=new LambdaClient(options),r={at:new Date().toISOString(),tables:[],awsWrites:0};
+for(const TableName of ['ProjectRespawn-TeamHub-Ntgre-Operational','ProjectRespawn-TeamHub-Ntgre-Journal']){const table=(await ddb.send(new DescribeTableCommand({TableName}))).Table;const recovery=(await ddb.send(new DescribeContinuousBackupsCommand({TableName}))).ContinuousBackupsDescription;const ttl=(await ddb.send(new DescribeTimeToLiveCommand({TableName}))).TimeToLiveDescription;r.tables.push({name:TableName,arn:table.TableArn,tableId:table.TableId,deletionProtection:table.DeletionProtectionEnabled,recovery,ttl});assert.equal(table.DeletionProtectionEnabled,true);assert.equal(recovery.PointInTimeRecoveryDescription.PointInTimeRecoveryStatus,'ENABLED');}
+const FunctionName=JSON.parse(fs.readFileSync('docs/architecture/team-hub-2b3-evidence-2026-10-05/live-consumers.json')).lambda;
+const f=await lambda.send(new GetFunctionConfigurationCommand({FunctionName}));r.legacyLambda={arn:f.FunctionArn,timeout:f.Timeout,codeSha256:f.CodeSha256,revision:f.RevisionId};
+try{r.asyncConfiguration=await lambda.send(new GetFunctionEventInvokeConfigCommand({FunctionName}));}catch(e){assert.equal(e.name,'ResourceNotFoundException');r.asyncConfiguration={explicitConfigurationAbsent:true,doesNotProveAsyncInvocationsAbsent:true};}
+r.presignedPutSeconds=300;r.presignedSource='amplify/myFunction/teamHub/branding.ts';r.complete=true;fs.writeFileSync('docs/architecture/team-hub-final-readiness-evidence-2026-10-12/recovery.json',JSON.stringify(r,null,2)+'\n');console.log(JSON.stringify({complete:true,targetTables:2,legacyLambdaTimeout:f.Timeout,awsWrites:0}));

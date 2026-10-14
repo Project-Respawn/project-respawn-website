@@ -1,0 +1,193 @@
+{
+  "startedAt": "2026-10-13T20:43:23.469Z",
+  "expected": [
+    {
+      "id": "positive-create",
+      "requestId": "M0QZBXJCYSVGHB6G",
+      "eventName": "CreateMultipartUpload"
+    },
+    {
+      "id": "positive-abort",
+      "requestId": "92K65DR1MS8S11EA",
+      "eventName": "AbortMultipartUpload"
+    },
+    {
+      "id": "negative-create",
+      "requestId": "MB4E2222XPY7WJ1G",
+      "eventName": "CreateMultipartUpload"
+    },
+    {
+      "id": "diagnostic-deny-install",
+      "requestId": "HHTX1173P7S3Z7S3",
+      "eventName": "PutBucketPolicy"
+    },
+    {
+      "id": "owned-abort-denial",
+      "requestId": "FMNH2DH4K7JDGHG5",
+      "eventName": "AbortMultipartUpload",
+      "expectedError": "AccessDenied"
+    },
+    {
+      "id": "restore-own-diagnostic-policy",
+      "requestId": "FMNW2VKY2AD60AM6",
+      "eventName": "PutBucketPolicy"
+    },
+    {
+      "id": "terminal-abort",
+      "requestId": "Z24VEB8D3PHDKP9M",
+      "eventName": "AbortMultipartUpload"
+    }
+  ],
+  "attempts": [
+    {
+      "at": "2026-10-13T20:43:25.367Z",
+      "matched": 2,
+      "expected": 7,
+      "trailFilesRead": 4
+    },
+    {
+      "at": "2026-10-13T20:43:41.877Z",
+      "matched": 2,
+      "expected": 7,
+      "trailFilesRead": 4
+    },
+    {
+      "at": "2026-10-13T20:43:58.393Z",
+      "matched": 2,
+      "expected": 7,
+      "trailFilesRead": 4
+    },
+    {
+      "at": "2026-10-13T20:44:15.146Z",
+      "matched": 2,
+      "expected": 7,
+      "trailFilesRead": 4
+    },
+    {
+      "at": "2026-10-13T20:44:32.332Z",
+      "matched": 2,
+      "expected": 7,
+      "trailFilesRead": 4
+    },
+    {
+      "at": "2026-10-13T20:44:49.533Z",
+      "matched": 2,
+      "expected": 7,
+      "trailFilesRead": 4
+    },
+    {
+      "at": "2026-10-13T20:45:06.155Z",
+      "matched": 2,
+      "expected": 7,
+      "trailFilesRead": 4
+    },
+    {
+      "at": "2026-10-13T20:45:22.847Z",
+      "matched": 7,
+      "expected": 7,
+      "trailFilesRead": 5
+    }
+  ],
+  "matches": [
+    {
+      "id": "restore-own-diagnostic-policy",
+      "requestId": "FMNW2VKY2AD60AM6",
+      "eventId": "cf35cc72-a7ad-434d-8cf5-d7f6caa06b1f",
+      "eventTime": "2026-10-13T20:42:23Z",
+      "eventName": "PutBucketPolicy",
+      "principal": "arn:aws:iam::058264289478:user/RavenTest",
+      "bucket": "amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+      "provenance": {
+        "type": "AccountManagementEventHistory"
+      }
+    },
+    {
+      "id": "diagnostic-deny-install",
+      "requestId": "HHTX1173P7S3Z7S3",
+      "eventId": "f80bba6e-3a76-48bc-acf8-73007954926e",
+      "eventTime": "2026-10-13T20:40:29Z",
+      "eventName": "PutBucketPolicy",
+      "principal": "arn:aws:iam::058264289478:user/RavenTest",
+      "bucket": "amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+      "provenance": {
+        "type": "AccountManagementEventHistory"
+      }
+    },
+    {
+      "id": "positive-create",
+      "requestId": "M0QZBXJCYSVGHB6G",
+      "eventId": "fa67ca02-c70a-4bdf-a4b1-cde9f222c74c",
+      "eventTime": "2026-10-13T20:40:23Z",
+      "eventName": "CreateMultipartUpload",
+      "principal": "arn:aws:iam::058264289478:user/RavenTest",
+      "bucket": "amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+      "key": "team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png",
+      "provenance": {
+        "type": "RetainedPrivateTrail",
+        "logKey": "AWSLogs/058264289478/CloudTrail/eu-north-1/2026/10/13/058264289478_CloudTrail_eu-north-1_20261013T2045Z_2YYT1cGDgaiYios7.json.gz"
+      }
+    },
+    {
+      "id": "positive-abort",
+      "requestId": "92K65DR1MS8S11EA",
+      "eventId": "eda1d42f-11db-47e3-928d-2fffbd77f5f8",
+      "eventTime": "2026-10-13T20:40:25Z",
+      "eventName": "AbortMultipartUpload",
+      "principal": "arn:aws:iam::058264289478:user/RavenTest",
+      "bucket": "amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+      "key": "team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png",
+      "provenance": {
+        "type": "RetainedPrivateTrail",
+        "logKey": "AWSLogs/058264289478/CloudTrail/eu-north-1/2026/10/13/058264289478_CloudTrail_eu-north-1_20261013T2045Z_2YYT1cGDgaiYios7.json.gz"
+      }
+    },
+    {
+      "id": "negative-create",
+      "requestId": "MB4E2222XPY7WJ1G",
+      "eventId": "2c4c24a7-a194-4b1e-8dec-157cbad23b79",
+      "eventTime": "2026-10-13T20:40:27Z",
+      "eventName": "CreateMultipartUpload",
+      "principal": "arn:aws:iam::058264289478:user/RavenTest",
+      "bucket": "amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+      "key": "team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png",
+      "provenance": {
+        "type": "RetainedPrivateTrail",
+        "logKey": "AWSLogs/058264289478/CloudTrail/eu-north-1/2026/10/13/058264289478_CloudTrail_eu-north-1_20261013T2045Z_2YYT1cGDgaiYios7.json.gz"
+      }
+    },
+    {
+      "id": "owned-abort-denial",
+      "requestId": "FMNH2DH4K7JDGHG5",
+      "eventId": "7ee431da-8a2a-4f9e-8932-4f62864f3dff",
+      "eventTime": "2026-10-13T20:42:23Z",
+      "eventName": "AbortMultipartUpload",
+      "errorCode": "AccessDenied",
+      "principal": "arn:aws:iam::058264289478:user/RavenTest",
+      "bucket": "amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+      "key": "team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png",
+      "provenance": {
+        "type": "RetainedPrivateTrail",
+        "logKey": "AWSLogs/058264289478/CloudTrail/eu-north-1/2026/10/13/058264289478_CloudTrail_eu-north-1_20261013T2045Z_2YYT1cGDgaiYios7.json.gz"
+      }
+    },
+    {
+      "id": "terminal-abort",
+      "requestId": "Z24VEB8D3PHDKP9M",
+      "eventId": "25f6e9f7-b18e-4029-9f25-b755c7604e81",
+      "eventTime": "2026-10-13T20:42:24Z",
+      "eventName": "AbortMultipartUpload",
+      "principal": "arn:aws:iam::058264289478:user/RavenTest",
+      "bucket": "amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+      "key": "team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png",
+      "provenance": {
+        "type": "RetainedPrivateTrail",
+        "logKey": "AWSLogs/058264289478/CloudTrail/eu-north-1/2026/10/13/058264289478_CloudTrail_eu-north-1_20261013T2045Z_2YYT1cGDgaiYios7.json.gz"
+      }
+    }
+  ],
+  "complete": true,
+  "deliverySlaAssumed": false,
+  "collectionBudgetMinutes": 15,
+  "rawUploadIdsPublic": false,
+  "completedAt": "2026-10-13T20:45:22.848Z"
+}

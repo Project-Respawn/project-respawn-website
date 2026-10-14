@@ -1,0 +1,112 @@
+{
+  "at": "2026-10-13T20:13:14.154Z",
+  "sources": [
+    {
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "count": 0,
+      "pages": 1,
+      "stronglyConsistent": true,
+      "policy": "NO_POLICY"
+    },
+    {
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "count": 0,
+      "pages": 1,
+      "stronglyConsistent": true,
+      "policy": "NO_POLICY"
+    },
+    {
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "count": 0,
+      "pages": 1,
+      "stronglyConsistent": true,
+      "policy": "NO_POLICY"
+    },
+    {
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "count": 0,
+      "pages": 1,
+      "stronglyConsistent": true,
+      "policy": "NO_POLICY"
+    }
+  ],
+  "target": [
+    {
+      "table": "ProjectRespawn-TeamHub-Ntgre-Operational",
+      "count": 0
+    },
+    {
+      "table": "ProjectRespawn-TeamHub-Ntgre-Journal",
+      "count": 16
+    }
+  ],
+  "sourcePoliciesAbsent": true,
+  "authority": {
+    "PK": {
+      "S": "CONTROL#AUTHORITY"
+    },
+    "changedAt": {
+      "S": "2026-10-13T20:09:48.029Z"
+    },
+    "changedBy": {
+      "S": "arn:aws:iam::058264289478:user/RavenTest"
+    },
+    "epoch": {
+      "N": "3"
+    },
+    "gateDigest": {
+      "S": "6f527a0c73577743c368a333c30436b669c6ec25a9e216c865c4d9a964785502"
+    },
+    "mode": {
+      "S": "LEGACY_WRITER"
+    },
+    "schemaVersion": {
+      "S": "team-hub-authority.v1"
+    },
+    "version": {
+      "N": "3"
+    },
+    "SK": {
+      "S": "STATE"
+    }
+  },
+  "sourceLogoCount": 0,
+  "sourceBucketPolicy": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Deny",
+        "Principal": {
+          "AWS": "*"
+        },
+        "Action": "s3:*",
+        "Resource": [
+          "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+          "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/*"
+        ],
+        "Condition": {
+          "Bool": {
+            "aws:SecureTransport": "false"
+          }
+        }
+      },
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3"
+        },
+        "Action": [
+          "s3:PutBucketPolicy",
+          "s3:GetBucket*",
+          "s3:List*",
+          "s3:DeleteObject*"
+        ],
+        "Resource": [
+          "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+          "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/*"
+        ]
+      }
+    ]
+  },
+  "complete": true
+}

@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "team-hub-restricted-probe-review.v1",
+  "prepared": true,
+  "executed": false,
+  "resourceInventory": [
+    {
+      "logicalId": "RestrictedRole",
+      "type": "AWS::IAM::Role",
+      "name": "ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe"
+    },
+    {
+      "logicalId": "RestrictedProbe",
+      "type": "AWS::Lambda::Function",
+      "name": "ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe"
+    }
+  ],
+  "policy": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "OnlyOwnedConditionalDiagnostics",
+        "Effect": "Allow",
+        "Action": [
+          "dynamodb:PutItem",
+          "dynamodb:UpdateItem",
+          "dynamodb:DeleteItem",
+          "dynamodb:BatchWriteItem",
+          "dynamodb:PartiQLUpdate",
+          "dynamodb:PartiQLDelete"
+        ],
+        "Resource": [
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE"
+        ],
+        "Condition": {
+          "ForAllValues:StringEquals": {
+            "dynamodb:LeadingKeys": [
+              "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+            ]
+          },
+          "Null": {
+            "dynamodb:LeadingKeys": "false"
+          }
+        }
+      },
+      {
+        "Sid": "OnlyOwnedLogoDiagnostic",
+        "Effect": "Allow",
+        "Action": [
+          "s3:PutObject",
+          "s3:DeleteObject",
+          "s3:DeleteObjectVersion",
+          "s3:AbortMultipartUpload"
+        ],
+        "Resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png"
+      },
+      {
+        "Sid": "ExistingLogStreamsOnly",
+        "Effect": "Allow",
+        "Action": [
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ],
+        "Resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/aws/lambda/amplify-projectrespawnweb-myFunctionrebuildlambdaF-LwVW5TljICgV:log-stream:*"
+      },
+      {
+        "Sid": "NoPolicyOrPrivilegeAdministration",
+        "Effect": "Deny",
+        "Action": [
+          "iam:*",
+          "sts:AssumeRole",
+          "s3:PutBucketPolicy",
+          "s3:DeleteBucketPolicy",
+          "s3:PutBucketAcl",
+          "lambda:*",
+          "kms:*",
+          "ssm:*",
+          "secretsmanager:*",
+          "cognito-idp:*"
+        ],
+        "Resource": "*"
+      }
+    ]
+  },
+  "trust": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "Service": "lambda.amazonaws.com"
+        },
+        "Action": "sts:AssumeRole"
+      }
+    ]
+  },
+  "runtime": "Requires a new reviewed fixed runtime: original ZIP checks original function name/profile and must NOT be substituted",
+  "limitations": [
+    "Representative restricted-principal data-plane proof, not original cleanup/service-role live proof",
+    "No AppSync grant: generated mutations retain their own reviewed original-principal path",
+    "Original-role installed resource-policy proof/custody remains mandatory; this alternative alone cannot discharge it"
+  ],
+  "conditions": [
+    "No public URL/events/resource-based invocation grants",
+    "Security-owned exact PassRole/creation/invocation/code custody; ordinary caller remains denied",
+    "Exact fixture guards and ownership controls; no broad resource or arbitrary input",
+    "Separate runtime/template/hash/change-set review before any provisioning"
+  ],
+  "permanentIamChanges": 0,
+  "awsWrites": 0
+}

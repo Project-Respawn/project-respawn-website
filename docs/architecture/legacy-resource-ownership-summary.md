@@ -14,7 +14,7 @@ Inventory coverage is **100.00%** (2621/2621); future-owner resolution is **92.7
 | Stateful | 61 | 2.33% |
 | Protected | 62 | 2.37% |
 | Retirement candidates | 0 | 0.00% |
-| Migrated | 0 | 0.00% |
+| Migrated | 4 | 0.15% |
 | Retired | 0 | 0.00% |
 
 Stateful/shared/protected are overlapping dimensions, not additive buckets. Statefulness follows the accepted source definition (61 tables/buckets/keys/pool declarations); protected includes the AppSync API (62). Logical ownership is not physical transfer or deletion eligibility.
@@ -23,7 +23,7 @@ Stateful/shared/protected are overlapping dimensions, not additive buckets. Stat
 |---|---:|---:|---:|---:|---:|
 | SHARED_CORE | 418 | 418 | 0 | 0 | 0 |
 | TOURNAMENT | 0 | 0 | 0 | 0 | 0 |
-| TEAM_HUB | 188 | 188 | 0 | 0 | 0 |
+| TEAM_HUB | 188 | 188 | 4 | 0 | 0 |
 | CREATOR | 629 | 629 | 0 | 0 | 0 |
 | COMMERCE | 305 | 305 | 0 | 0 | 0 |
 | COMMUNITY_EVENTS | 382 | 382 | 0 | 0 | 0 |
@@ -35,7 +35,7 @@ Stateful/shared/protected are overlapping dimensions, not additive buckets. Stat
 | UNASSIGNED | 0 | 0 | 0 | 0 | 0 |
 | UNRESOLVED_SHARED | 191 | 0 | 0 | 0 | 191 |
 
-All resources remain Legacy-authoritative. Tournament/Team Hub independent previews add their own resources; they do not remove any of these rows. **No Legacy resource reduction is claimed.** Mixed shared providers, APIs, IAM and storage need consumer/lifecycle evidence before resolution. Unresolved entries include an explanation and source pointers. Do not assign them merely to improve coverage.
+Four Team Hub source-table rows have completed business-authority cutover to the independent Ntgre domain at TARGET_WRITER epoch/version 5/5. Their physical resources remain in LegacyPlatform with source writer fences installed and retirement NOT_ELIGIBLE. All other rows retain their recorded authority. **No Legacy resource reduction is claimed.** Mixed shared providers, APIs, IAM and storage need consumer/lifecycle evidence before resolution. Unresolved entries include an explanation and source pointers. Do not assign them merely to improve coverage.
 
 ## Latest Team Hub Gate 2 result
 

@@ -1,0 +1,2060 @@
+{
+  "at": "2026-10-12T18:56:12.954Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "absent": [
+    {
+      "s": "cloudformation",
+      "a": "describe-stacks",
+      "input": {
+        "StackName": "ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1"
+      }
+    },
+    {
+      "s": "iam",
+      "a": "get-role",
+      "input": {
+        "RoleName": "ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1"
+      }
+    },
+    {
+      "s": "lambda",
+      "a": "get-function-configuration",
+      "input": {
+        "FunctionName": "ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-CursorProbe"
+      }
+    },
+    {
+      "s": "dynamodb",
+      "a": "describe-table",
+      "input": {
+        "TableName": "ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational"
+      }
+    },
+    {
+      "s": "dynamodb",
+      "a": "describe-table",
+      "input": {
+        "TableName": "ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Journal"
+      }
+    },
+    {
+      "s": "s3api",
+      "a": "head-object",
+      "input": {
+        "Bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+        "Key": "team-hub/isolated/a072a13df0aa7e4299fb8f01a8e77513e8f9bcf6ae37c4867a933b1f09e9d1e4.zip"
+      }
+    }
+  ],
+  "operator": [],
+  "simulations": [
+    {
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+      "actions": [
+        "iam:CreateRole",
+        "iam:TagRole",
+        "iam:UntagRole",
+        "iam:ListRolePolicies",
+        "iam:ListAttachedRolePolicies",
+        "iam:GetRole",
+        "iam:PutRolePolicy",
+        "iam:GetRolePolicy",
+        "iam:DeleteRolePolicy",
+        "iam:DeleteRole"
+      ],
+      "result": {
+        "EvaluationResults": [
+          {
+            "EvalActionName": "iam:CreateRole",
+            "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "iam:TagRole",
+            "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "iam:UntagRole",
+            "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "iam:ListRolePolicies",
+            "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "iam:ListAttachedRolePolicies",
+            "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "iam:GetRole",
+            "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "iam:PutRolePolicy",
+            "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "iam:GetRolePolicy",
+            "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "iam:DeleteRolePolicy",
+            "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "iam:DeleteRole",
+            "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "IsTruncated": false
+      }
+    },
+    {
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+      "actions": [
+        "sts:AssumeRole"
+      ],
+      "result": {
+        "EvaluationResults": [
+          {
+            "EvalActionName": "sts:AssumeRole",
+            "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "IsTruncated": false
+      }
+    },
+    {
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+      "actions": [
+        "iam:PassRole"
+      ],
+      "result": {
+        "EvaluationResults": [
+          {
+            "EvalActionName": "iam:PassRole",
+            "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "IsTruncated": false
+      }
+    },
+    {
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-CursorProbe",
+      "actions": [
+        "lambda:CreateFunction",
+        "lambda:GetFunction",
+        "lambda:GetFunctionConfiguration",
+        "lambda:TagResource",
+        "lambda:DeleteFunction",
+        "lambda:InvokeFunction"
+      ],
+      "result": {
+        "EvaluationResults": [
+          {
+            "EvalActionName": "lambda:CreateFunction",
+            "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-CursorProbe",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-CursorProbe",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "lambda:GetFunction",
+            "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-CursorProbe",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-CursorProbe",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "lambda:GetFunctionConfiguration",
+            "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-CursorProbe",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-CursorProbe",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "lambda:TagResource",
+            "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-CursorProbe",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-CursorProbe",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "lambda:DeleteFunction",
+            "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-CursorProbe",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-CursorProbe",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "lambda:InvokeFunction",
+            "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-CursorProbe",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-CursorProbe",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "IsTruncated": false
+      }
+    },
+    {
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1/*",
+      "actions": [
+        "cloudformation:CreateChangeSet",
+        "cloudformation:ExecuteChangeSet",
+        "cloudformation:DescribeChangeSet",
+        "cloudformation:DescribeStacks",
+        "cloudformation:ListStackResources",
+        "cloudformation:DeleteStack"
+      ],
+      "result": {
+        "EvaluationResults": [
+          {
+            "EvalActionName": "cloudformation:CreateChangeSet",
+            "EvalResourceName": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1/*",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1/*",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "cloudformation:ExecuteChangeSet",
+            "EvalResourceName": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1/*",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1/*",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "cloudformation:DescribeChangeSet",
+            "EvalResourceName": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1/*",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1/*",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "cloudformation:DescribeStacks",
+            "EvalResourceName": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1/*",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1/*",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "cloudformation:ListStackResources",
+            "EvalResourceName": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1/*",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1/*",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "cloudformation:DeleteStack",
+            "EvalResourceName": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1/*",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1/*",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "IsTruncated": false
+      }
+    },
+    {
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/isolated/a072a13df0aa7e4299fb8f01a8e77513e8f9bcf6ae37c4867a933b1f09e9d1e4.zip",
+      "actions": [
+        "s3:PutObject",
+        "s3:GetObject",
+        "s3:DeleteObject"
+      ],
+      "result": {
+        "EvaluationResults": [
+          {
+            "EvalActionName": "s3:PutObject",
+            "EvalResourceName": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/isolated/a072a13df0aa7e4299fb8f01a8e77513e8f9bcf6ae37c4867a933b1f09e9d1e4.zip",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/isolated/a072a13df0aa7e4299fb8f01a8e77513e8f9bcf6ae37c4867a933b1f09e9d1e4.zip",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "s3:GetObject",
+            "EvalResourceName": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/isolated/a072a13df0aa7e4299fb8f01a8e77513e8f9bcf6ae37c4867a933b1f09e9d1e4.zip",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/isolated/a072a13df0aa7e4299fb8f01a8e77513e8f9bcf6ae37c4867a933b1f09e9d1e4.zip",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "s3:DeleteObject",
+            "EvalResourceName": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/isolated/a072a13df0aa7e4299fb8f01a8e77513e8f9bcf6ae37c4867a933b1f09e9d1e4.zip",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/team-hub/isolated/a072a13df0aa7e4299fb8f01a8e77513e8f9bcf6ae37c4867a933b1f09e9d1e4.zip",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "IsTruncated": false
+      }
+    },
+    {
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+      "actions": [
+        "dynamodb:CreateTable",
+        "dynamodb:DescribeTable",
+        "dynamodb:DeleteTable",
+        "dynamodb:TagResource",
+        "dynamodb:ListTagsOfResource",
+        "dynamodb:DescribeContinuousBackups",
+        "dynamodb:UpdateContinuousBackups"
+      ],
+      "result": {
+        "EvaluationResults": [
+          {
+            "EvalActionName": "dynamodb:CreateTable",
+            "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "dynamodb:DescribeTable",
+            "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "dynamodb:DeleteTable",
+            "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "dynamodb:TagResource",
+            "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "dynamodb:ListTagsOfResource",
+            "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "dynamodb:DescribeContinuousBackups",
+            "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "dynamodb:UpdateContinuousBackups",
+            "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "IsTruncated": false
+      }
+    },
+    {
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Journal",
+      "actions": [
+        "dynamodb:CreateTable",
+        "dynamodb:DescribeTable",
+        "dynamodb:DeleteTable",
+        "dynamodb:TagResource",
+        "dynamodb:ListTagsOfResource",
+        "dynamodb:DescribeContinuousBackups",
+        "dynamodb:UpdateContinuousBackups"
+      ],
+      "result": {
+        "EvaluationResults": [
+          {
+            "EvalActionName": "dynamodb:CreateTable",
+            "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Journal",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Journal",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "dynamodb:DescribeTable",
+            "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Journal",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Journal",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "dynamodb:DeleteTable",
+            "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Journal",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Journal",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "dynamodb:TagResource",
+            "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Journal",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Journal",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "dynamodb:ListTagsOfResource",
+            "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Journal",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Journal",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "dynamodb:DescribeContinuousBackups",
+            "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Journal",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Journal",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "EvalActionName": "dynamodb:UpdateContinuousBackups",
+            "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Journal",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "AdministratorAccess",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 3,
+                  "Column": 17
+                },
+                "EndPosition": {
+                  "Line": 8,
+                  "Column": 6
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Journal",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "AdministratorAccess",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 3,
+                      "Column": 17
+                    },
+                    "EndPosition": {
+                      "Line": 8,
+                      "Column": 6
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "IsTruncated": false
+      }
+    }
+  ],
+  "complete": true,
+  "awsWrites": 0,
+  "accountSettings": {
+    "AccountLimit": {
+      "TotalCodeSize": 322122547200,
+      "CodeSizeUnzipped": 262144000,
+      "CodeSizeZipped": 52428800,
+      "ConcurrentExecutions": 10,
+      "UnreservedConcurrentExecutions": 10
+    },
+    "AccountUsage": {
+      "TotalCodeSize": 305266624,
+      "FunctionCount": 69
+    }
+  },
+  "readRole": {
+    "Path": "/",
+    "RoleName": "ProjectRespawn-TeamHub-Ntgre-ParityRead",
+    "RoleId": "AROAQ3EGSQDDMQAUUA2OF",
+    "Arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+    "CreateDate": "2026-10-06T16:03:00+00:00",
+    "AssumeRolePolicyDocument": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "lambda.amazonaws.com"
+          },
+          "Action": "sts:AssumeRole"
+        }
+      ]
+    },
+    "Description": "",
+    "MaxSessionDuration": 3600,
+    "PermissionsBoundary": {
+      "PermissionsBoundaryType": "Policy",
+      "PermissionsBoundaryArn": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ParityReadBoundary"
+    },
+    "Tags": [
+      {
+        "Key": "Domain",
+        "Value": "TeamHub"
+      },
+      {
+        "Key": "Project",
+        "Value": "ProjectRespawn"
+      },
+      {
+        "Key": "Environment",
+        "Value": "Ntgre"
+      }
+    ],
+    "RoleLastUsed": {
+      "LastUsedDate": "2026-10-12T15:19:00+00:00",
+      "Region": "eu-north-1"
+    }
+  },
+  "operatorUser": {
+    "Path": "/",
+    "UserName": "RavenTest",
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest",
+    "CreateDate": "2026-05-20T20:07:01+00:00"
+  },
+  "userInline": [],
+  "userGroups": [
+    {
+      "Path": "/",
+      "GroupName": "Founder",
+      "GroupId": "AGPAQ3EGSQDDI4TIML3QI",
+      "Arn": "arn:aws:iam::058264289478:group/Founder",
+      "CreateDate": "2026-01-31T15:24:50+00:00"
+    }
+  ],
+  "attached": [],
+  "omittedMetadata": [
+    "IAM user tags: unnecessary for authorization evidence"
+  ]
+}

@@ -1,0 +1,1228 @@
+{
+  "at": "2026-10-13T22:05:30.593Z",
+  "proof": "OFFLINE_ACTUAL_DEPLOYED_ZIPS_LOCAL_SDK_ENDPOINTS_ONLY",
+  "readRuntime": "ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e",
+  "commandRuntime": "da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e",
+  "awsWrites": 0,
+  "checks": [
+    {
+      "label": "LIST_MY_TEAMS",
+      "passed": true
+    },
+    {
+      "label": "LIST_MY_TEAMS pagination and tamper",
+      "passed": true
+    },
+    {
+      "label": "GET_TEAM_HUB",
+      "passed": true
+    },
+    {
+      "label": "LIST_MY_CHAMPION_POOL",
+      "passed": true
+    },
+    {
+      "label": "LIST_MY_CHAMPION_POOL pagination and tamper",
+      "passed": true
+    },
+    {
+      "label": "LIST_TEAM_CHAMPION_POOLS",
+      "passed": true
+    },
+    {
+      "label": "LIST_TEAM_CHAMPION_POOLS pagination and tamper",
+      "passed": true
+    },
+    {
+      "label": "actor/context/expiry binding",
+      "passed": true
+    },
+    {
+      "label": "LIST_MY_TEAMS secret-missing fails closed",
+      "passed": true
+    },
+    {
+      "label": "LIST_MY_CHAMPION_POOL secret-missing fails closed",
+      "passed": true
+    },
+    {
+      "label": "LIST_TEAM_CHAMPION_POOLS secret-missing fails closed",
+      "passed": true
+    },
+    {
+      "label": "LIST_MY_TEAMS secret-kms fails closed",
+      "passed": true
+    },
+    {
+      "label": "LIST_MY_CHAMPION_POOL secret-kms fails closed",
+      "passed": true
+    },
+    {
+      "label": "LIST_TEAM_CHAMPION_POOLS secret-kms fails closed",
+      "passed": true
+    },
+    {
+      "label": "LIST_MY_TEAMS secret-timeout fails closed",
+      "passed": true
+    },
+    {
+      "label": "LIST_MY_CHAMPION_POOL secret-timeout fails closed",
+      "passed": true
+    },
+    {
+      "label": "LIST_TEAM_CHAMPION_POOLS secret-timeout fails closed",
+      "passed": true
+    },
+    {
+      "label": "Core failure",
+      "passed": true
+    },
+    {
+      "label": "all operations dark/FROZEN denied; no secret or writes",
+      "passed": true
+    },
+    {
+      "label": "authority change at transaction prevents all writes",
+      "passed": true
+    },
+    {
+      "label": "transaction throttle sanitized, no partial writes",
+      "passed": true
+    },
+    {
+      "label": "fresh Core revocation denies cached idempotent replay",
+      "passed": true
+    },
+    {
+      "label": "stale and missing authority fail closed",
+      "passed": true
+    }
+  ],
+  "complete": true,
+  "businessScenarios": [
+    {
+      "label": "normal command before first write",
+      "operation": "CREATE_TEAM",
+      "persona": "outsider",
+      "status": 403,
+      "expected": 403,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-1",
+        "error": {
+          "code": "FORBIDDEN"
+        }
+      }
+    },
+    {
+      "label": "normal read before first write",
+      "operation": "GET_TEAM_HUB",
+      "persona": "outsider",
+      "status": 403,
+      "expected": 403,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-3",
+        "error": {
+          "code": "FORBIDDEN"
+        }
+      }
+    },
+    {
+      "label": "unknown Team returns not found to global administrator",
+      "operation": "GET_TEAM_HUB",
+      "persona": "admin",
+      "status": 404,
+      "expected": 404,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-5",
+        "error": {
+          "code": "NOT_FOUND"
+        }
+      }
+    },
+    {
+      "label": "CREATE_TEAM",
+      "operation": "CREATE_TEAM",
+      "persona": "admin",
+      "status": 200,
+      "expected": 200,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-7",
+        "data": {
+          "team": {
+            "id": "team:phase2b4-test-cursorartifact-one",
+            "slug": "phase2b4-test-cursorartifact-one",
+            "name": "Synthetic verification",
+            "gameKey": "LEAGUE_OF_LEGENDS",
+            "status": "ACTIVE",
+            "version": 1,
+            "authorizationEpoch": 0,
+            "rosterVersion": 0,
+            "settings": {
+              "plan": "FREE",
+              "logoAssetId": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "label": "CREATE_TEAM",
+      "operation": "CREATE_TEAM",
+      "persona": "admin",
+      "status": 200,
+      "expected": 200,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-9",
+        "data": {
+          "team": {
+            "id": "team:phase2b4-test-cursorartifact-two",
+            "slug": "phase2b4-test-cursorartifact-two",
+            "name": "Synthetic isolated Team",
+            "gameKey": "LEAGUE_OF_LEGENDS",
+            "status": "ACTIVE",
+            "version": 1,
+            "authorizationEpoch": 0,
+            "rosterVersion": 0,
+            "settings": {
+              "plan": "FREE",
+              "logoAssetId": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "label": "SET_MANAGER",
+      "operation": "SET_MANAGER",
+      "persona": "admin",
+      "status": 200,
+      "expected": 200,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-11",
+        "data": {
+          "membership": {
+            "id": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000002",
+            "subject": "00000000-0000-0000-0000-000000000002",
+            "displayName": "manager",
+            "role": "MANAGER",
+            "status": "ACTIVE",
+            "version": 1
+          },
+          "team": {
+            "id": "team:phase2b4-test-cursorartifact-one",
+            "slug": "phase2b4-test-cursorartifact-one",
+            "name": "Synthetic verification",
+            "gameKey": "LEAGUE_OF_LEGENDS",
+            "status": "ACTIVE",
+            "version": 2,
+            "authorizationEpoch": 1,
+            "rosterVersion": 0,
+            "settings": {
+              "plan": "FREE",
+              "logoAssetId": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "label": "MANAGE_MEMBER",
+      "operation": "MANAGE_MEMBER",
+      "persona": "manager",
+      "status": 200,
+      "expected": 200,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-13",
+        "data": {
+          "membership": {
+            "id": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000003",
+            "subject": "00000000-0000-0000-0000-000000000003",
+            "displayName": "coach",
+            "role": "COACH",
+            "status": "ACTIVE",
+            "version": 1
+          },
+          "team": {
+            "id": "team:phase2b4-test-cursorartifact-one",
+            "slug": "phase2b4-test-cursorartifact-one",
+            "name": "Synthetic verification",
+            "gameKey": "LEAGUE_OF_LEGENDS",
+            "status": "ACTIVE",
+            "version": 3,
+            "authorizationEpoch": 2,
+            "rosterVersion": 0,
+            "settings": {
+              "plan": "FREE",
+              "logoAssetId": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "label": "MANAGE_MEMBER",
+      "operation": "MANAGE_MEMBER",
+      "persona": "manager",
+      "status": 200,
+      "expected": 200,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-15",
+        "data": {
+          "membership": {
+            "id": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000004",
+            "subject": "00000000-0000-0000-0000-000000000004",
+            "displayName": "player",
+            "role": "PLAYER",
+            "status": "ACTIVE",
+            "version": 1
+          },
+          "team": {
+            "id": "team:phase2b4-test-cursorartifact-one",
+            "slug": "phase2b4-test-cursorartifact-one",
+            "name": "Synthetic verification",
+            "gameKey": "LEAGUE_OF_LEGENDS",
+            "status": "ACTIVE",
+            "version": 4,
+            "authorizationEpoch": 3,
+            "rosterVersion": 0,
+            "settings": {
+              "plan": "FREE",
+              "logoAssetId": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "label": "UPDATE_TEAM",
+      "operation": "UPDATE_TEAM",
+      "persona": "admin",
+      "status": 200,
+      "expected": 200,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-17",
+        "data": {
+          "team": {
+            "id": "team:phase2b4-test-cursorartifact-one",
+            "slug": "phase2b4-test-cursorartifact-one",
+            "name": "Synthetic updated",
+            "gameKey": "LEAGUE_OF_LEGENDS",
+            "status": "ACTIVE",
+            "version": 5,
+            "authorizationEpoch": 3,
+            "rosterVersion": 0,
+            "settings": {
+              "plan": "FREE",
+              "logoAssetId": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "label": "SET_TEAM_PLAN",
+      "operation": "SET_TEAM_PLAN",
+      "persona": "admin",
+      "status": 200,
+      "expected": 200,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-19",
+        "data": {
+          "team": {
+            "id": "team:phase2b4-test-cursorartifact-one",
+            "slug": "phase2b4-test-cursorartifact-one",
+            "name": "Synthetic updated",
+            "gameKey": "LEAGUE_OF_LEGENDS",
+            "status": "ACTIVE",
+            "version": 6,
+            "authorizationEpoch": 3,
+            "rosterVersion": 0,
+            "settings": {
+              "plan": "PRO",
+              "logoAssetId": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "label": "SET_ROSTER_SLOT",
+      "operation": "SET_ROSTER_SLOT",
+      "persona": "manager",
+      "status": 200,
+      "expected": 200,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-21",
+        "data": {
+          "roster": [
+            {
+              "membershipId": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000004",
+              "gameRoleKey": "MID",
+              "slotType": "STARTER"
+            }
+          ],
+          "team": {
+            "id": "team:phase2b4-test-cursorartifact-one",
+            "slug": "phase2b4-test-cursorartifact-one",
+            "name": "Synthetic updated",
+            "gameKey": "LEAGUE_OF_LEGENDS",
+            "status": "ACTIVE",
+            "version": 7,
+            "authorizationEpoch": 3,
+            "rosterVersion": 1,
+            "settings": {
+              "plan": "PRO",
+              "logoAssetId": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "label": "UPSERT_MY_CHAMPION",
+      "operation": "UPSERT_MY_CHAMPION",
+      "persona": "player",
+      "status": 200,
+      "expected": 200,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-23",
+        "data": {
+          "entry": {
+            "teamId": "team:phase2b4-test-cursorartifact-one",
+            "membershipId": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000004",
+            "championId": "Ahri",
+            "gameRoleKey": "MID",
+            "comfortLevel": "A",
+            "priority": "NORMAL",
+            "competitiveReady": true,
+            "playerNotes": "synthetic",
+            "version": 1
+          },
+          "team": {
+            "id": "team:phase2b4-test-cursorartifact-one",
+            "slug": "phase2b4-test-cursorartifact-one",
+            "name": "Synthetic updated",
+            "gameKey": "LEAGUE_OF_LEGENDS",
+            "status": "ACTIVE",
+            "version": 8,
+            "authorizationEpoch": 3,
+            "rosterVersion": 1,
+            "settings": {
+              "plan": "PRO",
+              "logoAssetId": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "label": "UPSERT_COACH_ASSESSMENT",
+      "operation": "UPSERT_COACH_ASSESSMENT",
+      "persona": "coach",
+      "status": 200,
+      "expected": 200,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-25",
+        "data": {
+          "assessment": {
+            "championId": "Ahri",
+            "teamVisible": "Synthetic visible assessment",
+            "version": 1
+          },
+          "privateNote": {
+            "championId": "Ahri",
+            "privateNote": "",
+            "version": 1
+          },
+          "team": {
+            "id": "team:phase2b4-test-cursorartifact-one",
+            "slug": "phase2b4-test-cursorartifact-one",
+            "name": "Synthetic updated",
+            "gameKey": "LEAGUE_OF_LEGENDS",
+            "status": "ACTIVE",
+            "version": 9,
+            "authorizationEpoch": 3,
+            "rosterVersion": 1,
+            "settings": {
+              "plan": "PRO",
+              "logoAssetId": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "label": "Team context manager",
+      "operation": "GET_TEAM_HUB",
+      "persona": "manager",
+      "status": 200,
+      "expected": 200,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-167",
+        "data": {
+          "team": {
+            "id": "team:phase2b4-test-cursorartifact-one",
+            "slug": "phase2b4-test-cursorartifact-one",
+            "name": "Synthetic updated",
+            "gameKey": "LEAGUE_OF_LEGENDS",
+            "status": "ACTIVE",
+            "version": 11,
+            "authorizationEpoch": 4,
+            "rosterVersion": 1,
+            "settings": {
+              "plan": "PRO",
+              "logoAssetId": ""
+            }
+          },
+          "memberships": [
+            {
+              "id": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000002",
+              "subject": "00000000-0000-0000-0000-000000000002",
+              "displayName": "manager",
+              "role": "MANAGER",
+              "status": "ACTIVE",
+              "version": 1
+            },
+            {
+              "id": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000003",
+              "subject": "00000000-0000-0000-0000-000000000003",
+              "displayName": "coach",
+              "role": "COACH",
+              "status": "ACTIVE",
+              "version": 1
+            },
+            {
+              "id": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000004",
+              "subject": "00000000-0000-0000-0000-000000000004",
+              "displayName": "player",
+              "role": "PLAYER",
+              "status": "ACTIVE",
+              "version": 1
+            },
+            {
+              "id": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000005",
+              "subject": "00000000-0000-0000-0000-000000000005",
+              "displayName": "player2",
+              "role": "PLAYER",
+              "status": "ACTIVE",
+              "version": 1
+            }
+          ],
+          "roster": [
+            {
+              "membershipId": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000004",
+              "gameRoleKey": "MID",
+              "slotType": "STARTER"
+            }
+          ],
+          "capabilities": {
+            "teamsAdmin": false,
+            "brandingManage": false
+          }
+        }
+      }
+    },
+    {
+      "label": "Team context coach",
+      "operation": "GET_TEAM_HUB",
+      "persona": "coach",
+      "status": 200,
+      "expected": 200,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-169",
+        "data": {
+          "team": {
+            "id": "team:phase2b4-test-cursorartifact-one",
+            "slug": "phase2b4-test-cursorartifact-one",
+            "name": "Synthetic updated",
+            "gameKey": "LEAGUE_OF_LEGENDS",
+            "status": "ACTIVE",
+            "version": 11,
+            "authorizationEpoch": 4,
+            "rosterVersion": 1,
+            "settings": {
+              "plan": "PRO",
+              "logoAssetId": ""
+            }
+          },
+          "memberships": [
+            {
+              "id": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000002",
+              "subject": "00000000-0000-0000-0000-000000000002",
+              "displayName": "manager",
+              "role": "MANAGER",
+              "status": "ACTIVE",
+              "version": 1
+            },
+            {
+              "id": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000003",
+              "subject": "00000000-0000-0000-0000-000000000003",
+              "displayName": "coach",
+              "role": "COACH",
+              "status": "ACTIVE",
+              "version": 1
+            },
+            {
+              "id": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000004",
+              "subject": "00000000-0000-0000-0000-000000000004",
+              "displayName": "player",
+              "role": "PLAYER",
+              "status": "ACTIVE",
+              "version": 1
+            },
+            {
+              "id": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000005",
+              "subject": "00000000-0000-0000-0000-000000000005",
+              "displayName": "player2",
+              "role": "PLAYER",
+              "status": "ACTIVE",
+              "version": 1
+            }
+          ],
+          "roster": [
+            {
+              "membershipId": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000004",
+              "gameRoleKey": "MID",
+              "slotType": "STARTER"
+            }
+          ],
+          "capabilities": {
+            "teamsAdmin": false,
+            "brandingManage": false
+          }
+        }
+      }
+    },
+    {
+      "label": "Team context player",
+      "operation": "GET_TEAM_HUB",
+      "persona": "player",
+      "status": 200,
+      "expected": 200,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-171",
+        "data": {
+          "team": {
+            "id": "team:phase2b4-test-cursorartifact-one",
+            "slug": "phase2b4-test-cursorartifact-one",
+            "name": "Synthetic updated",
+            "gameKey": "LEAGUE_OF_LEGENDS",
+            "status": "ACTIVE",
+            "version": 11,
+            "authorizationEpoch": 4,
+            "rosterVersion": 1,
+            "settings": {
+              "plan": "PRO",
+              "logoAssetId": ""
+            }
+          },
+          "memberships": [
+            {
+              "id": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000002",
+              "subject": "00000000-0000-0000-0000-000000000002",
+              "displayName": "manager",
+              "role": "MANAGER",
+              "status": "ACTIVE",
+              "version": 1
+            },
+            {
+              "id": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000003",
+              "subject": "00000000-0000-0000-0000-000000000003",
+              "displayName": "coach",
+              "role": "COACH",
+              "status": "ACTIVE",
+              "version": 1
+            },
+            {
+              "id": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000004",
+              "subject": "00000000-0000-0000-0000-000000000004",
+              "displayName": "player",
+              "role": "PLAYER",
+              "status": "ACTIVE",
+              "version": 1
+            },
+            {
+              "id": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000005",
+              "subject": "00000000-0000-0000-0000-000000000005",
+              "displayName": "player2",
+              "role": "PLAYER",
+              "status": "ACTIVE",
+              "version": 1
+            }
+          ],
+          "roster": [
+            {
+              "membershipId": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000004",
+              "gameRoleKey": "MID",
+              "slotType": "STARTER"
+            }
+          ],
+          "capabilities": {
+            "teamsAdmin": false,
+            "brandingManage": false
+          }
+        }
+      }
+    },
+    {
+      "label": "LIST_MY_CHAMPION_POOL",
+      "operation": "LIST_MY_CHAMPION_POOL",
+      "persona": "player",
+      "status": 200,
+      "expected": 200,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-173",
+        "data": {
+          "items": [
+            {
+              "teamId": "team:phase2b4-test-cursorartifact-one",
+              "membershipId": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000004",
+              "championId": "Ahri",
+              "gameRoleKey": "MID",
+              "comfortLevel": "A",
+              "priority": "NORMAL",
+              "competitiveReady": true,
+              "playerNotes": "synthetic",
+              "version": 1
+            },
+            {
+              "teamId": "team:phase2b4-test-cursorartifact-one",
+              "membershipId": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000004",
+              "championId": "Ashe",
+              "gameRoleKey": "MID",
+              "comfortLevel": "A",
+              "priority": "NORMAL",
+              "competitiveReady": true,
+              "playerNotes": "Synthetic",
+              "version": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "LIST_TEAM_CHAMPION_POOLS",
+      "operation": "LIST_TEAM_CHAMPION_POOLS",
+      "persona": "manager",
+      "status": 200,
+      "expected": 200,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-175",
+        "data": {
+          "items": [
+            {
+              "membershipId": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000004",
+              "entries": [
+                {
+                  "teamId": "team:phase2b4-test-cursorartifact-one",
+                  "membershipId": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000004",
+                  "championId": "Ahri",
+                  "gameRoleKey": "MID",
+                  "comfortLevel": "A",
+                  "priority": "NORMAL",
+                  "competitiveReady": true,
+                  "playerNotes": "synthetic",
+                  "version": 1
+                },
+                {
+                  "teamId": "team:phase2b4-test-cursorartifact-one",
+                  "membershipId": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000004",
+                  "championId": "Ashe",
+                  "gameRoleKey": "MID",
+                  "comfortLevel": "A",
+                  "priority": "NORMAL",
+                  "competitiveReady": true,
+                  "playerNotes": "Synthetic",
+                  "version": 1
+                }
+              ],
+              "assessments": [
+                {
+                  "championId": "Ahri",
+                  "teamVisible": "Synthetic visible assessment",
+                  "version": 1
+                }
+              ]
+            },
+            {
+              "membershipId": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000005",
+              "entries": [],
+              "assessments": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "GET_PLAYER_COMPETITIVE_DETAIL",
+      "operation": "GET_PLAYER_COMPETITIVE_DETAIL",
+      "persona": "coach",
+      "status": 200,
+      "expected": 200,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-177",
+        "data": {
+          "membershipId": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000004",
+          "entries": [
+            {
+              "teamId": "team:phase2b4-test-cursorartifact-one",
+              "membershipId": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000004",
+              "championId": "Ahri",
+              "gameRoleKey": "MID",
+              "comfortLevel": "A",
+              "priority": "NORMAL",
+              "competitiveReady": true,
+              "playerNotes": "synthetic",
+              "version": 1
+            },
+            {
+              "teamId": "team:phase2b4-test-cursorartifact-one",
+              "membershipId": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000004",
+              "championId": "Ashe",
+              "gameRoleKey": "MID",
+              "comfortLevel": "A",
+              "priority": "NORMAL",
+              "competitiveReady": true,
+              "playerNotes": "Synthetic",
+              "version": 1
+            }
+          ],
+          "assessments": [
+            {
+              "championId": "Ahri",
+              "teamVisible": "Synthetic visible assessment",
+              "version": 1
+            }
+          ],
+          "privateNotes": []
+        }
+      }
+    },
+    {
+      "label": "UPDATE_TEAM",
+      "operation": "UPDATE_TEAM",
+      "persona": "admin",
+      "status": 200,
+      "expected": 200,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-179",
+        "data": {
+          "team": {
+            "id": "team:phase2b4-test-cursorartifact-one",
+            "slug": "phase2b4-test-cursorartifact-one",
+            "name": "Synthetic replay",
+            "gameKey": "LEAGUE_OF_LEGENDS",
+            "status": "ACTIVE",
+            "version": 12,
+            "authorizationEpoch": 4,
+            "rosterVersion": 1,
+            "settings": {
+              "plan": "PRO",
+              "logoAssetId": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "label": "idempotent replay",
+      "operation": "UPDATE_TEAM",
+      "persona": "admin",
+      "status": 200,
+      "expected": 200,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-181",
+        "data": {
+          "team": {
+            "id": "team:phase2b4-test-cursorartifact-one",
+            "slug": "phase2b4-test-cursorartifact-one",
+            "name": "Synthetic replay",
+            "gameKey": "LEAGUE_OF_LEGENDS",
+            "status": "ACTIVE",
+            "version": 12,
+            "authorizationEpoch": 4,
+            "rosterVersion": 1,
+            "settings": {
+              "plan": "PRO",
+              "logoAssetId": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "label": "idempotency conflict",
+      "operation": "UPDATE_TEAM",
+      "persona": "admin",
+      "status": 409,
+      "expected": 409,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-183",
+        "error": {
+          "code": "CONFLICT"
+        }
+      }
+    },
+    {
+      "label": "stale Team revision",
+      "operation": "MANAGE_MEMBER",
+      "persona": "manager",
+      "status": 409,
+      "expected": 409,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-185",
+        "error": {
+          "code": "CONFLICT"
+        }
+      }
+    },
+    {
+      "label": "stale epoch",
+      "operation": "MANAGE_MEMBER",
+      "persona": "manager",
+      "status": 409,
+      "expected": 409,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-187",
+        "error": {
+          "code": "CONFLICT"
+        }
+      }
+    },
+    {
+      "label": "stale membership revision",
+      "operation": "MANAGE_MEMBER",
+      "persona": "manager",
+      "status": 409,
+      "expected": 409,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-189",
+        "error": {
+          "code": "CONFLICT"
+        }
+      }
+    },
+    {
+      "label": "duplicate starter/player guard",
+      "operation": "SET_ROSTER_SLOT",
+      "persona": "manager",
+      "status": 409,
+      "expected": 409,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-191",
+        "error": {
+          "code": "CONFLICT"
+        }
+      }
+    },
+    {
+      "label": "wrong Manager role player",
+      "operation": "MANAGE_MEMBER",
+      "persona": "player",
+      "status": 403,
+      "expected": 403,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-193",
+        "error": {
+          "code": "FORBIDDEN"
+        }
+      }
+    },
+    {
+      "label": "wrong Manager role coach",
+      "operation": "MANAGE_MEMBER",
+      "persona": "coach",
+      "status": 403,
+      "expected": 403,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-195",
+        "error": {
+          "code": "FORBIDDEN"
+        }
+      }
+    },
+    {
+      "label": "Player cannot Coach assessment",
+      "operation": "UPSERT_COACH_ASSESSMENT",
+      "persona": "player",
+      "status": 403,
+      "expected": 403,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-197",
+        "error": {
+          "code": "FORBIDDEN"
+        }
+      }
+    },
+    {
+      "label": "Manager cannot Coach assessment",
+      "operation": "UPSERT_COACH_ASSESSMENT",
+      "persona": "manager",
+      "status": 403,
+      "expected": 403,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-199",
+        "error": {
+          "code": "FORBIDDEN"
+        }
+      }
+    },
+    {
+      "label": "private persistence denied",
+      "operation": "UPSERT_COACH_ASSESSMENT",
+      "persona": "coach",
+      "status": 403,
+      "expected": 403,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-201",
+        "error": {
+          "code": "FORBIDDEN"
+        }
+      }
+    },
+    {
+      "label": "cross-Team membership denied",
+      "operation": "GET_TEAM_HUB",
+      "persona": "manager",
+      "status": 403,
+      "expected": 403,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-203",
+        "error": {
+          "code": "FORBIDDEN"
+        }
+      }
+    },
+    {
+      "label": "wrong subject",
+      "operation": "GET_TEAM_HUB",
+      "persona": "outsider",
+      "status": 403,
+      "expected": 403,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-205",
+        "error": {
+          "code": "FORBIDDEN"
+        }
+      }
+    },
+    {
+      "label": "membership is not global entitlement",
+      "operation": "SET_TEAM_PLAN",
+      "persona": "manager",
+      "status": 403,
+      "expected": 403,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-207",
+        "error": {
+          "code": "FORBIDDEN"
+        }
+      }
+    },
+    {
+      "label": "concurrent update A",
+      "operation": "UPDATE_TEAM",
+      "persona": "admin",
+      "status": 200,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-209",
+        "data": {
+          "team": {
+            "id": "team:phase2b4-test-cursorartifact-one",
+            "slug": "phase2b4-test-cursorartifact-one",
+            "name": "Synthetic race A",
+            "gameKey": "LEAGUE_OF_LEGENDS",
+            "status": "ACTIVE",
+            "version": 13,
+            "authorizationEpoch": 4,
+            "rosterVersion": 1,
+            "settings": {
+              "plan": "PRO",
+              "logoAssetId": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "label": "concurrent update B",
+      "operation": "UPDATE_TEAM",
+      "persona": "admin",
+      "status": 409,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-211",
+        "error": {
+          "code": "CONFLICT"
+        }
+      }
+    },
+    {
+      "label": "DELETE_MY_CHAMPION",
+      "operation": "DELETE_MY_CHAMPION",
+      "persona": "player",
+      "status": 200,
+      "expected": 200,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-213",
+        "data": {
+          "deleted": true,
+          "championId": "Ahri",
+          "team": {
+            "id": "team:phase2b4-test-cursorartifact-one",
+            "slug": "phase2b4-test-cursorartifact-one",
+            "name": "Synthetic race A",
+            "gameKey": "LEAGUE_OF_LEGENDS",
+            "status": "ACTIVE",
+            "version": 14,
+            "authorizationEpoch": 4,
+            "rosterVersion": 1,
+            "settings": {
+              "plan": "PRO",
+              "logoAssetId": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "label": "MANAGE_MEMBER",
+      "operation": "MANAGE_MEMBER",
+      "persona": "manager",
+      "status": 200,
+      "expected": 200,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-215",
+        "data": {
+          "membership": {
+            "id": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000004",
+            "subject": "00000000-0000-0000-0000-000000000004",
+            "displayName": "player",
+            "role": "PLAYER",
+            "status": "INACTIVE",
+            "version": 2
+          },
+          "team": {
+            "id": "team:phase2b4-test-cursorartifact-one",
+            "slug": "phase2b4-test-cursorartifact-one",
+            "name": "Synthetic race A",
+            "gameKey": "LEAGUE_OF_LEGENDS",
+            "status": "ACTIVE",
+            "version": 15,
+            "authorizationEpoch": 5,
+            "rosterVersion": 2,
+            "settings": {
+              "plan": "PRO",
+              "logoAssetId": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "label": "revoked Player denied",
+      "operation": "GET_TEAM_HUB",
+      "persona": "player",
+      "status": 403,
+      "expected": 403,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-217",
+        "error": {
+          "code": "FORBIDDEN"
+        }
+      }
+    },
+    {
+      "label": "SET_MANAGER",
+      "operation": "SET_MANAGER",
+      "persona": "admin",
+      "status": 200,
+      "expected": 200,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-219",
+        "data": {
+          "membership": {
+            "id": "team-membership:team:phase2b4-test-cursorartifact-one:00000000-0000-0000-0000-000000000004",
+            "subject": "00000000-0000-0000-0000-000000000004",
+            "displayName": "player",
+            "role": "MANAGER",
+            "status": "ACTIVE",
+            "version": 3
+          },
+          "team": {
+            "id": "team:phase2b4-test-cursorartifact-one",
+            "slug": "phase2b4-test-cursorartifact-one",
+            "name": "Synthetic race A",
+            "gameKey": "LEAGUE_OF_LEGENDS",
+            "status": "ACTIVE",
+            "version": 16,
+            "authorizationEpoch": 6,
+            "rosterVersion": 2,
+            "settings": {
+              "plan": "PRO",
+              "logoAssetId": ""
+            }
+          }
+        }
+      }
+    },
+    {
+      "label": "former Manager revoked",
+      "operation": "MANAGE_MEMBER",
+      "persona": "manager",
+      "status": 403,
+      "expected": 403,
+      "response": {
+        "contractVersion": "team-hub.v1",
+        "requestId": "offline-221",
+        "error": {
+          "code": "FORBIDDEN"
+        }
+      }
+    }
+  ],
+  "mutationsVerified": 9,
+  "readsVerified": 4,
+  "transactions": 17,
+  "localSDKRequests": 1071,
+  "fixtureCleanup": "Child stopped, local server closed, memory rows cleared; no AWS test resources"
+}

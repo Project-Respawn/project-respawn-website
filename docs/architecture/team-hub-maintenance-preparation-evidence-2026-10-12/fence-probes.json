@@ -1,0 +1,1291 @@
+{
+  "schemaVersion": "team-hub-maintenance-probes.v1",
+  "at": "2026-10-12T20:57:42.540Z",
+  "prepared": true,
+  "executed": false,
+  "awsWrites": 0,
+  "reservedKey": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740",
+  "logoKey": "team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png",
+  "sourceTables": [
+    "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+    "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+    "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+    "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE"
+  ],
+  "requiredAbsenceChecks": [
+    "Strong GetItem on each exact reserved key",
+    "S3 exact-key current/version/delete-marker listing and multipart absence",
+    "Exclusive policy and diagnostic-key custody"
+  ],
+  "preControl": "Conditional/check/absence response at actual service before installation; validation/identity denial invalidates control. Never run unguarded INSERT before fence.",
+  "generated": {
+    "at": "2026-10-12T19:17:25.425Z",
+    "schemaSha256": "0ae65a54e8028365c4f85932a504dfd95471e1a7f81e72e488175b21b116638a",
+    "schemaRequestId": "6bf4d64e-fa57-481b-9957-1c2a2f38233f",
+    "api": "dxb2tdlulrch7hj2pts2mfijia",
+    "probes": [
+      {
+        "operation": "createTeam",
+        "document": "mutation FenceProbe($input: CreateTeamInput!, $condition: ModelTeamConditionInput) { createTeam(input: $input, condition: $condition) { id } }",
+        "variables": {
+          "input": {
+            "id": "__team_hub_fence_probe_20261012_Team",
+            "slug": "fence-probe",
+            "name": "fence-probe",
+            "gameKey": "fence-probe",
+            "status": "fence-probe",
+            "createdByUserId": "fence-probe",
+            "updatedByUserId": "fence-probe",
+            "rosterRevision": 0,
+            "membershipRevision": 0
+          },
+          "condition": {
+            "and": [
+              {
+                "slug": {
+                  "attributeExists": true
+                }
+              },
+              {
+                "slug": {
+                  "attributeExists": false
+                }
+              }
+            ]
+          }
+        },
+        "authentication": "AWS_IAM SigV4 using reviewed existing RavenTest identity; Cognito rejection is not fence proof",
+        "guard": "Contradictory condition cannot succeed, including on an existing item",
+        "beforeFenceExpected": "Underlying conditional-check failure, not authorization/input error; requires separate probe authorization",
+        "afterFenceRequired": "Underlying DynamoDB policy AccessDenied correlated to exact AppSync datasource role/request; a conditional/validation/auth error alone FAILS fence proof",
+        "executed": false
+      },
+      {
+        "operation": "updateTeam",
+        "document": "mutation FenceProbe($input: UpdateTeamInput!, $condition: ModelTeamConditionInput) { updateTeam(input: $input, condition: $condition) { id } }",
+        "variables": {
+          "input": {
+            "id": "__team_hub_fence_probe_20261012_Team"
+          },
+          "condition": {
+            "and": [
+              {
+                "slug": {
+                  "attributeExists": true
+                }
+              },
+              {
+                "slug": {
+                  "attributeExists": false
+                }
+              }
+            ]
+          }
+        },
+        "authentication": "AWS_IAM SigV4 using reviewed existing RavenTest identity; Cognito rejection is not fence proof",
+        "guard": "Contradictory condition cannot succeed, including on an existing item",
+        "beforeFenceExpected": "Underlying conditional-check failure, not authorization/input error; requires separate probe authorization",
+        "afterFenceRequired": "Underlying DynamoDB policy AccessDenied correlated to exact AppSync datasource role/request; a conditional/validation/auth error alone FAILS fence proof",
+        "executed": false
+      },
+      {
+        "operation": "deleteTeam",
+        "document": "mutation FenceProbe($input: DeleteTeamInput!, $condition: ModelTeamConditionInput) { deleteTeam(input: $input, condition: $condition) { id } }",
+        "variables": {
+          "input": {
+            "id": "__team_hub_fence_probe_20261012_Team"
+          },
+          "condition": {
+            "and": [
+              {
+                "slug": {
+                  "attributeExists": true
+                }
+              },
+              {
+                "slug": {
+                  "attributeExists": false
+                }
+              }
+            ]
+          }
+        },
+        "authentication": "AWS_IAM SigV4 using reviewed existing RavenTest identity; Cognito rejection is not fence proof",
+        "guard": "Contradictory condition cannot succeed, including on an existing item",
+        "beforeFenceExpected": "Underlying conditional-check failure, not authorization/input error; requires separate probe authorization",
+        "afterFenceRequired": "Underlying DynamoDB policy AccessDenied correlated to exact AppSync datasource role/request; a conditional/validation/auth error alone FAILS fence proof",
+        "executed": false
+      },
+      {
+        "operation": "createTeamMembership",
+        "document": "mutation FenceProbe($input: CreateTeamMembershipInput!, $condition: ModelTeamMembershipConditionInput) { createTeamMembership(input: $input, condition: $condition) { id } }",
+        "variables": {
+          "input": {
+            "id": "__team_hub_fence_probe_20261012_TeamMembership",
+            "teamId": "fence-probe",
+            "userId": "fence-probe",
+            "displayName": "fence-probe",
+            "role": "fence-probe",
+            "status": "fence-probe",
+            "addedByUserId": "fence-probe"
+          },
+          "condition": {
+            "and": [
+              {
+                "teamId": {
+                  "attributeExists": true
+                }
+              },
+              {
+                "teamId": {
+                  "attributeExists": false
+                }
+              }
+            ]
+          }
+        },
+        "authentication": "AWS_IAM SigV4 using reviewed existing RavenTest identity; Cognito rejection is not fence proof",
+        "guard": "Contradictory condition cannot succeed, including on an existing item",
+        "beforeFenceExpected": "Underlying conditional-check failure, not authorization/input error; requires separate probe authorization",
+        "afterFenceRequired": "Underlying DynamoDB policy AccessDenied correlated to exact AppSync datasource role/request; a conditional/validation/auth error alone FAILS fence proof",
+        "executed": false
+      },
+      {
+        "operation": "updateTeamMembership",
+        "document": "mutation FenceProbe($input: UpdateTeamMembershipInput!, $condition: ModelTeamMembershipConditionInput) { updateTeamMembership(input: $input, condition: $condition) { id } }",
+        "variables": {
+          "input": {
+            "id": "__team_hub_fence_probe_20261012_TeamMembership"
+          },
+          "condition": {
+            "and": [
+              {
+                "teamId": {
+                  "attributeExists": true
+                }
+              },
+              {
+                "teamId": {
+                  "attributeExists": false
+                }
+              }
+            ]
+          }
+        },
+        "authentication": "AWS_IAM SigV4 using reviewed existing RavenTest identity; Cognito rejection is not fence proof",
+        "guard": "Contradictory condition cannot succeed, including on an existing item",
+        "beforeFenceExpected": "Underlying conditional-check failure, not authorization/input error; requires separate probe authorization",
+        "afterFenceRequired": "Underlying DynamoDB policy AccessDenied correlated to exact AppSync datasource role/request; a conditional/validation/auth error alone FAILS fence proof",
+        "executed": false
+      },
+      {
+        "operation": "deleteTeamMembership",
+        "document": "mutation FenceProbe($input: DeleteTeamMembershipInput!, $condition: ModelTeamMembershipConditionInput) { deleteTeamMembership(input: $input, condition: $condition) { id } }",
+        "variables": {
+          "input": {
+            "id": "__team_hub_fence_probe_20261012_TeamMembership"
+          },
+          "condition": {
+            "and": [
+              {
+                "teamId": {
+                  "attributeExists": true
+                }
+              },
+              {
+                "teamId": {
+                  "attributeExists": false
+                }
+              }
+            ]
+          }
+        },
+        "authentication": "AWS_IAM SigV4 using reviewed existing RavenTest identity; Cognito rejection is not fence proof",
+        "guard": "Contradictory condition cannot succeed, including on an existing item",
+        "beforeFenceExpected": "Underlying conditional-check failure, not authorization/input error; requires separate probe authorization",
+        "afterFenceRequired": "Underlying DynamoDB policy AccessDenied correlated to exact AppSync datasource role/request; a conditional/validation/auth error alone FAILS fence proof",
+        "executed": false
+      },
+      {
+        "operation": "createTeamRosterSlot",
+        "document": "mutation FenceProbe($input: CreateTeamRosterSlotInput!, $condition: ModelTeamRosterSlotConditionInput) { createTeamRosterSlot(input: $input, condition: $condition) { id } }",
+        "variables": {
+          "input": {
+            "id": "__team_hub_fence_probe_20261012_TeamRosterSlot",
+            "teamId": "fence-probe",
+            "membershipId": "fence-probe",
+            "playerUserId": "fence-probe",
+            "gameRoleKey": "fence-probe",
+            "slotType": "fence-probe",
+            "status": "fence-probe",
+            "assignedByUserId": "fence-probe"
+          },
+          "condition": {
+            "and": [
+              {
+                "teamId": {
+                  "attributeExists": true
+                }
+              },
+              {
+                "teamId": {
+                  "attributeExists": false
+                }
+              }
+            ]
+          }
+        },
+        "authentication": "AWS_IAM SigV4 using reviewed existing RavenTest identity; Cognito rejection is not fence proof",
+        "guard": "Contradictory condition cannot succeed, including on an existing item",
+        "beforeFenceExpected": "Underlying conditional-check failure, not authorization/input error; requires separate probe authorization",
+        "afterFenceRequired": "Underlying DynamoDB policy AccessDenied correlated to exact AppSync datasource role/request; a conditional/validation/auth error alone FAILS fence proof",
+        "executed": false
+      },
+      {
+        "operation": "updateTeamRosterSlot",
+        "document": "mutation FenceProbe($input: UpdateTeamRosterSlotInput!, $condition: ModelTeamRosterSlotConditionInput) { updateTeamRosterSlot(input: $input, condition: $condition) { id } }",
+        "variables": {
+          "input": {
+            "id": "__team_hub_fence_probe_20261012_TeamRosterSlot"
+          },
+          "condition": {
+            "and": [
+              {
+                "teamId": {
+                  "attributeExists": true
+                }
+              },
+              {
+                "teamId": {
+                  "attributeExists": false
+                }
+              }
+            ]
+          }
+        },
+        "authentication": "AWS_IAM SigV4 using reviewed existing RavenTest identity; Cognito rejection is not fence proof",
+        "guard": "Contradictory condition cannot succeed, including on an existing item",
+        "beforeFenceExpected": "Underlying conditional-check failure, not authorization/input error; requires separate probe authorization",
+        "afterFenceRequired": "Underlying DynamoDB policy AccessDenied correlated to exact AppSync datasource role/request; a conditional/validation/auth error alone FAILS fence proof",
+        "executed": false
+      },
+      {
+        "operation": "deleteTeamRosterSlot",
+        "document": "mutation FenceProbe($input: DeleteTeamRosterSlotInput!, $condition: ModelTeamRosterSlotConditionInput) { deleteTeamRosterSlot(input: $input, condition: $condition) { id } }",
+        "variables": {
+          "input": {
+            "id": "__team_hub_fence_probe_20261012_TeamRosterSlot"
+          },
+          "condition": {
+            "and": [
+              {
+                "teamId": {
+                  "attributeExists": true
+                }
+              },
+              {
+                "teamId": {
+                  "attributeExists": false
+                }
+              }
+            ]
+          }
+        },
+        "authentication": "AWS_IAM SigV4 using reviewed existing RavenTest identity; Cognito rejection is not fence proof",
+        "guard": "Contradictory condition cannot succeed, including on an existing item",
+        "beforeFenceExpected": "Underlying conditional-check failure, not authorization/input error; requires separate probe authorization",
+        "afterFenceRequired": "Underlying DynamoDB policy AccessDenied correlated to exact AppSync datasource role/request; a conditional/validation/auth error alone FAILS fence proof",
+        "executed": false
+      },
+      {
+        "operation": "createPlayerChampionPoolEntry",
+        "document": "mutation FenceProbe($input: CreatePlayerChampionPoolEntryInput!, $condition: ModelPlayerChampionPoolEntryConditionInput) { createPlayerChampionPoolEntry(input: $input, condition: $condition) { id } }",
+        "variables": {
+          "input": {
+            "id": "__team_hub_fence_probe_20261012_PlayerChampionPoolEntry",
+            "teamId": "fence-probe",
+            "membershipId": "fence-probe",
+            "playerUserId": "fence-probe",
+            "championId": "fence-probe",
+            "comfortLevel": "fence-probe",
+            "priority": "fence-probe",
+            "competitiveReady": false
+          },
+          "condition": {
+            "and": [
+              {
+                "teamId": {
+                  "attributeExists": true
+                }
+              },
+              {
+                "teamId": {
+                  "attributeExists": false
+                }
+              }
+            ]
+          }
+        },
+        "authentication": "AWS_IAM SigV4 using reviewed existing RavenTest identity; Cognito rejection is not fence proof",
+        "guard": "Contradictory condition cannot succeed, including on an existing item",
+        "beforeFenceExpected": "Underlying conditional-check failure, not authorization/input error; requires separate probe authorization",
+        "afterFenceRequired": "Underlying DynamoDB policy AccessDenied correlated to exact AppSync datasource role/request; a conditional/validation/auth error alone FAILS fence proof",
+        "executed": false
+      },
+      {
+        "operation": "updatePlayerChampionPoolEntry",
+        "document": "mutation FenceProbe($input: UpdatePlayerChampionPoolEntryInput!, $condition: ModelPlayerChampionPoolEntryConditionInput) { updatePlayerChampionPoolEntry(input: $input, condition: $condition) { id } }",
+        "variables": {
+          "input": {
+            "id": "__team_hub_fence_probe_20261012_PlayerChampionPoolEntry"
+          },
+          "condition": {
+            "and": [
+              {
+                "teamId": {
+                  "attributeExists": true
+                }
+              },
+              {
+                "teamId": {
+                  "attributeExists": false
+                }
+              }
+            ]
+          }
+        },
+        "authentication": "AWS_IAM SigV4 using reviewed existing RavenTest identity; Cognito rejection is not fence proof",
+        "guard": "Contradictory condition cannot succeed, including on an existing item",
+        "beforeFenceExpected": "Underlying conditional-check failure, not authorization/input error; requires separate probe authorization",
+        "afterFenceRequired": "Underlying DynamoDB policy AccessDenied correlated to exact AppSync datasource role/request; a conditional/validation/auth error alone FAILS fence proof",
+        "executed": false
+      },
+      {
+        "operation": "deletePlayerChampionPoolEntry",
+        "document": "mutation FenceProbe($input: DeletePlayerChampionPoolEntryInput!, $condition: ModelPlayerChampionPoolEntryConditionInput) { deletePlayerChampionPoolEntry(input: $input, condition: $condition) { id } }",
+        "variables": {
+          "input": {
+            "id": "__team_hub_fence_probe_20261012_PlayerChampionPoolEntry"
+          },
+          "condition": {
+            "and": [
+              {
+                "teamId": {
+                  "attributeExists": true
+                }
+              },
+              {
+                "teamId": {
+                  "attributeExists": false
+                }
+              }
+            ]
+          }
+        },
+        "authentication": "AWS_IAM SigV4 using reviewed existing RavenTest identity; Cognito rejection is not fence proof",
+        "guard": "Contradictory condition cannot succeed, including on an existing item",
+        "beforeFenceExpected": "Underlying conditional-check failure, not authorization/input error; requires separate probe authorization",
+        "afterFenceRequired": "Underlying DynamoDB policy AccessDenied correlated to exact AppSync datasource role/request; a conditional/validation/auth error alone FAILS fence proof",
+        "executed": false
+      }
+    ],
+    "complete": true,
+    "awsWrites": 0,
+    "limitations": [
+      "No guarded request executed",
+      "Service-only Lambda/cleanup paths must use actual supported invocation or reviewed no-path proof; never relax trust",
+      "Presigned/logo probes require separately reviewed signed request and non-business key; no token persisted"
+    ]
+  },
+  "probes": [
+    {
+      "id": "DIRECT_0",
+      "api": "PutItem",
+      "action": "dynamodb:PutItem",
+      "input": {
+        "TableName": "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Item": {
+          "id": {
+            "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+          },
+          "proof": {
+            "S": "nonbusiness-fence-guard"
+          }
+        },
+        "ConditionExpression": "attribute_exists(#id) AND attribute_not_exists(#id)",
+        "ExpressionAttributeNames": {
+          "#id": "id"
+        }
+      },
+      "safe": "CONTRADICTORY_CONDITION",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_1",
+      "api": "UpdateItem",
+      "action": "dynamodb:UpdateItem",
+      "input": {
+        "TableName": "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Key": {
+          "id": {
+            "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+          }
+        },
+        "ConditionExpression": "attribute_exists(#id) AND attribute_not_exists(#id)",
+        "ExpressionAttributeNames": {
+          "#id": "id",
+          "#proof": "proof"
+        },
+        "UpdateExpression": "SET #proof = :value",
+        "ExpressionAttributeValues": {
+          ":value": {
+            "S": "nonbusiness-fence-guard"
+          }
+        }
+      },
+      "safe": "CONTRADICTORY_CONDITION",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_2",
+      "api": "DeleteItem",
+      "action": "dynamodb:DeleteItem",
+      "input": {
+        "TableName": "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Key": {
+          "id": {
+            "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+          }
+        },
+        "ConditionExpression": "attribute_exists(#id) AND attribute_not_exists(#id)",
+        "ExpressionAttributeNames": {
+          "#id": "id"
+        }
+      },
+      "safe": "CONTRADICTORY_CONDITION",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_3",
+      "api": "TransactWriteItems",
+      "action": "dynamodb:PutItem",
+      "input": {
+        "TransactItems": [
+          {
+            "Put": {
+              "TableName": "Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+              "Item": {
+                "id": {
+                  "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+                },
+                "proof": {
+                  "S": "nonbusiness-fence-guard"
+                }
+              },
+              "ConditionExpression": "attribute_exists(#id) AND attribute_not_exists(#id)",
+              "ExpressionAttributeNames": {
+                "#id": "id"
+              }
+            }
+          }
+        ]
+      },
+      "safe": "CONTRADICTORY_CONDITION",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_4",
+      "api": "BatchWriteItem",
+      "action": "dynamodb:BatchWriteItem",
+      "input": {
+        "RequestItems": {
+          "Team-dxb2tdlulrch7hj2pts2mfijia-NONE": [
+            {
+              "DeleteRequest": {
+                "Key": {
+                  "id": {
+                    "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "safe": "RESERVED_ABSENT_KEY_REQUIRED",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:s3:::undefined/undefined",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_5",
+      "api": "ExecuteStatement",
+      "action": "dynamodb:PartiQLUpdate",
+      "input": {
+        "Statement": "UPDATE \"Team-dxb2tdlulrch7hj2pts2mfijia-NONE\" SET \"proof\"=? WHERE \"id\"=? AND \"proof\"=? AND \"proof\"<>?",
+        "Parameters": [
+          {
+            "S": "nonbusiness-fence-guard"
+          },
+          {
+            "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+          },
+          {
+            "S": "impossible"
+          },
+          {
+            "S": "impossible"
+          }
+        ]
+      },
+      "safe": "CONTRADICTORY_CONDITION_REQUIRES_SERVICE_SYNTAX_CONTROL",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:s3:::undefined/undefined",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_6",
+      "api": "ExecuteStatement",
+      "action": "dynamodb:PartiQLDelete",
+      "input": {
+        "Statement": "DELETE FROM \"Team-dxb2tdlulrch7hj2pts2mfijia-NONE\" WHERE \"id\"=? AND \"proof\"=? AND \"proof\"<>?",
+        "Parameters": [
+          {
+            "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+          },
+          {
+            "S": "impossible"
+          },
+          {
+            "S": "impossible"
+          }
+        ]
+      },
+      "safe": "CONTRADICTORY_CONDITION_REQUIRES_SERVICE_SYNTAX_CONTROL",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:s3:::undefined/undefined",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_7",
+      "api": "PutItem",
+      "action": "dynamodb:PutItem",
+      "input": {
+        "TableName": "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Item": {
+          "id": {
+            "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+          },
+          "proof": {
+            "S": "nonbusiness-fence-guard"
+          }
+        },
+        "ConditionExpression": "attribute_exists(#id) AND attribute_not_exists(#id)",
+        "ExpressionAttributeNames": {
+          "#id": "id"
+        }
+      },
+      "safe": "CONTRADICTORY_CONDITION",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_8",
+      "api": "UpdateItem",
+      "action": "dynamodb:UpdateItem",
+      "input": {
+        "TableName": "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Key": {
+          "id": {
+            "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+          }
+        },
+        "ConditionExpression": "attribute_exists(#id) AND attribute_not_exists(#id)",
+        "ExpressionAttributeNames": {
+          "#id": "id",
+          "#proof": "proof"
+        },
+        "UpdateExpression": "SET #proof = :value",
+        "ExpressionAttributeValues": {
+          ":value": {
+            "S": "nonbusiness-fence-guard"
+          }
+        }
+      },
+      "safe": "CONTRADICTORY_CONDITION",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_9",
+      "api": "DeleteItem",
+      "action": "dynamodb:DeleteItem",
+      "input": {
+        "TableName": "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Key": {
+          "id": {
+            "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+          }
+        },
+        "ConditionExpression": "attribute_exists(#id) AND attribute_not_exists(#id)",
+        "ExpressionAttributeNames": {
+          "#id": "id"
+        }
+      },
+      "safe": "CONTRADICTORY_CONDITION",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_10",
+      "api": "TransactWriteItems",
+      "action": "dynamodb:PutItem",
+      "input": {
+        "TransactItems": [
+          {
+            "Put": {
+              "TableName": "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+              "Item": {
+                "id": {
+                  "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+                },
+                "proof": {
+                  "S": "nonbusiness-fence-guard"
+                }
+              },
+              "ConditionExpression": "attribute_exists(#id) AND attribute_not_exists(#id)",
+              "ExpressionAttributeNames": {
+                "#id": "id"
+              }
+            }
+          }
+        ]
+      },
+      "safe": "CONTRADICTORY_CONDITION",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_11",
+      "api": "BatchWriteItem",
+      "action": "dynamodb:BatchWriteItem",
+      "input": {
+        "RequestItems": {
+          "TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE": [
+            {
+              "DeleteRequest": {
+                "Key": {
+                  "id": {
+                    "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "safe": "RESERVED_ABSENT_KEY_REQUIRED",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:s3:::undefined/undefined",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_12",
+      "api": "ExecuteStatement",
+      "action": "dynamodb:PartiQLUpdate",
+      "input": {
+        "Statement": "UPDATE \"TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE\" SET \"proof\"=? WHERE \"id\"=? AND \"proof\"=? AND \"proof\"<>?",
+        "Parameters": [
+          {
+            "S": "nonbusiness-fence-guard"
+          },
+          {
+            "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+          },
+          {
+            "S": "impossible"
+          },
+          {
+            "S": "impossible"
+          }
+        ]
+      },
+      "safe": "CONTRADICTORY_CONDITION_REQUIRES_SERVICE_SYNTAX_CONTROL",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:s3:::undefined/undefined",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_13",
+      "api": "ExecuteStatement",
+      "action": "dynamodb:PartiQLDelete",
+      "input": {
+        "Statement": "DELETE FROM \"TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE\" WHERE \"id\"=? AND \"proof\"=? AND \"proof\"<>?",
+        "Parameters": [
+          {
+            "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+          },
+          {
+            "S": "impossible"
+          },
+          {
+            "S": "impossible"
+          }
+        ]
+      },
+      "safe": "CONTRADICTORY_CONDITION_REQUIRES_SERVICE_SYNTAX_CONTROL",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:s3:::undefined/undefined",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_14",
+      "api": "PutItem",
+      "action": "dynamodb:PutItem",
+      "input": {
+        "TableName": "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Item": {
+          "id": {
+            "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+          },
+          "proof": {
+            "S": "nonbusiness-fence-guard"
+          }
+        },
+        "ConditionExpression": "attribute_exists(#id) AND attribute_not_exists(#id)",
+        "ExpressionAttributeNames": {
+          "#id": "id"
+        }
+      },
+      "safe": "CONTRADICTORY_CONDITION",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_15",
+      "api": "UpdateItem",
+      "action": "dynamodb:UpdateItem",
+      "input": {
+        "TableName": "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Key": {
+          "id": {
+            "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+          }
+        },
+        "ConditionExpression": "attribute_exists(#id) AND attribute_not_exists(#id)",
+        "ExpressionAttributeNames": {
+          "#id": "id",
+          "#proof": "proof"
+        },
+        "UpdateExpression": "SET #proof = :value",
+        "ExpressionAttributeValues": {
+          ":value": {
+            "S": "nonbusiness-fence-guard"
+          }
+        }
+      },
+      "safe": "CONTRADICTORY_CONDITION",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_16",
+      "api": "DeleteItem",
+      "action": "dynamodb:DeleteItem",
+      "input": {
+        "TableName": "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Key": {
+          "id": {
+            "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+          }
+        },
+        "ConditionExpression": "attribute_exists(#id) AND attribute_not_exists(#id)",
+        "ExpressionAttributeNames": {
+          "#id": "id"
+        }
+      },
+      "safe": "CONTRADICTORY_CONDITION",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_17",
+      "api": "TransactWriteItems",
+      "action": "dynamodb:PutItem",
+      "input": {
+        "TransactItems": [
+          {
+            "Put": {
+              "TableName": "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+              "Item": {
+                "id": {
+                  "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+                },
+                "proof": {
+                  "S": "nonbusiness-fence-guard"
+                }
+              },
+              "ConditionExpression": "attribute_exists(#id) AND attribute_not_exists(#id)",
+              "ExpressionAttributeNames": {
+                "#id": "id"
+              }
+            }
+          }
+        ]
+      },
+      "safe": "CONTRADICTORY_CONDITION",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_18",
+      "api": "BatchWriteItem",
+      "action": "dynamodb:BatchWriteItem",
+      "input": {
+        "RequestItems": {
+          "TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE": [
+            {
+              "DeleteRequest": {
+                "Key": {
+                  "id": {
+                    "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "safe": "RESERVED_ABSENT_KEY_REQUIRED",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:s3:::undefined/undefined",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_19",
+      "api": "ExecuteStatement",
+      "action": "dynamodb:PartiQLUpdate",
+      "input": {
+        "Statement": "UPDATE \"TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE\" SET \"proof\"=? WHERE \"id\"=? AND \"proof\"=? AND \"proof\"<>?",
+        "Parameters": [
+          {
+            "S": "nonbusiness-fence-guard"
+          },
+          {
+            "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+          },
+          {
+            "S": "impossible"
+          },
+          {
+            "S": "impossible"
+          }
+        ]
+      },
+      "safe": "CONTRADICTORY_CONDITION_REQUIRES_SERVICE_SYNTAX_CONTROL",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:s3:::undefined/undefined",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_20",
+      "api": "ExecuteStatement",
+      "action": "dynamodb:PartiQLDelete",
+      "input": {
+        "Statement": "DELETE FROM \"TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE\" WHERE \"id\"=? AND \"proof\"=? AND \"proof\"<>?",
+        "Parameters": [
+          {
+            "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+          },
+          {
+            "S": "impossible"
+          },
+          {
+            "S": "impossible"
+          }
+        ]
+      },
+      "safe": "CONTRADICTORY_CONDITION_REQUIRES_SERVICE_SYNTAX_CONTROL",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:s3:::undefined/undefined",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_21",
+      "api": "PutItem",
+      "action": "dynamodb:PutItem",
+      "input": {
+        "TableName": "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Item": {
+          "id": {
+            "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+          },
+          "proof": {
+            "S": "nonbusiness-fence-guard"
+          }
+        },
+        "ConditionExpression": "attribute_exists(#id) AND attribute_not_exists(#id)",
+        "ExpressionAttributeNames": {
+          "#id": "id"
+        }
+      },
+      "safe": "CONTRADICTORY_CONDITION",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_22",
+      "api": "UpdateItem",
+      "action": "dynamodb:UpdateItem",
+      "input": {
+        "TableName": "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Key": {
+          "id": {
+            "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+          }
+        },
+        "ConditionExpression": "attribute_exists(#id) AND attribute_not_exists(#id)",
+        "ExpressionAttributeNames": {
+          "#id": "id",
+          "#proof": "proof"
+        },
+        "UpdateExpression": "SET #proof = :value",
+        "ExpressionAttributeValues": {
+          ":value": {
+            "S": "nonbusiness-fence-guard"
+          }
+        }
+      },
+      "safe": "CONTRADICTORY_CONDITION",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_23",
+      "api": "DeleteItem",
+      "action": "dynamodb:DeleteItem",
+      "input": {
+        "TableName": "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "Key": {
+          "id": {
+            "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+          }
+        },
+        "ConditionExpression": "attribute_exists(#id) AND attribute_not_exists(#id)",
+        "ExpressionAttributeNames": {
+          "#id": "id"
+        }
+      },
+      "safe": "CONTRADICTORY_CONDITION",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_24",
+      "api": "TransactWriteItems",
+      "action": "dynamodb:PutItem",
+      "input": {
+        "TransactItems": [
+          {
+            "Put": {
+              "TableName": "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+              "Item": {
+                "id": {
+                  "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+                },
+                "proof": {
+                  "S": "nonbusiness-fence-guard"
+                }
+              },
+              "ConditionExpression": "attribute_exists(#id) AND attribute_not_exists(#id)",
+              "ExpressionAttributeNames": {
+                "#id": "id"
+              }
+            }
+          }
+        ]
+      },
+      "safe": "CONTRADICTORY_CONDITION",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_25",
+      "api": "BatchWriteItem",
+      "action": "dynamodb:BatchWriteItem",
+      "input": {
+        "RequestItems": {
+          "PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE": [
+            {
+              "DeleteRequest": {
+                "Key": {
+                  "id": {
+                    "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "safe": "RESERVED_ABSENT_KEY_REQUIRED",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:s3:::undefined/undefined",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_26",
+      "api": "ExecuteStatement",
+      "action": "dynamodb:PartiQLUpdate",
+      "input": {
+        "Statement": "UPDATE \"PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE\" SET \"proof\"=? WHERE \"id\"=? AND \"proof\"=? AND \"proof\"<>?",
+        "Parameters": [
+          {
+            "S": "nonbusiness-fence-guard"
+          },
+          {
+            "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+          },
+          {
+            "S": "impossible"
+          },
+          {
+            "S": "impossible"
+          }
+        ]
+      },
+      "safe": "CONTRADICTORY_CONDITION_REQUIRES_SERVICE_SYNTAX_CONTROL",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:s3:::undefined/undefined",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_27",
+      "api": "ExecuteStatement",
+      "action": "dynamodb:PartiQLDelete",
+      "input": {
+        "Statement": "DELETE FROM \"PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE\" WHERE \"id\"=? AND \"proof\"=? AND \"proof\"<>?",
+        "Parameters": [
+          {
+            "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+          },
+          {
+            "S": "impossible"
+          },
+          {
+            "S": "impossible"
+          }
+        ]
+      },
+      "safe": "CONTRADICTORY_CONDITION_REQUIRES_SERVICE_SYNTAX_CONTROL",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:s3:::undefined/undefined",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_28",
+      "api": "PutObject",
+      "action": "s3:PutObject",
+      "input": {
+        "Bucket": "amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+        "Key": "team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png",
+        "Body": "nonbusiness-fence-guard",
+        "IfMatch": "\"00000000000000000000000000000000\"",
+        "ExpectedBucketOwner": "058264289478"
+      },
+      "safe": "RESERVED_ABSENT_KEY_AND_IF_MATCH_REQUIRED",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_29",
+      "api": "DeleteObject",
+      "action": "s3:DeleteObject",
+      "input": {
+        "Bucket": "amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+        "Key": "team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png",
+        "IfMatch": "*",
+        "ExpectedBucketOwner": "058264289478"
+      },
+      "safe": "RESERVED_ABSENT_KEY_REQUIRED",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_30",
+      "api": "DeleteObject",
+      "action": "s3:DeleteObjectVersion",
+      "input": {
+        "Bucket": "amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+        "Key": "team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png",
+        "VersionId": "null",
+        "ExpectedBucketOwner": "058264289478"
+      },
+      "safe": "RESERVED_KEY_ALL_VERSIONS_ABSENT_REQUIRED",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "DIRECT_31",
+      "api": "AbortMultipartUpload",
+      "action": "s3:AbortMultipartUpload",
+      "input": {
+        "Bucket": "amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+        "Key": "team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png",
+        "UploadId": "fence-proof-no-existing-upload",
+        "ExpectedBucketOwner": "058264289478"
+      },
+      "safe": "RESERVED_KEY_ALL_UPLOADS_ABSENT_REQUIRED",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png",
+      "expectedFrozen": "Actual resource-policy AccessDenied with principal/action/resource/request correlation; not validation or preexisting identity denial",
+      "cleanup": "No real business key is used. Assert reserved key and versions absent before/after; any unexpected success aborts the gate."
+    },
+    {
+      "id": "PARTIQL_INSERT_Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "api": "ExecuteStatement",
+      "action": "dynamodb:PartiQLInsert",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "input": {
+        "Statement": "INSERT INTO \"Team-dxb2tdlulrch7hj2pts2mfijia-NONE\" VALUE {'id': ?, 'proof': ?}",
+        "Parameters": [
+          {
+            "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+          },
+          {
+            "S": "nonbusiness-fence-probe"
+          }
+        ]
+      },
+      "risk": "MAY_CREATE_RESERVED_DIAGNOSTIC_ITEM_IF_FENCE_FAILS",
+      "authorization": "Explicit maintenance authorization must include this exact reserved diagnostic item and pre-target abort cleanup. No execution now.",
+      "expectedFrozen": "Policy AccessDenied",
+      "cleanup": "Unexpected success: remain FROZEN, stop before TARGET, retain row/hash/receipt; execute separately reviewed pre-target fence rollback, remove only exact reserved diagnostic key after matching its full content, reconcile, then restore Legacy with new epoch. No fence exception or administrator bypass."
+    },
+    {
+      "id": "PARTIQL_INSERT_TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "api": "ExecuteStatement",
+      "action": "dynamodb:PartiQLInsert",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "input": {
+        "Statement": "INSERT INTO \"TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE\" VALUE {'id': ?, 'proof': ?}",
+        "Parameters": [
+          {
+            "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+          },
+          {
+            "S": "nonbusiness-fence-probe"
+          }
+        ]
+      },
+      "risk": "MAY_CREATE_RESERVED_DIAGNOSTIC_ITEM_IF_FENCE_FAILS",
+      "authorization": "Explicit maintenance authorization must include this exact reserved diagnostic item and pre-target abort cleanup. No execution now.",
+      "expectedFrozen": "Policy AccessDenied",
+      "cleanup": "Unexpected success: remain FROZEN, stop before TARGET, retain row/hash/receipt; execute separately reviewed pre-target fence rollback, remove only exact reserved diagnostic key after matching its full content, reconcile, then restore Legacy with new epoch. No fence exception or administrator bypass."
+    },
+    {
+      "id": "PARTIQL_INSERT_TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "api": "ExecuteStatement",
+      "action": "dynamodb:PartiQLInsert",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "input": {
+        "Statement": "INSERT INTO \"TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE\" VALUE {'id': ?, 'proof': ?}",
+        "Parameters": [
+          {
+            "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+          },
+          {
+            "S": "nonbusiness-fence-probe"
+          }
+        ]
+      },
+      "risk": "MAY_CREATE_RESERVED_DIAGNOSTIC_ITEM_IF_FENCE_FAILS",
+      "authorization": "Explicit maintenance authorization must include this exact reserved diagnostic item and pre-target abort cleanup. No execution now.",
+      "expectedFrozen": "Policy AccessDenied",
+      "cleanup": "Unexpected success: remain FROZEN, stop before TARGET, retain row/hash/receipt; execute separately reviewed pre-target fence rollback, remove only exact reserved diagnostic key after matching its full content, reconcile, then restore Legacy with new epoch. No fence exception or administrator bypass."
+    },
+    {
+      "id": "PARTIQL_INSERT_PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "api": "ExecuteStatement",
+      "action": "dynamodb:PartiQLInsert",
+      "identity": "arn:aws:iam::058264289478:user/RavenTest",
+      "input": {
+        "Statement": "INSERT INTO \"PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE\" VALUE {'id': ?, 'proof': ?}",
+        "Parameters": [
+          {
+            "S": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740"
+          },
+          {
+            "S": "nonbusiness-fence-probe"
+          }
+        ]
+      },
+      "risk": "MAY_CREATE_RESERVED_DIAGNOSTIC_ITEM_IF_FENCE_FAILS",
+      "authorization": "Explicit maintenance authorization must include this exact reserved diagnostic item and pre-target abort cleanup. No execution now.",
+      "expectedFrozen": "Policy AccessDenied",
+      "cleanup": "Unexpected success: remain FROZEN, stop before TARGET, retain row/hash/receipt; execute separately reviewed pre-target fence rollback, remove only exact reserved diagnostic key after matching its full content, reconcile, then restore Legacy with new epoch. No fence exception or administrator bypass."
+    }
+  ],
+  "serviceRoleAlternative": "Two fixed temporary Lambda functions reuse existing shared-writer/cleanup roles through existing lambda.amazonaws.com trust; no trust/identity/boundary changes. Same principal denial proof, not invocation of original business/teardown handler. Existing gateway maintenance is tested separately. New temporary deployment requires its own security-owned inspection/authorization.",
+  "excludedUnsafeActions": [
+    "Never invoke bucket teardown provider",
+    "Never assume AppSync or service-only roles by changing trust",
+    "No real Team creation in Legacy",
+    "No unguarded presigned upload"
+  ],
+  "presignedAlternative": "Shared-role conditional PutObject uses the same data-plane principal. Existing preissued PUT URLs expire after 300s plus drain margin; do not claim a conditional direct request is an original presigned-handler test. An actual presigned negative control must sign the same guarded command under existing role without returning/persisting its URL."
+}

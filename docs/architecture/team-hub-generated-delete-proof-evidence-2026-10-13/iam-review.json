@@ -1,0 +1,303 @@
+{
+  "at": "2026-10-13T19:53:14.236Z",
+  "roles": [
+    {
+      "arn": "arn:aws:iam::058264289478:role/TeamIAMRoleb6b1b2-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "appsync.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "policies": [
+        {
+          "name": "DynamoDBAccess",
+          "document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Action": [
+                  "dynamodb:BatchGetItem",
+                  "dynamodb:BatchWriteItem",
+                  "dynamodb:PutItem",
+                  "dynamodb:DeleteItem",
+                  "dynamodb:GetItem",
+                  "dynamodb:Scan",
+                  "dynamodb:Query",
+                  "dynamodb:UpdateItem",
+                  "dynamodb:ConditionCheckItem",
+                  "dynamodb:DescribeTable",
+                  "dynamodb:GetRecords",
+                  "dynamodb:GetShardIterator"
+                ],
+                "Resource": [
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE/*"
+                ],
+                "Effect": "Allow"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/TeamMembershipIAMRolb0882a-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "appsync.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "policies": [
+        {
+          "name": "DynamoDBAccess",
+          "document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Action": [
+                  "dynamodb:BatchGetItem",
+                  "dynamodb:BatchWriteItem",
+                  "dynamodb:PutItem",
+                  "dynamodb:DeleteItem",
+                  "dynamodb:GetItem",
+                  "dynamodb:Scan",
+                  "dynamodb:Query",
+                  "dynamodb:UpdateItem",
+                  "dynamodb:ConditionCheckItem",
+                  "dynamodb:DescribeTable",
+                  "dynamodb:GetRecords",
+                  "dynamodb:GetShardIterator"
+                ],
+                "Resource": [
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE/*"
+                ],
+                "Effect": "Allow"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/TeamRosterSlotIAMRol236c3d-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "appsync.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "policies": [
+        {
+          "name": "DynamoDBAccess",
+          "document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Action": [
+                  "dynamodb:BatchGetItem",
+                  "dynamodb:BatchWriteItem",
+                  "dynamodb:PutItem",
+                  "dynamodb:DeleteItem",
+                  "dynamodb:GetItem",
+                  "dynamodb:Scan",
+                  "dynamodb:Query",
+                  "dynamodb:UpdateItem",
+                  "dynamodb:ConditionCheckItem",
+                  "dynamodb:DescribeTable",
+                  "dynamodb:GetRecords",
+                  "dynamodb:GetShardIterator"
+                ],
+                "Resource": [
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE/*"
+                ],
+                "Effect": "Allow"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/PlayerChampionPoolEn5c689d-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "appsync.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "policies": [
+        {
+          "name": "DynamoDBAccess",
+          "document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Action": [
+                  "dynamodb:BatchGetItem",
+                  "dynamodb:BatchWriteItem",
+                  "dynamodb:PutItem",
+                  "dynamodb:DeleteItem",
+                  "dynamodb:GetItem",
+                  "dynamodb:Scan",
+                  "dynamodb:Query",
+                  "dynamodb:UpdateItem",
+                  "dynamodb:ConditionCheckItem",
+                  "dynamodb:DescribeTable",
+                  "dynamodb:GetRecords",
+                  "dynamodb:GetShardIterator"
+                ],
+                "Resource": [
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE/*"
+                ],
+                "Effect": "Allow"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "role": "arn:aws:iam::058264289478:role/TeamIAMRoleb6b1b2-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/TeamIAMRoleb6b1b2-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "action": "dynamodb:DeleteItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/TeamIAMRoleb6b1b2-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "action": "dynamodb:DeleteItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "decision": "implicitDeny",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/TeamMembershipIAMRolb0882a-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/TeamMembershipIAMRolb0882a-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "action": "dynamodb:DeleteItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/TeamMembershipIAMRolb0882a-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "action": "dynamodb:DeleteItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "decision": "implicitDeny",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/TeamRosterSlotIAMRol236c3d-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/TeamRosterSlotIAMRol236c3d-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "action": "dynamodb:DeleteItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/TeamRosterSlotIAMRol236c3d-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "action": "dynamodb:DeleteItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "decision": "implicitDeny",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/PlayerChampionPoolEn5c689d-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/PlayerChampionPoolEn5c689d-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "action": "dynamodb:DeleteItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "decision": "allowed",
+      "missingContext": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/PlayerChampionPoolEn5c689d-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "action": "dynamodb:DeleteItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+      "decision": "implicitDeny",
+      "missingContext": []
+    }
+  ],
+  "analyzer": [
+    {
+      "role": "arn:aws:iam::058264289478:role/TeamIAMRoleb6b1b2-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "policy": "DynamoDBAccess",
+      "findings": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/TeamMembershipIAMRolb0882a-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "policy": "DynamoDBAccess",
+      "findings": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/TeamRosterSlotIAMRol236c3d-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "policy": "DynamoDBAccess",
+      "findings": []
+    },
+    {
+      "role": "arn:aws:iam::058264289478:role/PlayerChampionPoolEn5c689d-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "policy": "DynamoDBAccess",
+      "findings": []
+    }
+  ],
+  "complete": true,
+  "awsWrites": 0
+}

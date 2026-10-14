@@ -1,0 +1,32 @@
+{
+  "at": "2026-10-12T20:50:46.331Z",
+  "functionArn": "arn:aws:lambda:eu-north-1:058264289478:function:amplify-projectrespawnweb-adminusermanagementlambd-pQxwX6AKOxBE",
+  "role": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-adminusermanagementlambda-OIbycFZWXsdJ",
+  "zipCodeSha256": "7uvEQ6FDsvAbs8gHRU6WWZZJ+CHB4kxMqvdHfmpTTHI=",
+  "files": [
+    {
+      "name": "index.mjs",
+      "sha256": "ffbce0054e018c4144587a08d055aad38b839823a09048fa3674836ebd2873a2"
+    }
+  ],
+  "verifiedDispatch": [
+    "listInvestorAccess",
+    "findInvestorAccountByEmail",
+    "grantInvestorAccess",
+    "manageInvestorAccess",
+    "listManagedInvestorAccessRequests",
+    "reviewInvestorAccessRequest",
+    "listAdminUsers",
+    "updateUserRoles"
+  ],
+  "directTeamMutationCalls": [],
+  "sourceReview": "amplify/functions/admin-user-management/handler.ts has a closed field dispatch for investor/user management and no Team mutations.",
+  "noBusinessPath": "Reviewed installed closed handler has no supported Team business operation. Role retains broad AppSync potential permission; it is not marked IAM-denied. Control-plane code/permission/trust changes remain frozen under operator custody.",
+  "limitations": [
+    "Static handler review is not a live negative request under this principal",
+    "Bundled generated model definitions alone are not reachable handler operations",
+    "Do not invoke unrelated user/investor mutations to manufacture Team proof"
+  ],
+  "complete": true,
+  "awsWrites": 0
+}

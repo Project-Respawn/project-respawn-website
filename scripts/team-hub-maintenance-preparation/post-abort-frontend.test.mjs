@@ -1,0 +1,11 @@
+﻿import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import crypto from 'node:crypto';import path from 'node:path';
+import {createCutoverClient} from '../../src/features/team-hub/api/cutover-client.mjs';
+const E='docs/architecture/team-hub-post-abort-correction-evidence-2026-10-13',read=p=>JSON.parse(fs.readFileSync(p)),manifest=read('config/domains/team-hub/domain-endpoints.Ntgre.json'),core=read('config/domains/core/domain-endpoints.Ntgre.json').environmentContract,activation=read(E+'/activation.PROPOSED.json').releaseBinding;
+for(const mode of ['LEGACY_WRITER','FROZEN','TARGET_WRITER'])for(const epoch of [1,3,4,5,6,7])test('pinned release against actual returned '+mode+' epoch '+epoch,async()=>{
+ let business=0;const c=createCutoverClient({manifest,core,activation,tokenProvider:async()=>'LOCAL_ONLY_FIXTURE',fetcher:async url=>{if(new URL(url).pathname==='/v1/authority')return {ok:true,json:async()=>({contractVersion:'team-hub.authority-status.v1',domain:'TeamHub',environment:'Ntgre',account:core.account,region:core.region,mode,epoch,version:epoch,observedAt:new Date().toISOString()})};business++;return {ok:true,json:async()=>({contractVersion:'team-hub.v1',data:{items:[],capabilities:{teamsAdmin:false,brandingManage:false}}})};}});
+ if(mode==='TARGET_WRITER'&&epoch===5){await c.call('LIST_MY_TEAMS',{});assert.equal(business,1);}else{await assert.rejects(c.call('LIST_MY_TEAMS',{}));assert.equal(business,0);}
+});
+test('preserved activation and rollback bytes match every pinned file',()=>{for(const kind of ['activation','rollback']){const m=read(E+'/'+(kind==='rollback'?'rollback-reuse-manifest.json':kind+'-manifest.json'));for(const f of m.files){const actual=crypto.createHash('sha256').update(fs.readFileSync(path.join(m.artifactDirectory,f.path))).digest('hex');assert.equal(actual,f.sha256,f.path);}assert.equal(m.published,false);assert.equal(m.unrelatedWorkingTreeExcluded,true);}});
+test('normal source remains Legacy and unactivated',()=>{assert.equal(read('config/domains/team-hub/frontend-cutover.PROPOSAL.json').reviewed,false);assert.match(fs.readFileSync('src/features/team-hub/services/migration-mode.mjs','utf8'),/usingIndependentTeamHub=false/);});
+
+

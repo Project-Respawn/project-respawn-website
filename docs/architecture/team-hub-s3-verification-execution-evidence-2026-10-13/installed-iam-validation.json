@@ -1,0 +1,148 @@
+{
+  "at": "2026-10-13T16:02:47.183Z",
+  "results": [
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "key": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740",
+      "decision": "allowed"
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "action": "dynamodb:UpdateItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "key": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740",
+      "decision": "allowed"
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "action": "dynamodb:DeleteItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "key": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740",
+      "decision": "allowed"
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "key": "business",
+      "decision": "implicitDeny"
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "key": null,
+      "decision": "implicitDeny"
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE-foreign",
+      "key": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740",
+      "decision": "implicitDeny"
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "action": "dynamodb:Scan",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "key": null,
+      "decision": "implicitDeny"
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "action": "s3:PutObject",
+      "resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png",
+      "key": null,
+      "decision": "allowed"
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "action": "s3:PutObject",
+      "resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/business.png",
+      "key": null,
+      "decision": "implicitDeny"
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "action": "s3:PutBucketPolicy",
+      "resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+      "key": null,
+      "decision": "explicitDeny"
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "action": "ssm:GetParameters",
+      "resource": "*",
+      "key": null,
+      "decision": "explicitDeny"
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "action": "kms:Decrypt",
+      "resource": "*",
+      "key": null,
+      "decision": "explicitDeny"
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "action": "iam:PassRole",
+      "resource": "*",
+      "key": null,
+      "decision": "explicitDeny"
+    },
+    {
+      "principal": "ProjectRespawn-TeamHub-Ntgre-Deploy",
+      "action": "iam:PassRole",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "decision": "explicitDeny"
+    },
+    {
+      "principal": "ProjectRespawn-TeamHub-Ntgre-Deploy",
+      "action": "lambda:CreateFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "decision": "explicitDeny"
+    },
+    {
+      "principal": "ProjectRespawn-TeamHub-Ntgre-Deploy",
+      "action": "lambda:UpdateFunctionCode",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "decision": "explicitDeny"
+    },
+    {
+      "principal": "ProjectRespawn-TeamHub-Ntgre-Deploy",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "decision": "explicitDeny"
+    },
+    {
+      "principal": "ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "action": "iam:PassRole",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "decision": "explicitDeny"
+    },
+    {
+      "principal": "ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "action": "lambda:CreateFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "decision": "implicitDeny"
+    },
+    {
+      "principal": "ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "action": "lambda:UpdateFunctionCode",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "decision": "implicitDeny"
+    },
+    {
+      "principal": "ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "decision": "implicitDeny"
+    }
+  ],
+  "complete": true,
+  "helperInvoked": false,
+  "sourceDiagnosticAbsent": true,
+  "limitations": "Identity-policy simulations plus exact installed documents and resource policy review; not original-principal/fence/live business proof"
+}

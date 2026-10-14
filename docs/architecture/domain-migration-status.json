@@ -1,9 +1,9 @@
 {
   "schemaVersion": "domain-migration-status.v1",
-  "scope": "Offline migration-standard consolidation and GitHub checkpoint; accepted AWS state referenced, not refreshed",
+  "scope": "Accepted Ntgre business authority/frontend cutover only; no production publication or Legacy retirement",
   "currentDomain": "Team Hub",
-  "currentPhase": "M5 / 2B6 LAMBDA_CONFIGURATION_RECOVERY_ACCEPTED",
-  "awsChanges": 42,
+  "currentPhase": "M6_2B6_NTGRE_CONTROLLED_CUTOVER_ACCEPTED",
+  "awsChanges": 8,
   "productionChanges": 0,
   "domains": [
     {
@@ -119,22 +119,18 @@
       "domain": "Team Hub",
       "classification": "INDEPENDENT_PRODUCT_DOMAIN",
       "owner": "TEAM_HUB",
-      "phase": "M5_2B6_LAMBDA_CONFIGURATION_RECOVERY_ACCEPTED",
+      "phase": "M6_2B6_NTGRE_CONTROLLED_CUTOVER_ACCEPTED",
       "architectureStatus": "SECOND_INDEPENDENT_DOMAIN_PROVEN",
       "awsStatus": "UPDATE_COMPLETE",
       "stack": "ProjectRespawn-TeamHub-Ntgre",
       "api": "t54b88casf",
-      "dataStatus": "LEGACY_AUTHORITATIVE_NO_BUSINESS_DATA_MIGRATED",
-      "frontendStatus": "NO_INDEPENDENT_CUTOVER",
-      "legacyAuthority": true,
+      "dataStatus": "TARGET_WRITER_5_5_NTGRE_LEGACY_FENCED",
+      "frontendStatus": "ACCEPTED_PINNED_NTGRE_LOCALHOST_EPOCH_5",
+      "legacyAuthority": false,
       "gitCheckpoint": "4591f326de5c8ef6f09fc0b3a3d459d5d0d8580f",
-      "blockers": [
-        "Isolated live AWS business transaction and cursor-secret proofs remain outstanding",
-        "Installed Legacy fence live denial proof reserved for separately authorized FROZEN maintenance",
-        "Final target-authority/frontend transition requires separate acceptance and authorization"
-      ],
-      "nextStep": "Prepare separately reviewed isolated AWS transaction/cursor verification; preserve LEGACY_WRITER epoch/version 1 and disabled live frontend",
-      "lastVerified": "2026-10-12T15:21:52.829Z",
+      "blockers": [],
+      "nextStep": "Separate Master/production release review; source resources remain fenced/protected and retirement remains unauthorized",
+      "lastVerified": "2026-10-14T17:03:58.834Z",
       "evidence": [
         "docs/architecture/team-hub-2b2-caller-release-evidence-2026-10-05/accepted-state.json",
         "docs/architecture/project-respawn-domain-classification.md",
@@ -186,7 +182,22 @@
         "docs/architecture/team-hub-2b6-iam-validation-throttling-resolution.md",
         "docs/architecture/team-hub-2b6-window-recovery-result.md",
         "docs/architecture/team-hub-2b6-describekey-lifecycle-correction.md",
-        "docs/architecture/team-hub-2b6-describekey-recovery-result.md"
+        "docs/architecture/team-hub-2b6-describekey-recovery-result.md",
+        "docs/architecture/team-hub-2b6-quota-corrected-isolated-aws-verification-result.md",
+        "docs/architecture/team-hub-2b6-resumed-controlled-cutover-result.md",
+        "docs/architecture/team-hub-2b6-post-abort-correction-readiness.md",
+        "docs/architecture/team-hub-2b6-multipart-diagnostic-result.md",
+        "docs/architecture/team-hub-2b6-cursor-runtime-correction.md",
+        "docs/architecture/team-hub-2b6-cursor-iam-quota-correction.md",
+        "docs/architecture/team-hub-2b6-cursor-runtime-deployment-result.md",
+        "docs/architecture/team-hub-cursor-deployment-evidence-2026-10-13/accepted.json",
+        "docs/architecture/team-hub-cursor-deployment-evidence-2026-10-13/accepted-deployment-baseline.json",
+        "docs/architecture/team-hub-2b6-final-preflight-cutover-result-2026-10-14.md",
+        "docs/architecture/team-hub-cursor-accepted-cutover-evidence-2026-10-14/accepted.json",
+        "docs/architecture/team-hub-2b6-final-preflight-cutover-result-2026-10-14.md",
+        "docs/architecture/team-hub-cursor-accepted-cutover-evidence-2026-10-14/accepted.json",
+        "docs/architecture/team-hub-2b6-final-preflight-cutover-result-2026-10-14.md",
+        "docs/architecture/team-hub-cursor-accepted-cutover-evidence-2026-10-14/accepted.json"
       ],
       "restrictedCaller": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Deploy",
       "executionRole": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
@@ -330,7 +341,7 @@
         "businessAuthorityChanged": false
       },
       "phase2B6": {
-        "status": "RECOVERY_BLOCKED_KMS_DESCRIBEKEY",
+        "status": "CUTOVER_ACCEPTED_NTGRE_ONLY",
         "report": "docs/architecture/team-hub-2b6-acceptance.md",
         "gates": "docs/architecture/team-hub-2b6-gates-ef-result.md",
         "awsWrites": 33,
@@ -339,11 +350,7 @@
         "frontendCutover": false,
         "legacyRetired": false,
         "browserAcceptance": "FIVE_PERSONAS_PASS_ISOLATED_TEAM_LIVE_CORE",
-        "blockers": [
-          "Gate C business runtime transactional authority/epoch live proof pending",
-          "Gate B installed fence denial proof requires separately authorized FROZEN maintenance",
-          "Final authority/frontend transition remains separately unauthorized"
-        ],
+        "blockers": [],
         "nextStep": "R1/R2: prepare, separately authorize and install business transactional runtime before any Legacy freeze",
         "gateBDesign": "READY_DETACHED_NOT_INSTALLED",
         "gateBLiveProof": "PENDING_FROZEN_MAINTENANCE",
@@ -416,7 +423,120 @@
           "targetActivationAuthorized": false,
           "frontendActivationAuthorized": false,
           "awsWrites": 0
-        }
+        },
+        "currentCutover": {
+          "at": "2026-10-14T17:03:58.834Z",
+          "status": "TEAM_HUB_NTGRE_CUTOVER_ACCEPTED_READY_FOR_PRODUCTION_RELEASE_REVIEW",
+          "account": "058264289478",
+          "region": "eu-north-1",
+          "identity": "arn:aws:iam::058264289478:user/RavenTest",
+          "authority": {
+            "mode": "TARGET_WRITER",
+            "epoch": 5,
+            "version": 5
+          },
+          "window": {
+            "start": "2026-10-14T15:04:08.026Z",
+            "end": "2026-10-14T17:34:08.026Z",
+            "minutes": 150,
+            "operator": "Ntgre (user)",
+            "responder": "Ntgre (user)",
+            "recoveryContact": "Ntgre (user)",
+            "attendance": "docs/architecture/team-hub-cursor-accepted-cutover-evidence-2026-10-14/attendance.json"
+          },
+          "frontend": {
+            "origin": "http://localhost:5174",
+            "epoch": 5,
+            "manifestSha256": "3c4a04c630636d11a3235314c87699aa406b2451fd15a29e1d7be1cd5ba01bdf",
+            "scope": "NTGRE_LOCALHOST_ONLY"
+          },
+          "proof": {
+            "generated": 12,
+            "operator": 35,
+            "ownedAbortPrerequisite": "FMNH2DH4K7JDGHG5",
+            "sharedCleanup": "Explicitly approved installed-policy/representative-proof alternative; no invented direct service-role receipt"
+          },
+          "personas": 5,
+          "mutations": 9,
+          "reads": 4,
+          "observation": {
+            "samples": 58,
+            "startedAt": "2026-10-14T16:14:55.385Z",
+            "finishedAt": "2026-10-14T16:45:15.315Z",
+            "preObservationInterval": {
+              "from": "2026-10-14T16:08:41.735Z",
+              "to": "2026-10-14T16:14:55.385Z",
+              "seconds": 373,
+              "claim": "Not counted as continuous safety observation; acceptance held pending full interval"
+            }
+          },
+          "integrity": {
+            "at": "2026-10-14T16:50:29.396Z",
+            "complete": true,
+            "authority": {
+              "mode": "TARGET_WRITER",
+              "epoch": 5,
+              "version": 5
+            },
+            "operational": 7,
+            "journal": 52,
+            "audits": 18,
+            "idempotency": 18,
+            "fixtureStatus": "INACTIVE",
+            "createReplayAddedRecords": 0,
+            "operations": [
+              "CREATE_TEAM",
+              "UPDATE_TEAM",
+              "SET_MANAGER",
+              "MANAGE_MEMBER",
+              "SET_ROSTER_SLOT",
+              "UPSERT_MY_CHAMPION",
+              "UPSERT_COACH_ASSESSMENT",
+              "SET_TEAM_PLAN",
+              "DELETE_MY_CHAMPION"
+            ],
+            "sources": [
+              {
+                "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+                "count": 0
+              },
+              {
+                "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+                "count": 0
+              },
+              {
+                "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+                "count": 0
+              },
+              {
+                "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+                "count": 0
+              }
+            ],
+            "canonicalDigest": "3f41fefb1d50a5e79cf97bd6e781bc74be2fa8fdcffb575bf84dafbd9e07f0be",
+            "rawDataPersisted": false
+          },
+          "protected": {
+            "legacy": 2621,
+            "functionDirective": 167,
+            "teamProduct": 48,
+            "teamSecurity": 7,
+            "coreProduct": 8,
+            "coreSecurity": 5,
+            "tournament": 11
+          },
+          "runtime": {
+            "read": "ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e",
+            "command": "da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e",
+            "product": "caa0a68384990438196ed7720f1a24062641e03220f6092c1b4a2340d2417241",
+            "security": "5cf68f36b3e4e3f95ba8a3cb1444eacc82e382ae214e0cee58d5382409974c23"
+          },
+          "productionChanges": 0,
+          "legacyRetired": false,
+          "permanentIamChanges": 0,
+          "report": "docs/architecture/team-hub-2b6-final-preflight-cutover-result-2026-10-14.md"
+        },
+        "historicalSnapshotsBelowRemainEvidence": true
       },
       "businessRuntimeReadiness": {
         "status": "DEPLOYED_NOT_ACCEPTED_CONFIGURATION_MISMATCH",
@@ -625,6 +745,216 @@
         "permanentIamChanged": false,
         "productionChanges": 0,
         "isolatedAwsTransactionCursorProofs": "PENDING_SEPARATE_AUTHORIZATION"
+      },
+      "isolatedBusinessVerification": {
+        "status": "QUOTA_CORRECTED_READY_FOR_EXECUTION_REVIEW_NOT_DEPLOYED",
+        "report": "docs/architecture/team-hub-2b6-isolated-aws-business-verification.md",
+        "evidence": "docs/architecture/team-hub-isolated-verification-evidence-2026-10-12",
+        "prepared": true,
+        "liveAccepted": false,
+        "proposedTemporaryResources": 4,
+        "awsResourceChanges": 0,
+        "businessChanges": 0,
+        "authority": "LEGACY_WRITER",
+        "epoch": 1,
+        "version": 1
+      },
+      "isolatedVerificationExecution": {
+        "status": "BLOCKED_BEFORE_WRITES",
+        "failedGate": "PINNED_CURSOR_PROBE_RESERVED_CONCURRENCY",
+        "report": "docs/architecture/team-hub-2b6-isolated-aws-verification-result.md",
+        "evidence": "docs/architecture/team-hub-isolated-execution-evidence-2026-10-12",
+        "actualAccountConcurrency": 10,
+        "actualUnreservedConcurrency": 10,
+        "pinnedReservation": 1,
+        "changeSetsCreated": 0,
+        "temporaryResourcesCreated": 0,
+        "awsResourceChanges": 0,
+        "businessChanges": 0,
+        "liveAccepted": false
+      },
+      "quotaCorrectedIsolatedVerification": {
+        "status": "READY_FOR_EXECUTION_REVIEW",
+        "manifest": "docs/architecture/team-hub-isolated-quota-evidence-2026-10-12/execution-manifest.json",
+        "candidateSha256": "13db6824ce0f661a4b271a38108c706204b886edb5c7e6e39eea68fc2e492a4b",
+        "templateSha256": "62a06af84531336c4067d5a4158575d7a84b2ed9029a4f51765fe34b878a7c9f",
+        "policySha256": "91f88143ba16d5c11cdfd1293c86fbd5ca7c2a2f04311c5962f6112a28228d97",
+        "probeZipSha256": "a072a13df0aa7e4299fb8f01a8e77513e8f9bcf6ae37c4867a933b1f09e9d1e4",
+        "sourceHashesUnchanged": true,
+        "awsResourceChanges": 0,
+        "liveAccepted": false
+      },
+      "quotaCorrectedIsolatedExecution": {
+        "at": "2026-10-12T19:05:28.467Z",
+        "status": "ISOLATED_AWS_BUSINESS_VERIFICATION_ACCEPTED",
+        "candidate": {
+          "path": "docs/architecture/team-hub-isolated-quota-evidence-2026-10-12/candidate.json",
+          "sha256": "13db6824ce0f661a4b271a38108c706204b886edb5c7e6e39eea68fc2e492a4b"
+        },
+        "template": {
+          "path": "docs/architecture/team-hub-isolated-quota-evidence-2026-10-12/isolated.template.json",
+          "sha256": "62a06af84531336c4067d5a4158575d7a84b2ed9029a4f51765fe34b878a7c9f"
+        },
+        "policy": {
+          "path": "docs/architecture/team-hub-isolated-verification-evidence-2026-10-12/isolated-runner-policy.json",
+          "sha256": "91f88143ba16d5c11cdfd1293c86fbd5ca7c2a2f04311c5962f6112a28228d97"
+        },
+        "probeZip": "a072a13df0aa7e4299fb8f01a8e77513e8f9bcf6ae37c4867a933b1f09e9d1e4",
+        "transactionScenarios": 48,
+        "cursorChecks": 9,
+        "temporaryResourcesCreated": 4,
+        "temporaryResourcesRemoved": 4,
+        "remainingTemporaryResources": 0,
+        "permanentBusinessRecordsChanged": 0,
+        "permanentIamChanges": 0,
+        "legacyChanges": 0,
+        "productionChanges": 0,
+        "frontendActivated": false,
+        "sourceFenceInstalled": false,
+        "authority": {
+          "mode": "LEGACY_WRITER",
+          "epoch": 1,
+          "version": 1
+        },
+        "ledgerChanges": 0,
+        "complete": true,
+        "report": "docs/architecture/team-hub-2b6-quota-corrected-isolated-aws-verification-result.md",
+        "evidence": "docs/architecture/team-hub-isolated-quota-execution-evidence-2026-10-12/result.json"
+      },
+      "finalCutoverReview": {
+        "status": "BLOCKED_SPECIFIC_REMAINING_GATES",
+        "at": "2026-10-12T19:24:44.495Z",
+        "awsWrites": 0,
+        "report": "docs/architecture/team-hub-2b6-cutover-runbook.md",
+        "evidence": "docs/architecture/team-hub-final-readiness-evidence-2026-10-12",
+        "acceptedTransactions": 48,
+        "acceptedCursorChecks": 9,
+        "localTests": 316,
+        "authority": {
+          "mode": "LEGACY_WRITER",
+          "epoch": 1,
+          "version": 1
+        },
+        "remainingPreparation": [
+          "Exact safe live probe packet for service-only/shared Legacy writers and logo paths",
+          "Pinned Ntgre frontend activation and compatible rollback release"
+        ],
+        "maintenanceMinutes": 150,
+        "productionDestination": "Master eventually; separate review and authorization required"
+      },
+      "finalMaintenancePreparation": {
+        "at": "2026-10-12T21:11:09.586Z",
+        "status": "BLOCKED_EXACT_REMAINING_ITEMS",
+        "report": "docs/architecture/team-hub-2b6-final-maintenance-preparation.md",
+        "awsWrites": 0,
+        "frontendActivationManifestSha256": "f97453b3393db657964fe0149bba11ae0d7cf9b8663c53b9fac65a9868a866a1",
+        "frontendRollbackManifestSha256": "e4b8f8f8a53ed4a2dd0e821fa4e0745f4d9ed3657a072cb7fec28cd531194801",
+        "helperRuntimeSha256": "862b496d427dcb6b04e4d17f00d971fbe20e65a031a80a89e26512cfa67ffaa6",
+        "helperTemplateSha256": "36f5d9e1c708b93d61309b6d678d10c5e26b2f2244f5a0902495b41c14daaeaf",
+        "windowMinutes": 150,
+        "authority": {
+          "mode": "LEGACY_WRITER",
+          "epoch": 1,
+          "version": 1
+        },
+        "remaining": [
+          "Supported source S3 in-flight upload quiescence procedure/evidence",
+          "Explicit security-owner review/authorization of exact same-role temporary probe lifecycle"
+        ],
+        "businessAcceptance": "Prepared only; first target write requires state-aware rollback; retain inactive diagnostic Team/audits"
+      },
+      "finalCutoverExecutionReadiness": {
+        "date": "2026-10-13",
+        "status": "BLOCKED",
+        "report": "docs/architecture/team-hub-2b6-final-cutover-execution-readiness.md",
+        "freshReadOnlyRefreshComplete": true,
+        "awsResourceWrites": 0,
+        "tests": 61,
+        "artifactHashesVerified": 11,
+        "remaining": [
+          "Supported source upload quiescence",
+          "Security-owner same-role helper review"
+        ],
+        "frontendScope": "Ntgre localhost; Master publication separately reviewed"
+      },
+      "finalTwoBlockers": {
+        "date": "2026-10-13",
+        "status": "BLOCKED",
+        "sameRoleHelperVerdict": "NOT_APPROVED_EFFECTIVE_RESOURCE_POLICY_ADMINISTRATION_AND_FOREIGN_SECRET_CAPABILITY",
+        "restrictedAlternative": "PREPARED_NOT_DEPLOYABLE_NOT_ORIGINAL_PRINCIPAL_PROOF",
+        "uploadVerdict": "STRICT_PHYSICAL_QUIESCENCE_NOT_PROVEN",
+        "remainingDecision": "Reviewed complete terminal-drain guarantee or explicit logical-quarantine residual-risk approval; original-principal proof/security method",
+        "awsWrites": 0
+      },
+      "s3AuthorityAndHelperResolution": {
+        "date": "2026-10-13",
+        "scope": "PREPARED_ONLY",
+        "logicalQuarantine": "PROPOSED_FOR_REVIEW_PHYSICAL_LATE_COMPLETION_POSSIBLE",
+        "helper": "PINNED_RESTRICTED_TWO_RESOURCE_CANDIDATE",
+        "helperRuntimeSha256": "78b0259181e985f2488e379d210374834a0725e60bffe16b10a884f5839c9364",
+        "helperTemplateSha256": "02bcda3fa5616d0425a151f20e6e08bb47aa1feaed824746479c2ec01f1fd043",
+        "audit": "THREE_RESOURCE_ACCOUNT_LOCAL_TRAIL_PROPOSED_NOT_INSTALLED",
+        "race": "TWO_RESOURCE_ISOLATED_PLAN_NOT_EXECUTED",
+        "tests": 24,
+        "iamControls": 21,
+        "awsWrites": 0,
+        "status": "BLOCKED_SPECIFIC_SAFETY_GAP",
+        "remaining": [
+          "Original shared/cleanup-principal live proof security decision",
+          "Verified complete logo arrival audit/reconciliation",
+          "Explicit logical-quarantine residual-risk and isolated execution authorization"
+        ]
+      },
+      "finalS3Verification": {
+        "date": "2026-10-13",
+        "status": "READY_FOR_ISOLATED_EXECUTION_AUTHORIZATION",
+        "report": "docs/architecture/team-hub-2b6-final-s3-verification-execution-readiness.md",
+        "manifest": "docs/architecture/team-hub-s3-verification-evidence-2026-10-13/execution-manifest.json",
+        "manifestSha256": "e5395aac10635a8b65c50ccc8ca8fda0d125458643e69cd971372b07d9b5bde9",
+        "resources": 7,
+        "retained": 3,
+        "temporary": 4,
+        "authorized": false,
+        "executed": false,
+        "awsWrites": 0,
+        "cutoverAuthorized": false,
+        "originalPrincipalDecision": "PENDING_SEPARATE_SECURITY_REVIEW_FOR_REAL_MAINTENANCE"
+      },
+      "finalS3VerificationExecution": {
+        "date": "2026-10-13",
+        "status": "S3_ISOLATED_VERIFICATION_ACCEPTED",
+        "report": "docs/architecture/team-hub-2b6-isolated-s3-verification-result.md",
+        "receipt": "docs/architecture/team-hub-s3-verification-execution-evidence-2026-10-13/accepted.json",
+        "manifestSha256": "e5395aac10635a8b65c50ccc8ca8fda0d125458643e69cd971372b07d9b5bde9",
+        "deployedResources": 7,
+        "removedTemporaryResources": 4,
+        "retainedAuxiliaryAuditResources": 3,
+        "canaryEventMatches": 3,
+        "raceEventMatches": 4,
+        "actualRace": "DENIED_403_NOT_OBSERVED_LATE_COMPLETION",
+        "helperInvoked": false,
+        "authority": {
+          "mode": "LEGACY_WRITER",
+          "epoch": 1,
+          "version": 1
+        },
+        "businessDataChanges": 0,
+        "sourceFenceInstalled": false,
+        "frontendActivated": false,
+        "productionChanges": 0,
+        "requiredNext": "Separate original-principal proof method and real-cutover criterion security review"
+      },
+      "cursorRuntimeDeployment": {
+        "status": "DEPLOYED_AND_DARK_ACCEPTED",
+        "securitySha256": "5cf68f36b3e4e3f95ba8a3cb1444eacc82e382ae214e0cee58d5382409974c23",
+        "productSha256": "caa0a68384990438196ed7720f1a24062641e03220f6092c1b4a2340d2417241",
+        "readZipSha256": "ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e",
+        "commandZipSha256": "da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e",
+        "authority": "LEGACY_WRITER_3_3",
+        "businessDataChanges": 0,
+        "frontendActivated": false,
+        "productionChanges": 0,
+        "report": "docs/architecture/team-hub-2b6-cursor-runtime-deployment-result.md"
       }
     },
     {
@@ -785,5 +1115,183 @@
     "awsWrites": 0,
     "acceptedStateEvidence": "docs/architecture/team-hub-describekey-execution-evidence-2026-10-12/accepted.json",
     "ledgerChanged": false
-  }
+  },
+  "awsChangeAccounting": {
+    "created": 7,
+    "temporaryRemoved": 4,
+    "netRetainedAuxiliaryAudit": 3,
+    "ownedArtifactPublishedAndRemoved": true,
+    "canonicalProductSecurityRootsChanged": 0,
+    "businessAuthorityChanges": 0
+  },
+  "originalPrincipalSecurityDecision": {
+    "report": "docs/architecture/team-hub-2b6-original-principal-security-decision.md",
+    "prepared": true,
+    "securityOwnerAccepted": true,
+    "maintenanceAuthorized": true,
+    "awsWrites": 0,
+    "originalServiceRoleLiveProof": false,
+    "criterion": "Explicit alternative acceptance required; original AppSync/operator live proof remains mandatory",
+    "sameRoleHelpersRejected": true,
+    "logicalQuarantineAcceptanceRequired": true,
+    "authorizationReceipt": "docs/architecture/team-hub-maintenance-authorization-evidence-2026-10-13/authorization-approvals.json"
+  },
+  "controlledCutoverPreflight": {
+    "evidence": "docs/architecture/team-hub-controlled-cutover-preflight-evidence-2026-10-13/current-result.json",
+    "infrastructurePassed": true,
+    "authenticatedAcceptanceReady": true,
+    "maintenanceStarted": false,
+    "awsResourceWrites": 0,
+    "mandatoryGeneratedProofReady": false,
+    "resultReport": "docs/architecture/team-hub-2b6-controlled-cutover-result.md"
+  },
+  "generatedDeleteProofCorrection": {
+    "report": "docs/architecture/team-hub-2b6-generated-delete-proof-correction.md",
+    "candidateSha256": "cd335b6f16a422715388d31e30ffe54798be5fe45698754e96f13ed0a93ab351",
+    "prepared": true,
+    "liveInstalledFenceProof": false,
+    "awsChanges": 0,
+    "previousPinsPreserved": true,
+    "approvalsPreserved": true
+  },
+  "resumedControlledCutover": {
+    "at": "2026-10-13T20:14:54.065Z",
+    "result": "CUTOVER_ABORTED_PREWRITE_RECOVERY_COMPLETE",
+    "report": "docs/architecture/team-hub-2b6-resumed-controlled-cutover-result.md",
+    "approvalsValid": true,
+    "correctedProofSha256": "cd335b6f16a422715388d31e30ffe54798be5fe45698754e96f13ed0a93ab351",
+    "frozenTransition": true,
+    "generatedProofsPassed": 12,
+    "operatorProofsPassed": 31,
+    "failedGate": "ORIGINAL_OPERATOR_FENCE_PROOF_FAILED",
+    "failedRequestId": "2YAMA4GF3MQJHB6H",
+    "recoveryComplete": true,
+    "authority": {
+      "mode": "LEGACY_WRITER",
+      "epoch": 3,
+      "version": 3
+    },
+    "sourceFenceInstalled": false,
+    "sourceDataChanged": false,
+    "targetBusinessWrites": 0,
+    "frontendActivated": false,
+    "realBusinessAcceptance": false,
+    "productionChanges": 0,
+    "newResources": 0,
+    "resourcesRemainingForCleanup": 0,
+    "retainedAuditResources": 3,
+    "controlPlaneMutations": 16,
+    "nextGate": "Correct multipart-abort diagnostic and review monotonic epoch/release rebinding; no automatic retry"
+  },
+  "currentAuthority": {
+    "mode": "LEGACY_WRITER",
+    "epoch": 3,
+    "version": 3
+  },
+  "postAbortCorrections": {
+    "report": "docs/architecture/team-hub-2b6-post-abort-correction-readiness.md",
+    "candidateSha256": "58a168cf2f4e370e7b5ceb7044c6e957bd30085212efcac179caecc45b11f895",
+    "prepared": true,
+    "executionAuthorized": false,
+    "narrowAmendmentRequired": false,
+    "awsWrites": 0,
+    "observedAuthority": {
+      "mode": "LEGACY_WRITER",
+      "epoch": 3,
+      "version": 3
+    },
+    "proposedFrozen": {
+      "epoch": 4,
+      "version": 4
+    },
+    "proposedTarget": {
+      "epoch": 5,
+      "version": 5
+    },
+    "activationManifestSha256": "3c4a04c630636d11a3235314c87699aa406b2451fd15a29e1d7be1cd5ba01bdf",
+    "rollbackReuseManifestSha256": "65cf08822ea849bee4fc5b4d7371f50f4a06d8ee6db9fbeb255ad2a93b512a0a",
+    "rollbackBytesReused": true,
+    "multipartProofLive": true,
+    "oldApprovalsPreserved": true,
+    "amendmentAccepted": true,
+    "amendmentReceipt": "docs/architecture/team-hub-multipart-diagnostic-execution-evidence-2026-10-13/approval-amendment.json"
+  },
+  "multipartDiagnosticAcceptance": {
+    "acceptedAt": "2026-10-13T20:48:33.998Z",
+    "status": "MULTIPART_DIAGNOSTIC_ACCEPTED_READY_FOR_CONTROLLED_CUTOVER",
+    "candidateSha256": "58a168cf2f4e370e7b5ceb7044c6e957bd30085212efcac179caecc45b11f895",
+    "approval": "docs/architecture/team-hub-multipart-diagnostic-execution-evidence-2026-10-13/approval-amendment.json",
+    "uploads": [
+      {
+        "label": "MPU_A",
+        "uploadIdSha256": "1d6bd1e18facf26c91cd9dcbdeb7cbef1f5e3dfe404edb09b6fab8b742922f0c",
+        "createdAt": "2026-10-13T20:40:23.570Z",
+        "creationRequestId": "M0QZBXJCYSVGHB6G",
+        "creationStatus": 200,
+        "parts": 0,
+        "terminal": true,
+        "abortStatus": 204,
+        "abortRequestId": "92K65DR1MS8S11EA"
+      },
+      {
+        "label": "MPU_B",
+        "uploadIdSha256": "21f9b946e9b6d9f7d84767a289a35028bff2b918673c347d6be5e4a320739890",
+        "createdAt": "2026-10-13T20:40:27.754Z",
+        "creationRequestId": "MB4E2222XPY7WJ1G",
+        "creationStatus": 200,
+        "parts": 0,
+        "terminal": true,
+        "abortStatus": 204,
+        "abortRequestId": "Z24VEB8D3PHDKP9M"
+      }
+    ],
+    "denial": {
+      "id": "owned-abort-denial",
+      "at": "2026-10-13T20:42:22.978Z",
+      "status": 403,
+      "error": "AccessDenied",
+      "message": "User: arn:aws:iam::058264289478:user/RavenTest is not authorized to perform: s3:AbortMultipartUpload on resource: \"arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png\" with an explicit deny in a resource-based policy",
+      "requestId": "FMNH2DH4K7JDGHG5",
+      "ownedUploadStillExists": true,
+      "uploadIdSha256": "21f9b946e9b6d9f7d84767a289a35028bff2b918673c347d6be5e4a320739890"
+    },
+    "sourcePolicyRestored": true,
+    "terminalCleanup": true,
+    "auditRequestsCorrelated": 7,
+    "auditDataRequests": 5,
+    "auditManagementRequests": 2,
+    "authority": {
+      "mode": "LEGACY_WRITER",
+      "epoch": 3,
+      "version": 3
+    },
+    "normalBusinessRoutesDenied": 16,
+    "newResources": 0,
+    "policyMutations": 2,
+    "partsUploaded": 0,
+    "objectsCompleted": 0,
+    "businessDataChanges": 0,
+    "productionChanges": 0,
+    "fullMaintenancePerformed": false,
+    "frontendActivated": false,
+    "rawUploadIdsPublic": false,
+    "remainingScope": "Separate resumption instruction and fresh attended 150-minute maintenance window; FROZEN 4/4, live final fence proofs, reconciliation, TARGET 5/5, real personas, epoch-5 frontend and observation remain mandatory",
+    "report": "docs/architecture/team-hub-2b6-multipart-diagnostic-result.md",
+    "maintenanceReference": "docs/architecture/team-hub-multipart-diagnostic-execution-evidence-2026-10-13/corrected-maintenance-reference.json"
+  },
+  "latestAttempt": {
+    "acceptedAt": "2026-10-13T22:27:14.890Z",
+    "awsResourceModifications": 4,
+    "artifactObjectsPublished": 3,
+    "changeSetsExecuted": 2,
+    "businessDataChanges": 0,
+    "authority": {
+      "mode": "LEGACY_WRITER",
+      "epoch": 3,
+      "version": 3
+    },
+    "frontend": "LEGACY",
+    "evidence": "docs/architecture/team-hub-2b6-cursor-runtime-deployment-result.md"
+  },
+  "awsWriteCounting": "Seven approved source fence/gateway installations plus two conditional authority updates; eighteen successful target business transactions including API-only fixture cleanup. No CloudFormation/Lambda/IAM deployment, production publication or resource retirement."
 }

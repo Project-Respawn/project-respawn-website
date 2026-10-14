@@ -1,0 +1,35 @@
+{
+  "prepared": true,
+  "deployed": false,
+  "resourceCount": 2,
+  "newIamResources": 0,
+  "rolePolicyChanges": 0,
+  "trustChanges": 0,
+  "resourceTypes": [
+    "AWS::Lambda::Function"
+  ],
+  "runtimePath": ".tmp/team-hub-maintenance-preparation/fence-probe-2b66e845b9ee02dccfc203d8c418b2dd9ac367bcd3f12348bf17099e2e1ede89.zip",
+  "runtimeSha256": "2b66e845b9ee02dccfc203d8c418b2dd9ac367bcd3f12348bf17099e2e1ede89",
+  "templateSha256": "d6daa44506f0522ceb2d53c2a3e9a55397645458700ecb0d31461d83eb26e7a3",
+  "sourceHashes": [
+    {
+      "path": "scripts/team-hub-maintenance-preparation/probe-config.mjs",
+      "sha256": "599b316d0901d22d07860d297b360cb58838560b2939e72be94c1a0c59ac35e7"
+    },
+    {
+      "path": "scripts/team-hub-maintenance-preparation/probe-requests.mjs",
+      "sha256": "a0667ec63b1a9aa13f96df12768ffd0a34f20034404145388acdf7656dec15ba"
+    },
+    {
+      "path": "scripts/team-hub-maintenance-preparation/probe-runtime.mjs",
+      "sha256": "6a0a8111c55bf340400d2bd778d65f26dcd78b0d6a0a70db975705f477f1fd40"
+    }
+  ],
+  "permissions": "Existing approved security operator only, exact future PassRole for the two named Legacy service roles to lambda.amazonaws.com; normal Team deployment caller is not broadened. This candidate has NOT passed an AWS change-set or installed-role gate.",
+  "cleanup": "Delete only the two exact temporary functions and uploaded object version; retain existing roles/log groups; verify absence. No automatic business-row cleanup.",
+  "remaining": [
+    "Separately authorize exact temporary helper/artifact lifecycle and approve same-role proof scope; no original destructive provider invocation",
+    "Live positive/negative guarded service controls"
+  ],
+  "awsWrites": 0
+}

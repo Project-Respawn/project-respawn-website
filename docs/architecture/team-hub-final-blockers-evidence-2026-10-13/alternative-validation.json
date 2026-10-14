@@ -1,0 +1,123 @@
+{
+  "at": "2026-10-13T14:32:29.522Z",
+  "resourcePolicyEscalationRisk": {
+    "principal": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3",
+    "grants": [
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3"
+        },
+        "Action": [
+          "s3:PutBucketPolicy",
+          "s3:GetBucket*",
+          "s3:List*",
+          "s3:DeleteObject*"
+        ],
+        "Resource": [
+          "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+          "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/*"
+        ]
+      }
+    ]
+  },
+  "alternativeCases": [
+    {
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "key": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740",
+      "expected": "allowed",
+      "decision": "allowed"
+    },
+    {
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "key": "real-business",
+      "expected": "implicitDeny",
+      "decision": "implicitDeny"
+    },
+    {
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "key": null,
+      "expected": "implicitDeny",
+      "decision": "implicitDeny"
+    },
+    {
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE-foreign",
+      "key": "__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740",
+      "expected": "implicitDeny",
+      "decision": "implicitDeny"
+    },
+    {
+      "action": "s3:PutObject",
+      "resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png",
+      "key": null,
+      "expected": "allowed",
+      "decision": "allowed"
+    },
+    {
+      "action": "s3:PutObject",
+      "resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/business.png",
+      "key": null,
+      "expected": "implicitDeny",
+      "decision": "implicitDeny"
+    },
+    {
+      "action": "s3:PutBucketPolicy",
+      "resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+      "key": null,
+      "expected": "explicitDeny",
+      "decision": "explicitDeny"
+    },
+    {
+      "action": "s3:DeleteBucketPolicy",
+      "resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+      "key": null,
+      "expected": "explicitDeny",
+      "decision": "explicitDeny"
+    },
+    {
+      "action": "ssm:GetParameters",
+      "resource": "*",
+      "key": null,
+      "expected": "explicitDeny",
+      "decision": "explicitDeny"
+    },
+    {
+      "action": "kms:Decrypt",
+      "resource": "*",
+      "key": null,
+      "expected": "explicitDeny",
+      "decision": "explicitDeny"
+    },
+    {
+      "action": "iam:PassRole",
+      "resource": "*",
+      "key": null,
+      "expected": "explicitDeny",
+      "decision": "explicitDeny"
+    },
+    {
+      "action": "lambda:UpdateFunctionCode",
+      "resource": "*",
+      "key": null,
+      "expected": "explicitDeny",
+      "decision": "explicitDeny"
+    }
+  ],
+  "analyzer": [
+    {
+      "type": "IDENTITY_POLICY",
+      "findings": []
+    },
+    {
+      "type": "RESOURCE_POLICY",
+      "findings": []
+    }
+  ],
+  "complete": true,
+  "awsWrites": 0,
+  "limitations": "Custom-policy identity checks do not install a role, incorporate every effective layer, or prove original-role live source denial. Cleanup identity implicit deny is overridden by its actual same-account resource grant absent explicit deny."
+}

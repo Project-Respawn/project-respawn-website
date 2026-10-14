@@ -1,0 +1,152 @@
+{
+  "at": "2026-10-13T20:40:18.524Z",
+  "candidateSha256": "58a168cf2f4e370e7b5ceb7044c6e957bd30085212efcac179caecc45b11f895",
+  "phase": "PRE_MAINTENANCE",
+  "steps": [
+    {
+      "id": "positive-create",
+      "at": "2026-10-13T20:40:24.563Z",
+      "requestId": "M0QZBXJCYSVGHB6G",
+      "status": 200
+    },
+    {
+      "id": "positive-abort",
+      "at": "2026-10-13T20:40:26.636Z",
+      "status": 204,
+      "requestId": "92K65DR1MS8S11EA"
+    },
+    {
+      "id": "negative-create",
+      "at": "2026-10-13T20:40:28.788Z",
+      "requestId": "MB4E2222XPY7WJ1G",
+      "status": 200
+    },
+    {
+      "id": "diagnostic-deny-install",
+      "at": "2026-10-13T20:40:28.995Z",
+      "requestId": "HHTX1173P7S3Z7S3",
+      "status": 204
+    },
+    {
+      "id": "owned-abort-denial",
+      "at": "2026-10-13T20:42:22.978Z",
+      "status": 403,
+      "error": "AccessDenied",
+      "message": "User: arn:aws:iam::058264289478:user/RavenTest is not authorized to perform: s3:AbortMultipartUpload on resource: \"arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png\" with an explicit deny in a resource-based policy",
+      "requestId": "FMNH2DH4K7JDGHG5",
+      "ownedUploadStillExists": true,
+      "uploadIdSha256": "21f9b946e9b6d9f7d84767a289a35028bff2b918673c347d6be5e4a320739890"
+    },
+    {
+      "id": "restore-own-diagnostic-policy",
+      "at": "2026-10-13T20:42:23.297Z",
+      "status": 204,
+      "requestId": "FMNW2VKY2AD60AM6"
+    },
+    {
+      "id": "terminal-abort",
+      "at": "2026-10-13T20:42:25.336Z",
+      "status": 204,
+      "requestId": "Z24VEB8D3PHDKP9M"
+    }
+  ],
+  "uploads": [
+    {
+      "label": "MPU_A",
+      "uploadIdSha256": "1d6bd1e18facf26c91cd9dcbdeb7cbef1f5e3dfe404edb09b6fab8b742922f0c",
+      "createdAt": "2026-10-13T20:40:23.570Z",
+      "creationRequestId": "M0QZBXJCYSVGHB6G",
+      "creationStatus": 200,
+      "parts": 0,
+      "terminal": true,
+      "abortStatus": 204,
+      "abortRequestId": "92K65DR1MS8S11EA"
+    },
+    {
+      "label": "MPU_B",
+      "uploadIdSha256": "21f9b946e9b6d9f7d84767a289a35028bff2b918673c347d6be5e4a320739890",
+      "createdAt": "2026-10-13T20:40:27.754Z",
+      "creationRequestId": "MB4E2222XPY7WJ1G",
+      "creationStatus": 200,
+      "parts": 0,
+      "terminal": true,
+      "abortStatus": 204,
+      "abortRequestId": "Z24VEB8D3PHDKP9M"
+    }
+  ],
+  "policyRestored": true,
+  "complete": true,
+  "partsUploaded": 0,
+  "objectsCompleted": 0,
+  "rawUploadIdsPublic": false,
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "authorityBefore": {
+    "PK": {
+      "S": "CONTROL#AUTHORITY"
+    },
+    "changedAt": {
+      "S": "2026-10-13T20:09:48.029Z"
+    },
+    "changedBy": {
+      "S": "arn:aws:iam::058264289478:user/RavenTest"
+    },
+    "epoch": {
+      "N": "3"
+    },
+    "gateDigest": {
+      "S": "6f527a0c73577743c368a333c30436b669c6ec25a9e216c865c4d9a964785502"
+    },
+    "mode": {
+      "S": "LEGACY_WRITER"
+    },
+    "schemaVersion": {
+      "S": "team-hub-authority.v1"
+    },
+    "version": {
+      "N": "3"
+    },
+    "SK": {
+      "S": "STATE"
+    }
+  },
+  "trailHealthy": true,
+  "startedAt": "2026-10-13T20:40:22.619Z",
+  "initialComparisonEvidence": "lifecycle.json",
+  "representationReview": "policy-representation-review.json",
+  "continuationStartedAt": "2026-10-13T20:42:22.284Z",
+  "authorityAfter": {
+    "PK": {
+      "S": "CONTROL#AUTHORITY"
+    },
+    "changedAt": {
+      "S": "2026-10-13T20:09:48.029Z"
+    },
+    "changedBy": {
+      "S": "arn:aws:iam::058264289478:user/RavenTest"
+    },
+    "epoch": {
+      "N": "3"
+    },
+    "gateDigest": {
+      "S": "6f527a0c73577743c368a333c30436b669c6ec25a9e216c865c4d9a964785502"
+    },
+    "mode": {
+      "S": "LEGACY_WRITER"
+    },
+    "schemaVersion": {
+      "S": "team-hub-authority.v1"
+    },
+    "version": {
+      "N": "3"
+    },
+    "SK": {
+      "S": "STATE"
+    }
+  },
+  "auditAccepted": false,
+  "endedAt": "2026-10-13T20:42:25.375Z"
+}

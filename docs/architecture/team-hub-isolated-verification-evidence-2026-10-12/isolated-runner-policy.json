@@ -1,0 +1,66 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Deny",
+      "NotAction": [
+        "dynamodb:GetItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:PutItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:ConditionCheckItem"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Deny",
+      "Action": "dynamodb:*",
+      "NotResource": [
+        "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+        "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Journal",
+        "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational/index/BySubject",
+        "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational/index/ByTeamStatus"
+      ]
+    },
+    {
+      "Effect": "Deny",
+      "Action": "dynamodb:*",
+      "Resource": "*",
+      "Condition": {
+        "StringNotEquals": {
+          "aws:RequestedRegion": "eu-north-1"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:GetItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:PutItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:ConditionCheckItem"
+      ],
+      "Resource": [
+        "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+        "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Journal",
+        "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational/index/BySubject",
+        "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational/index/ByTeamStatus"
+      ],
+      "Condition": {
+        "DateGreaterThanEquals": {
+          "aws:CurrentTime": {
+            "Ref": "NotBefore"
+          }
+        },
+        "DateLessThan": {
+          "aws:CurrentTime": {
+            "Ref": "ExpiresAt"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "prepared": true,
+  "operator": "Ntgre (user)",
+  "pollSeconds": 30,
+  "windowMinutes": 150,
+  "alarmDestinations": [],
+  "operatorAcknowledgementRequiredAtMaintenance": true,
+  "signals": [
+    {
+      "signal": "Authority/epoch mismatch or stale write accepted",
+      "abortAt": 1,
+      "response": "Stop all tests/activation; separately authorized conditional target FROZEN; preserve evidence"
+    },
+    {
+      "signal": "Legacy business commit after fence proof/reconciliation",
+      "abortAt": 1,
+      "response": "Do not transfer TARGET; remain FROZEN and reconcile; Mode A invalid"
+    },
+    {
+      "signal": "Unauthorized/private-data response",
+      "abortAt": 1,
+      "response": "Immediate acceptance abort and containment; keep Legacy fenced"
+    },
+    {
+      "signal": "Unexpected API 5xx/Core failure/Lambda error/throttle",
+      "pauseAt": 1,
+      "abortAt": "2 events within 60 seconds or one unresolved for 120 seconds",
+      "response": "Pause progression immediately; correlate request/log/metric; abort when threshold met"
+    },
+    {
+      "signal": "Unexpected DynamoDB conflict/throttle",
+      "pauseAt": 1,
+      "abortAt": "3 unexpected failures within 60 seconds or one unresolved for 120 seconds",
+      "response": "Distinguish scheduled negative controls; stop writes until reconciled"
+    },
+    {
+      "signal": "Unexpected auth denial on a permitted persona",
+      "pauseAt": 1,
+      "abortAt": "Any unresolved after 120 seconds",
+      "response": "Do not weaken authorization; stop acceptance"
+    },
+    {
+      "signal": "Audit/journal or canonical data mismatch",
+      "abortAt": 1,
+      "response": "Preserve all state; freeze/reconcile under recovery authorization"
+    },
+    {
+      "signal": "Frontend uncaught error or unrelated domain network initialization",
+      "pauseAt": 1,
+      "abortAt": "Any unresolved after 120 seconds",
+      "response": "Contain presentation with pinned rollback; target authority remains"
+    },
+    {
+      "signal": "Lost operator coverage or telemetry",
+      "pauseAt": "One missed 30-second poll",
+      "abortAt": "60 seconds without coverage or 5 minutes without expected correlated telemetry",
+      "response": "Hold before TARGET; after target require recovery/observation decision; never unattended completion"
+    }
+  ],
+  "metrics": "Accepted D1 namespaces/dimensions, detailed API routes, native Lambda/DynamoDB metrics, Core request/log correlation; expected denial/conflict probes are tagged in execution receipt rather than discounted globally",
+  "ingestion": "Use request IDs and structured logs immediately; poll CloudWatch up to five minutes for expected count. Missing metrics never treated as zero. Preserve previous live D1 acceptance.",
+  "communication": "Operator explicitly authorizes channel/start/extension/end communication later; no messages sent now",
+  "awsWrites": 0
+}

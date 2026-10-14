@@ -1,0 +1,119 @@
+{
+  "at": "2026-10-12T16:41:34.245Z",
+  "metadata": {
+    "ARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+    "Name": "ProjectRespawn-TeamHub-Ntgre-Cursor",
+    "Description": "Team Hub pagination cursor HMAC material; never returned to clients",
+    "LastChangedDate": "2026-10-08T23:24:43.929000+01:00",
+    "Tags": [
+      {
+        "Key": "aws:cloudformation:stack-name",
+        "Value": "ProjectRespawn-TeamHub-Ntgre"
+      },
+      {
+        "Key": "Project",
+        "Value": "ProjectRespawn"
+      },
+      {
+        "Key": "aws:cloudformation:logical-id",
+        "Value": "CursorSecret"
+      },
+      {
+        "Key": "Environment",
+        "Value": "Ntgre"
+      },
+      {
+        "Key": "aws:cloudformation:stack-id",
+        "Value": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/b66ad780-c0cd-11f1-91ba-0effc0d85417"
+      },
+      {
+        "Key": "Domain",
+        "Value": "TeamHub"
+      }
+    ],
+    "VersionIdsToStages": {
+      "f81e45a2-7f91-6412-6c45-2b7a7b1db519": [
+        "AWSCURRENT"
+      ]
+    },
+    "CreatedDate": "2026-10-08T23:24:43.885000+01:00"
+  },
+  "key": {
+    "AWSAccountId": "058264289478",
+    "KeyId": "8802a37a-f981-4384-b538-fdb4f7aba74a",
+    "Arn": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+    "CreationDate": "2026-08-21T19:16:43.332000+01:00",
+    "Enabled": true,
+    "Description": "Default key that protects my Secrets Manager data when no other key is defined",
+    "KeyUsage": "ENCRYPT_DECRYPT",
+    "KeyState": "Enabled",
+    "Origin": "AWS_KMS",
+    "KeyManager": "AWS",
+    "CustomerMasterKeySpec": "SYMMETRIC_DEFAULT",
+    "KeySpec": "SYMMETRIC_DEFAULT",
+    "EncryptionAlgorithms": [
+      "SYMMETRIC_DEFAULT"
+    ],
+    "MultiRegion": false,
+    "CurrentKeyMaterialId": "0bbd002e204233c70c483442e639701c7975ff7e9309af89b03470e2c9eab687"
+  },
+  "keyPolicy": {
+    "Version": "2012-10-17",
+    "Id": "auto-secretsmanager-2",
+    "Statement": [
+      {
+        "Sid": "Allow access through AWS Secrets Manager for all principals in the account that are authorized to use AWS Secrets Manager",
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": "*"
+        },
+        "Action": [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:CreateGrant",
+          "kms:DescribeKey"
+        ],
+        "Resource": "*",
+        "Condition": {
+          "StringEquals": {
+            "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+            "kms:CallerAccount": "058264289478"
+          }
+        }
+      },
+      {
+        "Sid": "Allow access through AWS Secrets Manager for all principals in the account that are authorized to use AWS Secrets Manager",
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": "*"
+        },
+        "Action": "kms:GenerateDataKey*",
+        "Resource": "*",
+        "Condition": {
+          "StringEquals": {
+            "kms:CallerAccount": "058264289478"
+          },
+          "StringLike": {
+            "kms:ViaService": "secretsmanager.*.amazonaws.com"
+          }
+        }
+      },
+      {
+        "Sid": "Allow direct access to key metadata to the account",
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": "arn:aws:iam::058264289478:root"
+        },
+        "Action": [
+          "kms:Describe*",
+          "kms:Get*",
+          "kms:List*",
+          "kms:RevokeGrant"
+        ],
+        "Resource": "*"
+      }
+    ]
+  },
+  "secretValueRead": false
+}

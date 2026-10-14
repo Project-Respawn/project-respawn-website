@@ -1,0 +1,92 @@
+{
+  "ChangeSetName": "quota-corrected-isolated-20261012",
+  "ChangeSetId": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/quota-corrected-isolated-20261012/79692b47-e77e-4628-8501-1b338b3e3e1a",
+  "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1/f792c7d0-c66e-11f1-8332-0affe29d48d3",
+  "StackName": "ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+  "Description": "Exact reviewed quota-corrected isolated verification; no live authority changes",
+  "Parameters": [
+    {
+      "ParameterKey": "NotBefore",
+      "ParameterValue": "2026-10-12T19:00:51.830Z"
+    },
+    {
+      "ParameterKey": "ExpiresAt",
+      "ParameterValue": "2026-10-12T20:00:51.830Z"
+    }
+  ],
+  "CreationTime": "2026-10-12T18:58:52.818Z",
+  "ExecutionStatus": "AVAILABLE",
+  "Status": "CREATE_COMPLETE",
+  "NotificationARNs": [],
+  "RollbackConfiguration": {},
+  "Capabilities": [
+    "CAPABILITY_NAMED_IAM"
+  ],
+  "Tags": [
+    {
+      "Key": "Owner",
+      "Value": "TeamHubIsolatedVerification"
+    },
+    {
+      "Key": "RunId",
+      "Value": "20261012v1"
+    }
+  ],
+  "Changes": [
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "CursorProbe",
+        "ResourceType": "AWS::Lambda::Function",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"Role\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead\",\"FunctionName\":\"ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-CursorProbe\",\"MemorySize\":\"128\",\"Runtime\":\"nodejs22.x\",\"Timeout\":\"30\",\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"LogGroup\":\"/project-respawn/Ntgre/team-hub/parity-read\"},\"Handler\":\"index.handler\",\"Code\":{\"S3Bucket\":\"cdk-hnb659fds-assets-058264289478-eu-north-1\",\"S3Key\":\"team-hub/isolated/a072a13df0aa7e4299fb8f01a8e77513e8f9bcf6ae37c4867a933b1f09e9d1e4.zip\"},\"Tags\":[{\"Value\":\"TeamHubIsolatedVerification\",\"Key\":\"Owner\"},{\"Value\":\"20261012v1\",\"Key\":\"RunId\"}],\"Architectures\":[\"arm64\"]}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "IsolatedJournal",
+        "ResourceType": "AWS::DynamoDB::Table",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"SSESpecification\":{\"SSEEnabled\":\"false\"},\"TableName\":\"ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Journal\",\"AttributeDefinitions\":[{\"AttributeType\":\"S\",\"AttributeName\":\"PK\"},{\"AttributeType\":\"S\",\"AttributeName\":\"SK\"}],\"BillingMode\":\"PAY_PER_REQUEST\",\"PointInTimeRecoverySpecification\":{\"PointInTimeRecoveryEnabled\":\"false\"},\"KeySchema\":[{\"KeyType\":\"HASH\",\"AttributeName\":\"PK\"},{\"KeyType\":\"RANGE\",\"AttributeName\":\"SK\"}],\"DeletionProtectionEnabled\":\"false\",\"Tags\":[{\"Value\":\"TeamHubIsolatedVerification\",\"Key\":\"Owner\"},{\"Value\":\"20261012v1\",\"Key\":\"RunId\"},{\"Value\":\"Ntgre\",\"Key\":\"Environment\"}]},\"UpdateReplacePolicy\":\"Delete\",\"DeletionPolicy\":\"Delete\"}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "IsolatedOperational",
+        "ResourceType": "AWS::DynamoDB::Table",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"SSESpecification\":{\"SSEEnabled\":\"false\"},\"TableName\":\"ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational\",\"AttributeDefinitions\":[{\"AttributeType\":\"S\",\"AttributeName\":\"PK\"},{\"AttributeType\":\"S\",\"AttributeName\":\"SK\"},{\"AttributeType\":\"S\",\"AttributeName\":\"SubjectPK\"},{\"AttributeType\":\"S\",\"AttributeName\":\"SubjectSK\"},{\"AttributeType\":\"S\",\"AttributeName\":\"StatusPK\"},{\"AttributeType\":\"S\",\"AttributeName\":\"StatusSK\"}],\"BillingMode\":\"PAY_PER_REQUEST\",\"GlobalSecondaryIndexes\":[{\"IndexName\":\"BySubject\",\"Projection\":{\"ProjectionType\":\"KEYS_ONLY\"},\"KeySchema\":[{\"KeyType\":\"HASH\",\"AttributeName\":\"SubjectPK\"},{\"KeyType\":\"RANGE\",\"AttributeName\":\"SubjectSK\"}]},{\"IndexName\":\"ByTeamStatus\",\"Projection\":{\"ProjectionType\":\"KEYS_ONLY\"},\"KeySchema\":[{\"KeyType\":\"HASH\",\"AttributeName\":\"StatusPK\"},{\"KeyType\":\"RANGE\",\"AttributeName\":\"StatusSK\"}]}],\"PointInTimeRecoverySpecification\":{\"PointInTimeRecoveryEnabled\":\"false\"},\"KeySchema\":[{\"KeyType\":\"HASH\",\"AttributeName\":\"PK\"},{\"KeyType\":\"RANGE\",\"AttributeName\":\"SK\"}],\"DeletionProtectionEnabled\":\"false\",\"Tags\":[{\"Value\":\"TeamHubIsolatedVerification\",\"Key\":\"Owner\"},{\"Value\":\"20261012v1\",\"Key\":\"RunId\"},{\"Value\":\"Ntgre\",\"Key\":\"Environment\"}]},\"UpdateReplacePolicy\":\"Delete\",\"DeletionPolicy\":\"Delete\"}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "IsolatedRunner",
+        "ResourceType": "AWS::IAM::Role",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"MaxSessionDuration\":\"3600\",\"RoleName\":\"ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1\",\"Policies\":[{\"PolicyName\":\"ExactIsolatedTablesOnly\",\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Resource\":\"*\",\"Effect\":\"Deny\",\"NotAction\":[\"dynamodb:GetItem\",\"dynamodb:Query\",\"dynamodb:Scan\",\"dynamodb:PutItem\",\"dynamodb:DeleteItem\",\"dynamodb:ConditionCheckItem\"]},{\"Action\":\"dynamodb:*\",\"Effect\":\"Deny\",\"NotResource\":[\"arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational\",\"arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Journal\",\"arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational/index/BySubject\",\"arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational/index/ByTeamStatus\"]},{\"Condition\":{\"StringNotEquals\":{\"aws:RequestedRegion\":\"eu-north-1\"}},\"Action\":\"dynamodb:*\",\"Resource\":\"*\",\"Effect\":\"Deny\"},{\"Condition\":{\"DateGreaterThanEquals\":{\"aws:CurrentTime\":\"2026-10-12T19:00:51.830Z\"},\"DateLessThan\":{\"aws:CurrentTime\":\"2026-10-12T20:00:51.830Z\"}},\"Action\":[\"dynamodb:GetItem\",\"dynamodb:Query\",\"dynamodb:Scan\",\"dynamodb:PutItem\",\"dynamodb:DeleteItem\",\"dynamodb:ConditionCheckItem\"],\"Resource\":[\"arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational\",\"arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Journal\",\"arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational/index/BySubject\",\"arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational/index/ByTeamStatus\"],\"Effect\":\"Allow\"}]}}],\"AssumeRolePolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Condition\":{\"StringEquals\":{\"sts:RoleSessionName\":\"verification\"}},\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"AWS\":\"arn:aws:iam::058264289478:user/RavenTest\"}}]}}}"
+      }
+    }
+  ],
+  "IncludeNestedStacks": false,
+  "DeploymentConfig": {
+    "Mode": "STANDARD",
+    "DisableRollback": false
+  },
+  "$metadata": {
+    "httpStatusCode": 200,
+    "requestId": "f7662593-0ab8-4ab3-9842-aafb0b932451",
+    "attempts": 1,
+    "totalRetryDelay": 0
+  }
+}

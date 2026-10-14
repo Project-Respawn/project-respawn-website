@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "team-hub-s3-inflight-review.v1",
+  "prepared": true,
+  "executed": false,
+  "awsWrites": 0,
+  "identity": "arn:aws:iam::058264289478:user/RavenTest",
+  "account": "058264289478",
+  "region": "eu-north-1",
+  "resources": 2,
+  "iamChanges": 0,
+  "bucket": "respawn-teamhub-fence-race-058264289478-20261012-5dc9b348",
+  "object": {
+    "key": "team-logos/isolated-inflight-proof/zero-body.bin",
+    "bytes": 65536,
+    "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+    "businessData": false
+  },
+  "initialPolicy": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "RequireTLS",
+        "Effect": "Deny",
+        "Principal": "*",
+        "Action": "s3:*",
+        "Resource": [
+          "arn:aws:s3:::respawn-teamhub-fence-race-058264289478-20261012-5dc9b348",
+          "arn:aws:s3:::respawn-teamhub-fence-race-058264289478-20261012-5dc9b348/*"
+        ],
+        "Condition": {
+          "Bool": {
+            "aws:SecureTransport": "false"
+          }
+        }
+      }
+    ]
+  },
+  "fencePolicy": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "RequireTLS",
+        "Effect": "Deny",
+        "Principal": "*",
+        "Action": "s3:*",
+        "Resource": [
+          "arn:aws:s3:::respawn-teamhub-fence-race-058264289478-20261012-5dc9b348",
+          "arn:aws:s3:::respawn-teamhub-fence-race-058264289478-20261012-5dc9b348/*"
+        ],
+        "Condition": {
+          "Bool": {
+            "aws:SecureTransport": "false"
+          }
+        }
+      },
+      {
+        "Sid": "IsolatedTeamLogoFence",
+        "Effect": "Deny",
+        "Principal": "*",
+        "Action": [
+          "s3:PutObject",
+          "s3:DeleteObject",
+          "s3:DeleteObjectVersion",
+          "s3:AbortMultipartUpload"
+        ],
+        "Resource": "arn:aws:s3:::respawn-teamhub-fence-race-058264289478-20261012-5dc9b348/team-logos/*"
+      }
+    ]
+  },
+  "steps": [
+    "Separate isolated-test approval; fresh identity, collision check and exact two-resource change-set inspection. No Legacy resources, roles or authority changes.",
+    "Provision only the owned isolated bucket/SSL policy. Record bucket identity and empty contents. No public access, versioning, lifecycle or CMK.",
+    "Sign exactly one PUT for the fixed synthetic key/body. Keep Authorization/URL in memory only. Send the first body chunk, hold remaining chunks, record request-start timing without credentials.",
+    "Install the exact all-principal logo fence on the isolated bucket while PUT is open; read back its complete hash. Send a fresh guarded request to demonstrate effective denial independently of the open PUT.",
+    "Resume the original body stream and capture terminal status/request ID; HEAD/list the exact key, size and digest metadata. Record whether an already-started request committed after denial became effective.",
+    "Repeat only if separately approved and the prior request is terminal; no automatic retry after ambiguous failure. Distinguish direct SigV4 and presigned PUT; a presigned download example is not upload proof.",
+    "Restore only the isolated initial SSL policy, then remove only the matching synthetic object after content/identity checks. Verify no unexpected objects, remove the two temporary resources and confirm absence."
+  ],
+  "bounds": {
+    "singleRunSeconds": 180,
+    "bodyChunkBytes": 2048,
+    "streaming": "Controlled local runner with explicit pause/resume; abort connection on deadline, then verify terminal AWS/object outcome rather than assuming cancellation"
+  },
+  "interpretation": {
+    "lateCommit": "Confirms fence/expiry cannot substitute for draining accepted requests. Require a separately reviewed source-writer/upload quiescence mechanism before maintenance.",
+    "denied": "One isolated result does not establish a universal maximum lifetime or enumerate real in-flight PUTs. Review source request lifecycle and operator/issuance evidence before choosing a bound.",
+    "unknown": "Gate remains blocked; preserve partial evidence and perform safe isolated cleanup only."
+  },
+  "actualSourceRequirement": "Do not enter real FROZEN until a supported source quiescence procedure is reviewed; do not transfer TARGET without terminal/correlation evidence that admitted Legacy data-plane operations cannot commit later. ListMultipartUploads covers multipart metadata only, not in-flight single-part PUTs.",
+  "remainingDecision": "A 300-second presigned expiry, 900-second cleanup-provider timeout and repeated empty listings are supporting observations, not by themselves a certificate that all admitted S3 uploads ended.",
+  "references": [
+    "https://docs.aws.amazon.com/AmazonS3/latest/userguide/using-presigned-url.html",
+    "https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListMultipartUploads.html"
+  ],
+  "productionChanges": 0
+}

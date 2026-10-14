@@ -1,0 +1,72 @@
+{
+  "at": "2026-10-12T17:02:41.582Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "absent": [
+    {
+      "s": "cloudformation",
+      "a": "describe-stacks",
+      "input": {
+        "StackName": "ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1"
+      }
+    },
+    {
+      "s": "iam",
+      "a": "get-role",
+      "input": {
+        "RoleName": "ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1"
+      }
+    },
+    {
+      "s": "lambda",
+      "a": "get-function-configuration",
+      "input": {
+        "FunctionName": "ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-CursorProbe"
+      }
+    },
+    {
+      "s": "dynamodb",
+      "a": "describe-table",
+      "input": {
+        "TableName": "ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational"
+      }
+    },
+    {
+      "s": "dynamodb",
+      "a": "describe-table",
+      "input": {
+        "TableName": "ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Journal"
+      }
+    },
+    {
+      "s": "s3api",
+      "a": "head-object",
+      "input": {
+        "Bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+        "Key": "team-hub/isolated/a072a13df0aa7e4299fb8f01a8e77513e8f9bcf6ae37c4867a933b1f09e9d1e4.zip"
+      }
+    }
+  ],
+  "operator": [],
+  "simulations": [],
+  "complete": false,
+  "awsWrites": 0,
+  "accountSettings": {
+    "AccountLimit": {
+      "TotalCodeSize": 322122547200,
+      "CodeSizeUnzipped": 262144000,
+      "CodeSizeZipped": 52428800,
+      "ConcurrentExecutions": 10,
+      "UnreservedConcurrentExecutions": 10
+    },
+    "AccountUsage": {
+      "TotalCodeSize": 305266624,
+      "FunctionCount": 69
+    }
+  },
+  "failedGate": "PINNED_CURSOR_PROBE_RESERVED_CONCURRENCY",
+  "requiredReservation": 1
+}

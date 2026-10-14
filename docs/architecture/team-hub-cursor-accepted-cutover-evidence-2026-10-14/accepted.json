@@ -1,0 +1,112 @@
+{
+  "at": "2026-10-14T17:03:58.834Z",
+  "status": "TEAM_HUB_NTGRE_CUTOVER_ACCEPTED_READY_FOR_PRODUCTION_RELEASE_REVIEW",
+  "account": "058264289478",
+  "region": "eu-north-1",
+  "identity": "arn:aws:iam::058264289478:user/RavenTest",
+  "authority": {
+    "mode": "TARGET_WRITER",
+    "epoch": 5,
+    "version": 5
+  },
+  "window": {
+    "start": "2026-10-14T15:04:08.026Z",
+    "end": "2026-10-14T17:34:08.026Z",
+    "minutes": 150,
+    "operator": "Ntgre (user)",
+    "responder": "Ntgre (user)",
+    "recoveryContact": "Ntgre (user)",
+    "attendance": "docs/architecture/team-hub-cursor-accepted-cutover-evidence-2026-10-14/attendance.json"
+  },
+  "frontend": {
+    "origin": "http://localhost:5174",
+    "epoch": 5,
+    "manifestSha256": "3c4a04c630636d11a3235314c87699aa406b2451fd15a29e1d7be1cd5ba01bdf",
+    "scope": "NTGRE_LOCALHOST_ONLY"
+  },
+  "proof": {
+    "generated": 12,
+    "operator": 35,
+    "ownedAbortPrerequisite": "FMNH2DH4K7JDGHG5",
+    "sharedCleanup": "Explicitly approved installed-policy/representative-proof alternative; no invented direct service-role receipt"
+  },
+  "personas": 5,
+  "mutations": 9,
+  "reads": 4,
+  "observation": {
+    "samples": 58,
+    "startedAt": "2026-10-14T16:14:55.385Z",
+    "finishedAt": "2026-10-14T16:45:15.315Z",
+    "preObservationInterval": {
+      "from": "2026-10-14T16:08:41.735Z",
+      "to": "2026-10-14T16:14:55.385Z",
+      "seconds": 373,
+      "claim": "Not counted as continuous safety observation; acceptance held pending full interval"
+    }
+  },
+  "integrity": {
+    "at": "2026-10-14T16:50:29.396Z",
+    "complete": true,
+    "authority": {
+      "mode": "TARGET_WRITER",
+      "epoch": 5,
+      "version": 5
+    },
+    "operational": 7,
+    "journal": 52,
+    "audits": 18,
+    "idempotency": 18,
+    "fixtureStatus": "INACTIVE",
+    "createReplayAddedRecords": 0,
+    "operations": [
+      "CREATE_TEAM",
+      "UPDATE_TEAM",
+      "SET_MANAGER",
+      "MANAGE_MEMBER",
+      "SET_ROSTER_SLOT",
+      "UPSERT_MY_CHAMPION",
+      "UPSERT_COACH_ASSESSMENT",
+      "SET_TEAM_PLAN",
+      "DELETE_MY_CHAMPION"
+    ],
+    "sources": [
+      {
+        "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "count": 0
+      },
+      {
+        "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "count": 0
+      },
+      {
+        "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "count": 0
+      },
+      {
+        "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "count": 0
+      }
+    ],
+    "canonicalDigest": "3f41fefb1d50a5e79cf97bd6e781bc74be2fa8fdcffb575bf84dafbd9e07f0be",
+    "rawDataPersisted": false
+  },
+  "protected": {
+    "legacy": 2621,
+    "functionDirective": 167,
+    "teamProduct": 48,
+    "teamSecurity": 7,
+    "coreProduct": 8,
+    "coreSecurity": 5,
+    "tournament": 11
+  },
+  "runtime": {
+    "read": "ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e",
+    "command": "da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e",
+    "product": "caa0a68384990438196ed7720f1a24062641e03220f6092c1b4a2340d2417241",
+    "security": "5cf68f36b3e4e3f95ba8a3cb1444eacc82e382ae214e0cee58d5382409974c23"
+  },
+  "productionChanges": 0,
+  "legacyRetired": false,
+  "permanentIamChanges": 0,
+  "report": "docs/architecture/team-hub-2b6-final-preflight-cutover-result-2026-10-14.md"
+}

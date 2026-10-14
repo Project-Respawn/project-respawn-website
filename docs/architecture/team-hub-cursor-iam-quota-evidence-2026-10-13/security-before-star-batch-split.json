@@ -1,0 +1,394 @@
+{
+  "at": "2026-10-13T21:27:32.102Z",
+  "awsWrites": 0,
+  "securitySha256": "5cf68f36b3e4e3f95ba8a3cb1444eacc82e382ae214e0cee58d5382409974c23",
+  "installed": [
+    {
+      "id": "ExecutionRole",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "cloudformation.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofExecutionBoundary",
+      "version": "v11",
+      "matchesAccepted": true,
+      "inlineNames": [
+        "ReadProofLifecycle"
+      ],
+      "attached": []
+    },
+    {
+      "id": "DeploymentCaller",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Deploy",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:user/RavenTest"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofPreparation",
+      "version": "v14",
+      "matchesAccepted": true,
+      "inlineNames": [],
+      "attached": [
+        {
+          "PolicyName": "ProjectRespawn-TeamHub-Ntgre-ReadProofPreparation",
+          "PolicyArn": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-ReadProofPreparation"
+        }
+      ]
+    }
+  ],
+  "analyzer": [
+    {
+      "id": "ExecutionRole",
+      "findings": []
+    },
+    {
+      "id": "ExecutionBoundary",
+      "findings": []
+    },
+    {
+      "id": "PreparationCaller",
+      "findings": []
+    }
+  ],
+  "comparisons": [
+    {
+      "name": "artifact-access",
+      "overgrant": false,
+      "results": [
+        {
+          "action": "s3:DeleteObject",
+          "resource": "arn:aws:s3:::${BucketName}/${KeyName}",
+          "decision": "explicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "s3:GetObject",
+          "resource": "arn:aws:s3:::${BucketName}/${KeyName}",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "s3:GetObjectVersion",
+          "resource": "arn:aws:s3:::${BucketName}/${KeyName}",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "s3:PutObject",
+          "resource": "arn:aws:s3:::${BucketName}/${KeyName}",
+          "decision": "explicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "PassRole-correct-service",
+      "overgrant": false,
+      "results": [
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:iam::${Account}:${ResourceType}/${ResourceName}",
+          "decision": "explicitDeny",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "PassRole-wrong-service",
+      "overgrant": false,
+      "results": [
+        {
+          "action": "iam:PassRole",
+          "resource": "arn:aws:iam::${Account}:${ResourceType}/${ResourceName}",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "lambda-lifecycle-isolation",
+      "overgrant": false,
+      "results": [
+        {
+          "action": "lambda:CreateFunction",
+          "resource": "arn:aws:lambda:${Region}:${Account}:${ResourceType}:${ResourceId}",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:DeleteFunction",
+          "resource": "arn:aws:lambda:${Region}:${Account}:${ResourceType}:${ResourceId}",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:GetFunction",
+          "resource": "arn:aws:lambda:${Region}:${Account}:${ResourceType}:${ResourceId}",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:GetFunctionConfiguration",
+          "resource": "arn:aws:lambda:${Region}:${Account}:${ResourceType}:${ResourceId}",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:UpdateFunctionCode",
+          "resource": "arn:aws:lambda:${Region}:${Account}:${ResourceType}:${ResourceId}",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "lambda:UpdateFunctionConfiguration",
+          "resource": "arn:aws:lambda:${Region}:${Account}:${ResourceType}:${ResourceId}",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "kms-correct-context",
+      "overgrant": false,
+      "results": [
+        {
+          "action": "kms:CreateGrant",
+          "resource": "arn:aws:kms:${Region}:${Account}:${ResourceType}/${Id}",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:Decrypt",
+          "resource": "arn:aws:kms:${Region}:${Account}:${ResourceType}/${Id}",
+          "decision": "explicitDeny",
+          "missing": [
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "kms:DescribeKey",
+          "resource": "arn:aws:kms:${Region}:${Account}:${ResourceType}/${Id}",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:Encrypt",
+          "resource": "arn:aws:kms:${Region}:${Account}:${ResourceType}/${Id}",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:GenerateDataKey",
+          "resource": "arn:aws:kms:${Region}:${Account}:${ResourceType}/${Id}",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:PutKeyPolicy",
+          "resource": "arn:aws:kms:${Region}:${Account}:${ResourceType}/${Id}",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:ScheduleKeyDeletion",
+          "resource": "arn:aws:kms:${Region}:${Account}:${ResourceType}/${Id}",
+          "decision": "explicitDeny",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "kms-wrong-secret",
+      "overgrant": false,
+      "results": [
+        {
+          "action": "kms:Decrypt",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:GenerateDataKey",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+          "decision": "explicitDeny",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "kms-wrong-service",
+      "overgrant": false,
+      "results": [
+        {
+          "action": "kms:Decrypt",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "kms:GenerateDataKey",
+          "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+          "decision": "explicitDeny",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "secret-scope",
+      "overgrant": false,
+      "results": [
+        {
+          "action": "secretsmanager:DescribeSecret",
+          "resource": "arn:aws:secretsmanager:${Region}:${Account}:secret:${SecretId}",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        },
+        {
+          "action": "secretsmanager:GetSecretValue",
+          "resource": "arn:aws:secretsmanager:${Region}:${Account}:secret:${SecretId}",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "secretsmanager:PutSecretValue",
+          "resource": "arn:aws:secretsmanager:${Region}:${Account}:secret:${SecretId}",
+          "decision": "implicitDeny",
+          "missing": [
+            "kms:ViaService",
+            "kms:CallerAccount",
+            "kms:EncryptionContext:SecretARN",
+            "iam:PassedToService"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "IAM-administration",
+      "overgrant": false,
+      "results": [
+        {
+          "action": "iam:AttachRolePolicy",
+          "resource": "arn:aws:iam::${Account}:${ResourceType}/${ResourceName}",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:CreatePolicyVersion",
+          "resource": "arn:aws:iam::${Account}:${ResourceType}/${ResourceName}",
+          "decision": "implicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:DeleteRolePermissionsBoundary",
+          "resource": "arn:aws:iam::${Account}:${ResourceType}/${ResourceName}",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:PutRolePermissionsBoundary",
+          "resource": "arn:aws:iam::${Account}:${ResourceType}/${ResourceName}",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "iam:SetDefaultPolicyVersion",
+          "resource": "arn:aws:iam::${Account}:${ResourceType}/${ResourceName}",
+          "decision": "implicitDeny",
+          "missing": []
+        }
+      ]
+    },
+    {
+      "name": "CloudFormation-isolation",
+      "overgrant": false,
+      "results": [
+        {
+          "action": "cloudformation:ExecuteChangeSet",
+          "resource": "arn:aws:cloudformation:${Region}:${Account}:${ResourceType}/${Id}",
+          "decision": "explicitDeny",
+          "missing": []
+        },
+        {
+          "action": "cloudformation:UpdateStack",
+          "resource": "arn:aws:cloudformation:${Region}:${Account}:${ResourceType}/${Id}",
+          "decision": "explicitDeny",
+          "missing": []
+        }
+      ]
+    }
+  ],
+  "controls": [],
+  "retries": [],
+  "complete": false,
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  }
+}

@@ -1,0 +1,768 @@
+{
+  "at": "2026-10-14T15:03:35.797Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "authorityBefore": {
+    "PK": {
+      "S": "CONTROL#AUTHORITY"
+    },
+    "changedAt": {
+      "S": "2026-10-13T20:09:48.029Z"
+    },
+    "changedBy": {
+      "S": "arn:aws:iam::058264289478:user/RavenTest"
+    },
+    "epoch": {
+      "N": "3"
+    },
+    "gateDigest": {
+      "S": "6f527a0c73577743c368a333c30436b669c6ec25a9e216c865c4d9a964785502"
+    },
+    "mode": {
+      "S": "LEGACY_WRITER"
+    },
+    "schemaVersion": {
+      "S": "team-hub-authority.v1"
+    },
+    "version": {
+      "N": "3"
+    },
+    "SK": {
+      "S": "STATE"
+    }
+  },
+  "tables": [
+    {
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "policy": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Sid": "TeamHubMigrationWriterFence",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": [
+              "dynamodb:PutItem",
+              "dynamodb:UpdateItem",
+              "dynamodb:DeleteItem",
+              "dynamodb:BatchWriteItem",
+              "dynamodb:PartiQLInsert",
+              "dynamodb:PartiQLUpdate",
+              "dynamodb:PartiQLDelete"
+            ],
+            "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE"
+          }
+        ]
+      },
+      "install": false
+    },
+    {
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "policy": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Sid": "TeamHubMigrationWriterFence",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": [
+              "dynamodb:PutItem",
+              "dynamodb:UpdateItem",
+              "dynamodb:DeleteItem",
+              "dynamodb:BatchWriteItem",
+              "dynamodb:PartiQLInsert",
+              "dynamodb:PartiQLUpdate",
+              "dynamodb:PartiQLDelete"
+            ],
+            "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE"
+          }
+        ]
+      },
+      "install": false
+    },
+    {
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "policy": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Sid": "TeamHubMigrationWriterFence",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": [
+              "dynamodb:PutItem",
+              "dynamodb:UpdateItem",
+              "dynamodb:DeleteItem",
+              "dynamodb:BatchWriteItem",
+              "dynamodb:PartiQLInsert",
+              "dynamodb:PartiQLUpdate",
+              "dynamodb:PartiQLDelete"
+            ],
+            "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE"
+          }
+        ]
+      },
+      "install": false
+    },
+    {
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "policy": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Sid": "TeamHubMigrationWriterFence",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": [
+              "dynamodb:PutItem",
+              "dynamodb:UpdateItem",
+              "dynamodb:DeleteItem",
+              "dynamodb:BatchWriteItem",
+              "dynamodb:PartiQLInsert",
+              "dynamodb:PartiQLUpdate",
+              "dynamodb:PartiQLDelete"
+            ],
+            "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE"
+          }
+        ]
+      },
+      "install": false
+    }
+  ],
+  "logo": {
+    "name": "amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+    "before": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Deny",
+          "Principal": {
+            "AWS": "*"
+          },
+          "Action": "s3:*",
+          "Resource": [
+            "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+            "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/*"
+          ],
+          "Condition": {
+            "Bool": {
+              "aws:SecureTransport": "false"
+            }
+          }
+        },
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "AWS": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3"
+          },
+          "Action": [
+            "s3:PutBucketPolicy",
+            "s3:GetBucket*",
+            "s3:List*",
+            "s3:DeleteObject*"
+          ],
+          "Resource": [
+            "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+            "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/*"
+          ]
+        }
+      ]
+    },
+    "after": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Deny",
+          "Principal": {
+            "AWS": "*"
+          },
+          "Action": "s3:*",
+          "Resource": [
+            "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+            "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/*"
+          ],
+          "Condition": {
+            "Bool": {
+              "aws:SecureTransport": "false"
+            }
+          }
+        },
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "AWS": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3"
+          },
+          "Action": [
+            "s3:PutBucketPolicy",
+            "s3:GetBucket*",
+            "s3:List*",
+            "s3:DeleteObject*"
+          ],
+          "Resource": [
+            "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+            "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/*"
+          ]
+        },
+        {
+          "Sid": "TeamHubMigrationLogoFence",
+          "Effect": "Deny",
+          "Principal": "*",
+          "Action": [
+            "s3:PutObject",
+            "s3:DeleteObject",
+            "s3:DeleteObjectVersion",
+            "s3:AbortMultipartUpload"
+          ],
+          "Resource": "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/*"
+        }
+      ]
+    }
+  },
+  "gateways": [
+    {
+      "api": "dxb2tdlulrch7hj2pts2mfijia",
+      "type": "Query",
+      "field": "readTeamHub",
+      "before": {
+        "typeName": "Query",
+        "fieldName": "readTeamHub",
+        "resolverArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/types/Query/resolvers/readTeamHub",
+        "requestMappingTemplate": "## [Start] Stash resolver specific context.. **\n$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"readTeamHub\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthauthenticatedU-U29LVCPfkFsl/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthunauthenticate-y8Sz5XK5OfBN/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"eu-north-1:a3621b12-4773-4295-b232-b55863c37fd3\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n{}\n## [End] Stash resolver specific context.. **",
+        "responseMappingTemplate": "$util.toJson($ctx.prev.result)",
+        "kind": "PIPELINE",
+        "pipelineConfig": {
+          "functions": [
+            "7hlakiy7fzhwhidtlxltmstq5i",
+            "lev4xkxdl5cszjd3xgyqs2yomm"
+          ]
+        },
+        "maxBatchSize": 0
+      },
+      "beforeSha256": "f90024ffeffc959a5faef7a0e892e4015207436e042bbd731022ec5d4ee484fb",
+      "frozenRequest": "$util.error(\"TEAM_HUB_MAINTENANCE\", \"TeamHubMigration\")",
+      "targetRequest": "$util.error(\"TEAM_HUB_DOMAIN_MOVED\", \"TeamHubMigration\")",
+      "preserve": [
+        "kind",
+        "pipelineConfig",
+        "responseMappingTemplate",
+        "cachingConfig",
+        "syncConfig",
+        "runtime",
+        "code"
+      ],
+      "install": false,
+      "actual": {
+        "typeName": "Query",
+        "fieldName": "readTeamHub",
+        "resolverArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/types/Query/resolvers/readTeamHub",
+        "requestMappingTemplate": "## [Start] Stash resolver specific context.. **\n$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"readTeamHub\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthauthenticatedU-U29LVCPfkFsl/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthunauthenticate-y8Sz5XK5OfBN/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"eu-north-1:a3621b12-4773-4295-b232-b55863c37fd3\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n{}\n## [End] Stash resolver specific context.. **",
+        "responseMappingTemplate": "$util.toJson($ctx.prev.result)",
+        "kind": "PIPELINE",
+        "pipelineConfig": {
+          "functions": [
+            "7hlakiy7fzhwhidtlxltmstq5i",
+            "lev4xkxdl5cszjd3xgyqs2yomm"
+          ]
+        },
+        "maxBatchSize": 0
+      }
+    },
+    {
+      "api": "dxb2tdlulrch7hj2pts2mfijia",
+      "type": "Mutation",
+      "field": "mutateTeamHub",
+      "before": {
+        "typeName": "Mutation",
+        "fieldName": "mutateTeamHub",
+        "resolverArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/types/Mutation/resolvers/mutateTeamHub",
+        "requestMappingTemplate": "## [Start] Stash resolver specific context.. **\n$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"mutateTeamHub\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthauthenticatedU-U29LVCPfkFsl/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthunauthenticate-y8Sz5XK5OfBN/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"eu-north-1:a3621b12-4773-4295-b232-b55863c37fd3\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n{}\n## [End] Stash resolver specific context.. **",
+        "responseMappingTemplate": "$util.toJson($ctx.prev.result)",
+        "kind": "PIPELINE",
+        "pipelineConfig": {
+          "functions": [
+            "4yb6cg662ralnnxiwlrwrb5vqa",
+            "lev4xkxdl5cszjd3xgyqs2yomm"
+          ]
+        },
+        "maxBatchSize": 0
+      },
+      "beforeSha256": "3c1f93e32397ec85fd26e9f20b19f23db4a6b577d7149caf8acf188cd48d24fd",
+      "frozenRequest": "$util.error(\"TEAM_HUB_MAINTENANCE\", \"TeamHubMigration\")",
+      "targetRequest": "$util.error(\"TEAM_HUB_DOMAIN_MOVED\", \"TeamHubMigration\")",
+      "preserve": [
+        "kind",
+        "pipelineConfig",
+        "responseMappingTemplate",
+        "cachingConfig",
+        "syncConfig",
+        "runtime",
+        "code"
+      ],
+      "install": false,
+      "actual": {
+        "typeName": "Mutation",
+        "fieldName": "mutateTeamHub",
+        "resolverArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/types/Mutation/resolvers/mutateTeamHub",
+        "requestMappingTemplate": "## [Start] Stash resolver specific context.. **\n$util.qr($ctx.stash.put(\"typeName\", \"Mutation\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"mutateTeamHub\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthauthenticatedU-U29LVCPfkFsl/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:aws:sts::058264289478:assumed-role/amplify-projectrespawnweb-amplifyAuthunauthenticate-y8Sz5XK5OfBN/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"eu-north-1:a3621b12-4773-4295-b232-b55863c37fd3\"))\n$util.qr($ctx.stash.put(\"adminRoles\", []))\n{}\n## [End] Stash resolver specific context.. **",
+        "responseMappingTemplate": "$util.toJson($ctx.prev.result)",
+        "kind": "PIPELINE",
+        "pipelineConfig": {
+          "functions": [
+            "4yb6cg662ralnnxiwlrwrb5vqa",
+            "lev4xkxdl5cszjd3xgyqs2yomm"
+          ]
+        },
+        "maxBatchSize": 0
+      }
+    }
+  ],
+  "trail": {
+    "IsLogging": true,
+    "LatestDeliveryTime": "2026-10-13T21:45:14.280000+01:00",
+    "StartLoggingTime": "2026-10-13T16:57:42.096000+01:00",
+    "LatestDigestDeliveryTime": "2026-10-14T15:16:51.445000+01:00",
+    "LatestDeliveryAttemptTime": "2026-10-13T20:45:14Z",
+    "LatestNotificationAttemptTime": "",
+    "LatestNotificationAttemptSucceeded": "",
+    "LatestDeliveryAttemptSucceeded": "2026-10-13T20:45:14Z",
+    "TimeLoggingStarted": "2026-10-13T15:57:42Z",
+    "TimeLoggingStopped": ""
+  },
+  "selectors": {
+    "TrailARN": "arn:aws:cloudtrail:eu-north-1:058264289478:trail/ProjectRespawn-TeamHub-Ntgre-LogoQuarantineAudit",
+    "AdvancedEventSelectors": [
+      {
+        "Name": "OnlyOwnedLogoWrites",
+        "FieldSelectors": [
+          {
+            "Field": "eventCategory",
+            "Equals": [
+              "Data"
+            ]
+          },
+          {
+            "Field": "resources.ARN",
+            "StartsWith": [
+              "arn:aws:s3:::amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw/team-logos/",
+              "arn:aws:s3:::respawn-teamhub-fence-race-058264289478-20261012-5dc9b348/team-logos/"
+            ]
+          },
+          {
+            "Field": "readOnly",
+            "Equals": [
+              "false"
+            ]
+          },
+          {
+            "Field": "resources.type",
+            "Equals": [
+              "AWS::S3::Object"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "manifestSha256": "e3e5f5d7877830cfaa258e135beca78d369da337fdc88b44f8560d3d599dbbac",
+  "backend": {
+    "schemaVersion": "team-hub-accepted-dark-deployment.v1",
+    "account": "058264289478",
+    "region": "eu-north-1",
+    "product": "ProjectRespawn-TeamHub-Ntgre",
+    "security": "ProjectRespawn-TeamHub-Ntgre-ReadProofSecurity",
+    "api": "t54b88casf",
+    "securitySha256": "5cf68f36b3e4e3f95ba8a3cb1444eacc82e382ae214e0cee58d5382409974c23",
+    "productSha256": "caa0a68384990438196ed7720f1a24062641e03220f6092c1b4a2340d2417241",
+    "readZipSha256": "ab6edf023d4091f87c56de7f4d5520cda580630d5e147e9c49c0a09a135c571e",
+    "commandZipSha256": "da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e",
+    "functions": [
+      {
+        "kind": "Read",
+        "configuration": {
+          "FunctionName": "ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "Runtime": "nodejs22.x",
+          "Role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "Handler": "index.handler",
+          "CodeSize": 1969710,
+          "Description": "",
+          "Timeout": 15,
+          "MemorySize": 256,
+          "LastModified": "2026-10-13T21:58:06.000+0000",
+          "CodeSha256": "q27fAj1Akfh8Vt5/TVUgzaWAYw1eFH6cScCgmhNcVx4=",
+          "Version": "$LATEST",
+          "VpcConfig": {
+            "SubnetIds": [],
+            "SecurityGroupIds": [],
+            "VpcId": "",
+            "Ipv6AllowedForDualStack": false
+          },
+          "Environment": {
+            "Variables": {
+              "TEAM_HUB_RUNTIME": "read",
+              "TEAM_HUB_AUTHORITY": "LEGACY_WRITER",
+              "TEAM_CURSOR_SECRET_ARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "TEAM_HUB_STAGE": "PRE_CUTOVER",
+              "CORE_CONTRACT_ARN": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EXPECTED_ISSUER": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE",
+              "TEAM_HUB_BUSINESS_RUNTIME": "AUTHORITY_GATED_V1",
+              "TEAM_HUB_NORMAL_WRITES": "DISABLED",
+              "TEAM_HUB_VERIFICATION": "{\"mode\":\"DISABLED\",\"authority\":\"LEGACY_WRITER\"}",
+              "EXPECTED_POOL_ID": "eu-north-1_n24iLL7QE",
+              "CORE_ENVIRONMENT": "{\"contractVersion\":\"environment.v1\",\"environment\":\"Ntgre\",\"account\":\"058264289478\",\"region\":\"eu-north-1\",\"poolId\":\"eu-north-1_n24iLL7QE\",\"clientId\":\"1iq7ovjaf7d16imdvbqgfgvf86\",\"issuer\":\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\"}",
+              "EXPECTED_CLIENT_ID": "1iq7ovjaf7d16imdvbqgfgvf86"
+            }
+          },
+          "TracingConfig": {
+            "Mode": "PassThrough"
+          },
+          "RevisionId": "509b5e8f-67ad-46f5-be9d-88793cd4ff44",
+          "State": "Active",
+          "LastUpdateStatus": "Successful",
+          "PackageType": "Zip",
+          "Architectures": [
+            "arm64"
+          ],
+          "EphemeralStorage": {
+            "Size": 512
+          },
+          "SnapStart": {
+            "ApplyOn": "None",
+            "OptimizationStatus": "Off"
+          },
+          "RuntimeVersionConfig": {
+            "RuntimeVersionArn": "arn:aws:lambda:eu-north-1::runtime:775dab0d220a0b97f3ec34fe1692d7a07b5d13049153b00f03204c9543bd69e4"
+          },
+          "LoggingConfig": {
+            "LogFormat": "JSON",
+            "ApplicationLogLevel": "INFO",
+            "SystemLogLevel": "INFO",
+            "LogGroup": "/project-respawn/Ntgre/team-hub/parity-read"
+          }
+        },
+        "drift": "IN_SYNC"
+      },
+      {
+        "kind": "Command",
+        "configuration": {
+          "FunctionName": "ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+          "FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+          "Runtime": "nodejs22.x",
+          "Role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+          "Handler": "index.handler",
+          "CodeSize": 1969650,
+          "Description": "",
+          "Timeout": 15,
+          "MemorySize": 256,
+          "LastModified": "2026-10-12T15:18:18.000+0000",
+          "CodeSha256": "2oyiXo3iNWyd85QMjeUqHVreczBCX4ifw8PvmVj9Gz4=",
+          "Version": "$LATEST",
+          "VpcConfig": {
+            "SubnetIds": [],
+            "SecurityGroupIds": [],
+            "VpcId": "",
+            "Ipv6AllowedForDualStack": false
+          },
+          "Environment": {
+            "Variables": {
+              "TEAM_HUB_RUNTIME": "command",
+              "TEAM_HUB_AUTHORITY": "LEGACY_WRITER",
+              "TEAM_HUB_STAGE": "PRE_CUTOVER",
+              "CORE_CONTRACT_ARN": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EXPECTED_ISSUER": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE",
+              "TEAM_HUB_BUSINESS_RUNTIME": "AUTHORITY_GATED_V1",
+              "TEAM_HUB_NORMAL_WRITES": "DISABLED",
+              "TEAM_HUB_VERIFICATION": "{\"mode\":\"DISABLED\",\"authority\":\"LEGACY_WRITER\"}",
+              "EXPECTED_POOL_ID": "eu-north-1_n24iLL7QE",
+              "CORE_ENVIRONMENT": "{\"contractVersion\":\"environment.v1\",\"environment\":\"Ntgre\",\"account\":\"058264289478\",\"region\":\"eu-north-1\",\"poolId\":\"eu-north-1_n24iLL7QE\",\"clientId\":\"1iq7ovjaf7d16imdvbqgfgvf86\",\"issuer\":\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_n24iLL7QE\"}",
+              "EXPECTED_CLIENT_ID": "1iq7ovjaf7d16imdvbqgfgvf86"
+            }
+          },
+          "TracingConfig": {
+            "Mode": "PassThrough"
+          },
+          "RevisionId": "554a40af-ffff-4b5c-bcbd-8b023ea0bf44",
+          "State": "Active",
+          "LastUpdateStatus": "Successful",
+          "PackageType": "Zip",
+          "Architectures": [
+            "arm64"
+          ],
+          "EphemeralStorage": {
+            "Size": 512
+          },
+          "SnapStart": {
+            "ApplyOn": "None",
+            "OptimizationStatus": "Off"
+          },
+          "RuntimeVersionConfig": {
+            "RuntimeVersionArn": "arn:aws:lambda:eu-north-1::runtime:775dab0d220a0b97f3ec34fe1692d7a07b5d13049153b00f03204c9543bd69e4"
+          },
+          "LoggingConfig": {
+            "LogFormat": "JSON",
+            "ApplicationLogLevel": "INFO",
+            "SystemLogLevel": "INFO",
+            "LogGroup": "/project-respawn/Ntgre/team-hub/parity-command"
+          }
+        },
+        "drift": "IN_SYNC"
+      }
+    ],
+    "authority": {
+      "PK": {
+        "S": "CONTROL#AUTHORITY"
+      },
+      "changedAt": {
+        "S": "2026-10-13T20:09:48.029Z"
+      },
+      "changedBy": {
+        "S": "arn:aws:iam::058264289478:user/RavenTest"
+      },
+      "epoch": {
+        "N": "3"
+      },
+      "gateDigest": {
+        "S": "6f527a0c73577743c368a333c30436b669c6ec25a9e216c865c4d9a964785502"
+      },
+      "mode": {
+        "S": "LEGACY_WRITER"
+      },
+      "schemaVersion": {
+        "S": "team-hub-authority.v1"
+      },
+      "version": {
+        "N": "3"
+      },
+      "SK": {
+        "S": "STATE"
+      }
+    },
+    "sourceFenceInstalled": false,
+    "frontend": "LEGACY",
+    "resources": {
+      "legacy": 2621,
+      "functionDirective": 167,
+      "teamProduct": 48,
+      "teamSecurity": 7,
+      "coreProduct": 8,
+      "coreSecurity": 5,
+      "tournament": 11
+    },
+    "businessDataChanges": 0,
+    "productionChanges": 0,
+    "existingEpoch5FrontendPinsPreserved": true,
+    "rollback": {
+      "templateSha256": "a48e15fa6dc9af763494ffbc9f7ee5a502c91b340351cfd550d39d442476bbad",
+      "templateKey": "team-hub/cursor-runtime/rollback-a48e15fa6dc9af763494ffbc9f7ee5a502c91b340351cfd550d39d442476bbad.template.json",
+      "templateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/team-hub/cursor-runtime/rollback-a48e15fa6dc9af763494ffbc9f7ee5a502c91b340351cfd550d39d442476bbad.template.json",
+      "product": "docs/architecture/team-hub-cursor-security-evidence-2026-10-08/product.template.json",
+      "security": "docs/architecture/team-hub-cursor-runtime-correction-evidence-2026-10-13/previous/security.template.json",
+      "readRuntime": ".tmp/team-hub-business-runtime/runtime.zip",
+      "readCode": {
+        "S3Bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+        "S3Key": "team-hub/business/da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e.zip"
+      },
+      "commandCode": {
+        "S3Bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+        "S3Key": "team-hub/business/da8ca25e8de2356c9df3940c8de52a1d5ade7330425f889fc3c3ef9958fd1b3e.zip"
+      }
+    },
+    "acceptedAt": "2026-10-13T22:27:14.890Z"
+  },
+  "approvals": {
+    "schemaVersion": "team-hub-maintenance-authorization.v1",
+    "status": "APPROVALS_RECORDED_AWAITING_ATTENDED_WINDOW_AND_PREFLIGHT",
+    "valid": false,
+    "account": "058264289478",
+    "region": "eu-north-1",
+    "environment": "Ntgre",
+    "governance": {
+      "reviewedDocuments": [
+        "docs/architecture/independent-domain-deployment-callers.md",
+        "docs/architecture/domain-deployment-runtime-security.md",
+        "docs/architecture/domain-migration-template.md",
+        "docs/architecture/team-hub-2b6-original-principal-security-decision.md"
+      ],
+      "finding": "No reserved or independent-human approval rule found in available repository governance; current user accountable-owner declaration establishes repository-scoped dual-role designation",
+      "dualRoleAuthorizationVerified": true,
+      "authorityBasis": "docs/architecture/team-hub-2b6-governance-designation.md",
+      "verificationScope": "Available repository records plus current explicit user declaration; no undisclosed corporate policy or Organizations authority certified"
+    },
+    "securityOwner": {
+      "name": "Ntgre (user; requesting founder/accountable infrastructure administrator)",
+      "exactApprovalWording": "I approve the original-principal alternative proof criterion in this report for account 058264289478, eu-north-1, Ntgre only. I accept that original shared/cleanup service-role direct-write receipts are unavailable and are not replaced by helper or simulator receipts. I require exact installed-policy review, original AppSync/operator service-reaching proof, no same-role helper or destructive cleanup, exclusive control-plane custody and abort on policy drift. I accept late physical S3 completion and asynchronous/incomplete audit-history risk under the specified non-authoritative quarantine model, with branding disabled and unknown objects preserved. This decision grants no permission to broaden IAM, remove source fences or publish to Master/production.",
+      "accepted": true,
+      "approvalTimestamp": null,
+      "approvalRecordedAt": "2026-10-13T19:29:42Z"
+    },
+    "maintenanceOperator": {
+      "name": "Ntgre (user; requesting founder/accountable infrastructure administrator)",
+      "exactApprovalWording": "After the named security owner records the preceding decision, I authorize the existing pinned Ntgre maintenance sequence and its explicit abort/rollback gates: fresh preflight; conditional LEGACY_WRITER epoch 1 to FROZEN epoch 2; exact source-fence installation and original AppSync/operator proof; source/target reconciliation and quarantine controls; conditional TARGET_WRITER epoch 3; real business/persona acceptance; reversible Ntgre localhost frontend activation; monitored observation and state-aware recovery. I accept custody, reconciliation, incident response and retained audit costs. I authorize no unsafe original-role helper, destructive cleanup, permanent IAM broadening, Master/production publication or Legacy retirement. Any failed gate stops progression.",
+      "accepted": true,
+      "approvalTimestamp": null,
+      "approvalRecordedAt": "2026-10-13T19:29:42Z"
+    },
+    "requiredAcknowledgements": [
+      "Retained S3 audit resources remain active",
+      "Actual installed-fence denial checks remain mandatory",
+      "150-minute attended maintenance; no concurrent deployments",
+      "No Master/production publication or Legacy retirement"
+    ],
+    "artifactReferences": [
+      {
+        "path": "docs/architecture/team-hub-s3-authority-evidence-2026-10-13/audit.PROPOSED.template.json",
+        "sha256": "37a70eff1cd45016d4306f31eb723d6cdd7c59536ad05ebb154d9c37a801ebe1"
+      },
+      {
+        "path": "docs/architecture/team-hub-s3-authority-evidence-2026-10-13/restricted-template.json",
+        "sha256": "02bcda3fa5616d0425a151f20e6e08bb47aa1feaed824746479c2ec01f1fd043"
+      },
+      {
+        "path": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/s3-inflight.PROPOSED.template.json",
+        "sha256": "85f7b289c31dbff4f260be8999197a7b19ffa3b3504c4cb22dad539486d4791e"
+      },
+      {
+        "path": "docs/architecture/team-hub-s3-authority-evidence-2026-10-13/restricted-policy.json",
+        "sha256": "6b04b81394254fd865a84106dcd1e2994c19127a059d4b42bbdbb8f34c139c0f"
+      },
+      {
+        "path": "docs/architecture/team-hub-s3-authority-evidence-2026-10-13/restricted-trust.json",
+        "sha256": "b9cc71a38c80e687ad1946218fb689594cfb66a3deb9437944c40e670a4a8633"
+      },
+      {
+        "path": "docs/architecture/team-hub-s3-authority-evidence-2026-10-13/restricted-manifest.json",
+        "sha256": "6733ad6c27c8719374917d7c40bc05886843d94f4247d0cc0b78c32ac58c896a"
+      },
+      {
+        "path": "docs/architecture/team-hub-s3-authority-evidence-2026-10-13/logical-race-plan.json",
+        "sha256": "1a225c9fa906719ef5959b46595b4701977531db41c1ce34d0e638ed9cc72cdf"
+      },
+      {
+        "path": "docs/architecture/team-hub-s3-authority-evidence-2026-10-13/quarantine-protocol.json",
+        "sha256": "5b63f2fe216e3927366fdce6bd8dde5288e2b85f0e1016244c6ad9b3def9085b"
+      },
+      {
+        "path": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/s3-inflight-review-plan.json",
+        "sha256": "ba1d889f1d6ac0cb3d4f46e1c8aa75cddc28e4077cbdc2d1ba1c40790e35a136"
+      },
+      {
+        "path": ".tmp/team-hub-s3-authority/restricted-probe-78b0259181e985f2488e379d210374834a0725e60bffe16b10a884f5839c9364.zip",
+        "sha256": "78b0259181e985f2488e379d210374834a0725e60bffe16b10a884f5839c9364"
+      },
+      {
+        "path": ".tmp/team-hub-s3-verification/race-3008109404da2c054828e2492bf92c069110a9f505ec0406577c2cf2a96f468d.cjs",
+        "sha256": "3008109404da2c054828e2492bf92c069110a9f505ec0406577c2cf2a96f468d"
+      },
+      {
+        "path": "scripts/team-hub-describekey-execution/aws.mjs",
+        "sha256": "4ef4830d5bc3303e1a647a0c1f9a62d73fdcc1e5a11b356afac266a5f693a3fa"
+      },
+      {
+        "path": "scripts/team-hub-maintenance-preparation/quarantine-model.mjs",
+        "sha256": "a4e050f7bce493b6dab4d2dd85f3ce89b12c99e547adc3ee46631deb9cd4bf78"
+      },
+      {
+        "path": "scripts/team-hub-s3-verification/scope.mjs",
+        "sha256": "bf287e40c963904029afe9a9b98facf1d698e1b76cf10184f10663bf6340d2f7"
+      },
+      {
+        "path": "scripts/team-hub-s3-verification/race.mjs",
+        "sha256": "ff066d3a3d2b0834a24edad12d59d1939fffc8998eb6cf8003c8b26f9ca410aa"
+      },
+      {
+        "path": ".tmp/team-hub-s3-verification/audit-31a202527912991d39f8c5a8c7107f52bc24882823969e93396051ef36d75dd2.cjs",
+        "sha256": "31a202527912991d39f8c5a8c7107f52bc24882823969e93396051ef36d75dd2"
+      },
+      {
+        "path": "scripts/team-hub-s3-verification/audit.mjs",
+        "sha256": "22f76e0f6ee3ad2d29519d1e6edef005f07315322c92017fdc2dc7736b1f5a0a"
+      },
+      {
+        "path": "docs/architecture/team-hub-s3-verification-evidence-2026-10-13/audit-change-set-input.json",
+        "sha256": "17666ac2f74ec93b8c6960f42f9c69a83739722956fc0db755e28a3eb9eb48db"
+      },
+      {
+        "path": "docs/architecture/team-hub-s3-verification-evidence-2026-10-13/helper-change-set-input.json",
+        "sha256": "41dc8b87cfda2b273e71536c4565a4f9dfe446009a36ff85db4f65667e36c67d"
+      },
+      {
+        "path": "docs/architecture/team-hub-s3-verification-evidence-2026-10-13/race-change-set-input.json",
+        "sha256": "b88230d061e6b24ac05d39038b5e1a8e357be72d97a0ecfb74fab1e518de95ee"
+      },
+      {
+        "path": "docs/architecture/team-hub-s3-verification-evidence-2026-10-13/approval-proposal.json",
+        "sha256": "212172889af472bd3842245ce326048bdad4c66701e3f7b18b1229cbc908f558"
+      }
+    ],
+    "window": {
+      "start": null,
+      "end": null,
+      "timezone": null,
+      "durationMinutes": 150,
+      "continuousAttendanceConfirmed": true,
+      "scheduling": "User confirmed start after fresh preflight passes; actual UTC start/end to be recorded at maintenance entry"
+    },
+    "monitoringResponder": "Ntgre (user)",
+    "recoveryContact": "Ntgre (user)",
+    "rollbackAvailabilityConfirmed": true,
+    "stopConditions": [
+      "Unexpected artifact, identity, configuration, policy or resource drift",
+      "Failed installed original-principal fence proof",
+      "Nonempty unexpected source state or incomplete reconciliation",
+      "Unexpected business write, privacy failure or stale epoch acceptance",
+      "Lost monitoring or exclusive custody",
+      "Any failed mandatory acceptance gate"
+    ],
+    "awsWrites": 0,
+    "approvalEvidence": {
+      "exactUserStatement": "I explicitly approve both statements as Security Owner and Maintenance Operator.",
+      "recordedAt": "2026-10-13T19:29:42Z",
+      "timestampMeaning": "Actual recording time; user message timestamp unavailable, not an invented signature time"
+    },
+    "concurrentDeploymentsProhibited": true,
+    "attendanceEvidence": "Yes—start after preflight passes; I’m available for 150 minutes"
+  },
+  "amendment": {
+    "candidateSha256": "58a168cf2f4e370e7b5ceb7044c6e957bd30085212efcac179caecc45b11f895",
+    "explicitUserStatement": "I explicitly approve the amendment for candidate 58a168cf2f4e370e7b5ceb7044c6e957bd30085212efcac179caecc45b11f895.",
+    "exactAmendmentWording": "As the recorded Security Owner and Maintenance Operator, I approve the pinned post-abort correction package for account 058264289478, eu-north-1, Ntgre only. I authorize the exact two-owned-zero-part multipart diagnostic on the reserved source key, exact-key Abort-only diagnostic deny and restoration/owned terminal cleanup before maintenance while Legacy 3/3 remains authoritative and the full writer fence is absent. I accept the resulting original-principal/source-bucket Abort denial together with the required final full-prefix policy verification and other actual FROZEN denial proofs; I do not treat it as an Abort receipt against the final full-prefix policy. I approve conditional 3/3 → 4/4 → 5/5 execution and the new activation/rollback pins, with existing live acceptance, custody, reconciliation, monitoring and recovery gates unchanged. No parts/object creation, fence weakening, permanent IAM broadening, Master/production publication or retirement is authorized. Any ambiguity, ownership/policy mismatch, incomplete cleanup or missing evidence stops progression.",
+    "accepted": true,
+    "approvalRecordedAt": "2026-10-13T20:37:03Z",
+    "timestampMeaning": "Actual recording time; user-message signature timestamp unavailable",
+    "securityOwner": "Ntgre (user)",
+    "maintenanceOperator": "Ntgre (user)",
+    "taskScope": "Owned multipart diagnostic only; no full maintenance execution"
+  },
+  "inventory": {
+    "sources": [
+      {
+        "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "count": 0,
+        "digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "count": 0,
+        "digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "count": 0,
+        "digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+        "count": 0,
+        "digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    ],
+    "operational": 0,
+    "journal": 16,
+    "journalDigest": "e6fdfdb0e0b985d1b0da65ff5e5d1857f6f71f11e14575d851a5b696a508457c",
+    "logos": 0,
+    "pendingUploads": 0
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "prepared": true,
+  "deployed": false,
+  "resources": 2,
+  "permanentPolicyChanges": 0,
+  "runtime": {
+    "path": ".tmp/team-hub-s3-authority/restricted-probe-78b0259181e985f2488e379d210374834a0725e60bffe16b10a884f5839c9364.zip",
+    "sha256": "78b0259181e985f2488e379d210374834a0725e60bffe16b10a884f5839c9364"
+  },
+  "artifacts": [
+    {
+      "path": "docs/architecture/team-hub-s3-authority-evidence-2026-10-13/restricted-policy.json",
+      "sha256": "6b04b81394254fd865a84106dcd1e2994c19127a059d4b42bbdbb8f34c139c0f"
+    },
+    {
+      "path": "docs/architecture/team-hub-s3-authority-evidence-2026-10-13/restricted-template.json",
+      "sha256": "02bcda3fa5616d0425a151f20e6e08bb47aa1feaed824746479c2ec01f1fd043"
+    },
+    {
+      "path": "docs/architecture/team-hub-s3-authority-evidence-2026-10-13/restricted-trust.json",
+      "sha256": "b9cc71a38c80e687ad1946218fb689594cfb66a3deb9437944c40e670a4a8633"
+    }
+  ],
+  "sourceHashes": [
+    {
+      "path": "scripts/team-hub-maintenance-preparation/probe-requests.mjs",
+      "sha256": "a0667ec63b1a9aa13f96df12768ffd0a34f20034404145388acdf7656dec15ba"
+    },
+    {
+      "path": "scripts/team-hub-maintenance-preparation/restricted-probe.mjs",
+      "sha256": "062b8e862579c0d66d13865d528bd0c3832b177b8734aecff01ca7d1bda70338"
+    }
+  ],
+  "invocation": {
+    "allowedOwner": "arn:aws:iam::058264289478:user/RavenTest",
+    "input": {},
+    "functionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+    "resourcePermissionResources": 0,
+    "publicUrl": false,
+    "eventSources": false,
+    "requirements": [
+      "Verify actual owner IAM permits only reviewed actions for this execution",
+      "Verify normal Team callers cannot PassRole/create/update/invoke helper",
+      "No AddPermission, alias, public URL or event source; installed role/trust/ZIP equivalence",
+      "Normal caller policy is not changed; account-wide privileged custody remains mandatory"
+    ]
+  },
+  "cleanup": [
+    "Wait for terminal invocation and no in-flight diagnostics",
+    "Delete only exact temporary Lambda and role/owned inline policy",
+    "Delete only uploaded owned artifact version; preserve existing log group",
+    "Verify role/function absence and unchanged source/target business data"
+  ],
+  "originalPrincipalProof": false,
+  "awsWrites": 0
+}

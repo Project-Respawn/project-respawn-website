@@ -1,0 +1,292 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "PROPOSAL ONLY: isolated Team Hub proof; no live authority writes",
+  "Parameters": {
+    "NotBefore": {
+      "Type": "String"
+    },
+    "ExpiresAt": {
+      "Type": "String"
+    }
+  },
+  "Resources": {
+    "IsolatedOperational": {
+      "Type": "AWS::DynamoDB::Table",
+      "DeletionPolicy": "Delete",
+      "UpdateReplacePolicy": "Delete",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "PK",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "SK",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "SubjectPK",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "SubjectSK",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "StatusPK",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "StatusSK",
+            "AttributeType": "S"
+          }
+        ],
+        "BillingMode": "PAY_PER_REQUEST",
+        "DeletionProtectionEnabled": false,
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "BySubject",
+            "KeySchema": [
+              {
+                "AttributeName": "SubjectPK",
+                "KeyType": "HASH"
+              },
+              {
+                "AttributeName": "SubjectSK",
+                "KeyType": "RANGE"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "KEYS_ONLY"
+            }
+          },
+          {
+            "IndexName": "ByTeamStatus",
+            "KeySchema": [
+              {
+                "AttributeName": "StatusPK",
+                "KeyType": "HASH"
+              },
+              {
+                "AttributeName": "StatusSK",
+                "KeyType": "RANGE"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "KEYS_ONLY"
+            }
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "PK",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "SK",
+            "KeyType": "RANGE"
+          }
+        ],
+        "PointInTimeRecoverySpecification": {
+          "PointInTimeRecoveryEnabled": false
+        },
+        "SSESpecification": {
+          "SSEEnabled": false
+        },
+        "TableName": "ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+        "Tags": [
+          {
+            "Key": "Owner",
+            "Value": "TeamHubIsolatedVerification"
+          },
+          {
+            "Key": "RunId",
+            "Value": "20261012v1"
+          },
+          {
+            "Key": "Environment",
+            "Value": "Ntgre"
+          }
+        ]
+      }
+    },
+    "IsolatedJournal": {
+      "Type": "AWS::DynamoDB::Table",
+      "DeletionPolicy": "Delete",
+      "UpdateReplacePolicy": "Delete",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "PK",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "SK",
+            "AttributeType": "S"
+          }
+        ],
+        "BillingMode": "PAY_PER_REQUEST",
+        "DeletionProtectionEnabled": false,
+        "KeySchema": [
+          {
+            "AttributeName": "PK",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "SK",
+            "KeyType": "RANGE"
+          }
+        ],
+        "PointInTimeRecoverySpecification": {
+          "PointInTimeRecoveryEnabled": false
+        },
+        "SSESpecification": {
+          "SSEEnabled": false
+        },
+        "TableName": "ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Journal",
+        "Tags": [
+          {
+            "Key": "Owner",
+            "Value": "TeamHubIsolatedVerification"
+          },
+          {
+            "Key": "RunId",
+            "Value": "20261012v1"
+          },
+          {
+            "Key": "Environment",
+            "Value": "Ntgre"
+          }
+        ]
+      }
+    },
+    "IsolatedRunner": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": "ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1",
+        "MaxSessionDuration": 3600,
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::058264289478:user/RavenTest"
+              },
+              "Action": "sts:AssumeRole",
+              "Condition": {
+                "StringEquals": {
+                  "sts:RoleSessionName": "verification"
+                }
+              }
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": "ExactIsolatedTablesOnly",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Deny",
+                  "NotAction": [
+                    "dynamodb:GetItem",
+                    "dynamodb:Query",
+                    "dynamodb:Scan",
+                    "dynamodb:PutItem",
+                    "dynamodb:DeleteItem",
+                    "dynamodb:ConditionCheckItem"
+                  ],
+                  "Resource": "*"
+                },
+                {
+                  "Effect": "Deny",
+                  "Action": "dynamodb:*",
+                  "NotResource": [
+                    "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+                    "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Journal",
+                    "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational/index/BySubject",
+                    "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational/index/ByTeamStatus"
+                  ]
+                },
+                {
+                  "Effect": "Deny",
+                  "Action": "dynamodb:*",
+                  "Resource": "*",
+                  "Condition": {
+                    "StringNotEquals": {
+                      "aws:RequestedRegion": "eu-north-1"
+                    }
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:GetItem",
+                    "dynamodb:Query",
+                    "dynamodb:Scan",
+                    "dynamodb:PutItem",
+                    "dynamodb:DeleteItem",
+                    "dynamodb:ConditionCheckItem"
+                  ],
+                  "Resource": [
+                    "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+                    "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Journal",
+                    "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational/index/BySubject",
+                    "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational/index/ByTeamStatus"
+                  ],
+                  "Condition": {
+                    "DateGreaterThanEquals": {
+                      "aws:CurrentTime": {
+                        "Ref": "NotBefore"
+                      }
+                    },
+                    "DateLessThan": {
+                      "aws:CurrentTime": {
+                        "Ref": "ExpiresAt"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "CursorProbe": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "FunctionName": "ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-CursorProbe",
+        "Runtime": "nodejs22.x",
+        "Handler": "index.handler",
+        "Architectures": [
+          "arm64"
+        ],
+        "MemorySize": 128,
+        "Timeout": 30,
+        "ReservedConcurrentExecutions": 1,
+        "Role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+          "S3Key": "team-hub/isolated/a072a13df0aa7e4299fb8f01a8e77513e8f9bcf6ae37c4867a933b1f09e9d1e4.zip"
+        },
+        "LoggingConfig": {
+          "LogFormat": "JSON",
+          "LogGroup": "/project-respawn/Ntgre/team-hub/parity-read"
+        },
+        "Tags": [
+          {
+            "Key": "Owner",
+            "Value": "TeamHubIsolatedVerification"
+          },
+          {
+            "Key": "RunId",
+            "Value": "20261012v1"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "at": "2026-10-12T21:01:43.992Z",
+  "deployed": false,
+  "checks": [
+    {
+      "principal": "arn:aws:iam::058264289478:user/RavenTest",
+      "action": "iam:PassRole",
+      "resource": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "decision": "allowed"
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:user/RavenTest",
+      "action": "iam:PassRole",
+      "resource": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3",
+      "decision": "allowed"
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "action": "iam:PassRole",
+      "resource": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-myFunctionrebuildlambdaSe-mwrta80Al783",
+      "decision": "explicitDeny"
+    },
+    {
+      "principal": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ReadProofExecution",
+      "action": "iam:PassRole",
+      "resource": "arn:aws:iam::058264289478:role/amplify-projectrespawnweb-CustomS3AutoDeleteObjects-LxFoKPsKh5l3",
+      "decision": "explicitDeny"
+    }
+  ],
+  "awsWrites": 0,
+  "template": {
+    "Parameters": [],
+    "Description": "PROPOSED fixed Ntgre source-fence proof helpers; no runtime IAM changes",
+    "$metadata": {
+      "httpStatusCode": 200,
+      "requestId": "fbea2e55-ee2a-46c5-9bfd-d1af5e3564b4",
+      "attempts": 1,
+      "totalRetryDelay": 0
+    }
+  },
+  "artifactBucketOwnerVerified": true,
+  "existingSecurityOperator": "RavenTest retains existing broad operator permissions; this review grants none and does not claim an IAM-enforced narrow session. Exact candidate/action scope and custody require separate authorization.",
+  "roleReuseRisk": "The two temporary functions acquire the existing reused roles, including their existing permissions. Fixed packaged code/empty input, exact function identity, no trigger/URL/event mapping, security-owned code custody and immediate cleanup constrain use. Normal Team runtime/caller is not broadened. Review this new temporary-resource design explicitly.",
+  "complete": true
+}

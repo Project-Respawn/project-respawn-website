@@ -1,0 +1,2629 @@
+{
+  "at": "2026-10-12T18:43:02.390Z",
+  "simulationWindowOnly": {
+    "start": "2026-10-12T18:43:02.390Z",
+    "end": "2026-10-12T19:43:02.390Z"
+  },
+  "analyzer": {
+    "findings": []
+  },
+  "checks": [
+    {
+      "label": "inside",
+      "rows": [
+        {
+          "EvalActionName": "dynamodb:GetItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+          "EvalDecision": "allowed",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 858
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 1642
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "allowed",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 858
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 1642
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "allowed"
+        },
+        {
+          "EvalActionName": "dynamodb:GetItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 207
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 734
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "allowed",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 858
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 1642
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        },
+        {
+          "EvalActionName": "dynamodb:PutItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+          "EvalDecision": "allowed",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 858
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 1642
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "allowed",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 858
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 1642
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "allowed"
+        },
+        {
+          "EvalActionName": "dynamodb:PutItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 207
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 734
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "allowed",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 858
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 1642
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        },
+        {
+          "EvalActionName": "dynamodb:ConditionCheckItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+          "EvalDecision": "allowed",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 858
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 1642
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "allowed",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 858
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 1642
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "allowed"
+        },
+        {
+          "EvalActionName": "dynamodb:ConditionCheckItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 207
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 734
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "allowed",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 858
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 1642
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        },
+        {
+          "EvalActionName": "dynamodb:Scan",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+          "EvalDecision": "allowed",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 858
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 1642
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "allowed",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 858
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 1642
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "allowed"
+        },
+        {
+          "EvalActionName": "dynamodb:Scan",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 207
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 734
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "allowed",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 858
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 1642
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        },
+        {
+          "EvalActionName": "iam:PassRole",
+          "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 207
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        },
+        {
+          "EvalActionName": "secretsmanager:GetSecretValue",
+          "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 207
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        },
+        {
+          "EvalActionName": "lambda:InvokeFunction",
+          "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 207
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        },
+        {
+          "EvalActionName": "kms:Decrypt",
+          "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 207
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  }
+                }
+              ]
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "expired",
+      "rows": [
+        {
+          "EvalActionName": "dynamodb:GetItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+          "EvalDecision": "implicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 207
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 734
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "implicitDeny"
+        },
+        {
+          "EvalActionName": "dynamodb:GetItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 207
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 734
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        },
+        {
+          "EvalActionName": "dynamodb:PutItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+          "EvalDecision": "implicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 207
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 734
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "implicitDeny"
+        },
+        {
+          "EvalActionName": "dynamodb:PutItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 207
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 734
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        },
+        {
+          "EvalActionName": "dynamodb:ConditionCheckItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+          "EvalDecision": "implicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 207
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 734
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "implicitDeny"
+        },
+        {
+          "EvalActionName": "dynamodb:ConditionCheckItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 207
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 734
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        },
+        {
+          "EvalActionName": "dynamodb:Scan",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+          "EvalDecision": "implicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 207
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 734
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "implicitDeny"
+        },
+        {
+          "EvalActionName": "dynamodb:Scan",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 207
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 734
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        },
+        {
+          "EvalActionName": "iam:PassRole",
+          "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 207
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        },
+        {
+          "EvalActionName": "secretsmanager:GetSecretValue",
+          "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 207
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        },
+        {
+          "EvalActionName": "lambda:InvokeFunction",
+          "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 207
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        },
+        {
+          "EvalActionName": "kms:Decrypt",
+          "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 207
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  }
+                }
+              ]
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        }
+      ]
+    },
+    {
+      "label": "wrong-region",
+      "rows": [
+        {
+          "EvalActionName": "dynamodb:GetItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 734
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 858
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 858
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  }
+                },
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 858
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        },
+        {
+          "EvalActionName": "dynamodb:GetItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 207
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 734
+              }
+            },
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 734
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 858
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 858
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  }
+                },
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 858
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        },
+        {
+          "EvalActionName": "dynamodb:PutItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 734
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 858
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 858
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  }
+                },
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 858
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        },
+        {
+          "EvalActionName": "dynamodb:PutItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 207
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 734
+              }
+            },
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 734
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 858
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 858
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  }
+                },
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 858
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        },
+        {
+          "EvalActionName": "dynamodb:ConditionCheckItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 734
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 858
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 858
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  }
+                },
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 858
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        },
+        {
+          "EvalActionName": "dynamodb:ConditionCheckItem",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 207
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 734
+              }
+            },
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 734
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 858
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 858
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  }
+                },
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 858
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        },
+        {
+          "EvalActionName": "dynamodb:Scan",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 734
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 858
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 858
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  }
+                },
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 858
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        },
+        {
+          "EvalActionName": "dynamodb:Scan",
+          "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 207
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 734
+              }
+            },
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 734
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 858
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 858
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  }
+                },
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 734
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 858
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        },
+        {
+          "EvalActionName": "iam:PassRole",
+          "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 207
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        },
+        {
+          "EvalActionName": "secretsmanager:GetSecretValue",
+          "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 207
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        },
+        {
+          "EvalActionName": "lambda:InvokeFunction",
+          "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 207
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  }
+                }
+              ]
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "implicitDeny"
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        },
+        {
+          "EvalActionName": "kms:Decrypt",
+          "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+          "EvalDecision": "explicitDeny",
+          "MatchedStatements": [
+            {
+              "SourcePolicyId": "PolicyInputList.1",
+              "SourcePolicyType": "IAM Policy",
+              "StartPosition": {
+                "Line": 1,
+                "Column": 38
+              },
+              "EndPosition": {
+                "Line": 1,
+                "Column": 207
+              }
+            }
+          ],
+          "MissingContextValues": [],
+          "EvalDecisionDetails": {},
+          "ResourceSpecificResults": [
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Isolated-20261012v1-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-ParityRead",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-wbclUV",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+              "EvalResourceDecision": "implicitDeny"
+            },
+            {
+              "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+              "EvalResourceDecision": "explicitDeny",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "PolicyInputList.1",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 1,
+                    "Column": 38
+                  },
+                  "EndPosition": {
+                    "Line": 1,
+                    "Column": 207
+                  }
+                }
+              ]
+            }
+          ],
+          "EvalResourceDecision": "explicitDeny"
+        }
+      ]
+    }
+  ],
+  "complete": true,
+  "awsWrites": 0
+}

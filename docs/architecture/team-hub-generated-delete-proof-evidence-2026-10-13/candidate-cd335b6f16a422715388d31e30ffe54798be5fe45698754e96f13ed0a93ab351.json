@@ -1,0 +1,318 @@
+{
+  "schemaVersion": "team-hub-generated-delete-proof.v1",
+  "awsChanges": 0,
+  "executionAuthorized": false,
+  "oldPacket": {
+    "path": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/fence-probes.json",
+    "sha256": "f28b406a106c94580291023f9235543eba0595dc7d65fe79ae39fb58da3665b0"
+  },
+  "maintenancePinsPreserved": [
+    {
+      "path": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/activation-manifest.json",
+      "sha256": "f97453b3393db657964fe0149bba11ae0d7cf9b8663c53b9fac65a9868a866a1"
+    },
+    {
+      "path": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/rollback-manifest.json",
+      "sha256": "e4b8f8f8a53ed4a2dd0e821fa4e0745f4d9ed3657a072cb7fec28cd531194801"
+    },
+    {
+      "path": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/activation.PROPOSED.json",
+      "sha256": "36c7e8cc1fbd97f161407317062f4840103d991550e02f7fddf702ebc57e32e5"
+    },
+    {
+      "path": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/fence-helper-candidate.json",
+      "sha256": "4dfa45eeafba0aaa410cc7c377d8710cb596a5a34c8e771fbc1dbeb4d9883e58"
+    },
+    {
+      "path": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/fence-helper.PROPOSED.template.json",
+      "sha256": "36f5d9e1c708b93d61309b6d678d10c5e26b2f2244f5a0902495b41c14daaeaf"
+    },
+    {
+      "path": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/fence-probes.json",
+      "sha256": "f28b406a106c94580291023f9235543eba0595dc7d65fe79ae39fb58da3665b0"
+    },
+    {
+      "path": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/writer-coverage.json",
+      "sha256": "ecac3ce2703776d35918e421707f883a08a9283361c697e3d126726a578b8cf5"
+    },
+    {
+      "path": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/business-acceptance.json",
+      "sha256": "e731da5732aeec13c87feb63d616add77fb2a70965553621f02c85435303f348"
+    },
+    {
+      "path": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/monitoring-checklist.json",
+      "sha256": "b641427ae02edf78c71ca755765e4c036cab772cab36a91f20bba6b69ff519ce"
+    },
+    {
+      "path": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/s3-inflight.PROPOSED.template.json",
+      "sha256": "85f7b289c31dbff4f260be8999197a7b19ffa3b3504c4cb22dad539486d4791e"
+    },
+    {
+      "path": "docs/architecture/team-hub-maintenance-preparation-evidence-2026-10-12/s3-inflight-review-plan.json",
+      "sha256": "ba1d889f1d6ac0cb3d4f46e1c8aa75cddc28e4077cbdc2d1ba1c40790e35a136"
+    }
+  ],
+  "method": "UNMODIFIED_ORIGINAL_PIPELINE_RESERVED_ABSENT_KEY_WITH_CONTRADICTORY_CONDITION",
+  "preFenceCriterion": "GraphQL 200/null is documented AppSync delete-condition reconciliation, not standalone write proof. Require exact evaluated DeleteItem/contradictory condition, original role binding and IAM allowance, and absent unchanged state; use the existing recorded null control. Do not require an exposed ConditionalCheckFailedException for absent deletes.",
+  "postFenceCriterion": "GraphQL response must contain a DynamoDB DeleteItem explicit resource-policy AccessDenied naming the exact original assumed datasource role and source table; null, conditional failure, GetItem denial or AppSync caller rejection FAILS. Require fresh installed fence hashes, request attribution and unchanged source state.",
+  "proofs": [
+    {
+      "model": "Team",
+      "operation": "deleteTeam",
+      "document": "mutation FenceProbe($input: DeleteTeamInput!, $condition: ModelTeamConditionInput) { deleteTeam(input: $input, condition: $condition) { id } }",
+      "variables": {
+        "input": {
+          "id": "__team_hub_fence_probe_20261012_Team"
+        },
+        "condition": {
+          "and": [
+            {
+              "slug": {
+                "attributeExists": true
+              }
+            },
+            {
+              "slug": {
+                "attributeExists": false
+              }
+            }
+          ]
+        }
+      },
+      "resolverArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/types/Mutation/resolvers/deleteTeam",
+      "functionIds": [
+        "fwtpfuiif5ccxly6ljdxrgovpi",
+        "p6iymqzicvespbwmhrnowsy54a",
+        "fnhiym653bf57f4wetzzyqsjfa"
+      ],
+      "dataSource": "TeamTable",
+      "dataSourceRoleArn": "arn:aws:iam::058264289478:role/TeamIAMRoleb6b1b2-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "tableArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "useCallerCredentials": false,
+      "request": {
+        "version": "2018-05-29",
+        "operation": "DeleteItem",
+        "key": {
+          "id": {
+            "S": "__team_hub_fence_probe_20261012_Team"
+          }
+        },
+        "condition": {
+          "expression": "((attribute_exists(#id)) AND ((attribute_exists(#slug)) AND (attribute_not_exists(#slug))))",
+          "expressionNames": {
+            "#slug": "slug",
+            "#id": "id"
+          }
+        }
+      },
+      "functionVersion": "2018-05-29"
+    },
+    {
+      "model": "TeamMembership",
+      "operation": "deleteTeamMembership",
+      "document": "mutation FenceProbe($input: DeleteTeamMembershipInput!, $condition: ModelTeamMembershipConditionInput) { deleteTeamMembership(input: $input, condition: $condition) { id } }",
+      "variables": {
+        "input": {
+          "id": "__team_hub_fence_probe_20261012_TeamMembership"
+        },
+        "condition": {
+          "and": [
+            {
+              "teamId": {
+                "attributeExists": true
+              }
+            },
+            {
+              "teamId": {
+                "attributeExists": false
+              }
+            }
+          ]
+        }
+      },
+      "resolverArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/types/Mutation/resolvers/deleteTeamMembership",
+      "functionIds": [
+        "vywcbczjaffyll4d4yosiqrdg4",
+        "yty3ubwbuzey3fqw57zxaiijea",
+        "e7tikdggjbdkrpm7ieedlhsoxy"
+      ],
+      "dataSource": "TeamMembershipTable",
+      "dataSourceRoleArn": "arn:aws:iam::058264289478:role/TeamMembershipIAMRolb0882a-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "tableArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "useCallerCredentials": false,
+      "request": {
+        "version": "2018-05-29",
+        "operation": "DeleteItem",
+        "key": {
+          "id": {
+            "S": "__team_hub_fence_probe_20261012_TeamMembership"
+          }
+        },
+        "condition": {
+          "expression": "((attribute_exists(#id)) AND ((attribute_exists(#teamId)) AND (attribute_not_exists(#teamId))))",
+          "expressionNames": {
+            "#id": "id",
+            "#teamId": "teamId"
+          }
+        }
+      },
+      "functionVersion": "2018-05-29"
+    },
+    {
+      "model": "TeamRosterSlot",
+      "operation": "deleteTeamRosterSlot",
+      "document": "mutation FenceProbe($input: DeleteTeamRosterSlotInput!, $condition: ModelTeamRosterSlotConditionInput) { deleteTeamRosterSlot(input: $input, condition: $condition) { id } }",
+      "variables": {
+        "input": {
+          "id": "__team_hub_fence_probe_20261012_TeamRosterSlot"
+        },
+        "condition": {
+          "and": [
+            {
+              "teamId": {
+                "attributeExists": true
+              }
+            },
+            {
+              "teamId": {
+                "attributeExists": false
+              }
+            }
+          ]
+        }
+      },
+      "resolverArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/types/Mutation/resolvers/deleteTeamRosterSlot",
+      "functionIds": [
+        "iiuz4vvtbjfbfhqhlytzld6xfy",
+        "j24ml2iez5cxngse34wexbdmfa",
+        "7kjronj7c5aknhvko2jjjpdcsu"
+      ],
+      "dataSource": "TeamRosterSlotTable",
+      "dataSourceRoleArn": "arn:aws:iam::058264289478:role/TeamRosterSlotIAMRol236c3d-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "tableArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "useCallerCredentials": false,
+      "request": {
+        "version": "2018-05-29",
+        "operation": "DeleteItem",
+        "key": {
+          "id": {
+            "S": "__team_hub_fence_probe_20261012_TeamRosterSlot"
+          }
+        },
+        "condition": {
+          "expression": "((attribute_exists(#id)) AND ((attribute_exists(#teamId)) AND (attribute_not_exists(#teamId))))",
+          "expressionNames": {
+            "#id": "id",
+            "#teamId": "teamId"
+          }
+        }
+      },
+      "functionVersion": "2018-05-29"
+    },
+    {
+      "model": "PlayerChampionPoolEntry",
+      "operation": "deletePlayerChampionPoolEntry",
+      "document": "mutation FenceProbe($input: DeletePlayerChampionPoolEntryInput!, $condition: ModelPlayerChampionPoolEntryConditionInput) { deletePlayerChampionPoolEntry(input: $input, condition: $condition) { id } }",
+      "variables": {
+        "input": {
+          "id": "__team_hub_fence_probe_20261012_PlayerChampionPoolEntry"
+        },
+        "condition": {
+          "and": [
+            {
+              "teamId": {
+                "attributeExists": true
+              }
+            },
+            {
+              "teamId": {
+                "attributeExists": false
+              }
+            }
+          ]
+        }
+      },
+      "resolverArn": "arn:aws:appsync:eu-north-1:058264289478:apis/dxb2tdlulrch7hj2pts2mfijia/types/Mutation/resolvers/deletePlayerChampionPoolEntry",
+      "functionIds": [
+        "bevzo2dkfjfhldtm6nnyuh6wfm",
+        "qiigqmt53je3fn6x4lfw3geyk4",
+        "oosgrzq6ijflpmcniy5gzlpnz4"
+      ],
+      "dataSource": "PlayerChampionPoolEntryTable",
+      "dataSourceRoleArn": "arn:aws:iam::058264289478:role/PlayerChampionPoolEn5c689d-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "tableArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-dxb2tdlulrch7hj2pts2mfijia-NONE",
+      "useCallerCredentials": false,
+      "request": {
+        "version": "2018-05-29",
+        "operation": "DeleteItem",
+        "key": {
+          "id": {
+            "S": "__team_hub_fence_probe_20261012_PlayerChampionPoolEntry"
+          }
+        },
+        "condition": {
+          "expression": "((attribute_exists(#id)) AND ((attribute_exists(#teamId)) AND (attribute_not_exists(#teamId))))",
+          "expressionNames": {
+            "#id": "id",
+            "#teamId": "teamId"
+          }
+        }
+      },
+      "functionVersion": "2018-05-29"
+    }
+  ],
+  "bindings": [
+    {
+      "path": "docs/architecture/team-hub-generated-delete-proof-evidence-2026-10-13/resolver-paths.json",
+      "sha256": "8751910ac306882f93be17329996a385b9f11a1456ae78f918cdb77448659646"
+    },
+    {
+      "path": "docs/architecture/team-hub-generated-delete-proof-evidence-2026-10-13/data-sources.json",
+      "sha256": "13005cebdf202e23df73fc60eabd9bae7572c04d7f3fac756903caa391449b56"
+    },
+    {
+      "path": "docs/architecture/team-hub-generated-delete-proof-evidence-2026-10-13/iam-review.json",
+      "sha256": "b81ed7da50e4fe2106bea10a8e3014fb80cc356ef5600e549048e07083a66aea"
+    },
+    {
+      "path": "docs/architecture/team-hub-generated-delete-proof-evidence-2026-10-13/evaluated-Team-request.json",
+      "sha256": "98c5b8e711d62a16cf1c22b622ee1278ffde1aed684b991161b64c2b32687f29"
+    },
+    {
+      "path": "docs/architecture/team-hub-generated-delete-proof-evidence-2026-10-13/evaluated-Team-deny.json",
+      "sha256": "2317f06effb0a8fda345fe43d94950a2615003dc905ec83d00f3f08be867ccde"
+    },
+    {
+      "path": "docs/architecture/team-hub-generated-delete-proof-evidence-2026-10-13/evaluated-TeamMembership-request.json",
+      "sha256": "0db36f70c9e374f8c6d0ff19f196922ecfe14fb7e58b29c85ce62630da40e1d1"
+    },
+    {
+      "path": "docs/architecture/team-hub-generated-delete-proof-evidence-2026-10-13/evaluated-TeamMembership-deny.json",
+      "sha256": "2317f06effb0a8fda345fe43d94950a2615003dc905ec83d00f3f08be867ccde"
+    },
+    {
+      "path": "docs/architecture/team-hub-generated-delete-proof-evidence-2026-10-13/evaluated-TeamRosterSlot-request.json",
+      "sha256": "a3d16f4cb8cd6afcdf7e96d03ebcded810470c61f0cab1a6771419ca6d865d7b"
+    },
+    {
+      "path": "docs/architecture/team-hub-generated-delete-proof-evidence-2026-10-13/evaluated-TeamRosterSlot-deny.json",
+      "sha256": "2317f06effb0a8fda345fe43d94950a2615003dc905ec83d00f3f08be867ccde"
+    },
+    {
+      "path": "docs/architecture/team-hub-generated-delete-proof-evidence-2026-10-13/evaluated-PlayerChampionPoolEntry-request.json",
+      "sha256": "f38435894983669f63967e0181f6dc014b117375a94fe859a895ca8487827378"
+    },
+    {
+      "path": "docs/architecture/team-hub-generated-delete-proof-evidence-2026-10-13/evaluated-PlayerChampionPoolEntry-deny.json",
+      "sha256": "2317f06effb0a8fda345fe43d94950a2615003dc905ec83d00f3f08be867ccde"
+    }
+  ],
+  "validator": {
+    "path": "scripts/team-hub-maintenance-preparation/delete-proof.mjs",
+    "sha256": "817d93fbcb0c5132fe2e4f3052d2b2be05643566e911c9dddf603f901068b7fe"
+  },
+  "tests": {
+    "path": "scripts/team-hub-maintenance-preparation/delete-proof.test.mjs",
+    "sha256": "856aae86f1dfd4684159a68254c2542d3b251536079e77f574973d0e75dbd0e1"
+  }
+}

@@ -1,0 +1,23 @@
+// Password arrives only through echo-disabled private stdin; normal browser Cognito sign-in.
+import fs from 'node:fs';import path from 'node:path';import crypto from 'node:crypto';import assert from 'node:assert/strict';import {spawn} from 'node:child_process';
+if(process.stdin.isTTY)process.stdin.setRawMode(true);process.stdin.resume();console.log('Private input ready; input is not echoed or saved.');
+let password=await new Promise(resolve=>{let value='';const listener=b=>{for(const ch of b.toString()){if(ch==='\r'||ch==='\n'){process.stdin.off('data',listener);resolve(value);return;}value+=ch;}};process.stdin.on('data',listener);});if(process.stdin.isTTY)process.stdin.setRawMode(false);process.stdin.pause();
+const root=path.resolve('.tmp/team-hub-persona-automation'),profile=path.join(root,crypto.randomUUID());fs.mkdirSync(profile,{recursive:true});
+const browser=spawn('C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',['--headless=new','--no-proxy-server','--disable-background-networking','--disable-extensions','--no-first-run','--no-default-browser-check','--remote-debugging-address=127.0.0.1','--remote-debugging-port=0','--user-data-dir='+profile,'about:blank'],{windowsHide:true,stdio:'ignore'});
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));let ws,sequence=0;const pending=new Map();
+async function send(method,params={},sessionId){return new Promise((resolve,reject)=>{const id=++sequence,timer=setTimeout(()=>{pending.delete(id);reject(Error('BROWSER_TIMEOUT'));},30000);pending.set(id,{resolve:x=>{clearTimeout(timer);resolve(x)},reject});ws.send(JSON.stringify({id,method,params,...(sessionId?{sessionId}:{})}));});}
+const result={at:new Date().toISOString(),personas:[],complete:false,tokensPersisted:false,businessWrites:0};
+try{
+ const active=path.join(profile,'DevToolsActivePort');for(let i=0;i<200&&!fs.existsSync(active);i++)await sleep(100);assert.ok(fs.existsSync(active));const [port,endpoint]=fs.readFileSync(active,'utf8').trim().split('\n');ws=new WebSocket('ws://127.0.0.1:'+port+endpoint);await new Promise((resolve,reject)=>{ws.onopen=resolve;ws.onerror=reject;});ws.onmessage=e=>{const m=JSON.parse(e.data);const p=pending.get(m.id);if(p){pending.delete(m.id);m.error?p.reject(Error('BROWSER_PROTOCOL_ERROR')):p.resolve(m.result);}};
+ const status=await(await fetch('http://localhost:5178/status')).json();
+ const selected=process.argv.find(x=>x.startsWith('--renew-persona='))?.split('=')[1];if(selected)assert.ok(['admin','manager','coach','player','ordinary'].includes(selected));
+ for(const persona of ['admin','manager','coach','player','ordinary'].filter(p=>selected?p===selected:process.argv.includes('--renew')||!status.personas.some(x=>x.persona===p))){
+  const {browserContextId}=await send('Target.createBrowserContext',{disposeOnDetach:true});const {targetId}=await send('Target.createTarget',{url:'http://localhost:5178',browserContextId}),{sessionId}=await send('Target.attachToTarget',{targetId,flatten:true});await send('Runtime.enable',{},sessionId);await sleep(2000);
+  const expr=`(()=>{const select=document.querySelector('#persona');select.value=${JSON.stringify(persona)};select.onchange();document.querySelector('#password').value=${JSON.stringify(password)};document.querySelector('#form').requestSubmit();return true})()`;
+  const started=await send('Runtime.evaluate',{expression:expr,returnByValue:true},sessionId);assert.ok(!started.exceptionDetails);
+  let passed=false,errorName;for(let i=0;i<30;i++){await sleep(1000);const m=await send('Runtime.evaluate',{expression:'document.querySelector("#message").textContent',returnByValue:true},sessionId);if((m.result?.value??'').startsWith(persona+' verified')){passed=true;break;}if(/Exception|Failed|Error/.test(m.result?.value??'')){errorName=m.result.value;break;}}
+  result.personas.push({persona,authenticated:passed,errorName,method:'NORMAL_BROWSER_COGNITO_SIGNIN_PRIVATE_CONTEXT'});await send('Target.disposeBrowserContext',{browserContextId});if(!passed)break;
+ }
+ const final=await(await fetch('http://localhost:5178/status')).json();result.complete=final.ready;result.verifiedPersonas=final.personas;console.log(JSON.stringify(result));
+}finally{password='';if(ws?.readyState===1){try{await send('Browser.close')}catch{}}ws?.close();browser.kill();await sleep(1000);assert.ok(profile.startsWith(root+path.sep));try{fs.rmSync(profile,{recursive:true,force:true});result.browserProfileRemoved=true;}catch{result.browserProfileRemoved=false;}const E='docs/architecture/team-hub-cursor-accepted-cutover-evidence-2026-10-14';fs.mkdirSync(E,{recursive:true});fs.writeFileSync(E+'/persona-authentication.json',JSON.stringify(result,null,2)+'\n');}
+if(!result.complete)process.exitCode=2;

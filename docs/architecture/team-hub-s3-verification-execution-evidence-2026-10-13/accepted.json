@@ -1,0 +1,88 @@
+{
+  "acceptedAt": "2026-10-13T16:22:07.346Z",
+  "status": "S3_ISOLATED_VERIFICATION_ACCEPTED",
+  "manifestSha256": "e5395aac10635a8b65c50ccc8ca8fda0d125458643e69cd971372b07d9b5bde9",
+  "artifactPinsVerified": 21,
+  "maintenancePinsPreserved": 11,
+  "changeSets": [
+    {
+      "kind": "audit",
+      "stack": "ProjectRespawn-TeamHub-Ntgre-S3Audit",
+      "stackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-S3Audit/8c9b4b90-c71e-11f1-a606-0effef32395f",
+      "changeSetId": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/ntgre-s3-audit-create-20261013/ef3a937a-e868-4a04-9b14-13595f91709f",
+      "status": "CREATE_COMPLETE",
+      "additions": 3,
+      "reviewed": true
+    },
+    {
+      "kind": "helper",
+      "stack": "ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe",
+      "stackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-RestrictedFenceProbe/8d80c990-c71e-11f1-8332-0affe29d48d3",
+      "changeSetId": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/ntgre-restricted-fence-probe-create-20261013/bf847b85-0fea-444c-8494-1243a7d3a520",
+      "status": "CREATE_COMPLETE",
+      "additions": 2,
+      "reviewed": true
+    },
+    {
+      "kind": "race",
+      "stack": "ProjectRespawn-TeamHub-Ntgre-S3Race",
+      "stackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre-S3Race/8e670ae0-c71e-11f1-b3b4-0a00fe57ed85",
+      "changeSetId": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/ntgre-s3-race-create-20261013/b03f6fe9-615f-40a2-81e8-6eee6b68bfae",
+      "status": "CREATE_COMPLETE",
+      "additions": 2,
+      "reviewed": true
+    }
+  ],
+  "installedResources": 7,
+  "actualRoleCases": 21,
+  "helperInvoked": false,
+  "canaryRequests": [
+    {
+      "eventName": "PutObject",
+      "bucket": "amplify-projectrespawnweb-projectrespawnstoragebuc-ketz6kwxegaw",
+      "key": "team-logos/__team_hub_fence_20261012_5dc9b3484c16415fa3dfc740/absent.png",
+      "requestId": "EH46YY6BVGGDAPD1",
+      "status": 404,
+      "guarded": true,
+      "objectChanged": false
+    },
+    {
+      "eventName": "PutObject",
+      "bucket": "respawn-teamhub-fence-race-058264289478-20261012-5dc9b348",
+      "key": "team-logos/isolated-inflight-proof/zero-body.bin",
+      "requestId": "8A4FTYA7MCPMCBWC",
+      "status": 200,
+      "synthetic": true
+    },
+    {
+      "eventName": "DeleteObject",
+      "bucket": "respawn-teamhub-fence-race-058264289478-20261012-5dc9b348",
+      "key": "team-logos/isolated-inflight-proof/zero-body.bin",
+      "requestId": "8A48EJHPJBWGF00Y",
+      "status": 204,
+      "synthetic": true
+    }
+  ],
+  "canaryEvents": 3,
+  "raceOutcome": "HELD_STREAM_DENIED_403; preissued-not-started denied 403",
+  "syntheticInjection": "Separately labeled; NOT measured late completion",
+  "raceEvents": 4,
+  "objectCleanup": true,
+  "temporaryResourceCleanup": 4,
+  "ownedAssetVersionCleanup": true,
+  "retainedAuditResources": 3,
+  "retentionCustodian": "Ntgre",
+  "retainEvidenceUntilAtLeast": "2027-01-11T16:22:07.346Z",
+  "authority": {
+    "mode": "LEGACY_WRITER",
+    "epoch": 1,
+    "version": 1
+  },
+  "businessDataChanges": 0,
+  "sourceFenceInstalled": false,
+  "frontendActivated": false,
+  "productionChanges": 0,
+  "tests": 48,
+  "originalPrincipalSecurityReview": "REQUIRED_BEFORE_REAL_CUTOVER",
+  "weakerRealCutoverCriterionAuthorized": false
+}
