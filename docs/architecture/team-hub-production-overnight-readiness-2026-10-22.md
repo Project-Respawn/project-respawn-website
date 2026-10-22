@@ -125,3 +125,11 @@ Navigation/status/runbook files are sealed by existing review bindings. Rather t
 Automatic approval review rejected an earlier reproduction command because a historical helper could overwrite accepted evidence. A self-contained replacement restricted writes to scratch and this new evidence directory; it passed and reproduced the accepted ZIP. No blocked command was used to mutate historical artifacts.
 
 **Final recommendation: NO-GO for Master/publication or authority transfer.** The independent dark candidate is security-reviewed and preserved for a fresh controlled deployment decision. Required next gates are actual execution custody/window, inspected 8/39-addition change sets, installed-role and Lambda/KMS checks, then separately authorized authority bootstrap, nonempty-data migration, real persona acceptance and frontend publication.
+
+## Published review checkpoint
+
+Source checkpoint **52fec5443d970e6ac0f34f166a3811f334ad16a9** was pushed and independently verified on **review/team-hub-production-readiness-20261022**. Master/development remain unchanged. The source checkpoint contains 574 audited files; all 162 accepted bindings match Git bytes. 166 historical/diagnostic files remain local and were not deleted. The per-file review records their exclusions and historical source references.
+
+Draft PR creation was attempted but the integration returned HTTP 403 (Resource not accessible by integration). [Open the development comparison](https://github.com/Project-Respawn/project-respawn-website/compare/development...review%2Fteam-hub-production-readiness-20261022) to create the draft with an authorized GitHub identity. [Checkpoint receipt](team-hub-overnight-evidence-2026-10-22/github-checkpoint.json). This reporting follow-up does not change deployment artifacts.
+
+GitHub also reported five default-branch dependency alerts (four high, one moderate) during push. They were not triaged in this scoped task; no dependency manifest/lockfile was changed. Assess those separately before public release.
