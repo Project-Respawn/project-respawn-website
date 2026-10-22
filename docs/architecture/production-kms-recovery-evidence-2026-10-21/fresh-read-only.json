@@ -1,0 +1,1737 @@
+{
+  "at": "2026-10-21T05:39:01.797Z",
+  "awsWrites": 0,
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "stacks": {
+    "ProjectRespawn-Core-Production-Security": {
+      "Stacks": [
+        {
+          "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production-Security/f831f540-ccd5-11f1-9843-0a0597cb14fd",
+          "StackName": "ProjectRespawn-Core-Production-Security",
+          "ChangeSetId": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/production-coresecurity-e665c2e48a1dbec2/cad63af0-8523-4a1c-974b-4fd53e832a68",
+          "CreationTime": "2026-10-20T22:31:19.097000+00:00",
+          "LastUpdatedTime": "2026-10-20T22:31:29.836000+00:00",
+          "RollbackConfiguration": {},
+          "StackStatus": "CREATE_COMPLETE",
+          "DisableRollback": false,
+          "NotificationARNs": [],
+          "Capabilities": [
+            "CAPABILITY_NAMED_IAM"
+          ],
+          "Outputs": [
+            {
+              "OutputKey": "CursorSecretArn",
+              "OutputValue": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn",
+              "ExportName": "ProjectRespawn-Core-Production-CursorSecretArn"
+            },
+            {
+              "OutputKey": "RuntimeBoundaryArn",
+              "OutputValue": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary",
+              "ExportName": "ProjectRespawn-Core-Production-RuntimeBoundaryArn"
+            }
+          ],
+          "Tags": [],
+          "EnableTerminationProtection": false,
+          "DriftInformation": {
+            "StackDriftStatus": "NOT_CHECKED"
+          },
+          "LastOperations": [
+            {
+              "OperationType": "CREATE_STACK",
+              "OperationId": "b8a07c95-42fb-4604-98d5-fdf2bba4a63e"
+            }
+          ]
+        }
+      ]
+    },
+    "ProjectRespawn-Core-Production": {
+      "Stacks": [
+        {
+          "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+          "StackName": "ProjectRespawn-Core-Production",
+          "CreationTime": "2026-10-20T22:34:12.799000+00:00",
+          "DeletionTime": "2026-10-20T22:34:49.156000+00:00",
+          "LastUpdatedTime": "2026-10-20T22:34:23.024000+00:00",
+          "RollbackConfiguration": {},
+          "StackStatus": "ROLLBACK_COMPLETE",
+          "DisableRollback": false,
+          "NotificationARNs": [],
+          "Capabilities": [
+            "CAPABILITY_NAMED_IAM"
+          ],
+          "RoleARN": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+          "Tags": [],
+          "EnableTerminationProtection": false,
+          "DriftInformation": {
+            "StackDriftStatus": "NOT_CHECKED"
+          },
+          "LastOperations": [
+            {
+              "OperationType": "ROLLBACK",
+              "OperationId": "2da740c3-98a5-4c8e-8918-545ff0672cd9"
+            },
+            {
+              "OperationType": "CREATE_STACK",
+              "OperationId": "11f392de-0742-4f52-9f97-a1c3cd6c4da2"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "resources": {
+    "StackResourceSummaries": [
+      {
+        "LogicalResourceId": "Contracts",
+        "PhysicalResourceId": "ProjectRespawn-Core-Production-Contracts",
+        "ResourceType": "AWS::Lambda::Function",
+        "LastUpdatedTimestamp": "2026-10-20T22:34:56.340000+00:00",
+        "ResourceStatus": "DELETE_COMPLETE",
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        }
+      },
+      {
+        "LogicalResourceId": "Denied",
+        "PhysicalResourceId": "ProjectRespawn-Core-Production-Denied",
+        "ResourceType": "AWS::CloudWatch::Alarm",
+        "LastUpdatedTimestamp": "2026-10-20T22:34:51.912000+00:00",
+        "ResourceStatus": "DELETE_COMPLETE",
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        }
+      },
+      {
+        "LogicalResourceId": "DependencyFailures",
+        "PhysicalResourceId": "ProjectRespawn-Core-Production-DependencyFailures",
+        "ResourceType": "AWS::CloudWatch::Alarm",
+        "LastUpdatedTimestamp": "2026-10-20T22:34:51.766000+00:00",
+        "ResourceStatus": "DELETE_COMPLETE",
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        }
+      },
+      {
+        "LogicalResourceId": "Logs",
+        "PhysicalResourceId": "/project-respawn/Production/core/contracts",
+        "ResourceType": "AWS::Logs::LogGroup",
+        "LastUpdatedTimestamp": "2026-10-20T22:34:57.091000+00:00",
+        "ResourceStatus": "DELETE_SKIPPED",
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        }
+      },
+      {
+        "LogicalResourceId": "Runtime",
+        "PhysicalResourceId": "ProjectRespawn-Core-Production-Contracts",
+        "ResourceType": "AWS::IAM::Role",
+        "LastUpdatedTimestamp": "2026-10-20T22:35:17.893000+00:00",
+        "ResourceStatus": "DELETE_COMPLETE",
+        "DriftInformation": {
+          "StackResourceDriftStatus": "NOT_CHECKED"
+        }
+      }
+    ]
+  },
+  "events": {
+    "StackEvents": [
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "86e10ec0-ccd6-11f1-a295-0affeb360719",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "2da740c3-98a5-4c8e-8918-545ff0672cd9",
+        "LogicalResourceId": "ProjectRespawn-Core-Production",
+        "PhysicalResourceId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "ResourceType": "AWS::CloudFormation::Stack",
+        "Timestamp": "2026-10-20T22:35:18.298000+00:00",
+        "ResourceStatus": "ROLLBACK_COMPLETE",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "Runtime-DELETE_COMPLETE-2026-10-20T22:35:17.893Z",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "2da740c3-98a5-4c8e-8918-545ff0672cd9",
+        "LogicalResourceId": "Runtime",
+        "PhysicalResourceId": "ProjectRespawn-Core-Production-Contracts",
+        "ResourceType": "AWS::IAM::Role",
+        "Timestamp": "2026-10-20T22:35:17.893000+00:00",
+        "ResourceStatus": "DELETE_COMPLETE",
+        "ResourceProperties": "{\"RoleName\":\"ProjectRespawn-Core-Production-Contracts\",\"Policies\":[{\"PolicyName\":\"ProductionRuntime\",\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Resource\":\"*\",\"Effect\":\"Deny\",\"NotAction\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\",\"cognito-idp:AdminGetUser\",\"cognito-idp:AdminListGroupsForUser\",\"cognito-idp:ListUsers\",\"secretsmanager:GetSecretValue\",\"kms:Decrypt\"]},{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Resource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts:*\",\"Effect\":\"Allow\"},{\"Action\":[\"cognito-idp:AdminGetUser\",\"cognito-idp:AdminListGroupsForUser\",\"cognito-idp:ListUsers\"],\"Resource\":\"arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_Uufjxul58\",\"Effect\":\"Allow\"},{\"Action\":\"secretsmanager:GetSecretValue\",\"Resource\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\",\"Effect\":\"Allow\"},{\"Action\":\"cognito-idp:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_Uufjxul58\"},{\"Action\":\"logs:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts:*\"},{\"Action\":\"secretsmanager:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\"},{\"Action\":\"kms:*\",\"Effect\":\"Deny\",\"NotResource\":[\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\"]},{\"Resource\":[\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\"],\"Effect\":\"Deny\",\"NotAction\":[\"kms:Decrypt\"]},{\"Condition\":{\"StringEquals\":{\"kms:EncryptionContext:aws:lambda:FunctionArn\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts\"],\"kms:ViaService\":\"lambda.eu-north-1.amazonaws.com\",\"kms:CallerAccount\":\"058264289478\"}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Allow\"},{\"Condition\":{\"StringEquals\":{\"kms:ViaService\":\"secretsmanager.eu-north-1.amazonaws.com\",\"kms:CallerAccount\":\"058264289478\",\"kms:EncryptionContext:SecretARN\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\"}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\",\"Effect\":\"Allow\"},{\"Condition\":{\"StringNotEquals\":{\"kms:ViaService\":\"lambda.eu-north-1.amazonaws.com\"}},\"Action\":[\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:CallerAccount\":\"058264289478\"}},\"Action\":[\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:ViaService\":\"secretsmanager.eu-north-1.amazonaws.com\"}},\"Action\":[\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:CallerAccount\":\"058264289478\"}},\"Action\":[\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:EncryptionContext:aws:lambda:FunctionArn\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts\"]}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:EncryptionContext:SecretARN\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\"}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\",\"Effect\":\"Deny\"}]}}],\"AssumeRolePolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"}}]},\"PermissionsBoundary\":\"arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary\"}",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "Logs-DELETE_SKIPPED-2026-10-20T22:34:57.091Z",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "2da740c3-98a5-4c8e-8918-545ff0672cd9",
+        "LogicalResourceId": "Logs",
+        "PhysicalResourceId": "/project-respawn/Production/core/contracts",
+        "ResourceType": "AWS::Logs::LogGroup",
+        "Timestamp": "2026-10-20T22:34:57.091000+00:00",
+        "ResourceStatus": "DELETE_SKIPPED",
+        "ResourceProperties": "{\"RetentionInDays\":\"30\",\"LogGroupName\":\"/project-respawn/Production/core/contracts\"}",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "Runtime-DELETE_IN_PROGRESS-2026-10-20T22:34:56.679Z",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "2da740c3-98a5-4c8e-8918-545ff0672cd9",
+        "LogicalResourceId": "Runtime",
+        "PhysicalResourceId": "ProjectRespawn-Core-Production-Contracts",
+        "ResourceType": "AWS::IAM::Role",
+        "Timestamp": "2026-10-20T22:34:56.679000+00:00",
+        "ResourceStatus": "DELETE_IN_PROGRESS",
+        "ResourceProperties": "{\"RoleName\":\"ProjectRespawn-Core-Production-Contracts\",\"Policies\":[{\"PolicyName\":\"ProductionRuntime\",\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Resource\":\"*\",\"Effect\":\"Deny\",\"NotAction\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\",\"cognito-idp:AdminGetUser\",\"cognito-idp:AdminListGroupsForUser\",\"cognito-idp:ListUsers\",\"secretsmanager:GetSecretValue\",\"kms:Decrypt\"]},{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Resource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts:*\",\"Effect\":\"Allow\"},{\"Action\":[\"cognito-idp:AdminGetUser\",\"cognito-idp:AdminListGroupsForUser\",\"cognito-idp:ListUsers\"],\"Resource\":\"arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_Uufjxul58\",\"Effect\":\"Allow\"},{\"Action\":\"secretsmanager:GetSecretValue\",\"Resource\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\",\"Effect\":\"Allow\"},{\"Action\":\"cognito-idp:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_Uufjxul58\"},{\"Action\":\"logs:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts:*\"},{\"Action\":\"secretsmanager:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\"},{\"Action\":\"kms:*\",\"Effect\":\"Deny\",\"NotResource\":[\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\"]},{\"Resource\":[\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\"],\"Effect\":\"Deny\",\"NotAction\":[\"kms:Decrypt\"]},{\"Condition\":{\"StringEquals\":{\"kms:EncryptionContext:aws:lambda:FunctionArn\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts\"],\"kms:ViaService\":\"lambda.eu-north-1.amazonaws.com\",\"kms:CallerAccount\":\"058264289478\"}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Allow\"},{\"Condition\":{\"StringEquals\":{\"kms:ViaService\":\"secretsmanager.eu-north-1.amazonaws.com\",\"kms:CallerAccount\":\"058264289478\",\"kms:EncryptionContext:SecretARN\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\"}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\",\"Effect\":\"Allow\"},{\"Condition\":{\"StringNotEquals\":{\"kms:ViaService\":\"lambda.eu-north-1.amazonaws.com\"}},\"Action\":[\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:CallerAccount\":\"058264289478\"}},\"Action\":[\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:ViaService\":\"secretsmanager.eu-north-1.amazonaws.com\"}},\"Action\":[\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:CallerAccount\":\"058264289478\"}},\"Action\":[\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:EncryptionContext:aws:lambda:FunctionArn\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts\"]}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:EncryptionContext:SecretARN\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\"}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\",\"Effect\":\"Deny\"}]}}],\"AssumeRolePolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"}}]},\"PermissionsBoundary\":\"arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary\"}",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "Contracts-DELETE_COMPLETE-2026-10-20T22:34:56.340Z",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "2da740c3-98a5-4c8e-8918-545ff0672cd9",
+        "LogicalResourceId": "Contracts",
+        "PhysicalResourceId": "ProjectRespawn-Core-Production-Contracts",
+        "ResourceType": "AWS::Lambda::Function",
+        "Timestamp": "2026-10-20T22:34:56.340000+00:00",
+        "ResourceStatus": "DELETE_COMPLETE",
+        "ResourceProperties": "{\"Role\":\"arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts\",\"FunctionName\":\"ProjectRespawn-Core-Production-Contracts\",\"MemorySize\":\"256\",\"Runtime\":\"nodejs22.x\",\"Timeout\":\"10\",\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"LogGroup\":\"/project-respawn/Production/core/contracts\"},\"Handler\":\"index.handler\",\"Environment\":{\"Variables\":{\"CORE_ENVIRONMENT\":\"{\\\"contractVersion\\\":\\\"environment.v1\\\",\\\"environment\\\":\\\"Production\\\",\\\"account\\\":\\\"058264289478\\\",\\\"region\\\":\\\"eu-north-1\\\",\\\"poolId\\\":\\\"eu-north-1_Uufjxul58\\\",\\\"clientId\\\":\\\"2kc81ph5mgvo9eu2qjvmif5u8g\\\",\\\"issuer\\\":\\\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_Uufjxul58\\\"}\",\"CORE_CURSOR_SECRET_ARN\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\"}},\"Code\":{\"S3Bucket\":\"cdk-hnb659fds-assets-058264289478-eu-north-1\",\"S3Key\":\"production/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.zip\"},\"Architectures\":[\"arm64\"]}",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "Denied-DELETE_COMPLETE-2026-10-20T22:34:51.912Z",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "2da740c3-98a5-4c8e-8918-545ff0672cd9",
+        "LogicalResourceId": "Denied",
+        "PhysicalResourceId": "ProjectRespawn-Core-Production-Denied",
+        "ResourceType": "AWS::CloudWatch::Alarm",
+        "Timestamp": "2026-10-20T22:34:51.912000+00:00",
+        "ResourceStatus": "DELETE_COMPLETE",
+        "ResourceProperties": "{\"MetricName\":\"Denied\",\"ComparisonOperator\":\"GreaterThanOrEqualToThreshold\",\"TreatMissingData\":\"notBreaching\",\"AlarmName\":\"ProjectRespawn-Core-Production-Denied\",\"Statistic\":\"Sum\",\"Dimensions\":[{\"Value\":\"Production\",\"Name\":\"Environment\"}],\"Period\":\"60\",\"EvaluationPeriods\":\"1\",\"Namespace\":\"ProjectRespawn/Core\",\"Threshold\":\"20\"}",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "DependencyFailures-DELETE_COMPLETE-2026-10-20T22:34:51.766Z",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "2da740c3-98a5-4c8e-8918-545ff0672cd9",
+        "LogicalResourceId": "DependencyFailures",
+        "PhysicalResourceId": "ProjectRespawn-Core-Production-DependencyFailures",
+        "ResourceType": "AWS::CloudWatch::Alarm",
+        "Timestamp": "2026-10-20T22:34:51.766000+00:00",
+        "ResourceStatus": "DELETE_COMPLETE",
+        "ResourceProperties": "{\"MetricName\":\"DependencyFailures\",\"ComparisonOperator\":\"GreaterThanOrEqualToThreshold\",\"TreatMissingData\":\"notBreaching\",\"AlarmName\":\"ProjectRespawn-Core-Production-DependencyFailures\",\"Statistic\":\"Sum\",\"Dimensions\":[{\"Value\":\"Production\",\"Name\":\"Environment\"}],\"Period\":\"60\",\"EvaluationPeriods\":\"1\",\"Namespace\":\"ProjectRespawn/Core\",\"Threshold\":\"1\"}",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "DependencyFailures-DELETE_IN_PROGRESS-2026-10-20T22:34:50.579Z",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "2da740c3-98a5-4c8e-8918-545ff0672cd9",
+        "LogicalResourceId": "DependencyFailures",
+        "PhysicalResourceId": "ProjectRespawn-Core-Production-DependencyFailures",
+        "ResourceType": "AWS::CloudWatch::Alarm",
+        "Timestamp": "2026-10-20T22:34:50.579000+00:00",
+        "ResourceStatus": "DELETE_IN_PROGRESS",
+        "ResourceProperties": "{\"MetricName\":\"DependencyFailures\",\"ComparisonOperator\":\"GreaterThanOrEqualToThreshold\",\"TreatMissingData\":\"notBreaching\",\"AlarmName\":\"ProjectRespawn-Core-Production-DependencyFailures\",\"Statistic\":\"Sum\",\"Dimensions\":[{\"Value\":\"Production\",\"Name\":\"Environment\"}],\"Period\":\"60\",\"EvaluationPeriods\":\"1\",\"Namespace\":\"ProjectRespawn/Core\",\"Threshold\":\"1\"}",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "Contracts-DELETE_IN_PROGRESS-2026-10-20T22:34:50.579Z",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "2da740c3-98a5-4c8e-8918-545ff0672cd9",
+        "LogicalResourceId": "Contracts",
+        "PhysicalResourceId": "ProjectRespawn-Core-Production-Contracts",
+        "ResourceType": "AWS::Lambda::Function",
+        "Timestamp": "2026-10-20T22:34:50.579000+00:00",
+        "ResourceStatus": "DELETE_IN_PROGRESS",
+        "ResourceProperties": "{\"Role\":\"arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts\",\"FunctionName\":\"ProjectRespawn-Core-Production-Contracts\",\"MemorySize\":\"256\",\"Runtime\":\"nodejs22.x\",\"Timeout\":\"10\",\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"LogGroup\":\"/project-respawn/Production/core/contracts\"},\"Handler\":\"index.handler\",\"Environment\":{\"Variables\":{\"CORE_ENVIRONMENT\":\"{\\\"contractVersion\\\":\\\"environment.v1\\\",\\\"environment\\\":\\\"Production\\\",\\\"account\\\":\\\"058264289478\\\",\\\"region\\\":\\\"eu-north-1\\\",\\\"poolId\\\":\\\"eu-north-1_Uufjxul58\\\",\\\"clientId\\\":\\\"2kc81ph5mgvo9eu2qjvmif5u8g\\\",\\\"issuer\\\":\\\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_Uufjxul58\\\"}\",\"CORE_CURSOR_SECRET_ARN\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\"}},\"Code\":{\"S3Bucket\":\"cdk-hnb659fds-assets-058264289478-eu-north-1\",\"S3Key\":\"production/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.zip\"},\"Architectures\":[\"arm64\"]}",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "Denied-DELETE_IN_PROGRESS-2026-10-20T22:34:50.570Z",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "2da740c3-98a5-4c8e-8918-545ff0672cd9",
+        "LogicalResourceId": "Denied",
+        "PhysicalResourceId": "ProjectRespawn-Core-Production-Denied",
+        "ResourceType": "AWS::CloudWatch::Alarm",
+        "Timestamp": "2026-10-20T22:34:50.570000+00:00",
+        "ResourceStatus": "DELETE_IN_PROGRESS",
+        "ResourceProperties": "{\"MetricName\":\"Denied\",\"ComparisonOperator\":\"GreaterThanOrEqualToThreshold\",\"TreatMissingData\":\"notBreaching\",\"AlarmName\":\"ProjectRespawn-Core-Production-Denied\",\"Statistic\":\"Sum\",\"Dimensions\":[{\"Value\":\"Production\",\"Name\":\"Environment\"}],\"Period\":\"60\",\"EvaluationPeriods\":\"1\",\"Namespace\":\"ProjectRespawn/Core\",\"Threshold\":\"20\"}",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "7583b6f0-ccd6-11f1-8ecc-0efff7189ec7",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "2da740c3-98a5-4c8e-8918-545ff0672cd9",
+        "LogicalResourceId": "ProjectRespawn-Core-Production",
+        "PhysicalResourceId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "ResourceType": "AWS::CloudFormation::Stack",
+        "Timestamp": "2026-10-20T22:34:49.156000+00:00",
+        "ResourceStatus": "ROLLBACK_IN_PROGRESS",
+        "ResourceStatusReason": "The following resource(s) failed to create: [Contracts]. Rollback requested by user.",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "Contracts-CREATE_FAILED-2026-10-20T22:34:48.819Z",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "11f392de-0742-4f52-9f97-a1c3cd6c4da2",
+        "LogicalResourceId": "Contracts",
+        "PhysicalResourceId": "ProjectRespawn-Core-Production-Contracts",
+        "ResourceType": "AWS::Lambda::Function",
+        "Timestamp": "2026-10-20T22:34:48.819000+00:00",
+        "ResourceStatus": "CREATE_FAILED",
+        "ResourceStatusReason": "Resource handler returned message: \"Lambda was unable to configure access to your environment variables because KMS returned Access Denied. Please check your KMS permissions. KMS Exception: AccessDeniedException KMS Message: User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-Core-Production-Execution/AWSCloudFormation is not authorized to perform: kms:CreateGrant on resource: arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7 with an explicit deny in an identity-based policy (Service: Lambda, Status Code: 403, Request ID: e7338420-65e9-4864-a4cd-b9871abc277e) (SDK Attempt Count: 1)\" (RequestToken: a4ea41c1-fc81-2029-1f42-be59b74f9ad0, HandlerErrorCode: AccessDenied)",
+        "ResourceProperties": "{\"Role\":\"arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts\",\"FunctionName\":\"ProjectRespawn-Core-Production-Contracts\",\"MemorySize\":\"256\",\"Runtime\":\"nodejs22.x\",\"Timeout\":\"10\",\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"LogGroup\":\"/project-respawn/Production/core/contracts\"},\"Handler\":\"index.handler\",\"Environment\":{\"Variables\":{\"CORE_ENVIRONMENT\":\"{\\\"contractVersion\\\":\\\"environment.v1\\\",\\\"environment\\\":\\\"Production\\\",\\\"account\\\":\\\"058264289478\\\",\\\"region\\\":\\\"eu-north-1\\\",\\\"poolId\\\":\\\"eu-north-1_Uufjxul58\\\",\\\"clientId\\\":\\\"2kc81ph5mgvo9eu2qjvmif5u8g\\\",\\\"issuer\\\":\\\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_Uufjxul58\\\"}\",\"CORE_CURSOR_SECRET_ARN\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\"}},\"Code\":{\"S3Bucket\":\"cdk-hnb659fds-assets-058264289478-eu-north-1\",\"S3Key\":\"production/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.zip\"},\"Architectures\":[\"arm64\"]}",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "Contracts-CREATE_IN_PROGRESS-2026-10-20T22:34:46.863Z",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "11f392de-0742-4f52-9f97-a1c3cd6c4da2",
+        "LogicalResourceId": "Contracts",
+        "PhysicalResourceId": "ProjectRespawn-Core-Production-Contracts",
+        "ResourceType": "AWS::Lambda::Function",
+        "Timestamp": "2026-10-20T22:34:46.863000+00:00",
+        "ResourceStatus": "CREATE_IN_PROGRESS",
+        "ResourceStatusReason": "Resource creation Initiated",
+        "ResourceProperties": "{\"Role\":\"arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts\",\"FunctionName\":\"ProjectRespawn-Core-Production-Contracts\",\"MemorySize\":\"256\",\"Runtime\":\"nodejs22.x\",\"Timeout\":\"10\",\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"LogGroup\":\"/project-respawn/Production/core/contracts\"},\"Handler\":\"index.handler\",\"Environment\":{\"Variables\":{\"CORE_ENVIRONMENT\":\"{\\\"contractVersion\\\":\\\"environment.v1\\\",\\\"environment\\\":\\\"Production\\\",\\\"account\\\":\\\"058264289478\\\",\\\"region\\\":\\\"eu-north-1\\\",\\\"poolId\\\":\\\"eu-north-1_Uufjxul58\\\",\\\"clientId\\\":\\\"2kc81ph5mgvo9eu2qjvmif5u8g\\\",\\\"issuer\\\":\\\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_Uufjxul58\\\"}\",\"CORE_CURSOR_SECRET_ARN\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\"}},\"Code\":{\"S3Bucket\":\"cdk-hnb659fds-assets-058264289478-eu-north-1\",\"S3Key\":\"production/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.zip\"},\"Architectures\":[\"arm64\"]}",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "Contracts-CREATE_IN_PROGRESS-2026-10-20T22:34:45.326Z",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "11f392de-0742-4f52-9f97-a1c3cd6c4da2",
+        "LogicalResourceId": "Contracts",
+        "PhysicalResourceId": "",
+        "ResourceType": "AWS::Lambda::Function",
+        "Timestamp": "2026-10-20T22:34:45.326000+00:00",
+        "ResourceStatus": "CREATE_IN_PROGRESS",
+        "ResourceProperties": "{\"Role\":\"arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts\",\"FunctionName\":\"ProjectRespawn-Core-Production-Contracts\",\"MemorySize\":\"256\",\"Runtime\":\"nodejs22.x\",\"Timeout\":\"10\",\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"LogGroup\":\"/project-respawn/Production/core/contracts\"},\"Handler\":\"index.handler\",\"Environment\":{\"Variables\":{\"CORE_ENVIRONMENT\":\"{\\\"contractVersion\\\":\\\"environment.v1\\\",\\\"environment\\\":\\\"Production\\\",\\\"account\\\":\\\"058264289478\\\",\\\"region\\\":\\\"eu-north-1\\\",\\\"poolId\\\":\\\"eu-north-1_Uufjxul58\\\",\\\"clientId\\\":\\\"2kc81ph5mgvo9eu2qjvmif5u8g\\\",\\\"issuer\\\":\\\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_Uufjxul58\\\"}\",\"CORE_CURSOR_SECRET_ARN\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\"}},\"Code\":{\"S3Bucket\":\"cdk-hnb659fds-assets-058264289478-eu-north-1\",\"S3Key\":\"production/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.zip\"},\"Architectures\":[\"arm64\"]}",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "Runtime-CREATE_COMPLETE-2026-10-20T22:34:44.190Z",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "11f392de-0742-4f52-9f97-a1c3cd6c4da2",
+        "LogicalResourceId": "Runtime",
+        "PhysicalResourceId": "ProjectRespawn-Core-Production-Contracts",
+        "ResourceType": "AWS::IAM::Role",
+        "Timestamp": "2026-10-20T22:34:44.190000+00:00",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "ResourceProperties": "{\"RoleName\":\"ProjectRespawn-Core-Production-Contracts\",\"Policies\":[{\"PolicyName\":\"ProductionRuntime\",\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Resource\":\"*\",\"Effect\":\"Deny\",\"NotAction\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\",\"cognito-idp:AdminGetUser\",\"cognito-idp:AdminListGroupsForUser\",\"cognito-idp:ListUsers\",\"secretsmanager:GetSecretValue\",\"kms:Decrypt\"]},{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Resource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts:*\",\"Effect\":\"Allow\"},{\"Action\":[\"cognito-idp:AdminGetUser\",\"cognito-idp:AdminListGroupsForUser\",\"cognito-idp:ListUsers\"],\"Resource\":\"arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_Uufjxul58\",\"Effect\":\"Allow\"},{\"Action\":\"secretsmanager:GetSecretValue\",\"Resource\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\",\"Effect\":\"Allow\"},{\"Action\":\"cognito-idp:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_Uufjxul58\"},{\"Action\":\"logs:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts:*\"},{\"Action\":\"secretsmanager:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\"},{\"Action\":\"kms:*\",\"Effect\":\"Deny\",\"NotResource\":[\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\"]},{\"Resource\":[\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\"],\"Effect\":\"Deny\",\"NotAction\":[\"kms:Decrypt\"]},{\"Condition\":{\"StringEquals\":{\"kms:EncryptionContext:aws:lambda:FunctionArn\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts\"],\"kms:ViaService\":\"lambda.eu-north-1.amazonaws.com\",\"kms:CallerAccount\":\"058264289478\"}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Allow\"},{\"Condition\":{\"StringEquals\":{\"kms:ViaService\":\"secretsmanager.eu-north-1.amazonaws.com\",\"kms:CallerAccount\":\"058264289478\",\"kms:EncryptionContext:SecretARN\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\"}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\",\"Effect\":\"Allow\"},{\"Condition\":{\"StringNotEquals\":{\"kms:ViaService\":\"lambda.eu-north-1.amazonaws.com\"}},\"Action\":[\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:CallerAccount\":\"058264289478\"}},\"Action\":[\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:ViaService\":\"secretsmanager.eu-north-1.amazonaws.com\"}},\"Action\":[\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:CallerAccount\":\"058264289478\"}},\"Action\":[\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:EncryptionContext:aws:lambda:FunctionArn\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts\"]}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:EncryptionContext:SecretARN\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\"}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\",\"Effect\":\"Deny\"}]}}],\"AssumeRolePolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"}}]},\"PermissionsBoundary\":\"arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary\"}",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "Logs-CREATE_COMPLETE-2026-10-20T22:34:34.746Z",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "11f392de-0742-4f52-9f97-a1c3cd6c4da2",
+        "LogicalResourceId": "Logs",
+        "PhysicalResourceId": "/project-respawn/Production/core/contracts",
+        "ResourceType": "AWS::Logs::LogGroup",
+        "Timestamp": "2026-10-20T22:34:34.746000+00:00",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "ResourceProperties": "{\"RetentionInDays\":\"30\",\"LogGroupName\":\"/project-respawn/Production/core/contracts\"}",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "DependencyFailures-CREATE_COMPLETE-2026-10-20T22:34:27.290Z",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "11f392de-0742-4f52-9f97-a1c3cd6c4da2",
+        "LogicalResourceId": "DependencyFailures",
+        "PhysicalResourceId": "ProjectRespawn-Core-Production-DependencyFailures",
+        "ResourceType": "AWS::CloudWatch::Alarm",
+        "Timestamp": "2026-10-20T22:34:27.290000+00:00",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "ResourceProperties": "{\"MetricName\":\"DependencyFailures\",\"ComparisonOperator\":\"GreaterThanOrEqualToThreshold\",\"TreatMissingData\":\"notBreaching\",\"AlarmName\":\"ProjectRespawn-Core-Production-DependencyFailures\",\"Statistic\":\"Sum\",\"Dimensions\":[{\"Value\":\"Production\",\"Name\":\"Environment\"}],\"Period\":\"60\",\"EvaluationPeriods\":\"1\",\"Namespace\":\"ProjectRespawn/Core\",\"Threshold\":\"1\"}",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "Denied-CREATE_COMPLETE-2026-10-20T22:34:27.223Z",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "11f392de-0742-4f52-9f97-a1c3cd6c4da2",
+        "LogicalResourceId": "Denied",
+        "PhysicalResourceId": "ProjectRespawn-Core-Production-Denied",
+        "ResourceType": "AWS::CloudWatch::Alarm",
+        "Timestamp": "2026-10-20T22:34:27.223000+00:00",
+        "ResourceStatus": "CREATE_COMPLETE",
+        "ResourceProperties": "{\"MetricName\":\"Denied\",\"ComparisonOperator\":\"GreaterThanOrEqualToThreshold\",\"TreatMissingData\":\"notBreaching\",\"AlarmName\":\"ProjectRespawn-Core-Production-Denied\",\"Statistic\":\"Sum\",\"Dimensions\":[{\"Value\":\"Production\",\"Name\":\"Environment\"}],\"Period\":\"60\",\"EvaluationPeriods\":\"1\",\"Namespace\":\"ProjectRespawn/Core\",\"Threshold\":\"20\"}",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "Runtime-CREATE_IN_PROGRESS-2026-10-20T22:34:26.508Z",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "11f392de-0742-4f52-9f97-a1c3cd6c4da2",
+        "LogicalResourceId": "Runtime",
+        "PhysicalResourceId": "ProjectRespawn-Core-Production-Contracts",
+        "ResourceType": "AWS::IAM::Role",
+        "Timestamp": "2026-10-20T22:34:26.508000+00:00",
+        "ResourceStatus": "CREATE_IN_PROGRESS",
+        "ResourceStatusReason": "Resource creation Initiated",
+        "ResourceProperties": "{\"RoleName\":\"ProjectRespawn-Core-Production-Contracts\",\"Policies\":[{\"PolicyName\":\"ProductionRuntime\",\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Resource\":\"*\",\"Effect\":\"Deny\",\"NotAction\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\",\"cognito-idp:AdminGetUser\",\"cognito-idp:AdminListGroupsForUser\",\"cognito-idp:ListUsers\",\"secretsmanager:GetSecretValue\",\"kms:Decrypt\"]},{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Resource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts:*\",\"Effect\":\"Allow\"},{\"Action\":[\"cognito-idp:AdminGetUser\",\"cognito-idp:AdminListGroupsForUser\",\"cognito-idp:ListUsers\"],\"Resource\":\"arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_Uufjxul58\",\"Effect\":\"Allow\"},{\"Action\":\"secretsmanager:GetSecretValue\",\"Resource\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\",\"Effect\":\"Allow\"},{\"Action\":\"cognito-idp:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_Uufjxul58\"},{\"Action\":\"logs:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts:*\"},{\"Action\":\"secretsmanager:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\"},{\"Action\":\"kms:*\",\"Effect\":\"Deny\",\"NotResource\":[\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\"]},{\"Resource\":[\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\"],\"Effect\":\"Deny\",\"NotAction\":[\"kms:Decrypt\"]},{\"Condition\":{\"StringEquals\":{\"kms:EncryptionContext:aws:lambda:FunctionArn\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts\"],\"kms:ViaService\":\"lambda.eu-north-1.amazonaws.com\",\"kms:CallerAccount\":\"058264289478\"}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Allow\"},{\"Condition\":{\"StringEquals\":{\"kms:ViaService\":\"secretsmanager.eu-north-1.amazonaws.com\",\"kms:CallerAccount\":\"058264289478\",\"kms:EncryptionContext:SecretARN\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\"}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\",\"Effect\":\"Allow\"},{\"Condition\":{\"StringNotEquals\":{\"kms:ViaService\":\"lambda.eu-north-1.amazonaws.com\"}},\"Action\":[\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:CallerAccount\":\"058264289478\"}},\"Action\":[\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:ViaService\":\"secretsmanager.eu-north-1.amazonaws.com\"}},\"Action\":[\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:CallerAccount\":\"058264289478\"}},\"Action\":[\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:EncryptionContext:aws:lambda:FunctionArn\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts\"]}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:EncryptionContext:SecretARN\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\"}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\",\"Effect\":\"Deny\"}]}}],\"AssumeRolePolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"}}]},\"PermissionsBoundary\":\"arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary\"}",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "Logs-CREATE_IN_PROGRESS-2026-10-20T22:34:25.813Z",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "11f392de-0742-4f52-9f97-a1c3cd6c4da2",
+        "LogicalResourceId": "Logs",
+        "PhysicalResourceId": "/project-respawn/Production/core/contracts",
+        "ResourceType": "AWS::Logs::LogGroup",
+        "Timestamp": "2026-10-20T22:34:25.813000+00:00",
+        "ResourceStatus": "CREATE_IN_PROGRESS",
+        "ResourceStatusReason": "Resource creation Initiated",
+        "ResourceProperties": "{\"RetentionInDays\":\"30\",\"LogGroupName\":\"/project-respawn/Production/core/contracts\"}",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "DependencyFailures-CREATE_IN_PROGRESS-2026-10-20T22:34:25.692Z",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "11f392de-0742-4f52-9f97-a1c3cd6c4da2",
+        "LogicalResourceId": "DependencyFailures",
+        "PhysicalResourceId": "ProjectRespawn-Core-Production-DependencyFailures",
+        "ResourceType": "AWS::CloudWatch::Alarm",
+        "Timestamp": "2026-10-20T22:34:25.692000+00:00",
+        "ResourceStatus": "CREATE_IN_PROGRESS",
+        "ResourceStatusReason": "Resource creation Initiated",
+        "ResourceProperties": "{\"MetricName\":\"DependencyFailures\",\"ComparisonOperator\":\"GreaterThanOrEqualToThreshold\",\"TreatMissingData\":\"notBreaching\",\"AlarmName\":\"ProjectRespawn-Core-Production-DependencyFailures\",\"Statistic\":\"Sum\",\"Dimensions\":[{\"Value\":\"Production\",\"Name\":\"Environment\"}],\"Period\":\"60\",\"EvaluationPeriods\":\"1\",\"Namespace\":\"ProjectRespawn/Core\",\"Threshold\":\"1\"}",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "Denied-CREATE_IN_PROGRESS-2026-10-20T22:34:25.659Z",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "11f392de-0742-4f52-9f97-a1c3cd6c4da2",
+        "LogicalResourceId": "Denied",
+        "PhysicalResourceId": "ProjectRespawn-Core-Production-Denied",
+        "ResourceType": "AWS::CloudWatch::Alarm",
+        "Timestamp": "2026-10-20T22:34:25.659000+00:00",
+        "ResourceStatus": "CREATE_IN_PROGRESS",
+        "ResourceStatusReason": "Resource creation Initiated",
+        "ResourceProperties": "{\"MetricName\":\"Denied\",\"ComparisonOperator\":\"GreaterThanOrEqualToThreshold\",\"TreatMissingData\":\"notBreaching\",\"AlarmName\":\"ProjectRespawn-Core-Production-Denied\",\"Statistic\":\"Sum\",\"Dimensions\":[{\"Value\":\"Production\",\"Name\":\"Environment\"}],\"Period\":\"60\",\"EvaluationPeriods\":\"1\",\"Namespace\":\"ProjectRespawn/Core\",\"Threshold\":\"20\"}",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "Runtime-CREATE_IN_PROGRESS-2026-10-20T22:34:24.791Z",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "11f392de-0742-4f52-9f97-a1c3cd6c4da2",
+        "LogicalResourceId": "Runtime",
+        "PhysicalResourceId": "",
+        "ResourceType": "AWS::IAM::Role",
+        "Timestamp": "2026-10-20T22:34:24.791000+00:00",
+        "ResourceStatus": "CREATE_IN_PROGRESS",
+        "ResourceProperties": "{\"RoleName\":\"ProjectRespawn-Core-Production-Contracts\",\"Policies\":[{\"PolicyName\":\"ProductionRuntime\",\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Resource\":\"*\",\"Effect\":\"Deny\",\"NotAction\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\",\"cognito-idp:AdminGetUser\",\"cognito-idp:AdminListGroupsForUser\",\"cognito-idp:ListUsers\",\"secretsmanager:GetSecretValue\",\"kms:Decrypt\"]},{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Resource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts:*\",\"Effect\":\"Allow\"},{\"Action\":[\"cognito-idp:AdminGetUser\",\"cognito-idp:AdminListGroupsForUser\",\"cognito-idp:ListUsers\"],\"Resource\":\"arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_Uufjxul58\",\"Effect\":\"Allow\"},{\"Action\":\"secretsmanager:GetSecretValue\",\"Resource\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\",\"Effect\":\"Allow\"},{\"Action\":\"cognito-idp:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_Uufjxul58\"},{\"Action\":\"logs:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts:*\"},{\"Action\":\"secretsmanager:*\",\"Effect\":\"Deny\",\"NotResource\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\"},{\"Action\":\"kms:*\",\"Effect\":\"Deny\",\"NotResource\":[\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\"]},{\"Resource\":[\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\"],\"Effect\":\"Deny\",\"NotAction\":[\"kms:Decrypt\"]},{\"Condition\":{\"StringEquals\":{\"kms:EncryptionContext:aws:lambda:FunctionArn\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts\"],\"kms:ViaService\":\"lambda.eu-north-1.amazonaws.com\",\"kms:CallerAccount\":\"058264289478\"}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Allow\"},{\"Condition\":{\"StringEquals\":{\"kms:ViaService\":\"secretsmanager.eu-north-1.amazonaws.com\",\"kms:CallerAccount\":\"058264289478\",\"kms:EncryptionContext:SecretARN\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\"}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\",\"Effect\":\"Allow\"},{\"Condition\":{\"StringNotEquals\":{\"kms:ViaService\":\"lambda.eu-north-1.amazonaws.com\"}},\"Action\":[\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:CallerAccount\":\"058264289478\"}},\"Action\":[\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:ViaService\":\"secretsmanager.eu-north-1.amazonaws.com\"}},\"Action\":[\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:CallerAccount\":\"058264289478\"}},\"Action\":[\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:EncryptionContext:aws:lambda:FunctionArn\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts\"]}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Deny\"},{\"Condition\":{\"StringNotEquals\":{\"kms:EncryptionContext:SecretARN\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\"}},\"Action\":\"kms:Decrypt\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a\",\"Effect\":\"Deny\"}]}}],\"AssumeRolePolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"}}]},\"PermissionsBoundary\":\"arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary\"}",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "Logs-CREATE_IN_PROGRESS-2026-10-20T22:34:24.786Z",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "11f392de-0742-4f52-9f97-a1c3cd6c4da2",
+        "LogicalResourceId": "Logs",
+        "PhysicalResourceId": "",
+        "ResourceType": "AWS::Logs::LogGroup",
+        "Timestamp": "2026-10-20T22:34:24.786000+00:00",
+        "ResourceStatus": "CREATE_IN_PROGRESS",
+        "ResourceProperties": "{\"RetentionInDays\":\"30\",\"LogGroupName\":\"/project-respawn/Production/core/contracts\"}",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "DependencyFailures-CREATE_IN_PROGRESS-2026-10-20T22:34:24.780Z",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "11f392de-0742-4f52-9f97-a1c3cd6c4da2",
+        "LogicalResourceId": "DependencyFailures",
+        "PhysicalResourceId": "",
+        "ResourceType": "AWS::CloudWatch::Alarm",
+        "Timestamp": "2026-10-20T22:34:24.780000+00:00",
+        "ResourceStatus": "CREATE_IN_PROGRESS",
+        "ResourceProperties": "{\"MetricName\":\"DependencyFailures\",\"ComparisonOperator\":\"GreaterThanOrEqualToThreshold\",\"TreatMissingData\":\"notBreaching\",\"AlarmName\":\"ProjectRespawn-Core-Production-DependencyFailures\",\"Statistic\":\"Sum\",\"Dimensions\":[{\"Value\":\"Production\",\"Name\":\"Environment\"}],\"Period\":\"60\",\"EvaluationPeriods\":\"1\",\"Namespace\":\"ProjectRespawn/Core\",\"Threshold\":\"1\"}",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "Denied-CREATE_IN_PROGRESS-2026-10-20T22:34:24.747Z",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "11f392de-0742-4f52-9f97-a1c3cd6c4da2",
+        "LogicalResourceId": "Denied",
+        "PhysicalResourceId": "",
+        "ResourceType": "AWS::CloudWatch::Alarm",
+        "Timestamp": "2026-10-20T22:34:24.747000+00:00",
+        "ResourceStatus": "CREATE_IN_PROGRESS",
+        "ResourceProperties": "{\"MetricName\":\"Denied\",\"ComparisonOperator\":\"GreaterThanOrEqualToThreshold\",\"TreatMissingData\":\"notBreaching\",\"AlarmName\":\"ProjectRespawn-Core-Production-Denied\",\"Statistic\":\"Sum\",\"Dimensions\":[{\"Value\":\"Production\",\"Name\":\"Environment\"}],\"Period\":\"60\",\"EvaluationPeriods\":\"1\",\"Namespace\":\"ProjectRespawn/Core\",\"Threshold\":\"20\"}",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "65edd8b0-ccd6-11f1-8b8a-0effd096d3b1",
+        "StackName": "ProjectRespawn-Core-Production",
+        "OperationId": "11f392de-0742-4f52-9f97-a1c3cd6c4da2",
+        "LogicalResourceId": "ProjectRespawn-Core-Production",
+        "PhysicalResourceId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "ResourceType": "AWS::CloudFormation::Stack",
+        "Timestamp": "2026-10-20T22:34:23.024000+00:00",
+        "ResourceStatus": "CREATE_IN_PROGRESS",
+        "ResourceStatusReason": "User Initiated",
+        "ClientRequestToken": "e7ccaf03-8313-4d9c-b8d1-245e8e1c959f"
+      },
+      {
+        "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "EventId": "5fbcea80-ccd6-11f1-8214-0efffa990c75",
+        "StackName": "ProjectRespawn-Core-Production",
+        "LogicalResourceId": "ProjectRespawn-Core-Production",
+        "PhysicalResourceId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/5fbdadd0-ccd6-11f1-8214-0efffa990c75",
+        "ResourceType": "AWS::CloudFormation::Stack",
+        "Timestamp": "2026-10-20T22:34:12.799000+00:00",
+        "ResourceStatus": "REVIEW_IN_PROGRESS",
+        "ResourceStatusReason": "User Initiated"
+      }
+    ]
+  },
+  "role": {
+    "Role": {
+      "Path": "/",
+      "RoleName": "ProjectRespawn-Core-Production-Execution",
+      "RoleId": "AROAQ3EGSQDDJ2P7BKN4P",
+      "Arn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+      "CreateDate": "2026-10-20T22:31:52+00:00",
+      "AssumeRolePolicyDocument": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "cloudformation.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "Description": "",
+      "MaxSessionDuration": 3600,
+      "PermissionsBoundary": {
+        "PermissionsBoundaryType": "Policy",
+        "PermissionsBoundaryArn": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-ExecutionBoundary"
+      },
+      "RoleLastUsed": {
+        "LastUsedDate": "2026-10-20T22:35:17+00:00",
+        "Region": "us-east-1"
+      }
+    }
+  },
+  "inlineNames": {
+    "PolicyNames": [
+      "ProductionExecution"
+    ]
+  },
+  "attached": {
+    "AttachedPolicies": []
+  },
+  "inline": [
+    {
+      "RoleName": "ProjectRespawn-Core-Production-Execution",
+      "PolicyName": "ProductionExecution",
+      "PolicyDocument": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Action": [
+              "lambda:CreateFunction",
+              "lambda:GetFunction",
+              "lambda:GetFunctionConfiguration",
+              "lambda:UpdateFunctionCode",
+              "lambda:UpdateFunctionConfiguration",
+              "lambda:DeleteFunction",
+              "lambda:ListTags",
+              "lambda:TagResource",
+              "lambda:UntagResource",
+              "lambda:GetFunctionConcurrency"
+            ],
+            "Resource": [
+              "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts",
+              "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts:$LATEST"
+            ],
+            "Effect": "Allow"
+          },
+          {
+            "Action": [
+              "iam:GetRole",
+              "iam:GetRolePolicy",
+              "iam:ListRolePolicies",
+              "iam:ListAttachedRolePolicies",
+              "iam:PutRolePolicy",
+              "iam:DeleteRolePolicy",
+              "iam:DeleteRole",
+              "iam:UpdateAssumeRolePolicy",
+              "iam:TagRole",
+              "iam:UntagRole"
+            ],
+            "Resource": [
+              "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts"
+            ],
+            "Effect": "Allow"
+          },
+          {
+            "Condition": {
+              "StringEquals": {
+                "iam:PassedToService": "lambda.amazonaws.com"
+              }
+            },
+            "Action": "iam:PassRole",
+            "Resource": [
+              "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts"
+            ],
+            "Effect": "Allow"
+          },
+          {
+            "Action": "iam:GetPolicy",
+            "Resource": [
+              "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary"
+            ],
+            "Effect": "Allow"
+          },
+          {
+            "Action": [
+              "logs:CreateLogGroup",
+              "logs:DeleteLogGroup",
+              "logs:PutRetentionPolicy",
+              "logs:DeleteRetentionPolicy",
+              "logs:TagResource",
+              "logs:UntagResource",
+              "logs:ListTagsForResource"
+            ],
+            "Resource": [
+              "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts",
+              "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts:*"
+            ],
+            "Effect": "Allow"
+          },
+          {
+            "Action": "logs:DescribeLogGroups",
+            "Resource": "*",
+            "Effect": "Allow"
+          },
+          {
+            "Action": [
+              "cloudwatch:PutMetricAlarm",
+              "cloudwatch:DeleteAlarms",
+              "cloudwatch:DescribeAlarms",
+              "cloudwatch:TagResource",
+              "cloudwatch:UntagResource",
+              "cloudwatch:ListTagsForResource"
+            ],
+            "Resource": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-Core-Production-*",
+            "Effect": "Allow"
+          },
+          {
+            "Action": "s3:GetObject",
+            "Resource": [
+              "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/b9c5d96e7123a6d837c903f1e1779080e020aba8c9eab8af1e2ddccde912ed96.json",
+              "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.zip"
+            ],
+            "Effect": "Allow"
+          },
+          {
+            "Action": "iam:DeleteRolePermissionsBoundary",
+            "Resource": "*",
+            "Effect": "Deny"
+          },
+          {
+            "Condition": {
+              "StringEquals": {
+                "iam:PermissionsBoundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary"
+              }
+            },
+            "Action": [
+              "iam:CreateRole",
+              "iam:PutRolePermissionsBoundary"
+            ],
+            "Resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts",
+            "Effect": "Allow"
+          },
+          {
+            "Action": "kms:*",
+            "Effect": "Deny",
+            "NotResource": [
+              "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7"
+            ]
+          },
+          {
+            "Resource": [
+              "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7"
+            ],
+            "Effect": "Deny",
+            "NotAction": [
+              "kms:Encrypt",
+              "kms:Decrypt",
+              "kms:DescribeKey"
+            ]
+          },
+          {
+            "Condition": {
+              "StringEquals": {
+                "kms:EncryptionContext:aws:lambda:FunctionArn": [
+                  "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts"
+                ],
+                "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+                "kms:CallerAccount": "058264289478"
+              }
+            },
+            "Action": [
+              "kms:Encrypt",
+              "kms:Decrypt"
+            ],
+            "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+            "Effect": "Allow"
+          },
+          {
+            "Condition": {
+              "StringEquals": {
+                "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+                "kms:CallerAccount": "058264289478"
+              }
+            },
+            "Action": "kms:DescribeKey",
+            "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+            "Effect": "Allow"
+          },
+          {
+            "Condition": {
+              "StringNotEquals": {
+                "kms:ViaService": "lambda.eu-north-1.amazonaws.com"
+              }
+            },
+            "Action": [
+              "kms:Encrypt",
+              "kms:Decrypt",
+              "kms:DescribeKey"
+            ],
+            "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+            "Effect": "Deny"
+          },
+          {
+            "Condition": {
+              "StringNotEquals": {
+                "kms:CallerAccount": "058264289478"
+              }
+            },
+            "Action": [
+              "kms:Encrypt",
+              "kms:Decrypt",
+              "kms:DescribeKey"
+            ],
+            "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+            "Effect": "Deny"
+          },
+          {
+            "Condition": {
+              "StringNotEquals": {
+                "kms:EncryptionContext:aws:lambda:FunctionArn": [
+                  "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts"
+                ]
+              }
+            },
+            "Action": [
+              "kms:Encrypt",
+              "kms:Decrypt"
+            ],
+            "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+            "Effect": "Deny"
+          }
+        ]
+      }
+    }
+  ],
+  "boundary": {
+    "Policy": {
+      "PolicyName": "ProjectRespawn-Core-Production-ExecutionBoundary",
+      "PolicyId": "ANPAQ3EGSQDDG4XJ4R4TQ",
+      "Arn": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-ExecutionBoundary",
+      "Path": "/",
+      "DefaultVersionId": "v1",
+      "AttachmentCount": 0,
+      "PermissionsBoundaryUsageCount": 1,
+      "IsAttachable": true,
+      "CreateDate": "2026-10-20T22:31:32+00:00",
+      "UpdateDate": "2026-10-20T22:31:32+00:00",
+      "Tags": []
+    }
+  },
+  "boundaryVersion": {
+    "PolicyVersion": {
+      "Document": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Action": [
+              "lambda:CreateFunction",
+              "lambda:GetFunction",
+              "lambda:GetFunctionConfiguration",
+              "lambda:UpdateFunctionCode",
+              "lambda:UpdateFunctionConfiguration",
+              "lambda:DeleteFunction",
+              "lambda:ListTags",
+              "lambda:TagResource",
+              "lambda:UntagResource",
+              "lambda:GetFunctionConcurrency"
+            ],
+            "Resource": [
+              "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts",
+              "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts:$LATEST"
+            ],
+            "Effect": "Allow"
+          },
+          {
+            "Action": [
+              "iam:GetRole",
+              "iam:GetRolePolicy",
+              "iam:ListRolePolicies",
+              "iam:ListAttachedRolePolicies",
+              "iam:PutRolePolicy",
+              "iam:DeleteRolePolicy",
+              "iam:DeleteRole",
+              "iam:UpdateAssumeRolePolicy",
+              "iam:TagRole",
+              "iam:UntagRole"
+            ],
+            "Resource": [
+              "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts"
+            ],
+            "Effect": "Allow"
+          },
+          {
+            "Condition": {
+              "StringEquals": {
+                "iam:PassedToService": "lambda.amazonaws.com"
+              }
+            },
+            "Action": "iam:PassRole",
+            "Resource": [
+              "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts"
+            ],
+            "Effect": "Allow"
+          },
+          {
+            "Action": "iam:GetPolicy",
+            "Resource": [
+              "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary"
+            ],
+            "Effect": "Allow"
+          },
+          {
+            "Action": [
+              "logs:CreateLogGroup",
+              "logs:DeleteLogGroup",
+              "logs:PutRetentionPolicy",
+              "logs:DeleteRetentionPolicy",
+              "logs:TagResource",
+              "logs:UntagResource",
+              "logs:ListTagsForResource"
+            ],
+            "Resource": [
+              "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts",
+              "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts:*"
+            ],
+            "Effect": "Allow"
+          },
+          {
+            "Action": "logs:DescribeLogGroups",
+            "Resource": "*",
+            "Effect": "Allow"
+          },
+          {
+            "Action": [
+              "cloudwatch:PutMetricAlarm",
+              "cloudwatch:DeleteAlarms",
+              "cloudwatch:DescribeAlarms",
+              "cloudwatch:TagResource",
+              "cloudwatch:UntagResource",
+              "cloudwatch:ListTagsForResource"
+            ],
+            "Resource": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-Core-Production-*",
+            "Effect": "Allow"
+          },
+          {
+            "Action": "s3:GetObject",
+            "Resource": [
+              "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/b9c5d96e7123a6d837c903f1e1779080e020aba8c9eab8af1e2ddccde912ed96.json",
+              "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.zip"
+            ],
+            "Effect": "Allow"
+          },
+          {
+            "Condition": {
+              "StringEquals": {
+                "iam:PermissionsBoundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary"
+              }
+            },
+            "Action": [
+              "iam:CreateRole",
+              "iam:PutRolePermissionsBoundary"
+            ],
+            "Resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts",
+            "Effect": "Allow"
+          },
+          {
+            "Condition": {
+              "StringEquals": {
+                "kms:EncryptionContext:aws:lambda:FunctionArn": [
+                  "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts"
+                ],
+                "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+                "kms:CallerAccount": "058264289478"
+              }
+            },
+            "Action": [
+              "kms:Encrypt",
+              "kms:Decrypt"
+            ],
+            "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+            "Effect": "Allow"
+          },
+          {
+            "Condition": {
+              "StringEquals": {
+                "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+                "kms:CallerAccount": "058264289478"
+              }
+            },
+            "Action": "kms:DescribeKey",
+            "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+            "Effect": "Allow"
+          }
+        ]
+      },
+      "VersionId": "v1",
+      "IsDefaultVersion": true,
+      "CreateDate": "2026-10-20T22:31:32+00:00"
+    }
+  },
+  "key": {
+    "KeyMetadata": {
+      "AWSAccountId": "058264289478",
+      "KeyId": "13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "Arn": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "CreationDate": "2026-03-31T13:31:31.492000+01:00",
+      "Enabled": true,
+      "Description": "Default key that protects my Lambda functions when no other key is defined",
+      "KeyUsage": "ENCRYPT_DECRYPT",
+      "KeyState": "Enabled",
+      "Origin": "AWS_KMS",
+      "KeyManager": "AWS",
+      "CustomerMasterKeySpec": "SYMMETRIC_DEFAULT",
+      "KeySpec": "SYMMETRIC_DEFAULT",
+      "EncryptionAlgorithms": [
+        "SYMMETRIC_DEFAULT"
+      ],
+      "MultiRegion": false,
+      "CurrentKeyMaterialId": "930f1e3a8e20fe3ba32201a4a74e99d141cfead7c144753fce47eb96352d7366"
+    }
+  },
+  "keyPolicy": {
+    "Policy": "{\n  \"Version\" : \"2012-10-17\",\n  \"Id\" : \"auto-awslambda-3\",\n  \"Statement\" : [ {\n    \"Sid\" : \"Allow access through AWS Lambda for all principals in the account that are authorized to use AWS Lambda\",\n    \"Effect\" : \"Allow\",\n    \"Principal\" : {\n      \"AWS\" : \"*\"\n    },\n    \"Action\" : [ \"kms:Encrypt\", \"kms:Decrypt\", \"kms:ReEncrypt*\", \"kms:GenerateDataKey*\", \"kms:CreateGrant\", \"kms:DescribeKey\" ],\n    \"Resource\" : \"*\",\n    \"Condition\" : {\n      \"StringEquals\" : {\n        \"kms:CallerAccount\" : \"058264289478\",\n        \"kms:ViaService\" : \"lambda.eu-north-1.amazonaws.com\"\n      }\n    }\n  }, {\n    \"Sid\" : \"Allow all principals in the account to decrypt ciphertexts for Lambda functions in the account\",\n    \"Effect\" : \"Allow\",\n    \"Principal\" : {\n      \"AWS\" : \"*\"\n    },\n    \"Action\" : \"kms:Decrypt\",\n    \"Resource\" : \"*\",\n    \"Condition\" : {\n      \"StringEquals\" : {\n        \"kms:CallerAccount\" : \"058264289478\"\n      },\n      \"ArnLike\" : {\n        \"kms:EncryptionContext:aws:lambda:FunctionArn\" : \"arn:*:lambda:eu-north-1:058264289478:function:*\"\n      }\n    }\n  }, {\n    \"Sid\" : \"Allow Lambda service access\",\n    \"Effect\" : \"Allow\",\n    \"Principal\" : {\n      \"Service\" : [ \"lambda.amazonaws.com\", \"lambda.eu-north-1.amazonaws.com\" ]\n    },\n    \"Action\" : \"kms:GenerateDataKey\",\n    \"Resource\" : \"*\",\n    \"Condition\" : {\n      \"ArnLike\" : {\n        \"kms:EncryptionContext:aws:lambda:FunctionArn\" : \"arn:*:lambda:eu-north-1:058264289478:function:*\"\n      }\n    }\n  }, {\n    \"Sid\" : \"Allow Lambda to directly describe the key and list its grants\",\n    \"Effect\" : \"Allow\",\n    \"Principal\" : {\n      \"Service\" : [ \"lambda.amazonaws.com\", \"lambda.eu-north-1.amazonaws.com\" ]\n    },\n    \"Action\" : [ \"kms:Describe*\", \"kms:Get*\", \"kms:List*\" ],\n    \"Resource\" : \"*\"\n  }, {\n    \"Sid\" : \"Allow direct access to key metadata to the account\",\n    \"Effect\" : \"Allow\",\n    \"Principal\" : {\n      \"AWS\" : \"arn:aws:iam::058264289478:root\"\n    },\n    \"Action\" : [ \"kms:Describe*\", \"kms:Get*\", \"kms:List*\", \"kms:RevokeGrant\" ],\n    \"Resource\" : \"*\"\n  } ]\n}",
+    "PolicyName": "default"
+  },
+  "logs": {
+    "logGroups": [
+      {
+        "logGroupName": "/project-respawn/Production/core/contracts",
+        "creationTime": 1792535667090,
+        "retentionInDays": 30,
+        "metricFilterCount": 0,
+        "arn": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts:*",
+        "storedBytes": 0,
+        "logGroupClass": "STANDARD",
+        "logGroupArn": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts",
+        "deletionProtectionEnabled": false,
+        "bearerTokenAuthenticationEnabled": false
+      }
+    ]
+  },
+  "streams": {
+    "logStreams": []
+  },
+  "sources": [
+    {
+      "model": "Team",
+      "table": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "slug",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "status",
+            "AttributeType": "S"
+          }
+        ],
+        "TableName": "Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "TableStatus": "ACTIVE",
+        "CreationDateTime": "2026-09-02T18:29:01.206000+01:00",
+        "ProvisionedThroughput": {
+          "NumberOfDecreasesToday": 0,
+          "ReadCapacityUnits": 0,
+          "WriteCapacityUnits": 0
+        },
+        "TableSizeBytes": 531,
+        "ItemCount": 1,
+        "TableArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "TableId": "78f6917b-9d12-4af4-aa14-fdae57eb7f2b",
+        "BillingModeSummary": {
+          "BillingMode": "PAY_PER_REQUEST",
+          "LastUpdateToPayPerRequestDateTime": "2026-09-02T18:29:01.206000+01:00"
+        },
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "teamsBySlug",
+            "KeySchema": [
+              {
+                "AttributeName": "slug",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "NumberOfDecreasesToday": 0,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 496,
+            "ItemCount": 1,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE/index/teamsBySlug",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          },
+          {
+            "IndexName": "teamsByStatus",
+            "KeySchema": [
+              {
+                "AttributeName": "status",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "NumberOfDecreasesToday": 0,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 496,
+            "ItemCount": 1,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE/index/teamsByStatus",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          }
+        ],
+        "StreamSpecification": {
+          "StreamEnabled": true,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        },
+        "LatestStreamLabel": "2026-09-02T17:29:01.206",
+        "LatestStreamArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE/stream/2026-09-02T17:29:01.206",
+        "DeletionProtectionEnabled": true,
+        "WarmThroughput": {
+          "ReadUnitsPerSecond": 12000,
+          "WriteUnitsPerSecond": 4000,
+          "Status": "ACTIVE"
+        }
+      },
+      "protection": {
+        "ContinuousBackupsDescription": {
+          "ContinuousBackupsStatus": "ENABLED",
+          "PointInTimeRecoveryDescription": {
+            "PointInTimeRecoveryStatus": "ENABLED",
+            "RecoveryPeriodInDays": 35,
+            "EarliestRestorableDateTime": "2026-10-20T21:25:04+01:00",
+            "LatestRestorableDateTime": "2026-10-21T06:34:30.652000+01:00"
+          }
+        }
+      },
+      "backup": {
+        "BackupDescription": {
+          "BackupDetails": {
+            "BackupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527947116-43f6eb02",
+            "BackupName": "ProjectRespawn-TeamHub-Production-Team-Recovery-20261020",
+            "BackupSizeBytes": 531,
+            "BackupStatus": "AVAILABLE",
+            "BackupType": "USER",
+            "BackupCreationDateTime": "2026-10-20T21:25:47.116000+01:00"
+          },
+          "SourceTableDetails": {
+            "TableName": "Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+            "TableId": "78f6917b-9d12-4af4-aa14-fdae57eb7f2b",
+            "TableArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+            "TableSizeBytes": 531,
+            "KeySchema": [
+              {
+                "AttributeName": "id",
+                "KeyType": "HASH"
+              }
+            ],
+            "TableCreationDateTime": "2026-09-02T18:29:01.206000+01:00",
+            "ProvisionedThroughput": {
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "ItemCount": 1,
+            "BillingMode": "PAY_PER_REQUEST"
+          },
+          "SourceTableFeatureDetails": {
+            "GlobalSecondaryIndexes": [
+              {
+                "IndexName": "teamsBySlug",
+                "KeySchema": [
+                  {
+                    "AttributeName": "slug",
+                    "KeyType": "HASH"
+                  }
+                ],
+                "Projection": {
+                  "ProjectionType": "ALL"
+                },
+                "ProvisionedThroughput": {
+                  "ReadCapacityUnits": 0,
+                  "WriteCapacityUnits": 0
+                }
+              },
+              {
+                "IndexName": "teamsByStatus",
+                "KeySchema": [
+                  {
+                    "AttributeName": "status",
+                    "KeyType": "HASH"
+                  }
+                ],
+                "Projection": {
+                  "ProjectionType": "ALL"
+                },
+                "ProvisionedThroughput": {
+                  "ReadCapacityUnits": 0,
+                  "WriteCapacityUnits": 0
+                }
+              }
+            ],
+            "StreamDescription": {
+              "StreamEnabled": true,
+              "StreamViewType": "NEW_AND_OLD_IMAGES"
+            }
+          }
+        }
+      }
+    },
+    {
+      "model": "TeamMembership",
+      "table": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "teamId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "userId",
+            "AttributeType": "S"
+          }
+        ],
+        "TableName": "TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "TableStatus": "ACTIVE",
+        "CreationDateTime": "2026-09-02T18:29:02.632000+01:00",
+        "ProvisionedThroughput": {
+          "NumberOfDecreasesToday": 0,
+          "ReadCapacityUnits": 0,
+          "WriteCapacityUnits": 0
+        },
+        "TableSizeBytes": 3057,
+        "ItemCount": 8,
+        "TableArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "TableId": "84e7d7af-3ff0-4881-a76a-90bc00b3d3ab",
+        "BillingModeSummary": {
+          "BillingMode": "PAY_PER_REQUEST",
+          "LastUpdateToPayPerRequestDateTime": "2026-09-02T18:29:02.632000+01:00"
+        },
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "teamMembershipsByTeamId",
+            "KeySchema": [
+              {
+                "AttributeName": "teamId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "NumberOfDecreasesToday": 0,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 2777,
+            "ItemCount": 8,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE/index/teamMembershipsByTeamId",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          },
+          {
+            "IndexName": "teamMembershipsByUserId",
+            "KeySchema": [
+              {
+                "AttributeName": "userId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "NumberOfDecreasesToday": 0,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 2777,
+            "ItemCount": 8,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE/index/teamMembershipsByUserId",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          }
+        ],
+        "StreamSpecification": {
+          "StreamEnabled": true,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        },
+        "LatestStreamLabel": "2026-09-02T17:29:02.632",
+        "LatestStreamArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE/stream/2026-09-02T17:29:02.632",
+        "DeletionProtectionEnabled": true,
+        "WarmThroughput": {
+          "ReadUnitsPerSecond": 12000,
+          "WriteUnitsPerSecond": 4000,
+          "Status": "ACTIVE"
+        }
+      },
+      "protection": {
+        "ContinuousBackupsDescription": {
+          "ContinuousBackupsStatus": "ENABLED",
+          "PointInTimeRecoveryDescription": {
+            "PointInTimeRecoveryStatus": "ENABLED",
+            "RecoveryPeriodInDays": 35,
+            "EarliestRestorableDateTime": "2026-10-20T21:25:12+01:00",
+            "LatestRestorableDateTime": "2026-10-21T06:34:35.212000+01:00"
+          }
+        }
+      },
+      "backup": {
+        "BackupDescription": {
+          "BackupDetails": {
+            "BackupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527948497-eda960ad",
+            "BackupName": "ProjectRespawn-TeamHub-Production-TeamMembership-Recovery-20261020",
+            "BackupSizeBytes": 3057,
+            "BackupStatus": "AVAILABLE",
+            "BackupType": "USER",
+            "BackupCreationDateTime": "2026-10-20T21:25:48.497000+01:00"
+          },
+          "SourceTableDetails": {
+            "TableName": "TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE",
+            "TableId": "84e7d7af-3ff0-4881-a76a-90bc00b3d3ab",
+            "TableArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE",
+            "TableSizeBytes": 3057,
+            "KeySchema": [
+              {
+                "AttributeName": "id",
+                "KeyType": "HASH"
+              }
+            ],
+            "TableCreationDateTime": "2026-09-02T18:29:02.632000+01:00",
+            "ProvisionedThroughput": {
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "ItemCount": 8,
+            "BillingMode": "PAY_PER_REQUEST"
+          },
+          "SourceTableFeatureDetails": {
+            "GlobalSecondaryIndexes": [
+              {
+                "IndexName": "teamMembershipsByTeamId",
+                "KeySchema": [
+                  {
+                    "AttributeName": "teamId",
+                    "KeyType": "HASH"
+                  }
+                ],
+                "Projection": {
+                  "ProjectionType": "ALL"
+                },
+                "ProvisionedThroughput": {
+                  "ReadCapacityUnits": 0,
+                  "WriteCapacityUnits": 0
+                }
+              },
+              {
+                "IndexName": "teamMembershipsByUserId",
+                "KeySchema": [
+                  {
+                    "AttributeName": "userId",
+                    "KeyType": "HASH"
+                  }
+                ],
+                "Projection": {
+                  "ProjectionType": "ALL"
+                },
+                "ProvisionedThroughput": {
+                  "ReadCapacityUnits": 0,
+                  "WriteCapacityUnits": 0
+                }
+              }
+            ],
+            "StreamDescription": {
+              "StreamEnabled": true,
+              "StreamViewType": "NEW_AND_OLD_IMAGES"
+            }
+          }
+        }
+      }
+    },
+    {
+      "model": "TeamRosterSlot",
+      "table": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "membershipId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "teamId",
+            "AttributeType": "S"
+          }
+        ],
+        "TableName": "TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "TableStatus": "ACTIVE",
+        "CreationDateTime": "2026-09-02T18:29:01.568000+01:00",
+        "ProvisionedThroughput": {
+          "NumberOfDecreasesToday": 0,
+          "ReadCapacityUnits": 0,
+          "WriteCapacityUnits": 0
+        },
+        "TableSizeBytes": 5355,
+        "ItemCount": 11,
+        "TableArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "TableId": "ce302ae3-9446-4594-81e1-12bff167f12f",
+        "BillingModeSummary": {
+          "BillingMode": "PAY_PER_REQUEST",
+          "LastUpdateToPayPerRequestDateTime": "2026-09-02T18:29:01.568000+01:00"
+        },
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "teamRosterSlotsByMembershipId",
+            "KeySchema": [
+              {
+                "AttributeName": "membershipId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "NumberOfDecreasesToday": 0,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 4970,
+            "ItemCount": 11,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE/index/teamRosterSlotsByMembershipId",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          },
+          {
+            "IndexName": "teamRosterSlotsByTeamId",
+            "KeySchema": [
+              {
+                "AttributeName": "teamId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "NumberOfDecreasesToday": 0,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 4970,
+            "ItemCount": 11,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE/index/teamRosterSlotsByTeamId",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          }
+        ],
+        "StreamSpecification": {
+          "StreamEnabled": true,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        },
+        "LatestStreamLabel": "2026-09-02T17:29:01.568",
+        "LatestStreamArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE/stream/2026-09-02T17:29:01.568",
+        "DeletionProtectionEnabled": true,
+        "WarmThroughput": {
+          "ReadUnitsPerSecond": 12000,
+          "WriteUnitsPerSecond": 4000,
+          "Status": "ACTIVE"
+        }
+      },
+      "protection": {
+        "ContinuousBackupsDescription": {
+          "ContinuousBackupsStatus": "ENABLED",
+          "PointInTimeRecoveryDescription": {
+            "PointInTimeRecoveryStatus": "ENABLED",
+            "RecoveryPeriodInDays": 35,
+            "EarliestRestorableDateTime": "2026-10-20T21:25:19+01:00",
+            "LatestRestorableDateTime": "2026-10-21T06:34:40.104000+01:00"
+          }
+        }
+      },
+      "backup": {
+        "BackupDescription": {
+          "BackupDetails": {
+            "BackupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527949892-3c2d8f3a",
+            "BackupName": "ProjectRespawn-TeamHub-Production-TeamRosterSlot-Recovery-20261020",
+            "BackupSizeBytes": 5355,
+            "BackupStatus": "AVAILABLE",
+            "BackupType": "USER",
+            "BackupCreationDateTime": "2026-10-20T21:25:49.892000+01:00"
+          },
+          "SourceTableDetails": {
+            "TableName": "TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE",
+            "TableId": "ce302ae3-9446-4594-81e1-12bff167f12f",
+            "TableArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE",
+            "TableSizeBytes": 5355,
+            "KeySchema": [
+              {
+                "AttributeName": "id",
+                "KeyType": "HASH"
+              }
+            ],
+            "TableCreationDateTime": "2026-09-02T18:29:01.568000+01:00",
+            "ProvisionedThroughput": {
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "ItemCount": 11,
+            "BillingMode": "PAY_PER_REQUEST"
+          },
+          "SourceTableFeatureDetails": {
+            "GlobalSecondaryIndexes": [
+              {
+                "IndexName": "teamRosterSlotsByMembershipId",
+                "KeySchema": [
+                  {
+                    "AttributeName": "membershipId",
+                    "KeyType": "HASH"
+                  }
+                ],
+                "Projection": {
+                  "ProjectionType": "ALL"
+                },
+                "ProvisionedThroughput": {
+                  "ReadCapacityUnits": 0,
+                  "WriteCapacityUnits": 0
+                }
+              },
+              {
+                "IndexName": "teamRosterSlotsByTeamId",
+                "KeySchema": [
+                  {
+                    "AttributeName": "teamId",
+                    "KeyType": "HASH"
+                  }
+                ],
+                "Projection": {
+                  "ProjectionType": "ALL"
+                },
+                "ProvisionedThroughput": {
+                  "ReadCapacityUnits": 0,
+                  "WriteCapacityUnits": 0
+                }
+              }
+            ],
+            "StreamDescription": {
+              "StreamEnabled": true,
+              "StreamViewType": "NEW_AND_OLD_IMAGES"
+            }
+          }
+        }
+      }
+    },
+    {
+      "model": "PlayerChampionPoolEntry",
+      "table": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "membershipId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "teamId",
+            "AttributeType": "S"
+          }
+        ],
+        "TableName": "PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "TableStatus": "ACTIVE",
+        "CreationDateTime": "2026-09-02T18:29:02.724000+01:00",
+        "ProvisionedThroughput": {
+          "NumberOfDecreasesToday": 0,
+          "ReadCapacityUnits": 0,
+          "WriteCapacityUnits": 0
+        },
+        "TableSizeBytes": 41218,
+        "ItemCount": 101,
+        "TableArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "TableId": "a208a911-c53c-45f8-a499-d69117d611d5",
+        "BillingModeSummary": {
+          "BillingMode": "PAY_PER_REQUEST",
+          "LastUpdateToPayPerRequestDateTime": "2026-09-02T18:29:02.724000+01:00"
+        },
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "playerChampionPoolEntriesByTeamId",
+            "KeySchema": [
+              {
+                "AttributeName": "teamId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "NumberOfDecreasesToday": 0,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 41218,
+            "ItemCount": 101,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE/index/playerChampionPoolEntriesByTeamId",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          },
+          {
+            "IndexName": "playerChampionPoolEntriesByMembershipId",
+            "KeySchema": [
+              {
+                "AttributeName": "membershipId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "IndexStatus": "ACTIVE",
+            "ProvisionedThroughput": {
+              "NumberOfDecreasesToday": 0,
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "IndexSizeBytes": 41218,
+            "ItemCount": 101,
+            "IndexArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE/index/playerChampionPoolEntriesByMembershipId",
+            "WarmThroughput": {
+              "ReadUnitsPerSecond": 12000,
+              "WriteUnitsPerSecond": 4000,
+              "Status": "ACTIVE"
+            }
+          }
+        ],
+        "StreamSpecification": {
+          "StreamEnabled": true,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        },
+        "LatestStreamLabel": "2026-09-02T17:29:02.724",
+        "LatestStreamArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE/stream/2026-09-02T17:29:02.724",
+        "DeletionProtectionEnabled": true,
+        "WarmThroughput": {
+          "ReadUnitsPerSecond": 12000,
+          "WriteUnitsPerSecond": 4000,
+          "Status": "ACTIVE"
+        }
+      },
+      "protection": {
+        "ContinuousBackupsDescription": {
+          "ContinuousBackupsStatus": "ENABLED",
+          "PointInTimeRecoveryDescription": {
+            "PointInTimeRecoveryStatus": "ENABLED",
+            "RecoveryPeriodInDays": 35,
+            "EarliestRestorableDateTime": "2026-10-20T21:25:28+01:00",
+            "LatestRestorableDateTime": "2026-10-21T06:34:44.792000+01:00"
+          }
+        }
+      },
+      "backup": {
+        "BackupDescription": {
+          "BackupDetails": {
+            "BackupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527951273-7b424a61",
+            "BackupName": "ProjectRespawn-TeamHub-Production-PlayerChampionPoolEntry-Recovery-20261020",
+            "BackupSizeBytes": 41218,
+            "BackupStatus": "AVAILABLE",
+            "BackupType": "USER",
+            "BackupCreationDateTime": "2026-10-20T21:25:51.273000+01:00"
+          },
+          "SourceTableDetails": {
+            "TableName": "PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE",
+            "TableId": "a208a911-c53c-45f8-a499-d69117d611d5",
+            "TableArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE",
+            "TableSizeBytes": 41218,
+            "KeySchema": [
+              {
+                "AttributeName": "id",
+                "KeyType": "HASH"
+              }
+            ],
+            "TableCreationDateTime": "2026-09-02T18:29:02.724000+01:00",
+            "ProvisionedThroughput": {
+              "ReadCapacityUnits": 0,
+              "WriteCapacityUnits": 0
+            },
+            "ItemCount": 101,
+            "BillingMode": "PAY_PER_REQUEST"
+          },
+          "SourceTableFeatureDetails": {
+            "GlobalSecondaryIndexes": [
+              {
+                "IndexName": "playerChampionPoolEntriesByMembershipId",
+                "KeySchema": [
+                  {
+                    "AttributeName": "membershipId",
+                    "KeyType": "HASH"
+                  }
+                ],
+                "Projection": {
+                  "ProjectionType": "ALL"
+                },
+                "ProvisionedThroughput": {
+                  "ReadCapacityUnits": 0,
+                  "WriteCapacityUnits": 0
+                }
+              },
+              {
+                "IndexName": "playerChampionPoolEntriesByTeamId",
+                "KeySchema": [
+                  {
+                    "AttributeName": "teamId",
+                    "KeyType": "HASH"
+                  }
+                ],
+                "Projection": {
+                  "ProjectionType": "ALL"
+                },
+                "ProvisionedThroughput": {
+                  "ReadCapacityUnits": 0,
+                  "WriteCapacityUnits": 0
+                }
+              }
+            ],
+            "StreamDescription": {
+              "StreamEnabled": true,
+              "StreamViewType": "NEW_AND_OLD_IMAGES"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "recordContentRescan": false,
+  "limitations": [
+    "No production source item scan or raw personal data collected; prior content preservation is historical and must be refreshed at execution",
+    "No exhaustive organization-policy visibility or account-wide drift claim"
+  ]
+}

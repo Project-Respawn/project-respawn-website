@@ -12,7 +12,10 @@ export function selection(args) {
   }
   const domain = options['--domain'], environment = options['--env'], mode = options['--mode'], action = options['--action'];
   if (!domain || !environment || !mode || !action) throw new Error('Missing mandatory domain/environment/mode/action');
-  if (['production', 'master', 'main'].includes(environment.toLowerCase())) throw new Error('Production requires separate artifact-bound authorization; no production adapter installed');
+  if (['production', 'master', 'main'].includes(environment.toLowerCase())) {
+    if (environment !== 'Production' || !['core', 'team-hub'].includes(domain) || mode !== 'PRODUCTION_DARK' || !['check', 'describe'].includes(action)) throw new Error('Production requires separate artifact-bound authorization; only explicit offline candidate checks are installed');
+    return { domain, environment, mode, action, entrypoint: 'scripts/team-hub-production/deployment-ci.mjs', command: ['scripts/team-hub-production/deployment-ci.mjs', '--domain', domain], selectedDomains: [domain], legacySelected: false, tournamentSelected: false, awsWrites: false };
+  }
   if (!['check', 'synth', 'test', 'describe'].includes(action)) throw new Error('No diff/deploy/change-set execution adapter is authorized or installed');
   let command, entrypoint;
   if (domain === 'team-hub') {

@@ -1,0 +1,235 @@
+{
+  "schemaVersion": "production-core-emf-candidate.v1",
+  "approved": false,
+  "awsWrites": 0,
+  "account": "058264289478",
+  "region": "eu-north-1",
+  "runtime": {
+    "path": "docs/architecture/production-core-emf-evidence-2026-10-21/dc2a7137a725f6a82582abc8a800f5d30846058ecdbe12965f81a19c887154c4.core.runtime.zip",
+    "sha256": "dc2a7137a725f6a82582abc8a800f5d30846058ecdbe12965f81a19c887154c4",
+    "key": "production/dc2a7137a725f6a82582abc8a800f5d30846058ecdbe12965f81a19c887154c4.zip"
+  },
+  "product": {
+    "path": "docs/architecture/production-core-emf-evidence-2026-10-21/5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086.coreProduct.template.json",
+    "sha256": "5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086",
+    "key": "production/5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086.json",
+    "url": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086.json"
+  },
+  "security": {
+    "path": "docs/architecture/production-core-runtime-kms-evidence-2026-10-21/8f83dda21a47895b2f48cea19839daa84bdbcba7f28ff82e30906aec595b0c44.coreSecurity.template.json",
+    "sha256": "8f83dda21a47895b2f48cea19839daa84bdbcba7f28ff82e30906aec595b0c44",
+    "key": "production/8f83dda21a47895b2f48cea19839daa84bdbcba7f28ff82e30906aec595b0c44.json",
+    "url": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/8f83dda21a47895b2f48cea19839daa84bdbcba7f28ff82e30906aec595b0c44.json"
+  },
+  "rollback": {
+    "runtime": {
+      "path": "docs/architecture/team-hub-production-evidence-2026-10-20/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.core.runtime.zip",
+      "sha256": "fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503",
+      "key": "production/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.zip"
+    },
+    "product": {
+      "path": "docs/architecture/production-core-runtime-kms-evidence-2026-10-21/0302056f0152107ecabd9d459ab50d436245587eef3cec1aa4d971c77a6ca1e4.coreProduct.template.json",
+      "sha256": "0302056f0152107ecabd9d459ab50d436245587eef3cec1aa4d971c77a6ca1e4",
+      "key": "production/0302056f0152107ecabd9d459ab50d436245587eef3cec1aa4d971c77a6ca1e4.json",
+      "url": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/0302056f0152107ecabd9d459ab50d436245587eef3cec1aa4d971c77a6ca1e4.json"
+    },
+    "security": {
+      "path": "docs/architecture/production-core-runtime-kms-evidence-2026-10-21/8f83dda21a47895b2f48cea19839daa84bdbcba7f28ff82e30906aec595b0c44.coreSecurity.template.json",
+      "sha256": "8f83dda21a47895b2f48cea19839daa84bdbcba7f28ff82e30906aec595b0c44",
+      "key": "production/8f83dda21a47895b2f48cea19839daa84bdbcba7f28ff82e30906aec595b0c44.json",
+      "url": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/8f83dda21a47895b2f48cea19839daa84bdbcba7f28ff82e30906aec595b0c44.json"
+    },
+    "monitoringKnownUnhealthy": true
+  },
+  "baselineReproduced": true,
+  "bundleDiff": "One console.log to process.stdout.write plus newline; all other bundle bytes identical",
+  "sources": [
+    {
+      "path": "domains/shared-core/contracts.mjs",
+      "sha256": "89ed68ec07063c7afc1bc1bc6f5263e6ca3f45f1423c42255c8b9489a6aac703",
+      "productionBaselineSha256": "a6486a3531f2492ed5a90a5d72a2df5e045092e7659fb7b10053204a16cecfe4"
+    },
+    {
+      "path": "domains/shared-core/entry.mjs",
+      "sha256": "7548bf6c4fd1dd3d3a3074c8adf908c6c6fcd04f1e8319f25c4dd2986ebf3a3d",
+      "productionBaselineSha256": "d1e3d9df11e3993a8fb60471e8f677f32fbf21ec2296268c1e95202b4e9d9dec"
+    },
+    {
+      "path": "domains/shared-core/observability.mjs",
+      "sha256": "1850037ff1bc49e30b6505105b0f3c54febb2b4feed4e7984130fe5d7a308034",
+      "productionBaselineSha256": "60272ece14087f9ea401153f90026424faea486603dd15fa8452fa3ca5c3d206"
+    },
+    {
+      "path": "domains/shared-core/rate-limit.mjs",
+      "sha256": "cd5d95eb27ee3f28a1b157cbb32a52d506f02147e57d9628642005d272618216",
+      "productionBaselineSha256": "cd5d95eb27ee3f28a1b157cbb32a52d506f02147e57d9628642005d272618216"
+    },
+    {
+      "path": "domains/shared-core/service.mjs",
+      "sha256": "6b7634cda9b096ff79810fc5b752ac9be7cdb26fc26ab5bc9fa3b26ff2718d0a",
+      "productionBaselineSha256": "6b7634cda9b096ff79810fc5b752ac9be7cdb26fc26ab5bc9fa3b26ff2718d0a"
+    }
+  ],
+  "expectedChanges": {
+    "additions": 0,
+    "modifications": [
+      "Contracts.Code"
+    ],
+    "deletions": 0,
+    "replacements": 0
+  },
+  "counts": {
+    "security": 6,
+    "product": 7,
+    "total": 13
+  },
+  "iamChanged": false,
+  "loggingConfigurationChanged": false,
+  "liveAccepted": false,
+  "actualCloudWatchProofPending": true,
+  "status": "BLOCKED_EXACT_DEPLOYMENT_ARTIFACT_BINDINGS_REQUIRE_SEPARATE_IAM_REVIEW",
+  "requiredFollowUp": {
+    "securityCandidateGenerated": false,
+    "policyResources": [
+      "Execution",
+      "ExecutionBoundary",
+      "Caller",
+      "CallerBoundary"
+    ],
+    "scope": "Separately review only exact new runtime/product artifact bindings and product TemplateURL; retain rollback references; preserve actions/runtime IAM/KMS/PassRole"
+  },
+  "validation": {
+    "awsWrites": 0,
+    "invocations": 0,
+    "tests": {
+      "passed": 104,
+      "failed": 0,
+      "skipped": 0,
+      "exactBundleTests": 8
+    },
+    "coreTypeScript": {
+      "passed": true,
+      "compiler": "Existing repository TypeScript with existing parent @types/node; no packages installed"
+    },
+    "coreBuild": {
+      "passed": true,
+      "acceptedZipReproduced": true,
+      "oneExpressionBundleDiff": true
+    },
+    "websiteBuild": {
+      "accepted": false,
+      "reason": "Unchanged frontend build context lacks VITE_API_BASE_URL; no substitute settings used"
+    },
+    "iamPreserved": true,
+    "accessAnalyzer": {
+      "policies": 6,
+      "blockingFindings": 0
+    },
+    "templateValidated": true,
+    "artifactBindingChecks": {
+      "passedAsNegativeControls": 6,
+      "newArtifactsAllowed": false
+    },
+    "historicalBindingsVerified": 136,
+    "resourceCounts": {
+      "security": 6,
+      "product": 7
+    },
+    "liveProof": false,
+    "cloudWatchExtractionAccepted": false
+  },
+  "secretScan": {
+    "files": 22,
+    "matches": 0
+  },
+  "bindings": [
+    {
+      "path": "scripts/team-hub-production/core-emf-prepare.mjs",
+      "sha256": "f9fa06b0dff52a6135f4998b2a52a2ffc91a4e795d78bb727c2913fa08b68a5c"
+    },
+    {
+      "path": "scripts/team-hub-production/core-emf-inspect.mjs",
+      "sha256": "54a06f417fb2c5fa799253be28f56083bd0402a0c9ced11c7c443ec4b6887a92"
+    },
+    {
+      "path": "scripts/team-hub-production/core-emf-logs.mjs",
+      "sha256": "654704bb4c823846f20d6186df5e0dc0cc956b6952ab6b876b941a96ce1bed5e"
+    },
+    {
+      "path": "scripts/team-hub-production/core-emf-seal.mjs",
+      "sha256": "f6cc5fa7c6ce0759deed666f96593a625b52d89340a61f3a07d886eefa798a7e"
+    },
+    {
+      "path": "scripts/team-hub-production/core-emf.test.mjs",
+      "sha256": "f653e5a7e2b2e19e1f8fe9f577693c52230a8dc6bc5495e71b22014689667e64"
+    },
+    {
+      "path": "docs/architecture/production-core-emf-correction.md",
+      "sha256": "346d6c0e20ecf4ef47d3cb52c137e05ac478bcf9d6112465c250d0e16a63d07d"
+    },
+    {
+      "path": "domains/shared-core/contracts.mjs",
+      "sha256": "89ed68ec07063c7afc1bc1bc6f5263e6ca3f45f1423c42255c8b9489a6aac703"
+    },
+    {
+      "path": "domains/shared-core/entry.mjs",
+      "sha256": "7548bf6c4fd1dd3d3a3074c8adf908c6c6fcd04f1e8319f25c4dd2986ebf3a3d"
+    },
+    {
+      "path": "domains/shared-core/observability.mjs",
+      "sha256": "1850037ff1bc49e30b6505105b0f3c54febb2b4feed4e7984130fe5d7a308034"
+    },
+    {
+      "path": "domains/shared-core/rate-limit.mjs",
+      "sha256": "cd5d95eb27ee3f28a1b157cbb32a52d506f02147e57d9628642005d272618216"
+    },
+    {
+      "path": "domains/shared-core/service.mjs",
+      "sha256": "6b7634cda9b096ff79810fc5b752ac9be7cdb26fc26ab5bc9fa3b26ff2718d0a"
+    },
+    {
+      "path": "domains/shared-core/package.json",
+      "sha256": "8a0a2b7c24c8ebfc3ad30d6d64758d71d753a5666f4a66be37ba630b23fd266a"
+    },
+    {
+      "path": "domains/shared-core/package-lock.json",
+      "sha256": "3c8e16aca9be1ffdff00d8e7eb1ad5b15eaf685fc390294bdc784e6668288263"
+    },
+    {
+      "path": "docs/architecture/production-core-emf-evidence-2026-10-21/5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086.coreProduct.template.json",
+      "sha256": "5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086"
+    },
+    {
+      "path": "docs/architecture/production-core-emf-evidence-2026-10-21/artifact-binding-controls.json",
+      "sha256": "6a68d2ae1e0e89929e49502e445cb7482605aedf06e5f25dd0203a463ad8b7c6"
+    },
+    {
+      "path": "docs/architecture/production-core-emf-evidence-2026-10-21/dc2a7137a725f6a82582abc8a800f5d30846058ecdbe12965f81a19c887154c4.core.runtime.zip",
+      "sha256": "dc2a7137a725f6a82582abc8a800f5d30846058ecdbe12965f81a19c887154c4"
+    },
+    {
+      "path": "docs/architecture/production-core-emf-evidence-2026-10-21/fresh-installed-baseline.json",
+      "sha256": "929d3f9d5ebba5ec34312dbb6c7882f34ea764518fbabb4b4b7a3aaef65d6308"
+    },
+    {
+      "path": "docs/architecture/production-core-emf-evidence-2026-10-21/live-logging-inspection.json",
+      "sha256": "ca7f532bb3d935e7008a62802270d860f3086a46f83a35a61512428057b5e040"
+    },
+    {
+      "path": "docs/architecture/production-core-emf-evidence-2026-10-21/manifest.json",
+      "sha256": "992436674021135f263301c9611f9bb85a79026a36d3cbf241352fe42aaeffa6"
+    },
+    {
+      "path": "docs/architecture/production-core-emf-evidence-2026-10-21/policy-and-template-validation.json",
+      "sha256": "3f24e8cb308f5816b1eb783f36b0bdd099e40b1902a9fa4564e43f6244239f3e"
+    },
+    {
+      "path": "docs/architecture/production-core-emf-evidence-2026-10-21/tests.txt",
+      "sha256": "d6046202fd9960a697e1f712b5f4efc0d318ffb4ecf0547a52af524649839de5"
+    },
+    {
+      "path": "docs/architecture/production-core-emf-evidence-2026-10-21/validation-summary.json",
+      "sha256": "a38be4e3f716bb3b6fce589f4439e3b8d3ab693baa1ac37da84a29169aa23623"
+    }
+  ]
+}

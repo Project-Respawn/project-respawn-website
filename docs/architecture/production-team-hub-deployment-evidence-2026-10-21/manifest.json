@@ -1,0 +1,188 @@
+{
+  "schemaVersion": "production-team-hub-dark-readiness.v1",
+  "preparedAt": "2026-10-21T20:57:07.646Z",
+  "authorizationRecorded": false,
+  "awsWrites": 0,
+  "environment": {
+    "contractVersion": "environment.v1",
+    "environment": "Production",
+    "account": "058264289478",
+    "region": "eu-north-1",
+    "poolId": "eu-north-1_Uufjxul58",
+    "clientId": "2kc81ph5mgvo9eu2qjvmif5u8g",
+    "issuer": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_Uufjxul58"
+  },
+  "core": {
+    "accepted": true,
+    "functionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts",
+    "runtimeSha256": "dc2a7137a725f6a82582abc8a800f5d30846058ecdbe12965f81a19c887154c4",
+    "securitySha256": "668049957edf3fb6e3dfda209e4600a824aa0b8182d41afb3051fb76f32bd613",
+    "productSha256": "5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086",
+    "acceptance": "docs/architecture/production-core-emf-execution-2026-10-21/final-result.json",
+    "acceptanceSha256": "2a60b92acc3f1db672d185d4b796ab5d166d30a2d069708c9ab83a1ca8496e06",
+    "rawHistoricalFlagNote": "The copied liveCoreAccepted=false field in the historical final receipt predates authentication. Its final liveAccepted=true and actual authenticated/monitoring receipts establish acceptance; no historical bytes modified."
+  },
+  "parents": {
+    "originalManifest": {
+      "path": "docs/architecture/production-domain-deployment-evidence-2026-10-20/manifest.json",
+      "sha256": "a2edd836734044c9a607ba718ae06b39b1c392029fbf6fec066358ba57ca3d43"
+    },
+    "kmsProposal": {
+      "path": "docs/architecture/production-kms-recovery-evidence-2026-10-21/manifest.json",
+      "sha256": "ca35f7a41b0c9786ab8a81d130a464a170c69d466d3a0e807531a06a164b7d86"
+    }
+  },
+  "security": {
+    "path": "docs/architecture/production-team-hub-deployment-evidence-2026-10-21/44262d06047926ada1d1ce88edc9ad55180ab8b2e080079218fc97090ee19bdc.teamSecurity.template.json",
+    "sha256": "44262d06047926ada1d1ce88edc9ad55180ab8b2e080079218fc97090ee19bdc",
+    "key": "production/44262d06047926ada1d1ce88edc9ad55180ab8b2e080079218fc97090ee19bdc.json",
+    "url": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/44262d06047926ada1d1ce88edc9ad55180ab8b2e080079218fc97090ee19bdc.json"
+  },
+  "product": {
+    "path": "docs/architecture/production-team-hub-deployment-evidence-2026-10-21/995b40be6cd460999cbde2510b33c5e93a407251f48b1ba1905f75a2c8c0ef24.teamProduct.template.json",
+    "sha256": "995b40be6cd460999cbde2510b33c5e93a407251f48b1ba1905f75a2c8c0ef24",
+    "key": "production/995b40be6cd460999cbde2510b33c5e93a407251f48b1ba1905f75a2c8c0ef24.json",
+    "url": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/995b40be6cd460999cbde2510b33c5e93a407251f48b1ba1905f75a2c8c0ef24.json"
+  },
+  "runtimes": {
+    "read": {
+      "path": "docs/architecture/team-hub-production-evidence-2026-10-20/3b9da09caa3e8684aabd5c0421539326eb68d1ed5aa5696dcf76425659ea0287.team-read.runtime.zip",
+      "sha256": "3b9da09caa3e8684aabd5c0421539326eb68d1ed5aa5696dcf76425659ea0287",
+      "key": "production/3b9da09caa3e8684aabd5c0421539326eb68d1ed5aa5696dcf76425659ea0287.zip"
+    },
+    "command": {
+      "path": "docs/architecture/team-hub-production-evidence-2026-10-20/3b9da09caa3e8684aabd5c0421539326eb68d1ed5aa5696dcf76425659ea0287.team-command.runtime.zip",
+      "sha256": "3b9da09caa3e8684aabd5c0421539326eb68d1ed5aa5696dcf76425659ea0287",
+      "key": "production/3b9da09caa3e8684aabd5c0421539326eb68d1ed5aa5696dcf76425659ea0287.zip"
+    }
+  },
+  "keys": {
+    "lambda": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+    "secretsManager": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+    "classification": "AWS-managed, same account/region; current metadata/policy readback required"
+  },
+  "policies": [
+    {
+      "id": "product.ParityCommandRole",
+      "kind": "identity",
+      "path": "docs/architecture/production-team-hub-deployment-evidence-2026-10-21/product.ParityCommandRole.policy.json",
+      "sha256": "a6e8e3ef4a29f93437b9569d1776c21a5978ecb7083715f74f755c965b12f57d",
+      "size": 5060,
+      "limit": 10240
+    },
+    {
+      "id": "product.ParityReadRole",
+      "kind": "identity",
+      "path": "docs/architecture/production-team-hub-deployment-evidence-2026-10-21/product.ParityReadRole.policy.json",
+      "sha256": "e5c9058a36dc5293d33825b0b68646791cc31ee9ff30e1223df59b73cc63182d",
+      "size": 5557,
+      "limit": 10240
+    },
+    {
+      "id": "security.ExecutionBoundary",
+      "kind": "boundary",
+      "path": "docs/architecture/production-team-hub-deployment-evidence-2026-10-21/security.ExecutionBoundary.policy.json",
+      "sha256": "7fdfcd8309b4094a561bd67c5d505473d980966dbfcd12e5dc415a1d4cc07850",
+      "size": 6134,
+      "limit": 6144
+    },
+    {
+      "id": "security.ExecutionRole",
+      "kind": "identity",
+      "path": "docs/architecture/production-team-hub-deployment-evidence-2026-10-21/security.ExecutionRole.policy.json",
+      "sha256": "d8a3d4eb2972c564ec3f43d308987c71cbd902e9a4d3bde608ebc8e3500a634a",
+      "size": 9346,
+      "limit": 10240
+    },
+    {
+      "id": "security.PreparationCaller",
+      "kind": "boundary",
+      "path": "docs/architecture/production-team-hub-deployment-evidence-2026-10-21/security.PreparationCaller.policy.json",
+      "sha256": "40107385c75102718245979aee222d54d03a21276de4655e443ed736b2e70b39",
+      "size": 2129,
+      "limit": 6144
+    },
+    {
+      "id": "security.DeploymentCaller",
+      "kind": "identity",
+      "path": "docs/architecture/production-team-hub-deployment-evidence-2026-10-21/security.DeploymentCaller.policy.json",
+      "sha256": "40107385c75102718245979aee222d54d03a21276de4655e443ed736b2e70b39",
+      "size": 2129,
+      "limit": 10240
+    },
+    {
+      "id": "security.ParityCommandBoundary",
+      "kind": "boundary",
+      "path": "docs/architecture/production-team-hub-deployment-evidence-2026-10-21/security.ParityCommandBoundary.policy.json",
+      "sha256": "a6e8e3ef4a29f93437b9569d1776c21a5978ecb7083715f74f755c965b12f57d",
+      "size": 5060,
+      "limit": 6144
+    },
+    {
+      "id": "security.ParityReadBoundary",
+      "kind": "boundary",
+      "path": "docs/architecture/production-team-hub-deployment-evidence-2026-10-21/security.ParityReadBoundary.policy.json",
+      "sha256": "ec72d5a003c75be9e4d5a8c474d061a2f444e9612328ab7dd57daab8950689f2",
+      "size": 5361,
+      "limit": 6144
+    }
+  ],
+  "counts": {
+    "security": 8,
+    "product": 39,
+    "total": 47,
+    "legacyAdded": 0
+  },
+  "semanticChanges": {
+    "runtimeCode": "UNCHANGED",
+    "runtimePolicy": "Exact Lambda Decrypt absent ViaService correction, preserving mandatory CallerAccount/function context",
+    "executionPolicy": "Previously proposed service-mediated exact-key CreateGrant with GrantIsForAWSResource, plus exact new product binding",
+    "core": "NO_CHANGES",
+    "secretsManager": "NO_CONDITION_OR_ACCESS_EXPANSION"
+  },
+  "lateBindings": {
+    "api": "Security HttpApi Ref exported and imported by product",
+    "cursorSecret": "Security CursorSecret exact Ref exported/imported; no wildcard suffix grant or operator-substitutable ARN",
+    "syntheticIdsAllowedOnlyInSimulations": true,
+    "installedEquivalenceRequired": true
+  },
+  "rollback": {
+    "initialCreate": true,
+    "oldProduct": {
+      "path": "docs/architecture/production-domain-deployment-evidence-2026-10-20/dda9937e87e2bbc350597ecdfbd8b7ae31c09dae5cffe91a43241edfbe5ce291.teamProduct.template.json",
+      "sha256": "dda9937e87e2bbc350597ecdfbd8b7ae31c09dae5cffe91a43241edfbe5ce291",
+      "key": "production/dda9937e87e2bbc350597ecdfbd8b7ae31c09dae5cffe91a43241edfbe5ce291.json",
+      "url": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/dda9937e87e2bbc350597ecdfbd8b7ae31c09dae5cffe91a43241edfbe5ce291.json"
+    },
+    "oldSecurity": {
+      "path": "docs/architecture/production-domain-deployment-evidence-2026-10-20/4d3352865d5978d508a14d370d627f53d247c85944ca0a394126b38007ff7777.teamSecurity.template.json",
+      "sha256": "4d3352865d5978d508a14d370d627f53d247c85944ca0a394126b38007ff7777",
+      "key": "production/4d3352865d5978d508a14d370d627f53d247c85944ca0a394126b38007ff7777.json",
+      "url": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/4d3352865d5978d508a14d370d627f53d247c85944ca0a394126b38007ff7777.json"
+    },
+    "oldKmsProposal": {
+      "path": "docs/architecture/production-kms-recovery-evidence-2026-10-21/12cbedb22e12a1691496bcd5be22b44633bdf8ab0620c1a883191d3eabea678c.teamSecurity.template.json",
+      "sha256": "12cbedb22e12a1691496bcd5be22b44633bdf8ab0620c1a883191d3eabea678c",
+      "key": "production/12cbedb22e12a1691496bcd5be22b44633bdf8ab0620c1a883191d3eabea678c.json",
+      "url": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/12cbedb22e12a1691496bcd5be22b44633bdf8ab0620c1a883191d3eabea678c.json"
+    },
+    "runtime": {
+      "path": "docs/architecture/team-hub-production-evidence-2026-10-20/3b9da09caa3e8684aabd5c0421539326eb68d1ed5aa5696dcf76425659ea0287.team-read.runtime.zip",
+      "sha256": "3b9da09caa3e8684aabd5c0421539326eb68d1ed5aa5696dcf76425659ea0287",
+      "key": "production/3b9da09caa3e8684aabd5c0421539326eb68d1ed5aa5696dcf76425659ea0287.zip"
+    },
+    "previousInstalledProductionTeam": null,
+    "olderRuntimePoliciesKnownBlocked": true,
+    "automaticReversionToKnownBlockedPolicies": false,
+    "retainedResources": [
+      "CursorSecret",
+      "OperationalTable",
+      "JournalTable"
+    ],
+    "ntgreIsNotProductionRollback": true
+  },
+  "authorityInitializationAuthorized": false,
+  "sourceDataMigrationAuthorized": false,
+  "targetWritesAuthorized": false,
+  "masterPublicationAuthorized": false
+}

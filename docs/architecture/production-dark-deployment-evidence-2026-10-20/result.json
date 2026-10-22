@@ -1,0 +1,117 @@
+{
+  "at": "2026-10-20T22:40:56.404Z",
+  "status": "PRODUCTION_DARK_DEPLOYMENT_BLOCKED_CORE_CREATEGRANT",
+  "approvedManifestSha256": "a2edd836734044c9a607ba718ae06b39b1c392029fbf6fec066358ba57ca3d43",
+  "approvedExecutionPackageSha256": "bd6c821dbc7d9e4ea9aee68abf9574bd15a8a8504499361c9364caba18f21d69",
+  "operator": "arn:aws:iam::058264289478:user/RavenTest",
+  "account": "058264289478",
+  "region": "eu-north-1",
+  "coreSecurity": {
+    "status": "CREATE_COMPLETE",
+    "resources": 6,
+    "installedIamVerified": true,
+    "changeSetArn": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/production-coresecurity-e665c2e48a1dbec2/cad63af0-8523-4a1c-974b-4fd53e832a68"
+  },
+  "coreProduct": {
+    "status": "ROLLBACK_COMPLETE",
+    "changeSetArn": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/production-coreproduct-b9c5d96e7123a6d8/c8b88858-6a4c-4f18-9d9b-017b9fe4a40e",
+    "functionAbsent": true,
+    "runtimeRoleAbsent": true,
+    "alarmsAbsent": true,
+    "retainedLogGroups": [
+      {
+        "name": "/project-respawn/Production/core/contracts",
+        "arn": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts:*",
+        "retentionInDays": 30
+      }
+    ]
+  },
+  "failure": {
+    "action": "kms:CreateGrant",
+    "principal": "arn:aws:sts::058264289478:assumed-role/ProjectRespawn-Core-Production-Execution/AWSCloudFormation",
+    "keyArn": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+    "layer": "Explicit identity-policy Deny; boundary also has no CreateGrant Allow",
+    "cloudTrailEventId": "8e4f248c-cd7e-4b9a-be43-d3a35d8aca21",
+    "lambdaRequestId": "e7338420-65e9-4864-a4cd-b9871abc277e",
+    "kmsRequestId": "964d5eaf-0f2b-4620-85cb-12ec85d65691"
+  },
+  "teamHub": {
+    "securityChangeSetCreated": false,
+    "productChangeSetCreated": false,
+    "deployed": false
+  },
+  "coreLiveAcceptance": "NOT_RUN_NO_FUNCTION_AFTER_ROLLBACK",
+  "monitoringAcceptance": "NOT_REACHED_RETAINED_LOG_GROUP_ONLY",
+  "artifactPublications": [
+    {
+      "name": "coreProduct",
+      "target": {
+        "Bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+        "Key": "production/b9c5d96e7123a6d837c903f1e1779080e020aba8c9eab8af1e2ddccde912ed96.json"
+      },
+      "sha256": "b9c5d96e7123a6d837c903f1e1779080e020aba8c9eab8af1e2ddccde912ed96",
+      "verified": true
+    },
+    {
+      "name": "coreSecurity",
+      "target": {
+        "Bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+        "Key": "production/e665c2e48a1dbec276f5f1afd9f71a1d4459de8b424a544830ee3e456eaa8cfa.json"
+      },
+      "sha256": "e665c2e48a1dbec276f5f1afd9f71a1d4459de8b424a544830ee3e456eaa8cfa",
+      "verified": true
+    },
+    {
+      "name": "core",
+      "target": {
+        "Bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+        "Key": "production/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.zip"
+      },
+      "sha256": "fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503",
+      "verified": true
+    }
+  ],
+  "sourceRecords": [
+    {
+      "model": "Team",
+      "count": 1,
+      "digest": "8f202d72f19f9a04cfaf2709a3a5df497ed477ab82f592e59aa4485c24d13994",
+      "preserved": true
+    },
+    {
+      "model": "TeamMembership",
+      "count": 8,
+      "digest": "c1b709749b79811c540a3e0b5b485206bd0cdeb85d1338c7e837419907f3b15f",
+      "preserved": true
+    },
+    {
+      "model": "TeamRosterSlot",
+      "count": 11,
+      "digest": "d79485c9663ec496cce3e529727c2bd033fa1bc3ad372aa7101294029bbe22df",
+      "preserved": true
+    },
+    {
+      "model": "PlayerChampionPoolEntry",
+      "count": 101,
+      "digest": "8f701e4999e3e5a11df0948b46ade2c76d3b8a8e745b49afe94ca0ddd86d2e53",
+      "preserved": true
+    }
+  ],
+  "backupsAvailable": 4,
+  "protectionsEnabled": 4,
+  "cognitoPreserved": true,
+  "masterPreserved": true,
+  "existingProtectedStacksPreserved": true,
+  "authorityInitialized": false,
+  "businessRecordsWritten": 0,
+  "sourceFenceInstalled": false,
+  "iamBroadenedAfterFailure": false,
+  "deploymentRetriedAfterFailure": false,
+  "automaticCleanupAfterFailure": false,
+  "requiredNextReview": [
+    "Narrow CreateGrant lifecycle correction to execution identity and boundary; no general KMS grant",
+    "Review empty failed stack record and retained log-group handling before a separately authorized retry",
+    "Core live acceptance before any Team deployment",
+    "Separate authority initializer authorization only after infrastructure acceptance"
+  ]
+}

@@ -1,0 +1,163 @@
+{
+  "recordedAt": "2026-10-21T14:54:47.879Z",
+  "status": "PRODUCTION_CORE_RUNTIME_RECOVERY_BLOCKED_CUSTOM_METRIC_EXTRACTION",
+  "manifestSha256": "bf0b925d859e98ce160b4de53ab9ccca5c9f73285ea6bfa46f733da5e071de0c",
+  "securitySha256": "8f83dda21a47895b2f48cea19839daa84bdbcba7f28ff82e30906aec595b0c44",
+  "productSha256": "0302056f0152107ecabd9d459ab50d436245587eef3cec1aa4d971c77a6ca1e4",
+  "runtimeSha256": "fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503",
+  "account": "058264289478",
+  "region": "eu-north-1",
+  "operatorArn": "arn:aws:iam::058264289478:user/RavenTest",
+  "window": {
+    "recordedAt": "2026-10-21T14:42:17.877Z",
+    "windowStart": "2026-10-21T14:42:17.877Z",
+    "expiresAt": "2026-10-21T16:42:17.877Z",
+    "operatorArn": "arn:aws:iam::058264289478:user/RavenTest",
+    "operatorAvailable": true,
+    "noConcurrentChanges": true,
+    "teamAuthorized": false,
+    "authorizationRequestSha256": "6f8590a8e2832155e8da2a3f6c294a17886f953b8a48a39ce8482b9ecc6d404a",
+    "source": "Current explicit authorization and current async availability confirmation"
+  },
+  "securityDeployment": {
+    "status": "UPDATE_COMPLETE",
+    "modifications": 5,
+    "additions": 0,
+    "deletions": 0,
+    "replacements": 0,
+    "changeSetArn": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/core-runtime-kms-security-20261021/39ebbe08-e737-4ff3-bb8f-db19e5f80bb0",
+    "rollbackEnabled": true
+  },
+  "productDeployment": {
+    "status": "UPDATE_COMPLETE",
+    "modifications": 1,
+    "logicalId": "Runtime",
+    "additions": 0,
+    "deletions": 0,
+    "replacements": 0,
+    "changeSetArn": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/core-runtime-kms-product-20261021/30c9b009-ef0f-4fb8-a443-4a3b41a925ee",
+    "rollbackEnabled": true
+  },
+  "installedSecurityMatched": true,
+  "installedRuntimeMatched": true,
+  "executionRoleChecks": 119,
+  "runtimeRoleChecks": 50,
+  "runtimeCodeAndEnvironmentUnchanged": true,
+  "coreResourceCounts": {
+    "security": 6,
+    "product": 7,
+    "total": 13
+  },
+  "controlledInvocation": {
+    "at": "2026-10-21T14:49:35.289Z",
+    "passed": true,
+    "attempts": 1,
+    "automaticRetry": false,
+    "awsRequestId": "d427e306-cbeb-4425-a8d6-9b3be19b5bbe",
+    "statusCode": 200,
+    "response": {
+      "ok": false,
+      "error": {
+        "code": "UNAUTHENTICATED"
+      }
+    },
+    "platformLogLines": [],
+    "authenticatedAcceptance": false,
+    "secretValueRetrievedByOperator": false
+  },
+  "actualRuntimeDecryptSuccessEvents": [
+    {
+      "eventID": "dcbfe8d8-778a-3430-918e-e906d2bf69cd",
+      "eventTime": "2026-10-21T14:49:35Z",
+      "requestID": "d004500f-aedb-41e7-8f2b-e4dd028a4787",
+      "principalArn": "arn:aws:sts::058264289478:assumed-role/ProjectRespawn-Core-Production-Contracts/ProjectRespawn-Core-Production-Contracts",
+      "resources": [
+        {
+          "accountId": "058264289478",
+          "type": "AWS::KMS::Key",
+          "ARN": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a"
+        }
+      ],
+      "requestParameters": {
+        "encryptionContext": {
+          "SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn",
+          "SecretVersionId": "2d663a87-3ddb-925d-7a2a-a0730cd2aa89"
+        }
+      }
+    },
+    {
+      "eventID": "f839c270-4489-4d7e-bcab-175ec9a7c292",
+      "eventTime": "2026-10-21T14:49:34Z",
+      "requestID": "3478dae3-66f4-4481-b069-b03d284f108b",
+      "principalArn": "arn:aws:sts::058264289478:assumed-role/ProjectRespawn-Core-Production-Contracts/ProjectRespawn-Core-Production-Contracts",
+      "resources": [
+        {
+          "accountId": "058264289478",
+          "type": "AWS::KMS::Key",
+          "ARN": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7"
+        }
+      ],
+      "requestParameters": {
+        "encryptionContext": {
+          "aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts"
+        }
+      }
+    }
+  ],
+  "logsDrift": "IN_SYNC",
+  "failedGate": "CUSTOM_APPLICATION_METRICS_NOT_EXTRACTED_FROM_JSON_MESSAGE",
+  "monitoring": {
+    "nativeInvocationCount": 1,
+    "nativeErrors": 0,
+    "nativeThrottles": 0,
+    "expectedDeniedAtLeast": 1,
+    "actualDenied": 0,
+    "emfNestedInMessage": true,
+    "alarms": [
+      "OK",
+      "OK",
+      "OK",
+      "OK"
+    ],
+    "accepted": false
+  },
+  "liveAuthenticationAcceptance": "NOT_COMPLETED_MANDATORY_MONITORING_STOP",
+  "productionAdminAccepted": false,
+  "ordinaryAccepted": false,
+  "validNtgreTokenRejectionAccepted": false,
+  "helperStopped": true,
+  "helperStoppedPid": 19292,
+  "tokensPersisted": false,
+  "automaticInvocationRetry": false,
+  "runtimeOrLoggingPatch": false,
+  "rollbackPerformed": false,
+  "sourceCounts": [
+    {
+      "model": "Team",
+      "count": 1
+    },
+    {
+      "model": "TeamMembership",
+      "count": 8
+    },
+    {
+      "model": "TeamRosterSlot",
+      "count": 11
+    },
+    {
+      "model": "PlayerChampionPoolEntry",
+      "count": 101
+    }
+  ],
+  "sourceDigestsPreserved": true,
+  "backupsAvailable": 4,
+  "pitrAndDeletionProtectionPreserved": true,
+  "cognitoPreserved": true,
+  "masterPreserved": true,
+  "protectedDomainsPreserved": true,
+  "teamDeployed": false,
+  "authorityInitialized": false,
+  "businessDataWrites": 0,
+  "masterPublished": false,
+  "legacyRetired": false
+}

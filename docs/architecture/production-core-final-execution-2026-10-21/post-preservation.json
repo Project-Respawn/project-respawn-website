@@ -1,0 +1,310 @@
+{
+  "at": "2026-10-21T07:00:07.277Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "tables": [
+    {
+      "model": "Team",
+      "sourceArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "tableId": "78f6917b-9d12-4af4-aa14-fdae57eb7f2b",
+      "count": 1,
+      "digest": "8f202d72f19f9a04cfaf2709a3a5df497ed477ab82f592e59aa4485c24d13994",
+      "sourcePreserved": true,
+      "pitr": true,
+      "deletionProtection": true,
+      "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527947116-43f6eb02",
+      "backupAvailable": true,
+      "recoveryProofAbsent": true
+    },
+    {
+      "model": "TeamMembership",
+      "sourceArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "tableId": "84e7d7af-3ff0-4881-a76a-90bc00b3d3ab",
+      "count": 8,
+      "digest": "c1b709749b79811c540a3e0b5b485206bd0cdeb85d1338c7e837419907f3b15f",
+      "sourcePreserved": true,
+      "pitr": true,
+      "deletionProtection": true,
+      "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527948497-eda960ad",
+      "backupAvailable": true,
+      "recoveryProofAbsent": true
+    },
+    {
+      "model": "TeamRosterSlot",
+      "sourceArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "tableId": "ce302ae3-9446-4594-81e1-12bff167f12f",
+      "count": 11,
+      "digest": "d79485c9663ec496cce3e529727c2bd033fa1bc3ad372aa7101294029bbe22df",
+      "sourcePreserved": true,
+      "pitr": true,
+      "deletionProtection": true,
+      "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527949892-3c2d8f3a",
+      "backupAvailable": true,
+      "recoveryProofAbsent": true
+    },
+    {
+      "model": "PlayerChampionPoolEntry",
+      "sourceArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "tableId": "a208a911-c53c-45f8-a499-d69117d611d5",
+      "count": 101,
+      "digest": "8f701e4999e3e5a11df0948b46ade2c76d3b8a8e745b49afe94ca0ddd86d2e53",
+      "sourcePreserved": true,
+      "pitr": true,
+      "deletionProtection": true,
+      "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527951273-7b424a61",
+      "backupAvailable": true,
+      "recoveryProofAbsent": true
+    }
+  ],
+  "awsWrites": 0,
+  "cognito": {
+    "poolId": "eu-north-1_Uufjxul58",
+    "clientId": "2kc81ph5mgvo9eu2qjvmif5u8g",
+    "preserved": true,
+    "userCount": 15,
+    "statuses": {
+      "CONFIRMED": 14,
+      "UNCONFIRMED": 1
+    }
+  },
+  "approvedCoreDeploymentStates": [
+    {
+      "StackName": "ProjectRespawn-Core-Production",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-10-21T06:54:09.792000+00:00",
+      "CreationTime": "2026-10-21T06:05:23.921000+00:00"
+    },
+    {
+      "StackName": "ProjectRespawn-Core-Production-Security",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-10-21T06:51:21.612000+00:00",
+      "CreationTime": "2026-10-20T22:31:19.097000+00:00"
+    }
+  ],
+  "protectedStacksPreserved": true,
+  "productionTeamHubRootsAbsent": true,
+  "master": {
+    "commit": "a83a874dad50395518fb0d7e2f1e853cf6bf2513",
+    "job": "151",
+    "status": "SUCCEED",
+    "preserved": true
+  },
+  "managedKeys": [
+    {
+      "arn": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "keyManager": "AWS",
+      "keyState": "Enabled",
+      "policy": {
+        "Version": "2012-10-17",
+        "Id": "auto-awslambda-3",
+        "Statement": [
+          {
+            "Sid": "Allow access through AWS Lambda for all principals in the account that are authorized to use AWS Lambda",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "*"
+            },
+            "Action": [
+              "kms:Encrypt",
+              "kms:Decrypt",
+              "kms:ReEncrypt*",
+              "kms:GenerateDataKey*",
+              "kms:CreateGrant",
+              "kms:DescribeKey"
+            ],
+            "Resource": "*",
+            "Condition": {
+              "StringEquals": {
+                "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+                "kms:CallerAccount": "058264289478"
+              }
+            }
+          },
+          {
+            "Sid": "Allow all principals in the account to decrypt ciphertexts for Lambda functions in the account",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "*"
+            },
+            "Action": "kms:Decrypt",
+            "Resource": "*",
+            "Condition": {
+              "StringEquals": {
+                "kms:CallerAccount": "058264289478"
+              },
+              "ArnLike": {
+                "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:*:lambda:eu-north-1:058264289478:function:*"
+              }
+            }
+          },
+          {
+            "Sid": "Allow Lambda service access",
+            "Effect": "Allow",
+            "Principal": {
+              "Service": [
+                "lambda.eu-north-1.amazonaws.com",
+                "lambda.amazonaws.com"
+              ]
+            },
+            "Action": "kms:GenerateDataKey",
+            "Resource": "*",
+            "Condition": {
+              "ArnLike": {
+                "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:*:lambda:eu-north-1:058264289478:function:*"
+              }
+            }
+          },
+          {
+            "Sid": "Allow Lambda to directly describe the key and list its grants",
+            "Effect": "Allow",
+            "Principal": {
+              "Service": [
+                "lambda.eu-north-1.amazonaws.com",
+                "lambda.amazonaws.com"
+              ]
+            },
+            "Action": [
+              "kms:Describe*",
+              "kms:Get*",
+              "kms:List*"
+            ],
+            "Resource": "*"
+          },
+          {
+            "Sid": "Allow direct access to key metadata to the account",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": [
+              "kms:Describe*",
+              "kms:Get*",
+              "kms:List*",
+              "kms:RevokeGrant"
+            ],
+            "Resource": "*"
+          }
+        ]
+      }
+    },
+    {
+      "arn": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "keyManager": "AWS",
+      "keyState": "Enabled",
+      "policy": {
+        "Version": "2012-10-17",
+        "Id": "auto-secretsmanager-2",
+        "Statement": [
+          {
+            "Sid": "Allow access through AWS Secrets Manager for all principals in the account that are authorized to use AWS Secrets Manager",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "*"
+            },
+            "Action": [
+              "kms:Encrypt",
+              "kms:Decrypt",
+              "kms:ReEncrypt*",
+              "kms:CreateGrant",
+              "kms:DescribeKey"
+            ],
+            "Resource": "*",
+            "Condition": {
+              "StringEquals": {
+                "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+                "kms:CallerAccount": "058264289478"
+              }
+            }
+          },
+          {
+            "Sid": "Allow access through AWS Secrets Manager for all principals in the account that are authorized to use AWS Secrets Manager",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "*"
+            },
+            "Action": "kms:GenerateDataKey*",
+            "Resource": "*",
+            "Condition": {
+              "StringEquals": {
+                "kms:CallerAccount": "058264289478"
+              },
+              "StringLike": {
+                "kms:ViaService": "secretsmanager.*.amazonaws.com"
+              }
+            }
+          },
+          {
+            "Sid": "Allow direct access to key metadata to the account",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": [
+              "kms:Describe*",
+              "kms:Get*",
+              "kms:List*",
+              "kms:RevokeGrant"
+            ],
+            "Resource": "*"
+          }
+        ]
+      }
+    }
+  ],
+  "capacity": {
+    "AccountLimit": {
+      "TotalCodeSize": 322122547200,
+      "CodeSizeUnzipped": 262144000,
+      "CodeSizeZipped": 52428800,
+      "ConcurrentExecutions": 10,
+      "UnreservedConcurrentExecutions": 10
+    },
+    "AccountUsage": {
+      "TotalCodeSize": 306940900,
+      "FunctionCount": 70
+    }
+  },
+  "artifactEncryption": {
+    "ServerSideEncryptionConfiguration": {
+      "Rules": [
+        {
+          "ApplyServerSideEncryptionByDefault": {
+            "SSEAlgorithm": "aws:kms"
+          },
+          "BucketKeyEnabled": false,
+          "BlockedEncryptionTypes": {
+            "EncryptionType": [
+              "SSE-C"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "artifactBucketPolicy": {
+    "Version": "2012-10-17",
+    "Id": "AccessControl",
+    "Statement": [
+      {
+        "Sid": "AllowSSLRequestsOnly",
+        "Effect": "Deny",
+        "Principal": "*",
+        "Action": "s3:*",
+        "Resource": [
+          "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1",
+          "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/*"
+        ],
+        "Condition": {
+          "Bool": {
+            "aws:SecureTransport": "false"
+          }
+        }
+      }
+    ]
+  },
+  "publicationRequiresExplicitAES256": true,
+  "complete": true
+}

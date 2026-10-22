@@ -1,0 +1,110 @@
+{
+  "at": "2026-10-20T20:48:59.020Z",
+  "status": "PRODUCTION_R2_BLOCKED_PINNED_STS_SESSION_NAME_LENGTH",
+  "manifestSha256": "c9cf39fb86f90d26ce582d9828b33e3ccd133e4a829e34919b6694c4f3df4bc7",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "failedGate": {
+    "model": "PlayerChampionPoolEntry",
+    "name": "RespawnR2-PlayerChampionPoolEntry",
+    "characters": 33,
+    "maximum": 32,
+    "awsRequestAttempted": false,
+    "source": "https://docs.aws.amazon.com/STS/latest/APIReference/API_GetFederationToken.html"
+  },
+  "runnerStopped": true,
+  "stoppedProcessId": 9212,
+  "restoresRecorded": 1,
+  "cleanupPerformed": 0,
+  "credentialsPersisted": false,
+  "originalRestrictedSessionLostOnProcessStop": true,
+  "noAutomaticSessionRenewal": true,
+  "sources": [
+    {
+      "model": "Team",
+      "status": "ACTIVE",
+      "pitr": "ENABLED",
+      "deletionProtection": true,
+      "backupAvailable": true,
+      "count": 1,
+      "recordsPreserved": true
+    },
+    {
+      "model": "TeamMembership",
+      "status": "ACTIVE",
+      "pitr": "ENABLED",
+      "deletionProtection": true,
+      "backupAvailable": true,
+      "count": 8,
+      "recordsPreserved": true
+    },
+    {
+      "model": "TeamRosterSlot",
+      "status": "ACTIVE",
+      "pitr": "ENABLED",
+      "deletionProtection": true,
+      "backupAvailable": true,
+      "count": 11,
+      "recordsPreserved": true
+    },
+    {
+      "model": "PlayerChampionPoolEntry",
+      "status": "ACTIVE",
+      "pitr": "ENABLED",
+      "deletionProtection": true,
+      "backupAvailable": true,
+      "count": 101,
+      "recordsPreserved": true
+    }
+  ],
+  "targets": [
+    {
+      "model": "Team",
+      "name": "ProjectRespawn-TeamHub-Production-Team-RecoveryProof-20261020",
+      "tableId": "e5f9ef58-c81b-4190-bb72-1473371e4c8a",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Team-RecoveryProof-20261020",
+      "status": "ACTIVE",
+      "restoreInProgress": null,
+      "sourceBackupProof": "CREATION_RECEIPT_ONLY_AUDIT_PENDING",
+      "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527947116-43f6eb02",
+      "creationReceiptMatches": true,
+      "absent": false,
+      "count": 1,
+      "contentVerified": true,
+      "schemaVerified": true,
+      "rawItemsDigest": "8f202d72f19f9a04cfaf2709a3a5df497ed477ab82f592e59aa4485c24d13994",
+      "custody": {
+        "method": "Windows CurrentUser DPAPI",
+        "path": ".tmp/team-hub-production-r2-custody/R2-Team-PostStop.dpapi",
+        "ciphertextSha256": "347b275455f280e085c5ea31989368304af434b4cabef651bedf7ab7d3ba279d",
+        "roundTrip": true,
+        "ownerOnlyDirectoryAcl": true,
+        "contextSha256": "ef2c102e30b3a7ae515f4560bd40ee909b156f889ca628c7adefaba65b290ab2",
+        "rawRecordsPersisted": false,
+        "portableRecoveryArchive": false
+      }
+    },
+    {
+      "model": "TeamMembership",
+      "name": "ProjectRespawn-TeamHub-Production-TeamMembership-RecoveryProof-20261020",
+      "absent": true
+    },
+    {
+      "model": "TeamRosterSlot",
+      "name": "ProjectRespawn-TeamHub-Production-TeamRosterSlot-RecoveryProof-20261020",
+      "absent": true
+    },
+    {
+      "model": "PlayerChampionPoolEntry",
+      "name": "ProjectRespawn-TeamHub-Production-PlayerChampionPoolEntry-RecoveryProof-20261020",
+      "absent": true
+    }
+  ],
+  "sourceWrites": 0,
+  "iamChanges": 0,
+  "additionalAwsWrites": 0,
+  "requiredDecision": "Corrected immutable manifest and explicit scoped cleanup/resumption authorization; do not fall back to unrestricted parent credentials"
+}

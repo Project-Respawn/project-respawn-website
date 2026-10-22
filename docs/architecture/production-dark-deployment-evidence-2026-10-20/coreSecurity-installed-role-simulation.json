@@ -1,0 +1,732 @@
+{
+  "at": "2026-10-20T22:33:55.938Z",
+  "rows": [
+    {
+      "name": "own-function",
+      "request": {
+        "PolicySourceArn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+        "ActionNames": [
+          "lambda:UpdateFunctionConfiguration"
+        ],
+        "ResourceArns": [
+          "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts"
+        ],
+        "ContextEntries": [
+          {
+            "ContextKeyName": "aws:RequestedRegion",
+            "ContextKeyValues": [
+              "eu-north-1"
+            ],
+            "ContextKeyType": "string"
+          }
+        ]
+      },
+      "result": {
+        "EvalActionName": "lambda:UpdateFunctionConfiguration",
+        "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts",
+        "EvalDecision": "allowed",
+        "MatchedStatements": [
+          {
+            "SourcePolicyId": "role_ProjectRespawn-Core-Production-Execution_ProductionExecution",
+            "SourcePolicyType": "IAM Policy",
+            "StartPosition": {
+              "Line": 1,
+              "Column": 38
+            },
+            "EndPosition": {
+              "Line": 1,
+              "Column": 532
+            }
+          }
+        ],
+        "MissingContextValues": [],
+        "OrganizationsDecisionDetail": {
+          "AllowedByOrganizations": true
+        },
+        "PermissionsBoundaryDecisionDetail": {
+          "AllowedByPermissionsBoundary": true
+        },
+        "EvalDecisionDetails": {},
+        "ResourceSpecificResults": [
+          {
+            "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts",
+            "EvalResourceDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "role_ProjectRespawn-Core-Production-Execution_ProductionExecution",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 1,
+                  "Column": 38
+                },
+                "EndPosition": {
+                  "Line": 1,
+                  "Column": 532
+                }
+              }
+            ],
+            "PermissionsBoundaryDecisionDetail": {
+              "AllowedByPermissionsBoundary": true
+            }
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "own-latest",
+      "request": {
+        "PolicySourceArn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+        "ActionNames": [
+          "lambda:UpdateFunctionConfiguration"
+        ],
+        "ResourceArns": [
+          "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts:$LATEST"
+        ],
+        "ContextEntries": [
+          {
+            "ContextKeyName": "aws:RequestedRegion",
+            "ContextKeyValues": [
+              "eu-north-1"
+            ],
+            "ContextKeyType": "string"
+          }
+        ]
+      },
+      "result": {
+        "EvalActionName": "lambda:UpdateFunctionConfiguration",
+        "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts:$LATEST",
+        "EvalDecision": "allowed",
+        "MatchedStatements": [
+          {
+            "SourcePolicyId": "role_ProjectRespawn-Core-Production-Execution_ProductionExecution",
+            "SourcePolicyType": "IAM Policy",
+            "StartPosition": {
+              "Line": 1,
+              "Column": 38
+            },
+            "EndPosition": {
+              "Line": 1,
+              "Column": 532
+            }
+          }
+        ],
+        "MissingContextValues": [],
+        "OrganizationsDecisionDetail": {
+          "AllowedByOrganizations": true
+        },
+        "PermissionsBoundaryDecisionDetail": {
+          "AllowedByPermissionsBoundary": true
+        },
+        "EvalDecisionDetails": {},
+        "ResourceSpecificResults": [
+          {
+            "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts:$LATEST",
+            "EvalResourceDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "role_ProjectRespawn-Core-Production-Execution_ProductionExecution",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 1,
+                  "Column": 38
+                },
+                "EndPosition": {
+                  "Line": 1,
+                  "Column": 532
+                }
+              }
+            ],
+            "PermissionsBoundaryDecisionDetail": {
+              "AllowedByPermissionsBoundary": true
+            }
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "no-alias",
+      "request": {
+        "PolicySourceArn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+        "ActionNames": [
+          "lambda:UpdateFunctionConfiguration"
+        ],
+        "ResourceArns": [
+          "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts:live"
+        ],
+        "ContextEntries": [
+          {
+            "ContextKeyName": "aws:RequestedRegion",
+            "ContextKeyValues": [
+              "eu-north-1"
+            ],
+            "ContextKeyType": "string"
+          }
+        ]
+      },
+      "result": {
+        "EvalActionName": "lambda:UpdateFunctionConfiguration",
+        "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts:live",
+        "EvalDecision": "implicitDeny",
+        "MatchedStatements": [],
+        "MissingContextValues": [
+          "kms:EncryptionContext:aws:lambda:FunctionArn",
+          "iam:PermissionsBoundary",
+          "kms:ViaService",
+          "kms:CallerAccount",
+          "iam:PassedToService"
+        ],
+        "OrganizationsDecisionDetail": {
+          "AllowedByOrganizations": true
+        },
+        "PermissionsBoundaryDecisionDetail": {
+          "AllowedByPermissionsBoundary": false
+        },
+        "EvalDecisionDetails": {},
+        "ResourceSpecificResults": [
+          {
+            "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts:live",
+            "EvalResourceDecision": "implicitDeny",
+            "MissingContextValues": [
+              "kms:EncryptionContext:aws:lambda:FunctionArn",
+              "iam:PermissionsBoundary",
+              "kms:ViaService",
+              "kms:CallerAccount",
+              "iam:PassedToService"
+            ],
+            "PermissionsBoundaryDecisionDetail": {
+              "AllowedByPermissionsBoundary": false
+            }
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "foreign-function",
+      "request": {
+        "PolicySourceArn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+        "ActionNames": [
+          "lambda:UpdateFunctionConfiguration"
+        ],
+        "ResourceArns": [
+          "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts"
+        ],
+        "ContextEntries": [
+          {
+            "ContextKeyName": "aws:RequestedRegion",
+            "ContextKeyValues": [
+              "eu-north-1"
+            ],
+            "ContextKeyType": "string"
+          }
+        ]
+      },
+      "result": {
+        "EvalActionName": "lambda:UpdateFunctionConfiguration",
+        "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+        "EvalDecision": "implicitDeny",
+        "MatchedStatements": [],
+        "MissingContextValues": [
+          "kms:EncryptionContext:aws:lambda:FunctionArn",
+          "iam:PermissionsBoundary",
+          "kms:ViaService",
+          "kms:CallerAccount",
+          "iam:PassedToService"
+        ],
+        "OrganizationsDecisionDetail": {
+          "AllowedByOrganizations": true
+        },
+        "PermissionsBoundaryDecisionDetail": {
+          "AllowedByPermissionsBoundary": false
+        },
+        "EvalDecisionDetails": {},
+        "ResourceSpecificResults": [
+          {
+            "EvalResourceName": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Ntgre-Contracts",
+            "EvalResourceDecision": "implicitDeny",
+            "MissingContextValues": [
+              "kms:EncryptionContext:aws:lambda:FunctionArn",
+              "iam:PermissionsBoundary",
+              "kms:ViaService",
+              "kms:CallerAccount",
+              "iam:PassedToService"
+            ],
+            "PermissionsBoundaryDecisionDetail": {
+              "AllowedByPermissionsBoundary": false
+            }
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "kms:Encrypt",
+      "request": {
+        "PolicySourceArn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+        "ActionNames": [
+          "kms:Encrypt"
+        ],
+        "ResourceArns": [
+          "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7"
+        ],
+        "ContextEntries": [
+          {
+            "ContextKeyName": "aws:RequestedRegion",
+            "ContextKeyValues": [
+              "eu-north-1"
+            ],
+            "ContextKeyType": "string"
+          },
+          {
+            "ContextKeyName": "kms:ViaService",
+            "ContextKeyValues": [
+              "lambda.eu-north-1.amazonaws.com"
+            ],
+            "ContextKeyType": "string"
+          },
+          {
+            "ContextKeyName": "kms:CallerAccount",
+            "ContextKeyValues": [
+              "058264289478"
+            ],
+            "ContextKeyType": "string"
+          },
+          {
+            "ContextKeyName": "kms:EncryptionContext:aws:lambda:FunctionArn",
+            "ContextKeyValues": [
+              "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts"
+            ],
+            "ContextKeyType": "string"
+          }
+        ]
+      },
+      "result": {
+        "EvalActionName": "kms:Encrypt",
+        "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+        "EvalDecision": "allowed",
+        "MatchedStatements": [
+          {
+            "SourcePolicyId": "role_ProjectRespawn-Core-Production-Execution_ProductionExecution",
+            "SourcePolicyType": "IAM Policy",
+            "StartPosition": {
+              "Line": 1,
+              "Column": 2975
+            },
+            "EndPosition": {
+              "Line": 1,
+              "Column": 3380
+            }
+          }
+        ],
+        "MissingContextValues": [],
+        "OrganizationsDecisionDetail": {
+          "AllowedByOrganizations": true
+        },
+        "PermissionsBoundaryDecisionDetail": {
+          "AllowedByPermissionsBoundary": true
+        },
+        "EvalDecisionDetails": {},
+        "ResourceSpecificResults": [
+          {
+            "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+            "EvalResourceDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "role_ProjectRespawn-Core-Production-Execution_ProductionExecution",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 1,
+                  "Column": 2975
+                },
+                "EndPosition": {
+                  "Line": 1,
+                  "Column": 3380
+                }
+              }
+            ],
+            "PermissionsBoundaryDecisionDetail": {
+              "AllowedByPermissionsBoundary": true
+            }
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "kms:Decrypt",
+      "request": {
+        "PolicySourceArn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+        "ActionNames": [
+          "kms:Decrypt"
+        ],
+        "ResourceArns": [
+          "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7"
+        ],
+        "ContextEntries": [
+          {
+            "ContextKeyName": "aws:RequestedRegion",
+            "ContextKeyValues": [
+              "eu-north-1"
+            ],
+            "ContextKeyType": "string"
+          },
+          {
+            "ContextKeyName": "kms:ViaService",
+            "ContextKeyValues": [
+              "lambda.eu-north-1.amazonaws.com"
+            ],
+            "ContextKeyType": "string"
+          },
+          {
+            "ContextKeyName": "kms:CallerAccount",
+            "ContextKeyValues": [
+              "058264289478"
+            ],
+            "ContextKeyType": "string"
+          },
+          {
+            "ContextKeyName": "kms:EncryptionContext:aws:lambda:FunctionArn",
+            "ContextKeyValues": [
+              "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts"
+            ],
+            "ContextKeyType": "string"
+          }
+        ]
+      },
+      "result": {
+        "EvalActionName": "kms:Decrypt",
+        "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+        "EvalDecision": "allowed",
+        "MatchedStatements": [
+          {
+            "SourcePolicyId": "role_ProjectRespawn-Core-Production-Execution_ProductionExecution",
+            "SourcePolicyType": "IAM Policy",
+            "StartPosition": {
+              "Line": 1,
+              "Column": 2975
+            },
+            "EndPosition": {
+              "Line": 1,
+              "Column": 3380
+            }
+          }
+        ],
+        "MissingContextValues": [],
+        "OrganizationsDecisionDetail": {
+          "AllowedByOrganizations": true
+        },
+        "PermissionsBoundaryDecisionDetail": {
+          "AllowedByPermissionsBoundary": true
+        },
+        "EvalDecisionDetails": {},
+        "ResourceSpecificResults": [
+          {
+            "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+            "EvalResourceDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "role_ProjectRespawn-Core-Production-Execution_ProductionExecution",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 1,
+                  "Column": 2975
+                },
+                "EndPosition": {
+                  "Line": 1,
+                  "Column": 3380
+                }
+              }
+            ],
+            "PermissionsBoundaryDecisionDetail": {
+              "AllowedByPermissionsBoundary": true
+            }
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "kms:DescribeKey",
+      "request": {
+        "PolicySourceArn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+        "ActionNames": [
+          "kms:DescribeKey"
+        ],
+        "ResourceArns": [
+          "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7"
+        ],
+        "ContextEntries": [
+          {
+            "ContextKeyName": "aws:RequestedRegion",
+            "ContextKeyValues": [
+              "eu-north-1"
+            ],
+            "ContextKeyType": "string"
+          },
+          {
+            "ContextKeyName": "kms:ViaService",
+            "ContextKeyValues": [
+              "lambda.eu-north-1.amazonaws.com"
+            ],
+            "ContextKeyType": "string"
+          },
+          {
+            "ContextKeyName": "kms:CallerAccount",
+            "ContextKeyValues": [
+              "058264289478"
+            ],
+            "ContextKeyType": "string"
+          }
+        ]
+      },
+      "result": {
+        "EvalActionName": "kms:DescribeKey",
+        "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+        "EvalDecision": "allowed",
+        "MatchedStatements": [
+          {
+            "SourcePolicyId": "role_ProjectRespawn-Core-Production-Execution_ProductionExecution",
+            "SourcePolicyType": "IAM Policy",
+            "StartPosition": {
+              "Line": 1,
+              "Column": 3380
+            },
+            "EndPosition": {
+              "Line": 1,
+              "Column": 3633
+            }
+          }
+        ],
+        "MissingContextValues": [],
+        "OrganizationsDecisionDetail": {
+          "AllowedByOrganizations": true
+        },
+        "PermissionsBoundaryDecisionDetail": {
+          "AllowedByPermissionsBoundary": true
+        },
+        "EvalDecisionDetails": {},
+        "ResourceSpecificResults": [
+          {
+            "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+            "EvalResourceDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "role_ProjectRespawn-Core-Production-Execution_ProductionExecution",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 1,
+                  "Column": 3380
+                },
+                "EndPosition": {
+                  "Line": 1,
+                  "Column": 3633
+                }
+              }
+            ],
+            "PermissionsBoundaryDecisionDetail": {
+              "AllowedByPermissionsBoundary": true
+            }
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "foreign-key",
+      "request": {
+        "PolicySourceArn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+        "ActionNames": [
+          "kms:Decrypt"
+        ],
+        "ResourceArns": [
+          "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000"
+        ],
+        "ContextEntries": [
+          {
+            "ContextKeyName": "aws:RequestedRegion",
+            "ContextKeyValues": [
+              "eu-north-1"
+            ],
+            "ContextKeyType": "string"
+          }
+        ]
+      },
+      "result": {
+        "EvalActionName": "kms:Decrypt",
+        "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+        "EvalDecision": "explicitDeny",
+        "MatchedStatements": [
+          {
+            "SourcePolicyId": "role_ProjectRespawn-Core-Production-Execution_ProductionExecution",
+            "SourcePolicyType": "IAM Policy",
+            "StartPosition": {
+              "Line": 1,
+              "Column": 2675
+            },
+            "EndPosition": {
+              "Line": 1,
+              "Column": 2805
+            }
+          }
+        ],
+        "MissingContextValues": [],
+        "OrganizationsDecisionDetail": {
+          "AllowedByOrganizations": true
+        },
+        "PermissionsBoundaryDecisionDetail": {
+          "AllowedByPermissionsBoundary": false
+        },
+        "EvalDecisionDetails": {},
+        "ResourceSpecificResults": [
+          {
+            "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+            "EvalResourceDecision": "explicitDeny",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "role_ProjectRespawn-Core-Production-Execution_ProductionExecution",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 1,
+                  "Column": 2675
+                },
+                "EndPosition": {
+                  "Line": 1,
+                  "Column": 2805
+                }
+              }
+            ],
+            "PermissionsBoundaryDecisionDetail": {
+              "AllowedByPermissionsBoundary": false
+            }
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "no-cognito-admin",
+      "request": {
+        "PolicySourceArn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+        "ActionNames": [
+          "cognito-idp:AdminCreateUser"
+        ],
+        "ResourceArns": [
+          "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_Uufjxul58"
+        ],
+        "ContextEntries": [
+          {
+            "ContextKeyName": "aws:RequestedRegion",
+            "ContextKeyValues": [
+              "eu-north-1"
+            ],
+            "ContextKeyType": "string"
+          }
+        ]
+      },
+      "result": {
+        "EvalActionName": "cognito-idp:AdminCreateUser",
+        "EvalResourceName": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_Uufjxul58",
+        "EvalDecision": "implicitDeny",
+        "MatchedStatements": [],
+        "MissingContextValues": [
+          "kms:EncryptionContext:aws:lambda:FunctionArn",
+          "iam:PermissionsBoundary",
+          "kms:ViaService",
+          "kms:CallerAccount",
+          "iam:PassedToService"
+        ],
+        "OrganizationsDecisionDetail": {
+          "AllowedByOrganizations": true
+        },
+        "PermissionsBoundaryDecisionDetail": {
+          "AllowedByPermissionsBoundary": false
+        },
+        "EvalDecisionDetails": {},
+        "ResourceSpecificResults": [
+          {
+            "EvalResourceName": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_Uufjxul58",
+            "EvalResourceDecision": "implicitDeny",
+            "MissingContextValues": [
+              "kms:EncryptionContext:aws:lambda:FunctionArn",
+              "iam:PermissionsBoundary",
+              "kms:ViaService",
+              "kms:CallerAccount",
+              "iam:PassedToService"
+            ],
+            "PermissionsBoundaryDecisionDetail": {
+              "AllowedByPermissionsBoundary": false
+            }
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "wrong-passrole",
+      "request": {
+        "PolicySourceArn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+        "ActionNames": [
+          "iam:PassRole"
+        ],
+        "ResourceArns": [
+          "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-Execution"
+        ],
+        "ContextEntries": [
+          {
+            "ContextKeyName": "aws:RequestedRegion",
+            "ContextKeyValues": [
+              "eu-north-1"
+            ],
+            "ContextKeyType": "string"
+          },
+          {
+            "ContextKeyName": "iam:PassedToService",
+            "ContextKeyValues": [
+              "lambda.amazonaws.com"
+            ],
+            "ContextKeyType": "string"
+          }
+        ]
+      },
+      "result": {
+        "EvalActionName": "iam:PassRole",
+        "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-Execution",
+        "EvalDecision": "implicitDeny",
+        "MatchedStatements": [],
+        "MissingContextValues": [
+          "kms:EncryptionContext:aws:lambda:FunctionArn",
+          "iam:PermissionsBoundary",
+          "kms:ViaService",
+          "kms:CallerAccount"
+        ],
+        "OrganizationsDecisionDetail": {
+          "AllowedByOrganizations": true
+        },
+        "PermissionsBoundaryDecisionDetail": {
+          "AllowedByPermissionsBoundary": false
+        },
+        "EvalDecisionDetails": {},
+        "ResourceSpecificResults": [
+          {
+            "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-Tournaments-Ntgre-Execution",
+            "EvalResourceDecision": "implicitDeny",
+            "MissingContextValues": [
+              "kms:EncryptionContext:aws:lambda:FunctionArn",
+              "iam:PermissionsBoundary",
+              "kms:ViaService",
+              "kms:CallerAccount"
+            ],
+            "PermissionsBoundaryDecisionDetail": {
+              "AllowedByPermissionsBoundary": false
+            }
+          }
+        ]
+      },
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "limitations": "Simulation does not prove live KMS/organization authorization"
+}

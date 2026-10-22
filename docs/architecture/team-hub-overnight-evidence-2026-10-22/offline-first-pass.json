@@ -1,0 +1,148 @@
+{
+  "awsWrites": 0,
+  "providerRequests": 0,
+  "results": [
+    {
+      "name": "production-runtime",
+      "at": "2026-10-22T21:54:39.655Z",
+      "command": [
+        "node",
+        "--test",
+        ".tmp/team-hub-production/source/scripts/team-hub-business-runtime/tests/target.test.mjs",
+        ".tmp/team-hub-production/source/scripts/team-hub-cursor-runtime/read.test.mjs",
+        ".tmp/team-hub-production/source/scripts/team-hub-cursor-runtime/production-pinned-bundle.test.mjs",
+        ".tmp/team-hub-production/source/scripts/team-hub-2b4/tests/parity.readiness.test.mjs",
+        ".tmp/team-hub-production/source/scripts/team-hub-2b5/tests/target.test.mjs",
+        ".tmp/team-hub-production/source/scripts/team-hub-2b5/tests/core.readiness.test.mjs",
+        "scripts/team-hub-production/team-readiness.test.mjs",
+        "scripts/team-hub-production/deployment-core.test.mjs",
+        "scripts/team-hub-production/deployment.test.mjs",
+        "scripts/cloudformation-accounting.test.mjs",
+        "scripts/ntgre-phase1-allowance.test.mjs",
+        "scripts/migration/control.test.mjs",
+        "scripts/migration/deployment-checks.test.mjs"
+      ],
+      "exitCode": 0,
+      "tests": 0,
+      "failures": 0,
+      "logSha256": "195f6292b5ee09dc6a5ecd2bda53622645eee24b7cf78b2678cd533ad2878072",
+      "log": ".tmp/team-hub-overnight/production-runtime.log"
+    },
+    {
+      "name": "frontend-isolation",
+      "at": "2026-10-22T21:54:44.565Z",
+      "command": [
+        "node",
+        "--test",
+        "scripts/team-hub/tests/frontend-http.test.mjs",
+        "scripts/team-hub/tests/security-isolation.test.mjs",
+        "scripts/team-hub/tests/domain.test.mjs",
+        "scripts/team-hub-2b6/route-access.test.mjs",
+        "scripts/team-hub-authority-status/endpoint.test.mjs",
+        "scripts/team-hub-2b5b/candidate.test.mjs",
+        "scripts/deployment/tests/selection.test.mjs",
+        "scripts/validate-amplify-guards.test.mjs",
+        "scripts/runtime-ownership.test.mjs",
+        "scripts/validate-master-twitch-environment.test.mjs"
+      ],
+      "exitCode": 1,
+      "tests": 0,
+      "failures": 0,
+      "logSha256": "936522212e08a47deb19b3521cf7623c2895de3776225194ccb37eee381490d4",
+      "log": ".tmp/team-hub-overnight/frontend-isolation.log"
+    },
+    {
+      "name": "legacy-team",
+      "at": "2026-10-22T21:54:46.634Z",
+      "command": [
+        "node",
+        "scripts/run-team-hub-backend-tests.mjs"
+      ],
+      "exitCode": 0,
+      "tests": 0,
+      "failures": 0,
+      "logSha256": "fcc6412d98a10267d60b0343b906462fd41de58faaf2617436063af3574907e0",
+      "log": ".tmp/team-hub-overnight/legacy-team.log"
+    },
+    {
+      "name": "team-typescript",
+      "at": "2026-10-22T21:54:47.229Z",
+      "command": [
+        "node",
+        "infrastructure/domains/team-hub/node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "-p",
+        "infrastructure/domains/team-hub/tsconfig.json"
+      ],
+      "exitCode": 0,
+      "tests": 0,
+      "failures": 0,
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log": ".tmp/team-hub-overnight/team-typescript.log"
+    },
+    {
+      "name": "core-typescript",
+      "at": "2026-10-22T21:55:55.863Z",
+      "command": [
+        "node",
+        "infrastructure/domains/team-hub/node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "-p",
+        "infrastructure/domains/core/tsconfig.json",
+        "--typeRoots",
+        "infrastructure/domains/team-hub/node_modules/@types"
+      ],
+      "exitCode": 0,
+      "tests": 0,
+      "failures": 0,
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log": ".tmp/team-hub-overnight/core-typescript.log"
+    },
+    {
+      "name": "ledger",
+      "at": "2026-10-22T21:56:06.175Z",
+      "command": [
+        "node",
+        "scripts/migration/ledger.mjs",
+        "check"
+      ],
+      "exitCode": 0,
+      "tests": 0,
+      "failures": 0,
+      "logSha256": "8c58f2065cd1641887cf21534719bca2ff58af5fed48bd32a59a34144e1b70a5",
+      "log": ".tmp/team-hub-overnight/ledger.log"
+    },
+    {
+      "name": "isolated-cdk-synthesis",
+      "at": "2026-10-22T21:56:07.167Z",
+      "command": [
+        "node",
+        "scripts/team-hub/plan.mjs",
+        "--env",
+        "Ntgre",
+        "--offline"
+      ],
+      "exitCode": 1,
+      "tests": 0,
+      "failures": 0,
+      "logSha256": "6393f004f1a08de6c49a05e24dff710477e3bb2a3d4ec989ab78a64b52d20359",
+      "log": ".tmp/team-hub-overnight/isolated-cdk-synthesis.log"
+    },
+    {
+      "name": "frontend-build",
+      "at": "2026-10-22T21:56:07.467Z",
+      "command": [
+        "node",
+        "node_modules/vite/bin/vite.js",
+        "build",
+        "--outDir",
+        ".tmp/team-hub-overnight/dist"
+      ],
+      "exitCode": 1,
+      "tests": 0,
+      "failures": 0,
+      "logSha256": "9106c6b878f0768ca83ff843367c5fb49519cc7e892f2b6e412a245210b2fc76",
+      "log": ".tmp/team-hub-overnight/frontend-build.log"
+    }
+  ]
+}

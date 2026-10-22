@@ -1,0 +1,614 @@
+{
+  "at": "2026-10-21T15:38:10.265Z",
+  "passed": true,
+  "complete": true,
+  "cases": [
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "exact-create",
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/proof",
+      "allowed": true,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "cloudformation:RoleArn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+        "cloudformation:TemplateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/b9c5d96e7123a6d837c903f1e1779080e020aba8c9eab8af1e2ddccde912ed96.json"
+      },
+      "decision": "allowed",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "old rollback template URL",
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/proof",
+      "allowed": true,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "cloudformation:RoleArn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+        "cloudformation:TemplateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/b9c5d96e7123a6d837c903f1e1779080e020aba8c9eab8af1e2ddccde912ed96.json"
+      },
+      "decision": "allowed",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "wrong-template",
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/proof",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "cloudformation:RoleArn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+        "cloudformation:TemplateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/b9c5d96e7123a6d837c903f1e1779080e020aba8c9eab8af1e2ddccde912ed96.jsonwrong"
+      },
+      "decision": "implicitDeny",
+      "missingContext": [
+        "iam:PassedToService"
+      ],
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "wrong-stack",
+      "action": "cloudformation:ExecuteChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Ntgre/proof",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "foreign TeamHub",
+      "action": "lambda:UpdateFunctionConfiguration",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Production-Contracts",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "foreign Tournament",
+      "action": "lambda:UpdateFunctionConfiguration",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournament-Production-Contracts",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "foreign Creator",
+      "action": "lambda:UpdateFunctionConfiguration",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Creator-Production-Contracts",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "foreign Commerce",
+      "action": "lambda:UpdateFunctionConfiguration",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Commerce-Production-Contracts",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "wrong-artifact",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/OtherDomain/other.zip",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "decision": "implicitDeny",
+      "missingContext": [
+        "cloudformation:TemplateUrl",
+        "cloudformation:RoleArn",
+        "iam:PassedToService"
+      ],
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "new exact product object",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/0302056f0152107ecabd9d459ab50d436245587eef3cec1aa4d971c77a6ca1e4.json",
+      "allowed": true,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "decision": "allowed",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "old exact rollback object",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/b9c5d96e7123a6d837c903f1e1779080e020aba8c9eab8af1e2ddccde912ed96.json",
+      "allowed": true,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "decision": "allowed",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "wrong new product object",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/0302056f0152107ecabd9d459ab50d436245587eef3cec1aa4d971c77a6ca1e4.jsonwrong",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "decision": "implicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "no product object overwrite",
+      "action": "s3:PutObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/0302056f0152107ecabd9d459ab50d436245587eef3cec1aa4d971c77a6ca1e4.json",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "new ZIP scoped to execution only",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/dc2a7137a725f6a82582abc8a800f5d30846058ecdbe12965f81a19c887154c4.zip",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "decision": "implicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "wrong ZIP",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/dc2a7137a725f6a82582abc8a800f5d30846058ecdbe12965f81a19c887154c4.zipwrong",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "decision": "implicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "no versioned object expansion",
+      "action": "s3:GetObjectVersion",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/dc2a7137a725f6a82582abc8a800f5d30846058ecdbe12965f81a19c887154c4.zip",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "new exact product object",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086.json",
+      "allowed": true,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "decision": "allowed",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "old exact rollback object",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/0302056f0152107ecabd9d459ab50d436245587eef3cec1aa4d971c77a6ca1e4.json",
+      "allowed": true,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "decision": "allowed",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "wrong new product object",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086.jsonwrong",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "decision": "implicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "no product object overwrite",
+      "action": "s3:PutObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086.json",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "exact-pass",
+      "action": "iam:PassRole",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+      "allowed": true,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "iam:PassedToService": "cloudformation.amazonaws.com"
+      },
+      "decision": "allowed",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "wrong-pass",
+      "action": "iam:PassRole",
+      "resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "iam:PassedToService": "lambda.amazonaws.com"
+      },
+      "decision": "implicitDeny",
+      "missingContext": [
+        "cloudformation:TemplateUrl",
+        "cloudformation:RoleArn"
+      ],
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "unrelated-key arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts"
+      },
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "unrelated-key arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts"
+      },
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "no-admin kms:CreateKey",
+      "action": "kms:CreateKey",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts"
+      },
+      "decision": "implicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "no-admin kms:PutKeyPolicy",
+      "action": "kms:PutKeyPolicy",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts"
+      },
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "no-admin kms:CreateGrant",
+      "action": "kms:CreateGrant",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts"
+      },
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "no-admin kms:GenerateDataKey",
+      "action": "kms:GenerateDataKey",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts"
+      },
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "no-admin iam:CreatePolicyVersion",
+      "action": "iam:CreatePolicyVersion",
+      "resource": "*",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts"
+      },
+      "decision": "explicitDeny",
+      "missingContext": [],
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "no-admin cognito-idp:AdminCreateUser",
+      "action": "cognito-idp:AdminCreateUser",
+      "resource": "*",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts"
+      },
+      "decision": "explicitDeny",
+      "missingContext": [],
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "legacy Team",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "dynamodb:LeadingKeys": [
+          "TEAM#team:proof"
+        ],
+        "dynamodb:EnclosingOperation": [
+          "TransactWriteItems"
+        ]
+      },
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "legacy TeamMembership",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "dynamodb:LeadingKeys": [
+          "TEAM#team:proof"
+        ],
+        "dynamodb:EnclosingOperation": [
+          "TransactWriteItems"
+        ]
+      },
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "legacy TeamRosterSlot",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "dynamodb:LeadingKeys": [
+          "TEAM#team:proof"
+        ],
+        "dynamodb:EnclosingOperation": [
+          "TransactWriteItems"
+        ]
+      },
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "legacy PlayerChampionPoolEntry",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "dynamodb:LeadingKeys": [
+          "TEAM#team:proof"
+        ],
+        "dynamodb:EnclosingOperation": [
+          "TransactWriteItems"
+        ]
+      },
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "new exact product template URL",
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/proof",
+      "allowed": true,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "cloudformation:RoleArn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+        "cloudformation:TemplateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/0302056f0152107ecabd9d459ab50d436245587eef3cec1aa4d971c77a6ca1e4.json"
+      },
+      "decision": "allowed",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "old rollback template URL",
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/proof",
+      "allowed": true,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "cloudformation:RoleArn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+        "cloudformation:TemplateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/0302056f0152107ecabd9d459ab50d436245587eef3cec1aa4d971c77a6ca1e4.json"
+      },
+      "decision": "allowed",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "wrong template URL",
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/proof",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "cloudformation:RoleArn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+        "cloudformation:TemplateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/0302056f0152107ecabd9d459ab50d436245587eef3cec1aa4d971c77a6ca1e4.jsonwrong"
+      },
+      "decision": "implicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "wrong execution role",
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/proof",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "cloudformation:RoleArn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Production-ReadProofExecution",
+        "cloudformation:TemplateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/0302056f0152107ecabd9d459ab50d436245587eef3cec1aa4d971c77a6ca1e4.json"
+      },
+      "decision": "implicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "new exact product template URL",
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/proof",
+      "allowed": true,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "cloudformation:RoleArn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+        "cloudformation:TemplateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086.json"
+      },
+      "decision": "allowed",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "wrong stack",
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Production/proof",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "cloudformation:RoleArn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+        "cloudformation:TemplateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086.json"
+      },
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "wrong template URL",
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/proof",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "cloudformation:RoleArn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+        "cloudformation:TemplateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086.jsonwrong"
+      },
+      "decision": "implicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "query suffix URL denied",
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/proof",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "cloudformation:RoleArn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+        "cloudformation:TemplateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086.json?versionId=unreviewed"
+      },
+      "decision": "implicitDeny",
+      "passed": true
+    },
+    {
+      "policy": "coreSecurity.Caller",
+      "name": "wrong execution role",
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/proof",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "cloudformation:RoleArn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Production-ReadProofExecution",
+        "cloudformation:TemplateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086.json"
+      },
+      "decision": "implicitDeny",
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Simulated context does not prove actual Lambda/KMS service behavior"
+  ]
+}

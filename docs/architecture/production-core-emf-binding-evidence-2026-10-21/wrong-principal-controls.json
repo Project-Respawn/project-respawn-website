@@ -1,0 +1,298 @@
+{
+  "at": "2026-10-21T15:13:52.736Z",
+  "PolicySourceArn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts",
+  "rows": [
+    {
+      "action": "s3:GetObject",
+      "resources": [
+        "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/dc2a7137a725f6a82582abc8a800f5d30846058ecdbe12965f81a19c887154c4.zip",
+        "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086.json"
+      ],
+      "response": {
+        "EvaluationResults": [
+          {
+            "EvalActionName": "s3:GetObject",
+            "EvalResourceName": "arn:aws:s3:::${BucketName}/${KeyName}",
+            "EvalDecision": "explicitDeny",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "role_ProjectRespawn-Core-Production-Contracts_ProductionRuntime",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 1,
+                  "Column": 38
+                },
+                "EndPosition": {
+                  "Line": 1,
+                  "Column": 261
+                }
+              },
+              {
+                "SourcePolicyId": "ProjectRespawn-Core-Production-RuntimeBoundary",
+                "SourcePolicyType": "Permissions Boundary Policy",
+                "StartPosition": {
+                  "Line": 1,
+                  "Column": 38
+                },
+                "EndPosition": {
+                  "Line": 1,
+                  "Column": 261
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "PermissionsBoundaryDecisionDetail": {
+              "AllowedByPermissionsBoundary": false
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/dc2a7137a725f6a82582abc8a800f5d30846058ecdbe12965f81a19c887154c4.zip",
+                "EvalResourceDecision": "explicitDeny",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "ProjectRespawn-Core-Production-RuntimeBoundary",
+                    "SourcePolicyType": "Permissions Boundary Policy",
+                    "StartPosition": {
+                      "Line": 1,
+                      "Column": 38
+                    },
+                    "EndPosition": {
+                      "Line": 1,
+                      "Column": 261
+                    }
+                  },
+                  {
+                    "SourcePolicyId": "role_ProjectRespawn-Core-Production-Contracts_ProductionRuntime",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 1,
+                      "Column": 38
+                    },
+                    "EndPosition": {
+                      "Line": 1,
+                      "Column": 261
+                    }
+                  }
+                ],
+                "PermissionsBoundaryDecisionDetail": {
+                  "AllowedByPermissionsBoundary": false
+                }
+              },
+              {
+                "EvalResourceName": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086.json",
+                "EvalResourceDecision": "explicitDeny",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "ProjectRespawn-Core-Production-RuntimeBoundary",
+                    "SourcePolicyType": "Permissions Boundary Policy",
+                    "StartPosition": {
+                      "Line": 1,
+                      "Column": 38
+                    },
+                    "EndPosition": {
+                      "Line": 1,
+                      "Column": 261
+                    }
+                  },
+                  {
+                    "SourcePolicyId": "role_ProjectRespawn-Core-Production-Contracts_ProductionRuntime",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 1,
+                      "Column": 38
+                    },
+                    "EndPosition": {
+                      "Line": 1,
+                      "Column": 261
+                    }
+                  }
+                ],
+                "PermissionsBoundaryDecisionDetail": {
+                  "AllowedByPermissionsBoundary": false
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "action": "sts:AssumeRole",
+      "resources": [
+        "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Deploy"
+      ],
+      "response": {
+        "EvaluationResults": [
+          {
+            "EvalActionName": "sts:AssumeRole",
+            "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Deploy",
+            "EvalDecision": "explicitDeny",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "role_ProjectRespawn-Core-Production-Contracts_ProductionRuntime",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 1,
+                  "Column": 38
+                },
+                "EndPosition": {
+                  "Line": 1,
+                  "Column": 261
+                }
+              },
+              {
+                "SourcePolicyId": "ProjectRespawn-Core-Production-RuntimeBoundary",
+                "SourcePolicyType": "Permissions Boundary Policy",
+                "StartPosition": {
+                  "Line": 1,
+                  "Column": 38
+                },
+                "EndPosition": {
+                  "Line": 1,
+                  "Column": 261
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "PermissionsBoundaryDecisionDetail": {
+              "AllowedByPermissionsBoundary": false
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Deploy",
+                "EvalResourceDecision": "explicitDeny",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "ProjectRespawn-Core-Production-RuntimeBoundary",
+                    "SourcePolicyType": "Permissions Boundary Policy",
+                    "StartPosition": {
+                      "Line": 1,
+                      "Column": 38
+                    },
+                    "EndPosition": {
+                      "Line": 1,
+                      "Column": 261
+                    }
+                  },
+                  {
+                    "SourcePolicyId": "role_ProjectRespawn-Core-Production-Contracts_ProductionRuntime",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 1,
+                      "Column": 38
+                    },
+                    "EndPosition": {
+                      "Line": 1,
+                      "Column": 261
+                    }
+                  }
+                ],
+                "PermissionsBoundaryDecisionDetail": {
+                  "AllowedByPermissionsBoundary": false
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "action": "iam:PassRole",
+      "resources": [
+        "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution"
+      ],
+      "response": {
+        "EvaluationResults": [
+          {
+            "EvalActionName": "iam:PassRole",
+            "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+            "EvalDecision": "explicitDeny",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "role_ProjectRespawn-Core-Production-Contracts_ProductionRuntime",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 1,
+                  "Column": 38
+                },
+                "EndPosition": {
+                  "Line": 1,
+                  "Column": 261
+                }
+              },
+              {
+                "SourcePolicyId": "ProjectRespawn-Core-Production-RuntimeBoundary",
+                "SourcePolicyType": "Permissions Boundary Policy",
+                "StartPosition": {
+                  "Line": 1,
+                  "Column": 38
+                },
+                "EndPosition": {
+                  "Line": 1,
+                  "Column": 261
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "PermissionsBoundaryDecisionDetail": {
+              "AllowedByPermissionsBoundary": false
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+                "EvalResourceDecision": "explicitDeny",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "ProjectRespawn-Core-Production-RuntimeBoundary",
+                    "SourcePolicyType": "Permissions Boundary Policy",
+                    "StartPosition": {
+                      "Line": 1,
+                      "Column": 38
+                    },
+                    "EndPosition": {
+                      "Line": 1,
+                      "Column": 261
+                    }
+                  },
+                  {
+                    "SourcePolicyId": "role_ProjectRespawn-Core-Production-Contracts_ProductionRuntime",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 1,
+                      "Column": 38
+                    },
+                    "EndPosition": {
+                      "Line": 1,
+                      "Column": 261
+                    }
+                  }
+                ],
+                "PermissionsBoundaryDecisionDetail": {
+                  "AllowedByPermissionsBoundary": false
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "awsWrites": 0,
+  "limitations": "Actual installed runtime role simulation; no STS assumption or credential generation; caller/execution trust remains byte-equivalent and is separately checked"
+}

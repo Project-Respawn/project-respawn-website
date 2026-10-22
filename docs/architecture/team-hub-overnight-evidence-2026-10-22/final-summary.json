@@ -1,0 +1,106 @@
+{
+  "at": "2026-10-22T22:35:04.128Z",
+  "awsWrites": 0,
+  "secretValuesRead": 0,
+  "customerRecordsRead": 0,
+  "tests": [
+    {
+      "name": "production-runtime",
+      "tests": 233,
+      "pass": 233,
+      "fail": 0,
+      "logSha256": "4d2184f1423742fc195bc3a2186e8121cf9ab585059e84de2e18e28f4031b55c"
+    },
+    {
+      "name": "legacy-team",
+      "tests": 47,
+      "pass": 47,
+      "fail": 0,
+      "logSha256": "8325869328b45f3df8d8181b34605dce2ab668f6de39c1dbdfda6406fc9a54b8"
+    },
+    {
+      "name": "production-extra",
+      "tests": 51,
+      "pass": 51,
+      "fail": 0,
+      "logSha256": "7d787da8cd0f5e340b4aaa54261a59fde379ee5f1b640d5581c9e36dba7d7c0c"
+    },
+    {
+      "name": "frontend-isolation",
+      "tests": 295,
+      "pass": 294,
+      "fail": 1,
+      "logSha256": "0ff98e5d2f6d38e46d74800060cc4db9d56f49370caba7bba96b79c02b054d10"
+    },
+    {
+      "name": "shared-auth-commerce-twitch",
+      "tests": 30,
+      "pass": 30,
+      "fail": 0,
+      "logSha256": "ea666c4ed5388785fdf2e6f82a577ab0c3528c4aa1f0cbe13ac638701619eda6"
+    },
+    {
+      "name": "website-baseline",
+      "tests": 307,
+      "pass": 306,
+      "fail": 1,
+      "logSha256": "449a951c26099d1fdcf7ef98368d3ecf38c6b3ef939c67278d1f8b766d901e4f"
+    },
+    {
+      "name": "website-proposed-shared-patch",
+      "tests": 307,
+      "pass": 307,
+      "fail": 0,
+      "logSha256": "dcc368c9d5bb0664da2f973d76efde7fe1c3f215194f9053f5153be2fb2c3711"
+    },
+    {
+      "name": "fixture-recovery",
+      "tests": 52,
+      "pass": 52,
+      "fail": 0,
+      "logSha256": "5bd8faf163ba8ebc8072fbb823d735a9552470db11f0379c2e134b33bf3dd28e"
+    },
+    {
+      "name": "accounting-links",
+      "tests": 43,
+      "pass": 43,
+      "fail": 0,
+      "logSha256": "24da1b0f7861d1e24c044cfc06035e9445094d13869dce12db75e5af123f494d"
+    }
+  ],
+  "remainingLocalIssues": [
+    {
+      "gate": "Unmodified website baseline",
+      "issue": "Creator connected-demo route test expects a string; current accepted routes use lazy loader functions",
+      "scope": "Unchanged from development; isolated shared test-helper patch prepared and tested 307/307",
+      "action": "Review/apply the proposed test-only compatibility patch in shared integration"
+    },
+    {
+      "gate": "Legacy Master synthesis and dependent runtime-ownership test",
+      "issue": "Amplify PathNotUnderRoot: parent node_modules branch_linker.js is outside isolated projectRoot",
+      "action": "Use a complete dependency installation inside a dedicated release worktree before Master release; do not relax project-root checks"
+    }
+  ],
+  "pinnedCdkSynthesis": {
+    "at": "2026-10-22T22:33:10.668Z",
+    "checks": [
+      {
+        "name": "TeamProduct",
+        "resources": 39,
+        "resourcesPreservedExceptTagOrdering": true
+      },
+      {
+        "name": "TeamSecurity",
+        "resources": 8,
+        "resourcesPreservedExceptTagOrdering": true
+      }
+    ],
+    "passed": true,
+    "awsCalls": 0,
+    "limitation": "CDK roundtrip of pinned templates, not regeneration from historical Ntgre skeleton; AWS change sets and replacements remain unproven"
+  },
+  "runtimeReproducedByteIdentically": true,
+  "masterPublicationGo": false,
+  "darkDeployment": "Prepared immutable proposal; fresh separately authorized execution gates mandatory",
+  "historicalCiScope": "deployment-ci.mjs still describes original 20 October candidates; current manifest/review-bindings and team-readiness.test.mjs are authoritative"
+}

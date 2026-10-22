@@ -1,0 +1,109 @@
+{
+  "at": "2026-10-21T15:36:58.733Z",
+  "kind": "coreSecurity",
+  "stack": "ProjectRespawn-Core-Production-Security",
+  "resources": [
+    {
+      "LogicalResourceId": "Caller",
+      "PhysicalResourceId": "ProjectRespawn-Core-Production-Deploy",
+      "ResourceType": "AWS::IAM::Role",
+      "LastUpdatedTimestamp": "2026-10-21T15:35:48.802000+00:00",
+      "ResourceStatus": "UPDATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "CallerBoundary",
+      "PhysicalResourceId": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-CallerBoundary",
+      "ResourceType": "AWS::IAM::ManagedPolicy",
+      "LastUpdatedTimestamp": "2026-10-21T15:35:29.887000+00:00",
+      "ResourceStatus": "UPDATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "CursorSecret",
+      "PhysicalResourceId": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn",
+      "ResourceType": "AWS::SecretsManager::Secret",
+      "LastUpdatedTimestamp": "2026-10-20T22:31:33.600000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "Execution",
+      "PhysicalResourceId": "ProjectRespawn-Core-Production-Execution",
+      "ResourceType": "AWS::IAM::Role",
+      "LastUpdatedTimestamp": "2026-10-21T15:35:49.329000+00:00",
+      "ResourceStatus": "UPDATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ExecutionBoundary",
+      "PhysicalResourceId": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-ExecutionBoundary",
+      "ResourceType": "AWS::IAM::ManagedPolicy",
+      "LastUpdatedTimestamp": "2026-10-21T15:35:30.063000+00:00",
+      "ResourceStatus": "UPDATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "RuntimeBoundary",
+      "PhysicalResourceId": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary",
+      "ResourceType": "AWS::IAM::ManagedPolicy",
+      "LastUpdatedTimestamp": "2026-10-21T14:45:09.625000+00:00",
+      "ResourceStatus": "UPDATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    }
+  ],
+  "checks": [
+    {
+      "logicalId": "RuntimeBoundary",
+      "type": "AWS::IAM::ManagedPolicy",
+      "arn": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary",
+      "policySha256": "5ea2024401b63d6e1171979fbad2a956d0c3f827e9b642a446a6831e64f02d59",
+      "matched": true
+    },
+    {
+      "logicalId": "ExecutionBoundary",
+      "type": "AWS::IAM::ManagedPolicy",
+      "arn": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-ExecutionBoundary",
+      "policySha256": "3328185934f47c4808de16c12cb62fc40359d2e6b0a44a3089290e41c5b5f42b",
+      "matched": true
+    },
+    {
+      "logicalId": "CallerBoundary",
+      "type": "AWS::IAM::ManagedPolicy",
+      "arn": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-CallerBoundary",
+      "policySha256": "3725c6b954897f60bc4b2888f7fe9fde1c302b0d866026bfe61b097fc14c3581",
+      "matched": true
+    },
+    {
+      "logicalId": "Execution",
+      "type": "AWS::IAM::Role",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-ExecutionBoundary",
+      "trustAndPoliciesMatched": true
+    },
+    {
+      "logicalId": "Caller",
+      "type": "AWS::IAM::Role",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Deploy",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-CallerBoundary",
+      "trustAndPoliciesMatched": true
+    }
+  ],
+  "outputs": {
+    "ProjectRespawn-Core-Production-CursorSecretArn": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn",
+    "ProjectRespawn-Core-Production-RuntimeBoundaryArn": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary"
+  },
+  "passed": true
+}

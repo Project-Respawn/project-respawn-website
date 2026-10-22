@@ -1,0 +1,474 @@
+{
+  "at": "2026-10-21T20:57:45.242Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "core": [
+    {
+      "stack": "ProjectRespawn-Core-Production-Security",
+      "status": "UPDATE_COMPLETE",
+      "resources": 6,
+      "templateSha256": "668049957edf3fb6e3dfda209e4600a824aa0b8182d41afb3051fb76f32bd613",
+      "checks": [
+        {
+          "id": "RuntimeBoundary",
+          "policySha256": "fd65f7566f04c5b5904f43c0e23b581f962b537dbc5f9c2149d85099c84f29c1",
+          "matched": true
+        },
+        {
+          "id": "ExecutionBoundary",
+          "policySha256": "add82720a3c873833581f54d01b4142f92db43af47b12e3ca23402ba3699d1dd",
+          "matched": true
+        },
+        {
+          "id": "CallerBoundary",
+          "policySha256": "c22819e692a2cb9c90a15ccf0bdcec446bab83873be7d2c49efa4dfd041f1c9e",
+          "matched": true
+        },
+        {
+          "id": "Execution",
+          "trustBoundaryAndPoliciesMatched": true
+        },
+        {
+          "id": "Caller",
+          "trustBoundaryAndPoliciesMatched": true
+        }
+      ]
+    },
+    {
+      "stack": "ProjectRespawn-Core-Production",
+      "status": "UPDATE_COMPLETE",
+      "resources": 7,
+      "templateSha256": "5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086",
+      "checks": [
+        {
+          "id": "Runtime",
+          "trustBoundaryAndPoliciesMatched": true
+        },
+        {
+          "id": "Contracts",
+          "state": "Active",
+          "lastUpdateStatus": "Successful",
+          "codeSha256": "dc2a7137a725f6a82582abc8a800f5d30846058ecdbe12965f81a19c887154c4",
+          "environmentAndLoggingMatched": true,
+          "revisionId": "a9544e2b-c15d-4b84-80b2-89041920b497"
+        }
+      ]
+    }
+  ],
+  "collisions": [
+    {
+      "id": "ExecutionBoundary",
+      "request": {
+        "PolicyArn": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Production-ReadProofExecutionBoundary"
+      },
+      "absent": true
+    },
+    {
+      "id": "ExecutionRole",
+      "request": {
+        "RoleName": "ProjectRespawn-TeamHub-Production-ReadProofExecution"
+      },
+      "absent": true
+    },
+    {
+      "id": "PreparationCaller",
+      "request": {
+        "PolicyArn": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Production-ReadProofPreparation"
+      },
+      "absent": true
+    },
+    {
+      "id": "DeploymentCaller",
+      "request": {
+        "RoleName": "ProjectRespawn-TeamHub-Production-Deploy"
+      },
+      "absent": true
+    },
+    {
+      "id": "ParityCommandBoundary",
+      "request": {
+        "PolicyArn": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Production-ParityCommandBoundary"
+      },
+      "absent": true
+    },
+    {
+      "id": "ParityReadBoundary",
+      "request": {
+        "PolicyArn": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Production-ParityReadBoundary"
+      },
+      "absent": true
+    },
+    {
+      "id": "CursorSecret",
+      "request": {
+        "SecretId": "ProjectRespawn-TeamHub-Production-Cursor"
+      },
+      "absent": true
+    },
+    {
+      "id": "HttpApi",
+      "name": "ProjectRespawn-TeamHub-Production",
+      "absent": true
+    },
+    {
+      "id": "OperationalTable",
+      "request": {
+        "TableName": "ProjectRespawn-TeamHub-Production-Operational"
+      },
+      "absent": true
+    },
+    {
+      "id": "JournalTable",
+      "request": {
+        "TableName": "ProjectRespawn-TeamHub-Production-Journal"
+      },
+      "absent": true
+    },
+    {
+      "id": "ParityCommandLogs",
+      "name": "/project-respawn/Production/team-hub/parity-command",
+      "absent": true
+    },
+    {
+      "id": "ParityCommandRole",
+      "request": {
+        "RoleName": "ProjectRespawn-TeamHub-Production-ParityCommand"
+      },
+      "absent": true
+    },
+    {
+      "id": "ParityCommandFunction",
+      "request": {
+        "FunctionName": "ProjectRespawn-TeamHub-Production-ParityCommand"
+      },
+      "absent": true
+    },
+    {
+      "id": "ParityReadLogs",
+      "name": "/project-respawn/Production/team-hub/parity-read",
+      "absent": true
+    },
+    {
+      "id": "ParityReadRole",
+      "request": {
+        "RoleName": "ProjectRespawn-TeamHub-Production-ParityRead"
+      },
+      "absent": true
+    },
+    {
+      "id": "ParityReadFunction",
+      "request": {
+        "FunctionName": "ProjectRespawn-TeamHub-Production-ParityRead"
+      },
+      "absent": true
+    },
+    {
+      "StackName": "ProjectRespawn-TeamHub-Production-Security",
+      "absent": true
+    },
+    {
+      "StackName": "ProjectRespawn-TeamHub-Production",
+      "absent": true
+    }
+  ],
+  "keys": [
+    {
+      "arn": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "keyManager": "AWS",
+      "state": "Enabled",
+      "policy": {
+        "Version": "2012-10-17",
+        "Id": "auto-awslambda-3",
+        "Statement": [
+          {
+            "Sid": "Allow access through AWS Lambda for all principals in the account that are authorized to use AWS Lambda",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "*"
+            },
+            "Action": [
+              "kms:Encrypt",
+              "kms:Decrypt",
+              "kms:ReEncrypt*",
+              "kms:GenerateDataKey*",
+              "kms:CreateGrant",
+              "kms:DescribeKey"
+            ],
+            "Resource": "*",
+            "Condition": {
+              "StringEquals": {
+                "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+                "kms:CallerAccount": "058264289478"
+              }
+            }
+          },
+          {
+            "Sid": "Allow all principals in the account to decrypt ciphertexts for Lambda functions in the account",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "*"
+            },
+            "Action": "kms:Decrypt",
+            "Resource": "*",
+            "Condition": {
+              "StringEquals": {
+                "kms:CallerAccount": "058264289478"
+              },
+              "ArnLike": {
+                "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:*:lambda:eu-north-1:058264289478:function:*"
+              }
+            }
+          },
+          {
+            "Sid": "Allow Lambda service access",
+            "Effect": "Allow",
+            "Principal": {
+              "Service": [
+                "lambda.eu-north-1.amazonaws.com",
+                "lambda.amazonaws.com"
+              ]
+            },
+            "Action": "kms:GenerateDataKey",
+            "Resource": "*",
+            "Condition": {
+              "ArnLike": {
+                "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:*:lambda:eu-north-1:058264289478:function:*"
+              }
+            }
+          },
+          {
+            "Sid": "Allow Lambda to directly describe the key and list its grants",
+            "Effect": "Allow",
+            "Principal": {
+              "Service": [
+                "lambda.eu-north-1.amazonaws.com",
+                "lambda.amazonaws.com"
+              ]
+            },
+            "Action": [
+              "kms:Describe*",
+              "kms:Get*",
+              "kms:List*"
+            ],
+            "Resource": "*"
+          },
+          {
+            "Sid": "Allow direct access to key metadata to the account",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": [
+              "kms:Describe*",
+              "kms:Get*",
+              "kms:List*",
+              "kms:RevokeGrant"
+            ],
+            "Resource": "*"
+          }
+        ]
+      }
+    },
+    {
+      "arn": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "keyManager": "AWS",
+      "state": "Enabled",
+      "policy": {
+        "Version": "2012-10-17",
+        "Id": "auto-secretsmanager-2",
+        "Statement": [
+          {
+            "Sid": "Allow access through AWS Secrets Manager for all principals in the account that are authorized to use AWS Secrets Manager",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "*"
+            },
+            "Action": [
+              "kms:Encrypt",
+              "kms:Decrypt",
+              "kms:ReEncrypt*",
+              "kms:CreateGrant",
+              "kms:DescribeKey"
+            ],
+            "Resource": "*",
+            "Condition": {
+              "StringEquals": {
+                "kms:CallerAccount": "058264289478",
+                "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com"
+              }
+            }
+          },
+          {
+            "Sid": "Allow access through AWS Secrets Manager for all principals in the account that are authorized to use AWS Secrets Manager",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "*"
+            },
+            "Action": "kms:GenerateDataKey*",
+            "Resource": "*",
+            "Condition": {
+              "StringEquals": {
+                "kms:CallerAccount": "058264289478"
+              },
+              "StringLike": {
+                "kms:ViaService": "secretsmanager.*.amazonaws.com"
+              }
+            }
+          },
+          {
+            "Sid": "Allow direct access to key metadata to the account",
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::058264289478:root"
+            },
+            "Action": [
+              "kms:Describe*",
+              "kms:Get*",
+              "kms:List*",
+              "kms:RevokeGrant"
+            ],
+            "Resource": "*"
+          }
+        ]
+      }
+    }
+  ],
+  "awsWrites": 0,
+  "alarms": [
+    {
+      "AlarmName": "ProjectRespawn-Core-Production-Denied",
+      "AlarmArn": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-Core-Production-Denied",
+      "AlarmConfigurationUpdatedTimestamp": "2026-10-21T07:54:14.146000+01:00",
+      "ActionsEnabled": true,
+      "OKActions": [],
+      "AlarmActions": [],
+      "InsufficientDataActions": [],
+      "StateValue": "OK",
+      "StateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+      "StateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-21T06:55:02.438+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":20.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-21T06:54:00.000+0000\"}]}",
+      "StateUpdatedTimestamp": "2026-10-21T07:55:02.440000+01:00",
+      "MetricName": "Denied",
+      "Namespace": "ProjectRespawn/Core",
+      "Statistic": "Sum",
+      "Dimensions": [
+        {
+          "Name": "Environment",
+          "Value": "Production"
+        }
+      ],
+      "Period": 60,
+      "EvaluationPeriods": 1,
+      "Threshold": 20,
+      "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+      "TreatMissingData": "notBreaching",
+      "StateTransitionedTimestamp": "2026-10-21T07:55:02.440000+01:00"
+    },
+    {
+      "AlarmName": "ProjectRespawn-Core-Production-DependencyFailures",
+      "AlarmArn": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-Core-Production-DependencyFailures",
+      "AlarmConfigurationUpdatedTimestamp": "2026-10-21T07:54:14.717000+01:00",
+      "ActionsEnabled": true,
+      "OKActions": [],
+      "AlarmActions": [],
+      "InsufficientDataActions": [],
+      "StateValue": "OK",
+      "StateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+      "StateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-21T06:55:43.880+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":1.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-21T06:54:00.000+0000\"}]}",
+      "StateUpdatedTimestamp": "2026-10-21T07:55:43.883000+01:00",
+      "MetricName": "DependencyFailures",
+      "Namespace": "ProjectRespawn/Core",
+      "Statistic": "Sum",
+      "Dimensions": [
+        {
+          "Name": "Environment",
+          "Value": "Production"
+        }
+      ],
+      "Period": 60,
+      "EvaluationPeriods": 1,
+      "Threshold": 1,
+      "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+      "TreatMissingData": "notBreaching",
+      "StateTransitionedTimestamp": "2026-10-21T07:55:43.883000+01:00"
+    },
+    {
+      "AlarmName": "ProjectRespawn-Core-Production-Errors",
+      "AlarmArn": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-Core-Production-Errors",
+      "AlarmConfigurationUpdatedTimestamp": "2026-10-21T07:54:44.479000+01:00",
+      "ActionsEnabled": true,
+      "OKActions": [],
+      "AlarmActions": [],
+      "InsufficientDataActions": [],
+      "StateValue": "OK",
+      "StateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+      "StateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-21T07:06:51.940+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":1.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-21T07:05:00.000+0000\"}]}",
+      "StateUpdatedTimestamp": "2026-10-21T08:06:51.942000+01:00",
+      "MetricName": "Errors",
+      "Namespace": "AWS/Lambda",
+      "Statistic": "Sum",
+      "Dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-Core-Production-Contracts"
+        }
+      ],
+      "Period": 60,
+      "EvaluationPeriods": 1,
+      "Threshold": 1,
+      "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+      "TreatMissingData": "notBreaching",
+      "StateTransitionedTimestamp": "2026-10-21T08:06:51.942000+01:00"
+    },
+    {
+      "AlarmName": "ProjectRespawn-Core-Production-Throttles",
+      "AlarmArn": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-Core-Production-Throttles",
+      "AlarmConfigurationUpdatedTimestamp": "2026-10-21T07:54:44.630000+01:00",
+      "ActionsEnabled": true,
+      "OKActions": [],
+      "AlarmActions": [],
+      "InsufficientDataActions": [],
+      "StateValue": "OK",
+      "StateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+      "StateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-21T06:56:14.445+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":1.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-21T06:55:00.000+0000\"}]}",
+      "StateUpdatedTimestamp": "2026-10-21T07:56:14.449000+01:00",
+      "MetricName": "Throttles",
+      "Namespace": "AWS/Lambda",
+      "Statistic": "Sum",
+      "Dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-Core-Production-Contracts"
+        }
+      ],
+      "Period": 60,
+      "EvaluationPeriods": 1,
+      "Threshold": 1,
+      "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+      "TreatMissingData": "notBreaching",
+      "StateTransitionedTimestamp": "2026-10-21T07:56:14.449000+01:00"
+    }
+  ],
+  "capacity": {
+    "AccountLimit": {
+      "TotalCodeSize": 322122547200,
+      "CodeSizeUnzipped": 262144000,
+      "CodeSizeZipped": 52428800,
+      "ConcurrentExecutions": 10,
+      "UnreservedConcurrentExecutions": 10
+    },
+    "AccountUsage": {
+      "TotalCodeSize": 306940916,
+      "FunctionCount": 70
+    }
+  },
+  "reservedConcurrencyRequested": 0,
+  "testConcurrency": 1,
+  "limitations": [
+    "No AWS writes or new Core invocation; accepted live contracts/EMF receipts are preserved and linked",
+    "No new drift detection or complete Organizations visibility asserted; actual installed Team IAM/service gates remain mandatory"
+  ],
+  "passed": true
+}

@@ -1,0 +1,448 @@
+{
+ "Description": "OFFLINE security definitions; separate bootstrap review required",
+ "Resources": {
+  "ExecutionBoundary": {
+   "Type": "AWS::IAM::ManagedPolicy",
+   "Properties": {
+    "ManagedPolicyName": "ProjectRespawn-TeamHub-Ntgre-ExecutionBoundary",
+    "PolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Effect": "Allow",
+       "Action": [
+        "apigateway:GET",
+        "apigateway:POST",
+        "apigateway:PUT",
+        "apigateway:PATCH",
+        "apigateway:DELETE"
+       ],
+       "Resource": "arn:aws:apigateway:eu-north-1::*"
+      },
+      {
+       "Effect": "Allow",
+       "Action": [
+        "lambda:CreateFunction",
+        "lambda:UpdateFunctionCode",
+        "lambda:UpdateFunctionConfiguration",
+        "lambda:DeleteFunction",
+        "lambda:GetFunction",
+        "lambda:GetFunctionConfiguration",
+        "lambda:AddPermission",
+        "lambda:RemovePermission",
+        "lambda:GetPolicy",
+        "lambda:TagResource",
+        "lambda:UntagResource",
+        "lambda:ListTags"
+       ],
+       "Resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-*"
+      },
+      {
+       "Effect": "Allow",
+       "Action": [
+        "dynamodb:CreateTable",
+        "dynamodb:DescribeTable",
+        "dynamodb:UpdateTable",
+        "dynamodb:DeleteTable",
+        "dynamodb:UpdateContinuousBackups",
+        "dynamodb:DescribeContinuousBackups",
+        "dynamodb:UpdateTimeToLive",
+        "dynamodb:DescribeTimeToLive",
+        "dynamodb:TagResource",
+        "dynamodb:UntagResource",
+        "dynamodb:ListTagsOfResource"
+       ],
+       "Resource": [
+        "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+        "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal"
+       ]
+      },
+      {
+       "Effect": "Allow",
+       "Action": [
+        "logs:CreateLogGroup",
+        "logs:DeleteLogGroup",
+        "logs:PutRetentionPolicy",
+        "logs:DeleteRetentionPolicy",
+        "logs:TagResource",
+        "logs:UntagResource",
+        "logs:ListTagsForResource"
+       ],
+       "Resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/*"
+      },
+      {
+       "Effect": "Allow",
+       "Action": [
+        "logs:DescribeLogGroups",
+        "logs:CreateLogDelivery",
+        "logs:GetLogDelivery",
+        "logs:UpdateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:PutResourcePolicy",
+        "logs:DeleteResourcePolicy",
+        "logs:DescribeResourcePolicies"
+       ],
+       "Resource": "*"
+      },
+      {
+       "Effect": "Allow",
+       "Action": [
+        "cloudwatch:PutMetricAlarm",
+        "cloudwatch:DeleteAlarms",
+        "cloudwatch:DescribeAlarms",
+        "cloudwatch:TagResource",
+        "cloudwatch:UntagResource"
+       ],
+       "Resource": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-TeamHub-Ntgre-*"
+      },
+      {
+       "Effect": "Allow",
+       "Action": [
+        "iam:CreateRole",
+        "iam:PutRolePermissionsBoundary"
+       ],
+       "Resource": [
+        "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-read",
+        "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-command"
+       ],
+       "Condition": {
+        "StringEquals": {
+         "iam:PermissionsBoundary": [
+          "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-read-Boundary",
+          "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-command-Boundary"
+         ]
+        }
+       }
+      },
+      {
+       "Effect": "Allow",
+       "Action": [
+        "iam:GetRole",
+        "iam:DeleteRole",
+        "iam:PutRolePolicy",
+        "iam:GetRolePolicy",
+        "iam:DeleteRolePolicy",
+        "iam:TagRole",
+        "iam:UntagRole"
+       ],
+       "Resource": [
+        "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-read",
+        "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-command"
+       ]
+      },
+      {
+       "Effect": "Allow",
+       "Action": [
+        "iam:CreatePolicy",
+        "iam:GetPolicy",
+        "iam:GetPolicyVersion",
+        "iam:CreatePolicyVersion",
+        "iam:DeletePolicyVersion",
+        "iam:ListPolicyVersions",
+        "iam:DeletePolicy"
+       ],
+       "Resource": [
+        "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-read-Boundary",
+        "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-command-Boundary"
+       ]
+      },
+      {
+       "Effect": "Allow",
+       "Action": "iam:PassRole",
+       "Resource": [
+        "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-read",
+        "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-command"
+       ],
+       "Condition": {
+        "StringEquals": {
+         "iam:PassedToService": "lambda.amazonaws.com"
+        }
+       }
+      },
+      {
+       "Effect": "Deny",
+       "Action": [
+        "cognito-idp:*",
+        "kms:*",
+        "secretsmanager:*",
+        "appsync:*"
+       ],
+       "Resource": "*"
+      }
+     ]
+    }
+   }
+  },
+  "ExecutionRole": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "cloudformation.amazonaws.com"
+       },
+       "Action": "sts:AssumeRole",
+       "Condition": {
+        "StringEquals": {
+         "aws:SourceAccount": "058264289478"
+        }
+       }
+      }
+     ]
+    },
+    "PermissionsBoundary": {
+     "Ref": "ExecutionBoundary"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Effect": "Allow",
+         "Action": [
+          "apigateway:GET",
+          "apigateway:POST",
+          "apigateway:PUT",
+          "apigateway:PATCH",
+          "apigateway:DELETE"
+         ],
+         "Resource": "arn:aws:apigateway:eu-north-1::*"
+        },
+        {
+         "Effect": "Allow",
+         "Action": [
+          "lambda:CreateFunction",
+          "lambda:UpdateFunctionCode",
+          "lambda:UpdateFunctionConfiguration",
+          "lambda:DeleteFunction",
+          "lambda:GetFunction",
+          "lambda:GetFunctionConfiguration",
+          "lambda:AddPermission",
+          "lambda:RemovePermission",
+          "lambda:GetPolicy",
+          "lambda:TagResource",
+          "lambda:UntagResource",
+          "lambda:ListTags"
+         ],
+         "Resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-*"
+        },
+        {
+         "Effect": "Allow",
+         "Action": [
+          "dynamodb:CreateTable",
+          "dynamodb:DescribeTable",
+          "dynamodb:UpdateTable",
+          "dynamodb:DeleteTable",
+          "dynamodb:UpdateContinuousBackups",
+          "dynamodb:DescribeContinuousBackups",
+          "dynamodb:UpdateTimeToLive",
+          "dynamodb:DescribeTimeToLive",
+          "dynamodb:TagResource",
+          "dynamodb:UntagResource",
+          "dynamodb:ListTagsOfResource"
+         ],
+         "Resource": [
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Operational",
+          "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal"
+         ]
+        },
+        {
+         "Effect": "Allow",
+         "Action": [
+          "logs:CreateLogGroup",
+          "logs:DeleteLogGroup",
+          "logs:PutRetentionPolicy",
+          "logs:DeleteRetentionPolicy",
+          "logs:TagResource",
+          "logs:UntagResource",
+          "logs:ListTagsForResource"
+         ],
+         "Resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Ntgre/team-hub/*"
+        },
+        {
+         "Effect": "Allow",
+         "Action": [
+          "logs:DescribeLogGroups",
+          "logs:CreateLogDelivery",
+          "logs:GetLogDelivery",
+          "logs:UpdateLogDelivery",
+          "logs:DeleteLogDelivery",
+          "logs:ListLogDeliveries",
+          "logs:PutResourcePolicy",
+          "logs:DeleteResourcePolicy",
+          "logs:DescribeResourcePolicies"
+         ],
+         "Resource": "*"
+        },
+        {
+         "Effect": "Allow",
+         "Action": [
+          "cloudwatch:PutMetricAlarm",
+          "cloudwatch:DeleteAlarms",
+          "cloudwatch:DescribeAlarms",
+          "cloudwatch:TagResource",
+          "cloudwatch:UntagResource"
+         ],
+         "Resource": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-TeamHub-Ntgre-*"
+        },
+        {
+         "Effect": "Allow",
+         "Action": [
+          "iam:CreateRole",
+          "iam:PutRolePermissionsBoundary"
+         ],
+         "Resource": [
+          "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-read",
+          "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-command"
+         ],
+         "Condition": {
+          "StringEquals": {
+           "iam:PermissionsBoundary": [
+            "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-read-Boundary",
+            "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-command-Boundary"
+           ]
+          }
+         }
+        },
+        {
+         "Effect": "Allow",
+         "Action": [
+          "iam:GetRole",
+          "iam:DeleteRole",
+          "iam:PutRolePolicy",
+          "iam:GetRolePolicy",
+          "iam:DeleteRolePolicy",
+          "iam:TagRole",
+          "iam:UntagRole"
+         ],
+         "Resource": [
+          "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-read",
+          "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-command"
+         ]
+        },
+        {
+         "Effect": "Allow",
+         "Action": [
+          "iam:CreatePolicy",
+          "iam:GetPolicy",
+          "iam:GetPolicyVersion",
+          "iam:CreatePolicyVersion",
+          "iam:DeletePolicyVersion",
+          "iam:ListPolicyVersions",
+          "iam:DeletePolicy"
+         ],
+         "Resource": [
+          "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-read-Boundary",
+          "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Ntgre-command-Boundary"
+         ]
+        },
+        {
+         "Effect": "Allow",
+         "Action": "iam:PassRole",
+         "Resource": [
+          "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-read",
+          "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-command"
+         ],
+         "Condition": {
+          "StringEquals": {
+           "iam:PassedToService": "lambda.amazonaws.com"
+          }
+         }
+        },
+        {
+         "Effect": "Deny",
+         "Action": [
+          "cognito-idp:*",
+          "kms:*",
+          "secretsmanager:*",
+          "appsync:*"
+         ],
+         "Resource": "*"
+        }
+       ]
+      },
+      "PolicyName": "TeamDeployment"
+     }
+    ],
+    "RoleName": "ProjectRespawn-TeamHub-Ntgre-Execution"
+   }
+  },
+  "PreparationCallerPolicy": {
+   "Type": "AWS::IAM::ManagedPolicy",
+   "Properties": {
+    "ManagedPolicyName": "ProjectRespawn-TeamHub-Ntgre-PreparationCaller",
+    "PolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Effect": "Allow",
+       "Action": [
+        "cloudformation:CreateChangeSet",
+        "cloudformation:DescribeChangeSet",
+        "cloudformation:DeleteChangeSet",
+        "cloudformation:DescribeStacks",
+        "cloudformation:DescribeStackEvents",
+        "cloudformation:GetTemplate"
+       ],
+       "Resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*"
+      },
+      {
+       "Effect": "Allow",
+       "Action": "iam:PassRole",
+       "Resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Ntgre-Execution",
+       "Condition": {
+        "StringEquals": {
+         "iam:PassedToService": "cloudformation.amazonaws.com"
+        }
+       }
+      },
+      {
+       "Effect": "Deny",
+       "Action": "cloudformation:*",
+       "NotResource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Ntgre/*"
+      }
+     ]
+    }
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

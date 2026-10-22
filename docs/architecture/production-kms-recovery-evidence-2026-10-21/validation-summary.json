@@ -1,0 +1,124 @@
+{
+  "status": "PREPARED_AWAITING_FRESH_AUTHORIZATION",
+  "awsWrites": 0,
+  "manifestSha256": "ca35f7a41b0c9786ab8a81d130a464a170c69d466d3a0e807531a06a164b7d86",
+  "security": {
+    "coreSecurity": {
+      "path": "docs/architecture/production-kms-recovery-evidence-2026-10-21/59c85a51a66a064044e81d28acff3d72f0fdb9e2d9604c823df3d74573ed7cab.coreSecurity.template.json",
+      "sha256": "59c85a51a66a064044e81d28acff3d72f0fdb9e2d9604c823df3d74573ed7cab",
+      "key": "production/59c85a51a66a064044e81d28acff3d72f0fdb9e2d9604c823df3d74573ed7cab.json",
+      "url": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/59c85a51a66a064044e81d28acff3d72f0fdb9e2d9604c823df3d74573ed7cab.json"
+    },
+    "teamSecurity": {
+      "path": "docs/architecture/production-kms-recovery-evidence-2026-10-21/12cbedb22e12a1691496bcd5be22b44633bdf8ab0620c1a883191d3eabea678c.teamSecurity.template.json",
+      "sha256": "12cbedb22e12a1691496bcd5be22b44633bdf8ab0620c1a883191d3eabea678c",
+      "key": "production/12cbedb22e12a1691496bcd5be22b44633bdf8ab0620c1a883191d3eabea678c.json",
+      "url": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/12cbedb22e12a1691496bcd5be22b44633bdf8ab0620c1a883191d3eabea678c.json"
+    }
+  },
+  "logImport": {
+    "path": "docs/architecture/production-kms-recovery-evidence-2026-10-21/099f4aed191a8f6921daa4c15ce91a14869ad90bcb71d46044e4f898cd4c55b8.coreLogImport.template.json",
+    "sha256": "099f4aed191a8f6921daa4c15ce91a14869ad90bcb71d46044e4f898cd4c55b8",
+    "key": "production/099f4aed191a8f6921daa4c15ce91a14869ad90bcb71d46044e4f898cd4c55b8.json",
+    "url": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/099f4aed191a8f6921daa4c15ce91a14869ad90bcb71d46044e4f898cd4c55b8.json"
+  },
+  "oldProductsAndRuntimeUnchanged": true,
+  "policies": [
+    {
+      "id": "coreProduct.Runtime",
+      "size": 3915,
+      "limit": 10240,
+      "blockingFindings": 0
+    },
+    {
+      "id": "teamProduct.ParityCommandRole",
+      "size": 5001,
+      "limit": 10240,
+      "blockingFindings": 0
+    },
+    {
+      "id": "teamProduct.ParityReadRole",
+      "size": 5626,
+      "limit": 10240,
+      "blockingFindings": 0
+    },
+    {
+      "id": "coreSecurity.RuntimeBoundary",
+      "size": 3915,
+      "limit": 6144,
+      "blockingFindings": 0
+    },
+    {
+      "id": "coreSecurity.ExecutionBoundary",
+      "size": 3694,
+      "limit": 6144,
+      "blockingFindings": 0
+    },
+    {
+      "id": "coreSecurity.CallerBoundary",
+      "size": 1787,
+      "limit": 6144,
+      "blockingFindings": 0
+    },
+    {
+      "id": "coreSecurity.Execution",
+      "size": 5521,
+      "limit": 10240,
+      "blockingFindings": 0
+    },
+    {
+      "id": "coreSecurity.Caller",
+      "size": 1787,
+      "limit": 10240,
+      "blockingFindings": 0
+    },
+    {
+      "id": "teamSecurity.PreparationCaller",
+      "size": 1820,
+      "limit": 10240,
+      "blockingFindings": 0
+    },
+    {
+      "id": "teamSecurity.DeploymentCaller",
+      "size": 1820,
+      "limit": 10240,
+      "blockingFindings": 0
+    },
+    {
+      "id": "teamSecurity.ParityCommandBoundary",
+      "size": 5001,
+      "limit": 6144,
+      "blockingFindings": 0
+    },
+    {
+      "id": "teamSecurity.ParityReadBoundary",
+      "size": 5626,
+      "limit": 6144,
+      "blockingFindings": 0
+    },
+    {
+      "id": "teamSecurity.ExecutionBoundary",
+      "size": 6044,
+      "limit": 6144,
+      "blockingFindings": 0
+    },
+    {
+      "id": "teamSecurity.ExecutionRole",
+      "size": 9040,
+      "limit": 10240,
+      "blockingFindings": 0
+    }
+  ],
+  "simulationCases": 516,
+  "effectiveAndInjectedAllowCases": 14,
+  "templateValidations": 3,
+  "focusedTests": 30,
+  "r2ImmutableInputsVerified": 44,
+  "secretScan": {
+    "files": 23,
+    "matches": 0
+  },
+  "limitations": [
+    "Custom policy simulation does not prove actual service context, AWS-managed key grant creation, role trust, Organizations permissions or Lambda provisioning"
+  ]
+}

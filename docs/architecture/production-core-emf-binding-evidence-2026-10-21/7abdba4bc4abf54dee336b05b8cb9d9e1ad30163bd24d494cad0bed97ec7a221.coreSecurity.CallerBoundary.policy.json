@@ -1,0 +1,73 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Deny",
+      "NotAction": [
+        "cloudformation:DescribeStacks",
+        "cloudformation:DescribeStackEvents",
+        "cloudformation:ListStackResources",
+        "cloudformation:GetTemplate",
+        "cloudformation:DescribeChangeSet",
+        "cloudformation:ExecuteChangeSet",
+        "cloudformation:DeleteChangeSet",
+        "cloudformation:CreateChangeSet",
+        "iam:PassRole",
+        "s3:GetObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Deny",
+      "Action": "cloudformation:*",
+      "NotResource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DescribeStacks",
+        "cloudformation:DescribeStackEvents",
+        "cloudformation:ListStackResources",
+        "cloudformation:GetTemplate",
+        "cloudformation:DescribeChangeSet",
+        "cloudformation:ExecuteChangeSet",
+        "cloudformation:DeleteChangeSet"
+      ],
+      "Resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": "cloudformation:CreateChangeSet",
+      "Resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/*",
+      "Condition": {
+        "StringEquals": {
+          "cloudformation:RoleArn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+          "cloudformation:TemplateUrl": [
+            "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/b9c5d96e7123a6d837c903f1e1779080e020aba8c9eab8af1e2ddccde912ed96.json",
+            "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/0302056f0152107ecabd9d459ab50d436245587eef3cec1aa4d971c77a6ca1e4.json",
+            "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086.json"
+          ]
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": "iam:PassRole",
+      "Resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+      "Condition": {
+        "StringEquals": {
+          "iam:PassedToService": "cloudformation.amazonaws.com"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": "s3:GetObject",
+      "Resource": [
+        "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/b9c5d96e7123a6d837c903f1e1779080e020aba8c9eab8af1e2ddccde912ed96.json",
+        "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/0302056f0152107ecabd9d459ab50d436245587eef3cec1aa4d971c77a6ca1e4.json",
+        "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086.json"
+      ]
+    }
+  ]
+}

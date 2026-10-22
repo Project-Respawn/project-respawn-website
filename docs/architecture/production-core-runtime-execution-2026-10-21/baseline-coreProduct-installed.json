@@ -1,0 +1,143 @@
+{
+  "at": "2026-10-21T14:44:04.440Z",
+  "kind": "coreProduct",
+  "stack": "ProjectRespawn-Core-Production",
+  "resources": [
+    {
+      "LogicalResourceId": "Contracts",
+      "PhysicalResourceId": "ProjectRespawn-Core-Production-Contracts",
+      "ResourceType": "AWS::Lambda::Function",
+      "LastUpdatedTimestamp": "2026-10-21T06:54:41.932000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "Denied",
+      "PhysicalResourceId": "ProjectRespawn-Core-Production-Denied",
+      "ResourceType": "AWS::CloudWatch::Alarm",
+      "LastUpdatedTimestamp": "2026-10-21T06:54:14.782000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "DependencyFailures",
+      "PhysicalResourceId": "ProjectRespawn-Core-Production-DependencyFailures",
+      "ResourceType": "AWS::CloudWatch::Alarm",
+      "LastUpdatedTimestamp": "2026-10-21T06:54:15.418000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "Errors",
+      "PhysicalResourceId": "ProjectRespawn-Core-Production-Errors",
+      "ResourceType": "AWS::CloudWatch::Alarm",
+      "LastUpdatedTimestamp": "2026-10-21T06:54:45.085000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "Logs",
+      "PhysicalResourceId": "/project-respawn/Production/core/contracts",
+      "ResourceType": "AWS::Logs::LogGroup",
+      "LastUpdatedTimestamp": "2026-10-21T06:05:39.576000+00:00",
+      "ResourceStatus": "UPDATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "IN_SYNC"
+      }
+    },
+    {
+      "LogicalResourceId": "Runtime",
+      "PhysicalResourceId": "ProjectRespawn-Core-Production-Contracts",
+      "ResourceType": "AWS::IAM::Role",
+      "LastUpdatedTimestamp": "2026-10-21T06:54:31.394000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "Throttles",
+      "PhysicalResourceId": "ProjectRespawn-Core-Production-Throttles",
+      "ResourceType": "AWS::CloudWatch::Alarm",
+      "LastUpdatedTimestamp": "2026-10-21T06:54:45.290000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    }
+  ],
+  "checks": [
+    {
+      "logicalId": "Runtime",
+      "type": "AWS::IAM::Role",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary",
+      "trustAndPoliciesMatched": true
+    },
+    {
+      "logicalId": "Contracts",
+      "type": "AWS::Lambda::Function",
+      "configuration": {
+        "FunctionName": "ProjectRespawn-Core-Production-Contracts",
+        "FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts",
+        "Runtime": "nodejs22.x",
+        "Role": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts",
+        "Handler": "index.handler",
+        "CodeSize": 1674216,
+        "Description": "",
+        "Timeout": 10,
+        "MemorySize": 256,
+        "LastModified": "2026-10-21T06:54:35.485+0000",
+        "CodeSha256": "/s3AMnpfdci+T55PKAd2tpCPZG39/99r7k5h5egSZQM=",
+        "Version": "$LATEST",
+        "Environment": {
+          "Variables": {
+            "CORE_CURSOR_SECRET_ARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn",
+            "CORE_ENVIRONMENT": "{\"contractVersion\":\"environment.v1\",\"environment\":\"Production\",\"account\":\"058264289478\",\"region\":\"eu-north-1\",\"poolId\":\"eu-north-1_Uufjxul58\",\"clientId\":\"2kc81ph5mgvo9eu2qjvmif5u8g\",\"issuer\":\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_Uufjxul58\"}"
+          }
+        },
+        "TracingConfig": {
+          "Mode": "PassThrough"
+        },
+        "RevisionId": "201a575f-db2a-4303-89a5-5d23e2792aff",
+        "State": "Active",
+        "LastUpdateStatus": "Successful",
+        "PackageType": "Zip",
+        "Architectures": [
+          "arm64"
+        ],
+        "EphemeralStorage": {
+          "Size": 512
+        },
+        "SnapStart": {
+          "ApplyOn": "None",
+          "OptimizationStatus": "Off"
+        },
+        "RuntimeVersionConfig": {
+          "RuntimeVersionArn": "arn:aws:lambda:eu-north-1::runtime:775dab0d220a0b97f3ec34fe1692d7a07b5d13049153b00f03204c9543bd69e4"
+        },
+        "LoggingConfig": {
+          "LogFormat": "JSON",
+          "ApplicationLogLevel": "INFO",
+          "SystemLogLevel": "INFO",
+          "LogGroup": "/project-respawn/Production/core/contracts"
+        }
+      },
+      "sha256": "fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503",
+      "completeEnvironmentMatched": true
+    }
+  ],
+  "outputs": {
+    "ProjectRespawn-Core-Production-CursorSecretArn": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn",
+    "ProjectRespawn-Core-Production-RuntimeBoundaryArn": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary"
+  },
+  "passed": true
+}

@@ -1,0 +1,67 @@
+{
+  "at": "2026-10-21T15:38:38.586Z",
+  "completeAwsChangeSet": {
+    "Changes": [
+      {
+        "Type": "Resource",
+        "ResourceChange": {
+          "Action": "Modify",
+          "LogicalResourceId": "Contracts",
+          "PhysicalResourceId": "ProjectRespawn-Core-Production-Contracts",
+          "ResourceType": "AWS::Lambda::Function",
+          "Replacement": "False",
+          "Scope": [
+            "Properties"
+          ],
+          "Details": [
+            {
+              "Target": {
+                "Attribute": "Properties",
+                "Name": "Code",
+                "RequiresRecreation": "Never",
+                "Path": "/Properties/Code/S3Key",
+                "BeforeValue": "production/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.zip",
+                "AfterValue": "production/dc2a7137a725f6a82582abc8a800f5d30846058ecdbe12965f81a19c887154c4.zip",
+                "AttributeChangeType": "Modify"
+              },
+              "Evaluation": "Static",
+              "ChangeSource": "DirectModification"
+            }
+          ],
+          "BeforeContext": "{\"Properties\":{\"Role\":\"arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts\",\"FunctionName\":\"ProjectRespawn-Core-Production-Contracts\",\"MemorySize\":\"256\",\"Runtime\":\"nodejs22.x\",\"Timeout\":\"10\",\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"LogGroup\":\"/project-respawn/Production/core/contracts\"},\"Handler\":\"index.handler\",\"Environment\":{\"Variables\":{\"CORE_ENVIRONMENT\":\"{\\\"contractVersion\\\":\\\"environment.v1\\\",\\\"environment\\\":\\\"Production\\\",\\\"account\\\":\\\"058264289478\\\",\\\"region\\\":\\\"eu-north-1\\\",\\\"poolId\\\":\\\"eu-north-1_Uufjxul58\\\",\\\"clientId\\\":\\\"2kc81ph5mgvo9eu2qjvmif5u8g\\\",\\\"issuer\\\":\\\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_Uufjxul58\\\"}\",\"CORE_CURSOR_SECRET_ARN\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\"}},\"Code\":{\"S3Bucket\":\"cdk-hnb659fds-assets-058264289478-eu-north-1\",\"S3Key\":\"production/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.zip\"},\"Architectures\":[\"arm64\"]}}",
+          "AfterContext": "{\"Properties\":{\"Role\":\"arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts\",\"FunctionName\":\"ProjectRespawn-Core-Production-Contracts\",\"MemorySize\":\"256\",\"Runtime\":\"nodejs22.x\",\"Timeout\":\"10\",\"LoggingConfig\":{\"LogFormat\":\"JSON\",\"LogGroup\":\"/project-respawn/Production/core/contracts\"},\"Handler\":\"index.handler\",\"Environment\":{\"Variables\":{\"CORE_ENVIRONMENT\":\"{\\\"contractVersion\\\":\\\"environment.v1\\\",\\\"environment\\\":\\\"Production\\\",\\\"account\\\":\\\"058264289478\\\",\\\"region\\\":\\\"eu-north-1\\\",\\\"poolId\\\":\\\"eu-north-1_Uufjxul58\\\",\\\"clientId\\\":\\\"2kc81ph5mgvo9eu2qjvmif5u8g\\\",\\\"issuer\\\":\\\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_Uufjxul58\\\"}\",\"CORE_CURSOR_SECRET_ARN\":\"arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-Core-Production-Cursor-eO2gTn\"}},\"Code\":{\"S3Bucket\":\"cdk-hnb659fds-assets-058264289478-eu-north-1\",\"S3Key\":\"production/dc2a7137a725f6a82582abc8a800f5d30846058ecdbe12965f81a19c887154c4.zip\"},\"Architectures\":[\"arm64\"]}}"
+        }
+      }
+    ],
+    "ChangeSetName": "core-emf-product-20261021",
+    "ChangeSetId": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/core-emf-product-20261021/07a2fc0c-0e1b-4727-bb9f-63413cd7e700",
+    "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/67614030-cd15-11f1-86d0-06ffccbbfd31",
+    "StackName": "ProjectRespawn-Core-Production",
+    "Description": null,
+    "Parameters": null,
+    "CreationTime": "2026-10-21T15:38:29.688000+00:00",
+    "ExecutionStatus": "AVAILABLE",
+    "Status": "CREATE_COMPLETE",
+    "StatusReason": null,
+    "NotificationARNs": [],
+    "RollbackConfiguration": {},
+    "Capabilities": [
+      "CAPABILITY_NAMED_IAM"
+    ],
+    "Tags": null,
+    "ParentChangeSetId": null,
+    "IncludeNestedStacks": false,
+    "RootChangeSetId": null,
+    "OnStackFailure": null,
+    "ImportExistingResources": null,
+    "StackDriftStatus": null,
+    "DeploymentMode": null
+  },
+  "expected": {
+    "Contracts": [
+      "Modify",
+      "AWS::Lambda::Function"
+    ]
+  },
+  "passed": true
+}

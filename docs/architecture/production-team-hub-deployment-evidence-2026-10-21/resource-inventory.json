@@ -1,0 +1,251 @@
+{
+  "security": [
+    {
+      "logicalId": "ExecutionBoundary",
+      "type": "AWS::IAM::ManagedPolicy",
+      "physicalName": "ProjectRespawn-TeamHub-Production-ReadProofExecutionBoundary"
+    },
+    {
+      "logicalId": "ExecutionRole",
+      "type": "AWS::IAM::Role",
+      "physicalName": "ProjectRespawn-TeamHub-Production-ReadProofExecution"
+    },
+    {
+      "logicalId": "PreparationCaller",
+      "type": "AWS::IAM::ManagedPolicy",
+      "physicalName": "ProjectRespawn-TeamHub-Production-ReadProofPreparation"
+    },
+    {
+      "logicalId": "DeploymentCaller",
+      "type": "AWS::IAM::Role",
+      "physicalName": "ProjectRespawn-TeamHub-Production-Deploy"
+    },
+    {
+      "logicalId": "ParityCommandBoundary",
+      "type": "AWS::IAM::ManagedPolicy",
+      "physicalName": "ProjectRespawn-TeamHub-Production-ParityCommandBoundary"
+    },
+    {
+      "logicalId": "ParityReadBoundary",
+      "type": "AWS::IAM::ManagedPolicy",
+      "physicalName": "ProjectRespawn-TeamHub-Production-ParityReadBoundary"
+    },
+    {
+      "logicalId": "CursorSecret",
+      "type": "AWS::SecretsManager::Secret",
+      "physicalName": "ProjectRespawn-TeamHub-Production-Cursor"
+    },
+    {
+      "logicalId": "HttpApi",
+      "type": "AWS::ApiGatewayV2::Api",
+      "physicalName": "ProjectRespawn-TeamHub-Production"
+    }
+  ],
+  "product": [
+    {
+      "logicalId": "JwtAuthorizer",
+      "type": "AWS::ApiGatewayV2::Authorizer",
+      "physicalName": "ExistingProductionIdentity"
+    },
+    {
+      "logicalId": "Stage",
+      "type": "AWS::ApiGatewayV2::Stage",
+      "physicalName": null
+    },
+    {
+      "logicalId": "ApiErrors",
+      "type": "AWS::CloudWatch::Alarm",
+      "physicalName": null
+    },
+    {
+      "logicalId": "OperationalTable",
+      "type": "AWS::DynamoDB::Table",
+      "physicalName": "ProjectRespawn-TeamHub-Production-Operational"
+    },
+    {
+      "logicalId": "JournalTable",
+      "type": "AWS::DynamoDB::Table",
+      "physicalName": "ProjectRespawn-TeamHub-Production-Journal"
+    },
+    {
+      "logicalId": "ParityCommandLogs",
+      "type": "AWS::Logs::LogGroup",
+      "physicalName": "/project-respawn/Production/team-hub/parity-command"
+    },
+    {
+      "logicalId": "ParityCommandRole",
+      "type": "AWS::IAM::Role",
+      "physicalName": "ProjectRespawn-TeamHub-Production-ParityCommand"
+    },
+    {
+      "logicalId": "ParityCommandFunction",
+      "type": "AWS::Lambda::Function",
+      "physicalName": "ProjectRespawn-TeamHub-Production-ParityCommand"
+    },
+    {
+      "logicalId": "ParityCommandIntegration",
+      "type": "AWS::ApiGatewayV2::Integration",
+      "physicalName": null
+    },
+    {
+      "logicalId": "ParityCommandPermission",
+      "type": "AWS::Lambda::Permission",
+      "physicalName": {
+        "Ref": "ParityCommandFunction"
+      }
+    },
+    {
+      "logicalId": "ParityRouteCREATETEAM",
+      "type": "AWS::ApiGatewayV2::Route",
+      "physicalName": null
+    },
+    {
+      "logicalId": "ParityRouteUPDATETEAM",
+      "type": "AWS::ApiGatewayV2::Route",
+      "physicalName": null
+    },
+    {
+      "logicalId": "ParityRouteSETMANAGER",
+      "type": "AWS::ApiGatewayV2::Route",
+      "physicalName": null
+    },
+    {
+      "logicalId": "ParityRouteMANAGEMEMBER",
+      "type": "AWS::ApiGatewayV2::Route",
+      "physicalName": null
+    },
+    {
+      "logicalId": "ParityRouteSETROSTERSLOT",
+      "type": "AWS::ApiGatewayV2::Route",
+      "physicalName": null
+    },
+    {
+      "logicalId": "ParityRouteUPSERTMYCHAMPION",
+      "type": "AWS::ApiGatewayV2::Route",
+      "physicalName": null
+    },
+    {
+      "logicalId": "ParityRouteDELETEMYCHAMPION",
+      "type": "AWS::ApiGatewayV2::Route",
+      "physicalName": null
+    },
+    {
+      "logicalId": "ParityRouteUPSERTCOACHASSESSMENT",
+      "type": "AWS::ApiGatewayV2::Route",
+      "physicalName": null
+    },
+    {
+      "logicalId": "ParityRouteSETTEAMPLAN",
+      "type": "AWS::ApiGatewayV2::Route",
+      "physicalName": null
+    },
+    {
+      "logicalId": "ParityCommandErrors",
+      "type": "AWS::CloudWatch::Alarm",
+      "physicalName": null
+    },
+    {
+      "logicalId": "ParityCommandThrottles",
+      "type": "AWS::CloudWatch::Alarm",
+      "physicalName": null
+    },
+    {
+      "logicalId": "ParityReadLogs",
+      "type": "AWS::Logs::LogGroup",
+      "physicalName": "/project-respawn/Production/team-hub/parity-read"
+    },
+    {
+      "logicalId": "ParityReadRole",
+      "type": "AWS::IAM::Role",
+      "physicalName": "ProjectRespawn-TeamHub-Production-ParityRead"
+    },
+    {
+      "logicalId": "ParityReadFunction",
+      "type": "AWS::Lambda::Function",
+      "physicalName": "ProjectRespawn-TeamHub-Production-ParityRead"
+    },
+    {
+      "logicalId": "ParityReadIntegration",
+      "type": "AWS::ApiGatewayV2::Integration",
+      "physicalName": null
+    },
+    {
+      "logicalId": "ParityReadPermission",
+      "type": "AWS::Lambda::Permission",
+      "physicalName": {
+        "Ref": "ParityReadFunction"
+      }
+    },
+    {
+      "logicalId": "ParityRouteGETTEAMHUB",
+      "type": "AWS::ApiGatewayV2::Route",
+      "physicalName": null
+    },
+    {
+      "logicalId": "ParityRouteLISTMYCHAMPIONPOOL",
+      "type": "AWS::ApiGatewayV2::Route",
+      "physicalName": null
+    },
+    {
+      "logicalId": "ParityRouteLISTTEAMCHAMPIONPOOLS",
+      "type": "AWS::ApiGatewayV2::Route",
+      "physicalName": null
+    },
+    {
+      "logicalId": "ParityRouteGETPLAYERCOMPETITIVEDETAIL",
+      "type": "AWS::ApiGatewayV2::Route",
+      "physicalName": null
+    },
+    {
+      "logicalId": "ParityReadErrors",
+      "type": "AWS::CloudWatch::Alarm",
+      "physicalName": null
+    },
+    {
+      "logicalId": "ParityReadThrottles",
+      "type": "AWS::CloudWatch::Alarm",
+      "physicalName": null
+    },
+    {
+      "logicalId": "AuthorityStatusInvokePermission",
+      "type": "AWS::Lambda::Permission",
+      "physicalName": {
+        "Ref": "ParityReadFunction"
+      }
+    },
+    {
+      "logicalId": "AuthorityStatusRoute",
+      "type": "AWS::ApiGatewayV2::Route",
+      "physicalName": null
+    },
+    {
+      "logicalId": "ListMyTeamsRoute",
+      "type": "AWS::ApiGatewayV2::Route",
+      "physicalName": null
+    },
+    {
+      "logicalId": "DirectorySearchRoute",
+      "type": "AWS::ApiGatewayV2::Route",
+      "physicalName": null
+    },
+    {
+      "logicalId": "DirectorySearchRouteInvokePermission",
+      "type": "AWS::Lambda::Permission",
+      "physicalName": {
+        "Ref": "ParityReadFunction"
+      }
+    },
+    {
+      "logicalId": "DirectoryResolveRoute",
+      "type": "AWS::ApiGatewayV2::Route",
+      "physicalName": null
+    },
+    {
+      "logicalId": "DirectoryResolveRouteInvokePermission",
+      "type": "AWS::Lambda::Permission",
+      "physicalName": {
+        "Ref": "ParityReadFunction"
+      }
+    }
+  ]
+}

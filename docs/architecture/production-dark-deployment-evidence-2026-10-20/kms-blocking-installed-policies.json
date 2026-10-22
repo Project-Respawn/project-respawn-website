@@ -1,0 +1,357 @@
+{
+  "at": "2026-10-20T22:38:07.918Z",
+  "principalRole": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+  "identityPolicy": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Action": [
+          "lambda:CreateFunction",
+          "lambda:GetFunction",
+          "lambda:GetFunctionConfiguration",
+          "lambda:UpdateFunctionCode",
+          "lambda:UpdateFunctionConfiguration",
+          "lambda:DeleteFunction",
+          "lambda:ListTags",
+          "lambda:TagResource",
+          "lambda:UntagResource",
+          "lambda:GetFunctionConcurrency"
+        ],
+        "Resource": [
+          "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts",
+          "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts:$LATEST"
+        ],
+        "Effect": "Allow"
+      },
+      {
+        "Action": [
+          "iam:GetRole",
+          "iam:GetRolePolicy",
+          "iam:ListRolePolicies",
+          "iam:ListAttachedRolePolicies",
+          "iam:PutRolePolicy",
+          "iam:DeleteRolePolicy",
+          "iam:DeleteRole",
+          "iam:UpdateAssumeRolePolicy",
+          "iam:TagRole",
+          "iam:UntagRole"
+        ],
+        "Resource": [
+          "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts"
+        ],
+        "Effect": "Allow"
+      },
+      {
+        "Condition": {
+          "StringEquals": {
+            "iam:PassedToService": "lambda.amazonaws.com"
+          }
+        },
+        "Action": "iam:PassRole",
+        "Resource": [
+          "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts"
+        ],
+        "Effect": "Allow"
+      },
+      {
+        "Action": "iam:GetPolicy",
+        "Resource": [
+          "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary"
+        ],
+        "Effect": "Allow"
+      },
+      {
+        "Action": [
+          "logs:CreateLogGroup",
+          "logs:DeleteLogGroup",
+          "logs:PutRetentionPolicy",
+          "logs:DeleteRetentionPolicy",
+          "logs:TagResource",
+          "logs:UntagResource",
+          "logs:ListTagsForResource"
+        ],
+        "Resource": [
+          "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts",
+          "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts:*"
+        ],
+        "Effect": "Allow"
+      },
+      {
+        "Action": "logs:DescribeLogGroups",
+        "Resource": "*",
+        "Effect": "Allow"
+      },
+      {
+        "Action": [
+          "cloudwatch:PutMetricAlarm",
+          "cloudwatch:DeleteAlarms",
+          "cloudwatch:DescribeAlarms",
+          "cloudwatch:TagResource",
+          "cloudwatch:UntagResource",
+          "cloudwatch:ListTagsForResource"
+        ],
+        "Resource": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-Core-Production-*",
+        "Effect": "Allow"
+      },
+      {
+        "Action": "s3:GetObject",
+        "Resource": [
+          "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/b9c5d96e7123a6d837c903f1e1779080e020aba8c9eab8af1e2ddccde912ed96.json",
+          "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.zip"
+        ],
+        "Effect": "Allow"
+      },
+      {
+        "Action": "iam:DeleteRolePermissionsBoundary",
+        "Resource": "*",
+        "Effect": "Deny"
+      },
+      {
+        "Condition": {
+          "StringEquals": {
+            "iam:PermissionsBoundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary"
+          }
+        },
+        "Action": [
+          "iam:CreateRole",
+          "iam:PutRolePermissionsBoundary"
+        ],
+        "Resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts",
+        "Effect": "Allow"
+      },
+      {
+        "Action": "kms:*",
+        "Effect": "Deny",
+        "NotResource": [
+          "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7"
+        ]
+      },
+      {
+        "Resource": [
+          "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7"
+        ],
+        "Effect": "Deny",
+        "NotAction": [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:DescribeKey"
+        ]
+      },
+      {
+        "Condition": {
+          "StringEquals": {
+            "kms:EncryptionContext:aws:lambda:FunctionArn": [
+              "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts"
+            ],
+            "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+            "kms:CallerAccount": "058264289478"
+          }
+        },
+        "Action": [
+          "kms:Encrypt",
+          "kms:Decrypt"
+        ],
+        "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+        "Effect": "Allow"
+      },
+      {
+        "Condition": {
+          "StringEquals": {
+            "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+            "kms:CallerAccount": "058264289478"
+          }
+        },
+        "Action": "kms:DescribeKey",
+        "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+        "Effect": "Allow"
+      },
+      {
+        "Condition": {
+          "StringNotEquals": {
+            "kms:ViaService": "lambda.eu-north-1.amazonaws.com"
+          }
+        },
+        "Action": [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:DescribeKey"
+        ],
+        "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+        "Effect": "Deny"
+      },
+      {
+        "Condition": {
+          "StringNotEquals": {
+            "kms:CallerAccount": "058264289478"
+          }
+        },
+        "Action": [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:DescribeKey"
+        ],
+        "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+        "Effect": "Deny"
+      },
+      {
+        "Condition": {
+          "StringNotEquals": {
+            "kms:EncryptionContext:aws:lambda:FunctionArn": [
+              "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts"
+            ]
+          }
+        },
+        "Action": [
+          "kms:Encrypt",
+          "kms:Decrypt"
+        ],
+        "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+        "Effect": "Deny"
+      }
+    ]
+  },
+  "permissionsBoundary": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Action": [
+          "lambda:CreateFunction",
+          "lambda:GetFunction",
+          "lambda:GetFunctionConfiguration",
+          "lambda:UpdateFunctionCode",
+          "lambda:UpdateFunctionConfiguration",
+          "lambda:DeleteFunction",
+          "lambda:ListTags",
+          "lambda:TagResource",
+          "lambda:UntagResource",
+          "lambda:GetFunctionConcurrency"
+        ],
+        "Resource": [
+          "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts",
+          "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts:$LATEST"
+        ],
+        "Effect": "Allow"
+      },
+      {
+        "Action": [
+          "iam:GetRole",
+          "iam:GetRolePolicy",
+          "iam:ListRolePolicies",
+          "iam:ListAttachedRolePolicies",
+          "iam:PutRolePolicy",
+          "iam:DeleteRolePolicy",
+          "iam:DeleteRole",
+          "iam:UpdateAssumeRolePolicy",
+          "iam:TagRole",
+          "iam:UntagRole"
+        ],
+        "Resource": [
+          "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts"
+        ],
+        "Effect": "Allow"
+      },
+      {
+        "Condition": {
+          "StringEquals": {
+            "iam:PassedToService": "lambda.amazonaws.com"
+          }
+        },
+        "Action": "iam:PassRole",
+        "Resource": [
+          "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts"
+        ],
+        "Effect": "Allow"
+      },
+      {
+        "Action": "iam:GetPolicy",
+        "Resource": [
+          "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary"
+        ],
+        "Effect": "Allow"
+      },
+      {
+        "Action": [
+          "logs:CreateLogGroup",
+          "logs:DeleteLogGroup",
+          "logs:PutRetentionPolicy",
+          "logs:DeleteRetentionPolicy",
+          "logs:TagResource",
+          "logs:UntagResource",
+          "logs:ListTagsForResource"
+        ],
+        "Resource": [
+          "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts",
+          "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts:*"
+        ],
+        "Effect": "Allow"
+      },
+      {
+        "Action": "logs:DescribeLogGroups",
+        "Resource": "*",
+        "Effect": "Allow"
+      },
+      {
+        "Action": [
+          "cloudwatch:PutMetricAlarm",
+          "cloudwatch:DeleteAlarms",
+          "cloudwatch:DescribeAlarms",
+          "cloudwatch:TagResource",
+          "cloudwatch:UntagResource",
+          "cloudwatch:ListTagsForResource"
+        ],
+        "Resource": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-Core-Production-*",
+        "Effect": "Allow"
+      },
+      {
+        "Action": "s3:GetObject",
+        "Resource": [
+          "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/b9c5d96e7123a6d837c903f1e1779080e020aba8c9eab8af1e2ddccde912ed96.json",
+          "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.zip"
+        ],
+        "Effect": "Allow"
+      },
+      {
+        "Condition": {
+          "StringEquals": {
+            "iam:PermissionsBoundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary"
+          }
+        },
+        "Action": [
+          "iam:CreateRole",
+          "iam:PutRolePermissionsBoundary"
+        ],
+        "Resource": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts",
+        "Effect": "Allow"
+      },
+      {
+        "Condition": {
+          "StringEquals": {
+            "kms:EncryptionContext:aws:lambda:FunctionArn": [
+              "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts"
+            ],
+            "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+            "kms:CallerAccount": "058264289478"
+          }
+        },
+        "Action": [
+          "kms:Encrypt",
+          "kms:Decrypt"
+        ],
+        "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+        "Effect": "Allow"
+      },
+      {
+        "Condition": {
+          "StringEquals": {
+            "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+            "kms:CallerAccount": "058264289478"
+          }
+        },
+        "Action": "kms:DescribeKey",
+        "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+        "Effect": "Allow"
+      }
+    ]
+  },
+  "policiesChanged": false
+}

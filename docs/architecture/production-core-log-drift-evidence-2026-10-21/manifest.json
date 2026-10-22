@@ -1,0 +1,111 @@
+{
+  "schemaVersion": "production-core-log-drift-correction.v1",
+  "approved": false,
+  "awsWrites": 0,
+  "account": "058264289478",
+  "region": "eu-north-1",
+  "operatorArn": "arn:aws:iam::058264289478:user/RavenTest",
+  "previousManifestSha256": "ca35f7a41b0c9786ab8a81d130a464a170c69d466d3a0e807531a06a164b7d86",
+  "installedSecurity": {
+    "path": "docs/architecture/production-kms-recovery-evidence-2026-10-21/59c85a51a66a064044e81d28acff3d72f0fdb9e2d9604c823df3d74573ed7cab.coreSecurity.template.json",
+    "sha256": "59c85a51a66a064044e81d28acff3d72f0fdb9e2d9604c823df3d74573ed7cab",
+    "key": "production/59c85a51a66a064044e81d28acff3d72f0fdb9e2d9604c823df3d74573ed7cab.json",
+    "url": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/59c85a51a66a064044e81d28acff3d72f0fdb9e2d9604c823df3d74573ed7cab.json"
+  },
+  "security": {
+    "path": "docs/architecture/production-core-log-drift-evidence-2026-10-21/5f30d59d1e7f5e436cecefd723ee6a10c2b79651eb47ab90115d528ced0e7172.coreSecurity.template.json",
+    "sha256": "5f30d59d1e7f5e436cecefd723ee6a10c2b79651eb47ab90115d528ced0e7172",
+    "key": "production/5f30d59d1e7f5e436cecefd723ee6a10c2b79651eb47ab90115d528ced0e7172.json",
+    "url": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/5f30d59d1e7f5e436cecefd723ee6a10c2b79651eb47ab90115d528ced0e7172.json"
+  },
+  "policies": [
+    {
+      "id": "coreSecurity.Execution",
+      "kind": "identity",
+      "path": "docs/architecture/production-core-log-drift-evidence-2026-10-21/7a97d5d8f0a3681e72acaff52d98cfbd6a2e7bb81d87b73de5c4708afdcbacd8.Execution.policy.json",
+      "sha256": "7a97d5d8f0a3681e72acaff52d98cfbd6a2e7bb81d87b73de5c4708afdcbacd8",
+      "canonicalSha256": "a6be1d7792c527061c05756ddb4c4ab57bc09a76c1d05fab4667259497585c28",
+      "size": 5659,
+      "limit": 10240
+    },
+    {
+      "id": "coreSecurity.ExecutionBoundary",
+      "kind": "boundary",
+      "path": "docs/architecture/production-core-log-drift-evidence-2026-10-21/0d1dae1442e780d93c3e1c4665cebffa15410f42c9ce1183e5decef71db8bd15.ExecutionBoundary.policy.json",
+      "sha256": "0d1dae1442e780d93c3e1c4665cebffa15410f42c9ce1183e5decef71db8bd15",
+      "canonicalSha256": "d718a1b7c84b9c1a289201373d13e35014e7543b97028ba0cc501f8c17a7c44d",
+      "size": 3832,
+      "limit": 6144
+    }
+  ],
+  "product": {
+    "path": "docs/architecture/production-domain-deployment-evidence-2026-10-20/b9c5d96e7123a6d837c903f1e1779080e020aba8c9eab8af1e2ddccde912ed96.coreProduct.template.json",
+    "sha256": "b9c5d96e7123a6d837c903f1e1779080e020aba8c9eab8af1e2ddccde912ed96",
+    "key": "production/b9c5d96e7123a6d837c903f1e1779080e020aba8c9eab8af1e2ddccde912ed96.json",
+    "url": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/b9c5d96e7123a6d837c903f1e1779080e020aba8c9eab8af1e2ddccde912ed96.json"
+  },
+  "runtime": {
+    "path": "docs/architecture/team-hub-production-evidence-2026-10-20/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.core.runtime.zip",
+    "sha256": "fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503",
+    "key": "production/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.zip"
+  },
+  "importedLogs": {
+    "name": "/project-respawn/Production/core/contracts",
+    "stack": "ProjectRespawn-Core-Production",
+    "logicalId": "Logs",
+    "expectedStackStatus": "IMPORT_COMPLETE",
+    "lastDrift": "UNKNOWN",
+    "deleteOrReimport": false
+  },
+  "expectedSecurityChanges": {
+    "additions": 0,
+    "modifications": [
+      "Execution",
+      "ExecutionBoundary"
+    ],
+    "deletions": 0,
+    "replacements": 0
+  },
+  "expectedProductChanges": {
+    "additions": [
+      "Runtime",
+      "Contracts",
+      "Errors",
+      "Throttles",
+      "DependencyFailures",
+      "Denied"
+    ],
+    "modifications": 0,
+    "deletions": 0,
+    "replacements": 0,
+    "finalResourceCount": 7
+  },
+  "rollback": {
+    "security": {
+      "path": "docs/architecture/production-kms-recovery-evidence-2026-10-21/59c85a51a66a064044e81d28acff3d72f0fdb9e2d9604c823df3d74573ed7cab.coreSecurity.template.json",
+      "sha256": "59c85a51a66a064044e81d28acff3d72f0fdb9e2d9604c823df3d74573ed7cab",
+      "key": "production/59c85a51a66a064044e81d28acff3d72f0fdb9e2d9604c823df3d74573ed7cab.json",
+      "url": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/59c85a51a66a064044e81d28acff3d72f0fdb9e2d9604c823df3d74573ed7cab.json"
+    },
+    "product": "Native UPDATE rollback to current Logs-only imported stack; preserve log group; no automatic security downgrade"
+  },
+  "visibility": "Index-policy metadata for log groups accessible in this account through eu-north-1, including unrelated domains; not log events. No supported per-group IAM resource or service-specific condition restriction. Exact-request group binding is an operational control, not a hard IAM boundary.",
+  "liveAcceptanceRequired": true,
+  "teamDeploymentAuthorized": false,
+  "authorityInitialization": false,
+  "masterPublication": false,
+  "sourceBindings": {
+    "scripts/team-hub-production/core-log-drift-prepare.mjs": "f3ba22249fd099311fb4071145ba7fee8ae1d947bdfa4c11871a5e1e821fddf2",
+    "scripts/team-hub-production/core-log-drift-validate.mjs": "6412fde2f55971930b50990790b1e229bdba53bbca3db09bc2d630eabaa8fc65",
+    "scripts/team-hub-production/core-log-drift.test.mjs": "db524c9a8a3be1627dbe44e153398412b3791f6de99f99fed28987f5acbb658e",
+    "scripts/team-hub-production/core-log-drift-seal.mjs": "c0ddd38fa152133ccdf85810ccee6ed8f9edffe0c57e9cc055ef51ca3f1319cd"
+  },
+  "evidenceBindings": {
+    "docs/architecture/production-core-log-drift-evidence-2026-10-21/policy-diff.json": "3d9a3596c47835cd0f4eb86976ec002a096946ad8ae6b83f745bd9cac6b00ffc",
+    "docs/architecture/production-core-log-drift-evidence-2026-10-21/fresh-installed-baseline.json": "b54516bf1f96352c31ea90fb63d3e2079817bddaae5fc7336b408ac2ff952e09",
+    "docs/architecture/production-core-log-drift-evidence-2026-10-21/aws-permission-scope.json": "d0f8ba47e3ead2a33456e6ea7f49294a72436feea2cb6d28fecdc0b6e2ce331d",
+    "docs/architecture/production-core-log-drift-evidence-2026-10-21/security-validation.json": "f33d1102337966d1f1b9648ed0f9767b207971d177d8ea81416f3fdb218a3200",
+    "docs/architecture/production-core-log-drift-evidence-2026-10-21/template-validation.json": "af8933be8ee0750e785b18b09b15393861f1c2d3e1ab18336dea8d8ae5c95099",
+    "docs/architecture/production-core-log-drift-evidence-2026-10-21/initial-unsupported-arn-simulation.json": "73d7bbaaf4a94f39f33313ca1caa04871e0098ed7f58578f8cf56faec1fb227d"
+  }
+}

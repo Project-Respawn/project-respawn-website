@@ -1,0 +1,208 @@
+{
+  "at": "2026-10-20T13:59:14.904Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "environment": {
+    "contractVersion": "environment.v1",
+    "environment": "Production",
+    "account": "058264289478",
+    "region": "eu-north-1",
+    "poolId": "eu-north-1_Uufjxul58",
+    "clientId": "2kc81ph5mgvo9eu2qjvmif5u8g",
+    "issuer": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_Uufjxul58"
+  },
+  "root": "amplify-d2cux232bpa951-master-branch-53ef67772a",
+  "bucket": "amplify-d2cux232bpa951-ma-projectrespawnstoragebuc-bw3gimudfvur",
+  "tables": [
+    {
+      "model": "Team",
+      "table": "Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "tableId": "78f6917b-9d12-4af4-aa14-fdae57eb7f2b",
+      "status": "ACTIVE",
+      "count": 1,
+      "pages": 1,
+      "consistent": true,
+      "crossTableSnapshot": false,
+      "deletionProtection": false,
+      "pitr": "DISABLED",
+      "backups": []
+    },
+    {
+      "model": "TeamMembership",
+      "table": "TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "tableId": "84e7d7af-3ff0-4881-a76a-90bc00b3d3ab",
+      "status": "ACTIVE",
+      "count": 8,
+      "pages": 1,
+      "consistent": true,
+      "crossTableSnapshot": false,
+      "deletionProtection": false,
+      "pitr": "DISABLED",
+      "backups": []
+    },
+    {
+      "model": "TeamRosterSlot",
+      "table": "TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "tableId": "ce302ae3-9446-4594-81e1-12bff167f12f",
+      "status": "ACTIVE",
+      "count": 11,
+      "pages": 1,
+      "consistent": true,
+      "crossTableSnapshot": false,
+      "deletionProtection": false,
+      "pitr": "DISABLED",
+      "backups": []
+    },
+    {
+      "model": "PlayerChampionPoolEntry",
+      "table": "PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "tableId": "a208a911-c53c-45f8-a499-d69117d611d5",
+      "status": "ACTIVE",
+      "count": 101,
+      "pages": 1,
+      "consistent": true,
+      "crossTableSnapshot": false,
+      "deletionProtection": false,
+      "pitr": "DISABLED",
+      "backups": []
+    }
+  ],
+  "shape": {
+    "Team": {
+      "count": 1,
+      "fields": [
+        "__typename",
+        "coachMembershipId",
+        "createdAt",
+        "createdByUserId",
+        "gameKey",
+        "id",
+        "managerMembershipId",
+        "membershipRevision",
+        "name",
+        "rosterRevision",
+        "slug",
+        "status",
+        "updatedAt",
+        "updatedByUserId"
+      ],
+      "teamIdsUseTargetFormat": true
+    },
+    "TeamMembership": {
+      "count": 8,
+      "fields": [
+        "__typename",
+        "addedByUserId",
+        "createdAt",
+        "displayName",
+        "id",
+        "revokedAt",
+        "revokedByUserId",
+        "role",
+        "status",
+        "teamId",
+        "updatedAt",
+        "userId"
+      ]
+    },
+    "TeamRosterSlot": {
+      "count": 11,
+      "fields": [
+        "__typename",
+        "assignedByUserId",
+        "createdAt",
+        "deactivatedAt",
+        "gameRoleKey",
+        "id",
+        "membershipId",
+        "playerUserId",
+        "slotType",
+        "status",
+        "teamId",
+        "updatedAt"
+      ]
+    },
+    "PlayerChampionPoolEntry": {
+      "count": 101,
+      "fields": [
+        "__typename",
+        "championId",
+        "comfortLevel",
+        "competitiveReady",
+        "createdAt",
+        "gameRoleKey",
+        "id",
+        "membershipId",
+        "playerNotes",
+        "playerUserId",
+        "priority",
+        "teamId",
+        "updatedAt"
+      ]
+    }
+  },
+  "relationErrors": {
+    "membersWithoutTeam": 0,
+    "childrenWithoutMember": 0,
+    "childrenWithWrongTeam": 0
+  },
+  "sourceSnapshotDigest": "8c3ae61fd07b83d4b9833daeecd97ff9db1e149d9cdb86c62d264315ec822602",
+  "snapshotGuarantee": "Strong per-item scans; final consistent cross-table export requires installed writer fence and drained writes",
+  "groups": [
+    {
+      "name": "AffiliatePartner",
+      "precedence": 7
+    },
+    {
+      "name": "Moderator",
+      "precedence": 3
+    },
+    {
+      "name": "Trainer",
+      "precedence": 4
+    },
+    {
+      "name": "Member",
+      "precedence": 8
+    },
+    {
+      "name": "Admin",
+      "precedence": 1
+    },
+    {
+      "name": "Staff",
+      "precedence": 2
+    },
+    {
+      "name": "BetaMember",
+      "precedence": 9
+    },
+    {
+      "name": "StreamingPartner",
+      "precedence": 6
+    },
+    {
+      "name": "SuperAdmin",
+      "precedence": 0
+    },
+    {
+      "name": "Therapist",
+      "precedence": 5
+    }
+  ],
+  "roles": {
+    "MANAGER": 1,
+    "COACH": 1,
+    "PLAYER": 6
+  },
+  "coachFieldPresence": 0,
+  "sourceRecordsPersisted": false,
+  "awsWrites": 0
+}

@@ -1,0 +1,26 @@
+{
+  "at": "2026-10-20T20:40:38.703Z",
+  "offlineTests": {
+    "passed": 54,
+    "failed": 0
+  },
+  "coverage": [
+    "Four exact backup/target pairs",
+    "Wrong backup, principal, physical TableId and nonterminal ownership rejection",
+    "Cleanup requires matching policy/content/encrypted custody receipts",
+    "R1 approval cannot authorize R2",
+    "Stable complete record digests and schema/index equivalence",
+    "CurrentUser DPAPI roundtrip, wrong context/tamper rejection and explicit owner-only ACL readback",
+    "CLI without approval refuses before AWS calls"
+  ],
+  "iamSimulationCases": 1080,
+  "accessAnalyzerBlockingFindings": 0,
+  "nodeSyntaxChecks": "PASS",
+  "migrationLedger": "PASS_2621_TOTAL_4_NTGRE_MIGRATED_0_RETIRED",
+  "productionRestores": 0,
+  "awsWrites": 0,
+  "limitations": [
+    "DPAPI requires approved owner execution context with loaded Windows profile; synthetic sandbox profile failed closed, owner-context test passed",
+    "No live session or restore/content/cleanup acceptance inferred from simulation"
+  ]
+}

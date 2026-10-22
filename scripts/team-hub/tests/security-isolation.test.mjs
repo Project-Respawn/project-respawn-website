@@ -61,7 +61,9 @@ test('deployment permissions are separate from runtime; caller has no execute or
   for (const stack of ['LegacyPlatform', 'ProjectRespawn-Tournaments-Ntgre', 'Production']) assert.equal(evaluate(callerPolicy, 'cloudformation:CreateChangeSet', own.replace(target.stack, stack)), 'explicitDeny');
 });
 test('synth receipt counts every root/resource including security and closes over only Team source + isolated libraries', () => {
-  const { receipt } = read('infrastructure/domains/team-hub/.build/latest.json'); const evidence = read(receipt);
+  const fixture=read('docs/architecture/team-hub-overnight-evidence-2026-10-22/historical-skeleton-fixture.json');
+  assert.equal(createHash('sha256').update(fs.readFileSync(fixture.receipt.path)).digest('hex'),fixture.receipt.sha256);
+  const evidence=read(fixture.receipt.path);
   assert.equal(evidence.total, 46); assert.ok(evidence.total <= 75); assert.equal(evidence.templates.length, 2);
   assert.equal(evidence.templates.find(t => t.name === target.stack).count, 43);
   assert.equal(evidence.templates.find(t => t.name.endsWith('-Security')).count, 3);
@@ -75,8 +77,19 @@ test('synth receipt counts every root/resource including security and closes ove
   assert.ok(evidence.closure.find(c => c.name === 'routes').outputs.length >= 7, 'major pages emitted as lazy chunks');
   const amendment=JSON.parse(fs.readFileSync('docs/architecture/team-hub-ef-evidence-2026-10-08/frontend-amendment.json'));
   const expectedInputHash=input=>{const change=amendment.files.find(f=>f.path===input.path);if(!change)return input.sha256;assert.equal(input.sha256,change.previousSha256);assert.equal(amendment.liveActivation,false);return change.sha256;};
-  for (const input of evidence.inputs) assert.equal(createHash('sha256').update(fs.readFileSync(path.join(root, input.path))).digest('hex'), expectedInputHash(input), `stale synthesis input ${input.path}`);
-  const product = read(evidence.templates.find(t => t.name === target.stack).path);
+  // The production selector adds offline inspection only. Preserve the historical
+  // receipt while pinning this test update and that exact selector separately.
+  const productionAmendment=read('docs/architecture/team-hub-overnight-evidence-2026-10-22/source-amendment.json');
+  assert.equal(productionAmendment.awsWrites,0);
+  assert.deepEqual(productionAmendment.files.map(f=>f.path).sort(),['scripts/deployment/select.mjs','scripts/team-hub/tests/security-isolation.test.mjs']);
+  for (const input of evidence.inputs) {
+    const amended=productionAmendment.files.find(f=>f.path===input.path),previous=expectedInputHash(input);
+    if(amended)assert.equal(amended.previousSha256,previous,'amendment must extend the historical pin');
+    assert.equal(createHash('sha256').update(fs.readFileSync(path.join(root,input.path))).digest('hex'),amended?.sha256??previous,`stale synthesis input ${input.path}`);
+  }
+  const productFixture=fixture.templates.find(t=>t.name===target.stack);
+  assert.equal(createHash('sha256').update(fs.readFileSync(productFixture.path)).digest('hex'),productFixture.sha256);
+  const product = read(productFixture.path);
   assert.equal(product.Metadata.Status, 'OFFLINE_SKELETON'); assert.equal(product.Outputs, undefined);
   for (const [id, resource] of Object.entries(product.Resources)) {
     if (resource.Type === 'AWS::DynamoDB::Table') { assert.equal(resource.DeletionPolicy, 'Retain'); assert.equal(resource.UpdateReplacePolicy, 'Retain'); assert.equal(resource.Properties.DeletionProtectionEnabled, true); }

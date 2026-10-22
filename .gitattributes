@@ -290,3 +290,20 @@ src/features/*/*.routes.js -text whitespace=cr-at-eol
 "src/views/Admin/AdminLayout/AdminLayout.js" -text whitespace=cr-at-eol
 "src/views/Admin/AdminLayout/AdminLayout.vue" -text whitespace=cr-at-eol
 "src/views/UserHomepage/UserHomepage.js" -text whitespace=cr-at-eol
+
+# Production Core/Team Hub immutable evidence must retain exact approved bytes.
+.gitattributes -text whitespace=cr-at-eol
+docs/architecture/README-PHASE2-MIGRATION.md -text whitespace=cr-at-eol
+docs/architecture/domain-migration-status.json -text whitespace=cr-at-eol
+docs/architecture/production-* -text whitespace=cr-at-eol
+docs/architecture/production-*/** -text whitespace=cr-at-eol
+docs/architecture/team-hub-overnight*/** -text whitespace=cr-at-eol
+# Preserve accepted R2 source bytes, including their pinned trailing blank lines.
+docs/architecture/team-hub-production-evidence-2026-10-20/R2/restore-audit-collector.source.mjs -text whitespace=cr-at-eol,-blank-at-eof
+docs/architecture/team-hub-production-evidence-2026-10-20/R2/stop-inspector.source.mjs -text whitespace=cr-at-eol,-blank-at-eof
+scripts/team-hub-production/r2-custody.mjs -text whitespace=cr-at-eol,-blank-at-eof
+scripts/team-hub-production/r2-execute.mjs -text whitespace=cr-at-eol,-blank-at-eof
+scripts/team-hub-production/r2-prepare.mjs -text whitespace=cr-at-eol,-blank-at-eof
+scripts/team-hub-production/r2-preservation.mjs -text whitespace=cr-at-eol,-blank-at-eof
+scripts/team-hub-production/r2-resume-execute.mjs -text whitespace=cr-at-eol,-blank-at-eof
+scripts/team-hub-production/r2.test.mjs -text whitespace=cr-at-eol,-blank-at-eof

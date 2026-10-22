@@ -1,0 +1,53 @@
+{
+  "at": "2026-10-21T15:02:46.332Z",
+  "cases": [
+    {
+      "who": "Execution",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/dc2a7137a725f6a82582abc8a800f5d30846058ecdbe12965f81a19c887154c4.zip",
+      "context": {},
+      "decision": "implicitDeny"
+    },
+    {
+      "who": "Execution",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.zip",
+      "context": {},
+      "decision": "allowed"
+    },
+    {
+      "who": "Deploy",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086.json",
+      "context": {},
+      "decision": "implicitDeny"
+    },
+    {
+      "who": "Deploy",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/0302056f0152107ecabd9d459ab50d436245587eef3cec1aa4d971c77a6ca1e4.json",
+      "context": {},
+      "decision": "allowed"
+    },
+    {
+      "who": "Deploy",
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/proof",
+      "context": {
+        "cloudformation:TemplateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086.json"
+      },
+      "decision": "implicitDeny"
+    },
+    {
+      "who": "Deploy",
+      "action": "cloudformation:CreateChangeSet",
+      "resource": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production/proof",
+      "context": {
+        "cloudformation:TemplateUrl": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/0302056f0152107ecabd9d459ab50d436245587eef3cec1aa4d971c77a6ca1e4.json"
+      },
+      "decision": "allowed"
+    }
+  ],
+  "awsWrites": 0,
+  "limitation": "Simulation plus exact installed documents establishes intended guard; no live write attempted; no complete organization-policy certification"
+}
