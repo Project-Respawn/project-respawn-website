@@ -313,6 +313,19 @@ TABLE OF CONTENTS (SECTION NUMBERS)
               </label>
             </section>
 
+            <section v-if="isPlatformOperator" class="modal-section">
+              <h3>Checkout prices by variant</h3>
+              <p>Set each tax-inclusive currency price independently. Shipping is FREE to the customer; Project Respawn absorbs fulfilment and delivery costs. Leave a price blank to disable that currency for the variant.</p>
+              <div v-for="variant in productVariants.filter(v => v.productId === productForm.id)" :key="variant.id" class="modal-section">
+                <h4>{{ variant.name || variant.size || variant.id }}</h4>
+                <label v-for="code in currencyCodes" :key="code" class="field">
+                  <span>{{ code }}</span>
+                  <input v-model="variantCurrencyDraft(variant)[code]" type="text" inputmode="decimal" placeholder="Not configured" />
+                </label>
+                <button type="button" :disabled="savingVariantPrices === variant.id" @click="saveVariantPrices(variant)">Save variant prices</button>
+              </div>
+            </section>
+
             <!-- 3.3 Detail sections -->
             <section class="modal-section" id="section-2-details">
               <h3>2. Detail sections</h3>

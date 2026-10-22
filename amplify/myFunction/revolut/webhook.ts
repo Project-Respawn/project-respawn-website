@@ -16,6 +16,7 @@ type Dependencies = {
   signingSecret?: string
   now?: () => number
   dispatch?: (order: any) => Promise<unknown>
+  stage2?: (paymentId: string) => Promise<boolean>
 }
 
 const FIVE_MINUTES_MS = 5 * 60 * 1000
@@ -86,6 +87,14 @@ export async function handleRevolutWebhook(event: unknown, injected: Dependencie
   try { payload = JSON.parse(rawBody(apiEvent)) } catch { return response(400) }
   const orderId = String(payload.order_id || '').trim()
   if (!orderId) return response(400)
+
+  // Signature and timestamp have already been verified. V2 uses its own immutable ledger.
+  if (injected.stage2 || process.env.COMMERCE_LEDGER_TABLE) {
+    try {
+      const handled = await (injected.stage2 || (id => import('../commerce/runtime').then(m => m.commerceService().paymentEvent(id))))(orderId)
+      if (handled) return response(204)
+    } catch { return response(503) }
+  }
 
   const client = await (injected.getClient || defaultClient)() as any
   const existingResult = await client.models.FulfillmentOrder.list({ filter: { revolutOrderId: { eq: orderId } } })

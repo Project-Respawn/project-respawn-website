@@ -34,14 +34,17 @@ export async function handleListManagedProfiles(event: any, injected?: any) {
   const client = injected || await loadDataClient(); await requireEffectivePermission(event, client, 'profiles.staff.view')
   return { profiles: await listAll(client, 'UserProfile') }
 }
-export async function handleRecoverManagedOrder(event: any, injected?: any) {
+export async function handleRecoverManagedOrder(event: any, injected?: any, dispatcherInjected?: typeof import('../fulfillment').dispatchFulfillment) {
   const client = injected || await loadDataClient(); const actor = await requireEffectivePermission(event, client, 'orders.fulfillment.manage')
-  const id = String(event.arguments?.orderId || ''); const order = decodeFulfillmentOrder(ok(await client.models.FulfillmentOrder.get({ id }), 'Order lookup')); if (!order) throw new Error('Order not found')
-  const { fetchRevolutMerchantOrder } = await import('../revolut'); const payment = await fetchRevolutMerchantOrder(order.revolutOrderId); const state = String((payment.body as any)?.state || '').toLowerCase()
-  if (!['paid', 'completed', 'captured'].includes(state)) throw new Error('Revolut payment is not paid')
-  const recoveryEntry = { timestamp: new Date().toISOString(), action: 'Admin recovery started', result: 'verified', provider: null }
-  await client.models.FulfillmentOrder.update({ id, auditHistory: JSON.stringify([...(order.auditHistory || []), recoveryEntry]), updatedAt: recoveryEntry.timestamp })
-  const { dispatchFulfillment } = await import('../fulfillment'); const providers = await dispatchFulfillment({ ...order, auditHistory: [...(order.auditHistory || []), recoveryEntry] })
+  const id = String(event.arguments?.orderId || '')
+  if (id.startsWith('cr_')) {
+    const result = await (await import('../commerce/administration')).reconcileCommerceOrder(event, client)
+    return mutationResult(result.id, `Commerce order ${result.state}; uncertain attempts are never resubmitted`)
+  }
+  const order = decodeFulfillmentOrder(ok(await client.models.FulfillmentOrder.get({ id }), 'Order lookup')); if (!order) throw new Error('Order not found')
+  // The shared dispatcher reloads the record and verifies catalogue, payment and environment.
+  const { dispatchFulfillment } = await import('../fulfillment')
+  const providers = await (dispatcherInjected || dispatchFulfillment)(order, { getClient: async () => client })
   await writePermissionAudit(client, actor.actorUserId, 'order.fulfillment.recover', 'FulfillmentOrder', id, { overallFulfillmentStatus: order.overallFulfillmentStatus }, { providerStatuses: providers })
   return mutationResult(id)
 }
@@ -49,6 +52,10 @@ export async function handleReconcileManagedOrder(event: any, injected?: any, fe
   const client = injected || await loadDataClient()
   const actor = await requireEffectivePermission(event, client, 'orders.fulfillment.manage')
   const id = String(event.arguments?.orderId || '')
+  if (id.startsWith('cr_')) {
+    const result = await (await import('../commerce/administration')).reconcileCommerceOrder(event, client)
+    return mutationResult(result.id, `Commerce order ${result.state}`)
+  }
   const order = decodeFulfillmentOrder(ok(await client.models.FulfillmentOrder.get({ id }), 'Order lookup'))
   if (!order) throw new Error('Order not found')
 
@@ -91,7 +98,7 @@ export async function handleImportManagedRevolutOrder(event: any, injected?: any
   if (payment.statusCode < 200 || payment.statusCode >= 300 || !['paid', 'completed', 'captured'].includes(state)) throw new Error('Revolut payment is not paid')
   const now = new Date().toISOString()
   const { createValidatedFulfillmentOrder } = await import('../fulfillment')
-  const created = await createValidatedFulfillmentOrder(client, { projectOrderId: body.merchant_order_ext_ref || revolutOrderId, revolutOrderId, paymentStatus: state, paymentDate: now, paymentAmount: typeof body.amount === 'number' ? body.amount : null, currency: body.currency || null, environment: String(process.env.REVOLUT_MODE || '').toLowerCase() === 'prod' ? 'production' : 'sandbox', overallFulfillmentStatus: 'recovery_required', customerName: '', email: body.email || '', phone: '', shippingAddress: JSON.stringify({}), items: JSON.stringify([]), providerStatuses: JSON.stringify({}), auditHistory: JSON.stringify([{ timestamp: now, action: 'Existing Revolut order imported by admin', result: 'recovery_required', provider: 'revolut' }]), createdAt: now, updatedAt: now })
+  const created = await createValidatedFulfillmentOrder(client, { projectOrderId: body.merchant_order_ext_ref || revolutOrderId, revolutOrderId, paymentStatus: state, paymentDate: now, paymentAmount: typeof body.amount === 'number' ? body.amount / 100 : null, currency: body.currency || null, environment: String(process.env.REVOLUT_MODE || '').toLowerCase() === 'prod' ? 'production' : 'sandbox', overallFulfillmentStatus: 'recovery_required', customerName: '', email: body.email || '', phone: '', shippingAddress: JSON.stringify({}), items: JSON.stringify([]), providerStatuses: JSON.stringify({}), auditHistory: JSON.stringify([{ timestamp: now, action: 'Existing Revolut order imported by admin', result: 'recovery_required', provider: 'revolut' }]), createdAt: now, updatedAt: now })
   await writePermissionAudit(client, actor.actorUserId, 'order.revolut.import', 'FulfillmentOrder', created.id, null, { revolutOrderId, overallFulfillmentStatus: 'recovery_required' })
   return mutationResult(created.id)
 }

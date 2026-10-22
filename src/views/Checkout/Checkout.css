@@ -2,7 +2,7 @@
   box-sizing: border-box;
 }
 
-:root {
+.checkout-page {
   --bg-1: #0b1020;
   --bg-2: #12182c;
   --bg-3: #1a223d;
@@ -21,6 +21,7 @@
 }
 
 .checkout-page {
+  font-family: 'Segoe UI', system-ui, sans-serif;
   min-height: 100vh;
   background:
     radial-gradient(circle at top left, rgba(168, 85, 247, 0.12), transparent 28%),
@@ -28,6 +29,52 @@
     linear-gradient(180deg, #161b33 0%, #10162a 45%, #0b1020 100%);
   color: var(--text);
   padding: 32px 20px 48px;
+}
+
+.customer-form fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.order-status-lookup {
+  margin-top: 24px;
+  padding: 24px;
+}
+
+.order-status-lookup form {
+  display: grid;
+  gap: 12px;
+  max-width: 580px;
+}
+
+.order-status-lookup input {
+  min-width: 0;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  background: var(--bg-1);
+  color: var(--text);
+  font: inherit;
+}
+
+.checkout-summary > label {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.checkout-summary select {
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  padding: 10px;
+  background: var(--bg-1);
+  color: var(--text);
+  font: inherit;
 }
 
 .checkout-shell {
@@ -457,6 +504,9 @@
 }
 
 @media (max-width: 768px) {
+  .checkout-sidebar {
+    order: -1;
+  }
   .checkout-page {
     padding: 20px 14px 40px;
   }

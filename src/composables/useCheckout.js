@@ -1,531 +1,217 @@
-import { computed, nextTick, onBeforeUnmount, reactive, ref, watch } from 'vue'
-import RevolutCheckout from '@revolut/checkout'
-import { getApiBaseUrl, joinApiUrl } from '../config/apiBaseUrl'
-import { assertCartItemsFulfillable, isSameCartVariant, normaliseCartItem } from '../commerce/cartItem.js'
-
-function getErrorMessage(error, fallback) {
-  if (error instanceof Error && error.message) {
-    return error.message
-  }
-
-  if (typeof error === 'string' && error.trim()) {
-    return error
-  }
-
-  return fallback
-}
-
-function resolveRevolutMode() {
-  const configuredMode = String(import.meta.env.VITE_REVOLUT_MODE || '')
-    .trim()
-    .toLowerCase()
-
-  if (!configuredMode) {
-    throw new Error('Missing VITE_REVOLUT_MODE. Set it explicitly to live or sandbox.')
-  }
-
-  if (configuredMode === 'live') {
-    return 'prod'
-  }
-
-  if (configuredMode === 'sandbox') {
-    return 'sandbox'
-  }
-
-  throw new Error('Invalid VITE_REVOLUT_MODE. Expected live or sandbox.')
-}
-
-function resolveRevolutPublicKey() {
-  const publicKey = String(import.meta.env.VITE_REVOLUT_PUBLIC_KEY || '').trim()
-
-  if (!publicKey) {
-    throw new Error('Missing VITE_REVOLUT_PUBLIC_KEY for Revolut Checkout.')
-  }
-
-  return publicKey
-}
-
-const ALLOWED_COUNTRIES = new Set([
-  'GB',
-  'US',
-  'IE',
-  'FR',
-  'DE',
-  'ES',
-  'IT',
-  'NL',
-  'BE',
-  'PT',
-  'SE',
-  'DK',
-  'FI',
-  'NO',
-  'PL',
-  'AT',
-  'CH',
-])
-
-function isAllowedShippingCountry(countryCode) {
-  return ALLOWED_COUNTRIES.has(String(countryCode || '').trim().toUpperCase())
-}
-
+import { computed, nextTick, onBeforeUnmount, reactive, ref, watch } from 'vue';
+import { checkoutCurrencies } from '../commerce/currencyPrices.js';
+import { createSecureCheckout, statusMessage } from '../commerce/secureCheckout.js';
+import { getApiBaseUrl } from '../config/apiBaseUrl';
+import { isSameCartVariant, normaliseCartItem } from '../commerce/cartItem.js';
+const DEMO = import.meta.env.DEV && import.meta.env.VITE_COMMERCE_DEMO === '1';
 export function useCheckout() {
-  const originalShipping = 5
-
-  const activeStep = ref('address')
-  const orderComplete = ref(false)
-  const orderId = ref('')
-
-  const addressComplete = ref(false)
-  const addressError = ref('')
-
-  const revolutLoading = ref(false)
-  const revolutError = ref('')
-  const paymentReady = ref(false)
-  const revolutEmbeddedCheckout = ref(null)
-  const activeRevolutOrder = ref(null)
-  let orderCreationPromise = null
-  const autoMountQueued = ref(false)
-  const fulfillmentError = ref('')
-  const fulfillmentAttempts = new Set()
-
-  const apiBase = getApiBaseUrl('checkout API requests')
-
-  const revolutMode = resolveRevolutMode()
-  const revolutPublicKey = resolveRevolutPublicKey()
-  console.log('Resolved frontend Revolut mode:', revolutMode)
-
-  const cartItems = ref([])
-
-  const customer = reactive({
-    fullName: '',
-    email: '',
-    phone: '',
-    address: '',
-    city: '',
-    postcode: '',
-    country: '',
-  })
-
-  function loadCart() {
-    try {
-      const parsedCart = JSON.parse(localStorage.getItem('cart') || '[]')
-      const rawItems = Array.isArray(parsedCart) ? parsedCart : []
-      cartItems.value = rawItems.map(normaliseCartItem)
-    } catch {
-      cartItems.value = []
+    const activeStep = ref('address'), orderComplete = ref(false), orderId = ref('');
+    const addressComplete = ref(false), addressError = ref(''), revolutLoading = ref(false), revolutError = ref('');
+    const fulfillmentError = ref(''), paymentReady = ref(false), paymentStarted = ref(false), quoting = ref(false);
+    const checkoutEnabled = ref(false), destinations = ref([]), configurationError = ref('');
+    const statusReference = ref(''), statusLookupMessage = ref(''), statusLookupBusy = ref(false);
+    const orderState = ref('PENDING_PAYMENT');
+    const canStartNewOrder = computed(() => ['PAYMENT_VERIFIED', 'PROVIDER_CONFIRMED', 'SHIPPED', 'CANCELLED', 'REFUNDED', 'PARTIALLY_REFUNDED', 'PAYMENT_FAILED'].includes(orderState.value));
+    const authoritativeTotals = ref(null), currency = ref('GBP'), cartItems = ref([]);
+    const customer = reactive({ fullName: '', email: '', phone: '', address: '', city: '', postcode: '', country: '', state: '' });
+    const apiBase = DEMO ? '/__commerce_demo' : getApiBaseUrl('checkout API requests');
+    const commerce = createSecureCheckout({ baseUrl: apiBase, accessToken: async () => {
+            if (DEMO)
+                return undefined;
+            const { fetchAuthSession } = await import('aws-amplify/auth');
+            return (await fetchAuthSession()).tokens?.accessToken?.toString();
+        } });
+    let embedded = null, activeOrder = null, timer = null, disposed = false, generation = 0, lockKey = '';
+    const currencyCodes = checkoutCurrencies;
+    const hasAuthoritativeQuote = computed(() => authoritativeTotals.value?.currency === currency.value);
+    const subtotal = computed(() => hasAuthoritativeQuote.value ? authoritativeTotals.value.subtotalMinor / 100 : null);
+    const total = computed(() => hasAuthoritativeQuote.value ? authoritativeTotals.value.totalMinor / 100 : null);
+    const taxTotal = computed(() => hasAuthoritativeQuote.value ? authoritativeTotals.value.taxMinor / 100 : null);
+    const originalShipping = computed(() => 0);
+    const cartCount = computed(() => cartItems.value.reduce((sum, i) => sum + i.quantity, 0));
+    const formatMoney = amount => amount === null || !Number.isFinite(amount) ? 'Awaiting server quote' : new Intl.NumberFormat('en-GB', { style: 'currency', currency: currency.value }).format(amount);
+    const recipient = () => ({ name: customer.fullName, email: customer.email, address1: customer.address, city: customer.city, zip: customer.postcode, country_code: customer.country, ...(customer.state ? { state_code: customer.state } : {}) });
+    const selectionKey = () => JSON.stringify({ items: cartItems.value.map(({ variantId, quantity }) => ({ variantId, quantity })), recipient: recipient(), currency: currency.value });
+    function loadCart() { if (paymentStarted.value)
+        return; try {
+        const value = JSON.parse(localStorage.getItem('cart') || '[]');
+        cartItems.value = (Array.isArray(value) ? value : []).map(normaliseCartItem);
     }
-  }
-
-  function persistCart(items) {
-    localStorage.setItem('cart', JSON.stringify(items))
-    cartItems.value = items.map(normaliseCartItem)
-    window.dispatchEvent(new Event('cart-updated'))
-  }
-
-  function removeCartItem(itemToRemove) {
-    const updated = cartItems.value.filter((item) => {
-      return !isSameCartVariant(item, itemToRemove)
-    })
-
-    persistCart(updated)
-    if (!updated.length) {
-      paymentReady.value = false
-      activeStep.value = addressComplete.value ? 'address' : 'address'
-      resetPaymentState()
+    catch {
+        cartItems.value = [];
+    } }
+    function removeCartItem(item) { if (paymentStarted.value || quoting.value)
+        return; const next = cartItems.value.filter(value => !isSameCartVariant(value, item)); localStorage.setItem('cart', JSON.stringify(next)); loadCart(); window.dispatchEvent(new Event('cart-updated')); }
+    function destroy() { try {
+        embedded?.destroy?.();
     }
-  }
-
-  const cartCount = computed(() =>
-    cartItems.value.reduce((sum, item) => sum + item.quantity, 0)
-  )
-
-  const subtotal = computed(() =>
-    cartItems.value.reduce((sum, item) => sum + item.price * item.quantity, 0)
-  )
-
-  const total = computed(() => subtotal.value)
-
-  function validateCustomerDetails() {
-    if (!customer.fullName.trim()) throw new Error('Full name is required')
-    if (!customer.email.trim()) throw new Error('Email address is required')
-    if (!customer.phone.trim()) throw new Error('Phone number is required')
-    if (!customer.address.trim()) throw new Error('Street address is required')
-    if (!customer.city.trim()) throw new Error('City is required')
-    if (!customer.postcode.trim()) throw new Error('Postcode is required')
-    if (!customer.country.trim()) throw new Error('Country is required')
-
-    if (!isAllowedShippingCountry(customer.country)) {
-      throw new Error('We currently only ship to the UK, Europe, and the USA. Please contact us for other locations.')
+    catch { } embedded = null; paymentReady.value = false; }
+    async function refreshStatus() {
+        try {
+            const status = await commerce.status();
+            if (disposed)
+                return;
+            fulfillmentError.value = statusMessage(status.state);
+            orderState.value = status.state;
+            if (['PAYMENT_VERIFIED', 'FULFILMENT_CLAIMED', 'PROVIDER_ORDER_CREATED', 'PROVIDER_CONFIRMING', 'PROVIDER_CONFIRMED', 'SHIPPED'].includes(status.state)) {
+                // Do not erase a basket edited in another tab while payment was in progress.
+                const saved = JSON.parse(localStorage.getItem('cart') || '[]').map(normaliseCartItem);
+                if (JSON.stringify(saved.map(({ variantId, quantity }) => ({ variantId, quantity }))) === JSON.stringify(cartItems.value.map(({ variantId, quantity }) => ({ variantId, quantity }))))
+                    localStorage.removeItem('cart');
+                window.dispatchEvent(new Event('cart-updated'));
+            }
+            if (!['SHIPPED', 'CANCELLED', 'REFUNDED', 'PARTIALLY_REFUNDED', 'PAYMENT_FAILED', 'RECONCILIATION_REQUIRED'].includes(status.state))
+                timer = setTimeout(refreshStatus, 5000);
+        }
+        catch {
+            if (!disposed)
+                fulfillmentError.value = 'Order status is unavailable. Keep your reference and contact support. Do not pay again.';
+        }
     }
-
-    if (!cartItems.value.length) throw new Error('Your cart is empty')
-    assertCartItemsFulfillable(cartItems.value)
-  }
-
-  function destroyEmbeddedCheckout() {
-    try {
-      if (revolutEmbeddedCheckout.value && typeof revolutEmbeddedCheckout.value.destroy === 'function') {
-        revolutEmbeddedCheckout.value.destroy()
-      }
-    } catch (error) {
-      console.warn('Failed to destroy embedded checkout', error)
+    async function completePaidOrder() {
+        if (!activeOrder || disposed)
+            return;
+        orderId.value = activeOrder.id;
+        orderComplete.value = true;
+        fulfillmentError.value = 'Payment submitted. Waiting for backend verification.';
+        await refreshStatus();
     }
-
-    revolutEmbeddedCheckout.value = null
-    paymentReady.value = false
-  }
-
-  function resetPaymentState() {
-    activeRevolutOrder.value = null
-    orderCreationPromise = null
-    revolutError.value = ''
-    autoMountQueued.value = false
-    destroyEmbeddedCheckout()
-  }
-
-  function saveAddress() {
-    addressError.value = ''
-
-    try {
-      validateCustomerDetails()
-      addressComplete.value = true
-      activeStep.value = 'payment'
-      resetPaymentState()
-    } catch (error) {
-      addressComplete.value = false
-      addressError.value = getErrorMessage(
-        error,
-        'Please complete all required fields.'
-      )
+    async function createEmbeddedCheckoutOrder() {
+        if (lockKey !== selectionKey())
+            throw new Error('Order details changed. Review the basket again.');
+        if (authoritativeTotals.value.expiresAt <= Date.now())
+            throw new Error('Your quote expired. Do not create another session until this order has been checked.');
+        const order = await commerce.start(cartItems.value, recipient(), currency.value);
+        activeOrder = order;
+        orderId.value = order.id;
+        return { publicId: order.token };
     }
-  }
-
-  async function createRevolutOrder() {
-    if (!apiBase) {
-      throw new Error('Missing API base URL for checkout')
+    async function mountPaymentField() {
+        if (revolutLoading.value || !addressComplete.value)
+            return;
+        revolutLoading.value = true;
+        revolutError.value = '';
+        try {
+            destroy();
+            await nextTick();
+            const target = document.getElementById('revolut-checkout');
+            if (!target)
+                throw new Error('Payment container not found');
+            if (DEMO) {
+                const { mountMockPayment } = await import('../commerce/demo/payment.js');
+                embedded = await mountMockPayment({ target, createOrder: createEmbeddedCheckoutOrder, onSuccess: completePaidOrder, baseUrl: apiBase });
+            }
+            else {
+                const mode = String(import.meta.env.VITE_REVOLUT_MODE || '').toLowerCase(), publicToken = import.meta.env.VITE_REVOLUT_PUBLIC_KEY;
+                if (!['sandbox', 'live'].includes(mode) || !publicToken)
+                    throw new Error('Secure payment configuration is unavailable.');
+                const { default: RevolutCheckout } = await import('@revolut/checkout');
+                embedded = await RevolutCheckout.embeddedCheckout({ publicToken, mode: mode === 'live' ? 'prod' : 'sandbox', target, locale: 'en', email: customer.email,
+                    createOrder: createEmbeddedCheckoutOrder, onSuccess: () => void completePaidOrder(),
+                    onError: () => { revolutError.value = 'Payment could not be confirmed. Check this order before paying again.'; },
+                    onCancel: () => { revolutError.value = 'Payment form closed. This does not confirm cancellation of the server payment.'; } });
+            }
+            if (disposed) {
+                destroy();
+                return;
+            }
+            paymentReady.value = true;
+        }
+        catch (error) {
+            revolutError.value = error instanceof Error ? error.message : 'Unable to load payment form. Keep your order reference; do not start a second payment.';
+        }
+        finally {
+            revolutLoading.value = false;
+        }
     }
-
-    assertCartItemsFulfillable(cartItems.value)
-    const projectOrderId = `PR-${Date.now()}`
-    const orderItems = cartItems.value.map((item) => ({
-      productId: item.productId,
-      variantId: item.variantId,
-      externalVariantId: item.externalVariantId,
-      fulfillmentProvider: item.fulfillmentProvider || 'manual',
-      fulfillmentVariantId: item.fulfillmentVariantId || null,
-      productName: item.name,
-      color: item.color || null,
-      size: item.size || null,
-      quantity: item.quantity,
-      unitPrice: item.price,
-    }))
-
-    const payload = {
-      amount: Number(total.value.toFixed(2)),
-      currency: 'GBP',
-      description: 'Project Respawn Merch Order',
-      orderId: projectOrderId,
-      email: customer.email,
-      customerName: customer.fullName,
-      phone: customer.phone,
-      address: customer.address,
-      city: customer.city,
-      postcode: customer.postcode,
-      country: customer.country,
-      shippingAddress: { address: customer.address, city: customer.city, postcode: customer.postcode, country: customer.country },
-      items: orderItems,
+    async function saveAddress() {
+        if (quoting.value || paymentStarted.value)
+            return;
+        addressError.value = '';
+        quoting.value = true;
+        const ownGeneration = ++generation;
+        try {
+            if (!checkoutEnabled.value)
+                throw new Error('Checkout is temporarily unavailable while secure release checks are completed.');
+            if (!cartItems.value.length)
+                throw new Error('Your basket is empty');
+            for (const key of ['fullName', 'email', 'address', 'city', 'postcode', 'country'])
+                if (!customer[key].trim())
+                    throw new Error('Complete all required delivery details.');
+            if (!destinations.value.includes(customer.country))
+                throw new Error('This delivery destination is not enabled for secure checkout.');
+            const key = selectionKey(), quote = await commerce.quote(cartItems.value, recipient(), currency.value);
+            if (disposed || generation !== ownGeneration || key !== selectionKey())
+                throw new Error('Order details changed. Review your basket again.');
+            authoritativeTotals.value = quote;
+            cartItems.value = cartItems.value.map(item => { const line = quote.items.find(l => l.variantId === item.variantId); return line ? { ...item, name: line.name, price: line.unitMinor / 100 } : item; });
+            addressComplete.value = true;
+            activeStep.value = 'payment';
+            lockKey = selectionKey();
+            // Lock selection before creating any payment session. No repricing after token creation.
+            paymentStarted.value = true;
+            await mountPaymentField();
+        }
+        catch (error) {
+            addressComplete.value = false;
+            addressError.value = error instanceof Error ? error.message : 'Unable to quote your order securely.';
+        }
+        finally {
+            quoting.value = false;
+        }
     }
-
-    const response = await fetch(joinApiUrl(apiBase, '/revolut/checkout'), {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    })
-
-    const data = await response.json().catch(() => null)
-
-    if (!response.ok) {
-      throw new Error(
-        data?.message ||
-          data?.error ||
-          data?.revolut?.message ||
-          'Failed to create Revolut order'
-      )
+    function resetCheckout() {
+        if (paymentStarted.value && !canStartNewOrder.value)
+            return;
+        clearTimeout(timer);
+        destroy();
+        commerce.reset();
+        generation++;
+        activeOrder = null;
+        authoritativeTotals.value = null;
+        paymentStarted.value = false;
+        orderComplete.value = false;
+        addressComplete.value = false;
+        orderId.value = '';
+        addressError.value = '';
+        revolutError.value = '';
+        fulfillmentError.value = '';
+        activeStep.value = 'address';
+        loadCart();
     }
-
-    console.log('Revolut checkout response status:', response.status)
-
-    const token =
-      data?.order?.token ||
-      data?.token ||
-      data?.public_id ||
-      data?.orderToken
-
-    const id = data?.order?.id || data?.id || data?.orderId
-
-    console.log('Revolut order token present:', Boolean(token))
-    console.log('Revolut order id present:', Boolean(id))
-    console.log('Resolved frontend Revolut mode:', revolutMode)
-
-    if (!token) {
-      throw new Error('Backend did not return a Revolut order token')
+    async function lookupOrderStatus() {
+        statusLookupBusy.value = true;
+        statusLookupMessage.value = '';
+        try {
+            const status = await commerce.status(statusReference.value.trim());
+            statusLookupMessage.value = statusMessage(status.state);
+        }
+        catch {
+            statusLookupMessage.value = 'This order could not be accessed. Sign in to the account that placed it, or use the original guest checkout tab. A reference alone does not grant access.';
+        }
+        finally {
+            statusLookupBusy.value = false;
+        }
     }
-
-    const backendMode = String(data?.mode || '').trim().toLowerCase()
-
-    if (backendMode !== revolutMode) {
-      throw new Error(
-        `Revolut environment mismatch: frontend is ${revolutMode}, backend is ${backendMode || 'unknown'}.`
-      )
+    async function loadConfiguration() { try {
+        const res = await fetch(`${apiBase}/commerce/orders/config`, { cache: 'no-store' });
+        if (!res.ok)
+            throw Error();
+        const config = await res.json();
+        checkoutEnabled.value = config.checkoutEnabled === true;
+        destinations.value = Array.isArray(config.destinations) ? config.destinations.filter(c => typeof c === 'string' && /^[A-Z]{2}$/.test(c)) : [];
     }
-
-    return {
-      token,
-      id,
-      projectOrderId,
-      mode: backendMode,
-    }
-  }
-
-  async function dispatchFulfillment(order) {
-    const revolutOrderId = order.id
-    if (!apiBase) {
-      throw new Error('Missing API base URL for fulfillment')
-    }
-
-    if (fulfillmentAttempts.has(revolutOrderId)) {
-      return false
-    }
-
-    fulfillmentAttempts.add(revolutOrderId)
-
-    const payload = {
-      projectOrderId: order.projectOrderId,
-      revolutOrderId,
-      paymentAmount: Number(total.value.toFixed(2)),
-      currency: 'GBP',
-      items: cartItems.value.map((item) => ({
-        productId: item.productId,
-        variantId: item.variantId,
-        externalVariantId: item.externalVariantId,
-        quantity: item.quantity,
-        fulfillmentProvider: item.fulfillmentProvider || 'manual',
-        fulfillmentVariantId: item.fulfillmentVariantId || null,
-        productName: item.name,
-        color: item.color || null,
-        size: item.size || null,
-        unitPrice: item.price,
-      })),
-      customerName: customer.fullName,
-      email: customer.email,
-      shippingAddress: { address: customer.address, city: customer.city, postcode: customer.postcode, country: customer.country },
-    }
-
-    console.log('Dispatching fulfillment')
-
-    const response = await fetch(joinApiUrl(apiBase, '/orders/fulfill'), {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    })
-
-    console.log('Fulfillment response status:', response.status)
-
-    const result = await response.json().catch(() => null)
-    if (!response.ok) {
-      throw new Error(result?.error || 'Fulfillment dispatch failed')
-    }
-    return Boolean(result?.success)
-  }
-
-  async function completePaidOrder(order) {
-    if (fulfillmentAttempts.has(order.id)) {
-      return
-    }
-
-    console.log('Revolut payment successful')
-    orderId.value = order.id
-    orderComplete.value = true
-
-    try {
-      const created = await dispatchFulfillment(order)
-
-      if (created) {
-        localStorage.removeItem('cart')
-        cartItems.value = []
-        window.dispatchEvent(new Event('cart-updated'))
-      }
-    } catch (error) {
-      fulfillmentError.value = 'Payment succeeded, but we could not submit your order for fulfillment. Please contact support with your order ID.'
-      console.error('Fulfillment dispatch failed after successful payment', error)
-    }
-  }
-
-  async function createEmbeddedCheckoutOrder() {
-    if (orderCreationPromise) return orderCreationPromise
-
-    orderCreationPromise = createRevolutOrder()
-
-    try {
-      const order = await orderCreationPromise
-      activeRevolutOrder.value = order
-      return { publicId: order.token }
-    } finally {
-      orderCreationPromise = null
-    }
-  }
-
-  async function mountPaymentField() {
-    if (revolutLoading.value || !addressComplete.value || !cartItems.value.length) return
-
-    revolutLoading.value = true
-    revolutError.value = ''
-
-    try {
-      destroyEmbeddedCheckout()
-      await nextTick()
-
-      const mountTarget = document.getElementById('revolut-checkout')
-      if (!mountTarget) {
-        throw new Error('Payment container not found')
-      }
-
-      const embeddedCheckout = await RevolutCheckout.embeddedCheckout({
-        publicToken: revolutPublicKey,
-        mode: revolutMode,
-        target: mountTarget,
-        locale: 'en',
-        email: customer.email,
-        billingAddress: {
-          countryCode: customer.country,
-          city: customer.city,
-          postcode: customer.postcode,
-          streetLine1: customer.address,
-        },
-        createOrder: createEmbeddedCheckoutOrder,
-        onSuccess({ orderId: paidOrderId }) {
-          const order = activeRevolutOrder.value
-          activeRevolutOrder.value = null
-          const resolvedOrderId = order?.id || paidOrderId
-
-          if (!resolvedOrderId) {
-            revolutError.value = 'Payment completed, but the Revolut order ID was not returned. Please contact support.'
-            return
-          }
-
-          void completePaidOrder({
-            id: resolvedOrderId,
-            projectOrderId: order?.projectOrderId || resolvedOrderId,
-          })
-        },
-        onError({ error }) {
-          revolutError.value = getErrorMessage(
-            error,
-            'Payment failed. Please try again.'
-          )
-          activeRevolutOrder.value = null
-        },
-        onCancel() {
-          revolutError.value = 'Payment was cancelled. You can try again.'
-          activeRevolutOrder.value = null
-        },
-      })
-
-      revolutEmbeddedCheckout.value = embeddedCheckout
-      paymentReady.value = true
-    } catch (error) {
-      revolutError.value = getErrorMessage(error, 'Unable to load payment form.')
-      paymentReady.value = false
-    } finally {
-      revolutLoading.value = false
-      autoMountQueued.value = false
-    }
-  }
-
-  function resetCheckout() {
-    loadCart()
-    orderComplete.value = false
-    orderId.value = ''
-    addressComplete.value = false
-    addressError.value = ''
-    activeStep.value = 'address'
-    customer.fullName = ''
-    customer.email = ''
-    customer.phone = ''
-    customer.address = ''
-    customer.city = ''
-    customer.postcode = ''
-    customer.country = ''
-    resetPaymentState()
-  }
-
-  function handleLocalCartUpdate() {
-    loadCart()
-  }
-
-  loadCart()
-
-  window.addEventListener('storage', handleLocalCartUpdate)
-  window.addEventListener('cart-updated', handleLocalCartUpdate)
-
-  watch(
-    () => ({
-      addressComplete: addressComplete.value,
-      activeStep: activeStep.value,
-      fullName: customer.fullName,
-      email: customer.email,
-      phone: customer.phone,
-      address: customer.address,
-      city: customer.city,
-      postcode: customer.postcode,
-      country: customer.country,
-      total: total.value,
-      cart: cartItems.value.map((item) => `${item.id}:${item.variantId}:${item.color}:${item.size}:${item.quantity}`).join('|'),
-    }),
-    async () => {
-      if (!addressComplete.value) return
-      if (activeStep.value !== 'payment') return
-      if (orderComplete.value) return
-      if (!cartItems.value.length) return
-      if (revolutLoading.value || autoMountQueued.value) return
-      if (paymentReady.value) return
-
-      autoMountQueued.value = true
-      await nextTick()
-      await mountPaymentField()
-    },
-    { deep: true }
-  )
-
-  onBeforeUnmount(() => {
-    destroyEmbeddedCheckout()
-    window.removeEventListener('storage', handleLocalCartUpdate)
-    window.removeEventListener('cart-updated', handleLocalCartUpdate)
-  })
-
-  return {
-    activeStep,
-    orderComplete,
-    orderId,
-    addressComplete,
-    addressError,
-    revolutLoading,
-    revolutError,
-    fulfillmentError,
-    paymentReady,
-    originalShipping,
-    cartItems,
-    customer,
-    cartCount,
-    subtotal,
-    total,
-    saveAddress,
-    resetCheckout,
-    removeCartItem,
-  }
+    catch {
+        configurationError.value = 'Checkout is temporarily unavailable. Your basket has been preserved.';
+    } }
+    watch(selectionKey, () => { if (!paymentStarted.value) {
+        authoritativeTotals.value = null;
+        addressComplete.value = false;
+    } });
+    loadCart();
+    void loadConfiguration();
+    window.addEventListener('storage', loadCart);
+    window.addEventListener('cart-updated', loadCart);
+    onBeforeUnmount(() => { disposed = true; generation++; clearTimeout(timer); destroy(); window.removeEventListener('storage', loadCart); window.removeEventListener('cart-updated', loadCart); });
+    return { activeStep, orderComplete, orderId, addressComplete, addressError, revolutLoading, revolutError, fulfillmentError, paymentReady, originalShipping, taxTotal, hasAuthoritativeQuote, currency, currencyCodes, cartItems, customer, cartCount, subtotal, total, saveAddress, resetCheckout, removeCartItem, formatMoney, quoting, checkoutEnabled, destinations, configurationError, paymentStarted, statusReference, statusLookupMessage, statusLookupBusy, lookupOrderStatus, canStartNewOrder };
 }

@@ -1,3 +1,4 @@
+import { currencyPrices } from '../commerce/currencies'
 import { getIdentityUsername, getResolverIdentity } from '../shared/auth'
 import { writePermissionAudit } from '../shared/audit'
 import { getEffectivePermissions, requireEffectivePermission } from '../shared/requirePermission'
@@ -202,6 +203,8 @@ export async function handleUpsertManagedMerchProductVariant(event: any, injecte
   for (const field of MANAGED_PRODUCT_VARIANT_FIELDS) {
     if (args[field] !== undefined) fields[field] = args[field]
   }
+
+  if (args.currencyPrices !== undefined) fields.currencyPrices = JSON.stringify(currencyPrices(args.currencyPrices))
 
   let before: any = null
   if (typeof args.variantId === 'string' && args.variantId) {

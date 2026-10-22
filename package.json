@@ -30,7 +30,10 @@
     "build": "node ./scripts/validate-vite-api-base-url.mjs && vite build",
     "preview": "vite preview",
     "cleanup:media:dry": "node ./scripts/cleanup-orphaned-media.mjs",
-    "cleanup:media:apply": "node ./scripts/cleanup-orphaned-media.mjs --apply"
+    "cleanup:media:apply": "node ./scripts/cleanup-orphaned-media.mjs --apply",
+    "test:commerce": "node scripts/run-commerce-security-tests.mjs",
+    "test:commerce:production": "node scripts/run-commerce-security-tests.mjs --production",
+    "checkout:demo": "node scripts/commerce/demo.mjs"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.20",

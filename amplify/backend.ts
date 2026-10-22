@@ -1,3 +1,4 @@
+import { composeCommerce } from './commerce/composition';
 import { defineBackend } from '@aws-amplify/backend';
 import { Aspects, CfnResource, IAspect, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { IConstruct } from 'constructs';
@@ -354,6 +355,11 @@ backend.addOutput({
 const overlaySourceStack = backend.createStack('overlay-source-stack');
 const userPool = backend.auth.resources.userPool;
 const userPoolClient = backend.auth.resources.userPoolClient;
+// Local review only: never activate this resource candidate on a production branch.
+if (process.env.COMMERCE_STAGE2_INFRASTRUCTURE === 'reviewed') {
+  if (['master','main','production'].includes(String(process.env.AWS_BRANCH || '').toLowerCase())) throw new Error('Commerce production infrastructure is not authorised');
+  composeCommerce({runtime: backend.myFunction.resources.lambda as LambdaFunction, api: httpApi, poolId: userPool.userPoolId, clientId: userPoolClient.userPoolClientId});
+}
 const runtimeHandler = backend.twitchRuntime.resources.lambda;
 assertRuntimeLambdaMutationTarget(runtimeHandler);
 composeOverlaySourceStack({ stack: overlaySourceStack, tables: backend.data.resources.tables, userPoolId: userPool.userPoolId, userPoolClientId: userPoolClient.userPoolClientId, frontendOrigin: process.env.AWS_BRANCH === 'master' ? 'https://www.projectrespawn.com' : 'http://localhost:5174', runtimeHandler, addOutput: (output) => backend.addOutput(output as any) });

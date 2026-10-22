@@ -3,6 +3,7 @@ import { generateClient } from 'aws-amplify/data';
 import { getUrl } from 'aws-amplify/storage';
 import outputs from '../../../amplify_outputs.json';
 import { buildMerchCartItem, isSameCartVariant } from '../../commerce/cartItem.js';
+import { advertisedVariantPrice, advertisedCataloguePrice } from '../../commerce/currencyPrices.js';
 
 let client = null;
 
@@ -205,8 +206,10 @@ function normalizeStoredImage(image) {
   };
 }
 
-function normalizeStoredVariant(variant) {
-  const retailPrice = inferPriceNumber(variant?.retailPrice, variant?.displayPrice);
+function normalizeStoredVariant(variant, sourceType) {
+  const printful = normalizeText(sourceType).toLowerCase() === 'printful';
+  const configured = printful ? advertisedVariantPrice(variant.currencyPrices) : null;
+  const retailPrice = printful ? configured?.price ?? null : inferPriceNumber(variant?.retailPrice, variant?.displayPrice);
 
   return {
     id: variant.id,
@@ -217,12 +220,13 @@ function normalizeStoredVariant(variant) {
     color: titleCase(variant.color),
     colorHex: normalizeText(variant.colorHex),
     size: normalizeText(variant.size),
-    displayPrice: firstNonEmpty(
+    currencyPrices: variant.currencyPrices,
+    displayPrice: printful ? configured?.display || 'Price available after configuration' : firstNonEmpty(
       variant.displayPrice,
       retailPrice != null ? formatPrice(retailPrice, firstNonEmpty(variant.currency, 'GBP')) : ''
     ),
     retailPrice,
-    currency: firstNonEmpty(variant.currency, 'GBP'),
+    currency: printful ? configured?.currency || 'GBP' : firstNonEmpty(variant.currency, 'GBP'),
     availabilityStatus: firstNonEmpty(variant.availabilityStatus, 'Availability unknown'),
     imageUrl: normalizeImageUrl(variant.imageUrl),
     rawImageUrl: normalizeText(variant.imageUrl),
@@ -572,7 +576,7 @@ export default {
                 .sort((a, b) => a.sortOrder - b.sortOrder);
 
               const normalizedVariants = (variantsByProductId.get(product.id) || [])
-                .map((variant) => normalizeStoredVariant(variant))
+                .map((variant) => normalizeStoredVariant(variant, product.sourceType))
                 .filter((variant) => {
                   const status = normalizeText(variant.status).toLowerCase();
                   const active = !status || status === 'active';
@@ -649,7 +653,7 @@ export default {
                 whatsIncluded: normalizeText(product.whatsIncluded),
                 careInstructions: normalizeText(product.careInstructions),
                 fitNotes: normalizeText(product.fitNotes),
-                displayPrice: firstNonEmpty(
+                displayPrice: normalizeText(product.sourceType).toLowerCase() === 'printful' ? advertisedCataloguePrice(resolvedVariants) : firstNonEmpty(
                   product.displayPrice,
                   fallbackNumericPrice != null
                     ? formatPrice(fallbackNumericPrice, firstNonEmpty(product.currency, 'GBP'))
