@@ -1,0 +1,78 @@
+{
+  "at": "2026-10-21T21:04:56.126Z",
+  "passed": true,
+  "results": [
+    {
+      "name": "production-regression",
+      "startedAt": "2026-10-21T21:02:21.879Z",
+      "exitCode": 0,
+      "tests": 233,
+      "failures": 0,
+      "logSha256": "d1b308716c7defa42df56d1220696117224880cdf50ffcd1d6e45463642a597d",
+      "command": [
+        "node",
+        "--test",
+        ".tmp/team-hub-production/source/scripts/team-hub-business-runtime/tests/target.test.mjs",
+        ".tmp/team-hub-production/source/scripts/team-hub-cursor-runtime/read.test.mjs",
+        ".tmp/team-hub-production/source/scripts/team-hub-cursor-runtime/production-pinned-bundle.test.mjs",
+        ".tmp/team-hub-production/source/scripts/team-hub-2b4/tests/parity.readiness.test.mjs",
+        ".tmp/team-hub-production/source/scripts/team-hub-2b5/tests/target.test.mjs",
+        ".tmp/team-hub-production/source/scripts/team-hub-2b5/tests/core.readiness.test.mjs",
+        "scripts/team-hub-production/team-readiness.test.mjs",
+        "scripts/team-hub-production/deployment-core.test.mjs",
+        "scripts/team-hub-production/deployment.test.mjs",
+        "scripts/cloudformation-accounting.test.mjs",
+        "scripts/ntgre-phase1-allowance.test.mjs",
+        "scripts/migration/control.test.mjs",
+        "scripts/migration/deployment-checks.test.mjs"
+      ]
+    },
+    {
+      "name": "team-typescript",
+      "startedAt": "2026-10-21T21:04:45.636Z",
+      "exitCode": 0,
+      "tests": 0,
+      "failures": 0,
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command": [
+        "node",
+        "infrastructure/domains/team-hub/node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "-p",
+        "infrastructure/domains/team-hub/tsconfig.json"
+      ]
+    },
+    {
+      "name": "core-typescript",
+      "startedAt": "2026-10-21T21:04:50.987Z",
+      "exitCode": 0,
+      "tests": 0,
+      "failures": 0,
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command": [
+        "node",
+        "infrastructure/domains/team-hub/node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "-p",
+        "infrastructure/domains/core/tsconfig.json",
+        "--typeRoots",
+        "infrastructure/domains/team-hub/node_modules/@types"
+      ]
+    },
+    {
+      "name": "ledger",
+      "startedAt": "2026-10-21T21:04:55.428Z",
+      "exitCode": 0,
+      "tests": 0,
+      "failures": 0,
+      "logSha256": "8c58f2065cd1641887cf21534719bca2ff58af5fed48bd32a59a34144e1b70a5",
+      "command": [
+        "node",
+        "scripts/migration/ledger.mjs",
+        "check"
+      ]
+    }
+  ],
+  "scope": "Production-bound Team business/read/cursor/Core fixtures and exact extracted compiled ZIP; no live AWS service test inferred",
+  "awsWrites": 0
+}

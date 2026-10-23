@@ -1,0 +1,413 @@
+{
+  "awsWrites": 0,
+  "cases": [
+    {
+      "name": "modeled-current-via-service-path",
+      "context": {
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts"
+      },
+      "simulation": {
+        "EvaluationResults": [
+          {
+            "EvalActionName": "kms:Decrypt",
+            "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+            "EvalDecision": "allowed",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "role_ProjectRespawn-Core-Production-Contracts_ProductionRuntime",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 1,
+                  "Column": 1680
+                },
+                "EndPosition": {
+                  "Line": 1,
+                  "Column": 2069
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "PermissionsBoundaryDecisionDetail": {
+              "AllowedByPermissionsBoundary": true
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+                "EvalResourceDecision": "allowed",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "role_ProjectRespawn-Core-Production-Contracts_ProductionRuntime",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 1,
+                      "Column": 1680
+                    },
+                    "EndPosition": {
+                      "Line": 1,
+                      "Column": 2069
+                    }
+                  }
+                ],
+                "PermissionsBoundaryDecisionDetail": {
+                  "AllowedByPermissionsBoundary": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "contextSource": "SUPPLIED_DIAGNOSTIC_MODEL_NOT_OBSERVED_AWS_CONTEXT"
+    },
+    {
+      "name": "modeled-missing kms:ViaService",
+      "context": {
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts"
+      },
+      "simulation": {
+        "EvaluationResults": [
+          {
+            "EvalActionName": "kms:Decrypt",
+            "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+            "EvalDecision": "explicitDeny",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "ProjectRespawn-Core-Production-RuntimeBoundary",
+                "SourcePolicyType": "Permissions Boundary Policy",
+                "StartPosition": {
+                  "Line": 1,
+                  "Column": 2461
+                },
+                "EndPosition": {
+                  "Line": 1,
+                  "Column": 2679
+                }
+              },
+              {
+                "SourcePolicyId": "role_ProjectRespawn-Core-Production-Contracts_ProductionRuntime",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 1,
+                  "Column": 2461
+                },
+                "EndPosition": {
+                  "Line": 1,
+                  "Column": 2679
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "PermissionsBoundaryDecisionDetail": {
+              "AllowedByPermissionsBoundary": false
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+                "EvalResourceDecision": "explicitDeny",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "ProjectRespawn-Core-Production-RuntimeBoundary",
+                    "SourcePolicyType": "Permissions Boundary Policy",
+                    "StartPosition": {
+                      "Line": 1,
+                      "Column": 2461
+                    },
+                    "EndPosition": {
+                      "Line": 1,
+                      "Column": 2679
+                    }
+                  },
+                  {
+                    "SourcePolicyId": "role_ProjectRespawn-Core-Production-Contracts_ProductionRuntime",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 1,
+                      "Column": 2461
+                    },
+                    "EndPosition": {
+                      "Line": 1,
+                      "Column": 2679
+                    }
+                  }
+                ],
+                "PermissionsBoundaryDecisionDetail": {
+                  "AllowedByPermissionsBoundary": false
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "contextSource": "SUPPLIED_DIAGNOSTIC_MODEL_NOT_OBSERVED_AWS_CONTEXT"
+    },
+    {
+      "name": "modeled-missing kms:CallerAccount",
+      "context": {
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts"
+      },
+      "simulation": {
+        "EvaluationResults": [
+          {
+            "EvalActionName": "kms:Decrypt",
+            "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+            "EvalDecision": "explicitDeny",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "ProjectRespawn-Core-Production-RuntimeBoundary",
+                "SourcePolicyType": "Permissions Boundary Policy",
+                "StartPosition": {
+                  "Line": 1,
+                  "Column": 2679
+                },
+                "EndPosition": {
+                  "Line": 1,
+                  "Column": 2881
+                }
+              },
+              {
+                "SourcePolicyId": "role_ProjectRespawn-Core-Production-Contracts_ProductionRuntime",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 1,
+                  "Column": 2679
+                },
+                "EndPosition": {
+                  "Line": 1,
+                  "Column": 2881
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "PermissionsBoundaryDecisionDetail": {
+              "AllowedByPermissionsBoundary": false
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+                "EvalResourceDecision": "explicitDeny",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "ProjectRespawn-Core-Production-RuntimeBoundary",
+                    "SourcePolicyType": "Permissions Boundary Policy",
+                    "StartPosition": {
+                      "Line": 1,
+                      "Column": 2679
+                    },
+                    "EndPosition": {
+                      "Line": 1,
+                      "Column": 2881
+                    }
+                  },
+                  {
+                    "SourcePolicyId": "role_ProjectRespawn-Core-Production-Contracts_ProductionRuntime",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 1,
+                      "Column": 2679
+                    },
+                    "EndPosition": {
+                      "Line": 1,
+                      "Column": 2881
+                    }
+                  }
+                ],
+                "PermissionsBoundaryDecisionDetail": {
+                  "AllowedByPermissionsBoundary": false
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "contextSource": "SUPPLIED_DIAGNOSTIC_MODEL_NOT_OBSERVED_AWS_CONTEXT"
+    },
+    {
+      "name": "modeled-missing kms:EncryptionContext:aws:lambda:FunctionArn",
+      "context": {
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478"
+      },
+      "simulation": {
+        "EvaluationResults": [
+          {
+            "EvalActionName": "kms:Decrypt",
+            "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+            "EvalDecision": "explicitDeny",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "ProjectRespawn-Core-Production-RuntimeBoundary",
+                "SourcePolicyType": "Permissions Boundary Policy",
+                "StartPosition": {
+                  "Line": 1,
+                  "Column": 3309
+                },
+                "EndPosition": {
+                  "Line": 1,
+                  "Column": 3614
+                }
+              },
+              {
+                "SourcePolicyId": "role_ProjectRespawn-Core-Production-Contracts_ProductionRuntime",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 1,
+                  "Column": 3309
+                },
+                "EndPosition": {
+                  "Line": 1,
+                  "Column": 3614
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "PermissionsBoundaryDecisionDetail": {
+              "AllowedByPermissionsBoundary": false
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+                "EvalResourceDecision": "explicitDeny",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "ProjectRespawn-Core-Production-RuntimeBoundary",
+                    "SourcePolicyType": "Permissions Boundary Policy",
+                    "StartPosition": {
+                      "Line": 1,
+                      "Column": 3309
+                    },
+                    "EndPosition": {
+                      "Line": 1,
+                      "Column": 3614
+                    }
+                  },
+                  {
+                    "SourcePolicyId": "role_ProjectRespawn-Core-Production-Contracts_ProductionRuntime",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 1,
+                      "Column": 3309
+                    },
+                    "EndPosition": {
+                      "Line": 1,
+                      "Column": 3614
+                    }
+                  }
+                ],
+                "PermissionsBoundaryDecisionDetail": {
+                  "AllowedByPermissionsBoundary": false
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "contextSource": "SUPPLIED_DIAGNOSTIC_MODEL_NOT_OBSERVED_AWS_CONTEXT"
+    },
+    {
+      "name": "modeled-qualified-function-context",
+      "context": {
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts:$LATEST"
+      },
+      "simulation": {
+        "EvaluationResults": [
+          {
+            "EvalActionName": "kms:Decrypt",
+            "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+            "EvalDecision": "explicitDeny",
+            "MatchedStatements": [
+              {
+                "SourcePolicyId": "ProjectRespawn-Core-Production-RuntimeBoundary",
+                "SourcePolicyType": "Permissions Boundary Policy",
+                "StartPosition": {
+                  "Line": 1,
+                  "Column": 3309
+                },
+                "EndPosition": {
+                  "Line": 1,
+                  "Column": 3614
+                }
+              },
+              {
+                "SourcePolicyId": "role_ProjectRespawn-Core-Production-Contracts_ProductionRuntime",
+                "SourcePolicyType": "IAM Policy",
+                "StartPosition": {
+                  "Line": 1,
+                  "Column": 3309
+                },
+                "EndPosition": {
+                  "Line": 1,
+                  "Column": 3614
+                }
+              }
+            ],
+            "MissingContextValues": [],
+            "OrganizationsDecisionDetail": {
+              "AllowedByOrganizations": true
+            },
+            "PermissionsBoundaryDecisionDetail": {
+              "AllowedByPermissionsBoundary": false
+            },
+            "EvalDecisionDetails": {},
+            "ResourceSpecificResults": [
+              {
+                "EvalResourceName": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+                "EvalResourceDecision": "explicitDeny",
+                "MatchedStatements": [
+                  {
+                    "SourcePolicyId": "ProjectRespawn-Core-Production-RuntimeBoundary",
+                    "SourcePolicyType": "Permissions Boundary Policy",
+                    "StartPosition": {
+                      "Line": 1,
+                      "Column": 3309
+                    },
+                    "EndPosition": {
+                      "Line": 1,
+                      "Column": 3614
+                    }
+                  },
+                  {
+                    "SourcePolicyId": "role_ProjectRespawn-Core-Production-Contracts_ProductionRuntime",
+                    "SourcePolicyType": "IAM Policy",
+                    "StartPosition": {
+                      "Line": 1,
+                      "Column": 3309
+                    },
+                    "EndPosition": {
+                      "Line": 1,
+                      "Column": 3614
+                    }
+                  }
+                ],
+                "PermissionsBoundaryDecisionDetail": {
+                  "AllowedByPermissionsBoundary": false
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "contextSource": "SUPPLIED_DIAGNOSTIC_MODEL_NOT_OBSERVED_AWS_CONTEXT"
+    }
+  ]
+}

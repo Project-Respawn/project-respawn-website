@@ -1,0 +1,123 @@
+{
+  "at": "2026-10-21T21:07:55.625Z",
+  "passed": true,
+  "analyzer": {
+    "findings": []
+  },
+  "cases": [
+    {
+      "mode": "scope-model",
+      "action": "s3:PutObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/44262d06047926ada1d1ce88edc9ad55180ab8b2e080079218fc97090ee19bdc.json",
+      "decision": "allowed",
+      "passed": true
+    },
+    {
+      "mode": "existing-operator",
+      "action": "s3:PutObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/44262d06047926ada1d1ce88edc9ad55180ab8b2e080079218fc97090ee19bdc.json",
+      "decision": "allowed",
+      "passed": true
+    },
+    {
+      "mode": "scope-model",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/44262d06047926ada1d1ce88edc9ad55180ab8b2e080079218fc97090ee19bdc.json",
+      "decision": "allowed",
+      "passed": true
+    },
+    {
+      "mode": "existing-operator",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/44262d06047926ada1d1ce88edc9ad55180ab8b2e080079218fc97090ee19bdc.json",
+      "decision": "allowed",
+      "passed": true
+    },
+    {
+      "mode": "scope-model",
+      "action": "s3:PutObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/995b40be6cd460999cbde2510b33c5e93a407251f48b1ba1905f75a2c8c0ef24.json",
+      "decision": "allowed",
+      "passed": true
+    },
+    {
+      "mode": "existing-operator",
+      "action": "s3:PutObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/995b40be6cd460999cbde2510b33c5e93a407251f48b1ba1905f75a2c8c0ef24.json",
+      "decision": "allowed",
+      "passed": true
+    },
+    {
+      "mode": "scope-model",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/995b40be6cd460999cbde2510b33c5e93a407251f48b1ba1905f75a2c8c0ef24.json",
+      "decision": "allowed",
+      "passed": true
+    },
+    {
+      "mode": "existing-operator",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/995b40be6cd460999cbde2510b33c5e93a407251f48b1ba1905f75a2c8c0ef24.json",
+      "decision": "allowed",
+      "passed": true
+    },
+    {
+      "mode": "scope-model",
+      "action": "s3:PutObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/3b9da09caa3e8684aabd5c0421539326eb68d1ed5aa5696dcf76425659ea0287.zip",
+      "decision": "allowed",
+      "passed": true
+    },
+    {
+      "mode": "existing-operator",
+      "action": "s3:PutObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/3b9da09caa3e8684aabd5c0421539326eb68d1ed5aa5696dcf76425659ea0287.zip",
+      "decision": "allowed",
+      "passed": true
+    },
+    {
+      "mode": "scope-model",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/3b9da09caa3e8684aabd5c0421539326eb68d1ed5aa5696dcf76425659ea0287.zip",
+      "decision": "allowed",
+      "passed": true
+    },
+    {
+      "mode": "existing-operator",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/3b9da09caa3e8684aabd5c0421539326eb68d1ed5aa5696dcf76425659ea0287.zip",
+      "decision": "allowed",
+      "passed": true
+    },
+    {
+      "mode": "scope-model",
+      "name": "wrong-object",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/wrong.json",
+      "decision": "implicitDeny",
+      "passed": true
+    },
+    {
+      "mode": "scope-model",
+      "name": "wrong-encryption",
+      "action": "s3:PutObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/44262d06047926ada1d1ce88edc9ad55180ab8b2e080079218fc97090ee19bdc.json",
+      "decision": "implicitDeny",
+      "passed": true
+    },
+    {
+      "mode": "scope-model",
+      "name": "no-delete",
+      "action": "s3:DeleteObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/44262d06047926ada1d1ce88edc9ad55180ab8b2e080079218fc97090ee19bdc.json",
+      "decision": "implicitDeny",
+      "passed": true
+    }
+  ],
+  "policyInstalled": false,
+  "awsWrites": 0,
+  "limitations": [
+    "Existing operator may have wider rights; execution authorization restricts actions to the exact reviewed objects. No operator IAM change is proposed",
+    "Simulation does not replace bucket policy/encryption/current effective permission checks at actual publication"
+  ]
+}

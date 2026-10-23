@@ -1,0 +1,236 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "apigateway:GET",
+      "Resource": {
+        "Fn::Sub": "arn:aws:apigateway:eu-north-1::/apis/${HttpApi}"
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:GET",
+        "apigateway:POST",
+        "apigateway:PATCH",
+        "apigateway:DELETE",
+        "apigateway:PUT"
+      ],
+      "Resource": [
+        {
+          "Fn::Sub": "arn:aws:apigateway:eu-north-1::/apis/${HttpApi}/*"
+        }
+      ],
+      "Condition": {
+        "StringEquals": {
+          "aws:RequestedRegion": "eu-north-1"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "lambda:CreateFunction",
+        "lambda:GetFunction",
+        "lambda:GetFunctionConfiguration",
+        "lambda:UpdateFunctionCode",
+        "lambda:UpdateFunctionConfiguration",
+        "lambda:DeleteFunction",
+        "lambda:AddPermission",
+        "lambda:RemovePermission",
+        "lambda:GetPolicy",
+        "lambda:ListTags",
+        "lambda:TagResource",
+        "lambda:UntagResource",
+        "lambda:GetRuntimeManagementConfig",
+        "lambda:GetFunctionRecursionConfig"
+      ],
+      "Resource": [
+        "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Production-ParityCommand",
+        "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Production-ParityCommand:$LATEST",
+        "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Production-ParityRead",
+        "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Production-ParityRead:$LATEST"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:DeleteLogGroup",
+        "logs:PutRetentionPolicy",
+        "logs:DeleteRetentionPolicy",
+        "logs:TagResource",
+        "logs:UntagResource",
+        "logs:ListTagsForResource",
+        "logs:DescribeLogStreams",
+        "logs:GetDataProtectionPolicy"
+      ],
+      "Resource": [
+        "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/team-hub/parity-command",
+        "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/team-hub/parity-command:*",
+        "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/team-hub/parity-read",
+        "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/team-hub/parity-read:*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "logs:DescribeLogGroups",
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:PutMetricAlarm",
+        "cloudwatch:DeleteAlarms",
+        "cloudwatch:DescribeAlarms",
+        "cloudwatch:TagResource",
+        "cloudwatch:UntagResource",
+        "cloudwatch:ListTagsForResource"
+      ],
+      "Resource": [
+        "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-TeamHub-Production-ReadProof-*",
+        "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-TeamHub-Production-ParityCommand-Errors",
+        "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-TeamHub-Production-ParityCommand-Throttles",
+        "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-TeamHub-Production-ParityRead-Errors",
+        "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-TeamHub-Production-ParityRead-Throttles"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetRole",
+        "iam:DeleteRole",
+        "iam:PutRolePolicy",
+        "iam:GetRolePolicy",
+        "iam:DeleteRolePolicy",
+        "iam:ListRolePolicies",
+        "iam:ListAttachedRolePolicies",
+        "iam:UpdateAssumeRolePolicy",
+        "iam:UpdateRole",
+        "iam:UpdateRoleDescription",
+        "iam:TagRole",
+        "iam:UntagRole",
+        "iam:ListRoleTags"
+      ],
+      "Resource": [
+        "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Production-ParityCommand",
+        "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Production-ParityRead"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "iam:PassRole",
+      "Resource": [
+        "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Production-ParityCommand",
+        "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Production-ParityRead"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "iam:PassedToService": "lambda.amazonaws.com"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": "s3:GetObject",
+      "Resource": [
+        "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/dda9937e87e2bbc350597ecdfbd8b7ae31c09dae5cffe91a43241edfbe5ce291.json",
+        "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/3b9da09caa3e8684aabd5c0421539326eb68d1ed5aa5696dcf76425659ea0287.zip"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:CreateTable",
+        "dynamodb:DescribeTable",
+        "dynamodb:UpdateTable",
+        "dynamodb:DescribeContinuousBackups",
+        "dynamodb:UpdateContinuousBackups",
+        "dynamodb:DescribeTimeToLive",
+        "dynamodb:UpdateTimeToLive",
+        "dynamodb:ListTagsOfResource",
+        "dynamodb:TagResource",
+        "dynamodb:UntagResource"
+      ],
+      "Resource": [
+        "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Operational",
+        "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Journal"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "aws:RequestedRegion": "eu-north-1"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateRole",
+        "iam:PutRolePermissionsBoundary"
+      ],
+      "Resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Production-ParityCommand",
+      "Condition": {
+        "StringEquals": {
+          "iam:PermissionsBoundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Production-ParityCommandBoundary"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateRole",
+        "iam:PutRolePermissionsBoundary"
+      ],
+      "Resource": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Production-ParityRead",
+      "Condition": {
+        "StringEquals": {
+          "iam:PermissionsBoundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Production-ParityReadBoundary"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "kms:Encrypt",
+        "kms:Decrypt"
+      ],
+      "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "Condition": {
+        "StringEquals": {
+          "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+          "kms:CallerAccount": "058264289478",
+          "kms:EncryptionContext:aws:lambda:FunctionArn": [
+            "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Production-ParityCommand",
+            "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Production-ParityRead"
+          ]
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": "kms:DescribeKey",
+      "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "Condition": {
+        "StringEquals": {
+          "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+          "kms:CallerAccount": "058264289478"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": "kms:CreateGrant",
+      "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "Condition": {
+        "StringEquals": {
+          "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+          "kms:CallerAccount": "058264289478"
+        },
+        "Bool": {
+          "kms:GrantIsForAWSResource": "true"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,249 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Resource": "*",
+      "Effect": "Deny",
+      "NotAction": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "kms:Decrypt",
+        "lambda:InvokeFunction",
+        "dynamodb:GetItem",
+        "dynamodb:Query",
+        "secretsmanager:GetSecretValue"
+      ],
+      "Sid": "OnlyAuthorityGatedTeamRuntime"
+    },
+    {
+      "Action": "logs:*",
+      "Effect": "Deny",
+      "NotResource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/team-hub/parity-read:*"
+    },
+    {
+      "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/team-hub/parity-read:*",
+      "Effect": "Allow"
+    },
+    {
+      "Action": "lambda:InvokeFunction",
+      "Resource": [
+        "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts",
+        "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts:$LATEST"
+      ],
+      "Effect": "Allow"
+    },
+    {
+      "Action": "lambda:*",
+      "Effect": "Deny",
+      "NotResource": [
+        "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts",
+        "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts:$LATEST"
+      ]
+    },
+    {
+      "Sid": "ReadOnlyAuthorityPartition",
+      "Effect": "Allow",
+      "Action": "dynamodb:GetItem",
+      "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Journal",
+      "Condition": {
+        "ForAllValues:StringEquals": {
+          "dynamodb:LeadingKeys": [
+            "CONTROL#AUTHORITY"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:GetItem",
+        "dynamodb:Query"
+      ],
+      "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Operational",
+      "Condition": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "TEAM#team:*",
+            "SLUG#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": "dynamodb:Query",
+      "Resource": [
+        "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Operational/index/BySubject",
+        "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Operational/index/ByTeamStatus"
+      ],
+      "Condition": {
+        "ForAllValues:StringLike": {
+          "dynamodb:LeadingKeys": [
+            "SUBJECT#*",
+            "STATUS#*"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": "secretsmanager:GetSecretValue",
+      "Resource": {
+        "Fn::ImportValue": "ProjectRespawn-TeamHub-Production-CursorSecretArn"
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": "dynamodb:*",
+      "NotResource": [
+        "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Operational",
+        "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Journal",
+        "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Operational/index/BySubject",
+        "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Operational/index/ByTeamStatus"
+      ]
+    },
+    {
+      "Effect": "Deny",
+      "Action": "secretsmanager:GetSecretValue",
+      "NotResource": {
+        "Fn::ImportValue": "ProjectRespawn-TeamHub-Production-CursorSecretArn"
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": "kms:*",
+      "NotResource": [
+        "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+        "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a"
+      ]
+    },
+    {
+      "Effect": "Deny",
+      "NotAction": [
+        "kms:Decrypt"
+      ],
+      "Resource": [
+        "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+        "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "kms:Decrypt",
+      "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "Condition": {
+        "StringEquals": {
+          "kms:CallerAccount": "058264289478",
+          "kms:EncryptionContext:aws:lambda:FunctionArn": [
+            "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Production-ParityRead"
+          ]
+        },
+        "StringEqualsIfExists": {
+          "kms:ViaService": "lambda.eu-north-1.amazonaws.com"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": "kms:Decrypt",
+      "Resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "Condition": {
+        "StringEquals": {
+          "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+          "kms:CallerAccount": "058264289478",
+          "kms:EncryptionContext:SecretARN": {
+            "Fn::ImportValue": "ProjectRespawn-TeamHub-Production-CursorSecretArn"
+          }
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": [
+        "kms:Decrypt"
+      ],
+      "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "Condition": {
+        "StringNotEquals": {
+          "kms:ViaService": "lambda.eu-north-1.amazonaws.com"
+        },
+        "Null": {
+          "kms:ViaService": "false"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": [
+        "kms:Decrypt"
+      ],
+      "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "Condition": {
+        "StringNotEquals": {
+          "kms:CallerAccount": "058264289478"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": [
+        "kms:Decrypt"
+      ],
+      "Resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "Condition": {
+        "StringNotEquals": {
+          "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": [
+        "kms:Decrypt"
+      ],
+      "Resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "Condition": {
+        "StringNotEquals": {
+          "kms:CallerAccount": "058264289478"
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": "kms:Decrypt",
+      "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "Condition": {
+        "StringNotEquals": {
+          "kms:EncryptionContext:aws:lambda:FunctionArn": [
+            "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Production-ParityRead"
+          ]
+        }
+      }
+    },
+    {
+      "Effect": "Deny",
+      "Action": "kms:Decrypt",
+      "Resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "Condition": {
+        "StringNotEquals": {
+          "kms:EncryptionContext:SecretARN": {
+            "Fn::ImportValue": "ProjectRespawn-TeamHub-Production-CursorSecretArn"
+          }
+        }
+      }
+    }
+  ]
+}

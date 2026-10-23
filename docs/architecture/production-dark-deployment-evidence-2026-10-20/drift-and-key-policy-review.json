@@ -1,0 +1,49 @@
+{
+  "at": "2026-10-20T22:29:07.582Z",
+  "managedKeyPoliciesUnchanged": true,
+  "artifactBucketConfigurationUnchanged": true,
+  "rows": [
+    {
+      "stack": "ProjectRespawn-Core-Ntgre",
+      "drift": []
+    },
+    {
+      "stack": "ProjectRespawn-Core-Ntgre-Security",
+      "drift": []
+    },
+    {
+      "stack": "ProjectRespawn-TeamHub-Ntgre",
+      "drift": [
+        {
+          "logicalId": "ParityCommandFunction",
+          "type": "AWS::Lambda::Function",
+          "physicalId": "ProjectRespawn-TeamHub-Ntgre-ParityCommand",
+          "status": "IN_SYNC",
+          "checkedAt": "2026-10-14T14:51:01.551000+00:00",
+          "differences": []
+        },
+        {
+          "logicalId": "ParityReadFunction",
+          "type": "AWS::Lambda::Function",
+          "physicalId": "ProjectRespawn-TeamHub-Ntgre-ParityRead",
+          "status": "IN_SYNC",
+          "checkedAt": "2026-10-14T14:50:58.033000+00:00",
+          "differences": []
+        }
+      ]
+    },
+    {
+      "stack": "ProjectRespawn-Tournaments-Ntgre",
+      "drift": []
+    },
+    {
+      "stack": "amplify-d2cux232bpa951-master-branch-53ef67772a",
+      "drift": []
+    }
+  ],
+  "limitations": [
+    "Read existing CloudFormation drift metadata; unsupported/unchecked resources are not classified as drift",
+    "Source data/protection/schema and deployment baselines are checked separately; no claim of exhaustive fresh account-wide drift detection"
+  ],
+  "awsWrites": 0
+}

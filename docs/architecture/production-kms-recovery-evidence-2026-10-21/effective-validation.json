@@ -1,0 +1,199 @@
+{
+  "awsWrites": 0,
+  "cases": [
+    {
+      "domain": "Core",
+      "name": "identity-boundary-intersection",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:GrantIsForAWSResource": true
+      },
+      "allow": true,
+      "decision": "allowed",
+      "passed": true
+    },
+    {
+      "domain": "Core",
+      "name": "explicit-deny kms:ViaService",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "kms:ViaService": "s3.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:GrantIsForAWSResource": true
+      },
+      "allow": false,
+      "injectAllow": true,
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "domain": "Core",
+      "name": "explicit-deny kms:CallerAccount",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "111111111111",
+        "kms:GrantIsForAWSResource": true
+      },
+      "allow": false,
+      "injectAllow": true,
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "domain": "Core",
+      "name": "explicit-deny kms:GrantIsForAWSResource",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:GrantIsForAWSResource": false
+      },
+      "allow": false,
+      "injectAllow": true,
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "domain": "Core",
+      "name": "explicit-deny missing resource flag",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478"
+      },
+      "allow": false,
+      "injectAllow": true,
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "domain": "Core",
+      "name": "explicit-deny foreign key arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:GrantIsForAWSResource": true
+      },
+      "allow": false,
+      "injectAllow": true,
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "domain": "Core",
+      "name": "explicit-deny foreign key arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "context": {
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:GrantIsForAWSResource": true
+      },
+      "allow": false,
+      "injectAllow": true,
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "domain": "TeamHub",
+      "name": "identity-boundary-intersection",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:GrantIsForAWSResource": true
+      },
+      "allow": true,
+      "decision": "allowed",
+      "passed": true
+    },
+    {
+      "domain": "TeamHub",
+      "name": "explicit-deny kms:ViaService",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "kms:ViaService": "s3.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:GrantIsForAWSResource": true
+      },
+      "allow": false,
+      "injectAllow": true,
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "domain": "TeamHub",
+      "name": "explicit-deny kms:CallerAccount",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "111111111111",
+        "kms:GrantIsForAWSResource": true
+      },
+      "allow": false,
+      "injectAllow": true,
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "domain": "TeamHub",
+      "name": "explicit-deny kms:GrantIsForAWSResource",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:GrantIsForAWSResource": false
+      },
+      "allow": false,
+      "injectAllow": true,
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "domain": "TeamHub",
+      "name": "explicit-deny missing resource flag",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "context": {
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478"
+      },
+      "allow": false,
+      "injectAllow": true,
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "domain": "TeamHub",
+      "name": "explicit-deny foreign key arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "context": {
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:GrantIsForAWSResource": true
+      },
+      "allow": false,
+      "injectAllow": true,
+      "decision": "explicitDeny",
+      "passed": true
+    },
+    {
+      "domain": "TeamHub",
+      "name": "explicit-deny foreign key arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "context": {
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:GrantIsForAWSResource": true
+      },
+      "allow": false,
+      "injectAllow": true,
+      "decision": "explicitDeny",
+      "passed": true
+    }
+  ],
+  "complete": true,
+  "passed": true
+}

@@ -1,0 +1,12 @@
+diff --git a/scripts/test-support/source-contracts.mjs b/scripts/test-support/source-contracts.mjs
+index 4112d3c..fcc6a7f 100644
+--- a/scripts/test-support/source-contracts.mjs
++++ b/scripts/test-support/source-contracts.mjs
+@@ -50,6 +50,6 @@ export function routeRecords(source) {
+   const exportNode = file.statements.find(ts.isExportAssignment)
+   assert.ok(exportNode, 'Expected route export')
+   // Retain actual route metadata declarations; substitute component imports with paths.
+-  const declarations = file.statements.filter(node => !ts.isImportDeclaration(node) && !ts.isExportAssignment(node)).map(node => node.getText(file)).join('\n')
++  const declarations = file.statements.filter(node => !ts.isImportDeclaration(node) && !ts.isExportAssignment(node)).map(node => { if (ts.isVariableStatement(node) && node.declarationList.declarations.every(d => d.initializer && ts.isArrowFunction(d.initializer) && ts.isCallExpression(d.initializer.body) && d.initializer.body.expression.kind === ts.SyntaxKind.ImportKeyword && d.initializer.body.arguments.length === 1 && ts.isStringLiteral(d.initializer.body.arguments[0]))) return node.declarationList.declarations.map(d => 'const ' + d.name.getText(file) + ' = ' + JSON.stringify(d.initializer.body.arguments[0].text) + ';').join('\n'); return node.getText(file) }).join('\n')
+   return Function(...Object.keys(bindings), `${declarations}\nreturn (${exportNode.expression.getText(file)})`)(...Object.values(bindings))
+ }

@@ -1,4 +1,74 @@
-# Project Respawn Phase 2 migration — START HERE
+> Current Team Hub review: [Production Team Hub dark deployment readiness](production-team-hub-deployment-readiness.md). Production Core is accepted and unchanged; Team candidates propose 8 security +39 product additions with preserved runtime bytes, reviewed KMS corrections, exact artifact bindings and passing IAM/build/regression checks. Read-only preservation verifies all 121 records, four backups/protections, Cognito, Master and Ntgre; Team stacks remain absent. Separate dark-deployment authorization is required. C1 authority initialization, cursor proof, business migration/cutover and public release are excluded. Earlier entries below are historical.
+
+> Current acceptance: [Production Core deployed and accepted](production-core-emf-acceptance.md). Exact security/product updates are UPDATE_COMPLETE; all 13 live contracts, signed-Ntgre rejection, EMF and alarm signals passed. The separately authorized ordinary test account was removed and all original 15 users preserved. Final checks preserve 121 source records, four backups/protections, Cognito configuration, Master and protected domains. Team Hub deployment requires separate review and authorization; no authority initialization, data migration or public release occurred. Earlier entries below are historical.
+
+> Current execution: [Production Core EMF deployment result](production-core-emf-deployment-result.md). Security (four modifications) and product (one Contracts Code modification) are UPDATE_COMPLETE. Actual root-level EMF ingestion and all four alarm input signals passed; 126 execution-role and 43 caller-role checks passed. All 121 source records, backups, protections, Cognito, Master and protected domains are preserved. Final Core acceptance is blocked only by missing authenticated production Admin/ordinary-user and signed-Ntgre rejection receipts. Team deployment remains unauthorized; no authority, migration or public release occurred. Earlier states below are historical.
+
+> Current review: [Core EMF artifact binding](production-core-emf-artifact-binding.md) is ready for separate deployment review. Proposed security changes are exactly four deployment-policy modifications; product remains one Contracts Code modification. Runtime IAM/KMS, EMF artifact bytes and rollback references are preserved. Certification passed 494 policy checks, 211 effective controls and 112 offline tests. No AWS writes, invocation, change sets or deployment occurred; live EMF/authentication acceptance remains pending. Earlier states below are historical.
+
+> Current preparation: [Production Core EMF correction](production-core-emf-correction.md). Emission-only runtime/product artifacts and tests are complete; installed IAM is unchanged. Execution remains blocked because the new immutable ZIP/template keys and TemplateURL are outside current exact artifact grants. No AWS writes or new invocation occurred. Separate artifact-binding review is required; Core live acceptance and Team deployment remain gated. Earlier results below are historical.
+
+> Current execution result: [Core runtime correction deployed; custom-metric acceptance blocked](production-core-runtime-execution-result.md). Five security and one Runtime IAM modifications UPDATE_COMPLETE, 119 execution-role + 50 runtime-role checks passed, actual initialization/Decrypt succeeded. Custom EMF is nested by JSON logging and not extracted; stop before further authentication or Team deployment. Source/protected baselines preserved. Earlier preparation and failures below are historical.
+
+> Current 21 October preparation: [Core runtime KMS correction](production-core-runtime-kms-correction.md). Deployed Core remains blocked at runtime Decrypt; the proposed identity/boundary correction is not installed or live accepted. Separate security-first/product-second authorization is required; no Team deployment, authority or Master change is included.
+
+<!-- PRODUCTION-CORE-FINAL-RESULT:START -->
+## Production Core — deployed, runtime acceptance blocked
+
+[Actual final recovery result](production-core-final-recovery-result.md): final security/product UPDATE_COMPLETE, 115 actual-role IAM checks passed, imported Logs IN_SYNC, exact six-addition product update and runtime/configuration pins verified. Actual CreateGrant succeeded. First live invocation failed on runtime-role kms:Decrypt explicit Deny before handler initialization. No Core live acceptance; helper stopped; no permission patch/retry. All 121 source records/backups/protections, Cognito, Master and protected domains preserved. Thirteen Core resources survive; Team remains unauthorized and absent. Separate runtime IAM/KMS review is required.
+<!-- PRODUCTION-CORE-FINAL-RESULT:END -->
+
+<!-- CORE-LOG-DRIFT-CORRECTION:START -->
+## Production Core log-drift correction — prepared only
+
+[Current permission review and execution plan](production-core-log-drift-permission-correction.md): proposes only logs:DescribeIndexPolicies on Resource star, restricted to eu-north-1, in the Core execution identity/boundary. Account/region-wide index-policy metadata visibility is explicit and requires fresh acceptance. Security remains UPDATE_COMPLETE and product IMPORT_COMPLETE with Logs only; no AWS writes or drift retry during this review. Actual IN_SYNC must pass before the unchanged six-addition product update. Team remains unauthorized.
+<!-- CORE-LOG-DRIFT-CORRECTION:END -->
+
+<!-- PRODUCTION-CORE-RECOVERY-RESULT:START -->
+## Production Core recovery — stopped at imported-log drift gate
+
+[Actual execution result](team-hub-production-core-kms-recovery-result.md): pinned Core security UPDATE_COMPLETE and 56 actual-role IAM checks passed; failed product stack record deleted with Logs retained; one-resource import IMPORT_COMPLETE. Mandatory Logs drift returned UNKNOWN because logs:DescribeIndexPolicies was denied. Product update/Lambda creation/live Core acceptance were not started. Sources, backups/protections, Cognito, Master and protected domains remain preserved. Separate permission review and fresh authorization are required; Team remains unauthorized.
+<!-- PRODUCTION-CORE-RECOVERY-RESULT:END -->
+
+<!-- PRODUCTION-KMS-RECOVERY-CURRENT:START -->
+## Production KMS recovery — proposed, not deployed
+
+[Recovery review, exact candidates and authorization gates](team-hub-production-kms-recovery-readiness.md): service-mediated CreateGrant correction for Core/Team execution roles, with existing runtime/security isolation preserved. Core security remains CREATE_COMPLETE; product remains ROLLBACK_COMPLETE with retained Logs. Proposed recovery retains/imports that group before adding six product resources. No AWS writes this task. Fresh approval must explicitly cover new security bytes, failed-stack-record deletion, retained-log import and product update; old approval is insufficient. Earlier deployment proposals below remain historical.
+<!-- PRODUCTION-KMS-RECOVERY-CURRENT:END -->
+
+<!-- PRODUCTION-DARK-RESULT-CURRENT:START -->
+## Production dark deployment blocked ? current
+
+**Core security CREATE_COMPLETE (6 resources); Core product ROLLBACK_COMPLETE.** Lambda creation required kms:CreateGrant on the AWS-managed Lambda key, explicitly denied by the reviewed execution identity. [Actual result, CloudTrail and recovery](team-hub-production-dark-deployment-result.md) supersede the preparation-only READY verdict below. Team stacks were not started. The retained Core log group and failed stack record remain; no automatic cleanup/retry or IAM broadening. Post-stop verification preserves all 121 records, four backups/protections, Cognito, Master and existing/Ntgre stacks. No authority row, migration, source fence or frontend publication. A separate narrow security/lifecycle correction review and new execution authorization are required.
+<!-- PRODUCTION-DARK-RESULT-CURRENT:END -->
+
+<!-- PRODUCTION-DOMAIN-READINESS-CURRENT:START -->
+## Production Core / Team Hub candidate — current
+
+**PRODUCTION CORE/TEAM HUB READY FOR DEPLOYMENT REVIEW.** [Readiness, exact hashes and live gates](team-hub-production-migration-readiness.md) · [ordered runbook](team-hub-production-migration-runbook.md). Four production-bound roots propose 60 additions (Core 6 security +7 product; Team 8 security +39 product), no Legacy additions. Existing production Cognito is preserved. IAM/artifact/CORS bindings, isolated runtime tests, accounting/build/security checks passed. R1/R2 remain accepted. This preparation made zero AWS writes: no publication/change sets/deployment/authority/Master changes. Separate production authorization and Core-before-Team live acceptance are required; conditional authority initialization and later stateful cutover remain separate gates. Earlier entries below are historical.
+<!-- PRODUCTION-DOMAIN-READINESS-CURRENT:END -->
+
+## Production R2 restore verification accepted — 20 October 2026
+
+[Accepted corrected R2 execution](team-hub-production-r2-result.md): existing Team restore reused, remaining three restored, all 121 records/schema/indexes/relationships/transform/encrypted evidence verified. Four owned recovery tables deleted and independently confirmed absent. Original sources, PITR/deletion protection, four backups, Cognito/Master/protected baselines preserved. Next: separate production Core/Team candidate binding and deployment review. Earlier blocked states are historical; no domain, authority or public release is authorized.
+
+## Production R2 blocked — one owned recovery table retained
+
+[Actual R2 stop and corrected resumption review](team-hub-production-r2-result.md): one Team backup restored and its one record/schema/encrypted evidence verified; other three restores never started. Runner stopped on the pinned 33-character STS name and observed disappearing RestoreSummary. The one exact owned ACTIVE recovery table remains; do not rerun the original executor, retry the restore or use parent credentials for cleanup. Sources/protections/four backups/Cognito/Master preserved. Corrected immutable resumption and additional cleanup-only session require a narrow explicit amendment. No domain deployment, authority or publication authorization.
+
+## Production R2 prepared — awaiting authorization
+
+[Exact R2 result and approval scope](team-hub-production-r2-result.md): four retained backups and source protections freshly verified; four reserved restore names absent; restricted per-pair session policies and owner-encrypted custody prepared. No R2 AWS writes or live restore acceptance. R1 remains accepted; do not repeat it.
+
+## Production R1 accepted — 20 October 2026
+
+[Production R1 result](team-hub-production-r1-result.md): four PITR enables, four deletion-protection enables and four named backups completed and independently verified. All 121 source records preserved; Cognito and Master unchanged. Next: separately reviewed R2 isolated restore proof. No production domain deployment or authority/publication change. Earlier production preparation entries are historical.
+
+### Production preparation — 20 October 2026
+
+Production recovery protection is prepared for separate execution review. Existing production users and 121 source records were inspected read-only; no production AWS writes, authority switch, Master merge or publication occurred. [Current production readiness](team-hub-production-migration-readiness.md) and [runbook](team-hub-production-migration-runbook.md) distinguish the R1 protection package from draft infrastructure and later live restore/cutover gates. Accepted Ntgre 5/5 remains a separate environment.
+
+ Project Respawn Phase 2 migration — START HERE
 
 ## Ntgre cutover accepted — 14 October 2026
 

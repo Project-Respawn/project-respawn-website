@@ -1,0 +1,549 @@
+{
+  "sourceDigest": "fd16c526bf1968caa105513ebf9a32c5513d8533d323573829926c6af13afa80",
+  "policies": [
+    {
+      "id": "product.ParityCommandRole",
+      "sourceSha256": "a6e8e3ef4a29f93437b9569d1776c21a5978ecb7083715f74f755c965b12f57d",
+      "resolvedPolicySha256": "190358162cc816e27bcce02b9014bd2cd418d3e73067860bc0ce40d5d1d4861e",
+      "size": 5060,
+      "limit": 10240,
+      "analyzer": {
+        "findings": []
+      }
+    }
+  ],
+  "cases": [
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "lambda-service-decrypt",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "allowed": true,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Production-ParityCommand"
+      },
+      "decision": "allowed",
+      "passed": true,
+      "suite": "product.ParityCommandRole",
+      "missingContext": []
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "unrelated-key arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/00000000-0000-0000-0000-000000000000",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Production-ParityCommand"
+      },
+      "decision": "explicitDeny",
+      "passed": true,
+      "suite": "product.ParityCommandRole",
+      "missingContext": []
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "unrelated-key arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Production-ParityCommand"
+      },
+      "decision": "explicitDeny",
+      "passed": true,
+      "suite": "product.ParityCommandRole",
+      "missingContext": []
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "no-admin kms:CreateKey",
+      "action": "kms:CreateKey",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Production-ParityCommand"
+      },
+      "decision": "implicitDeny",
+      "passed": true,
+      "suite": "product.ParityCommandRole",
+      "missingContext": []
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "no-admin kms:PutKeyPolicy",
+      "action": "kms:PutKeyPolicy",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Production-ParityCommand"
+      },
+      "decision": "explicitDeny",
+      "passed": true,
+      "suite": "product.ParityCommandRole",
+      "missingContext": []
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "no-admin kms:CreateGrant",
+      "action": "kms:CreateGrant",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Production-ParityCommand"
+      },
+      "decision": "explicitDeny",
+      "passed": true,
+      "suite": "product.ParityCommandRole",
+      "missingContext": []
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "no-admin kms:GenerateDataKey",
+      "action": "kms:GenerateDataKey",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Production-ParityCommand"
+      },
+      "decision": "explicitDeny",
+      "passed": true,
+      "suite": "product.ParityCommandRole",
+      "missingContext": []
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "wrong-lambda-context",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Ntgre-ParityRead"
+      },
+      "decision": "explicitDeny",
+      "passed": true,
+      "suite": "product.ParityCommandRole",
+      "missingContext": []
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "own-secret",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Production-Cursor-Aa0Bb1",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "decision": "explicitDeny",
+      "passed": true,
+      "suite": "product.ParityCommandRole",
+      "missingContext": []
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "other-secret",
+      "action": "secretsmanager:GetSecretValue",
+      "resource": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Ntgre-Cursor-Aa0Bb1",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "decision": "explicitDeny",
+      "passed": true,
+      "suite": "product.ParityCommandRole",
+      "missingContext": []
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "core-invoke",
+      "action": "lambda:InvokeFunction",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts",
+      "allowed": true,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "decision": "allowed",
+      "passed": true,
+      "suite": "product.ParityCommandRole",
+      "missingContext": []
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "foreign Core",
+      "action": "lambda:UpdateFunctionConfiguration",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "decision": "explicitDeny",
+      "passed": true,
+      "suite": "product.ParityCommandRole",
+      "missingContext": []
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "foreign Tournament",
+      "action": "lambda:UpdateFunctionConfiguration",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Tournament-Production-Contracts",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "decision": "explicitDeny",
+      "passed": true,
+      "suite": "product.ParityCommandRole",
+      "missingContext": []
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "foreign Creator",
+      "action": "lambda:UpdateFunctionConfiguration",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Creator-Production-Contracts",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "decision": "explicitDeny",
+      "passed": true,
+      "suite": "product.ParityCommandRole",
+      "missingContext": []
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "foreign Commerce",
+      "action": "lambda:UpdateFunctionConfiguration",
+      "resource": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Commerce-Production-Contracts",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "decision": "explicitDeny",
+      "passed": true,
+      "suite": "product.ParityCommandRole",
+      "missingContext": []
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "wrong-artifact",
+      "action": "s3:GetObject",
+      "resource": "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/OtherDomain/other.zip",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1"
+      },
+      "decision": "explicitDeny",
+      "passed": true,
+      "suite": "product.ParityCommandRole",
+      "missingContext": []
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "secret-decrypt",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Production-Cursor-Aa0Bb1"
+      },
+      "decision": "explicitDeny",
+      "passed": true,
+      "suite": "product.ParityCommandRole",
+      "missingContext": []
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "wrong-secret-context",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:SecretARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Production-Cursor-Aa0Bb1wrong"
+      },
+      "decision": "explicitDeny",
+      "passed": true,
+      "suite": "product.ParityCommandRole",
+      "missingContext": []
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "authority-get",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Journal",
+      "allowed": true,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "dynamodb:LeadingKeys": [
+          "CONTROL#AUTHORITY"
+        ]
+      },
+      "decision": "allowed",
+      "passed": true,
+      "suite": "product.ParityCommandRole",
+      "missingContext": []
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "authority-put",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Journal",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "dynamodb:LeadingKeys": [
+          "CONTROL#AUTHORITY"
+        ],
+        "dynamodb:EnclosingOperation": [
+          "TransactWriteItems"
+        ]
+      },
+      "decision": "implicitDeny",
+      "missingContext": [
+        "kms:EncryptionContext:aws:lambda:FunctionArn",
+        "kms:ViaService",
+        "kms:CallerAccount"
+      ],
+      "passed": true,
+      "suite": "product.ParityCommandRole"
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "team-put-transaction",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Operational",
+      "allowed": true,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "dynamodb:LeadingKeys": [
+          "TEAM#team:proof"
+        ],
+        "dynamodb:EnclosingOperation": [
+          "TransactWriteItems"
+        ]
+      },
+      "decision": "allowed",
+      "passed": true,
+      "suite": "product.ParityCommandRole",
+      "missingContext": []
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "legacy Team",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "dynamodb:LeadingKeys": [
+          "TEAM#team:proof"
+        ],
+        "dynamodb:EnclosingOperation": [
+          "TransactWriteItems"
+        ]
+      },
+      "decision": "explicitDeny",
+      "passed": true,
+      "suite": "product.ParityCommandRole",
+      "missingContext": []
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "legacy TeamMembership",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "dynamodb:LeadingKeys": [
+          "TEAM#team:proof"
+        ],
+        "dynamodb:EnclosingOperation": [
+          "TransactWriteItems"
+        ]
+      },
+      "decision": "explicitDeny",
+      "passed": true,
+      "suite": "product.ParityCommandRole",
+      "missingContext": []
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "legacy TeamRosterSlot",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "dynamodb:LeadingKeys": [
+          "TEAM#team:proof"
+        ],
+        "dynamodb:EnclosingOperation": [
+          "TransactWriteItems"
+        ]
+      },
+      "decision": "explicitDeny",
+      "passed": true,
+      "suite": "product.ParityCommandRole",
+      "missingContext": []
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "legacy PlayerChampionPoolEntry",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "dynamodb:LeadingKeys": [
+          "TEAM#team:proof"
+        ],
+        "dynamodb:EnclosingOperation": [
+          "TransactWriteItems"
+        ]
+      },
+      "decision": "explicitDeny",
+      "passed": true,
+      "suite": "product.ParityCommandRole",
+      "missingContext": []
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "team-put-direct",
+      "action": "dynamodb:PutItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Operational",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "dynamodb:LeadingKeys": [
+          "TEAM#team:proof"
+        ]
+      },
+      "decision": "implicitDeny",
+      "missingContext": [
+        "dynamodb:EnclosingOperation",
+        "kms:EncryptionContext:aws:lambda:FunctionArn",
+        "kms:ViaService",
+        "kms:CallerAccount"
+      ],
+      "passed": true,
+      "suite": "product.ParityCommandRole"
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "foreign-journal-partition",
+      "action": "dynamodb:GetItem",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Journal",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "dynamodb:LeadingKeys": [
+          "FOREIGN#proof"
+        ]
+      },
+      "decision": "implicitDeny",
+      "missingContext": [
+        "dynamodb:EnclosingOperation",
+        "kms:EncryptionContext:aws:lambda:FunctionArn",
+        "kms:ViaService",
+        "kms:CallerAccount"
+      ],
+      "passed": true,
+      "suite": "product.ParityCommandRole"
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "no-admin iam:CreatePolicyVersion",
+      "action": "iam:CreatePolicyVersion",
+      "resource": "*",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Production-ParityCommand"
+      },
+      "decision": "explicitDeny",
+      "missingContext": [],
+      "passed": true,
+      "suite": "product.ParityCommandRole"
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "no-admin cognito-idp:AdminCreateUser",
+      "action": "cognito-idp:AdminCreateUser",
+      "resource": "*",
+      "allowed": false,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Production-ParityCommand"
+      },
+      "decision": "explicitDeny",
+      "missingContext": [],
+      "passed": true,
+      "suite": "product.ParityCommandRole"
+    },
+    {
+      "policy": "product.ParityCommandRole",
+      "name": "runtime-absent-via-service",
+      "action": "kms:Decrypt",
+      "resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+      "allowed": true,
+      "context": {
+        "aws:RequestedRegion": "eu-north-1",
+        "kms:CallerAccount": "058264289478",
+        "kms:EncryptionContext:aws:lambda:FunctionArn": [
+          "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-TeamHub-Production-ParityCommand"
+        ]
+      },
+      "suite": "product.ParityCommandRole",
+      "decision": "implicitDeny",
+      "missingContext": [
+        "dynamodb:EnclosingOperation",
+        "dynamodb:LeadingKeys",
+        "kms:ViaService"
+      ],
+      "passed": false
+    }
+  ],
+  "effectiveCases": [],
+  "equivalence": [],
+  "wrongPrincipal": [],
+  "awsWrites": 0,
+  "limitations": [
+    "Generated API ID and secret suffix are explicitly synthetic; execution requires exact installed output/policy equivalence",
+    "IAM simulations do not prove trust, Organizations, KMS resource-policy/service context, real Lambda initialization or secret decryption",
+    "No AssumeRole, invocation, secret retrieval, change set or AWS mutation occurred"
+  ]
+}

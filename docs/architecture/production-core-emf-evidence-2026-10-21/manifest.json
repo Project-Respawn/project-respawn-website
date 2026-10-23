@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "production-core-emf-candidate.v1",
+  "approved": false,
+  "awsWrites": 0,
+  "account": "058264289478",
+  "region": "eu-north-1",
+  "runtime": {
+    "path": "docs/architecture/production-core-emf-evidence-2026-10-21/dc2a7137a725f6a82582abc8a800f5d30846058ecdbe12965f81a19c887154c4.core.runtime.zip",
+    "sha256": "dc2a7137a725f6a82582abc8a800f5d30846058ecdbe12965f81a19c887154c4",
+    "key": "production/dc2a7137a725f6a82582abc8a800f5d30846058ecdbe12965f81a19c887154c4.zip"
+  },
+  "product": {
+    "path": "docs/architecture/production-core-emf-evidence-2026-10-21/5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086.coreProduct.template.json",
+    "sha256": "5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086",
+    "key": "production/5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086.json",
+    "url": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086.json"
+  },
+  "security": {
+    "path": "docs/architecture/production-core-runtime-kms-evidence-2026-10-21/8f83dda21a47895b2f48cea19839daa84bdbcba7f28ff82e30906aec595b0c44.coreSecurity.template.json",
+    "sha256": "8f83dda21a47895b2f48cea19839daa84bdbcba7f28ff82e30906aec595b0c44",
+    "key": "production/8f83dda21a47895b2f48cea19839daa84bdbcba7f28ff82e30906aec595b0c44.json",
+    "url": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/8f83dda21a47895b2f48cea19839daa84bdbcba7f28ff82e30906aec595b0c44.json"
+  },
+  "rollback": {
+    "runtime": {
+      "path": "docs/architecture/team-hub-production-evidence-2026-10-20/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.core.runtime.zip",
+      "sha256": "fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503",
+      "key": "production/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.zip"
+    },
+    "product": {
+      "path": "docs/architecture/production-core-runtime-kms-evidence-2026-10-21/0302056f0152107ecabd9d459ab50d436245587eef3cec1aa4d971c77a6ca1e4.coreProduct.template.json",
+      "sha256": "0302056f0152107ecabd9d459ab50d436245587eef3cec1aa4d971c77a6ca1e4",
+      "key": "production/0302056f0152107ecabd9d459ab50d436245587eef3cec1aa4d971c77a6ca1e4.json",
+      "url": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/0302056f0152107ecabd9d459ab50d436245587eef3cec1aa4d971c77a6ca1e4.json"
+    },
+    "security": {
+      "path": "docs/architecture/production-core-runtime-kms-evidence-2026-10-21/8f83dda21a47895b2f48cea19839daa84bdbcba7f28ff82e30906aec595b0c44.coreSecurity.template.json",
+      "sha256": "8f83dda21a47895b2f48cea19839daa84bdbcba7f28ff82e30906aec595b0c44",
+      "key": "production/8f83dda21a47895b2f48cea19839daa84bdbcba7f28ff82e30906aec595b0c44.json",
+      "url": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/8f83dda21a47895b2f48cea19839daa84bdbcba7f28ff82e30906aec595b0c44.json"
+    },
+    "monitoringKnownUnhealthy": true
+  },
+  "baselineReproduced": true,
+  "bundleDiff": "One console.log to process.stdout.write plus newline; all other bundle bytes identical",
+  "sources": [
+    {
+      "path": "domains/shared-core/contracts.mjs",
+      "sha256": "89ed68ec07063c7afc1bc1bc6f5263e6ca3f45f1423c42255c8b9489a6aac703",
+      "productionBaselineSha256": "a6486a3531f2492ed5a90a5d72a2df5e045092e7659fb7b10053204a16cecfe4"
+    },
+    {
+      "path": "domains/shared-core/entry.mjs",
+      "sha256": "7548bf6c4fd1dd3d3a3074c8adf908c6c6fcd04f1e8319f25c4dd2986ebf3a3d",
+      "productionBaselineSha256": "d1e3d9df11e3993a8fb60471e8f677f32fbf21ec2296268c1e95202b4e9d9dec"
+    },
+    {
+      "path": "domains/shared-core/observability.mjs",
+      "sha256": "1850037ff1bc49e30b6505105b0f3c54febb2b4feed4e7984130fe5d7a308034",
+      "productionBaselineSha256": "60272ece14087f9ea401153f90026424faea486603dd15fa8452fa3ca5c3d206"
+    },
+    {
+      "path": "domains/shared-core/rate-limit.mjs",
+      "sha256": "cd5d95eb27ee3f28a1b157cbb32a52d506f02147e57d9628642005d272618216",
+      "productionBaselineSha256": "cd5d95eb27ee3f28a1b157cbb32a52d506f02147e57d9628642005d272618216"
+    },
+    {
+      "path": "domains/shared-core/service.mjs",
+      "sha256": "6b7634cda9b096ff79810fc5b752ac9be7cdb26fc26ab5bc9fa3b26ff2718d0a",
+      "productionBaselineSha256": "6b7634cda9b096ff79810fc5b752ac9be7cdb26fc26ab5bc9fa3b26ff2718d0a"
+    }
+  ],
+  "expectedChanges": {
+    "additions": 0,
+    "modifications": [
+      "Contracts.Code"
+    ],
+    "deletions": 0,
+    "replacements": 0
+  },
+  "counts": {
+    "security": 6,
+    "product": 7,
+    "total": 13
+  },
+  "iamChanged": false,
+  "loggingConfigurationChanged": false,
+  "liveAccepted": false,
+  "actualCloudWatchProofPending": true,
+  "status": "BLOCKED_EXACT_DEPLOYMENT_ARTIFACT_BINDINGS_REQUIRE_SEPARATE_IAM_REVIEW",
+  "requiredFollowUp": {
+    "securityCandidateGenerated": false,
+    "policyResources": [
+      "Execution",
+      "ExecutionBoundary",
+      "Caller",
+      "CallerBoundary"
+    ],
+    "scope": "Separately review only exact new runtime/product artifact bindings and product TemplateURL; retain rollback references; preserve actions/runtime IAM/KMS/PassRole"
+  }
+}

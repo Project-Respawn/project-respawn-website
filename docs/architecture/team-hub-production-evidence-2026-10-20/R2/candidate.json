@@ -1,0 +1,621 @@
+{
+  "schemaVersion": "production-team-r2.v1",
+  "environment": {
+    "contractVersion": "environment.v1",
+    "environment": "Production",
+    "account": "058264289478",
+    "region": "eu-north-1",
+    "poolId": "eu-north-1_Uufjxul58",
+    "clientId": "2kc81ph5mgvo9eu2qjvmif5u8g",
+    "issuer": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_Uufjxul58"
+  },
+  "operatorArn": "arn:aws:iam::058264289478:user/RavenTest",
+  "authorizationRecorded": false,
+  "sessionDurationSeconds": 7200,
+  "temporaryIamResources": 0,
+  "sourceWrites": 0,
+  "restoreCount": 4,
+  "cleanupCount": 4,
+  "pairs": [
+    {
+      "model": "Team",
+      "sourceArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "sourceTableId": "78f6917b-9d12-4af4-aa14-fdae57eb7f2b",
+      "sourceName": "Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527947116-43f6eb02",
+      "backupName": "ProjectRespawn-TeamHub-Production-Team-Recovery-20261020",
+      "backupCreatedAt": "2026-10-20T21:25:47.116000+01:00",
+      "targetName": "ProjectRespawn-TeamHub-Production-Team-RecoveryProof-20261020",
+      "targetArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Team-RecoveryProof-20261020",
+      "restoreRequest": {
+        "TargetTableName": "ProjectRespawn-TeamHub-Production-Team-RecoveryProof-20261020",
+        "BackupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527947116-43f6eb02"
+      },
+      "cleanupRequest": {
+        "TableName": "ProjectRespawn-TeamHub-Production-Team-RecoveryProof-20261020"
+      },
+      "expectedR1Count": 1,
+      "expectedR1RawDigest": "8f202d72f19f9a04cfaf2709a3a5df497ed477ab82f592e59aa4485c24d13994",
+      "expectedSchema": {
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "slug",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "status",
+            "AttributeType": "S"
+          }
+        ],
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "teamsBySlug",
+            "KeySchema": [
+              {
+                "AttributeName": "slug",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          },
+          {
+            "IndexName": "teamsByStatus",
+            "KeySchema": [
+              {
+                "AttributeName": "status",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          }
+        ],
+        "LocalSecondaryIndexes": [],
+        "BillingMode": "PAY_PER_REQUEST",
+        "SSEDescription": null,
+        "TableClassSummary": null,
+        "StreamSpecification": {
+          "StreamEnabled": true,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        }
+      },
+      "sessionName": "RespawnR2-Team",
+      "sessionArn": "arn:aws:sts::058264289478:federated-user/RespawnR2-Team",
+      "sessionPolicy": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Action": [
+              "dynamodb:RestoreTableFromBackup",
+              "dynamodb:DescribeBackup"
+            ],
+            "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527947116-43f6eb02"
+          },
+          {
+            "Effect": "Allow",
+            "Action": [
+              "dynamodb:RestoreTableFromBackup",
+              "dynamodb:DescribeTable",
+              "dynamodb:Scan",
+              "dynamodb:DeleteTable",
+              "dynamodb:GetItem",
+              "dynamodb:Query",
+              "dynamodb:PutItem",
+              "dynamodb:UpdateItem",
+              "dynamodb:DeleteItem",
+              "dynamodb:BatchWriteItem"
+            ],
+            "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Team-RecoveryProof-20261020"
+          },
+          {
+            "Effect": "Deny",
+            "NotAction": "sts:GetCallerIdentity",
+            "NotResource": [
+              "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527947116-43f6eb02",
+              "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Team-RecoveryProof-20261020"
+            ]
+          },
+          {
+            "Effect": "Deny",
+            "NotAction": [
+              "dynamodb:RestoreTableFromBackup",
+              "dynamodb:DescribeTable",
+              "dynamodb:Scan",
+              "dynamodb:DeleteTable",
+              "dynamodb:GetItem",
+              "dynamodb:Query",
+              "dynamodb:PutItem",
+              "dynamodb:UpdateItem",
+              "dynamodb:DeleteItem",
+              "dynamodb:BatchWriteItem",
+              "dynamodb:DescribeBackup",
+              "sts:GetCallerIdentity"
+            ],
+            "Resource": "*"
+          },
+          {
+            "Effect": "Deny",
+            "Action": "*",
+            "Resource": "*",
+            "Condition": {
+              "ArnNotEquals": {
+                "aws:PrincipalArn": "arn:aws:sts::058264289478:federated-user/RespawnR2-Team"
+              }
+            }
+          }
+        ]
+      },
+      "sessionPolicyCharacters": 1403
+    },
+    {
+      "model": "TeamMembership",
+      "sourceArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "sourceTableId": "84e7d7af-3ff0-4881-a76a-90bc00b3d3ab",
+      "sourceName": "TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527948497-eda960ad",
+      "backupName": "ProjectRespawn-TeamHub-Production-TeamMembership-Recovery-20261020",
+      "backupCreatedAt": "2026-10-20T21:25:48.497000+01:00",
+      "targetName": "ProjectRespawn-TeamHub-Production-TeamMembership-RecoveryProof-20261020",
+      "targetArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-TeamMembership-RecoveryProof-20261020",
+      "restoreRequest": {
+        "TargetTableName": "ProjectRespawn-TeamHub-Production-TeamMembership-RecoveryProof-20261020",
+        "BackupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527948497-eda960ad"
+      },
+      "cleanupRequest": {
+        "TableName": "ProjectRespawn-TeamHub-Production-TeamMembership-RecoveryProof-20261020"
+      },
+      "expectedR1Count": 8,
+      "expectedR1RawDigest": "c1b709749b79811c540a3e0b5b485206bd0cdeb85d1338c7e837419907f3b15f",
+      "expectedSchema": {
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "teamId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "userId",
+            "AttributeType": "S"
+          }
+        ],
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "teamMembershipsByTeamId",
+            "KeySchema": [
+              {
+                "AttributeName": "teamId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          },
+          {
+            "IndexName": "teamMembershipsByUserId",
+            "KeySchema": [
+              {
+                "AttributeName": "userId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          }
+        ],
+        "LocalSecondaryIndexes": [],
+        "BillingMode": "PAY_PER_REQUEST",
+        "SSEDescription": null,
+        "TableClassSummary": null,
+        "StreamSpecification": {
+          "StreamEnabled": true,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        }
+      },
+      "sessionName": "RespawnR2-TeamMembership",
+      "sessionArn": "arn:aws:sts::058264289478:federated-user/RespawnR2-TeamMembership",
+      "sessionPolicy": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Action": [
+              "dynamodb:RestoreTableFromBackup",
+              "dynamodb:DescribeBackup"
+            ],
+            "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527948497-eda960ad"
+          },
+          {
+            "Effect": "Allow",
+            "Action": [
+              "dynamodb:RestoreTableFromBackup",
+              "dynamodb:DescribeTable",
+              "dynamodb:Scan",
+              "dynamodb:DeleteTable",
+              "dynamodb:GetItem",
+              "dynamodb:Query",
+              "dynamodb:PutItem",
+              "dynamodb:UpdateItem",
+              "dynamodb:DeleteItem",
+              "dynamodb:BatchWriteItem"
+            ],
+            "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-TeamMembership-RecoveryProof-20261020"
+          },
+          {
+            "Effect": "Deny",
+            "NotAction": "sts:GetCallerIdentity",
+            "NotResource": [
+              "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527948497-eda960ad",
+              "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-TeamMembership-RecoveryProof-20261020"
+            ]
+          },
+          {
+            "Effect": "Deny",
+            "NotAction": [
+              "dynamodb:RestoreTableFromBackup",
+              "dynamodb:DescribeTable",
+              "dynamodb:Scan",
+              "dynamodb:DeleteTable",
+              "dynamodb:GetItem",
+              "dynamodb:Query",
+              "dynamodb:PutItem",
+              "dynamodb:UpdateItem",
+              "dynamodb:DeleteItem",
+              "dynamodb:BatchWriteItem",
+              "dynamodb:DescribeBackup",
+              "sts:GetCallerIdentity"
+            ],
+            "Resource": "*"
+          },
+          {
+            "Effect": "Deny",
+            "Action": "*",
+            "Resource": "*",
+            "Condition": {
+              "ArnNotEquals": {
+                "aws:PrincipalArn": "arn:aws:sts::058264289478:federated-user/RespawnR2-TeamMembership"
+              }
+            }
+          }
+        ]
+      },
+      "sessionPolicyCharacters": 1453
+    },
+    {
+      "model": "TeamRosterSlot",
+      "sourceArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "sourceTableId": "ce302ae3-9446-4594-81e1-12bff167f12f",
+      "sourceName": "TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527949892-3c2d8f3a",
+      "backupName": "ProjectRespawn-TeamHub-Production-TeamRosterSlot-Recovery-20261020",
+      "backupCreatedAt": "2026-10-20T21:25:49.892000+01:00",
+      "targetName": "ProjectRespawn-TeamHub-Production-TeamRosterSlot-RecoveryProof-20261020",
+      "targetArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-TeamRosterSlot-RecoveryProof-20261020",
+      "restoreRequest": {
+        "TargetTableName": "ProjectRespawn-TeamHub-Production-TeamRosterSlot-RecoveryProof-20261020",
+        "BackupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527949892-3c2d8f3a"
+      },
+      "cleanupRequest": {
+        "TableName": "ProjectRespawn-TeamHub-Production-TeamRosterSlot-RecoveryProof-20261020"
+      },
+      "expectedR1Count": 11,
+      "expectedR1RawDigest": "d79485c9663ec496cce3e529727c2bd033fa1bc3ad372aa7101294029bbe22df",
+      "expectedSchema": {
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "membershipId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "teamId",
+            "AttributeType": "S"
+          }
+        ],
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "teamRosterSlotsByMembershipId",
+            "KeySchema": [
+              {
+                "AttributeName": "membershipId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          },
+          {
+            "IndexName": "teamRosterSlotsByTeamId",
+            "KeySchema": [
+              {
+                "AttributeName": "teamId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          }
+        ],
+        "LocalSecondaryIndexes": [],
+        "BillingMode": "PAY_PER_REQUEST",
+        "SSEDescription": null,
+        "TableClassSummary": null,
+        "StreamSpecification": {
+          "StreamEnabled": true,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        }
+      },
+      "sessionName": "RespawnR2-TeamRosterSlot",
+      "sessionArn": "arn:aws:sts::058264289478:federated-user/RespawnR2-TeamRosterSlot",
+      "sessionPolicy": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Action": [
+              "dynamodb:RestoreTableFromBackup",
+              "dynamodb:DescribeBackup"
+            ],
+            "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527949892-3c2d8f3a"
+          },
+          {
+            "Effect": "Allow",
+            "Action": [
+              "dynamodb:RestoreTableFromBackup",
+              "dynamodb:DescribeTable",
+              "dynamodb:Scan",
+              "dynamodb:DeleteTable",
+              "dynamodb:GetItem",
+              "dynamodb:Query",
+              "dynamodb:PutItem",
+              "dynamodb:UpdateItem",
+              "dynamodb:DeleteItem",
+              "dynamodb:BatchWriteItem"
+            ],
+            "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-TeamRosterSlot-RecoveryProof-20261020"
+          },
+          {
+            "Effect": "Deny",
+            "NotAction": "sts:GetCallerIdentity",
+            "NotResource": [
+              "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527949892-3c2d8f3a",
+              "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-TeamRosterSlot-RecoveryProof-20261020"
+            ]
+          },
+          {
+            "Effect": "Deny",
+            "NotAction": [
+              "dynamodb:RestoreTableFromBackup",
+              "dynamodb:DescribeTable",
+              "dynamodb:Scan",
+              "dynamodb:DeleteTable",
+              "dynamodb:GetItem",
+              "dynamodb:Query",
+              "dynamodb:PutItem",
+              "dynamodb:UpdateItem",
+              "dynamodb:DeleteItem",
+              "dynamodb:BatchWriteItem",
+              "dynamodb:DescribeBackup",
+              "sts:GetCallerIdentity"
+            ],
+            "Resource": "*"
+          },
+          {
+            "Effect": "Deny",
+            "Action": "*",
+            "Resource": "*",
+            "Condition": {
+              "ArnNotEquals": {
+                "aws:PrincipalArn": "arn:aws:sts::058264289478:federated-user/RespawnR2-TeamRosterSlot"
+              }
+            }
+          }
+        ]
+      },
+      "sessionPolicyCharacters": 1453
+    },
+    {
+      "model": "PlayerChampionPoolEntry",
+      "sourceArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "sourceTableId": "a208a911-c53c-45f8-a499-d69117d611d5",
+      "sourceName": "PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527951273-7b424a61",
+      "backupName": "ProjectRespawn-TeamHub-Production-PlayerChampionPoolEntry-Recovery-20261020",
+      "backupCreatedAt": "2026-10-20T21:25:51.273000+01:00",
+      "targetName": "ProjectRespawn-TeamHub-Production-PlayerChampionPoolEntry-RecoveryProof-20261020",
+      "targetArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-PlayerChampionPoolEntry-RecoveryProof-20261020",
+      "restoreRequest": {
+        "TargetTableName": "ProjectRespawn-TeamHub-Production-PlayerChampionPoolEntry-RecoveryProof-20261020",
+        "BackupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527951273-7b424a61"
+      },
+      "cleanupRequest": {
+        "TableName": "ProjectRespawn-TeamHub-Production-PlayerChampionPoolEntry-RecoveryProof-20261020"
+      },
+      "expectedR1Count": 101,
+      "expectedR1RawDigest": "8f701e4999e3e5a11df0948b46ade2c76d3b8a8e745b49afe94ca0ddd86d2e53",
+      "expectedSchema": {
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "membershipId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "teamId",
+            "AttributeType": "S"
+          }
+        ],
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "playerChampionPoolEntriesByTeamId",
+            "KeySchema": [
+              {
+                "AttributeName": "teamId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          },
+          {
+            "IndexName": "playerChampionPoolEntriesByMembershipId",
+            "KeySchema": [
+              {
+                "AttributeName": "membershipId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          }
+        ],
+        "LocalSecondaryIndexes": [],
+        "BillingMode": "PAY_PER_REQUEST",
+        "SSEDescription": null,
+        "TableClassSummary": null,
+        "StreamSpecification": {
+          "StreamEnabled": true,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        }
+      },
+      "sessionName": "RespawnR2-PlayerChampionPoolEntry",
+      "sessionArn": "arn:aws:sts::058264289478:federated-user/RespawnR2-PlayerChampionPoolEntry",
+      "sessionPolicy": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Action": [
+              "dynamodb:RestoreTableFromBackup",
+              "dynamodb:DescribeBackup"
+            ],
+            "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527951273-7b424a61"
+          },
+          {
+            "Effect": "Allow",
+            "Action": [
+              "dynamodb:RestoreTableFromBackup",
+              "dynamodb:DescribeTable",
+              "dynamodb:Scan",
+              "dynamodb:DeleteTable",
+              "dynamodb:GetItem",
+              "dynamodb:Query",
+              "dynamodb:PutItem",
+              "dynamodb:UpdateItem",
+              "dynamodb:DeleteItem",
+              "dynamodb:BatchWriteItem"
+            ],
+            "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-PlayerChampionPoolEntry-RecoveryProof-20261020"
+          },
+          {
+            "Effect": "Deny",
+            "NotAction": "sts:GetCallerIdentity",
+            "NotResource": [
+              "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527951273-7b424a61",
+              "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-PlayerChampionPoolEntry-RecoveryProof-20261020"
+            ]
+          },
+          {
+            "Effect": "Deny",
+            "NotAction": [
+              "dynamodb:RestoreTableFromBackup",
+              "dynamodb:DescribeTable",
+              "dynamodb:Scan",
+              "dynamodb:DeleteTable",
+              "dynamodb:GetItem",
+              "dynamodb:Query",
+              "dynamodb:PutItem",
+              "dynamodb:UpdateItem",
+              "dynamodb:DeleteItem",
+              "dynamodb:BatchWriteItem",
+              "dynamodb:DescribeBackup",
+              "sts:GetCallerIdentity"
+            ],
+            "Resource": "*"
+          },
+          {
+            "Effect": "Deny",
+            "Action": "*",
+            "Resource": "*",
+            "Condition": {
+              "ArnNotEquals": {
+                "aws:PrincipalArn": "arn:aws:sts::058264289478:federated-user/RespawnR2-PlayerChampionPoolEntry"
+              }
+            }
+          }
+        ]
+      },
+      "sessionPolicyCharacters": 1498
+    }
+  ],
+  "custody": {
+    "method": "Windows CurrentUser DPAPI",
+    "location": ".tmp/team-hub-production-r2-custody/",
+    "rawRecordsInGit": false,
+    "requiresPrivateAcl": true,
+    "requiresEncryptDecryptRoundTripBeforeCleanup": true,
+    "limitations": "Owner/machine-specific verification evidence, not a portable disaster-recovery archive; native AWS backups retained"
+  },
+  "acceptance": {
+    "capturePoint": "Restored backup contents; compare against R1 per-table digests spanning capture and report current live differences separately",
+    "crossTableSnapshotClaim": false,
+    "restoreRelationshipsMustPass": true,
+    "cleanupRequiresVerifiedOwnership": true
+  },
+  "forbidden": [
+    "Source table or item writes",
+    "Cognito writes",
+    "Core/Team deployment",
+    "Authority changes",
+    "Master publication",
+    "Backup deletion",
+    "Permanent IAM changes",
+    "Automatic restore retry or session renewal"
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "core-emf-binding-execution-plan.v1",
+  "authorized": false,
+  "awsWrites": 0,
+  "account": "058264289478",
+  "region": "eu-north-1",
+  "operatorArn": "arn:aws:iam::058264289478:user/RavenTest",
+  "publication": [
+    {
+      "path": "docs/architecture/production-core-emf-evidence-2026-10-21/dc2a7137a725f6a82582abc8a800f5d30846058ecdbe12965f81a19c887154c4.core.runtime.zip",
+      "sha256": "dc2a7137a725f6a82582abc8a800f5d30846058ecdbe12965f81a19c887154c4",
+      "request": {
+        "Bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+        "Key": "production/dc2a7137a725f6a82582abc8a800f5d30846058ecdbe12965f81a19c887154c4.zip",
+        "ServerSideEncryption": "AES256",
+        "ChecksumSHA256": "3CpxN6cl9qglgqvIqAD10whGBY7NvhKWX4GhnIhxVMQ=",
+        "IfNoneMatch": "*"
+      }
+    },
+    {
+      "path": "docs/architecture/production-core-emf-evidence-2026-10-21/5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086.coreProduct.template.json",
+      "sha256": "5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086",
+      "request": {
+        "Bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+        "Key": "production/5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086.json",
+        "ServerSideEncryption": "AES256",
+        "ChecksumSHA256": "W4eDvhdlQJYCuXit5Z5kHtEcdRb2NDbENjGEcLvZ0IY=",
+        "IfNoneMatch": "*"
+      }
+    },
+    {
+      "path": "docs/architecture/production-core-emf-binding-evidence-2026-10-21/668049957edf3fb6e3dfda209e4600a824aa0b8182d41afb3051fb76f32bd613.coreSecurity.template.json",
+      "sha256": "668049957edf3fb6e3dfda209e4600a824aa0b8182d41afb3051fb76f32bd613",
+      "request": {
+        "Bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+        "Key": "production/668049957edf3fb6e3dfda209e4600a824aa0b8182d41afb3051fb76f32bd613.json",
+        "ServerSideEncryption": "AES256",
+        "ChecksumSHA256": "ZoBJlX7fP7bj39ognkYAqCSqC4GC1Br7MFH7dvMr1hM=",
+        "IfNoneMatch": "*"
+      }
+    }
+  ],
+  "stages": [
+    {
+      "kind": "security",
+      "identity": "RavenTest",
+      "expected": {
+        "modifications": [
+          "Execution",
+          "ExecutionBoundary",
+          "Caller",
+          "CallerBoundary"
+        ],
+        "additions": 0,
+        "deletions": 0,
+        "replacements": 0
+      },
+      "request": {
+        "StackName": "ProjectRespawn-Core-Production-Security",
+        "ChangeSetName": "core-emf-binding-security-20261021",
+        "ChangeSetType": "UPDATE",
+        "TemplateURL": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/668049957edf3fb6e3dfda209e4600a824aa0b8182d41afb3051fb76f32bd613.json",
+        "Capabilities": [
+          "CAPABILITY_NAMED_IAM"
+        ]
+      }
+    },
+    {
+      "kind": "product",
+      "identity": "ProjectRespawn-Core-Production-Deploy",
+      "expected": {
+        "modifications": [
+          "Contracts.Code"
+        ],
+        "additions": 0,
+        "deletions": 0,
+        "replacements": 0
+      },
+      "request": {
+        "StackName": "ProjectRespawn-Core-Production",
+        "ChangeSetName": "core-emf-product-20261021",
+        "ChangeSetType": "UPDATE",
+        "TemplateURL": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086.json",
+        "RoleARN": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+        "Capabilities": [
+          "CAPABILITY_NAMED_IAM"
+        ]
+      }
+    }
+  ],
+  "executeOptions": {
+    "DisableRollback": false,
+    "RetainExceptOnCreate": false
+  },
+  "stopOn": {
+    "hashMismatch": true,
+    "unexpectedChange": true,
+    "conditionalReplacement": true,
+    "unexpectedIAM": true,
+    "failedLiveSignals": true,
+    "authMismatch": true,
+    "protectedDomainDrift": true
+  },
+  "automaticWriteRetry": false,
+  "liveAcceptance": [
+    "installed policies/trust/boundary equivalence",
+    "new runtime code hash and unchanged full configuration",
+    "one controlled initialization and root EMF event",
+    "actual CloudWatch counters and alarm signal evaluation",
+    "production Admin and ordinary-user contracts plus signed Ntgre rejection",
+    "protected source/backups/Cognito/Master and domain preservation"
+  ],
+  "rollback": {
+    "runtime": {
+      "path": "docs/architecture/team-hub-production-evidence-2026-10-20/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.core.runtime.zip",
+      "sha256": "fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503",
+      "key": "production/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.zip"
+    },
+    "product": {
+      "path": "docs/architecture/production-core-runtime-kms-evidence-2026-10-21/0302056f0152107ecabd9d459ab50d436245587eef3cec1aa4d971c77a6ca1e4.coreProduct.template.json",
+      "sha256": "0302056f0152107ecabd9d459ab50d436245587eef3cec1aa4d971c77a6ca1e4",
+      "key": "production/0302056f0152107ecabd9d459ab50d436245587eef3cec1aa4d971c77a6ca1e4.json",
+      "url": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/0302056f0152107ecabd9d459ab50d436245587eef3cec1aa4d971c77a6ca1e4.json"
+    },
+    "security": {
+      "path": "docs/architecture/production-core-runtime-kms-evidence-2026-10-21/8f83dda21a47895b2f48cea19839daa84bdbcba7f28ff82e30906aec595b0c44.coreSecurity.template.json",
+      "sha256": "8f83dda21a47895b2f48cea19839daa84bdbcba7f28ff82e30906aec595b0c44",
+      "key": "production/8f83dda21a47895b2f48cea19839daa84bdbcba7f28ff82e30906aec595b0c44.json",
+      "url": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/8f83dda21a47895b2f48cea19839daa84bdbcba7f28ff82e30906aec595b0c44.json"
+    },
+    "monitoringKnownUnhealthy": true
+  },
+  "teamAuthorized": false,
+  "authorityAuthorized": false,
+  "masterAuthorized": false
+}

@@ -1,0 +1,66 @@
+{
+  "at": "2026-10-21T14:53:11.770Z",
+  "passed": false,
+  "expectedDeniedAtLeast": 1,
+  "observedDenied": 0,
+  "metrics": [
+    {
+      "MetricName": "Requests",
+      "Label": "Requests",
+      "Datapoints": []
+    },
+    {
+      "MetricName": "Denied",
+      "Label": "Denied",
+      "Datapoints": []
+    },
+    {
+      "MetricName": "DependencyFailures",
+      "Label": "DependencyFailures",
+      "Datapoints": []
+    },
+    {
+      "MetricName": "RateLimited",
+      "Label": "RateLimited",
+      "Datapoints": []
+    }
+  ],
+  "correlatedLogs": [
+    {
+      "eventId": "39976185934131982593259749338213125158064675754215211008",
+      "timestamp": 1792594174690,
+      "type": "platform.initStart"
+    },
+    {
+      "eventId": "39976185939796371873686527627139967204576172758703472640",
+      "timestamp": 1792594174944,
+      "type": "platform.start",
+      "requestId": "d427e306-cbeb-4425-a8d6-9b3be19b5bbe"
+    },
+    {
+      "eventId": "39976185948917376659885552492028075978089352614649462785",
+      "timestamp": 1792594175353,
+      "requestId": "d427e306-cbeb-4425-a8d6-9b3be19b5bbe",
+      "emfNestedInMessage": true,
+      "topLevelEmf": false,
+      "namespace": "ProjectRespawn/Core",
+      "Environment": "Production",
+      "Requests": 1,
+      "Denied": 1,
+      "DependencyFailures": 0,
+      "RateLimited": 0,
+      "outcome": "UNAUTHENTICATED"
+    },
+    {
+      "eventId": "39976185950634534040172410473926326285083276450609954818",
+      "timestamp": 1792594175430,
+      "type": "platform.report",
+      "requestId": "d427e306-cbeb-4425-a8d6-9b3be19b5bbe",
+      "status": "success"
+    }
+  ],
+  "rawMessagesPersisted": false,
+  "additionalInvocations": 0,
+  "source": "Actual deployed function JSON logs and exact Production metric dimensions",
+  "awsRuntimeOrLoggingChanges": 0
+}

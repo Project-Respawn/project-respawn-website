@@ -1,0 +1,272 @@
+{
+  "schemaVersion": "team-hub-production-recovery.v1",
+  "environment": {
+    "contractVersion": "environment.v1",
+    "environment": "Production",
+    "account": "058264289478",
+    "region": "eu-north-1",
+    "poolId": "eu-north-1_Uufjxul58",
+    "clientId": "2kc81ph5mgvo9eu2qjvmif5u8g",
+    "issuer": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_Uufjxul58"
+  },
+  "writeAuthorization": false,
+  "executor": "Existing security-owned RavenTest operator; no Team runtime/deployment-role changes",
+  "sourceTables": [
+    {
+      "model": "Team",
+      "name": "Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "previousCount": 1,
+      "backupName": "ProjectRespawn-TeamHub-Production-Team-Recovery-20261020",
+      "restoreName": "ProjectRespawn-TeamHub-Production-Team-RecoveryProof-20261020",
+      "tableId": "78f6917b-9d12-4af4-aa14-fdae57eb7f2b"
+    },
+    {
+      "model": "TeamMembership",
+      "name": "TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "previousCount": 8,
+      "backupName": "ProjectRespawn-TeamHub-Production-TeamMembership-Recovery-20261020",
+      "restoreName": "ProjectRespawn-TeamHub-Production-TeamMembership-RecoveryProof-20261020",
+      "tableId": "84e7d7af-3ff0-4881-a76a-90bc00b3d3ab"
+    },
+    {
+      "model": "TeamRosterSlot",
+      "name": "TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "previousCount": 11,
+      "backupName": "ProjectRespawn-TeamHub-Production-TeamRosterSlot-Recovery-20261020",
+      "restoreName": "ProjectRespawn-TeamHub-Production-TeamRosterSlot-RecoveryProof-20261020",
+      "tableId": "ce302ae3-9446-4594-81e1-12bff167f12f"
+    },
+    {
+      "model": "PlayerChampionPoolEntry",
+      "name": "PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "previousCount": 101,
+      "backupName": "ProjectRespawn-TeamHub-Production-PlayerChampionPoolEntry-Recovery-20261020",
+      "restoreName": "ProjectRespawn-TeamHub-Production-PlayerChampionPoolEntry-RecoveryProof-20261020",
+      "tableId": "a208a911-c53c-45f8-a499-d69117d611d5"
+    }
+  ],
+  "protection": [
+    {
+      "api": "UpdateContinuousBackups",
+      "request": {
+        "TableName": "Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "PointInTimeRecoverySpecification": {
+          "PointInTimeRecoveryEnabled": true
+        }
+      }
+    },
+    {
+      "api": "UpdateTable",
+      "request": {
+        "TableName": "Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "DeletionProtectionEnabled": true
+      }
+    },
+    {
+      "api": "UpdateContinuousBackups",
+      "request": {
+        "TableName": "TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "PointInTimeRecoverySpecification": {
+          "PointInTimeRecoveryEnabled": true
+        }
+      }
+    },
+    {
+      "api": "UpdateTable",
+      "request": {
+        "TableName": "TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "DeletionProtectionEnabled": true
+      }
+    },
+    {
+      "api": "UpdateContinuousBackups",
+      "request": {
+        "TableName": "TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "PointInTimeRecoverySpecification": {
+          "PointInTimeRecoveryEnabled": true
+        }
+      }
+    },
+    {
+      "api": "UpdateTable",
+      "request": {
+        "TableName": "TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "DeletionProtectionEnabled": true
+      }
+    },
+    {
+      "api": "UpdateContinuousBackups",
+      "request": {
+        "TableName": "PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "PointInTimeRecoverySpecification": {
+          "PointInTimeRecoveryEnabled": true
+        }
+      }
+    },
+    {
+      "api": "UpdateTable",
+      "request": {
+        "TableName": "PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "DeletionProtectionEnabled": true
+      }
+    }
+  ],
+  "backups": [
+    {
+      "api": "CreateBackup",
+      "request": {
+        "TableName": "Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "BackupName": "ProjectRespawn-TeamHub-Production-Team-Recovery-20261020"
+      }
+    },
+    {
+      "api": "CreateBackup",
+      "request": {
+        "TableName": "TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "BackupName": "ProjectRespawn-TeamHub-Production-TeamMembership-Recovery-20261020"
+      }
+    },
+    {
+      "api": "CreateBackup",
+      "request": {
+        "TableName": "TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "BackupName": "ProjectRespawn-TeamHub-Production-TeamRosterSlot-Recovery-20261020"
+      }
+    },
+    {
+      "api": "CreateBackup",
+      "request": {
+        "TableName": "PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "BackupName": "ProjectRespawn-TeamHub-Production-PlayerChampionPoolEntry-Recovery-20261020"
+      }
+    }
+  ],
+  "restoreProof": [
+    {
+      "target": "ProjectRespawn-TeamHub-Production-Team-RecoveryProof-20261020",
+      "backupBinding": {
+        "sourceArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "sourceTableId": "78f6917b-9d12-4af4-aa14-fdae57eb7f2b",
+        "backupName": "ProjectRespawn-TeamHub-Production-Team-Recovery-20261020",
+        "backupStatus": "AVAILABLE",
+        "backupArn": "RESOLVE_AND_PIN_FROM_VERIFIED_CREATE_RECEIPT"
+      },
+      "request": {
+        "TargetTableName": "ProjectRespawn-TeamHub-Production-Team-RecoveryProof-20261020",
+        "BackupArn": "VERIFIED_EXACT_BACKUP_ARN"
+      },
+      "cleanup": {
+        "api": "DeleteTable",
+        "TableName": "ProjectRespawn-TeamHub-Production-Team-RecoveryProof-20261020",
+        "requires": [
+          "Exact owned restore receipt",
+          "Target not source",
+          "Evidence retained",
+          "Restore verification complete"
+        ]
+      }
+    },
+    {
+      "target": "ProjectRespawn-TeamHub-Production-TeamMembership-RecoveryProof-20261020",
+      "backupBinding": {
+        "sourceArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "sourceTableId": "84e7d7af-3ff0-4881-a76a-90bc00b3d3ab",
+        "backupName": "ProjectRespawn-TeamHub-Production-TeamMembership-Recovery-20261020",
+        "backupStatus": "AVAILABLE",
+        "backupArn": "RESOLVE_AND_PIN_FROM_VERIFIED_CREATE_RECEIPT"
+      },
+      "request": {
+        "TargetTableName": "ProjectRespawn-TeamHub-Production-TeamMembership-RecoveryProof-20261020",
+        "BackupArn": "VERIFIED_EXACT_BACKUP_ARN"
+      },
+      "cleanup": {
+        "api": "DeleteTable",
+        "TableName": "ProjectRespawn-TeamHub-Production-TeamMembership-RecoveryProof-20261020",
+        "requires": [
+          "Exact owned restore receipt",
+          "Target not source",
+          "Evidence retained",
+          "Restore verification complete"
+        ]
+      }
+    },
+    {
+      "target": "ProjectRespawn-TeamHub-Production-TeamRosterSlot-RecoveryProof-20261020",
+      "backupBinding": {
+        "sourceArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "sourceTableId": "ce302ae3-9446-4594-81e1-12bff167f12f",
+        "backupName": "ProjectRespawn-TeamHub-Production-TeamRosterSlot-Recovery-20261020",
+        "backupStatus": "AVAILABLE",
+        "backupArn": "RESOLVE_AND_PIN_FROM_VERIFIED_CREATE_RECEIPT"
+      },
+      "request": {
+        "TargetTableName": "ProjectRespawn-TeamHub-Production-TeamRosterSlot-RecoveryProof-20261020",
+        "BackupArn": "VERIFIED_EXACT_BACKUP_ARN"
+      },
+      "cleanup": {
+        "api": "DeleteTable",
+        "TableName": "ProjectRespawn-TeamHub-Production-TeamRosterSlot-RecoveryProof-20261020",
+        "requires": [
+          "Exact owned restore receipt",
+          "Target not source",
+          "Evidence retained",
+          "Restore verification complete"
+        ]
+      }
+    },
+    {
+      "target": "ProjectRespawn-TeamHub-Production-PlayerChampionPoolEntry-RecoveryProof-20261020",
+      "backupBinding": {
+        "sourceArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "sourceTableId": "a208a911-c53c-45f8-a499-d69117d611d5",
+        "backupName": "ProjectRespawn-TeamHub-Production-PlayerChampionPoolEntry-Recovery-20261020",
+        "backupStatus": "AVAILABLE",
+        "backupArn": "RESOLVE_AND_PIN_FROM_VERIFIED_CREATE_RECEIPT"
+      },
+      "request": {
+        "TargetTableName": "ProjectRespawn-TeamHub-Production-PlayerChampionPoolEntry-RecoveryProof-20261020",
+        "BackupArn": "VERIFIED_EXACT_BACKUP_ARN"
+      },
+      "cleanup": {
+        "api": "DeleteTable",
+        "TableName": "ProjectRespawn-TeamHub-Production-PlayerChampionPoolEntry-RecoveryProof-20261020",
+        "requires": [
+          "Exact owned restore receipt",
+          "Target not source",
+          "Evidence retained",
+          "Restore verification complete"
+        ]
+      }
+    }
+  ],
+  "liveGates": [
+    "Fresh identity/account/region, exact table ARNs and TableIds; no name collisions",
+    "Before/after source counts/digests; stop on unexpected writes or schema drift",
+    "Verify ENABLED PITR and deletion protection independently",
+    "Describe all four backups: AVAILABLE, exact source table ARN/ID/name, creation receipts",
+    "Restore only exact receipt-bound backups into four reserved isolated names",
+    "Verify schema/indexes, restored data canonical digests and relationships; retain encrypted owner-only recovery export",
+    "Compare backups at their own capture times; do not claim atomic four-table snapshot while writers active",
+    "Delete only receipt-owned isolated restore tables; retain backups and protections",
+    "Do not start production migration until live backup/restore proof accepted"
+  ],
+  "rollback": "Do not disable protections or delete source/backups on failure. Preserve partial completion; no automatic retry after ambiguous writes.",
+  "maximumWrites": {
+    "protectionUpdates": 8,
+    "backupCreates": 4,
+    "isolatedRestores": 4,
+    "isolatedRestoreDeletes": 4
+  },
+  "forbidden": [
+    "Source record mutation",
+    "Source deletion/replacement",
+    "Cognito changes",
+    "IAM grants",
+    "Authority transition",
+    "Legacy CloudFormation deployment"
+  ]
+}

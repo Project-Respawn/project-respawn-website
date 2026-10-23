@@ -1,0 +1,614 @@
+{
+  "at": "2026-10-20T15:03:29.310Z",
+  "api": "lte47f3mgbbvxehfgz476en3xy",
+  "datasources": [
+    {
+      "name": "PlayerChampionPoolEntryTable",
+      "type": "AMAZON_DYNAMODB",
+      "role": "arn:aws:iam::058264289478:role/PlayerChampionPoolEn5c689d-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "table": "PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE"
+    },
+    {
+      "name": "TeamMembershipTable",
+      "type": "AMAZON_DYNAMODB",
+      "role": "arn:aws:iam::058264289478:role/TeamMembershipIAMRolb0882a-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "table": "TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE"
+    },
+    {
+      "name": "TeamRosterSlotTable",
+      "type": "AMAZON_DYNAMODB",
+      "role": "arn:aws:iam::058264289478:role/TeamRosterSlotIAMRol236c3d-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "table": "TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE"
+    },
+    {
+      "name": "TeamTable",
+      "type": "AMAZON_DYNAMODB",
+      "role": "arn:aws:iam::058264289478:role/TeamIAMRoleb6b1b2-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "table": "Team-lte47f3mgbbvxehfgz476en3xy-NONE"
+    }
+  ],
+  "roles": [
+    {
+      "arn": "arn:aws:iam::058264289478:role/PlayerChampionPoolEn5c689d-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "appsync.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "inline": [
+        {
+          "name": "DynamoDBAccess",
+          "document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Action": [
+                  "dynamodb:BatchGetItem",
+                  "dynamodb:BatchWriteItem",
+                  "dynamodb:PutItem",
+                  "dynamodb:DeleteItem",
+                  "dynamodb:GetItem",
+                  "dynamodb:Scan",
+                  "dynamodb:Query",
+                  "dynamodb:UpdateItem",
+                  "dynamodb:ConditionCheckItem",
+                  "dynamodb:DescribeTable",
+                  "dynamodb:GetRecords",
+                  "dynamodb:GetShardIterator"
+                ],
+                "Resource": [
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE",
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE/*"
+                ],
+                "Effect": "Allow"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/TeamMembershipIAMRolb0882a-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "appsync.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "inline": [
+        {
+          "name": "DynamoDBAccess",
+          "document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Action": [
+                  "dynamodb:BatchGetItem",
+                  "dynamodb:BatchWriteItem",
+                  "dynamodb:PutItem",
+                  "dynamodb:DeleteItem",
+                  "dynamodb:GetItem",
+                  "dynamodb:Scan",
+                  "dynamodb:Query",
+                  "dynamodb:UpdateItem",
+                  "dynamodb:ConditionCheckItem",
+                  "dynamodb:DescribeTable",
+                  "dynamodb:GetRecords",
+                  "dynamodb:GetShardIterator"
+                ],
+                "Resource": [
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE",
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE/*"
+                ],
+                "Effect": "Allow"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/TeamRosterSlotIAMRol236c3d-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "appsync.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "inline": [
+        {
+          "name": "DynamoDBAccess",
+          "document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Action": [
+                  "dynamodb:BatchGetItem",
+                  "dynamodb:BatchWriteItem",
+                  "dynamodb:PutItem",
+                  "dynamodb:DeleteItem",
+                  "dynamodb:GetItem",
+                  "dynamodb:Scan",
+                  "dynamodb:Query",
+                  "dynamodb:UpdateItem",
+                  "dynamodb:ConditionCheckItem",
+                  "dynamodb:DescribeTable",
+                  "dynamodb:GetRecords",
+                  "dynamodb:GetShardIterator"
+                ],
+                "Resource": [
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE",
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE/*"
+                ],
+                "Effect": "Allow"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/TeamIAMRoleb6b1b2-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "appsync.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "inline": [
+        {
+          "name": "DynamoDBAccess",
+          "document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Action": [
+                  "dynamodb:BatchGetItem",
+                  "dynamodb:BatchWriteItem",
+                  "dynamodb:PutItem",
+                  "dynamodb:DeleteItem",
+                  "dynamodb:GetItem",
+                  "dynamodb:Scan",
+                  "dynamodb:Query",
+                  "dynamodb:UpdateItem",
+                  "dynamodb:ConditionCheckItem",
+                  "dynamodb:DescribeTable",
+                  "dynamodb:GetRecords",
+                  "dynamodb:GetShardIterator"
+                ],
+                "Resource": [
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE/*"
+                ],
+                "Effect": "Allow"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/amplify-d2cux232bpa951-ma-myFunctionrebuildlambdaSe-UtjhlrWSLPPb",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "lambda.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "inline": [
+        {
+          "name": "GraphqlAccessPolicy11EF5618C",
+          "document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Action": "appsync:GraphQL",
+                "Resource": [
+                  "arn:aws:appsync:eu-north-1:058264289478:apis/lte47f3mgbbvxehfgz476en3xy/types/Query/*",
+                  "arn:aws:appsync:eu-north-1:058264289478:apis/lte47f3mgbbvxehfgz476en3xy/types/Mutation/*"
+                ],
+                "Effect": "Allow"
+              },
+              {
+                "Action": "s3:GetObject",
+                "Resource": "arn:aws:s3:::amplify-d2cux232bpa951-ma-modelintrospectionschema-c5zl6ckzfv3q/modelIntrospectionSchema.json",
+                "Effect": "Allow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "myFunctionrebuildlambdaServiceRoleDefaultPolicy67EF0A34",
+          "document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Action": [
+                  "s3:GetObject*",
+                  "s3:GetBucket*",
+                  "s3:List*"
+                ],
+                "Resource": [
+                  "arn:aws:s3:::amplify-d2cux232bpa951-ma-projectrespawnstoragebuc-bw3gimudfvur",
+                  "arn:aws:s3:::amplify-d2cux232bpa951-ma-projectrespawnstoragebuc-bw3gimudfvur/investor-data-room/*"
+                ],
+                "Effect": "Allow"
+              },
+              {
+                "Action": [
+                  "kms:Decrypt",
+                  "kms:Encrypt",
+                  "kms:ReEncrypt*",
+                  "kms:GenerateDataKey*"
+                ],
+                "Resource": "arn:aws:kms:eu-north-1:058264289478:key/a3d638ca-2aad-4e6f-9b66-a4f0f9c30bb5",
+                "Effect": "Allow"
+              },
+              {
+                "Action": [
+                  "dynamodb:PutItem",
+                  "dynamodb:UpdateItem"
+                ],
+                "Resource": [
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE",
+                  "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE"
+                ],
+                "Effect": "Allow"
+              },
+              {
+                "Action": [
+                  "s3:GetObject",
+                  "s3:PutObject",
+                  "s3:DeleteObject"
+                ],
+                "Resource": "arn:aws:s3:::amplify-d2cux232bpa951-ma-projectrespawnstoragebuc-bw3gimudfvur/team-logos/*",
+                "Effect": "Allow"
+              },
+              {
+                "Action": "cognito-idp:ListUsers",
+                "Resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_Uufjxul58",
+                "Effect": "Allow"
+              },
+              {
+                "Action": "ssm:GetParameters",
+                "Resource": [
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/d2cux232bpa951/master-branch-53ef67772a/PRINTFUL_API_KEY",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/shared/d2cux232bpa951/PRINTFUL_API_KEY",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/d2cux232bpa951/master-branch-53ef67772a/REVOLUT_API_KEY",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/shared/d2cux232bpa951/REVOLUT_API_KEY",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/d2cux232bpa951/master-branch-53ef67772a/REVOLUT_API_SECRET",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/shared/d2cux232bpa951/REVOLUT_API_SECRET",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/d2cux232bpa951/master-branch-53ef67772a/REVOLUT_WEBHOOK_SIGNING_SECRET",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/shared/d2cux232bpa951/REVOLUT_WEBHOOK_SIGNING_SECRET",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/d2cux232bpa951/master-branch-53ef67772a/TWITCH_CLIENT_ID",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/shared/d2cux232bpa951/TWITCH_CLIENT_ID",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/d2cux232bpa951/master-branch-53ef67772a/TWITCH_CLIENT_SECRET",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/shared/d2cux232bpa951/TWITCH_CLIENT_SECRET",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/d2cux232bpa951/master-branch-53ef67772a/TWITCH_OAUTH_STATE_SECRET",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/shared/d2cux232bpa951/TWITCH_OAUTH_STATE_SECRET",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/d2cux232bpa951/master-branch-53ef67772a/ALPHA_REWARD_EVENT_AUTH_SECRET",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/shared/d2cux232bpa951/ALPHA_REWARD_EVENT_AUTH_SECRET",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/resource_reference/d2cux232bpa951/master-branch-53ef67772a/AMPLIFY_DATA_GRAPHQL_ENDPOINT",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/resource_reference/d2cux232bpa951/master-branch-53ef67772a/AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAME",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/resource_reference/d2cux232bpa951/master-branch-53ef67772a/AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_KEY",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/resource_reference/d2cux232bpa951/master-branch-53ef67772a/AMPLIFY_DATA_DEFAULT_NAME"
+                ],
+                "Effect": "Allow"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/amplify-d2cux232bpa951-ma-twitchruntimelambdaServic-UupW9KZnJpvW",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "lambda.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "inline": [
+        {
+          "name": "twitchruntimelambdaServiceRoleDefaultPolicy2D9A9F50",
+          "document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Action": "kms:Decrypt",
+                "Resource": "arn:aws:kms:eu-north-1:058264289478:key/a3d638ca-2aad-4e6f-9b66-a4f0f9c30bb5",
+                "Effect": "Allow"
+              },
+              {
+                "Action": "appsync:GraphQL",
+                "Resource": [
+                  "arn:aws:appsync:eu-north-1:058264289478:apis/lte47f3mgbbvxehfgz476en3xy/types/Query/fields/getTwitchIntegration",
+                  "arn:aws:appsync:eu-north-1:058264289478:apis/lte47f3mgbbvxehfgz476en3xy/types/Query/fields/listTwitchCommands",
+                  "arn:aws:appsync:eu-north-1:058264289478:apis/lte47f3mgbbvxehfgz476en3xy/types/Query/fields/getTwitchTokenVault",
+                  "arn:aws:appsync:eu-north-1:058264289478:apis/lte47f3mgbbvxehfgz476en3xy/types/Query/fields/getTwitchRuntimeHealth",
+                  "arn:aws:appsync:eu-north-1:058264289478:apis/lte47f3mgbbvxehfgz476en3xy/types/Query/fields/getCreatorWorkspaceRecord",
+                  "arn:aws:appsync:eu-north-1:058264289478:apis/lte47f3mgbbvxehfgz476en3xy/types/Query/fields/getBrand",
+                  "arn:aws:appsync:eu-north-1:058264289478:apis/lte47f3mgbbvxehfgz476en3xy/types/Query/fields/listRewardRedemptionEvents",
+                  "arn:aws:appsync:eu-north-1:058264289478:apis/lte47f3mgbbvxehfgz476en3xy/types/Query/fields/getRewardRedemptionEvent",
+                  "arn:aws:appsync:eu-north-1:058264289478:apis/lte47f3mgbbvxehfgz476en3xy/types/Query/fields/getRewardRedemptionEventClaim"
+                ],
+                "Effect": "Allow"
+              },
+              {
+                "Action": "appsync:GraphQL",
+                "Resource": [
+                  "arn:aws:appsync:eu-north-1:058264289478:apis/lte47f3mgbbvxehfgz476en3xy/types/Mutation/fields/updateTwitchIntegration",
+                  "arn:aws:appsync:eu-north-1:058264289478:apis/lte47f3mgbbvxehfgz476en3xy/types/Mutation/fields/updateTwitchTokenVault",
+                  "arn:aws:appsync:eu-north-1:058264289478:apis/lte47f3mgbbvxehfgz476en3xy/types/Mutation/fields/createTwitchTokenVault",
+                  "arn:aws:appsync:eu-north-1:058264289478:apis/lte47f3mgbbvxehfgz476en3xy/types/Mutation/fields/updateTwitchRuntimeHealth",
+                  "arn:aws:appsync:eu-north-1:058264289478:apis/lte47f3mgbbvxehfgz476en3xy/types/Mutation/fields/createTwitchRuntimeHealth",
+                  "arn:aws:appsync:eu-north-1:058264289478:apis/lte47f3mgbbvxehfgz476en3xy/types/Mutation/fields/createRewardRedemptionEventClaim",
+                  "arn:aws:appsync:eu-north-1:058264289478:apis/lte47f3mgbbvxehfgz476en3xy/types/Mutation/fields/updateRewardRedemptionEvent"
+                ],
+                "Effect": "Allow"
+              },
+              {
+                "Action": "s3:GetObject",
+                "Resource": "arn:aws:s3:::amplify-d2cux232bpa951-ma-modelintrospectionschema-c5zl6ckzfv3q/modelIntrospectionSchema.json",
+                "Effect": "Allow"
+              },
+              {
+                "Action": "dynamodb:GetItem",
+                "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/amplify-d2cux232bpa951-master-branch-53ef67772a-overlaysourcestackF7F134D8-1013ERNKC34AE-OverlaySourceOverlayPublicationB74679B6-JNR3L96HZA9O",
+                "Effect": "Allow"
+              },
+              {
+                "Action": "dynamodb:Query",
+                "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/amplify-d2cux232bpa951-master-branch-53ef67772a-overlaysourcestackF7F134D8-1013ERNKC34AE-OverlaySourceOverlaySourceConnectionBA1951A5-1HJLMLCZGII3D/index/publicationId-index",
+                "Effect": "Allow"
+              },
+              {
+                "Action": "dynamodb:DeleteItem",
+                "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/amplify-d2cux232bpa951-master-branch-53ef67772a-overlaysourcestackF7F134D8-1013ERNKC34AE-OverlaySourceOverlaySourceConnectionBA1951A5-1HJLMLCZGII3D",
+                "Effect": "Allow"
+              },
+              {
+                "Action": [
+                  "dynamodb:PutItem",
+                  "dynamodb:UpdateItem"
+                ],
+                "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/amplify-d2cux232bpa951-master-branch-53ef67772a-overlaysourcestackF7F134D8-1013ERNKC34AE-OverlaySourceTwitchEventDeliveryDedupe8C2A76A7-15I0QDGFNTGWZ",
+                "Effect": "Allow"
+              },
+              {
+                "Action": "execute-api:ManageConnections",
+                "Resource": "arn:aws:execute-api:eu-north-1:058264289478:ztevn4upnk/live/POST/@connections/*",
+                "Effect": "Allow"
+              },
+              {
+                "Action": "ssm:GetParameters",
+                "Resource": [
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/d2cux232bpa951/master-branch-53ef67772a/TWITCH_CLIENT_ID",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/shared/d2cux232bpa951/TWITCH_CLIENT_ID",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/d2cux232bpa951/master-branch-53ef67772a/TWITCH_CLIENT_SECRET",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/shared/d2cux232bpa951/TWITCH_CLIENT_SECRET",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/d2cux232bpa951/master-branch-53ef67772a/TWITCH_RUNTIME_AUTH_SECRET",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/shared/d2cux232bpa951/TWITCH_RUNTIME_AUTH_SECRET"
+                ],
+                "Effect": "Allow"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/amplify-d2cux232bpa951-ma-adminusermanagementlambda-JXu01IiMGiq9",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "lambda.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "inline": [
+        {
+          "name": "adminusermanagementlambdaServiceRoleDefaultPolicy0C42CA6E",
+          "document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Action": [
+                  "cognito-idp:ListUsers",
+                  "cognito-idp:AdminListGroupsForUser",
+                  "cognito-idp:AdminAddUserToGroup",
+                  "cognito-idp:AdminRemoveUserFromGroup"
+                ],
+                "Resource": "*",
+                "Effect": "Allow"
+              },
+              {
+                "Action": "ssm:GetParameters",
+                "Resource": [
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/resource_reference/d2cux232bpa951/master-branch-53ef67772a/AMPLIFY_AUTH_USERPOOL_ID",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/resource_reference/d2cux232bpa951/master-branch-53ef67772a/AMPLIFY_DATA_GRAPHQL_ENDPOINT",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/resource_reference/d2cux232bpa951/master-branch-53ef67772a/AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_BUCKET_NAME",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/resource_reference/d2cux232bpa951/master-branch-53ef67772a/AMPLIFY_DATA_MODEL_INTROSPECTION_SCHEMA_KEY",
+                  "arn:aws:ssm:eu-north-1:058264289478:parameter/amplify/resource_reference/d2cux232bpa951/master-branch-53ef67772a/AMPLIFY_DATA_DEFAULT_NAME"
+                ],
+                "Effect": "Allow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "GraphqlAccessPolicy2990D371F",
+          "document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Action": "appsync:GraphQL",
+                "Resource": [
+                  "arn:aws:appsync:eu-north-1:058264289478:apis/lte47f3mgbbvxehfgz476en3xy/types/Query/*",
+                  "arn:aws:appsync:eu-north-1:058264289478:apis/lte47f3mgbbvxehfgz476en3xy/types/Mutation/*"
+                ],
+                "Effect": "Allow"
+              },
+              {
+                "Action": "s3:GetObject",
+                "Resource": "arn:aws:s3:::amplify-d2cux232bpa951-ma-modelintrospectionschema-c5zl6ckzfv3q/modelIntrospectionSchema.json",
+                "Effect": "Allow"
+              }
+            ]
+          }
+        },
+        {
+          "name": "userpoolAccess268F187DB",
+          "document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Action": [
+                  "cognito-idp:AdminConfirmSignUp",
+                  "cognito-idp:AdminCreateUser",
+                  "cognito-idp:AdminDeleteUser",
+                  "cognito-idp:AdminDeleteUserAttributes",
+                  "cognito-idp:AdminDisableUser",
+                  "cognito-idp:AdminEnableUser",
+                  "cognito-idp:AdminGetUser",
+                  "cognito-idp:AdminListGroupsForUser",
+                  "cognito-idp:AdminRespondToAuthChallenge",
+                  "cognito-idp:AdminSetUserMFAPreference",
+                  "cognito-idp:AdminSetUserSettings",
+                  "cognito-idp:AdminUpdateUserAttributes",
+                  "cognito-idp:AdminUserGlobalSignOut",
+                  "cognito-idp:AdminAddUserToGroup"
+                ],
+                "Resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_Uufjxul58",
+                "Effect": "Allow"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "arn": "arn:aws:iam::058264289478:role/amplify-d2cux232bpa951-ma-CustomS3AutoDeleteObjects-lsVIzL3JsCPu",
+      "trust": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "lambda.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      },
+      "boundary": null,
+      "inline": []
+    }
+  ],
+  "lambdaCandidates": [
+    {
+      "name": "amplify-d2cux232bpa951-ma-myFunctionrebuildlambdaF-WCQDb6sQRQ0d",
+      "arn": "arn:aws:lambda:eu-north-1:058264289478:function:amplify-d2cux232bpa951-ma-myFunctionrebuildlambdaF-WCQDb6sQRQ0d",
+      "role": "arn:aws:iam::058264289478:role/amplify-d2cux232bpa951-ma-myFunctionrebuildlambdaSe-UtjhlrWSLPPb",
+      "timeout": 30,
+      "codeSha256": "+NJ+/XkgQj/YuJtePQnNQAZ9JRLl34gDTCeyHh0JdnU="
+    },
+    {
+      "name": "amplify-d2cux232bpa951-ma-twitchruntimelambdaE27C0-40dXlGeLRvex",
+      "arn": "arn:aws:lambda:eu-north-1:058264289478:function:amplify-d2cux232bpa951-ma-twitchruntimelambdaE27C0-40dXlGeLRvex",
+      "role": "arn:aws:iam::058264289478:role/amplify-d2cux232bpa951-ma-twitchruntimelambdaServic-UupW9KZnJpvW",
+      "timeout": 30,
+      "codeSha256": "cwEOQUZlB74hCRmDMCFh+GC7VjihcXOfRtPSc/KI+vs="
+    },
+    {
+      "name": "amplify-d2cux232bpa951-ma-adminusermanagementlambd-kQKhnXZqELXB",
+      "arn": "arn:aws:lambda:eu-north-1:058264289478:function:amplify-d2cux232bpa951-ma-adminusermanagementlambd-kQKhnXZqELXB",
+      "role": "arn:aws:iam::058264289478:role/amplify-d2cux232bpa951-ma-adminusermanagementlambda-JXu01IiMGiq9",
+      "timeout": 3,
+      "codeSha256": "1siea1SHKVpd0iJb8k72yGSy1cy+KObr1eeZWB/xZj4="
+    },
+    {
+      "name": "amplify-d2cux232bpa951-ma-CustomS3AutoDeleteObject-X7FhcuFPbtBq",
+      "arn": "arn:aws:lambda:eu-north-1:058264289478:function:amplify-d2cux232bpa951-ma-CustomS3AutoDeleteObject-X7FhcuFPbtBq",
+      "role": "arn:aws:iam::058264289478:role/amplify-d2cux232bpa951-ma-CustomS3AutoDeleteObjects-lsVIzL3JsCPu",
+      "timeout": 900,
+      "codeSha256": "4qZwvk1gEdE5gckIHfBV0pSMEOJtKW8U5O7jHENuUz4="
+    }
+  ],
+  "bucketAdministrativeGrants": [
+    {
+      "principal": {
+        "AWS": "arn:aws:iam::058264289478:role/amplify-d2cux232bpa951-ma-CustomS3AutoDeleteObjects-lsVIzL3JsCPu"
+      },
+      "actions": [
+        "s3:PutBucketPolicy",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:DeleteObject*"
+      ],
+      "resource": [
+        "arn:aws:s3:::amplify-d2cux232bpa951-ma-projectrespawnstoragebuc-bw3gimudfvur",
+        "arn:aws:s3:::amplify-d2cux232bpa951-ma-projectrespawnstoragebuc-bw3gimudfvur/*"
+      ]
+    }
+  ],
+  "completeWriterClosure": false,
+  "remaining": [
+    "Map 30 business resolvers and all production generated/direct writers against current Lambda code/IAM",
+    "Review cleanup/shared-role control-plane bypass against actual bucket policy",
+    "Prepare original-principal live proof; no diagnostic invocation permitted now",
+    "New production security acceptance required; Ntgre acceptance does not transfer"
+  ],
+  "fencesInstalled": false,
+  "awsWrites": 0
+}

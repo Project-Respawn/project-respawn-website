@@ -1,0 +1,271 @@
+{
+  "scope": "Offline expected new independent Team roots; not an AWS change-set result",
+  "baseline": "metadata.json and baseline-review.json",
+  "roots": [
+    {
+      "kind": "security",
+      "templateSha256": "44262d06047926ada1d1ce88edc9ad55180ab8b2e080079218fc97090ee19bdc",
+      "additions": [
+        {
+          "logicalId": "ExecutionBoundary",
+          "type": "AWS::IAM::ManagedPolicy",
+          "replacement": false
+        },
+        {
+          "logicalId": "ExecutionRole",
+          "type": "AWS::IAM::Role",
+          "replacement": false
+        },
+        {
+          "logicalId": "PreparationCaller",
+          "type": "AWS::IAM::ManagedPolicy",
+          "replacement": false
+        },
+        {
+          "logicalId": "DeploymentCaller",
+          "type": "AWS::IAM::Role",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityCommandBoundary",
+          "type": "AWS::IAM::ManagedPolicy",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityReadBoundary",
+          "type": "AWS::IAM::ManagedPolicy",
+          "replacement": false
+        },
+        {
+          "logicalId": "CursorSecret",
+          "type": "AWS::SecretsManager::Secret",
+          "replacement": false
+        },
+        {
+          "logicalId": "HttpApi",
+          "type": "AWS::ApiGatewayV2::Api",
+          "replacement": false
+        }
+      ],
+      "modifications": [],
+      "deletions": [],
+      "replacements": [],
+      "nestedStacks": 0
+    },
+    {
+      "kind": "product",
+      "templateSha256": "995b40be6cd460999cbde2510b33c5e93a407251f48b1ba1905f75a2c8c0ef24",
+      "additions": [
+        {
+          "logicalId": "JwtAuthorizer",
+          "type": "AWS::ApiGatewayV2::Authorizer",
+          "replacement": false
+        },
+        {
+          "logicalId": "Stage",
+          "type": "AWS::ApiGatewayV2::Stage",
+          "replacement": false
+        },
+        {
+          "logicalId": "ApiErrors",
+          "type": "AWS::CloudWatch::Alarm",
+          "replacement": false
+        },
+        {
+          "logicalId": "OperationalTable",
+          "type": "AWS::DynamoDB::Table",
+          "replacement": false
+        },
+        {
+          "logicalId": "JournalTable",
+          "type": "AWS::DynamoDB::Table",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityCommandLogs",
+          "type": "AWS::Logs::LogGroup",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityCommandRole",
+          "type": "AWS::IAM::Role",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityCommandFunction",
+          "type": "AWS::Lambda::Function",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityCommandIntegration",
+          "type": "AWS::ApiGatewayV2::Integration",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityCommandPermission",
+          "type": "AWS::Lambda::Permission",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityRouteCREATETEAM",
+          "type": "AWS::ApiGatewayV2::Route",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityRouteUPDATETEAM",
+          "type": "AWS::ApiGatewayV2::Route",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityRouteSETMANAGER",
+          "type": "AWS::ApiGatewayV2::Route",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityRouteMANAGEMEMBER",
+          "type": "AWS::ApiGatewayV2::Route",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityRouteSETROSTERSLOT",
+          "type": "AWS::ApiGatewayV2::Route",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityRouteUPSERTMYCHAMPION",
+          "type": "AWS::ApiGatewayV2::Route",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityRouteDELETEMYCHAMPION",
+          "type": "AWS::ApiGatewayV2::Route",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityRouteUPSERTCOACHASSESSMENT",
+          "type": "AWS::ApiGatewayV2::Route",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityRouteSETTEAMPLAN",
+          "type": "AWS::ApiGatewayV2::Route",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityCommandErrors",
+          "type": "AWS::CloudWatch::Alarm",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityCommandThrottles",
+          "type": "AWS::CloudWatch::Alarm",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityReadLogs",
+          "type": "AWS::Logs::LogGroup",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityReadRole",
+          "type": "AWS::IAM::Role",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityReadFunction",
+          "type": "AWS::Lambda::Function",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityReadIntegration",
+          "type": "AWS::ApiGatewayV2::Integration",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityReadPermission",
+          "type": "AWS::Lambda::Permission",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityRouteGETTEAMHUB",
+          "type": "AWS::ApiGatewayV2::Route",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityRouteLISTMYCHAMPIONPOOL",
+          "type": "AWS::ApiGatewayV2::Route",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityRouteLISTTEAMCHAMPIONPOOLS",
+          "type": "AWS::ApiGatewayV2::Route",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityRouteGETPLAYERCOMPETITIVEDETAIL",
+          "type": "AWS::ApiGatewayV2::Route",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityReadErrors",
+          "type": "AWS::CloudWatch::Alarm",
+          "replacement": false
+        },
+        {
+          "logicalId": "ParityReadThrottles",
+          "type": "AWS::CloudWatch::Alarm",
+          "replacement": false
+        },
+        {
+          "logicalId": "AuthorityStatusInvokePermission",
+          "type": "AWS::Lambda::Permission",
+          "replacement": false
+        },
+        {
+          "logicalId": "AuthorityStatusRoute",
+          "type": "AWS::ApiGatewayV2::Route",
+          "replacement": false
+        },
+        {
+          "logicalId": "ListMyTeamsRoute",
+          "type": "AWS::ApiGatewayV2::Route",
+          "replacement": false
+        },
+        {
+          "logicalId": "DirectorySearchRoute",
+          "type": "AWS::ApiGatewayV2::Route",
+          "replacement": false
+        },
+        {
+          "logicalId": "DirectorySearchRouteInvokePermission",
+          "type": "AWS::Lambda::Permission",
+          "replacement": false
+        },
+        {
+          "logicalId": "DirectoryResolveRoute",
+          "type": "AWS::ApiGatewayV2::Route",
+          "replacement": false
+        },
+        {
+          "logicalId": "DirectoryResolveRouteInvokePermission",
+          "type": "AWS::Lambda::Permission",
+          "replacement": false
+        }
+      ],
+      "modifications": [],
+      "deletions": [],
+      "replacements": [],
+      "nestedStacks": 0
+    }
+  ],
+  "totalAdditions": 47,
+  "existingLegacyChanges": 0,
+  "coreChanges": 0,
+  "cognitoChanges": 0,
+  "appsyncChanges": 0,
+  "apiKeyExpiryChanges": 0,
+  "sharedCommerceRuntimeChanges": 0,
+  "ntgreChanges": 0,
+  "unrelatedConsolidationSelected": false,
+  "awsWrites": 0
+}

@@ -1,0 +1,261 @@
+{
+  "at": "2026-10-20T20:56:01.414Z",
+  "manifestSha256": "7f21d94f6664916c16510f33b3abf253f1dabbb38ab378c91f0c12b1524c7a67",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "restores": [
+    {
+      "model": "Team",
+      "mode": "VERIFY_EXISTING_CLEANUP_ONLY",
+      "restoreApiCalled": false,
+      "creationReceiptSource": "PRIOR_STOPPED_EXECUTOR",
+      "targetName": "ProjectRespawn-TeamHub-Production-Team-RecoveryProof-20261020",
+      "targetArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Team-RecoveryProof-20261020",
+      "tableId": "e5f9ef58-c81b-4190-bb72-1473371e4c8a",
+      "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527947116-43f6eb02",
+      "createdByFixedExecutor": true,
+      "policyHash": "9fe81e70ac4cf3026f7659a21245404620663a423899acc065e271e41c4afede",
+      "sessionArn": "arn:aws:sts::058264289478:federated-user/RespawnR2-TeamCleanup",
+      "sessionExpiresAt": "2026-10-20T22:56:40+00:00",
+      "contentVerified": true,
+      "encryptedEvidenceVerified": true,
+      "restoreSourceEvidence": {
+        "type": "CLOUDTRAIL_AND_CREATE_RESPONSE",
+        "eventId": "361d0878-1770-46df-8799-00398f9f01f9",
+        "requestId": "8GCGDEHTLSFMMUC6NL6JHBGR97VV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "principalArn": "arn:aws:sts::058264289478:federated-user/RespawnR2-Team",
+        "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527947116-43f6eb02",
+        "targetName": "ProjectRespawn-TeamHub-Production-Team-RecoveryProof-20261020",
+        "tableId": "e5f9ef58-c81b-4190-bb72-1473371e4c8a",
+        "creationResponseVerified": true,
+        "errorCode": null,
+        "cloudTrailContainsTableId": false
+      },
+      "count": 1,
+      "rawItemsDigest": "8f202d72f19f9a04cfaf2709a3a5df497ed477ab82f592e59aa4485c24d13994",
+      "schemaVerified": true,
+      "encryptionKey": "AWS_OWNED_DEFAULT_NO_OVERRIDE",
+      "custody": {
+        "method": "Windows CurrentUser DPAPI",
+        "path": ".tmp/team-hub-production-r2-custody/R2R-Team.dpapi",
+        "ciphertextSha256": "e76e89d4f16ce5f60c948b5b6e3643c453748cbe8e56df81670f9dd3a71139f0",
+        "roundTrip": true,
+        "ownerOnlyDirectoryAcl": true,
+        "contextSha256": "d5c35316b08255098d87afeb76c0f7afbb4de762c9e9edf6ad68d8725bf39bd7",
+        "rawRecordsPersisted": false,
+        "portableRecoveryArchive": false
+      }
+    },
+    {
+      "model": "TeamMembership",
+      "mode": "RESTORE_ONCE",
+      "restoreApiCalled": true,
+      "creationReceiptSource": "THIS_EXECUTOR",
+      "targetName": "ProjectRespawn-TeamHub-Production-TeamMembership-RecoveryProof-20261020",
+      "targetArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-TeamMembership-RecoveryProof-20261020",
+      "tableId": "8529e649-fe5b-4d37-9935-fa6a9556c5ea",
+      "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527948497-eda960ad",
+      "createdByFixedExecutor": true,
+      "policyHash": "3a2b92a07287bf655cd4b3927798411607315783f38f0deaa8958f6fe112b4de",
+      "sessionArn": "arn:aws:sts::058264289478:federated-user/RespawnR2-TeamMembership",
+      "sessionExpiresAt": "2026-10-20T22:56:52+00:00",
+      "contentVerified": true,
+      "encryptedEvidenceVerified": true,
+      "restoreSourceEvidence": {
+        "type": "CLOUDTRAIL_AND_CREATE_RESPONSE",
+        "eventId": "91c4ccf0-ed1c-43ae-bebe-8553e25d217f",
+        "requestId": "90F04UPL727JL28LP7NBPVK553VV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "principalArn": "arn:aws:sts::058264289478:federated-user/RespawnR2-TeamMembership",
+        "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527948497-eda960ad",
+        "targetName": "ProjectRespawn-TeamHub-Production-TeamMembership-RecoveryProof-20261020",
+        "tableId": "8529e649-fe5b-4d37-9935-fa6a9556c5ea",
+        "creationResponseVerified": true,
+        "errorCode": null,
+        "cloudTrailContainsTableId": false
+      },
+      "count": 8,
+      "rawItemsDigest": "c1b709749b79811c540a3e0b5b485206bd0cdeb85d1338c7e837419907f3b15f",
+      "schemaVerified": true,
+      "encryptionKey": "AWS_OWNED_DEFAULT_NO_OVERRIDE",
+      "custody": {
+        "method": "Windows CurrentUser DPAPI",
+        "path": ".tmp/team-hub-production-r2-custody/R2R-TeamMembership.dpapi",
+        "ciphertextSha256": "8821b0c1359ab134e665fddc29b67d0c2373ce479c96035e3753e0a11a6d54da",
+        "roundTrip": true,
+        "ownerOnlyDirectoryAcl": true,
+        "contextSha256": "1b72b59c3196a481dab9fe6a6eda350ba4c9c440629bfbd94bb56c518b76f41b",
+        "rawRecordsPersisted": false,
+        "portableRecoveryArchive": false
+      }
+    },
+    {
+      "model": "TeamRosterSlot",
+      "mode": "RESTORE_ONCE",
+      "restoreApiCalled": true,
+      "creationReceiptSource": "THIS_EXECUTOR",
+      "targetName": "ProjectRespawn-TeamHub-Production-TeamRosterSlot-RecoveryProof-20261020",
+      "targetArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-TeamRosterSlot-RecoveryProof-20261020",
+      "tableId": "9c2fa925-a260-4aa0-beb2-24a0c1c4df53",
+      "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527949892-3c2d8f3a",
+      "createdByFixedExecutor": true,
+      "policyHash": "a2ebae5f4b25b50624d69f9ca8a2421cae7e8fd1cdf59ebe1573b5a17e479d60",
+      "sessionArn": "arn:aws:sts::058264289478:federated-user/RespawnR2-TeamRosterSlot",
+      "sessionExpiresAt": "2026-10-20T23:00:53+00:00",
+      "contentVerified": true,
+      "encryptedEvidenceVerified": true,
+      "restoreSourceEvidence": {
+        "type": "CLOUDTRAIL_AND_CREATE_RESPONSE",
+        "eventId": "c77e3e20-e258-4d7a-aefd-2a0b3ff80961",
+        "requestId": "O6Q6L66H58PR2T5SMD28JU63ANVV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "principalArn": "arn:aws:sts::058264289478:federated-user/RespawnR2-TeamRosterSlot",
+        "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527949892-3c2d8f3a",
+        "targetName": "ProjectRespawn-TeamHub-Production-TeamRosterSlot-RecoveryProof-20261020",
+        "tableId": "9c2fa925-a260-4aa0-beb2-24a0c1c4df53",
+        "creationResponseVerified": true,
+        "errorCode": null,
+        "cloudTrailContainsTableId": false
+      },
+      "count": 11,
+      "rawItemsDigest": "d79485c9663ec496cce3e529727c2bd033fa1bc3ad372aa7101294029bbe22df",
+      "schemaVerified": true,
+      "encryptionKey": "AWS_OWNED_DEFAULT_NO_OVERRIDE",
+      "custody": {
+        "method": "Windows CurrentUser DPAPI",
+        "path": ".tmp/team-hub-production-r2-custody/R2R-TeamRosterSlot.dpapi",
+        "ciphertextSha256": "2dd8871b494c54e532c28aed4685216396a24a572bcf45128d14729fd47dd5e1",
+        "roundTrip": true,
+        "ownerOnlyDirectoryAcl": true,
+        "contextSha256": "eb9d5ad3e76dd5daa0221de8728b2e4d34eb2939a1af8a04c5aa946aefdf02fe",
+        "rawRecordsPersisted": false,
+        "portableRecoveryArchive": false
+      }
+    },
+    {
+      "model": "PlayerChampionPoolEntry",
+      "mode": "RESTORE_ONCE",
+      "restoreApiCalled": true,
+      "creationReceiptSource": "THIS_EXECUTOR",
+      "targetName": "ProjectRespawn-TeamHub-Production-PlayerChampionPoolEntry-RecoveryProof-20261020",
+      "targetArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-PlayerChampionPoolEntry-RecoveryProof-20261020",
+      "tableId": "f9692532-603b-441d-b4eb-69b7b948ad80",
+      "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527951273-7b424a61",
+      "createdByFixedExecutor": true,
+      "policyHash": "9ca3dd23c192024bbc37276a802870e7432d68f98ba6be384f89281d282a7575",
+      "sessionArn": "arn:aws:sts::058264289478:federated-user/RespawnR2-ChampionPool",
+      "sessionExpiresAt": "2026-10-20T23:04:45+00:00",
+      "contentVerified": true,
+      "encryptedEvidenceVerified": true,
+      "restoreSourceEvidence": {
+        "type": "CLOUDTRAIL_AND_CREATE_RESPONSE",
+        "eventId": "76587a4e-acd6-4e3f-9fe8-eb22011eee66",
+        "requestId": "JCBKMGISOQ9D07GB7J1KR3Q37JVV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "principalArn": "arn:aws:sts::058264289478:federated-user/RespawnR2-ChampionPool",
+        "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527951273-7b424a61",
+        "targetName": "ProjectRespawn-TeamHub-Production-PlayerChampionPoolEntry-RecoveryProof-20261020",
+        "tableId": "f9692532-603b-441d-b4eb-69b7b948ad80",
+        "creationResponseVerified": true,
+        "errorCode": null,
+        "cloudTrailContainsTableId": false
+      },
+      "count": 101,
+      "rawItemsDigest": "8f701e4999e3e5a11df0948b46ade2c76d3b8a8e745b49afe94ca0ddd86d2e53",
+      "schemaVerified": true,
+      "encryptionKey": "AWS_OWNED_DEFAULT_NO_OVERRIDE",
+      "custody": {
+        "method": "Windows CurrentUser DPAPI",
+        "path": ".tmp/team-hub-production-r2-custody/R2R-PlayerChampionPoolEntry.dpapi",
+        "ciphertextSha256": "5578f7bf5ca94225a583179f72f74f0682bc6625ee8fc6a961fa132b639bd974",
+        "roundTrip": true,
+        "ownerOnlyDirectoryAcl": true,
+        "contextSha256": "3c4d0b93d1ad839c88f0feeebe8bd6a5209e6cc3422f405e9664c070a1dfd161",
+        "rawRecordsPersisted": false,
+        "portableRecoveryArchive": false
+      }
+    }
+  ],
+  "cleanup": [
+    {
+      "model": "Team",
+      "name": "ProjectRespawn-TeamHub-Production-Team-RecoveryProof-20261020",
+      "tableId": "e5f9ef58-c81b-4190-bb72-1473371e4c8a",
+      "absent": true
+    },
+    {
+      "model": "TeamMembership",
+      "name": "ProjectRespawn-TeamHub-Production-TeamMembership-RecoveryProof-20261020",
+      "tableId": "8529e649-fe5b-4d37-9935-fa6a9556c5ea",
+      "absent": true
+    },
+    {
+      "model": "TeamRosterSlot",
+      "name": "ProjectRespawn-TeamHub-Production-TeamRosterSlot-RecoveryProof-20261020",
+      "tableId": "9c2fa925-a260-4aa0-beb2-24a0c1c4df53",
+      "absent": true
+    },
+    {
+      "model": "PlayerChampionPoolEntry",
+      "name": "ProjectRespawn-TeamHub-Production-PlayerChampionPoolEntry-RecoveryProof-20261020",
+      "tableId": "f9692532-603b-441d-b4eb-69b7b948ad80",
+      "absent": true
+    }
+  ],
+  "complete": true,
+  "custodyPreflight": true,
+  "activeStage": "DELETE_INTENT_PlayerChampionPoolEntry",
+  "migration": {
+    "accepted": true,
+    "inputByModel": {
+      "Team": 1,
+      "TeamMembership": 8,
+      "TeamRosterSlot": 11,
+      "PlayerChampionPoolEntry": 101
+    },
+    "inputCount": 121,
+    "outputCount": 122,
+    "sourceDigest": "9d7f52ba2cfc9eb011e53f1807ac4e4bd798951144f1b304fb100f0a6474e109",
+    "targetDigest": "d685856ace4a0115a1f5618d979994dde900891e3fdf17bb6575377677ac3049",
+    "sourceRelationshipsValid": true,
+    "roundTrip": true,
+    "rawRecordsPersisted": false,
+    "sourceArchiveRequired": true,
+    "warnings": [
+      "DEFAULT_SETTINGS_REVISION_ZERO"
+    ],
+    "liveFenceRequired": true,
+    "liveImportAccepted": false
+  },
+  "relationshipIntegrity": true,
+  "sourceComparison": [
+    {
+      "model": "Team",
+      "liveCount": 1,
+      "sourceUnchangedDuringR2": true,
+      "matchesBackupCapture": true
+    },
+    {
+      "model": "TeamMembership",
+      "liveCount": 8,
+      "sourceUnchangedDuringR2": true,
+      "matchesBackupCapture": true
+    },
+    {
+      "model": "TeamRosterSlot",
+      "liveCount": 11,
+      "sourceUnchangedDuringR2": true,
+      "matchesBackupCapture": true
+    },
+    {
+      "model": "PlayerChampionPoolEntry",
+      "liveCount": 101,
+      "sourceUnchangedDuringR2": true,
+      "matchesBackupCapture": true
+    }
+  ],
+  "acceptedAt": "2026-10-20T21:10:02.756Z",
+  "status": "PRODUCTION_R2_RESTORE_ACCEPTED",
+  "credentialsPersisted": false,
+  "rawRecordsPersisted": false
+}

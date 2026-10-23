@@ -1,0 +1,2424 @@
+{
+  "at": "2026-10-20T20:23:41.170Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "account": "058264289478",
+  "region": "eu-north-1",
+  "packageSha256": "970e6960dbed8d705cb2b1cc489e49ee4cd78c3617d816bc086984297e7326a5",
+  "executorSha256": "2ec135f822677b6732e438c3414e15c72810033dc20135324da4d9db168ced0f",
+  "allHistoricalArtifactsVerified": true,
+  "tables": [
+    {
+      "model": "Team",
+      "name": "Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "tableId": "78f6917b-9d12-4af4-aa14-fdae57eb7f2b",
+      "status": "ACTIVE",
+      "count": 1,
+      "rawItemsDigest": "8f202d72f19f9a04cfaf2709a3a5df497ed477ab82f592e59aa4485c24d13994",
+      "schema": {
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "slug",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "status",
+            "AttributeType": "S"
+          }
+        ],
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "teamsBySlug",
+            "KeySchema": [
+              {
+                "AttributeName": "slug",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          },
+          {
+            "IndexName": "teamsByStatus",
+            "KeySchema": [
+              {
+                "AttributeName": "status",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          }
+        ],
+        "LocalSecondaryIndexes": [],
+        "BillingMode": "PAY_PER_REQUEST",
+        "SSEDescription": null,
+        "TableClassSummary": null,
+        "StreamSpecification": {
+          "StreamEnabled": true,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        }
+      },
+      "schemaDigest": "c649e0953180fa7a6b1024ac4bad95307e773242bc9dbc13194077004dcecdc5",
+      "pitr": "DISABLED",
+      "deletionProtection": false,
+      "backups": []
+    },
+    {
+      "model": "TeamMembership",
+      "name": "TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "tableId": "84e7d7af-3ff0-4881-a76a-90bc00b3d3ab",
+      "status": "ACTIVE",
+      "count": 8,
+      "rawItemsDigest": "c1b709749b79811c540a3e0b5b485206bd0cdeb85d1338c7e837419907f3b15f",
+      "schema": {
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "teamId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "userId",
+            "AttributeType": "S"
+          }
+        ],
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "teamMembershipsByTeamId",
+            "KeySchema": [
+              {
+                "AttributeName": "teamId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          },
+          {
+            "IndexName": "teamMembershipsByUserId",
+            "KeySchema": [
+              {
+                "AttributeName": "userId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          }
+        ],
+        "LocalSecondaryIndexes": [],
+        "BillingMode": "PAY_PER_REQUEST",
+        "SSEDescription": null,
+        "TableClassSummary": null,
+        "StreamSpecification": {
+          "StreamEnabled": true,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        }
+      },
+      "schemaDigest": "d7d5b8c6e7a110f98e7d9512bc4093c10762acd3b9e0e85a5a38beb81e182b56",
+      "pitr": "DISABLED",
+      "deletionProtection": false,
+      "backups": []
+    },
+    {
+      "model": "TeamRosterSlot",
+      "name": "TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "tableId": "ce302ae3-9446-4594-81e1-12bff167f12f",
+      "status": "ACTIVE",
+      "count": 11,
+      "rawItemsDigest": "d79485c9663ec496cce3e529727c2bd033fa1bc3ad372aa7101294029bbe22df",
+      "schema": {
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "membershipId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "teamId",
+            "AttributeType": "S"
+          }
+        ],
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "teamRosterSlotsByMembershipId",
+            "KeySchema": [
+              {
+                "AttributeName": "membershipId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          },
+          {
+            "IndexName": "teamRosterSlotsByTeamId",
+            "KeySchema": [
+              {
+                "AttributeName": "teamId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          }
+        ],
+        "LocalSecondaryIndexes": [],
+        "BillingMode": "PAY_PER_REQUEST",
+        "SSEDescription": null,
+        "TableClassSummary": null,
+        "StreamSpecification": {
+          "StreamEnabled": true,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        }
+      },
+      "schemaDigest": "eea80043da34d48c2645d8a86a520be8a0ddeb96954ea59f0484df2442b09d60",
+      "pitr": "DISABLED",
+      "deletionProtection": false,
+      "backups": []
+    },
+    {
+      "model": "PlayerChampionPoolEntry",
+      "name": "PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "tableId": "a208a911-c53c-45f8-a499-d69117d611d5",
+      "status": "ACTIVE",
+      "count": 101,
+      "rawItemsDigest": "8f701e4999e3e5a11df0948b46ade2c76d3b8a8e745b49afe94ca0ddd86d2e53",
+      "schema": {
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "membershipId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "teamId",
+            "AttributeType": "S"
+          }
+        ],
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "playerChampionPoolEntriesByTeamId",
+            "KeySchema": [
+              {
+                "AttributeName": "teamId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          },
+          {
+            "IndexName": "playerChampionPoolEntriesByMembershipId",
+            "KeySchema": [
+              {
+                "AttributeName": "membershipId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          }
+        ],
+        "LocalSecondaryIndexes": [],
+        "BillingMode": "PAY_PER_REQUEST",
+        "SSEDescription": null,
+        "TableClassSummary": null,
+        "StreamSpecification": {
+          "StreamEnabled": true,
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        }
+      },
+      "schemaDigest": "dabd5ddd60b9498319be271f997686484db2203498e9a2cb7fdb5378736ba758",
+      "pitr": "DISABLED",
+      "deletionProtection": false,
+      "backups": []
+    }
+  ],
+  "migration": {
+    "accepted": true,
+    "inputByModel": {
+      "Team": 1,
+      "TeamMembership": 8,
+      "TeamRosterSlot": 11,
+      "PlayerChampionPoolEntry": 101
+    },
+    "inputCount": 121,
+    "outputCount": 122,
+    "sourceDigest": "9d7f52ba2cfc9eb011e53f1807ac4e4bd798951144f1b304fb100f0a6474e109",
+    "targetDigest": "d685856ace4a0115a1f5618d979994dde900891e3fdf17bb6575377677ac3049",
+    "sourceRelationshipsValid": true,
+    "roundTrip": true,
+    "rawRecordsPersisted": false,
+    "sourceArchiveRequired": true,
+    "warnings": [
+      "DEFAULT_SETTINGS_REVISION_ZERO"
+    ],
+    "liveFenceRequired": true,
+    "liveImportAccepted": false
+  },
+  "pool": {
+    "Id": "eu-north-1_Uufjxul58",
+    "LastModifiedDate": "2026-08-03T21:15:43.524000+01:00",
+    "Policies": {
+      "PasswordPolicy": {
+        "MinimumLength": 8,
+        "RequireUppercase": true,
+        "RequireLowercase": true,
+        "RequireNumbers": true,
+        "RequireSymbols": true,
+        "TemporaryPasswordValidityDays": 7
+      },
+      "SignInPolicy": {
+        "AllowedFirstAuthFactors": [
+          "PASSWORD"
+        ]
+      }
+    },
+    "SchemaAttributes": [
+      {
+        "Name": "profile",
+        "AttributeDataType": "String",
+        "DeveloperOnlyAttribute": false,
+        "Mutable": true,
+        "Required": false,
+        "StringAttributeConstraints": {
+          "MinLength": "0",
+          "MaxLength": "2048"
+        }
+      },
+      {
+        "Name": "address",
+        "AttributeDataType": "String",
+        "DeveloperOnlyAttribute": false,
+        "Mutable": true,
+        "Required": false,
+        "StringAttributeConstraints": {
+          "MinLength": "0",
+          "MaxLength": "2048"
+        }
+      },
+      {
+        "Name": "birthdate",
+        "AttributeDataType": "String",
+        "DeveloperOnlyAttribute": false,
+        "Mutable": true,
+        "Required": false,
+        "StringAttributeConstraints": {
+          "MinLength": "10",
+          "MaxLength": "10"
+        }
+      },
+      {
+        "Name": "gender",
+        "AttributeDataType": "String",
+        "DeveloperOnlyAttribute": false,
+        "Mutable": true,
+        "Required": false,
+        "StringAttributeConstraints": {
+          "MinLength": "0",
+          "MaxLength": "2048"
+        }
+      },
+      {
+        "Name": "preferred_username",
+        "AttributeDataType": "String",
+        "DeveloperOnlyAttribute": false,
+        "Mutable": true,
+        "Required": false,
+        "StringAttributeConstraints": {
+          "MinLength": "0",
+          "MaxLength": "2048"
+        }
+      },
+      {
+        "Name": "updated_at",
+        "AttributeDataType": "Number",
+        "DeveloperOnlyAttribute": false,
+        "Mutable": true,
+        "Required": false,
+        "NumberAttributeConstraints": {
+          "MinValue": "0"
+        }
+      },
+      {
+        "Name": "website",
+        "AttributeDataType": "String",
+        "DeveloperOnlyAttribute": false,
+        "Mutable": true,
+        "Required": false,
+        "StringAttributeConstraints": {
+          "MinLength": "0",
+          "MaxLength": "2048"
+        }
+      },
+      {
+        "Name": "picture",
+        "AttributeDataType": "String",
+        "DeveloperOnlyAttribute": false,
+        "Mutable": true,
+        "Required": false,
+        "StringAttributeConstraints": {
+          "MinLength": "0",
+          "MaxLength": "2048"
+        }
+      },
+      {
+        "Name": "identities",
+        "AttributeDataType": "String",
+        "DeveloperOnlyAttribute": false,
+        "Mutable": true,
+        "Required": false,
+        "StringAttributeConstraints": {}
+      },
+      {
+        "Name": "sub",
+        "AttributeDataType": "String",
+        "DeveloperOnlyAttribute": false,
+        "Mutable": false,
+        "Required": true,
+        "StringAttributeConstraints": {
+          "MinLength": "1",
+          "MaxLength": "2048"
+        }
+      },
+      {
+        "Name": "email_verified",
+        "AttributeDataType": "Boolean",
+        "DeveloperOnlyAttribute": false,
+        "Mutable": true,
+        "Required": false
+      },
+      {
+        "Name": "phone_number_verified",
+        "AttributeDataType": "Boolean",
+        "DeveloperOnlyAttribute": false,
+        "Mutable": true,
+        "Required": false
+      },
+      {
+        "Name": "phone_number",
+        "AttributeDataType": "String",
+        "DeveloperOnlyAttribute": false,
+        "Mutable": true,
+        "Required": false,
+        "StringAttributeConstraints": {
+          "MinLength": "0",
+          "MaxLength": "2048"
+        }
+      },
+      {
+        "Name": "zoneinfo",
+        "AttributeDataType": "String",
+        "DeveloperOnlyAttribute": false,
+        "Mutable": true,
+        "Required": false,
+        "StringAttributeConstraints": {
+          "MinLength": "0",
+          "MaxLength": "2048"
+        }
+      },
+      {
+        "Name": "locale",
+        "AttributeDataType": "String",
+        "DeveloperOnlyAttribute": false,
+        "Mutable": true,
+        "Required": false,
+        "StringAttributeConstraints": {
+          "MinLength": "0",
+          "MaxLength": "2048"
+        }
+      },
+      {
+        "Name": "email",
+        "AttributeDataType": "String",
+        "DeveloperOnlyAttribute": false,
+        "Mutable": true,
+        "Required": true,
+        "StringAttributeConstraints": {
+          "MinLength": "0",
+          "MaxLength": "2048"
+        }
+      },
+      {
+        "Name": "given_name",
+        "AttributeDataType": "String",
+        "DeveloperOnlyAttribute": false,
+        "Mutable": true,
+        "Required": false,
+        "StringAttributeConstraints": {
+          "MinLength": "0",
+          "MaxLength": "2048"
+        }
+      },
+      {
+        "Name": "family_name",
+        "AttributeDataType": "String",
+        "DeveloperOnlyAttribute": false,
+        "Mutable": true,
+        "Required": false,
+        "StringAttributeConstraints": {
+          "MinLength": "0",
+          "MaxLength": "2048"
+        }
+      },
+      {
+        "Name": "middle_name",
+        "AttributeDataType": "String",
+        "DeveloperOnlyAttribute": false,
+        "Mutable": true,
+        "Required": false,
+        "StringAttributeConstraints": {
+          "MinLength": "0",
+          "MaxLength": "2048"
+        }
+      },
+      {
+        "Name": "name",
+        "AttributeDataType": "String",
+        "DeveloperOnlyAttribute": false,
+        "Mutable": true,
+        "Required": false,
+        "StringAttributeConstraints": {
+          "MinLength": "0",
+          "MaxLength": "2048"
+        }
+      },
+      {
+        "Name": "nickname",
+        "AttributeDataType": "String",
+        "DeveloperOnlyAttribute": false,
+        "Mutable": true,
+        "Required": false,
+        "StringAttributeConstraints": {
+          "MinLength": "0",
+          "MaxLength": "2048"
+        }
+      }
+    ],
+    "AutoVerifiedAttributes": [
+      "email"
+    ],
+    "MfaConfiguration": "OFF",
+    "LambdaConfig": {
+      "PostConfirmation": "arn:aws:lambda:eu-north-1:058264289478:function:amplify-d2cux232bpa951-ma-postconfirmationlambda19-AjfozKdTKMcl"
+    }
+  },
+  "client": {
+    "UserPoolId": "eu-north-1_Uufjxul58",
+    "ClientId": "2kc81ph5mgvo9eu2qjvmif5u8g",
+    "LastModifiedDate": "2026-08-02T17:54:45.347000+01:00",
+    "ExplicitAuthFlows": [
+      "ALLOW_CUSTOM_AUTH",
+      "ALLOW_REFRESH_TOKEN_AUTH",
+      "ALLOW_USER_SRP_AUTH"
+    ],
+    "SupportedIdentityProviders": [
+      "COGNITO"
+    ],
+    "EnableTokenRevocation": true
+  },
+  "userSummary": [
+    {
+      "Status": "CONFIRMED",
+      "Enabled": true
+    },
+    {
+      "Status": "CONFIRMED",
+      "Enabled": true
+    },
+    {
+      "Status": "CONFIRMED",
+      "Enabled": true
+    },
+    {
+      "Status": "CONFIRMED",
+      "Enabled": true
+    },
+    {
+      "Status": "CONFIRMED",
+      "Enabled": true
+    },
+    {
+      "Status": "CONFIRMED",
+      "Enabled": true
+    },
+    {
+      "Status": "CONFIRMED",
+      "Enabled": true
+    },
+    {
+      "Status": "CONFIRMED",
+      "Enabled": true
+    },
+    {
+      "Status": "CONFIRMED",
+      "Enabled": true
+    },
+    {
+      "Status": "CONFIRMED",
+      "Enabled": true
+    },
+    {
+      "Status": "CONFIRMED",
+      "Enabled": true
+    },
+    {
+      "Status": "UNCONFIRMED",
+      "Enabled": true
+    },
+    {
+      "Status": "CONFIRMED",
+      "Enabled": true
+    },
+    {
+      "Status": "CONFIRMED",
+      "Enabled": true
+    },
+    {
+      "Status": "CONFIRMED",
+      "Enabled": true
+    }
+  ],
+  "identityFingerprint": "11d634c951c73eadd57da914b04db4849198710e1329a327e2182c19caf940e4",
+  "master": [
+    {
+      "jobId": "151",
+      "status": "SUCCEED",
+      "commitId": "a83a874dad50395518fb0d7e2f1e853cf6bf2513"
+    },
+    {
+      "jobId": "150",
+      "status": "SUCCEED",
+      "commitId": "ed77c4058c7f80c13208dfba837c30d49bdaacce"
+    },
+    {
+      "jobId": "149",
+      "status": "SUCCEED",
+      "commitId": "d688cbf5d00c932b97f1d5f69bd3861101cef454"
+    },
+    {
+      "jobId": "148",
+      "status": "SUCCEED",
+      "commitId": "2d011ef1eed8e3b8879201c0661c34b8d6d9712c"
+    },
+    {
+      "jobId": "147",
+      "status": "SUCCEED",
+      "commitId": "fde5bb46b015a5c7eedb6d6f98fb9ad8e1d02875"
+    },
+    {
+      "jobId": "146",
+      "status": "SUCCEED",
+      "commitId": "d4a8cdcee28bb498263906fde6c107b063d93809"
+    },
+    {
+      "jobId": "145",
+      "status": "SUCCEED",
+      "commitId": "7838e2b30a1cc518c1cd13e377c15cf7d17a9595"
+    },
+    {
+      "jobId": "144",
+      "status": "SUCCEED",
+      "commitId": "cbaf82627e9386ba73902d8735c89a703225137e"
+    },
+    {
+      "jobId": "143",
+      "status": "SUCCEED",
+      "commitId": "19a0021e9e3084fb0a373d9d7de09bce953f3882"
+    },
+    {
+      "jobId": "142",
+      "status": "SUCCEED",
+      "commitId": "19a0021e9e3084fb0a373d9d7de09bce953f3882"
+    }
+  ],
+  "stackBaseline": [
+    {
+      "StackName": "ProjectRespawn-TeamHub-Ntgre-S3Audit",
+      "StackStatus": "CREATE_COMPLETE",
+      "LastUpdatedTime": "2026-10-13T15:57:21.999000+00:00",
+      "CreationTime": "2026-10-13T15:55:44.766000+00:00"
+    },
+    {
+      "StackName": "ProjectRespawn-Core-Ntgre",
+      "StackStatus": "CREATE_COMPLETE",
+      "LastUpdatedTime": "2026-10-06T21:27:10.248000+00:00",
+      "CreationTime": "2026-10-06T21:26:27.615000+00:00"
+    },
+    {
+      "StackName": "ProjectRespawn-Core-Ntgre-Security",
+      "StackStatus": "CREATE_COMPLETE",
+      "LastUpdatedTime": "2026-10-06T21:22:59.958000+00:00",
+      "CreationTime": "2026-10-06T21:22:23.821000+00:00"
+    },
+    {
+      "StackName": "ProjectRespawn-TeamHub-Ntgre",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-10-13T21:58:00.411000+00:00",
+      "CreationTime": "2026-10-05T15:01:58.836000+00:00"
+    },
+    {
+      "StackName": "ProjectRespawn-TeamHub-Ntgre-ReadProofSecurity",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-10-13T21:56:02.218000+00:00",
+      "CreationTime": "2026-10-05T14:37:29.289000+00:00"
+    },
+    {
+      "StackName": "ProjectRespawn-Tournaments-Ntgre",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-10-04T13:34:34.859000+00:00",
+      "CreationTime": "2026-09-28T16:03:47.557000+00:00"
+    },
+    {
+      "StackName": "ProjectRespawn-Tournaments-Ntgre-SecurityBootstrap",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-28T15:29:34.592000+00:00",
+      "CreationTime": "2026-09-27T16:23:55.149000+00:00"
+    },
+    {
+      "StackName": "swg-beta-downloads",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-25T12:38:54.871000+00:00",
+      "CreationTime": "2026-09-22T00:52:59.895000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-8bd9d02332-apistack7B433BC7-1E7HN2JNUSFNZ",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-26T11:53:21.622000+00:00",
+      "CreationTime": "2026-09-21T14:36:10.274000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-8bd9d02332-function1351588B-P11YAN395W7B",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-26T11:53:10.332000+00:00",
+      "CreationTime": "2026-09-21T14:35:35.503000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-8bd9d02332-overlaysourcestackF7F134D8-11RZN039WXJHB",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-26T11:52:58.903000+00:00",
+      "CreationTime": "2026-09-21T14:34:33.712000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataFunctionDirectiveStackNestedSta-YEHESWWG7XHS",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-26T11:52:22.052000+00:00",
+      "CreationTime": "2026-09-21T14:24:17.813000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataConnectionStackNestedStackConne-14SQT9B91263H",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:24:01.783000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataWorkspaceMembershipPermissionSe-EIVOMDMIOY6P",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:24:00.912000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataWorkspaceMembershipPermissionNe-1A95LWNM73OVD",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:24:00.752000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataWorkspaceMembershipNestedStackW-8QPM2OKM0CKW",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:24:00.737000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataUserProfileNestedStackUserProfi-1N1L9N5L89W4E",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:23:47.034000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataTwitchTokenVaultNestedStackTwit-WKBEWIT1UDV1",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:23:46.982000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataTwitchOAuthTransactionNestedSta-1WLFCZT6BR0VI",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:23:46.950000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataRewardRedemptionEventNestedStac-1VFMYQ8KVRM69",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:23:46.932000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataTwitchIntegrationNestedStackTwi-YSFLZV03VCBQ",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:23:46.914000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataTwitchRuntimeHealthNestedStackT-IFOY4ZMH5GHJ",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:23:46.912000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataRewardRedemptionEventClaimNeste-6HL7DVK6VT84",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:23:46.912000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataTwitchCommandNestedStackTwitchC-W4IOYPK3WTV8",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:23:46.862000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataPermissionAuditEventNestedStack-1A0PXGESI1P14",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:23:46.846000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataInvestorAccessRequestNestedStac-1I8NAXAL4H75F",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:23:46.844000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataPlayerChampionPoolEntryNestedSt-7CZOVYLEJDGR",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:23:46.825000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataPermissionDefinitionNestedStack-1ITRJ4HE2951Q",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:23:46.824000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataInvestorAccessAuditEventNestedS-S4W1L1GSWH1S",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:23:46.808000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataInvestorAccessNestedStackInvest-YUVLR597GD0G",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:23:46.794000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataEventSuggestionNestedStackEvent-1CI9RHWHY9BV9",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.323000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataMerchProductNestedStackMerchPro-1TGFUUPFFPBM9",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.304000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataApplicationSubmissionNestedStac-SP7BAH4R3I8Q",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.266000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataApplicationAnswerNestedStackApp-13IUPR6G30449",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.245000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataForumPostNestedStackForumPostNe-1THTUDPS84PPM",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.245000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataMerchProductCategoryNestedStack-1DWXBY78GY0GT",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.241000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataApplicationAuditEventNestedStac-17F6NJN6DJ7WJ",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.225000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataTeamMembershipNestedStackTeamMe-WCZXVS62U7CN",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.225000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataApplicationPublicRateLimitNeste-APQKOTCVCETA",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.215000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataMediaItemNestedStackMediaItemNe-1CSA9MP7VMVZU",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.207000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataGroupPermissionNestedStackGroup-YOWCHNM4PMDD",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.194000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataMerchProductVariantNestedStackM-9W53RFLOJ5X2",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.191000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataMediaCollectionNestedStackMedia-1XQJV1IB641DT",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.188000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataApplicationCreatorProfileNested-1QF71ECB1E8V3",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.186000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataBrandNestedStackBrandNestedStac-8RGRVMAA8YC2",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.180000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataCreatorWorkspaceRecordNestedSta-13HSLWLT4DBGJ",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.170000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataForumActivityNestedStackForumAc-1KJW3GQ4OX1OW",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.170000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataBrandAccessNestedStackBrandAcce-FY7QBTKXJ2V5",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.164000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataForumBoardNestedStackForumBoard-1PCQXC9CL4RO",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.156000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataMerchProductBrandNestedStackMer-1OZBR5Y33V2X2",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.155000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataMerchCategoryNestedStackMerchCa-WTCPHSCGWFKY",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.154000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataMerchProductImageNestedStackMer-TY41JHKTHP6Y",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.153000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataBoardPermissionRuleNestedStackB-1EIFA8L7IK65U",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.152000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataApplicationScheduleNestedStackA-MOHWNT0DQQ2S",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.137000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataForumCategoryNestedStackForumCa-1EOR1WM67HK4Z",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.131000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataDiscordBotConfigurationNestedSt-LQVUU7J9LI80",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.127000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataTeamNestedStackTeamNestedStackR-1JDKU82MS8003",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.123000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataForumThreadNestedStackForumThre-1OVNN240N4AMW",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.121000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataFulfillmentOrderNestedStackFulf-19CCN2HVV52UG",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.115000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataEventNestedStackEventNestedStac-18RFDG5DRM1MX",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.110000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataEventTagNestedStackEventTagNest-737IG4DYC2PL",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.101000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataBrandAccessPermissionNestedStac-UUABYLRAR3LQ",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.099000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataAlphaServiceNonceNestedStackAlp-1QLOZ14U4V2K7",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.095000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataApplicationIdempotencyNestedSta-17TQ89N6EFY35",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.081000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataTeamRosterSlotNestedStackTeamRo-14YH10PBU6UWL",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:22:59.065000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-amplifyDataAmplifyTableManagerNestedStackA-11MDCDAL6VB4D",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:21:56.935000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-8bd9d02332-data7552DF31-1IT8L0URMILU",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-26T11:52:11.217000+00:00",
+      "CreationTime": "2026-09-21T14:21:47.002000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-8bd9d02332-storage0EC3F24A-194EYIIT5YTKU",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:21:12.414000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-8bd9d02332-auth179371D7-29EGF5J6TNK",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-21T14:20:10.615000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgre-sandbox-8bd9d02332",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-26T11:52:06.391000+00:00",
+      "CreationTime": "2026-09-21T14:20:06.404000+00:00"
+    },
+    {
+      "StackName": "swg-private-test",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-21T12:03:04.982000+00:00",
+      "CreationTime": "2026-09-21T11:05:11.861000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b38605406-function1351588B-1PAAEQ43OOHKI",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-14T21:16:46.727000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b38605406-overlaysourcestackF7F134D8-ZY8BE9BMLIOR",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-14T21:15:28.776000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataTeamMembershipNestedStackTeamMe-P5ZWKB9GG0PL",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-14T21:13:03.567000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataPlayerChampionPoolEntryNestedSt-172KTKG5ZK30D",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-14T21:13:00.038000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataTeamNestedStackTeamNestedStackR-7R4WZMVVMDUZ",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-14T21:12:58.741000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataTeamRosterSlotNestedStackTeamRo-1IC0B4F5I1D2S",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-14T21:12:58.701000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67772a-function1351588B-3LAUWIBLIPW2",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-10T12:07:04.338000+00:00",
+      "CreationTime": "2026-09-02T17:32:24.119000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataPlayerChampionPoolEntryNestedSt-1VGA6FUVYCYTD",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-02T17:28:52.183000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataTeamMembershipNestedStackTeamMe-Z648JKYMLC8H",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-02T17:28:51.838000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataTeamRosterSlotNestedStackTeamRo-ADN5U8QAT6YH",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-02T17:28:50.882000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataTeamNestedStackTeamNestedStackR-1BJ9ZP7NA30HX",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-09-02T17:28:50.869000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67772a-overlaysourcestackF7F134D8-1013ERNKC34AE",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-10T12:06:41.882000+00:00",
+      "CreationTime": "2026-08-26T21:09:42.356000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a6927-apistack7B433BC7-1ABM1WKEOZIM7",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:46:57.635000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataConnectionStackNestedStackConne-2DK7YP2DMXN5",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:46:01.656000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataUserProfileNestedStackUserProfi-BYNH3L5LP426",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:45:46.908000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataTwitchTokenVaultNestedStackTwit-1DVR9AHPLSEBG",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:45:46.818000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataTwitchRuntimeHealthNestedStackT-12GAB1MS9UURU",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:45:46.803000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataApplicationAnswerNestedStackApp-86EPEO9LUE9B",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.309000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataApplicationScheduleNestedStackA-1NJ1XUCAYXWB9",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.299000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataMerchProductNestedStackMerchPro-UQRSSS6LE7AQ",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.286000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataBrandAccessPermissionNestedStac-XEC7HJGZNC4W",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.274000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataMediaItemNestedStackMediaItemNe-QRZ4J63O3EIX",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.273000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataBrandAccessNestedStackBrandAcce-9AG6SBCQ57YU",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.270000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataApplicationSubmissionNestedStac-1AT22KLF5M3K8",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.269000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataEventTagNestedStackEventTagNest-1R68MVC61PL23",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.266000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataPermissionAuditEventNestedStack-1VKUG54O55X0Q",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.264000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataTwitchOAuthTransactionNestedSta-1BSW0VBNHYWJ",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.258000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataTwitchIntegrationNestedStackTwi-217NDS572M8T",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.254000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataEventSuggestionNestedStackEvent-1DDC67SQGWORZ",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.254000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataApplicationIdempotencyNestedSta-RE1BQEE2AFEP",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.253000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataMerchProductVariantNestedStackM-1KWVM8YSTZTEF",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.251000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataTwitchCommandNestedStackTwitchC-1FYBZ6G0VKM0X",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.251000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataForumActivityNestedStackForumAc-13JUFT4MIJZFO",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.250000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataFulfillmentOrderNestedStackFulf-JBWPG8OW6XF2",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.249000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataDiscordBotConfigurationNestedSt-FKGJFH6J9H81",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.245000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataBoardPermissionRuleNestedStackB-2VEDWTE4WXVM",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.240000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataMerchCategoryNestedStackMerchCa-1FTE17TONW2O",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.240000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataApplicationPublicRateLimitNeste-Z3UMH2GN05O4",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.237000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataForumCategoryNestedStackForumCa-YSM3PIUZD6L1",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.234000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataMediaCollectionNestedStackMedia-1P5RLWAND492A",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.227000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataApplicationAuditEventNestedStac-BB0YG475T92T",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.225000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataMerchProductCategoryNestedStack-1082XUAXB5FI0",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.225000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataForumPostNestedStackForumPostNe-8AIXEFUNBDV3",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.224000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataEventNestedStackEventNestedStac-2U9WXIYV31CX",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.222000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataApplicationCreatorProfileNested-86L9D176ARFC",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.221000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataForumThreadNestedStackForumThre-13PV5Y2GPBM0K",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.220000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataMerchProductImageNestedStackMer-G58WA4NI1PYT",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.215000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataForumBoardNestedStackForumBoard-GF51J9HOOUKO",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.214000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataBrandNestedStackBrandNestedStac-B78YHC2XFHAP",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.212000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataGroupPermissionNestedStackGroup-102NYXDJLYND3",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.210000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataPermissionDefinitionNestedStack-ZQG2EKJ9ZDNS",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.204000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataMerchProductBrandNestedStackMer-2IQE8TSY7IC8",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:44:59.198000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataFunctionDirectiveStackNestedSta-KGT4TIF4G252",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:43:48.107000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a69-amplifyDataAmplifyTableManagerNestedStackA-1XPCIKO48E5IY",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:43:05.245000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a6927-data7552DF31-HPK4IGEJV5ID",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:42:55.257000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a6927-storage0EC3F24A-YK99LT0BEOWR",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:42:55.186000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a6927-auth179371D7-1XWJRVLMLOUID",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:41:20.351000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-Demo-branch-e6d14a6927",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-23T21:41:15.767000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataAlphaServiceNonceNestedStackAlp-L930UU05NJ3B",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.299000+00:00",
+      "CreationTime": "2026-08-23T17:23:58.168000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataInvestorAccessNestedStackInvest-TSTFMSBVNBU1",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.350000+00:00",
+      "CreationTime": "2026-08-23T17:23:56.434000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataWorkspaceMembershipPermissionSe-M4CCZ1MPRCHO",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:43.993000+00:00",
+      "CreationTime": "2026-08-23T17:23:55.189000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataWorkspaceMembershipPermissionNe-1AXC7KL0GZYF7",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:43.936000+00:00",
+      "CreationTime": "2026-08-23T17:23:55.119000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataWorkspaceMembershipNestedStackW-17CCLILSXX5PH",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:43.881000+00:00",
+      "CreationTime": "2026-08-23T17:23:54.970000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataRewardRedemptionEventNestedStac-1VQ9AIQTQMAW9",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:43.906000+00:00",
+      "CreationTime": "2026-08-23T17:23:54.896000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataRewardRedemptionEventClaimNeste-1C7GKO7BNK5SM",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:43.823000+00:00",
+      "CreationTime": "2026-08-23T17:23:54.885000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataInvestorAccessRequestNestedStac-NDANZY0JT3XQ",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:43.945000+00:00",
+      "CreationTime": "2026-08-23T17:23:53.737000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataInvestorAccessAuditEventNestedS-BCY4I7MPKHMH",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.383000+00:00",
+      "CreationTime": "2026-08-23T17:23:53.648000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataCreatorWorkspaceRecordNestedSta-1ODIZI1Z0T6OX",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.337000+00:00",
+      "CreationTime": "2026-08-23T17:23:53.618000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataRewardRedemptionEventClaimNeste-17J4P4PM11768",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-22T22:46:01.879000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataAlphaServiceNonceNestedStackAlp-DMLE0OMMIP5S",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-22T22:02:03.857000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataRewardRedemptionEventNestedStac-LADWHN8M13LU",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-22T22:02:00.837000+00:00"
+    },
+    {
+      "StackName": "ProjectRespawnTwitchRuntimeStaging",
+      "StackStatus": "CREATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-22T06:11:30.669000+00:00",
+      "CreationTime": "2026-08-22T06:11:24.328000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataInvestorAccessNestedStackInvest-17STDTCCDOXVK",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-21T17:13:11.840000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataInvestorAccessRequestNestedStac-1K6KZ35497O0",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-21T17:13:11.489000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataWorkspaceMembershipPermissionNe-1UXJLLFRPENZO",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-21T17:13:08.657000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataWorkspaceMembershipPermissionSe-1I0BZ5J3DDTSL",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-21T17:13:08.590000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataWorkspaceMembershipNestedStackW-11UM5DROI2BZY",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-21T17:13:08.573000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataCreatorWorkspaceRecordNestedSta-10A2L3YD3K1DZ",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-14T21:13:03.832000+00:00",
+      "CreationTime": "2026-08-21T17:13:07.321000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataInvestorAccessAuditEventNestedS-X40LLTA7S3DM",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-21T17:13:07.252000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataApplicationAnswerNestedStackApp-1DJB92900XSYX",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-19T21:04:57.096000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataApplicationIdempotencyNestedSta-13UP8YY63ANG0",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-19T21:04:56.961000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataApplicationScheduleNestedStackA-1EA25RZ2HGSL9",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-19T21:04:56.786000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataApplicationAuditEventNestedStac-1SS0MJW79V3SI",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-19T21:04:56.473000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataApplicationSubmissionNestedStac-HZXCEELJ2RPN",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-19T21:04:56.253000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataApplicationPublicRateLimitNeste-UOH2ZEBUO347",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-19T21:04:52.119000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataApplicationCreatorProfileNested-U7T2MTNKZRH9",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-19T21:04:52.010000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataTwitchTokenVaultNestedStackTwit-10WB1L0BULJN4",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:43.891000+00:00",
+      "CreationTime": "2026-08-16T15:59:30.693000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataTwitchRuntimeHealthNestedStackT-1S9Q6QDYKJ6WM",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:43.814000+00:00",
+      "CreationTime": "2026-08-16T15:59:30.580000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataApplicationIdempotencyNestedSta-HTBVK7BC9H9X",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.402000+00:00",
+      "CreationTime": "2026-08-16T15:59:29.496000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataApplicationAnswerNestedStackApp-1HTNOGVPP9U6S",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.331000+00:00",
+      "CreationTime": "2026-08-16T15:59:29.475000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataApplicationPublicRateLimitNeste-1EE2GD4KEWJOP",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.388000+00:00",
+      "CreationTime": "2026-08-16T15:59:29.469000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataTwitchIntegrationNestedStackTwi-16TGWHFOE0NZP",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:43.978000+00:00",
+      "CreationTime": "2026-08-16T15:59:29.460000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataTwitchOAuthTransactionNestedSta-189C6LV7LBFF8",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:43.862000+00:00",
+      "CreationTime": "2026-08-16T15:59:29.330000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataApplicationCreatorProfileNested-XNZRSOR82QE",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.306000+00:00",
+      "CreationTime": "2026-08-16T15:59:29.324000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataApplicationSubmissionNestedStac-I6YILZNDYE57",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.337000+00:00",
+      "CreationTime": "2026-08-16T15:59:29.323000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataApplicationScheduleNestedStackA-126TP3QU4WTAT",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.371000+00:00",
+      "CreationTime": "2026-08-16T15:59:29.263000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataApplicationAuditEventNestedStac-129BEXNLXEZLK",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.358000+00:00",
+      "CreationTime": "2026-08-16T15:59:29.250000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataApplicationPublicRateLimitNeste-163IYSSIYIYG",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-16T14:24:34.717000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataApplicationAuditEventNestedStac-12X97TWEQYXD5",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-16T14:24:34.671000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataApplicationSubmissionNestedStac-11OBKUAJNWLUT",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-16T14:24:34.671000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataApplicationCreatorProfileNested-V6ZK45P6NOZ4",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-16T14:24:34.654000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataApplicationAnswerNestedStackApp-1SVKYC7N9BO22",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-16T14:24:34.610000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataApplicationScheduleNestedStackA-1UT6141D98JRF",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-16T14:24:30.082000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataApplicationIdempotencyNestedSta-118WH2VTC1ZWC",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-16T14:24:30.054000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbox-bbfa03cf7c-apistack7B433BC7-WSHRHEIPB8WC",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:54:56.913000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataConnectionStackNestedStackConne-8KR4ETDS76Y9",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-19T21:05:45.725000+00:00",
+      "CreationTime": "2026-08-15T12:54:07.925000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataMerchProductBrandNestedStackMer-696GUZEMXCC0",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.513000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataBrandAccessNestedStackBrandAcce-1QMP9SHK70FW3",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.454000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataMediaItemNestedStackMediaItemNe-1DMA0AECC712X",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.412000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataForumPostNestedStackForumPostNe-1SUMLZK5G7181",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.408000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataMerchProductImageNestedStackMer-18HRQVTWO3E0H",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.405000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataMerchProductNestedStackMerchPro-TBANMJMSG4EX",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.400000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataDiscordBotConfigurationNestedSt-W0NJIO5XEZC3",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.399000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataForumCategoryNestedStackForumCa-TZ945RBDXGBH",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.395000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataTwitchCommandNestedStackTwitchC-OILMYRG2C482",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.394000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataBoardPermissionRuleNestedStackB-1J1IIWJUGAJW",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.389000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataMerchCategoryNestedStackMerchCa-10T7AXL1JH8DM",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.387000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataForumBoardNestedStackForumBoard-IPOCJV4KIRVM",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.377000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataFulfillmentOrderNestedStackFulf-QNCXVX9V42KP",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.377000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataUserProfileNestedStackUserProfi-DLC3YNPAFYKJ",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.374000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataPermissionDefinitionNestedStack-1C21T9F1EUQU2",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.371000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataGroupPermissionNestedStackGroup-W8RDD8G7H6RR",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.370000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataForumActivityNestedStackForumAc-1JRX0RXMR3Z5J",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.368000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataPermissionAuditEventNestedStack-1NGXGG7KCWUY8",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.364000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataMerchProductCategoryNestedStack-HHVYUI75H37C",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.363000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataBrandNestedStackBrandNestedStac-1NFK1DM1239GL",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.357000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataEventNestedStackEventNestedStac-1L7UPYAAN5QSL",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.357000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataMerchProductVariantNestedStackM-HQCQ9WJYC4R4",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.356000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataEventSuggestionNestedStackEvent-MG6OYE761LL5",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.338000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataEventTagNestedStackEventTagNest-WSLSCYHT7N0Y",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.336000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataTwitchOAuthTransactionNestedSta-VUMPA5Y4OT1I",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.332000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataBrandAccessPermissionNestedStac-1EDORX676JUH5",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.331000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataForumThreadNestedStackForumThre-1K3MDUDX8Y4K4",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.330000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataMediaCollectionNestedStackMedia-O5R4F2MA29ST",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.327000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataTwitchTokenVaultNestedStackTwit-1M6A3TN2FX7C6",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.279000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataTwitchIntegrationNestedStackTwi-DOEPN42LHRAV",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.271000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataTwitchRuntimeHealthNestedStackT-1KFFRUHOOTOSW",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:53:05.269000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataFunctionDirectiveStackNestedSta-GB0QU4Y6A57T",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-19T21:04:57.111000+00:00",
+      "CreationTime": "2026-08-15T12:52:20.175000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbo-amplifyDataAmplifyTableManagerNestedStackA-11FB0DNV4C0XW",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:52:03.434000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbox-bbfa03cf7c-data7552DF31-1EWLDQ1O8WDSC",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-19T21:04:29.504000+00:00",
+      "CreationTime": "2026-08-15T12:51:53.817000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbox-bbfa03cf7c-storage0EC3F24A-G8QAU122PT60",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-15T12:51:53.747000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbox-bbfa03cf7c-auth179371D7-1VHNVVRGURWRI",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-19T21:04:06.847000+00:00",
+      "CreationTime": "2026-08-15T12:50:51.929000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Daniel-sandbox-bbfa03cf7c",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-19T21:04:02.573000+00:00",
+      "CreationTime": "2026-08-15T12:50:48.294000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataTwitchOAuthTransactionNestedSta-EPEXW8VEQJAK",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-14T21:13:00.612000+00:00",
+      "CreationTime": "2026-08-14T15:28:36.740000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataTwitchRuntimeHealthNestedStackT-1AGCLSY86KE3O",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-14T15:28:36.734000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataTwitchIntegrationNestedStackTwi-1TYPDBLX7TJ69",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-14T21:13:00.409000+00:00",
+      "CreationTime": "2026-08-14T15:28:36.638000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataTwitchTokenVaultNestedStackTwit-CNE67V3H6NF2",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-14T15:28:36.632000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b38605406-apistack7B433BC7-1E1TFWR0VJBXS",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-14T21:17:48.797000+00:00",
+      "CreationTime": "2026-08-10T21:43:38.070000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataConnectionStackNestedStackConne-19FTP53HBKEQP",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-16T14:25:23.292000+00:00",
+      "CreationTime": "2026-08-10T21:42:52.736000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataBrandAccessPermissionNestedStac-1M1BH1U7TUGS",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.391000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataBoardPermissionRuleNestedStackB-TSUPUYSM1YZ7",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.308000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataMerchCategoryNestedStackMerchCa-1ALE2R3G8QR5O",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.305000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataEventNestedStackEventNestedStac-1EDJWWJ26VUPJ",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.279000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataPermissionDefinitionNestedStack-10MIKYF9ME7E8",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.262000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataMediaItemNestedStackMediaItemNe-2SPGX7UIWTPT",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.255000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataMerchProductNestedStackMerchPro-17FD3CPV8KLMN",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.252000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataMerchProductImageNestedStackMer-XYCJWX3RHESM",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.249000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataMerchProductBrandNestedStackMer-14QY8RX6D1GVQ",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.248000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataMerchProductVariantNestedStackM-1X1M1GJXW55JW",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.246000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataEventTagNestedStackEventTagNest-PVOFISTKSG18",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.245000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataForumActivityNestedStackForumAc-OLAZ1IFAQXLD",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.244000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataDiscordBotConfigurationNestedSt-1TH487MOPW3TH",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.236000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataForumBoardNestedStackForumBoard-A1HB20HEKRQ0",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.235000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataBrandNestedStackBrandNestedStac-1K6XHLOUJJGW7",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.229000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataMediaCollectionNestedStackMedia-A4BXUP3YZBDC",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.218000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataUserProfileNestedStackUserProfi-3RG30LE817C4",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.209000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataEventSuggestionNestedStackEvent-142POZF3C6JTR",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.202000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataMerchProductCategoryNestedStack-TRNS21CMT61Y",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.201000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataGroupPermissionNestedStackGroup-17UP3UD9J7ANJ",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.194000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataForumCategoryNestedStackForumCa-1VNN1Q6434XPU",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.188000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataForumPostNestedStackForumPostNe-11LRI0PQNFLQZ",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.188000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataPermissionAuditEventNestedStack-YVGO0UZLO8OY",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.170000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataBrandAccessNestedStackBrandAcce-CMGMCTMW5PQT",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.164000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataFulfillmentOrderNestedStackFulf-1C2C3IWZ56L2I",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.157000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataTwitchCommandNestedStackTwitchC-1T2KVMFTEV2TE",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.136000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataForumThreadNestedStackForumThre-I17HBZ18FH2B",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:41:50.107000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataFunctionDirectiveStackNestedSta-86G2CHX8JSF4",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-14T21:14:24.295000+00:00",
+      "CreationTime": "2026-08-10T21:40:39.966000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b386-amplifyDataAmplifyTableManagerNestedStackA-7AI5HKPU3M8M",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-10T21:40:15.342000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b38605406-storage0EC3F24A-1NVAV3SJC02P7",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-21T17:12:22.975000+00:00",
+      "CreationTime": "2026-08-10T21:40:06.586000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b38605406-data7552DF31-G9IU8JN6V723",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-16T10:13:39.648000+00:00",
+      "CreationTime": "2026-08-10T21:40:06.579000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b38605406-auth179371D7-PPXB534TOQ08",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-14T21:12:01.575000+00:00",
+      "CreationTime": "2026-08-10T21:38:12.624000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-staging-branch-8b38605406",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-16T10:13:30.979000+00:00",
+      "CreationTime": "2026-08-10T21:38:07.599000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataBrandAccessPermissionNestedStac-8C31YUS97H4E",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.353000+00:00",
+      "CreationTime": "2026-08-09T16:46:23.691000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataPermissionDefinitionNestedStack-1B78EC4862VOL",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:43.805000+00:00",
+      "CreationTime": "2026-08-09T16:46:23.662000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataPermissionAuditEventNestedStack-ZKMT5CRFO7JX",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:43.785000+00:00",
+      "CreationTime": "2026-08-09T16:46:23.651000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataDiscordBotConfigurationNestedSt-RW3V3T4CA9T5",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.426000+00:00",
+      "CreationTime": "2026-08-09T16:46:23.430000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataGroupPermissionNestedStackGroup-1CDWMCLLI4KY2",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.365000+00:00",
+      "CreationTime": "2026-08-09T16:46:19.453000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-sandbox-583d036e70-apistack7B433BC7-12HKWH5B6SNKR",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-08T20:13:43.902000+00:00",
+      "CreationTime": "2026-08-08T18:46:26.095000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataConnectionStackNestedStackConne-19BFGAEXOPEQS",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-08T20:13:16.195000+00:00",
+      "CreationTime": "2026-08-08T18:46:00.839000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataForumBoardNestedStackForumBoard-1PQ4O5AJXDAPX",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-08T20:12:48.302000+00:00",
+      "CreationTime": "2026-08-08T18:44:58.613000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataPermissionDefinitionNestedStack-OR8PFJGCOOK0",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-08T18:44:58.593000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataDiscordBotConfigurationNestedSt-1VTTK7A47YUSM",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-08T20:12:52.831000+00:00",
+      "CreationTime": "2026-08-08T18:44:58.590000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataForumPostNestedStackForumPostNe-9VGJYYDKQ3MZ",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-08T20:12:52.478000+00:00",
+      "CreationTime": "2026-08-08T18:44:58.585000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataForumThreadNestedStackForumThre-16IENE1HEOI4Q",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-08T20:12:52.982000+00:00",
+      "CreationTime": "2026-08-08T18:44:58.579000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataEventSuggestionNestedStackEvent-RLUHHZT1Q8M7",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-08T20:12:52.929000+00:00",
+      "CreationTime": "2026-08-08T18:44:58.578000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataBrandAccessNestedStackBrandAcce-AXP6WA4K30ZC",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-08T18:44:58.576000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataMediaCollectionNestedStackMedia-V58LT2OIUKP3",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-08T19:33:11.153000+00:00",
+      "CreationTime": "2026-08-08T18:44:58.575000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataMerchProductVariantNestedStackM-X3MNWBBI0DIN",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-08T18:44:58.569000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataPermissionAuditEventNestedStack-1GKJWW4JHEMFC",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-08T18:44:58.568000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataEventTagNestedStackEventTagNest-1G09Q877TKJK3",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-08T20:12:48.320000+00:00",
+      "CreationTime": "2026-08-08T18:44:58.562000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataTwitchCommandNestedStackTwitchC-4VJHY3N5ORCU",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-08T18:44:58.560000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataBrandAccessPermissionNestedStac-906GMCGFCK9H",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-08T18:44:58.559000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataMerchProductImageNestedStackMer-V3L45CTVYCOX",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-08T18:44:58.559000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataMerchProductNestedStackMerchPro-1FJDAU8RXVY5K",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-08T18:44:58.553000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataFulfillmentOrderNestedStackFulf-ZIZV09MHIGND",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-08T20:12:52.975000+00:00",
+      "CreationTime": "2026-08-08T18:44:58.544000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataMerchProductBrandNestedStackMer-1CFG6QUU1YJN9",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-08T18:44:58.544000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataBrandNestedStackBrandNestedStac-1ROG7V6ZFR0Y",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-08T18:44:58.537000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataMerchCategoryNestedStackMerchCa-AJ7LEI8T886W",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-08T20:12:48.210000+00:00",
+      "CreationTime": "2026-08-08T18:44:58.536000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataBoardPermissionRuleNestedStackB-1CT82ZKQP90VT",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-08T18:44:58.520000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataForumActivityNestedStackForumAc-FWN3LLHVMDL5",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-08T18:44:58.518000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataEventNestedStackEventNestedStac-6651XZA76ENY",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-08T18:44:58.517000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataUserProfileNestedStackUserProfi-1DCM1H0MLUU5M",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-08T18:44:58.495000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataMediaItemNestedStackMediaItemNe-17CHXFDERO1VZ",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-08T19:33:11.199000+00:00",
+      "CreationTime": "2026-08-08T18:44:58.495000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataMerchProductCategoryNestedStack-WK8A64MI0CMO",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-08T18:44:58.490000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataForumCategoryNestedStackForumCa-D3GR192HDAEC",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-08T20:12:53.037000+00:00",
+      "CreationTime": "2026-08-08T18:44:58.484000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataGroupPermissionNestedStackGroup-BDA7E91VCTID",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-08T18:44:58.461000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataFunctionDirectiveStackNestedSta-1YRD7T0AJD3P",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-08T20:12:48.550000+00:00",
+      "CreationTime": "2026-08-08T18:44:11.133000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-s-amplifyDataAmplifyTableManagerNestedStackA-CDN4QNJKG66N",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-08T18:43:56.938000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-sandbox-583d036e70-storage0EC3F24A-1UQU9HKRSJUI8",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-08T18:43:48.142000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-sandbox-583d036e70-data7552DF31-GOEJQD87E9M",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-08T20:29:03.685000+00:00",
+      "CreationTime": "2026-08-08T18:43:48.112000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-sandbox-583d036e70-auth179371D7-8JZI4ES7ASO4",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-08-08T18:42:46.415000+00:00"
+    },
+    {
+      "StackName": "amplify-projectrespawnwebsite-Ntgrestage8-sandbox-583d036e70",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-08T20:28:57.936000+00:00",
+      "CreationTime": "2026-08-08T18:42:42.768000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataFulfillmentOrderNestedStackFulf-1IK4IQXUQYIIZ",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.315000+00:00",
+      "CreationTime": "2026-08-07T17:33:21.942000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataForumActivityNestedStackForumAc-X36G3378PN57",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.385000+00:00",
+      "CreationTime": "2026-08-05T22:30:19.722000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67772a-apistack7B433BC7-FH35ARGBCBQJ",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-02T17:33:26.054000+00:00",
+      "CreationTime": "2026-08-02T16:59:15.713000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataConnectionStackNestedStackConne-FR2Q4D0NCOL9",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:55.622000+00:00",
+      "CreationTime": "2026-08-02T16:58:30.166000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataMerchProductCategoryNestedStack-A52OPFYVX2YC",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.364000+00:00",
+      "CreationTime": "2026-08-02T16:57:28.101000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataUserProfileNestedStackUserProfi-NV7TZ0XYFHBQ",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:43.911000+00:00",
+      "CreationTime": "2026-08-02T16:57:28.061000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataMerchProductBrandNestedStackMer-1EYBMYRVXHDKK",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.360000+00:00",
+      "CreationTime": "2026-08-02T16:57:28.007000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataEventSuggestionNestedStackEvent-E31NJ9918KL9",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.403000+00:00",
+      "CreationTime": "2026-08-02T16:57:28.004000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataMerchProductImageNestedStackMer-1PJNFBQ636JOK",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.335000+00:00",
+      "CreationTime": "2026-08-02T16:57:27.991000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataMerchProductVariantNestedStackM-14Q5EEN1RI7TM",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.317000+00:00",
+      "CreationTime": "2026-08-02T16:57:27.989000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataBoardPermissionRuleNestedStackB-KWYH39D83S1K",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.349000+00:00",
+      "CreationTime": "2026-08-02T16:57:27.981000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataForumPostNestedStackForumPostNe-1PB47CGF60CKI",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.462000+00:00",
+      "CreationTime": "2026-08-02T16:57:27.975000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataForumThreadNestedStackForumThre-B50QPDDDAZVO",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.332000+00:00",
+      "CreationTime": "2026-08-02T16:57:27.975000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataTwitchCommandNestedStackTwitchC-1IMB4QJ9P5USB",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:43.820000+00:00",
+      "CreationTime": "2026-08-02T16:57:27.974000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataForumCategoryNestedStackForumCa-129Y8D5CGX44",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.293000+00:00",
+      "CreationTime": "2026-08-02T16:57:27.971000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataForumBoardNestedStackForumBoard-F0214P6HRM03",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.416000+00:00",
+      "CreationTime": "2026-08-02T16:57:27.967000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataEventTagNestedStackEventTagNest-RNFFV6TEGSXK",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.325000+00:00",
+      "CreationTime": "2026-08-02T16:57:27.966000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataMediaCollectionNestedStackMedia-1KB63Y4SEAXCT",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.327000+00:00",
+      "CreationTime": "2026-08-02T16:57:27.963000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataBrandNestedStackBrandNestedStac-E94GT900VNJP",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.295000+00:00",
+      "CreationTime": "2026-08-02T16:57:27.959000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataBrandAccessNestedStackBrandAcce-7RW31ZUAOX7P",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.302000+00:00",
+      "CreationTime": "2026-08-02T16:57:27.955000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataMerchProductNestedStackMerchPro-1E0UHCWYD548X",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.374000+00:00",
+      "CreationTime": "2026-08-02T16:57:27.953000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataMerchCategoryNestedStackMerchCa-1PCOHP6TO23HZ",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.317000+00:00",
+      "CreationTime": "2026-08-02T16:57:27.949000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataMediaItemNestedStackMediaItemNe-N0QCUTPO7GMJ",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.355000+00:00",
+      "CreationTime": "2026-08-02T16:57:27.935000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataEventNestedStackEventNestedStac-RAN00HYOXQC4",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:32.312000+00:00",
+      "CreationTime": "2026-08-02T16:57:27.932000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataFunctionDirectiveStackNestedSta-161ITRTNOX6TX",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-02T17:30:25.648000+00:00",
+      "CreationTime": "2026-08-02T16:56:19.044000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67-amplifyDataAmplifyTableManagerNestedStackA-ADST837VTJKV",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:17:20.746000+00:00",
+      "CreationTime": "2026-08-02T16:55:53.149000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67772a-data7552DF31-1O7UWRQP5A8D3",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-16T18:24:41.073000+00:00",
+      "CreationTime": "2026-08-02T16:55:44.404000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67772a-storage0EC3F24A-UONKYPZQFB94",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-08-29T16:16:59.210000+00:00",
+      "CreationTime": "2026-08-02T16:55:44.354000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67772a-auth179371D7-1HCDNYERQA09Z",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-02T17:28:05.411000+00:00",
+      "CreationTime": "2026-08-02T16:54:09.416000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-master-branch-53ef67772a",
+      "StackStatus": "UPDATE_COMPLETE",
+      "LastUpdatedTime": "2026-09-16T18:24:32.535000+00:00",
+      "CreationTime": "2026-08-02T16:54:04.507000+00:00"
+    },
+    {
+      "StackName": "amplify-d2cux232bpa951-development-branch-62707e873c",
+      "StackStatus": "ROLLBACK_COMPLETE",
+      "CreationTime": "2026-08-02T12:11:00.369000+00:00"
+    },
+    {
+      "StackName": "CDKToolkit",
+      "StackStatus": "CREATE_COMPLETE",
+      "CreationTime": "2026-03-31T12:01:31.646000+00:00"
+    }
+  ],
+  "administrativeActivity": "No in-progress CloudFormation stack or Master Amplify job observed; no lock on other administrators",
+  "rawRecordsPersisted": false,
+  "awsWrites": 0
+}

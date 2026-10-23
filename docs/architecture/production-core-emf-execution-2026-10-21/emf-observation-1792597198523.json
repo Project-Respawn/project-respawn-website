@@ -1,0 +1,249 @@
+{
+  "at": "2026-10-21T15:39:58.523Z",
+  "attempt": 1,
+  "deadline": "2026-10-21T15:49:25.547Z",
+  "passed": false,
+  "probeAwsRequestId": "fcd8589f-26a2-4688-a2b8-9fc455c324a7",
+  "rootEmf": [
+    {
+      "eventId": "39976252634389728922037323777948590895560829831048331266",
+      "timestamp": 1792597165633,
+      "requestId": "fcd8589f-26a2-4688-a2b8-9fc455c324a7",
+      "metadata": {
+        "Timestamp": 1792597165633,
+        "CloudWatchMetrics": [
+          {
+            "Namespace": "ProjectRespawn/Core",
+            "Dimensions": [
+              [
+                "Environment"
+              ]
+            ],
+            "Metrics": [
+              {
+                "Name": "Requests",
+                "Unit": "Count"
+              },
+              {
+                "Name": "Denied",
+                "Unit": "Count"
+              },
+              {
+                "Name": "DependencyFailures",
+                "Unit": "Count"
+              },
+              {
+                "Name": "RateLimited",
+                "Unit": "Count"
+              }
+            ]
+          }
+        ]
+      },
+      "Environment": "Production",
+      "Requests": 1,
+      "Denied": 1,
+      "DependencyFailures": 0,
+      "RateLimited": 0,
+      "outcome": "UNAUTHENTICATED"
+    }
+  ],
+  "platform": [
+    {
+      "eventId": "39976252618377793869492336362325945175799306269754392576",
+      "type": "platform.initStart"
+    },
+    {
+      "eventId": "39976252624287491347102951494832910518051122068839202817",
+      "type": "platform.start",
+      "requestId": "fcd8589f-26a2-4688-a2b8-9fc455c324a7"
+    },
+    {
+      "eventId": "39976252635259457984780018080468483908194115929781567491",
+      "type": "platform.report",
+      "requestId": "fcd8589f-26a2-4688-a2b8-9fc455c324a7",
+      "status": "success"
+    }
+  ],
+  "metrics": [
+    {
+      "Namespace": "ProjectRespawn/Core",
+      "MetricName": "Requests",
+      "Dimensions": [
+        {
+          "Name": "Environment",
+          "Value": "Production"
+        }
+      ],
+      "Label": "Requests",
+      "Datapoints": []
+    },
+    {
+      "Namespace": "ProjectRespawn/Core",
+      "MetricName": "Denied",
+      "Dimensions": [
+        {
+          "Name": "Environment",
+          "Value": "Production"
+        }
+      ],
+      "Label": "Denied",
+      "Datapoints": []
+    },
+    {
+      "Namespace": "ProjectRespawn/Core",
+      "MetricName": "DependencyFailures",
+      "Dimensions": [
+        {
+          "Name": "Environment",
+          "Value": "Production"
+        }
+      ],
+      "Label": "DependencyFailures",
+      "Datapoints": []
+    },
+    {
+      "Namespace": "ProjectRespawn/Core",
+      "MetricName": "RateLimited",
+      "Dimensions": [
+        {
+          "Name": "Environment",
+          "Value": "Production"
+        }
+      ],
+      "Label": "RateLimited",
+      "Datapoints": []
+    },
+    {
+      "Namespace": "AWS/Lambda",
+      "MetricName": "Invocations",
+      "Dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-Core-Production-Contracts"
+        }
+      ],
+      "Label": "Invocations",
+      "Datapoints": []
+    },
+    {
+      "Namespace": "AWS/Lambda",
+      "MetricName": "Errors",
+      "Dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-Core-Production-Contracts"
+        }
+      ],
+      "Label": "Errors",
+      "Datapoints": []
+    },
+    {
+      "Namespace": "AWS/Lambda",
+      "MetricName": "Throttles",
+      "Dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-Core-Production-Contracts"
+        }
+      ],
+      "Label": "Throttles",
+      "Datapoints": []
+    }
+  ],
+  "alarmChecks": [
+    {
+      "name": "ProjectRespawn-Core-Production-Errors",
+      "namespace": "AWS/Lambda",
+      "metric": "Errors",
+      "dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-Core-Production-Contracts"
+        }
+      ],
+      "statistic": "Sum",
+      "period": 60,
+      "threshold": 1,
+      "comparison": "GreaterThanOrEqualToThreshold",
+      "state": "OK",
+      "stateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+      "stateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-21T07:06:51.940+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":1.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-21T07:05:00.000+0000\"}]}",
+      "actualDatapoints": [],
+      "definitionMatched": true,
+      "signalObserved": false,
+      "forcedAlarm": false
+    },
+    {
+      "name": "ProjectRespawn-Core-Production-Throttles",
+      "namespace": "AWS/Lambda",
+      "metric": "Throttles",
+      "dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-Core-Production-Contracts"
+        }
+      ],
+      "statistic": "Sum",
+      "period": 60,
+      "threshold": 1,
+      "comparison": "GreaterThanOrEqualToThreshold",
+      "state": "OK",
+      "stateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+      "stateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-21T06:56:14.445+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":1.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-21T06:55:00.000+0000\"}]}",
+      "actualDatapoints": [],
+      "definitionMatched": true,
+      "signalObserved": false,
+      "forcedAlarm": false
+    },
+    {
+      "name": "ProjectRespawn-Core-Production-DependencyFailures",
+      "namespace": "ProjectRespawn/Core",
+      "metric": "DependencyFailures",
+      "dimensions": [
+        {
+          "Name": "Environment",
+          "Value": "Production"
+        }
+      ],
+      "statistic": "Sum",
+      "period": 60,
+      "threshold": 1,
+      "comparison": "GreaterThanOrEqualToThreshold",
+      "state": "OK",
+      "stateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+      "stateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-21T06:55:43.880+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":1.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-21T06:54:00.000+0000\"}]}",
+      "actualDatapoints": [],
+      "definitionMatched": true,
+      "signalObserved": false,
+      "forcedAlarm": false
+    },
+    {
+      "name": "ProjectRespawn-Core-Production-Denied",
+      "namespace": "ProjectRespawn/Core",
+      "metric": "Denied",
+      "dimensions": [
+        {
+          "Name": "Environment",
+          "Value": "Production"
+        }
+      ],
+      "statistic": "Sum",
+      "period": 60,
+      "threshold": 20,
+      "comparison": "GreaterThanOrEqualToThreshold",
+      "state": "OK",
+      "stateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+      "stateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-21T06:55:02.438+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":20.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-21T06:54:00.000+0000\"}]}",
+      "actualDatapoints": [],
+      "definitionMatched": true,
+      "signalObserved": false,
+      "forcedAlarm": false
+    }
+  ],
+  "additionalInvocations": 0,
+  "metricsFabricated": false,
+  "alarmStatesForced": false,
+  "rawLogsPersisted": false,
+  "cloudWatchDeliveryCanDuplicate": true
+}

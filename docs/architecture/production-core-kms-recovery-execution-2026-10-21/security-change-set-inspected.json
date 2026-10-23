@@ -1,0 +1,101 @@
+{
+  "at": "2026-10-21T06:02:34.483Z",
+  "completeAwsChangeSet": {
+    "Changes": [
+      {
+        "Type": "Resource",
+        "ResourceChange": {
+          "Action": "Modify",
+          "LogicalResourceId": "ExecutionBoundary",
+          "PhysicalResourceId": "arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-ExecutionBoundary",
+          "ResourceType": "AWS::IAM::ManagedPolicy",
+          "Replacement": "False",
+          "Scope": [
+            "Properties"
+          ],
+          "Details": [
+            {
+              "Target": {
+                "Attribute": "Properties",
+                "Name": "PolicyDocument",
+                "RequiresRecreation": "Never",
+                "Path": "/Properties/PolicyDocument",
+                "BeforeValue": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":[\"lambda:CreateFunction\",\"lambda:GetFunction\",\"lambda:GetFunctionConfiguration\",\"lambda:UpdateFunctionCode\",\"lambda:UpdateFunctionConfiguration\",\"lambda:DeleteFunction\",\"lambda:ListTags\",\"lambda:TagResource\",\"lambda:UntagResource\",\"lambda:GetFunctionConcurrency\"],\"Resource\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts:$LATEST\"]},{\"Effect\":\"Allow\",\"Action\":[\"iam:GetRole\",\"iam:GetRolePolicy\",\"iam:ListRolePolicies\",\"iam:ListAttachedRolePolicies\",\"iam:PutRolePolicy\",\"iam:DeleteRolePolicy\",\"iam:DeleteRole\",\"iam:UpdateAssumeRolePolicy\",\"iam:TagRole\",\"iam:UntagRole\"],\"Resource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts\"},{\"Effect\":\"Allow\",\"Action\":\"iam:PassRole\",\"Resource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts\",\"Condition\":{\"StringEquals\":{\"iam:PassedToService\":\"lambda.amazonaws.com\"}}},{\"Effect\":\"Allow\",\"Action\":\"iam:GetPolicy\",\"Resource\":\"arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary\"},{\"Effect\":\"Allow\",\"Action\":[\"logs:CreateLogGroup\",\"logs:DeleteLogGroup\",\"logs:PutRetentionPolicy\",\"logs:DeleteRetentionPolicy\",\"logs:TagResource\",\"logs:UntagResource\",\"logs:ListTagsForResource\"],\"Resource\":[\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts\",\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts:*\"]},{\"Effect\":\"Allow\",\"Action\":\"logs:DescribeLogGroups\",\"Resource\":\"*\"},{\"Effect\":\"Allow\",\"Action\":[\"cloudwatch:PutMetricAlarm\",\"cloudwatch:DeleteAlarms\",\"cloudwatch:DescribeAlarms\",\"cloudwatch:TagResource\",\"cloudwatch:UntagResource\",\"cloudwatch:ListTagsForResource\"],\"Resource\":\"arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-Core-Production-*\"},{\"Effect\":\"Allow\",\"Action\":\"s3:GetObject\",\"Resource\":[\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/b9c5d96e7123a6d837c903f1e1779080e020aba8c9eab8af1e2ddccde912ed96.json\",\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.zip\"]},{\"Effect\":\"Allow\",\"Action\":[\"iam:CreateRole\",\"iam:PutRolePermissionsBoundary\"],\"Resource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts\",\"Condition\":{\"StringEquals\":{\"iam:PermissionsBoundary\":\"arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary\"}}},{\"Effect\":\"Allow\",\"Action\":[\"kms:Encrypt\",\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Condition\":{\"StringEquals\":{\"kms:EncryptionContext:aws:lambda:FunctionArn\":\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts\",\"kms:ViaService\":\"lambda.eu-north-1.amazonaws.com\",\"kms:CallerAccount\":\"058264289478\"}}},{\"Effect\":\"Allow\",\"Action\":\"kms:DescribeKey\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Condition\":{\"StringEquals\":{\"kms:ViaService\":\"lambda.eu-north-1.amazonaws.com\",\"kms:CallerAccount\":\"058264289478\"}}}]}",
+                "AfterValue": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":[\"lambda:CreateFunction\",\"lambda:GetFunction\",\"lambda:GetFunctionConfiguration\",\"lambda:UpdateFunctionCode\",\"lambda:UpdateFunctionConfiguration\",\"lambda:DeleteFunction\",\"lambda:ListTags\",\"lambda:TagResource\",\"lambda:UntagResource\",\"lambda:GetFunctionConcurrency\"],\"Resource\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts:$LATEST\"]},{\"Effect\":\"Allow\",\"Action\":[\"iam:GetRole\",\"iam:GetRolePolicy\",\"iam:ListRolePolicies\",\"iam:ListAttachedRolePolicies\",\"iam:PutRolePolicy\",\"iam:DeleteRolePolicy\",\"iam:DeleteRole\",\"iam:UpdateAssumeRolePolicy\",\"iam:TagRole\",\"iam:UntagRole\"],\"Resource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts\"},{\"Effect\":\"Allow\",\"Action\":\"iam:PassRole\",\"Resource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts\",\"Condition\":{\"StringEquals\":{\"iam:PassedToService\":\"lambda.amazonaws.com\"}}},{\"Effect\":\"Allow\",\"Action\":\"iam:GetPolicy\",\"Resource\":\"arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary\"},{\"Effect\":\"Allow\",\"Action\":[\"logs:CreateLogGroup\",\"logs:DeleteLogGroup\",\"logs:PutRetentionPolicy\",\"logs:DeleteRetentionPolicy\",\"logs:TagResource\",\"logs:UntagResource\",\"logs:ListTagsForResource\"],\"Resource\":[\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts\",\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts:*\"]},{\"Effect\":\"Allow\",\"Action\":\"logs:DescribeLogGroups\",\"Resource\":\"*\"},{\"Effect\":\"Allow\",\"Action\":[\"cloudwatch:PutMetricAlarm\",\"cloudwatch:DeleteAlarms\",\"cloudwatch:DescribeAlarms\",\"cloudwatch:TagResource\",\"cloudwatch:UntagResource\",\"cloudwatch:ListTagsForResource\"],\"Resource\":\"arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-Core-Production-*\"},{\"Effect\":\"Allow\",\"Action\":\"s3:GetObject\",\"Resource\":[\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/b9c5d96e7123a6d837c903f1e1779080e020aba8c9eab8af1e2ddccde912ed96.json\",\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.zip\",\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/099f4aed191a8f6921daa4c15ce91a14869ad90bcb71d46044e4f898cd4c55b8.json\"]},{\"Effect\":\"Allow\",\"Action\":[\"iam:CreateRole\",\"iam:PutRolePermissionsBoundary\"],\"Resource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts\",\"Condition\":{\"StringEquals\":{\"iam:PermissionsBoundary\":\"arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary\"}}},{\"Effect\":\"Allow\",\"Action\":[\"kms:Encrypt\",\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Condition\":{\"StringEquals\":{\"kms:EncryptionContext:aws:lambda:FunctionArn\":\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts\",\"kms:ViaService\":\"lambda.eu-north-1.amazonaws.com\",\"kms:CallerAccount\":\"058264289478\"}}},{\"Effect\":\"Allow\",\"Action\":\"kms:DescribeKey\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Condition\":{\"StringEquals\":{\"kms:ViaService\":\"lambda.eu-north-1.amazonaws.com\",\"kms:CallerAccount\":\"058264289478\"}}},{\"Effect\":\"Allow\",\"Action\":\"kms:CreateGrant\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Condition\":{\"StringEquals\":{\"kms:ViaService\":\"lambda.eu-north-1.amazonaws.com\",\"kms:CallerAccount\":\"058264289478\"},\"Bool\":{\"kms:GrantIsForAWSResource\":\"true\"}}}]}",
+                "AttributeChangeType": "Modify"
+              },
+              "Evaluation": "Static",
+              "ChangeSource": "DirectModification"
+            }
+          ],
+          "BeforeContext": "{\"Properties\":{\"ManagedPolicyName\":\"ProjectRespawn-Core-Production-ExecutionBoundary\",\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"lambda:CreateFunction\",\"lambda:GetFunction\",\"lambda:GetFunctionConfiguration\",\"lambda:UpdateFunctionCode\",\"lambda:UpdateFunctionConfiguration\",\"lambda:DeleteFunction\",\"lambda:ListTags\",\"lambda:TagResource\",\"lambda:UntagResource\",\"lambda:GetFunctionConcurrency\"],\"Resource\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts:$LATEST\"],\"Effect\":\"Allow\"},{\"Action\":[\"iam:GetRole\",\"iam:GetRolePolicy\",\"iam:ListRolePolicies\",\"iam:ListAttachedRolePolicies\",\"iam:PutRolePolicy\",\"iam:DeleteRolePolicy\",\"iam:DeleteRole\",\"iam:UpdateAssumeRolePolicy\",\"iam:TagRole\",\"iam:UntagRole\"],\"Resource\":[\"arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts\"],\"Effect\":\"Allow\"},{\"Condition\":{\"StringEquals\":{\"iam:PassedToService\":\"lambda.amazonaws.com\"}},\"Action\":\"iam:PassRole\",\"Resource\":[\"arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts\"],\"Effect\":\"Allow\"},{\"Action\":\"iam:GetPolicy\",\"Resource\":[\"arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary\"],\"Effect\":\"Allow\"},{\"Action\":[\"logs:CreateLogGroup\",\"logs:DeleteLogGroup\",\"logs:PutRetentionPolicy\",\"logs:DeleteRetentionPolicy\",\"logs:TagResource\",\"logs:UntagResource\",\"logs:ListTagsForResource\"],\"Resource\":[\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts\",\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts:*\"],\"Effect\":\"Allow\"},{\"Action\":\"logs:DescribeLogGroups\",\"Resource\":\"*\",\"Effect\":\"Allow\"},{\"Action\":[\"cloudwatch:PutMetricAlarm\",\"cloudwatch:DeleteAlarms\",\"cloudwatch:DescribeAlarms\",\"cloudwatch:TagResource\",\"cloudwatch:UntagResource\",\"cloudwatch:ListTagsForResource\"],\"Resource\":\"arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-Core-Production-*\",\"Effect\":\"Allow\"},{\"Action\":\"s3:GetObject\",\"Resource\":[\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/b9c5d96e7123a6d837c903f1e1779080e020aba8c9eab8af1e2ddccde912ed96.json\",\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.zip\"],\"Effect\":\"Allow\"},{\"Condition\":{\"StringEquals\":{\"iam:PermissionsBoundary\":\"arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary\"}},\"Action\":[\"iam:CreateRole\",\"iam:PutRolePermissionsBoundary\"],\"Resource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts\",\"Effect\":\"Allow\"},{\"Condition\":{\"StringEquals\":{\"kms:EncryptionContext:aws:lambda:FunctionArn\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts\"],\"kms:ViaService\":\"lambda.eu-north-1.amazonaws.com\",\"kms:CallerAccount\":\"058264289478\"}},\"Action\":[\"kms:Encrypt\",\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Allow\"},{\"Condition\":{\"StringEquals\":{\"kms:ViaService\":\"lambda.eu-north-1.amazonaws.com\",\"kms:CallerAccount\":\"058264289478\"}},\"Action\":\"kms:DescribeKey\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Allow\"}]}}}",
+          "AfterContext": "{\"Properties\":{\"ManagedPolicyName\":\"ProjectRespawn-Core-Production-ExecutionBoundary\",\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"lambda:CreateFunction\",\"lambda:GetFunction\",\"lambda:GetFunctionConfiguration\",\"lambda:UpdateFunctionCode\",\"lambda:UpdateFunctionConfiguration\",\"lambda:DeleteFunction\",\"lambda:ListTags\",\"lambda:TagResource\",\"lambda:UntagResource\",\"lambda:GetFunctionConcurrency\"],\"Resource\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts\",\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts:$LATEST\"],\"Effect\":\"Allow\"},{\"Action\":[\"iam:GetRole\",\"iam:GetRolePolicy\",\"iam:ListRolePolicies\",\"iam:ListAttachedRolePolicies\",\"iam:PutRolePolicy\",\"iam:DeleteRolePolicy\",\"iam:DeleteRole\",\"iam:UpdateAssumeRolePolicy\",\"iam:TagRole\",\"iam:UntagRole\"],\"Resource\":[\"arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts\"],\"Effect\":\"Allow\"},{\"Condition\":{\"StringEquals\":{\"iam:PassedToService\":\"lambda.amazonaws.com\"}},\"Action\":\"iam:PassRole\",\"Resource\":[\"arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts\"],\"Effect\":\"Allow\"},{\"Action\":\"iam:GetPolicy\",\"Resource\":[\"arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary\"],\"Effect\":\"Allow\"},{\"Action\":[\"logs:CreateLogGroup\",\"logs:DeleteLogGroup\",\"logs:PutRetentionPolicy\",\"logs:DeleteRetentionPolicy\",\"logs:TagResource\",\"logs:UntagResource\",\"logs:ListTagsForResource\"],\"Resource\":[\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts\",\"arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts:*\"],\"Effect\":\"Allow\"},{\"Action\":\"logs:DescribeLogGroups\",\"Resource\":\"*\",\"Effect\":\"Allow\"},{\"Action\":[\"cloudwatch:PutMetricAlarm\",\"cloudwatch:DeleteAlarms\",\"cloudwatch:DescribeAlarms\",\"cloudwatch:TagResource\",\"cloudwatch:UntagResource\",\"cloudwatch:ListTagsForResource\"],\"Resource\":\"arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-Core-Production-*\",\"Effect\":\"Allow\"},{\"Action\":\"s3:GetObject\",\"Resource\":[\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/b9c5d96e7123a6d837c903f1e1779080e020aba8c9eab8af1e2ddccde912ed96.json\",\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.zip\",\"arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/099f4aed191a8f6921daa4c15ce91a14869ad90bcb71d46044e4f898cd4c55b8.json\"],\"Effect\":\"Allow\"},{\"Condition\":{\"StringEquals\":{\"iam:PermissionsBoundary\":\"arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-RuntimeBoundary\"}},\"Action\":[\"iam:CreateRole\",\"iam:PutRolePermissionsBoundary\"],\"Resource\":\"arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Contracts\",\"Effect\":\"Allow\"},{\"Condition\":{\"StringEquals\":{\"kms:EncryptionContext:aws:lambda:FunctionArn\":[\"arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts\"],\"kms:ViaService\":\"lambda.eu-north-1.amazonaws.com\",\"kms:CallerAccount\":\"058264289478\"}},\"Action\":[\"kms:Encrypt\",\"kms:Decrypt\"],\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Allow\"},{\"Condition\":{\"StringEquals\":{\"kms:ViaService\":\"lambda.eu-north-1.amazonaws.com\",\"kms:CallerAccount\":\"058264289478\"}},\"Action\":\"kms:DescribeKey\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Allow\"},{\"Condition\":{\"StringEquals\":{\"kms:ViaService\":\"lambda.eu-north-1.amazonaws.com\",\"kms:CallerAccount\":\"058264289478\"},\"Bool\":{\"kms:GrantIsForAWSResource\":\"true\"}},\"Action\":\"kms:CreateGrant\",\"Resource\":\"arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7\",\"Effect\":\"Allow\"}]}}}"
+        }
+      },
+      {
+        "Type": "Resource",
+        "ResourceChange": {
+          "Action": "Modify",
+          "LogicalResourceId": "Execution",
+          "PhysicalResourceId": "ProjectRespawn-Core-Production-Execution",
+          "ResourceType": "AWS::IAM::Role",
+          "Replacement": "False",
+          "Scope": [
+            "Properties"
+          ],
+          "Details": [
+            {
+              "Target": {
+                "Attribute": "Properties",
+                "Name": "Policies",
+                "RequiresRecreation": "Never",
+                "Path": "/Properties/Policies",
+                "BeforeValue": "(Truncated-Signature):1b2cca51783d83f386794b84005be5098cf16983d930bd9deaa2d5afba4b7687",
+                "AfterValue": "(Truncated-Signature):4d6fffd7b76e15c186a8b0f8d463df50ca0540d02a84c23009a0c591dc02f588",
+                "AttributeChangeType": "Modify"
+              },
+              "Evaluation": "Static",
+              "ChangeSource": "DirectModification"
+            }
+          ],
+          "BeforeContext": "{\"Properties\":{\"RoleName\":\"ProjectRespawn-Core-Production-Execution\",\"Policies\":\"(Truncated-Signature):1b2cca51783d83f386794b84005be5098cf16983d930bd9deaa2d5afba4b7687\",\"AssumeRolePolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"cloudformation.amazonaws.com\"}}]},\"PermissionsBoundary\":\"arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-ExecutionBoundary\"}}",
+          "AfterContext": "{\"Properties\":{\"RoleName\":\"ProjectRespawn-Core-Production-Execution\",\"Policies\":\"(Truncated-Signature):4d6fffd7b76e15c186a8b0f8d463df50ca0540d02a84c23009a0c591dc02f588\",\"AssumeRolePolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"cloudformation.amazonaws.com\"}}]},\"PermissionsBoundary\":\"arn:aws:iam::058264289478:policy/ProjectRespawn-Core-Production-ExecutionBoundary\"}}"
+        }
+      }
+    ],
+    "ChangeSetName": "core-kms-recovery-security-20261021",
+    "ChangeSetId": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/core-kms-recovery-security-20261021/9f079070-abc4-4867-b2ef-2bf6d65ce9ae",
+    "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-Core-Production-Security/f831f540-ccd5-11f1-9843-0a0597cb14fd",
+    "StackName": "ProjectRespawn-Core-Production-Security",
+    "Description": null,
+    "Parameters": null,
+    "CreationTime": "2026-10-21T06:02:26.677000+00:00",
+    "ExecutionStatus": "AVAILABLE",
+    "Status": "CREATE_COMPLETE",
+    "StatusReason": null,
+    "NotificationARNs": [],
+    "RollbackConfiguration": {},
+    "Capabilities": [
+      "CAPABILITY_NAMED_IAM"
+    ],
+    "Tags": null,
+    "ParentChangeSetId": null,
+    "IncludeNestedStacks": false,
+    "RootChangeSetId": null,
+    "OnStackFailure": null,
+    "ImportExistingResources": null,
+    "StackDriftStatus": null,
+    "DeploymentMode": null
+  },
+  "expected": {
+    "ExecutionBoundary": [
+      "Modify",
+      "AWS::IAM::ManagedPolicy"
+    ],
+    "Execution": [
+      "Modify",
+      "AWS::IAM::Role"
+    ]
+  },
+  "passed": true
+}

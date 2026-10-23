@@ -1,0 +1,343 @@
+{
+  "TemplateBody": {
+    "Resources": {
+      "Logs": {
+        "Type": "AWS::Logs::LogGroup",
+        "Properties": {
+          "LogGroupName": "/project-respawn/Production/core/contracts",
+          "RetentionInDays": 30
+        },
+        "DeletionPolicy": "Retain",
+        "UpdateReplacePolicy": "Retain"
+      },
+      "Runtime": {
+        "Type": "AWS::IAM::Role",
+        "Properties": {
+          "RoleName": "ProjectRespawn-Core-Production-Contracts",
+          "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Principal": {
+                  "Service": "lambda.amazonaws.com"
+                },
+                "Action": "sts:AssumeRole"
+              }
+            ]
+          },
+          "PermissionsBoundary": {
+            "Fn::ImportValue": "ProjectRespawn-Core-Production-RuntimeBoundaryArn"
+          },
+          "Policies": [
+            {
+              "PolicyName": "ProductionRuntime",
+              "PolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Deny",
+                    "NotAction": [
+                      "logs:CreateLogStream",
+                      "logs:PutLogEvents",
+                      "cognito-idp:AdminGetUser",
+                      "cognito-idp:AdminListGroupsForUser",
+                      "cognito-idp:ListUsers",
+                      "secretsmanager:GetSecretValue",
+                      "kms:Decrypt"
+                    ],
+                    "Resource": "*"
+                  },
+                  {
+                    "Effect": "Allow",
+                    "Action": [
+                      "logs:CreateLogStream",
+                      "logs:PutLogEvents"
+                    ],
+                    "Resource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts:*"
+                  },
+                  {
+                    "Effect": "Allow",
+                    "Action": [
+                      "cognito-idp:AdminGetUser",
+                      "cognito-idp:AdminListGroupsForUser",
+                      "cognito-idp:ListUsers"
+                    ],
+                    "Resource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_Uufjxul58"
+                  },
+                  {
+                    "Effect": "Allow",
+                    "Action": "secretsmanager:GetSecretValue",
+                    "Resource": {
+                      "Fn::ImportValue": "ProjectRespawn-Core-Production-CursorSecretArn"
+                    }
+                  },
+                  {
+                    "Effect": "Deny",
+                    "Action": "cognito-idp:*",
+                    "NotResource": "arn:aws:cognito-idp:eu-north-1:058264289478:userpool/eu-north-1_Uufjxul58"
+                  },
+                  {
+                    "Effect": "Deny",
+                    "Action": "logs:*",
+                    "NotResource": "arn:aws:logs:eu-north-1:058264289478:log-group:/project-respawn/Production/core/contracts:*"
+                  },
+                  {
+                    "Effect": "Deny",
+                    "Action": "secretsmanager:*",
+                    "NotResource": {
+                      "Fn::ImportValue": "ProjectRespawn-Core-Production-CursorSecretArn"
+                    }
+                  },
+                  {
+                    "Effect": "Deny",
+                    "Action": "kms:*",
+                    "NotResource": [
+                      "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+                      "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a"
+                    ]
+                  },
+                  {
+                    "Effect": "Deny",
+                    "NotAction": [
+                      "kms:Decrypt"
+                    ],
+                    "Resource": [
+                      "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+                      "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a"
+                    ]
+                  },
+                  {
+                    "Effect": "Allow",
+                    "Action": "kms:Decrypt",
+                    "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+                    "Condition": {
+                      "StringEquals": {
+                        "kms:ViaService": "lambda.eu-north-1.amazonaws.com",
+                        "kms:CallerAccount": "058264289478",
+                        "kms:EncryptionContext:aws:lambda:FunctionArn": [
+                          "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts"
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "Effect": "Allow",
+                    "Action": "kms:Decrypt",
+                    "Resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+                    "Condition": {
+                      "StringEquals": {
+                        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com",
+                        "kms:CallerAccount": "058264289478",
+                        "kms:EncryptionContext:SecretARN": {
+                          "Fn::ImportValue": "ProjectRespawn-Core-Production-CursorSecretArn"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "Effect": "Deny",
+                    "Action": [
+                      "kms:Decrypt"
+                    ],
+                    "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+                    "Condition": {
+                      "StringNotEquals": {
+                        "kms:ViaService": "lambda.eu-north-1.amazonaws.com"
+                      }
+                    }
+                  },
+                  {
+                    "Effect": "Deny",
+                    "Action": [
+                      "kms:Decrypt"
+                    ],
+                    "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+                    "Condition": {
+                      "StringNotEquals": {
+                        "kms:CallerAccount": "058264289478"
+                      }
+                    }
+                  },
+                  {
+                    "Effect": "Deny",
+                    "Action": [
+                      "kms:Decrypt"
+                    ],
+                    "Resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+                    "Condition": {
+                      "StringNotEquals": {
+                        "kms:ViaService": "secretsmanager.eu-north-1.amazonaws.com"
+                      }
+                    }
+                  },
+                  {
+                    "Effect": "Deny",
+                    "Action": [
+                      "kms:Decrypt"
+                    ],
+                    "Resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+                    "Condition": {
+                      "StringNotEquals": {
+                        "kms:CallerAccount": "058264289478"
+                      }
+                    }
+                  },
+                  {
+                    "Effect": "Deny",
+                    "Action": "kms:Decrypt",
+                    "Resource": "arn:aws:kms:eu-north-1:058264289478:key/13ae83f9-bc5f-4486-a013-e07b9d7d52e7",
+                    "Condition": {
+                      "StringNotEquals": {
+                        "kms:EncryptionContext:aws:lambda:FunctionArn": [
+                          "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts"
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "Effect": "Deny",
+                    "Action": "kms:Decrypt",
+                    "Resource": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+                    "Condition": {
+                      "StringNotEquals": {
+                        "kms:EncryptionContext:SecretARN": {
+                          "Fn::ImportValue": "ProjectRespawn-Core-Production-CursorSecretArn"
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "Contracts": {
+        "Type": "AWS::Lambda::Function",
+        "Properties": {
+          "FunctionName": "ProjectRespawn-Core-Production-Contracts",
+          "Runtime": "nodejs22.x",
+          "Handler": "index.handler",
+          "Architectures": [
+            "arm64"
+          ],
+          "MemorySize": 256,
+          "Timeout": 10,
+          "Role": {
+            "Fn::GetAtt": [
+              "Runtime",
+              "Arn"
+            ]
+          },
+          "Code": {
+            "S3Bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+            "S3Key": "production/fecdc0327a5f75c8be4f9e4f280776b6908f646dfdffdf6bee4e61e5e8126503.zip"
+          },
+          "LoggingConfig": {
+            "LogGroup": {
+              "Ref": "Logs"
+            },
+            "LogFormat": "JSON"
+          },
+          "Environment": {
+            "Variables": {
+              "CORE_ENVIRONMENT": "{\"contractVersion\":\"environment.v1\",\"environment\":\"Production\",\"account\":\"058264289478\",\"region\":\"eu-north-1\",\"poolId\":\"eu-north-1_Uufjxul58\",\"clientId\":\"2kc81ph5mgvo9eu2qjvmif5u8g\",\"issuer\":\"https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_Uufjxul58\"}",
+              "CORE_CURSOR_SECRET_ARN": {
+                "Fn::ImportValue": "ProjectRespawn-Core-Production-CursorSecretArn"
+              }
+            }
+          }
+        }
+      },
+      "Errors": {
+        "Type": "AWS::CloudWatch::Alarm",
+        "Properties": {
+          "AlarmName": "ProjectRespawn-Core-Production-Errors",
+          "Namespace": "AWS/Lambda",
+          "MetricName": "Errors",
+          "Dimensions": [
+            {
+              "Name": "FunctionName",
+              "Value": {
+                "Ref": "Contracts"
+              }
+            }
+          ],
+          "Statistic": "Sum",
+          "Period": 60,
+          "EvaluationPeriods": 1,
+          "Threshold": 1,
+          "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+          "TreatMissingData": "notBreaching"
+        }
+      },
+      "Throttles": {
+        "Type": "AWS::CloudWatch::Alarm",
+        "Properties": {
+          "AlarmName": "ProjectRespawn-Core-Production-Throttles",
+          "Namespace": "AWS/Lambda",
+          "MetricName": "Throttles",
+          "Dimensions": [
+            {
+              "Name": "FunctionName",
+              "Value": {
+                "Ref": "Contracts"
+              }
+            }
+          ],
+          "Statistic": "Sum",
+          "Period": 60,
+          "EvaluationPeriods": 1,
+          "Threshold": 1,
+          "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+          "TreatMissingData": "notBreaching"
+        }
+      },
+      "DependencyFailures": {
+        "Type": "AWS::CloudWatch::Alarm",
+        "Properties": {
+          "AlarmName": "ProjectRespawn-Core-Production-DependencyFailures",
+          "Namespace": "ProjectRespawn/Core",
+          "MetricName": "DependencyFailures",
+          "Dimensions": [
+            {
+              "Name": "Environment",
+              "Value": "Production"
+            }
+          ],
+          "Statistic": "Sum",
+          "Period": 60,
+          "EvaluationPeriods": 1,
+          "Threshold": 1,
+          "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+          "TreatMissingData": "notBreaching"
+        }
+      },
+      "Denied": {
+        "Type": "AWS::CloudWatch::Alarm",
+        "Properties": {
+          "AlarmName": "ProjectRespawn-Core-Production-Denied",
+          "Namespace": "ProjectRespawn/Core",
+          "MetricName": "Denied",
+          "Dimensions": [
+            {
+              "Name": "Environment",
+              "Value": "Production"
+            }
+          ],
+          "Statistic": "Sum",
+          "Period": 60,
+          "EvaluationPeriods": 1,
+          "Threshold": 20,
+          "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+          "TreatMissingData": "notBreaching"
+        }
+      }
+    }
+  },
+  "StagesAvailable": [
+    "Original",
+    "Processed"
+  ]
+}

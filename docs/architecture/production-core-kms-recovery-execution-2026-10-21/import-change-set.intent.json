@@ -1,0 +1,20 @@
+{
+  "at": "2026-10-21T06:05:22.444Z",
+  "request": {
+    "StackName": "ProjectRespawn-Core-Production",
+    "ChangeSetName": "core-kms-recovery-log-import-20261021",
+    "ChangeSetType": "IMPORT",
+    "TemplateURL": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/099f4aed191a8f6921daa4c15ce91a14869ad90bcb71d46044e4f898cd4c55b8.json",
+    "RoleARN": "arn:aws:iam::058264289478:role/ProjectRespawn-Core-Production-Execution",
+    "ResourcesToImport": [
+      {
+        "ResourceType": "AWS::Logs::LogGroup",
+        "LogicalResourceId": "Logs",
+        "ResourceIdentifier": {
+          "LogGroupName": "/project-respawn/Production/core/contracts"
+        }
+      }
+    ]
+  },
+  "automaticRetry": false
+}
