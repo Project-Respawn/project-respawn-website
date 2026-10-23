@@ -4,9 +4,28 @@ backend:
   phases:
     build:
       commands:
-        - npm install
+        - npm ci
         - |
-          if [ "$SWG_FRONTEND_ONLY" = "1" ]; then
+          if [ "$TEAM_HUB_COACH_HOTFIX_ONLY" = "1" ]; then
+            test "$AWS_BRANCH" = "master" || exit 1
+            test "$TEAM_HUB_COACH_HOTFIX_BASE" = "a83a874dad50395518fb0d7e2f1e853cf6bf2513" || exit 1
+            test "$(sha256sum package-lock.json | cut -d ' ' -f 1)" = "d6415773023294efcf1e5086a0fe361d9e4eb42c5e8f1ca9cde6d2cf601807d0" || exit 1
+            case "$(sha256sum 'src/features/Team Hub/champion-pool/CoachPoolReview.vue' | cut -d ' ' -f 1)" in
+              0f8b780f42ddddfa9ac0b44c1e0e17daebbdfe307fa8014aae520857d08c1b65|14f7bf2604889a4c0590a806bcc5e77a501bb8a63495af31ce34c81ebd4e6852) ;;
+              *) echo "Unreviewed Coach Review source bytes"; exit 1 ;;
+            esac
+            changed_files=$(git diff --name-only "$TEAM_HUB_COACH_HOTFIX_BASE" HEAD) || exit 1
+            printf '%s\n' "$changed_files" | while IFS= read -r changed; do
+              case "$changed" in
+                amplify.yml|"src/features/Team Hub/champion-pool/CoachPoolReview.vue") ;;
+                *) echo "Unreviewed file in Team Hub incident release: $changed"; exit 1 ;;
+              esac
+            done || exit 1
+            npx ampx generate outputs --branch "$AWS_BRANCH" --app-id d2cux232bpa951 --format json --out-dir .
+          elif [ "$AWS_BRANCH" = "master" ]; then
+            echo "Master backend deployment blocked: explicit reviewed frontend-only incident gate required"
+            exit 1
+          elif [ "$SWG_FRONTEND_ONLY" = "1" ]; then
             test -n "$SWG_FRONTEND_BASE" || (echo "Missing reviewed frontend base" && exit 1)
             changed_files=$(git diff --name-only "$SWG_FRONTEND_BASE" HEAD) || exit 1
             printf '%s\n' "$changed_files" | while IFS= read -r changed; do
@@ -24,7 +43,7 @@ frontend:
   phases:
     preBuild:
       commands:
-        - npm install
+        - npm ci
 
         # Generate Amplify outputs for the branch being deployed
         - npx ampx generate outputs --branch "$AWS_BRANCH" --app-id d2cux232bpa951 --format json --out-dir .

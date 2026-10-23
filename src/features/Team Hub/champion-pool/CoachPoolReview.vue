@@ -12,7 +12,7 @@
           <p>{{ canEditAssessments ? 'Review Player-authored pools and save independent Coach assessments.' : 'Read-only Player pools and Coach assessments for team planning.' }}</p>
         </div>
 
-        <div class="review-controls">
+        <div v-if="selectedPlayer" class="review-controls">
           <label>
             <span>Player</span>
 
@@ -60,7 +60,7 @@
         </button>
       </div>
 
-      <template v-else>
+      <template v-else-if="selectedPlayer">
         <section class="upper-workspace">
           <!-- Read-only player pool -->
           <article class="pool-panel">
