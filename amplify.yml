@@ -6,23 +6,33 @@ frontend:
       commands:
         - |
           set -eu
-          test "$AWS_BRANCH" = "master" || exit 1
-          test "$TEAM_HUB_COACH_HOTFIX_ONLY" = "1" || exit 1
-          test "$TEAM_HUB_COACH_HOTFIX_BASE" = "a83a874dad50395518fb0d7e2f1e853cf6bf2513" || exit 1
-          changed_files=$(git diff --name-only "$TEAM_HUB_COACH_HOTFIX_BASE" HEAD) || exit 1
-          printf '%s\n' "$changed_files" | while IFS= read -r changed; do
-            case "$changed" in
-              amplify.yml|"src/features/Team Hub/champion-pool/CoachPoolReview.vue") ;;
-              *) echo "Unreviewed frontend release source"; exit 1 ;;
+          test "$AWS_BRANCH" = master
+          test "$TEAM_HUB_COACH_HOTFIX_ONLY" = 1
+          test "$TEAM_HUB_COACH_HOTFIX_BASE" = 'b1d72219ae2194d057265c98b3b0ef171f75306a'
+          git diff --quiet
+          git diff --cached --quiet
+          changed_files=$(git diff --name-only "$TEAM_HUB_COACH_HOTFIX_BASE" HEAD)
+          printf '%s\n' "$changed_files" | while IFS= read -r file; do
+            case "$file" in
+              'amplify/myFunction/teamHub/index.ts'|'amplify/myFunction/teamHub/gateway.ts'|'amplify/myFunction/teamHub/entitlements.ts'|'src/features/Team Hub/TeamHome.vue'|'src/features/Team Hub/PlayableRoles.vue'|'src/features/Team Hub/TeamManagement.vue'|'src/features/Team Hub/team-hub.routes.js'|'src/features/Team Hub/teamHub.service.js'|'src/features/Team Hub/champion-pool/ChampionPool.vue'|'amplify/myFunction/teamHub/liveDispatch.mjs'|'amplify/myFunction/teamHub/rosterCapacity.ts'|'amplify.yml') ;;
+              *) echo "Unreviewed release source"; exit 1 ;;
             esac
-          done || exit 1
-          test "$(sha256sum package-lock.json | cut -d ' ' -f 1)" = "2d674ee92ca07d55f728217ae18af7bc6f7a0cfb60a5fc6aba5fc76d8cd776f6" || exit 1
-          source_sha=$(sha256sum 'src/features/Team Hub/champion-pool/CoachPoolReview.vue' | cut -d ' ' -f 1)
-          case "$source_sha:$TEAM_HUB_FRONTEND_ARTIFACT_SHA" in
-            dec761a84b88aa8ef7a4b6dafa823ff1eada30a402b7ebece705aad47ae63db8:f4a56d695de3e84c5f7bc2e1a98eea4b34be5470c390236c3975753c0d9265a0) ;;
-            0f8b780f42ddddfa9ac0b44c1e0e17daebbdfe307fa8014aae520857d08c1b65:136e5d5c231e3007289bccd463a5315189c35f123269709893c3a1571449c4b6) ;;
-            14f7bf2604889a4c0590a806bcc5e77a501bb8a63495af31ce34c81ebd4e6852:235c5930621cc324524e78e0b8dad1dfb52de9859544160f43293900630f4917) ;;
-            *) echo "Unreviewed source/artifact pairing"; exit 1 ;;
+          done
+          test "$(git show HEAD:package-lock.json | sha256sum | cut -d ' ' -f 1)" = 2d674ee92ca07d55f728217ae18af7bc6f7a0cfb60a5fc6aba5fc76d8cd776f6
+          test "$(git show 'HEAD:amplify/myFunction/teamHub/index.ts' | sha256sum | cut -d ' ' -f 1)" = 82bd995bf4163028c6ef25d50f625379522a70def97bf73f24c20a5a6c19ab24
+          test "$(git show 'HEAD:amplify/myFunction/teamHub/gateway.ts' | sha256sum | cut -d ' ' -f 1)" = 17803448647799a16239746ff88234bebd38633bab7550aac1354aa55224824f
+          test "$(git show 'HEAD:amplify/myFunction/teamHub/entitlements.ts' | sha256sum | cut -d ' ' -f 1)" = 6f541714e07df849dc9df93d54facb14e79afbd9681bc84a7da8d9bef6f9c42e
+          test "$(git show 'HEAD:src/features/Team Hub/TeamHome.vue' | sha256sum | cut -d ' ' -f 1)" = 33921367ac7a800c3ed1598f160da8f7ba875afd08ed36fb4da87d8193797a5a
+          test "$(git show 'HEAD:src/features/Team Hub/PlayableRoles.vue' | sha256sum | cut -d ' ' -f 1)" = db6f49bb248d19e1d0d751c1606da3fe6ebe8acc9fcae47da4ae5cd42628e659
+          test "$(git show 'HEAD:src/features/Team Hub/TeamManagement.vue' | sha256sum | cut -d ' ' -f 1)" = 0c4036a87db3425d856af4ff1845ff84a1cf281f0dc7f7defbd71530fb330ed9
+          test "$(git show 'HEAD:src/features/Team Hub/team-hub.routes.js' | sha256sum | cut -d ' ' -f 1)" = 81461dc5f0a32021daa8feaede82b9b040dd755cd02ba7875607ac06af15da77
+          test "$(git show 'HEAD:src/features/Team Hub/teamHub.service.js' | sha256sum | cut -d ' ' -f 1)" = 1cab91e774e04898aa6b3f9fa2ee092b68537d621a2dcbe530f50181130493fd
+          test "$(git show 'HEAD:src/features/Team Hub/champion-pool/ChampionPool.vue' | sha256sum | cut -d ' ' -f 1)" = 3ff8c1289a3bcc592a6f9e47dc10f2a695dc015448f1c5725181514a43d38dc5
+          test "$(git show 'HEAD:amplify/myFunction/teamHub/liveDispatch.mjs' | sha256sum | cut -d ' ' -f 1)" = 14acac75369fd64a3c56c7adb7181099d39164fe81148fd207dab1bab494f56b
+          test "$(git show 'HEAD:amplify/myFunction/teamHub/rosterCapacity.ts' | sha256sum | cut -d ' ' -f 1)" = 543fe90fd85ab565ff3ff4a1ae91b7f4178a1ad730e2503e8aa5692021127e64
+          case "$TEAM_HUB_FRONTEND_ARTIFACT_SHA" in
+            dd2378aeb49ca299e0cc296db64af3054beaac5aaa401201ff9d880af5910098|f4a56d695de3e84c5f7bc2e1a98eea4b34be5470c390236c3975753c0d9265a0) ;;
+            *) echo "Unreviewed frontend artifact"; exit 1 ;;
           esac
           case "$TEAM_HUB_FRONTEND_ARTIFACT_URL" in
             "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/frontend-restoration/$TEAM_HUB_FRONTEND_ARTIFACT_SHA.zip?"*) ;;
@@ -32,11 +42,11 @@ frontend:
       commands:
         - |
           set -eu
-          curl --fail --silent --show-error --location "$TEAM_HUB_FRONTEND_ARTIFACT_URL" --output /tmp/team-hub-frontend.zip
-          printf '%s  %s\n' "$TEAM_HUB_FRONTEND_ARTIFACT_SHA" /tmp/team-hub-frontend.zip | sha256sum --check --strict
-          test ! -e dist || { echo "Unexpected existing output directory"; exit 1; }
+          curl --fail --silent --show-error --location "$TEAM_HUB_FRONTEND_ARTIFACT_URL" --output /tmp/team-hub-rules.zip
+          printf '%s  %s\n' "$TEAM_HUB_FRONTEND_ARTIFACT_SHA" /tmp/team-hub-rules.zip | sha256sum --check --strict
+          test ! -e dist
           mkdir dist
-          unzip -q /tmp/team-hub-frontend.zip -d dist
+          unzip -q /tmp/team-hub-rules.zip -d dist
           test -s dist/index.html
   artifacts:
     baseDirectory: dist

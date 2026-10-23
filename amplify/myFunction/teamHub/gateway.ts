@@ -5,6 +5,7 @@ import {
   handleSearchTeamAssignableUsers, handleUpdateTeamHubTeam, handleUpsertMyChampionPoolEntry,
   handleGetPlayerCompetitiveDetail, handleUpsertCoachAssessment,
   handleSetTeamPlan, handleRequestTeamLogoUpload, handleCommitTeamLogo, handleRemoveTeamLogo,
+  handleSetMyPlayableRoles,
 } from '.'
 
 const MAX_GATEWAY_BYTES = 8_192
@@ -31,6 +32,7 @@ export const READ_ACTIONS: Record<string, Route> = {
 }
 
 export const MUTATION_ACTIONS: Record<string, Route> = {
+  SET_MY_ROLES: { handler: handleSetMyPlayableRoles, allowed: ['teamId', 'payload'], required: ['teamId', 'payload'] },
   CREATE_TEAM: { handler: handleCreateTeamHubTeam, allowed: ['slug', 'name', 'gameKey'], required: ['slug', 'name', 'gameKey'] },
   UPDATE_TEAM: { handler: handleUpdateTeamHubTeam, allowed: ['teamId', 'name', 'status'], required: ['teamId'], validate: atLeastOne('name', 'status') },
   SET_MANAGER: { handler: handleSetTeamManager, allowed: ['teamId', 'targetEmail', 'targetMembershipId', 'memberAction', 'expectedRevision'], required: ['teamId', 'memberAction', 'expectedRevision'], remap: { memberAction: 'action' } },

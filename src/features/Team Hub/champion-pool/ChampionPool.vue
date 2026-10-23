@@ -400,9 +400,9 @@ onMounted(async () => {
     const context = await getTeamHub({ teamSlug: teamSlug.value });
     teamContext.value = context;
     teamId.value = context.team.id;
-    const mine = context.members.find((member) => member.role === 'PLAYER' && member.status === 'ACTIVE');
+    const mine = context.members.find((member) => member.id === context.myMembershipId && member.role === 'PLAYER' && member.status === 'ACTIVE');
     const slot = context.roster.find((entry) => entry.membershipId === mine?.id && entry.status === 'ACTIVE');
-    assignedRole.value = slot?.gameRoleKey || 'Unassigned';
+    assignedRole.value = slot?.gameRoleKey || mine?.primaryRole || 'Unassigned';
     const pool = await loadBoundedPages((nextToken) => listMyChampionPool(teamId.value, { limit: 50, ...(nextToken ? { nextToken } : {}) }));
     if (!pool.complete) throw new Error('Team Hub data limit exceeded');
     const entries = pool.items;

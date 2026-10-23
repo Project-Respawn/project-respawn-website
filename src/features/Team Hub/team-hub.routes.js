@@ -6,7 +6,7 @@ const teamHubRoutes = [
     path: '/team-hub/:teamSlug/manage',
     name: 'team-hub-manage',
     component: () => import('./TeamManagement.vue'),
-    meta: { requiresAuth: true, requiresTeamMembership: true, teamRoles: ['ADMIN', 'MANAGER'] },
+    meta: { requiresAuth: true, requiresTeamMembership: true, teamRoles: ['ADMIN', 'MANAGER', 'COACH'] },
   },
   {
     path: '/team-hub',

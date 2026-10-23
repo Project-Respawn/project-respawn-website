@@ -5,12 +5,14 @@ import { getEffectivePermissions } from '../shared/requirePermission'
 import { createLogoUpload, deleteLogo, logoBucket, logoDisplayUrl, storageClient, verifyStoredLogo } from './branding'
 import { teamEntitlement } from './entitlements'
 import { getIdentityGroups } from '../shared/auth'
+import { readRosterCells, rosterChange, clearRosterMembership, prepareRosterBootstrap, rosterRulesGuard, snapshotPut } from './rosterCapacity'
 
 const PAGE_SIZE = 25
 const MAX_PAGE_SIZE = 50
 const MAX_INTERNAL_PAGES = 2
 const MAX_TEAM_MEMBERS = 50
 const MAX_MEMBER_SLOTS = 20
+const MAX_TEAM_ROSTER_RECORDS = MAX_TEAM_MEMBERS * 10
 const MAX_TX_ITEMS = 25
 const COGNITO_SUB = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 const TEAM_ID = /^team:[a-z0-9]+(?:-[a-z0-9]+)*$/
@@ -56,9 +58,6 @@ const pageToken = (value: unknown) => {
   return result
 }
 const memberId = (teamId: string, userId: string) => `team-membership:${teamId}:${userId}`
-const starterId = (teamId: string, role: string) => `team-roster:${teamId}:starter:${role}`
-const starterGuardId = (teamId: string, membershipId: string) => `team-roster:${teamId}:starter-player:${membershipId}`
-const substituteId = (teamId: string, membershipId: string, role: string) => `team-roster:${teamId}:substitute:${membershipId}:${role}`
 const poolId = (teamId: string, userId: string, championId: string) => `team-pool:${teamId}:${userId}:${championId}`
 
 const ok = (result: any, fallback: string) => {
@@ -75,10 +74,10 @@ const page = async (method: any, key: any, limit: number, nextToken?: string) =>
   if (result?.errors?.length) { console.error('Team Hub lookup failed', result.errors); fail('Team Hub lookup failed') }
   return { items: result?.data || [], nextToken: result?.nextToken || null }
 }
-async function complete(method: any, key: any, itemLimit: number): Promise<any[]> {
+async function complete(method: any, key: any, itemLimit: number, maxPages = MAX_INTERNAL_PAGES): Promise<any[]> {
   const items: any[] = []
   let token: string | undefined
-  for (let count = 0; count < MAX_INTERNAL_PAGES; count += 1) {
+  for (let count = 0; count < maxPages; count += 1) {
     const result = await page(method, key, Math.min(PAGE_SIZE, itemLimit - items.length), token)
     items.push(...result.items)
     if (!result.nextToken) return items
@@ -89,7 +88,7 @@ async function complete(method: any, key: any, itemLimit: number): Promise<any[]
 }
 const membershipsFor = (data: any, teamId: string) => complete(data.models.TeamMembership.listTeamMembershipByTeamId, { teamId }, MAX_TEAM_MEMBERS)
 const membershipForUser = (data: any, userId: string, limit = MAX_TEAM_MEMBERS) => complete(data.models.TeamMembership.listTeamMembershipByUserId, { userId }, limit)
-const slotsForTeam = (data: any, teamId: string) => complete(data.models.TeamRosterSlot.listTeamRosterSlotByTeamId, { teamId }, MAX_TEAM_MEMBERS)
+const slotsForTeam = (data: any, teamId: string) => complete(data.models.TeamRosterSlot.listTeamRosterSlotByTeamId, { teamId }, MAX_TEAM_ROSTER_RECORDS, MAX_TEAM_ROSTER_RECORDS / PAGE_SIZE)
 const slotsForMember = (data: any, membershipId: string) => complete(data.models.TeamRosterSlot.listTeamRosterSlotByMembershipId, { membershipId }, MAX_MEMBER_SLOTS)
 
 async function rawTeam(data: any, teamId: string) {
@@ -114,6 +113,13 @@ async function safeTeam(team: any, storage = storageClient()) {
 }
 const publicMember = (row: any) => ({ id: row.id, teamId: row.teamId, displayName: row.displayName || 'Project Respawn member', role: row.role, status: row.status, revokedAt: row.revokedAt || null })
 const publicSlot = (row: any) => ({ id: row.id, teamId: row.teamId, membershipId: row.membershipId, gameRoleKey: row.gameRoleKey, slotType: row.slotType, status: row.status })
+const isRolePreference = (row: any) => ['PREFERENCE_PRIMARY', 'PREFERENCE_SECONDARY'].includes(row.slotType)
+const assignedSlot = (row: any) => ['STARTER', 'SUBSTITUTE'].includes(row.slotType)
+const playableRoles = (rows: any[], membershipId: string) => {
+  const selected = rows.filter(row => row.membershipId === membershipId && row.status === ACTIVE && isRolePreference(row))
+  const primary = selected.find(row => row.slotType === 'PREFERENCE_PRIMARY')
+  return primary ? { primaryRole: primary.gameRoleKey, secondaryRoles: selected.filter(row => row.slotType === 'PREFERENCE_SECONDARY').map(row => row.gameRoleKey) } : {}
+}
 const now = () => new Date().toISOString()
 const jsonPayload = (value: unknown, max = 7000) => {
   const source = bounded(value, 'payload', max)
@@ -138,6 +144,9 @@ const putMembership = (table: string, item: any) => ({ Put: { TableName: table, 
 const revokeMembership = (table: string, membership: any, by: string, timestamp: string) => ({ Update: { TableName: table, Key: { id: membership.id }, ConditionExpression: '#status = :active AND teamId = :teamId AND #role = :role', UpdateExpression: 'SET #status = :inactive, revokedAt = :at, revokedByUserId = :by, updatedAt = :at', ExpressionAttributeNames: { '#status': 'status', '#role': 'role' }, ExpressionAttributeValues: { ':active': ACTIVE, ':inactive': INACTIVE, ':teamId': membership.teamId, ':role': membership.role, ':at': timestamp, ':by': by } } })
 const deactivateSlot = (table: string, slot: any, timestamp: string) => ({ Update: { TableName: table, Key: { id: slot.id }, ConditionExpression: '#status = :active AND membershipId = :membershipId', UpdateExpression: 'SET #status = :inactive, deactivatedAt = :at, updatedAt = :at', ExpressionAttributeNames: { '#status': 'status' }, ExpressionAttributeValues: { ':active': ACTIVE, ':inactive': INACTIVE, ':membershipId': slot.membershipId, ':at': timestamp } } })
 const putSlot = (table: string, item: any) => ({ Put: { TableName: table, Item: item } })
+// Conditional no-op uses existing UpdateItem access and checks current membership
+// in the same transaction, even when a GSI authorization read is stale.
+const activeMemberGuard = (table: string, member: any) => ({Update: {TableName: table, Key: {id: member.id}, UpdateExpression: 'SET #status = :active', ConditionExpression: '#status = :active AND #role = :role AND teamId = :team AND userId = :user', ExpressionAttributeNames: {'#status': 'status', '#role': 'role'}, ExpressionAttributeValues: {':active': ACTIVE, ':role': member.role, ':team': member.teamId, ':user': member.userId}}})
 const ensureTxBound = (items: any[]) => { if (items.length > MAX_TX_ITEMS) fail('Team Hub roster limit exceeded'); return items }
 const auditMembership = (value: Record<string, unknown>) => console.info('Team Hub membership audit', value)
 const auditSettings = (value: Record<string, unknown>) => console.info('Team Hub settings audit', value)
@@ -191,7 +200,7 @@ export async function handleSearchTeamAssignableUsers(event: any, injected?: any
   return searchAssignableAccounts(event.arguments?.query, event.assignmentDirectory)
 }
 
-export async function handleCreateTeamHubTeam(event: any, injected?: any) {
+export async function handleCreateTeamHubTeam(event: any, injected?: any, injectedTx?: any, injectedNames?: any) {
   const current = requireAdmin(event), data = await client(injected)
   const slug = bounded(event.arguments?.slug, 'team slug', 48).toLowerCase()
   if (!SLUG.test(slug)) fail('Invalid team slug')
@@ -199,7 +208,10 @@ export async function handleCreateTeamHubTeam(event: any, injected?: any) {
   const gameKey = oneOf(event.arguments?.gameKey, ['LEAGUE_OF_LEGENDS'], 'game key')
   const id = `team:${slug}`
   if (await rawTeam(data, id)) fail('Team slug already exists')
-  return publicTeam(ok(await data.models.Team.create({ id, slug, name, gameKey, status: ACTIVE, createdByUserId: current.userId, updatedByUserId: current.userId, rosterRevision: 0, membershipRevision: 0 }), 'Team creation failed'))
+  const created = ok(await data.models.Team.create({ id, slug, name, gameKey, status: ACTIVE, createdByUserId: current.userId, updatedByUserId: current.userId, rosterRevision: 0, membershipRevision: 0 }), 'Team creation failed')
+  const names = injectedNames || tableNames()
+  await transact(injectedTx, names, [teamRevisionUpdate(names.team, created, 'rosterRevision', 0, current.userId), ...prepareRosterBootstrap(names.roster, id, [], [], current.userId, now())])
+  return publicTeam({...created, rosterRevision: 1})
 }
 
 export async function handleUpdateTeamHubTeam(event: any, injected?: any) {
@@ -276,22 +288,22 @@ export async function handleSetTeamManager(event: any, injected?: any, injectedT
   if (action === 'REVOKE') {
     const targetMembershipId = membershipIdValue(event.arguments?.targetMembershipId, teamId)
     if (!currentManager || currentManager.id !== targetMembershipId) fail('Active Manager membership not found')
-    const slots = await slotsForMember(data, currentManager.id)
-    items.push(teamRevisionUpdate(names.team, team, 'membershipRevision', expected, current.userId, undefined, ['managerMembershipId'], slots.some((x: any) => x.status === ACTIVE)), revokeMembership(names.membership, currentManager, current.userId, timestamp), ...slots.filter((x: any) => x.status === ACTIVE).map((x: any) => deactivateSlot(names.roster, x, timestamp)))
+    items.push(teamRevisionUpdate(names.team, team, 'membershipRevision', expected, current.userId, undefined, ['managerMembershipId'], true), revokeMembership(names.membership, currentManager, current.userId, timestamp))
   } else {
     if (event.arguments?.targetMembershipId) fail('Invalid Manager assignment input')
     const account = await resolveForAssignment(event, current.userId, teamId, 'MANAGER_ASSIGN')
     const target = account.userId
     const desiredId = memberId(teamId, target), desired = memberships.find((row: any) => row.id === desiredId)
     if (desired?.status === ACTIVE && !['MANAGER', 'PLAYER'].includes(desired.role)) fail('Target already has an active Team role')
-    const staleSlots = desired && desired.role === 'PLAYER' ? await slotsForMember(data, desired.id) : []
-    items.push(teamRevisionUpdate(names.team, team, 'membershipRevision', expected, current.userId, { managerMembershipId: desiredId }, undefined, staleSlots.some((x: any) => x.status === ACTIVE)), ...(currentManager && currentManager.id !== desiredId ? [revokeMembership(names.membership, currentManager, current.userId, timestamp)] : []), ...staleSlots.filter((x: any) => x.status === ACTIVE).map((x: any) => deactivateSlot(names.roster, x, timestamp)), putMembership(names.membership, { id: desiredId, teamId, userId: target, displayName: account.displayName, role: 'MANAGER', status: ACTIVE, addedByUserId: current.userId, revokedAt: null, revokedByUserId: null, createdAt: desired?.createdAt || timestamp, updatedAt: timestamp, __typename: 'TeamMembership' }))
+    items.push(teamRevisionUpdate(names.team, team, 'membershipRevision', expected, current.userId, { managerMembershipId: desiredId }, undefined, true), ...(currentManager && currentManager.id !== desiredId ? [revokeMembership(names.membership, currentManager, current.userId, timestamp)] : []), putMembership(names.membership, { id: desiredId, teamId, userId: target, displayName: account.displayName, role: 'MANAGER', status: ACTIVE, addedByUserId: current.userId, revokedAt: null, revokedByUserId: null, createdAt: desired?.createdAt || timestamp, updatedAt: timestamp, __typename: 'TeamMembership' }))
   }
+  const affectedId = action === 'ASSIGN' ? items.at(-1)?.Put?.Item?.id : currentManager?.id
+  items.push(...clearRosterMembership(names.roster, teamId, await readRosterCells(data, teamId), affectedId, timestamp))
   try { await transact(injectedTx, names, items) } catch (error) {
     auditMembership({ actorUserId: current.userId, teamId, action: `MANAGER_${action}`, category: 'transaction_failed', timestamp: now() })
     throw error
   }
-  auditMembership({ actorUserId: current.userId, teamId, membershipId: action === 'ASSIGN' ? items.at(-1)?.Put?.Item?.id : currentManager?.id, action: `MANAGER_${action}`, category: 'success', timestamp })
+  auditMembership({ actorUserId: current.userId, teamId, membershipId: affectedId, action: `MANAGER_${action}`, category: 'success', timestamp })
   return { teamId, membershipRevision: expected + 1, role: 'MANAGER', action }
 }
 
@@ -309,14 +321,16 @@ export async function handleManageTeamMember(event: any, injected?: any, injecte
   if (action === 'REVOKE') {
     if (!existing || existing.status !== ACTIVE || existing.role !== role) fail(`Active ${role} membership not found`)
     if (role === 'COACH' && existing.id !== team.coachMembershipId) fail('Active authoritative Coach membership not found')
-    const slots = await slotsForMember(data, id)
-    items.push(teamRevisionUpdate(names.team, team, 'membershipRevision', expected, current.userId, undefined, role === 'COACH' ? ['coachMembershipId'] : [], slots.some((x: any) => x.status === ACTIVE)), revokeMembership(names.membership, existing, current.userId, timestamp), ...slots.filter((x: any) => x.status === ACTIVE).map((x: any) => deactivateSlot(names.roster, x, timestamp)))
+    items.push(teamRevisionUpdate(names.team, team, 'membershipRevision', expected, current.userId, undefined, role === 'COACH' ? ['coachMembershipId'] : [], true), revokeMembership(names.membership, existing, current.userId, timestamp))
   } else {
     if (existing?.status === ACTIVE && existing.role !== role && !(role === 'COACH' && existing.role === 'PLAYER')) fail('Target already has an active Team role')
-    const staleSlots = existing ? await slotsForMember(data, id) : []
     const oldCoach = role === 'COACH' ? memberships.find((row: any) => row.id === team.coachMembershipId && row.status === ACTIVE && row.role === 'COACH') : null
-    items.push(teamRevisionUpdate(names.team, team, 'membershipRevision', expected, current.userId, role === 'COACH' ? { coachMembershipId: id } : undefined, undefined, staleSlots.some((x: any) => x.status === ACTIVE)), ...(oldCoach && oldCoach.id !== id ? [revokeMembership(names.membership, oldCoach, current.userId, timestamp)] : []), ...staleSlots.filter((x: any) => x.status === ACTIVE).map((x: any) => deactivateSlot(names.roster, x, timestamp)), putMembership(names.membership, { id, teamId, userId: account!.userId, displayName: account!.displayName, role, status: ACTIVE, addedByUserId: current.userId, revokedAt: null, revokedByUserId: null, createdAt: existing?.createdAt || timestamp, updatedAt: timestamp, __typename: 'TeamMembership' }))
+    items.push(teamRevisionUpdate(names.team, team, 'membershipRevision', expected, current.userId, role === 'COACH' ? { coachMembershipId: id } : undefined, undefined, true), ...(oldCoach && oldCoach.id !== id ? [revokeMembership(names.membership, oldCoach, current.userId, timestamp)] : []), putMembership(names.membership, { id, teamId, userId: account!.userId, displayName: account!.displayName, role, status: ACTIVE, addedByUserId: current.userId, revokedAt: null, revokedByUserId: null, createdAt: existing?.createdAt || timestamp, updatedAt: timestamp, __typename: 'TeamMembership' }))
   }
+  items.push(...clearRosterMembership(names.roster, teamId, await readRosterCells(data, teamId), id, timestamp))
+  const membershipActor = memberships.find((row: any) => row.userId === current.userId && row.status === ACTIVE && row.role === 'MANAGER')
+  if (!membershipActor) fail(TEAM_HUB_DENIED)
+  items.push(activeMemberGuard(names.membership, membershipActor))
   try { await transact(injectedTx, names, items) } catch (error) {
     auditMembership({ actorUserId: current.userId, teamId, membershipId: id, action: `${role}_${action}`, category: 'transaction_failed', timestamp: now() })
     throw error
@@ -343,7 +357,8 @@ export async function handleGetTeamHub(event: any, injected?: any) {
   }
   const visible = capabilities.canAdministerTeam || capabilities.canManageMembers ? members : members.filter((row: any) => row.status === ACTIVE)
   const activePlayers = new Set(members.filter((row: any) => row.status === ACTIVE && row.role === 'PLAYER' && row.teamId === team.id).map((row: any) => row.id))
-  const slots = (await slotsForTeam(data, team.id)).filter((row: any) => row.status === ACTIVE && row.teamId === team.id && activePlayers.has(row.membershipId) && row.slotType !== 'STARTER_GUARD')
+  const allSlots = await slotsForTeam(data, team.id)
+  const slots = (await readRosterCells(data, team.id)).filter((row: any) => row && row.status === ACTIVE && activePlayers.has(row.membershipId))
   return {
     team: { ...await safeTeam(team), ...(current.isAdmin ? { planAdministration: { storedPlan: team.teamPlan || 'FREE', changedAt: team.planUpdatedAt || null, changedBy: team.planUpdatedBy || null }, brandingAdministration: { changedAt: team.logoUpdatedAt || null, changedBy: team.logoUpdatedBy || null } } : {}) },
     myRole: teamRole || (current.isAdmin ? 'ADMIN' : null),
@@ -354,13 +369,14 @@ export async function handleGetTeamHub(event: any, injected?: any) {
       canAdministerTeam: current.isAdmin,
       canManageBranding: canBrand,
       canManageMembers: teamRole === 'MANAGER',
-      canManageRoster: teamRole === 'MANAGER',
+      canManageRoster: current.isAdmin || teamRole === 'MANAGER' || teamRole === 'COACH',
+      canEditOwnRoles: teamRole === 'PLAYER',
       canReviewChampionPools: teamRole === 'COACH' || teamRole === 'MANAGER',
       canEditCoachAssessments: teamRole === 'COACH',
       canEditOwnChampionPool: teamRole === 'PLAYER',
       canEditChampionPool: teamRole === 'PLAYER',
     },
-    members: visible.map(publicMember),
+    members: visible.map((row: any) => ({...publicMember(row), ...playableRoles(allSlots, row.id)})),
     roster: slots.map(publicSlot),
   }
 }
@@ -368,36 +384,38 @@ export async function handleGetTeamHub(event: any, injected?: any) {
 export async function handleSetTeamRosterSlot(event: any, injected?: any, injectedTx?: any, injectedNames?: any) {
   const current = actor(event), data = await client(injected), teamId = teamIdValue(event.arguments?.teamId)
   const team = await teamFor(data, teamId), expected = revisionValue(event.arguments?.expectedRevision)
-  const members = await membershipsFor(data, teamId); requireManager(members, current.userId)
+  const members = await membershipsFor(data, teamId), rosterActor = current.isAdmin ? null : requireCompetitiveReader(members, current.userId)
   const requestedMembershipId = membershipIdValue(event.arguments?.membershipId, teamId), role = oneOf(event.arguments?.gameRoleKey, ROLES, 'League role'), slotType = oneOf(event.arguments?.slotType, ['STARTER', 'SUBSTITUTE'], 'slot type'), action = oneOf(event.arguments?.action, ['ASSIGN', 'REMOVE'], 'roster action')
   const membership = members.find((row: any) => row.id === requestedMembershipId && row.role === 'PLAYER' && row.status === ACTIVE && row.teamId === teamId)
   if (!membership) fail('An active Player membership is required')
-  const target = membership.userId
-  const names = injectedNames || tableNames(), timestamp = now(), slots = await slotsForTeam(data, teamId)
-  const id = slotType === 'STARTER' ? starterId(teamId, role) : substituteId(teamId, membership.id, role)
-  const existing = slots.find((row: any) => row.id === id && row.status === ACTIVE)
-  const items: any[] = [teamRevisionUpdate(names.team, team, 'rosterRevision', expected, current.userId)]
-  if (action === 'REMOVE') {
-    if (!existing || existing.membershipId !== membership.id) fail('Active roster slot not found')
-    items.push(deactivateSlot(names.roster, existing, timestamp))
-    if (slotType === 'STARTER') {
-      const guard = slots.find((row: any) => row.id === starterGuardId(teamId, membership.id) && row.status === ACTIVE)
-      if (guard) items.push(deactivateSlot(names.roster, guard, timestamp))
-    }
-  } else {
-    if (slotType === 'STARTER') {
-      const priorGuard = slots.find((row: any) => row.id === starterGuardId(teamId, membership.id) && row.status === ACTIVE)
-      if (priorGuard && priorGuard.gameRoleKey !== role) fail('Player already occupies a starting position')
-      if (existing && existing.membershipId !== membership.id) {
-        const oldGuard = slots.find((row: any) => row.id === starterGuardId(teamId, existing.membershipId) && row.status === ACTIVE)
-        if (oldGuard) items.push(deactivateSlot(names.roster, oldGuard, timestamp))
-      }
-      items.push(putSlot(names.roster, { id: starterGuardId(teamId, membership.id), teamId, membershipId: membership.id, playerUserId: target, gameRoleKey: role, slotType: 'STARTER_GUARD', status: ACTIVE, assignedByUserId: current.userId, deactivatedAt: null, createdAt: priorGuard?.createdAt || timestamp, updatedAt: timestamp, __typename: 'TeamRosterSlot' }))
-    }
-    items.push(putSlot(names.roster, { id, teamId, membershipId: membership.id, playerUserId: target, gameRoleKey: role, slotType, status: ACTIVE, assignedByUserId: current.userId, deactivatedAt: null, createdAt: existing?.createdAt || timestamp, updatedAt: timestamp, __typename: 'TeamRosterSlot' }))
-  }
+  const names = injectedNames || tableNames(), before = await readRosterCells(data, teamId)
+  const change = rosterChange(names.roster, teamId, before, {membership, role, slotType, action, actor: current.userId, at: now()})
+  const items: any[] = [teamRevisionUpdate(names.team, team, 'rosterRevision', expected, current.userId), ...change.writes]
+  if (rosterActor) items.push(activeMemberGuard(names.membership, rosterActor))
+  if (rosterActor?.id !== membership.id) items.push(activeMemberGuard(names.membership, membership))
   await transact(injectedTx, names, items)
-  return { id, teamId, membershipId: membership.id, playerUserId: target, gameRoleKey: role, slotType, status: action === 'REMOVE' ? INACTIVE : ACTIVE, rosterRevision: expected + 1 }
+  return {...publicSlot(change.row), playerUserId: membership.userId, rosterRevision: expected + 1}
+}
+
+export async function handleSetMyPlayableRoles(event: any, injected?: any, injectedTx?: any, injectedNames?: any) {
+  const current = actor(event), data = await client(injected), teamId = teamIdValue(event.arguments?.teamId)
+  const team = await teamFor(data, teamId), members = await membershipsFor(data, teamId), mine = requirePlayer(members, current.userId)
+  const input = jsonPayload(event.arguments?.payload, 1000)
+  if (Object.keys(input).some(key => !['primaryRole', 'secondaryRoles', 'expectedRevision'].includes(key))) fail('Invalid role preferences')
+  const primary = oneOf(input.primaryRole, ROLES, 'primary role')
+  if (!Array.isArray(input.secondaryRoles) || input.secondaryRoles.length > 2 || input.secondaryRoles.some((role: any) => !ROLES.includes(role) || role === primary) || new Set(input.secondaryRoles).size !== input.secondaryRoles.length) fail('Invalid secondary roles')
+  const expected = revisionValue(input.expectedRevision), names = injectedNames || tableNames(), timestamp = now()
+  const selected = new Map<string, string>([[primary, 'PREFERENCE_PRIMARY'], ...input.secondaryRoles.map((role: string) => [role, 'PREFERENCE_SECONDARY'] as [string, string])])
+  const items: any[] = [teamRevisionUpdate(names.team, team, 'membershipRevision', expected, current.userId), activeMemberGuard(names.membership, mine)]
+  for (const role of ROLES) {
+    const id = `team-preference:${teamId}:${current.userId}:${role}`
+    const old = ok(await data.models.TeamRosterSlot.get({id}), 'Team Hub role lookup failed') || null
+    if (old && (old.teamId !== teamId || old.membershipId !== mine.id || old.playerUserId !== current.userId || old.gameRoleKey !== role || !isRolePreference(old))) fail(TEAM_HUB_CONFLICT)
+    items.push(snapshotPut(names.roster, old, {id, teamId, membershipId: mine.id, playerUserId: current.userId, gameRoleKey: role, slotType: selected.get(role) || 'PREFERENCE_SECONDARY', status: selected.has(role) ? ACTIVE : INACTIVE, assignedByUserId: current.userId, deactivatedAt: selected.has(role) ? null : timestamp, createdAt: old?.createdAt || timestamp, updatedAt: timestamp, __typename: 'TeamRosterSlot'}))
+  }
+  items.push(rosterRulesGuard(names.roster, teamId))
+  await transact(injectedTx, names, items)
+  return {membershipId: mine.id, primaryRole: primary, secondaryRoles: input.secondaryRoles, membershipRevision: expected + 1}
 }
 
 export async function handleListMyChampionPool(event: any, injected?: any) {
@@ -439,17 +457,17 @@ export async function handleListTeamChampionPools(event: any, injected?: any) {
   await teamFor(data, teamId); const members = await membershipsFor(data, teamId); const viewer = requireCompetitiveReader(members, current.userId)
   const activePlayers = new Set(members.filter((row: any) => row.status === ACTIVE && row.role === 'PLAYER').map((row: any) => row.id))
   const result = await page(data.models.PlayerChampionPoolEntry.listPlayerChampionPoolEntryByTeamId, { teamId }, pageLimit(event.arguments?.limit), pageToken(event.arguments?.nextToken))
-  return { items: viewer.role === 'MANAGER' ? result.items : result.items.filter((entry: any) => activePlayers.has(entry.membershipId)), nextToken: result.nextToken }
+  return { items: result.items.filter((entry: any) => activePlayers.has(entry.membershipId)), nextToken: result.nextToken }
 }
 
 export async function handleGetPlayerCompetitiveDetail(event: any, injected?: any) {
   const current = actor(event), data = await client(injected), teamId = teamIdValue(event.arguments?.teamId)
   const members = await membershipsFor(data, teamId); requireCompetitiveReader(members, current.userId); await teamFor(data, teamId)
   const membershipId = membershipIdValue(event.arguments?.membershipId, teamId)
-  const member = members.find((row: any) => row.id === membershipId && row.teamId === teamId && row.role === 'PLAYER')
+  const member = members.find((row: any) => row.id === membershipId && row.teamId === teamId && row.role === 'PLAYER' && row.status === ACTIVE)
   if (!member) fail(TEAM_HUB_DENIED)
   const entries = await complete(data.models.PlayerChampionPoolEntry.listPlayerChampionPoolEntryByMembershipId, { membershipId }, MAX_TEAM_MEMBERS)
-  const slots = (await slotsForMember(data, membershipId)).filter((slot: any) => slot.status === ACTIVE && slot.slotType !== 'STARTER_GUARD')
+  const slots = (await readRosterCells(data, teamId)).filter((slot: any) => slot && slot.membershipId === membershipId && slot.status === ACTIVE)
   return { member: publicMember(member), roster: slots.map(publicSlot), entries }
 }
 

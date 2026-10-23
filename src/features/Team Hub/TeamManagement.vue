@@ -36,8 +36,9 @@
         </form>
       </section>
 
+      <section><h2>Player role preferences</h2><ul><li v-for="member in activePlayers" :key="member.id">{{ member.displayName }} — {{ member.primaryRole || 'Primary role not set' }}<span v-if="member.secondaryRoles?.length">; secondary: {{ member.secondaryRoles.join(', ') }}</span></li></ul></section>
       <section v-if="context.capabilities.canManageRoster">
-        <h2>Starting roster</h2>
+        <h2>Starting five and substitutes</h2><p>Team management and Coach assign five starting positions and up to three substitutes. Player preferences do not change these assignments.</p>
         <form @submit.prevent="assignSlot">
           <select v-model="rosterMembershipId" required><option value="" disabled>Player</option><option v-for="member in activePlayers" :key="member.id" :value="member.id">{{ member.displayName }}</option></select>
           <select v-model="gameRole"><option v-for="role in roles" :key="role">{{ role }}</option></select>
