@@ -1,3 +1,5 @@
+import { acquireFulfillmentClaim, claimedSnapshotClient, completeFulfillmentClaim, holdFulfillmentClaim, inspectStoredAttempt, providerId } from './claim'
+import { assertStoredOrderSafe } from './security'
 import { jsonResponse } from '../shared/responses'
 import { logger } from '../shared/logger'
 import { createPrintfulOrder } from '../printful'
@@ -143,99 +145,40 @@ export function buildFulfillmentOrder(body: any, paymentState: unknown, now = ne
 }
 
 async function saveProviderStatuses(client: any, order: any, providerStatuses: ProviderStatuses, auditEntries: unknown[]) {
-  await client.models.FulfillmentOrder.update({
+  const result = await client.models.FulfillmentOrder.update({
     id: order.id,
     providerStatuses: JSON.stringify(providerStatuses),
     overallFulfillmentStatus: overallStatus(providerStatuses),
     auditHistory: JSON.stringify([...(order.auditHistory || []), ...auditEntries]),
     updatedAt: new Date().toISOString(),
   })
+  if (result?.errors?.length || !result?.data) throw new Error('Fulfillment status could not be persisted; reconcile before retry')
 }
 
-export async function dispatchFulfillment(order: any, injected?: {
-  getClient?: () => Promise<any>
-  createPrintful?: typeof createPrintfulOrder
-  fulfillmentEnabled?: () => boolean
+async function dispatchFulfillmentInternal(order: any, injected?: {
+  getClient?: () => Promise<any>; createPrintful?: typeof createPrintfulOrder; fulfillmentEnabled?: () => boolean; fetchPayment?: typeof fetchRevolutMerchantOrder
 }) {
-  order = decodeFulfillmentOrder(order)
-  const getClient = injected?.getClient || getDataClient
-  const client = await getClient() as any
-  const createPrintful = injected?.createPrintful || createPrintfulOrder
-  const fulfillmentEnabled = injected?.fulfillmentEnabled || isPrintfulFulfillmentEnabled
-  const items = Array.isArray(order.items) ? order.items as FulfillmentItem[] : []
-  const providerStatuses: ProviderStatuses = { ...(order.providerStatuses || {}) }
-  const auditEntries: unknown[] = []
-
-  for (const [provider, providerItems] of Object.entries(groupByProvider(items))) {
-    if (providerStatuses[provider]?.status === 'fulfilled' || providerStatuses[provider]?.status === 'test_skipped') {
-      logger.info('Provider already fulfilled', { provider, orderId: order.revolutOrderId })
-      auditEntries.push(audit('Provider already fulfilled', 'skipped', provider))
-      continue
-    }
-
-    logger.info('Dispatching fulfillment provider', { provider, orderId: order.revolutOrderId })
-
-    if (provider !== 'printful') {
-      providerStatuses[provider] = { status: 'pending', message: 'Provider is not implemented', lastAttempt: new Date().toISOString() }
-      auditEntries.push(audit('Fulfillment dispatch', 'pending', provider))
-      continue
-    }
-
-    if (!fulfillmentEnabled() || !isProductionOrder(order)) {
-      providerStatuses.printful = {
-        status: 'test_skipped',
-        message: 'Printful fulfillment intentionally skipped for non-production transaction',
-      }
-      auditEntries.push(audit('Printful fulfillment', 'test_skipped', 'printful'))
-      logger.info('Printful fulfilment skipped for non-production transaction')
-      continue
-    }
-
-    const printfulItems = providerItems
-      .filter((item) => item.fulfillmentVariantId)
-      .map((item) => ({ sync_variant_id: item.fulfillmentVariantId, quantity: item.quantity }))
-
-    if (printfulItems.length !== providerItems.length) {
-      providerStatuses.printful = { status: 'failed', message: 'Missing Printful fulfillment variant ID', lastAttempt: new Date().toISOString(), lastError: 'Missing Printful fulfillment variant ID' }
-      auditEntries.push(audit('Printful fulfillment', 'failed', 'printful'))
-      continue
-    }
-
-    try {
-      logger.info('Creating Printful order', { orderId: order.revolutOrderId })
-      const result = await createPrintful({
-        orderId: order.projectOrderId,
-        shippingMethod: 'STANDARD',
-        items: printfulItems,
-        customerName: order.customerName,
-        email: order.email,
-        address: order.shippingAddress?.address,
-        city: order.shippingAddress?.city,
-        state: order.shippingAddress?.state,
-        zip: order.shippingAddress?.postcode,
-        country: order.shippingAddress?.country,
-      })
-      logger.info('Printful response status', { status: result.statusCode })
-      if (result.statusCode >= 200 && result.statusCode < 300) {
-        const body = result.body as { result?: { id?: string } }
-        providerStatuses.printful = { status: 'fulfilled', providerOrderId: body.result?.id, lastAttempt: new Date().toISOString() }
-        auditEntries.push(audit('Printful fulfillment', 'fulfilled', 'printful'))
-        logger.info('Provider fulfillment success', { provider: 'printful', orderId: order.revolutOrderId })
-      } else {
-        providerStatuses.printful = { status: 'failed', message: 'Printful order creation failed', lastAttempt: new Date().toISOString(), lastError: 'Printful order creation failed' }
-        auditEntries.push(audit('Printful fulfillment', 'failed', 'printful'))
-        logger.warn('Provider fulfillment failure', { provider: 'printful', orderId: order.revolutOrderId })
-      }
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'Printful order creation failed'
-      providerStatuses.printful = { status: 'failed', message, lastAttempt: new Date().toISOString(), lastError: message }
-      auditEntries.push(audit('Printful fulfillment', 'failed', 'printful'))
-      logger.error('Provider fulfillment failure', { provider: 'printful', orderId: order.revolutOrderId })
-    }
+  const client = await (injected?.getClient || getDataClient)() as any
+  const payment = injected?.fetchPayment || fetchRevolutMerchantOrder
+  const trusted = await assertStoredOrderSafe(order, client, payment)
+  const status = inspectStoredAttempt(trusted)
+  if (status !== 'fresh') return trusted.providerStatuses
+  if (!(injected?.fulfillmentEnabled || isPrintfulFulfillmentEnabled)() || !isProductionOrder(trusted)) {
+    return { ...(trusted.providerStatuses || {}), printful: { status: 'test_skipped' as const, message: 'Non-production fulfilment intentionally skipped' } }
   }
-
-  await saveProviderStatuses(client, order, providerStatuses, auditEntries)
-  return providerStatuses
+  const claim = await acquireFulfillmentClaim(client, trusted)
+  try {
+    const current = await assertStoredOrderSafe(claim.order, claimedSnapshotClient(client, claim), payment)
+    const response = await (injected?.createPrintful || createPrintfulOrder)({
+      orderId: current.projectOrderId, shippingMethod: 'STANDARD', items: current.items.map((item: FulfillmentItem) => ({ sync_variant_id: item.fulfillmentVariantId, quantity: item.quantity })),
+      customerName: current.customerName, email: current.email, address: current.shippingAddress?.address, city: current.shippingAddress?.city,
+      state: current.shippingAddress?.state, zip: current.shippingAddress?.postcode, country: current.shippingAddress?.country,
+    })
+    return await completeFulfillmentClaim(client, claim, providerId(response))
+  } catch {
+    try { await holdFulfillmentClaim(client, claim) } catch { /* Existing claim remains durable if reconciliation persistence fails. */ }
+    throw new Error('Fulfilment outcome requires reconciliation; reconcile before retry')
+  }
 }
 
 async function findOrder(client: any, identifier: string) {
@@ -260,116 +203,28 @@ export async function persistPendingFulfillmentOrder(body: any, revolutOrderId: 
   return created
 }
 
-export async function handleFulfillmentRequest(body: any) {
-  const client = await getDataClient() as any
-  const revolutOrderId = String(body?.revolutOrderId || '')
-  const projectOrderId = String(body?.projectOrderId || revolutOrderId)
-  if (!revolutOrderId || !Array.isArray(body?.items)) return jsonResponse(400, { error: 'Missing paid order fulfillment data' })
-
-  const payment = await fetchRevolutMerchantOrder(revolutOrderId)
-  const paymentBody = payment.body as { state?: string; amount?: number; currency?: string }
-  const paymentState = paymentBody.state
-  if (payment.statusCode < 200 || payment.statusCode >= 300 || !isPaid(paymentState)) {
-    return jsonResponse(409, { error: 'Revolut payment is not paid', revolutOrderId })
-  }
-  logger.info('Payment verified', { orderId: revolutOrderId, state: paymentState })
-
-  let order = await findOrder(client, revolutOrderId)
-  const alreadyFulfilled = Boolean(order) && Object.keys(order.providerStatuses || {}).length > 0 && Object.values(order.providerStatuses || {}).every((status: any) => status?.status === 'fulfilled')
-  if (!order) {
-    order = await createValidatedFulfillmentOrder(client, fulfillmentOrderInput(buildFulfillmentOrder(body, paymentState)))
-  } else {
-    assertPaymentMatchesStoredOrder(order, paymentBody)
-    const paidUpdate = {
-      id: order.id,
-      paymentStatus: String(paymentState).toLowerCase(),
-      paymentDate: new Date().toISOString(),
-      paymentAmount: typeof body?.paymentAmount === 'number' ? body.paymentAmount : order.paymentAmount,
-      currency: typeof body?.currency === 'string' ? body.currency : order.currency,
-      updatedAt: new Date().toISOString(),
-    }
-    await client.models.FulfillmentOrder.update(paidUpdate)
-    order = { ...order, ...paidUpdate }
-  }
-  const providers = await dispatchFulfillment(order)
-  const failedProvider = Object.entries(providers).find(([, status]) => status.status === 'failed')
-  if (failedProvider) {
-    return jsonResponse(502, {
-      success: false,
-      error: failedProvider[1].lastError || failedProvider[1].message || `${failedProvider[0]} fulfillment failed`,
-      recoverable: true,
-      revolutOrderId,
-      providers,
-    })
-  }
-  return jsonResponse(200, { success: true, alreadyFulfilled, revolutOrderId, providers })
+// REST requests do not establish customer ownership. Only webhook/admin dispatch.
+export async function handleFulfillmentRequest(_body: unknown) {
+  return jsonResponse(403, { error: 'Public fulfillment is disabled' })
+}
+export async function handleRecoveryFulfillment(_body: unknown) {
+  return jsonResponse(403, { error: 'Use authenticated administrative recovery' })
+}
+export async function handleExistingRevolutOrderImport(_body: unknown) {
+  return jsonResponse(403, { error: 'Use authenticated administrative import' })
 }
 
-export async function handleRecoveryFulfillment(body: any) {
-  const identifier = String(body?.revolutOrderId || body?.projectOrderId || '')
-  logger.info('Recovery requested', { identifier })
-  if (!identifier) return jsonResponse(400, { error: 'Missing revolutOrderId or projectOrderId' })
-  const client = await getDataClient() as any
-  let order = await findOrder(client, identifier)
-  if (!order) return jsonResponse(404, { error: 'Order was not stored; shipping address, provider assignments, and variant quantities cannot be safely reconstructed from Revolut.' })
-  const payment = await fetchRevolutMerchantOrder(order.revolutOrderId)
-  const paymentBody = payment.body as { state?: string; amount?: number; currency?: string }
-  const paymentState = paymentBody.state
-  if (!isPaid(paymentState)) return jsonResponse(409, { error: 'Revolut payment is not paid', revolutOrderId: order.revolutOrderId })
-  try { assertPaymentMatchesStoredOrder(order, paymentBody) }
-  catch (error) { return jsonResponse(409, { error: error instanceof Error ? error.message : 'Revolut payment verification failed', revolutOrderId: order.revolutOrderId }) }
-  logger.info('Payment verified', { orderId: order.revolutOrderId, state: paymentState })
-  const hydratedItems = await hydrateFulfillmentVariantIds(order, client)
-  if (JSON.stringify(hydratedItems) !== JSON.stringify(order.items || [])) {
-    const mappingEntry = audit('Printful variant mapping restored', 'verified', 'printful')
-    const update = {
-      id: order.id,
-      items: JSON.stringify(hydratedItems),
-      auditHistory: JSON.stringify([...(order.auditHistory || []), mappingEntry]),
-      updatedAt: new Date().toISOString(),
-    }
-    const result = await client.models.FulfillmentOrder.update(update)
-    if (result?.errors?.length || !result?.data) throw new Error('Failed to persist restored Printful variant mapping')
-    order = { ...order, items: hydratedItems, auditHistory: [...(order.auditHistory || []), mappingEntry] }
+// Cache only coalesces this process; the persistent conditional claim provides exclusion.
+export function createAtomicDispatcher() {
+  const attempts = new Map<string, Promise<ProviderStatuses>>()
+  return function dispatch(order: any, injected?: Parameters<typeof dispatchFulfillmentInternal>[1]) {
+    const key = String(order?.id || '')
+    if (!key) return Promise.reject(new Error('Stored internal order ID is required'))
+    if (attempts.has(key)) return attempts.get(key)!
+    if (attempts.size >= 1000) return Promise.reject(new Error('Fulfilment capacity reached; reconcile before retry'))
+    const attempt = dispatchFulfillmentInternal(order, injected); attempts.set(key, attempt); return attempt
   }
-  const alreadyFulfilled = Object.keys(order.providerStatuses || {}).length > 0 && Object.values(order.providerStatuses || {}).every((status: any) => status?.status === 'fulfilled')
-  await saveProviderStatuses(client, order, order.providerStatuses || {}, [audit('Admin recovery started', 'verified')])
-  const refreshed = { ...order, auditHistory: [...(order.auditHistory || []), audit('Admin recovery started', 'verified')] }
-  const providers = await dispatchFulfillment(refreshed)
-  return jsonResponse(200, { success: true, alreadyFulfilled, revolutOrderId: order.revolutOrderId, providers })
 }
-
-export async function handleExistingRevolutOrderImport(body: any) {
-  const revolutOrderId = String(body?.revolutOrderId || '')
-  if (!revolutOrderId) return jsonResponse(400, { error: 'Missing revolutOrderId' })
-  const client = await getDataClient() as any
-  const existing = await findOrder(client, revolutOrderId)
-  if (existing) return jsonResponse(200, { success: true, imported: false, order: existing })
-  const payment = await fetchRevolutMerchantOrder(revolutOrderId)
-  const paymentBody = payment.body as { state?: string; merchant_order_ext_ref?: string; amount?: number; currency?: string; email?: string }
-  if (payment.statusCode < 200 || payment.statusCode >= 300 || !isPaid(paymentBody.state)) {
-    return jsonResponse(409, { error: 'Revolut payment is not paid', revolutOrderId })
-  }
-  const missingData = 'Recovery requires the original shipping address, item quantities, fulfillment providers, and Printful sync variant IDs.'
-  const created = await createValidatedFulfillmentOrder(client, fulfillmentOrderInput({
-    projectOrderId: paymentBody.merchant_order_ext_ref || revolutOrderId,
-    revolutOrderId,
-    paymentStatus: String(paymentBody.state).toLowerCase(),
-    paymentDate: new Date().toISOString(),
-    paymentAmount: typeof paymentBody.amount === 'number' ? paymentBody.amount : null,
-    currency: paymentBody.currency || null,
-    environment: transactionEnvironment(),
-    overallFulfillmentStatus: 'recovery_required',
-    customerName: '',
-    email: paymentBody.email || '',
-    shippingAddress: {},
-    items: [],
-    providerStatuses: {},
-    auditHistory: [audit('Existing Revolut order imported', 'recovery_required')],
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  }))
-  return jsonResponse(200, { success: true, imported: true, recoveryRequired: true, missingData, order: created })
-}
+export const dispatchFulfillment = createAtomicDispatcher()
 
 export { createValidatedFulfillmentOrder, validateFulfillmentOrder } from './orderValidation'

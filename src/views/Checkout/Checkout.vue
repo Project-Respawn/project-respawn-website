@@ -4,7 +4,7 @@
       <header class="checkout-header">
         <div>
           <p class="checkout-kicker">Project Respawn Store</p>
-          <h1>{{ orderComplete ? 'Order Confirmed' : 'Checkout' }}</h1>
+          <h1>{{ orderComplete ? 'Payment Submitted' : 'Checkout' }}</h1>
         </div>
 
         <div v-if="!orderComplete" class="checkout-header-meta">
@@ -12,12 +12,10 @@
         </div>
       </header>
 
-      <div v-if="!orderComplete" class="shipping-notice" role="note">
-        <p>
-          We currently ship to the UK, Europe, and the USA only.
-          If you are ordering from another location, please contact us before placing an order
-          so we can discuss shipping options and pricing.
-        </p>
+      <div v-if="!orderComplete" class="shipping-notice" role="status">
+        <p>Prices include applicable taxes. Shipping is FREE. Sold by Ravens Community, trading as Project Respawn.</p>
+        <p v-if="!checkoutEnabled">Checkout is temporarily unavailable while secure release checks are completed. Your basket is safe.</p>
+        <p v-if="configurationError">{{ configurationError }}</p>
       </div>
 
       <section v-if="!orderComplete" class="checkout-grid">
@@ -40,7 +38,7 @@
                 </div>
 
                 <button
-                  v-if="addressComplete && activeStep !== 'address'"
+                  v-if="addressComplete && activeStep !== 'address' && !paymentStarted"
                   type="button"
                   class="step-edit"
                   @click="activeStep = 'address'"
@@ -51,6 +49,7 @@
 
               <div v-show="activeStep === 'address'" class="step-body">
                 <form class="customer-form" @submit.prevent="saveAddress">
+                  <fieldset :disabled="quoting || paymentStarted">
                   <div class="form-group">
                     <label for="full-name">Full Name *</label>
                     <input id="full-name" v-model="customer.fullName" type="text" required />
@@ -62,8 +61,8 @@
                   </div>
 
                   <div class="form-group">
-                    <label for="phone">Phone Number *</label>
-                    <input id="phone" v-model="customer.phone" type="tel" required />
+                    <label for="phone">Phone Number (optional)</label>
+                    <input id="phone" v-model="customer.phone" type="tel" />
                   </div>
 
                   <div class="form-group">
@@ -83,27 +82,12 @@
                     </div>
                   </div>
 
+                  <div v-if="['US', 'CA', 'AU'].includes(customer.country)" class="form-group"><label for="shipping-state">State / province code *</label><input id="shipping-state" v-model="customer.state" maxlength="10" required></div>
                   <div class="form-group">
                     <label for="country">Country *</label>
                     <select id="country" v-model="customer.country" required>
                       <option value="">Select your country</option>
-                      <option value="GB">United Kingdom</option>
-                      <option value="US">United States</option>
-                      <option value="IE">Ireland</option>
-                      <option value="FR">France</option>
-                      <option value="DE">Germany</option>
-                      <option value="ES">Spain</option>
-                      <option value="IT">Italy</option>
-                      <option value="NL">Netherlands</option>
-                      <option value="BE">Belgium</option>
-                      <option value="PT">Portugal</option>
-                      <option value="SE">Sweden</option>
-                      <option value="DK">Denmark</option>
-                      <option value="FI">Finland</option>
-                      <option value="NO">Norway</option>
-                      <option value="PL">Poland</option>
-                      <option value="AT">Austria</option>
-                      <option value="CH">Switzerland</option>
+                      <option v-for="code in destinations" :key="code" :value="code">{{ code }}</option>
                     </select>
                   </div>
 
@@ -111,9 +95,10 @@
                     {{ addressError }}
                   </div>
 
-                  <button type="submit" class="primary-btn">
-                    Use this address
+                  <button type="submit" class="primary-btn" :disabled="quoting || !checkoutEnabled || paymentStarted">
+                    {{ quoting ? 'Checking your total...' : 'Review all-inclusive total' }}
                   </button>
+                  </fieldset>
                 </form>
               </div>
             </section>
@@ -178,6 +163,7 @@
         <aside class="checkout-sidebar">
           <div class="checkout-card checkout-summary sticky">
             <h2>Order Summary</h2>
+            <label>Payment currency<select v-model="currency" :disabled="orderComplete || paymentStarted || quoting"><option v-for="code in currencyCodes" :key="code" :value="code">{{ code }}</option></select></label>
 
            <div class="summary-items">
   <div
@@ -195,14 +181,14 @@
         </div>
         <button
           type="button"
-          class="remove-item-btn summary-remove-btn"
+          class="remove-item-btn summary-remove-btn" :disabled="paymentStarted || quoting"
           @click="removeCartItem(item)"
         >
           Remove
         </button>
       </div>
 
-      <span>£{{ (item.price * item.quantity).toFixed(2) }}</span>
+      <span>{{ hasAuthoritativeQuote ? formatMoney(item.price * item.quantity) : 'Awaiting server quote' }}</span>
     </div>
   </div>
 </div>
@@ -210,17 +196,18 @@
             <div class="summary-block">
               <div class="summary-row">
                 <span>Subtotal</span>
-                <span>£{{ subtotal.toFixed(2) }}</span>
+                <span>{{ formatMoney(subtotal) }}</span>
               </div>
 
               <div class="summary-row">
                 <span>Shipping</span>
-                <span class="shipping-old">£{{ originalShipping.toFixed(2) }}</span>
+                <span class="shipping-quote">FREE</span>
               </div>
 
+              <div class="summary-row"><span>Tax included</span><span>{{ formatMoney(taxTotal) }}</span></div>
               <div class="summary-row total">
                 <span>Total</span>
-                <span>£{{ total.toFixed(2) }}</span>
+                <span>{{ formatMoney(total) }}</span>
               </div>
             </div>
           </div>
@@ -229,18 +216,30 @@
 
       <section v-if="orderComplete" class="confirmation-wrap">
         <div class="checkout-card confirmation-card">
-          <h2>✅ Order Confirmed!</h2>
-          <p>Thank you for your purchase.</p>
+          <h2>Payment Submitted</h2>
+          <p>Thank you. We will verify your payment before processing your order.</p>
+          <p>Guest access remains in this browser tab. Keep your order reference; it is not an access credential.</p>
           <p>Order ID: <strong>{{ orderId }}</strong></p>
-          <p v-if="fulfillmentError" class="payment-status payment-status--error">
+          <p>Order total: <strong>{{ formatMoney(total) }}</strong>. Shipping FREE. Applicable tax included.</p>
+          <p v-if="fulfillmentError" class="payment-status">
             {{ fulfillmentError }}
           </p>
-          <p v-else>Your order will be printed and shipped within 3–5 business days.</p>
+          <p v-else>Your order is awaiting verification.</p>
 
-          <button type="button" class="primary-btn" @click="resetCheckout">
+          <button type="button" class="primary-btn" :disabled="!canStartNewOrder" @click="resetCheckout">
             Continue Shopping
           </button>
         </div>
+      </section>
+      <section class="checkout-card order-status-lookup">
+        <h2>Check an existing order</h2>
+        <p>Sign in to the account that placed the order. Guest access remains in the original checkout tab.</p>
+        <form @submit.prevent="lookupOrderStatus">
+          <label for="order-reference">Order reference</label>
+          <input id="order-reference" v-model="statusReference" type="text" maxlength="39" required autocomplete="off" />
+          <button class="primary-btn" type="submit" :disabled="statusLookupBusy">{{ statusLookupBusy ? 'Checking...' : 'Check order status' }}</button>
+        </form>
+        <p role="status" aria-live="polite">{{ statusLookupMessage }}</p>
       </section>
     </div>
   </main>
@@ -250,6 +249,8 @@
 import { useCheckout } from '../../composables/useCheckout'
 
 const {
+  statusReference, statusLookupMessage, statusLookupBusy, lookupOrderStatus, canStartNewOrder,
+  formatMoney, quoting, checkoutEnabled, destinations, configurationError, paymentStarted,
   activeStep,
   orderComplete,
   orderId,
@@ -260,6 +261,10 @@ const {
   fulfillmentError,
   paymentReady,
   originalShipping,
+  taxTotal,
+  hasAuthoritativeQuote,
+  currency,
+  currencyCodes,
   cartItems,
   customer,
   cartCount,

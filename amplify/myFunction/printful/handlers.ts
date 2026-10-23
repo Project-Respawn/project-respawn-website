@@ -174,36 +174,9 @@ export async function createPrintfulOrder(
   return result
 }
 
-export async function handlePrintfulCreateOrder(body: any) {
-  try {
-    const result = await createPrintfulOrder(body)
-    return jsonResponse(result.statusCode, result.body)
-  } catch (error) {
-    const message = error instanceof Error ? error.message : 'Missing order items'
-    const statusCode = message === 'Printful fulfillment is disabled outside explicit production' ? 403 : 400
-    return jsonResponse(statusCode, { error: message })
-  }
+export async function handlePrintfulCreateOrder(_body: unknown) {
+  return jsonResponse(403, { error: 'Public provider order creation is disabled' })
 }
-
-export async function handlePrintfulOrderLookup(path: string) {
-  const orderId = path.split('/').pop()
-
-  if (!orderId) {
-    return jsonResponse(400, { error: 'Missing orderId' })
-  }
-
-  const result = await makeRequest(
-    `https://api.printful.com/orders/${orderId}`,
-    'GET',
-    null,
-    buildPrintfulAuthHeader()
-  )
-
-  return jsonResponse(result.statusCode, result.body)
+export async function handlePrintfulOrderLookup(_path: string) {
+  return jsonResponse(403, { error: 'Public provider order lookup is disabled' })
 }
-
-/* ============================================================================
-   Revolut configuration
-============================================================================ */
-
-

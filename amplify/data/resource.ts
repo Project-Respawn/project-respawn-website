@@ -700,6 +700,7 @@ const schema = a
       .arguments({
         variantId: a.id(), productId: a.id().required(), externalVariantId: a.string(), sku: a.string(),
         name: a.string(), color: a.string(), colorHex: a.string(), size: a.string(), displayPrice: a.string(),
+        currencyPrices: a.json(),
         retailPrice: a.float(), currency: a.string(), availabilityStatus: a.string(), imageUrl: a.string(),
         sortOrder: a.integer(), status: a.string(),
       })
@@ -1652,6 +1653,7 @@ const schema = a
         colorHex: a.string(),
         size: a.string(),
         displayPrice: a.string(),
+        currencyPrices: a.json(), // admin-controlled independent minor-unit prices
         retailPrice: a.float(),
         currency: a.string(),
         availabilityStatus: a.string(),

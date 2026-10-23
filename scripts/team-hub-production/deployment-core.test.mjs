@@ -1,5 +1,7 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {pathToFileURL} from 'node:url';import path from 'node:path';
 import {environment} from './config.mjs';
+import {prepareCoreTestFixture} from './core-test-fixture.mjs';
+prepareCoreTestFixture();
 const {createCoreService}=await import(pathToFileURL(path.resolve('.tmp/team-hub-production/source/domains/shared-core/service.mjs')));
 const actor='00000000-0000-0000-0000-000000000001',candidate='00000000-0000-0000-0000-000000000002';
 const search={contractVersion:'directory.assignment.v1',environment:'Production',accessToken:'SYNTHETIC',action:'search',teamId:'team:production-proof',query:'pr',limit:2};

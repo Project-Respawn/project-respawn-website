@@ -1,3 +1,4 @@
+import { composeCommerce } from './commerce/composition';
 import { defineBackend } from '@aws-amplify/backend';
 import type { BackendAuth } from '@aws-amplify/backend-auth';
 import { Aspects, CfnResource, IAspect, RemovalPolicy, Stack } from 'aws-cdk-lib';
@@ -362,3 +363,8 @@ const userPoolClient = backend.auth.resources.userPoolClient;
 const runtimeHandler = backend.twitchRuntime.resources.lambda;
 assertRuntimeLambdaMutationTarget(runtimeHandler);
 composeOverlaySourceStack({ stack: overlaySourceStack, tables: backend.data.resources.tables, userPoolId: userPool.userPoolId, userPoolClientId: userPoolClient.userPoolClientId, frontendOrigin: process.env.AWS_BRANCH === 'master' ? 'https://www.projectrespawn.com' : 'http://localhost:5174', runtimeHandler, addOutput: (output) => backend.addOutput(output as any) });
+
+if (process.env.COMMERCE_STAGE2_INFRASTRUCTURE === 'reviewed') {
+  if (['master','main','production'].includes(String(process.env.AWS_BRANCH || '').toLowerCase())) throw new Error('Commerce production infrastructure is not authorised');
+  composeCommerce({runtime: backend.myFunction.resources.lambda as LambdaFunction, api: httpApi, poolId: userPool.userPoolId, clientId: userPoolClient.userPoolClientId});
+}

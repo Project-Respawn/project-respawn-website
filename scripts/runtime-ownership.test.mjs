@@ -20,7 +20,7 @@ test('Lambda environment bindings never use AWS-invalid underscore-prefixed name
 });
 
 test('synthesized dependency graph has no data to overlay edge', () => {
-  const directory = '.amplify/master-preview/cdk.out';
+  const directory = process.env.RUNTIME_OWNERSHIP_ASSEMBLY || '.amplify/master-preview/cdk.out';
   const rootFile = readdirSync(directory).find((file) => file.startsWith('amplify-') && file.endsWith('.template.json'));
   const root = JSON.parse(readFileSync(join(directory, rootFile), 'utf8'));
   const nested = Object.fromEntries(Object.entries(root.Resources).filter(([, resource]) => resource.Type === 'AWS::CloudFormation::Stack').map(([id, resource]) => [id, basename(resource.Metadata?.['aws:asset:path'] || '')]));

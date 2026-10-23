@@ -54,3 +54,11 @@ test('checkout conditionally displays colour, size, quantity, and price', () => 
   assert.match(template, /Quantity: \{\{ item\.quantity \}\}/)
   assert.match(template, /item\.price \* item\.quantity/)
 })
+
+test('payment callback leaves fulfillment to the signed backend webhook', () => {
+  const source = readFileSync(new URL('./useCheckout.js', import.meta.url), 'utf8')
+  assert.doesNotMatch(source, /\/orders\/fulfill/)
+  const template = readFileSync(new URL('../views/Checkout/Checkout.vue', import.meta.url), 'utf8')
+  assert.doesNotMatch(template, /Order Confirmed|will be printed and shipped/)
+  assert.match(template, /Payment Submitted/)
+})

@@ -10,6 +10,21 @@ import { isolationPlugin } from '../build-isolation.mjs';
 import { runtimePolicy, deploymentPolicy, callerPolicy, operationalArn, journalArn, target } from '../../../infrastructure/domains/team-hub/security.mjs';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const read = p => JSON.parse(fs.readFileSync(path.join(root, p), 'utf8'));
+// Extend immutable historical pins only for enumerated Commerce integration edits.
+const integration = read('docs/commerce/team-hub-integration-amendment.json');
+assert.equal(integration.baseline, '4e5ce071bb00c07174e1b5a6c5e5790c51ea02f1');
+assert.deepEqual(integration.files.map(f => f.path).sort(), [
+  'amplify/backend.ts', 'amplify/data/resource.ts', 'package.json',
+  'scripts/team-hub/tests/security-isolation.test.mjs',
+]);
+const integrationHash = (p, previous) => {
+  const change = integration.files.find(f => f.path === p);
+  if (!change) return previous;
+  assert.equal(change.previousSha256, previous, `Integration must extend the exact historical pin: ${p}`);
+  assert.equal(integration.liveActivation, false);
+  assert.equal(integration.awsWrites, 0);
+  return change.sha256;
+};
 const list = value => Array.isArray(value) ? value : [value];
 const matches = (pattern, value) => new RegExp(`^${pattern.replace(/[.+^${}()|[\]\\]/g, '\\$&').replaceAll('*', '.*').replaceAll('?', '.')}$`, 'i').test(value);
 function evaluate(policy, action, resource, context = {}) {
@@ -85,7 +100,7 @@ test('synth receipt counts every root/resource including security and closes ove
   for (const input of evidence.inputs) {
     const amended=productionAmendment.files.find(f=>f.path===input.path),previous=expectedInputHash(input);
     if(amended)assert.equal(amended.previousSha256,previous,'amendment must extend the historical pin');
-    assert.equal(createHash('sha256').update(fs.readFileSync(path.join(root,input.path))).digest('hex'),amended?.sha256??previous,`stale synthesis input ${input.path}`);
+    assert.equal(createHash('sha256').update(fs.readFileSync(path.join(root,input.path))).digest('hex'),integrationHash(input.path,amended?.sha256??previous),`stale synthesis input ${input.path}`);
   }
   const productFixture=fixture.templates.find(t=>t.name===target.stack);
   assert.equal(createHash('sha256').update(fs.readFileSync(productFixture.path)).digest('hex'),productFixture.sha256);
@@ -151,7 +166,7 @@ test('protected Legacy hashes retained; explicit accepted phase amendments and d
       ? read('docs/architecture/team-hub-2b4-evidence-2026-10-06/source-manifest.json').legacyBackendSha256
       : allowedFrontend.has(p) ? (repair.changes.find(f => f.path === p)?.sha256 ?? frontend.files.find(f => f.path === p)?.sha256) : sha256;
     assert.ok(expected, `Missing explicit phase pin for ${p}`);
-    assert.equal(createHash('sha256').update(fs.readFileSync(path.join(root, p))).digest('hex'), expected, p);
+    assert.equal(createHash('sha256').update(fs.readFileSync(path.join(root, p))).digest('hex'), integrationHash(p, expected), p);
   }
   const manifest = read('config/domains/team-hub/domain-endpoints.Ntgre.json');
   assert.equal(manifest.stackName, 'ProjectRespawn-TeamHub-Ntgre');

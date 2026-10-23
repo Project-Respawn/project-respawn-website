@@ -1,0 +1,304 @@
+{
+  "branch": "commerce/secure-checkout-review-20261022",
+  "base": "a83a874dad50395518fb0d7e2f1e853cf6bf2513",
+  "state": "LOCAL IMPLEMENTATION COMPLETE; PRODUCTION NO-GO",
+  "fileHashEncoding": "UTF-8 text with CRLF normalised to LF",
+  "tests": {
+    "sandbox": {
+      "passed": 136,
+      "failed": 0,
+      "skipped": 27
+    },
+    "mockedProduction": {
+      "passed": 137,
+      "failed": 0,
+      "skipped": 1
+    },
+    "frontend": {
+      "passed": 15,
+      "failed": 0
+    },
+    "compatibilityFiles": {
+      "passed": 44,
+      "baselineFailures": 1
+    },
+    "infrastructureGuards": {
+      "passed": 15,
+      "failed": 0
+    },
+    "browserCurrencies": [
+      "GBP",
+      "EUR",
+      "USD"
+    ],
+    "browserExternalRequests": 0,
+    "vueBuild": "PASS",
+    "amplifyTypeScript": "PASS",
+    "generatedOutputContract": "FAIL: verified baseline readTeamHub/mutateTeamHub metadata drift"
+  },
+  "safety": {
+    "productionHold": true,
+    "defaultResourceAdditions": 0,
+    "optInResources": 9,
+    "deploymentAuthorised": false,
+    "masterPushPermitted": false,
+    "masterAutoBuild": true,
+    "amplifyAutoBranchCreation": false,
+    "prPreviews": false
+  },
+  "preservation": {
+    "verifiedAtUtc": "2026-10-22T22:35:08.051Z",
+    "protectedFilesChecked": 4715,
+    "protectedDrift": [],
+    "atomicManifestEntriesVerified": 459,
+    "atomicEvidenceDrift": [],
+    "pinnedArtifacts": {
+      "primary": {
+        "sha256": "0078b3ce83d36e3185a29f5d19f17d47322b67fd51cde27f7d11069c369bce86",
+        "unchanged": true
+      },
+      "fallback": {
+        "sha256": "dd5ee45a7ad8edda619b71b23d72089d13a3294166e118c7b066994cc748eef3",
+        "unchanged": true
+      },
+      "containment": {
+        "sha256": "267325a40e1a261614ef7b49b21ba1dca259075610d6d4c832b6af66cdaa1034",
+        "unchanged": true
+      }
+    }
+  },
+  "files": [
+    {
+      "file": "amplify/backend.ts",
+      "sha256": "25b7e1c25e8e9a6d746458604f0ac8cea49d3fe698098af5596280c15ddd09ed"
+    },
+    {
+      "file": "amplify/commerce/composition.test.ts",
+      "sha256": "cba1e33d5c7d8dd732ece3bc4437962c6ddb675185713e44a6794300495cc0dc"
+    },
+    {
+      "file": "amplify/commerce/composition.ts",
+      "sha256": "ccd0b47cba36e56e194ca45bd1b3866f344ac425ea1dd05b12b798ce7a77a53b"
+    },
+    {
+      "file": "amplify/data/resource.ts",
+      "sha256": "399a7d370e2a2905c9071d11b03e89c53c99ec34eb7a988399a49e888cb14d0c"
+    },
+    {
+      "file": "amplify/myFunction/commerce/administration.ts",
+      "sha256": "42138540f685d8c1adf0acbcceab93c5267b8b05ed88d83c3f0663f915307f89"
+    },
+    {
+      "file": "amplify/myFunction/commerce/commerce.test.ts",
+      "sha256": "e33d15ba51f5a1547651b90112a6c70ead7005221e0496a42ffca7820c3c9e50"
+    },
+    {
+      "file": "amplify/myFunction/commerce/completion.test.ts",
+      "sha256": "bd76fa14caf58a494684858fa1334a76ea9f4d3f7290b4bb7a75aea91bb23a72"
+    },
+    {
+      "file": "amplify/myFunction/commerce/contracts.ts",
+      "sha256": "290a0f1cdf78fda4e852456f69bf1306f8340feeeefed2c35c357b952a04deaa"
+    },
+    {
+      "file": "amplify/myFunction/commerce/currencies.ts",
+      "sha256": "57c76e629ddfbd3870aebff8dcc7be573e0749da7b643596787cc4924ea884c1"
+    },
+    {
+      "file": "amplify/myFunction/commerce/http.ts",
+      "sha256": "c1a207d809418fa3edb763c78ceb30afc8ee86c77d36dca23b3109dfdd4635d7"
+    },
+    {
+      "file": "amplify/myFunction/commerce/ledger.ts",
+      "sha256": "99f497d46a83e2dbefcc9bbae076f16f9c4c1fc0c6a118be691cb3160fbf7e19"
+    },
+    {
+      "file": "amplify/myFunction/commerce/legacy.ts",
+      "sha256": "03168a45c70cf3ca60cdf326336e8867639943fa5b95d7e9559bad1274d6b4df"
+    },
+    {
+      "file": "amplify/myFunction/commerce/providers.ts",
+      "sha256": "4b01d93d2420c43d729981cbc6b1c3aa5d53b0aac47758887fc9445d51dcb203"
+    },
+    {
+      "file": "amplify/myFunction/commerce/quote.ts",
+      "sha256": "66d052851261bf6fb6f2f6e60aed7fced1d2d418e5eacf0f81bd9e7665849843"
+    },
+    {
+      "file": "amplify/myFunction/commerce/runtime.ts",
+      "sha256": "5c678c7e3399e8904686578abe163cee18f1c6e4065d40ac44ca1dd7e6e091f7"
+    },
+    {
+      "file": "amplify/myFunction/commerce/service.ts",
+      "sha256": "0f3ee1337c03354849db7c48aa635fef1e7ea041551b811fafe4a04ff650b87b"
+    },
+    {
+      "file": "amplify/myFunction/commerce/taxPolicy.ts",
+      "sha256": "825711b5a643782eeccb5b835ce430ada0d29630442a09c0e17f65a36f7daf86"
+    },
+    {
+      "file": "amplify/myFunction/fulfillment/atomic.test.ts",
+      "sha256": "33f7186b4e90b72b8e9340bf10848706ff5192c799c71cff3268fe88926cc50e"
+    },
+    {
+      "file": "amplify/myFunction/fulfillment/claim.ts",
+      "sha256": "72d30c24c6f5b903acde4f09e5e9b8a9a042c26101f0e960965ca43c8d58103f"
+    },
+    {
+      "file": "amplify/myFunction/fulfillment/claimTestStore.ts",
+      "sha256": "42b54a884f38fb63d3f7a7ca0332b074e143aef5970c42edab5d3dd455a2a508"
+    },
+    {
+      "file": "amplify/myFunction/fulfillment/environmentBoundary.test.ts",
+      "sha256": "75e261d7db94e86cd86f2765515e9f2f05fa8c642549ba36b223541083022eb0"
+    },
+    {
+      "file": "amplify/myFunction/fulfillment/fixtures/claim-request.vtl",
+      "sha256": "0c6a3d9ed1d168b9f3f151daf7746d9544c12d96ae6d0f5664031a7fd1235e5f"
+    },
+    {
+      "file": "amplify/myFunction/fulfillment/fixtures/claim-response.vtl",
+      "sha256": "6483ee775c0280187a9884184f1c7d1d8fa0807f743a85a774e39f12563ee952"
+    },
+    {
+      "file": "amplify/myFunction/fulfillment/index.ts",
+      "sha256": "10d3d65c1960dd06542e1a268bbb1d545c8a8a965e1cc35cfee143f71a55825b"
+    },
+    {
+      "file": "amplify/myFunction/fulfillment/security.test.ts",
+      "sha256": "ef0d49035bc35884094be8739193a21934df136bbdd55c19c88dbe43e6aef895"
+    },
+    {
+      "file": "amplify/myFunction/fulfillment/security.ts",
+      "sha256": "367ff96da4403ca54f02162decd841f53a4ebd2c041bc23f986b40328463a3cc"
+    },
+    {
+      "file": "amplify/myFunction/merch/handlers.test.ts",
+      "sha256": "cb753487d013e4907fc75c382d6d8edc8643aa6b2712398b32e67a24ab4633fe"
+    },
+    {
+      "file": "amplify/myFunction/merch/handlers.ts",
+      "sha256": "5f49c0c35542e511db777102fc082bf0f61ae20e52ca36ebff54a47cd1fc0f16"
+    },
+    {
+      "file": "amplify/myFunction/printful/handlers.ts",
+      "sha256": "67acb8b9b89116ad543057ade3bff2fa8ce0ec65feed7afbc0d94339712b3cf3"
+    },
+    {
+      "file": "amplify/myFunction/revolut/handlers.ts",
+      "sha256": "7060034b27c4de7f4925bd2d1d3919c7fe4a863d8fbaec48e830c035b2463249"
+    },
+    {
+      "file": "amplify/myFunction/revolut/webhook.ts",
+      "sha256": "3e77e4e127690cf6158189304d579d1bab1d116f3b2bf2c38130abee92821d48"
+    },
+    {
+      "file": "amplify/myFunction/router/restRouter.ts",
+      "sha256": "90c8cee8476c0d62abfebb2f9b3b5ddc1fddb4cf8ae104361ef310005f1cc2ae"
+    },
+    {
+      "file": "amplify/myFunction/stage9/handlers.ts",
+      "sha256": "fdcf328bd554570a5456b1fc9dc3a8f35c8b79c5fa953ff81830b2eccdffee4c"
+    },
+    {
+      "file": "amplify/myFunction/stage9/securityRelease.test.ts",
+      "sha256": "bb2c4c7ed14c007863ad8390fa1f1a2b72a2e623ef3abba6f022dd62d10e3f2c"
+    },
+    {
+      "file": "checkout-demo.html",
+      "sha256": "3c2b98d5b211277427aa980ba45c682093c31eb4669e3af30ae71f260b2d24ec"
+    },
+    {
+      "file": "docs/commerce/secure-checkout-review.md",
+      "sha256": "c33abaef6949ebae16279f0e9fadd179f1e1f7684624501bf1824f9e4300eaeb"
+    },
+    {
+      "file": "package.json",
+      "sha256": "3431df196097c9ebed077c3c60bc49de548b24d95337449cbb289f6ab2134a96"
+    },
+    {
+      "file": "scripts/commerce/baseline-check.mjs",
+      "sha256": "91933cff6e6e56ff51044b21058aeb311813fd852348edcdfc48f5b83bc1e513"
+    },
+    {
+      "file": "scripts/commerce/browser-check.mjs",
+      "sha256": "4c40ed5380d9e6639a52350eead6a29a8e35a5a90d3f9c321020eaf3197c43ab"
+    },
+    {
+      "file": "scripts/commerce/compatibility.mjs",
+      "sha256": "c3832d6762bcc7e865b01b599e303d312522cb8c5eafcec292c7c00a840c1167"
+    },
+    {
+      "file": "scripts/commerce/demo.mjs",
+      "sha256": "4448966de4bd0b1b766d4347d60d66a23644ce67d744bf6fd0747bf15cd39f98"
+    },
+    {
+      "file": "scripts/commerce/offline-fixture.ts",
+      "sha256": "990421f8105d7379bf9bf7fba603fdc07c3f9278066176b60274b0b35139e0c4"
+    },
+    {
+      "file": "scripts/commerce/offline-guard.mjs",
+      "sha256": "f8008c0e430aabcda2f84852d7bdb8a904c966c1663bbff41dccf47f2068d69a"
+    },
+    {
+      "file": "scripts/commerce/test-prelude.mjs",
+      "sha256": "a5b35a5670fcea8304828bf7dadfe73b8a8873a0fc2b7849b527b3b030dd214d"
+    },
+    {
+      "file": "scripts/run-commerce-security-tests.mjs",
+      "sha256": "e850a3feb18099ee5b2c512aadea452b1bd8f47290d50be97c082c48d21e1dd5"
+    },
+    {
+      "file": "src/commerce/currencyPrices.js",
+      "sha256": "27b45b96e73724f203b1b6411bbecceb52f7d800a73c51c0af5bc42730e35997"
+    },
+    {
+      "file": "src/commerce/currencyPrices.test.mjs",
+      "sha256": "38b494b039d9e2fb6f859b3d40b891083a3ebfe17118a8f69d8c4c1c56453150"
+    },
+    {
+      "file": "src/commerce/demo/main.js",
+      "sha256": "6fa5d880064522d5291fb3006c7a0c396f59445dc94d07670c0076da2d3470db"
+    },
+    {
+      "file": "src/commerce/demo/payment.js",
+      "sha256": "c8eb728d4282e5e97fe5ee7b748a08a8c06122ecfa6a0375e58cca1841653dea"
+    },
+    {
+      "file": "src/commerce/secureCheckout.js",
+      "sha256": "5e6dfece28bd4f96eefae0cc3faa3db015fa0161b20d1672c9c2adc72ac7b4df"
+    },
+    {
+      "file": "src/commerce/secureCheckout.test.mjs",
+      "sha256": "4347af272daec289da5d564d07eebe8d338dc1023eec0c981efdc933d5b0dca1"
+    },
+    {
+      "file": "src/composables/useCheckout.js",
+      "sha256": "f6b97313fd66a3e79cda63683abbf4572020d2ad73f33f9322820ae2425d5fa7"
+    },
+    {
+      "file": "src/composables/useCheckout.test.mjs",
+      "sha256": "ccda567b4527128c569f699450cc356c11e70e1e8b412e42665951147682dc46"
+    },
+    {
+      "file": "src/views/Admin/ProductControl/ProductControl.js",
+      "sha256": "380c6d6bf2ab53195e06d8a10f1d0a2cd8611932c7765bac923f27f2acc57061"
+    },
+    {
+      "file": "src/views/Admin/ProductControl/ProductControl.vue",
+      "sha256": "94ce09922d192c53d1ca113c3f6e872cbf668d99c6c036d70155162fd13496c5"
+    },
+    {
+      "file": "src/views/Checkout/Checkout.css",
+      "sha256": "9a897156863ae4d08a85c02b800b8826d92c765d5802872215739c5a09419fa9"
+    },
+    {
+      "file": "src/views/Checkout/Checkout.vue",
+      "sha256": "0599638187f1185771151660fab727c943706a316cfa58206aa85185d98d9e04"
+    },
+    {
+      "file": "src/views/Merch/Merch.logic.js",
+      "sha256": "22ef1b52c70a53524bbb12e66a70864f7e521289f16d62d84dfa221decbee807"
+    }
+  ]
+}

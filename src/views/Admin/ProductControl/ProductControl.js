@@ -1,3 +1,4 @@
+import { checkoutCurrencies, priceDraft, pricesFromDraft } from '../../../commerce/currencyPrices.js';
 import { generateClient } from 'aws-amplify/data';
 import { uploadData, getUrl, remove } from 'aws-amplify/storage';
 import outputs from '../../../../amplify_outputs.json';
@@ -424,6 +425,7 @@ async function resolveStorageUrl(value) {
   }
 }
 
+
 export default {
   name: 'ProductControl',
 
@@ -431,6 +433,9 @@ export default {
     return {
       loadingProducts: false,
       savingProduct: false,
+      currencyCodes: checkoutCurrencies,
+      variantPriceDrafts: {},
+      savingVariantPrices: '',
       syncingProducts: false,
       loadError: '',
       syncStatus: '',
@@ -1116,6 +1121,25 @@ export default {
         productUrl: product.productUrl || '',
         sortOrder: product.sortOrder ?? 0,
       };
+    },
+
+    variantCurrencyDraft(variant) {
+      if (!this.variantPriceDrafts[variant.id]) this.variantPriceDrafts[variant.id] = priceDraft(variant.currencyPrices);
+      return this.variantPriceDrafts[variant.id];
+    },
+
+    async saveVariantPrices(variant) {
+      if (!this.isPlatformOperator) return;
+      this.savingVariantPrices = variant.id;
+      this.loadError = '';
+      try {
+        const currencyPrices = pricesFromDraft(this.variantCurrencyDraft(variant));
+        const result = await getClient().mutations.upsertManagedMerchProductVariant({ productId: variant.productId, variantId: variant.id, currencyPrices: JSON.stringify(currencyPrices) });
+        if (result.errors?.length || !result.data?.success) throw new Error(result.errors?.[0]?.message || 'Could not save configured prices.');
+        variant.currencyPrices = currencyPrices;
+        makeToast(this, 'Currency prices saved');
+      } catch (error) { this.loadError = error.message || 'Could not save prices.'; }
+      finally { this.savingVariantPrices = ''; }
     },
 
     closeProductModal() {

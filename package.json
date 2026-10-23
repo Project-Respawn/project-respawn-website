@@ -33,7 +33,10 @@
     "cleanup:media:apply": "node ./scripts/cleanup-orphaned-media.mjs --apply",
     "test:resource-accounting": "node --test ./scripts/cloudformation-accounting.test.mjs ./scripts/ntgre-phase1-allowance.test.mjs",
     "validate:infrastructure-ci": "node ./scripts/validate-infrastructure-ci.mjs",
-    "test:handler-consolidation": "node --test ./scripts/handler-consolidation.test.mjs"
+    "test:handler-consolidation": "node --test ./scripts/handler-consolidation.test.mjs",
+    "test:commerce": "node scripts/run-commerce-security-tests.mjs",
+    "test:commerce:production": "node scripts/run-commerce-security-tests.mjs --production",
+    "checkout:demo": "node scripts/commerce/demo.mjs"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.20",

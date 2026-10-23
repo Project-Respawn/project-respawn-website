@@ -1,5 +1,7 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import {createRequire} from 'node:module';import {generateKeyPairSync,sign,verify,createHash} from 'node:crypto';
 import {createAuthorityStatusHandler} from '../../domains/team-hub/authority-contract/handler.mjs';
+import {prepareAuthorityTestFixture} from './test-fixture.mjs';
+prepareAuthorityTestFixture();
 import {createAuthorityStatusRouter} from '../../domains/team-hub/authority-contract/router.mjs';
 import {createDarkMonitoringHandler} from '../../domains/team-hub/dark-monitoring/handler.mjs';
 import {createCutoverClient} from '../../src/features/team-hub/api/cutover-client.mjs';

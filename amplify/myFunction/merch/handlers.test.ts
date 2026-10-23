@@ -178,3 +178,17 @@ assert.deepEqual(platformRelationshipClient.created, [
 ])
 
 console.log('merch product command authorization tests passed')
+
+const configuredClient = makeClient();
+await handleUpsertManagedMerchProductVariant(event('staff-a', ['Staff'], {
+  productId: 'product-a', variantId: 'variant-created', currencyPrices: { GBP: 1000, EUR: 1400, USD: 1700 },
+}), configuredClient);
+assert.deepEqual(JSON.parse(configuredClient.variantUpdates[0].currencyPrices), { GBP: 1000, EUR: 1400, USD: 1700 });
+await assert.rejects(handleUpsertManagedMerchProductVariant(event('owner-a', ['Member'], {
+  productId: 'product-a', variantId: 'variant-created', currencyPrices: { GBP: 1 },
+}), makeClient()), /Permission products\.edit is required/i);
+const invalidPricesClient = makeClient();
+await assert.rejects(handleUpsertManagedMerchProductVariant(event('staff-a', ['Staff'], {
+  productId: 'product-a', variantId: 'variant-created', currencyPrices: { EUR: -1 },
+}), invalidPricesClient), /INVALID_CONFIGURED_PRICE/);
+assert.equal(invalidPricesClient.variantUpdates.length, 0);
