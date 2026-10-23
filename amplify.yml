@@ -19,6 +19,7 @@ frontend:
           test "$(sha256sum package-lock.json | cut -d ' ' -f 1)" = "2d674ee92ca07d55f728217ae18af7bc6f7a0cfb60a5fc6aba5fc76d8cd776f6" || exit 1
           source_sha=$(sha256sum 'src/features/Team Hub/champion-pool/CoachPoolReview.vue' | cut -d ' ' -f 1)
           case "$source_sha:$TEAM_HUB_FRONTEND_ARTIFACT_SHA" in
+            dec761a84b88aa8ef7a4b6dafa823ff1eada30a402b7ebece705aad47ae63db8:f4a56d695de3e84c5f7bc2e1a98eea4b34be5470c390236c3975753c0d9265a0) ;;
             0f8b780f42ddddfa9ac0b44c1e0e17daebbdfe307fa8014aae520857d08c1b65:136e5d5c231e3007289bccd463a5315189c35f123269709893c3a1571449c4b6) ;;
             14f7bf2604889a4c0590a806bcc5e77a501bb8a63495af31ce34c81ebd4e6852:235c5930621cc324524e78e0b8dad1dfb52de9859544160f43293900630f4917) ;;
             *) echo "Unreviewed source/artifact pairing"; exit 1 ;;

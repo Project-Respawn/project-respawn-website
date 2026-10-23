@@ -676,7 +676,7 @@ onMounted(async () => {
   try {
     const context = await getTeamHub({ teamSlug: teamSlug.value });
     teamContext.value = context;
-    const pool = await loadBoundedPages((nextToken) => listTeamChampionPools(context.team.id, { limit: 50, ...(nextToken ? { nextToken } : {}) }));
+    const pool = await loadBoundedPages((nextToken) => listTeamChampionPools(context.team.id, { limit: 50, ...(nextToken ? { nextToken } : {}) }), 20);
     if (!pool.complete) throw new Error('Team Hub data limit exceeded');
     const entries = pool.items;
     championReviews.value = Object.fromEntries(entries.filter((entry) => entry.coachTier || entry.coachAssessment || entry.coachRecommendation).map((entry) => [`${entry.membershipId}:${entry.championId}`, { coachTier: entry.coachTier || '', assessment: entry.coachAssessment || '', suggestion: entry.coachRecommendation || '', privateNote: '' }]));
