@@ -16,7 +16,7 @@ frontend:
               *) echo "Unreviewed frontend release source"; exit 1 ;;
             esac
           done || exit 1
-          test "$(sha256sum package-lock.json | cut -d ' ' -f 1)" = "d6415773023294efcf1e5086a0fe361d9e4eb42c5e8f1ca9cde6d2cf601807d0" || exit 1
+          test "$(sha256sum package-lock.json | cut -d ' ' -f 1)" = "2d674ee92ca07d55f728217ae18af7bc6f7a0cfb60a5fc6aba5fc76d8cd776f6" || exit 1
           source_sha=$(sha256sum 'src/features/Team Hub/champion-pool/CoachPoolReview.vue' | cut -d ' ' -f 1)
           case "$source_sha:$TEAM_HUB_FRONTEND_ARTIFACT_SHA" in
             0f8b780f42ddddfa9ac0b44c1e0e17daebbdfe307fa8014aae520857d08c1b65:136e5d5c231e3007289bccd463a5315189c35f123269709893c3a1571449c4b6) ;;
