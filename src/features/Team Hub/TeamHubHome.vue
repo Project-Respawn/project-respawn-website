@@ -11,7 +11,7 @@
       </div>
 
       <div class="header-actions">
-        <button v-if="canAdmin" type="button" class="button button--primary" @click="createNewTeam">
+        <button v-if="canAdmin" type="button" class="button button--primary" @click="openCreateDialog" :disabled="creating">
           Create Team
         </button>
 
@@ -20,6 +20,20 @@
         </button>
       </div>
     </header>
+
+    <p v-if="route.query.denied === '1'" class="create-feedback create-feedback--error" role="alert">That team page could not be loaded. This may be a service error; it does not mean your Admin role has been removed.</p>
+    <p v-if="creationNotice" class="create-feedback" role="status">{{ creationNotice }}</p>
+    <dialog ref="createDialog" class="create-team-dialog" aria-labelledby="create-team-title" @cancel="cancelCreate">
+      <form @submit.prevent="createNewTeam">
+        <h2 id="create-team-title">Create a team</h2>
+        <p>Create a League of Legends team, then open its workspace to manage the lineup.</p>
+        <label>Team name<input v-model="createName" maxlength="100" required autofocus :disabled="creating" autocomplete="off" /></label>
+        <label>Team address<input v-model="createSlug" maxlength="48" required pattern="[a-z0-9]+(-[a-z0-9]+)*" :disabled="creating" autocomplete="off" @input="slugEdited = true" /></label>
+        <small>Lowercase letters, numbers and hyphens. This is the unique address for your team.</small>
+        <p v-if="createError" class="create-feedback create-feedback--error" role="alert">{{ createError }}</p>
+        <div class="create-team-actions"><button type="button" class="button button--secondary" :disabled="creating" @click="cancelCreate">Cancel</button><button type="submit" class="button button--primary" :disabled="creating || !createName.trim() || !createSlug">{{ creating ? 'Creating team...' : 'Create team' }}</button></div>
+      </form>
+    </dialog>
 
     <p v-if="loading" class="empty-state">Loading your teams…</p>
     <p v-else-if="errorMessage" class="empty-state">{{ errorMessage }}</p>
@@ -242,15 +256,21 @@
 
 <script setup>
 import { usingIndependentTeamHub, loadTeamCapabilities } from '../team-hub/services/migration-mode.mjs';
-import { computed, onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { computed, onMounted, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 import TeamLogo from './TeamLogo.vue';
 import { useAuth } from '../../composables/useAuth.js';
 import { createTeam, listMyTeams, loadBoundedPages } from './teamHub.service.js';
-import { canShowAdminControls } from './teamHub.viewModel.js';
+import { canShowAdminControls, confirmCreatedTeam } from './teamHub.viewModel.js';
+import { normalizeTeamSlug, replaceTeamInList } from './teamAdministration.viewModel.js';
 
 const router = useRouter();
+const route = useRoute();
+const createDialog = ref(null), createName = ref(''), createSlug = ref(''), slugEdited = ref(false), creating = ref(false), createError = ref(''), creationNotice = ref('');
+watch(createName, name => { if (!slugEdited.value) createSlug.value = normalizeTeamSlug(name).slice(0, 48).replace(/-$/, ''); });
+function openCreateDialog() { createError.value = ''; creationNotice.value = ''; createDialog.value?.showModal(); }
+function cancelCreate(event) { if (creating.value) { event?.preventDefault(); return; } createDialog.value?.close(); }
 const { isAdmin, isSuperAdmin } = useAuth();
 const coreAdmin = ref(false);
 const canAdmin = computed(() => usingIndependentTeamHub ? coreAdmin.value : (canShowAdminControls({ isAdmin: isAdmin.value, isSuperAdmin: isSuperAdmin.value })));
@@ -307,14 +327,14 @@ function openSelectedTeam() {
     return;
   }
 
-  router.push(`/team-hub/${selectedTeam.value.slug}`);
+  router.push(`/team-hub/${selectedTeam.value.slug}${canAdmin.value || selectedTeam.value.userRole === 'MANAGER' ? '/manage' : ''}`);
 }
 
 onMounted(async () => {
   await refreshTeams();
 });
 
-async function refreshTeams() {
+async function refreshTeams(confirmedTeam = null) {
   loading.value = true;
   errorMessage.value = '';
   try {
@@ -322,7 +342,7 @@ async function refreshTeams() {
     const activePage = await loadBoundedPages((nextToken) => listMyTeams({ status: 'ACTIVE', limit: 50, ...(nextToken ? { nextToken } : {}) }));
     const inactivePage = canAdmin.value ? await loadBoundedPages((nextToken) => listMyTeams({ status: 'INACTIVE', limit: 50, ...(nextToken ? { nextToken } : {}) })) : { items: [], complete: true };
     if (!activePage.complete || !inactivePage.complete) throw new Error('Team Hub data limit exceeded');
-    const teams = [...activePage.items, ...inactivePage.items];
+    const teams = confirmedTeam ? replaceTeamInList([...activePage.items, ...inactivePage.items], confirmedTeam) : [...activePage.items, ...inactivePage.items];
     const leagueTeams = teams.filter((team) => team.gameKey === 'LEAGUE_OF_LEGENDS').map((team) => ({
       ...team, userRole: team.role, plan: team.entitlement?.isPro ? 'PRO' : null, players: 0, coaches: 0, poolSubmissions: 0,
       publicProfilePath: `/team-hub/${team.slug}`, tournament: null,
@@ -338,22 +358,32 @@ async function refreshTeams() {
 }
 
 async function createNewTeam() {
-  const name = window.prompt('Team name');
-  if (!name) return;
-  const slug = window.prompt('Unique team slug', name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
-  if (!slug) return;
+  if (creating.value) return;
+  if (!canAdmin.value) { createError.value = 'Creating a team requires an Admin or SuperAdmin account. Sign in again and retry.'; return; }
+  creating.value = true; createError.value = ''; creationNotice.value = '';
   try {
-    const created = await createTeam({ name, slug, gameKey: 'LEAGUE_OF_LEGENDS' });
-    await refreshTeams();
-    selectedGameId.value = games.value.find((game) => game.teams.some((team) => team.id === created.id))?.id ?? selectedGameId.value;
-    selectedTeamId.value = created.id;
+    const name = createName.value.trim(), slug = createSlug.value.trim();
+    if (!name || name.length > 100 || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) || slug.length > 48) throw new Error('Enter a team name and a valid unique team address.');
+    const created = { ...confirmCreatedTeam(await createTeam({ name, slug, gameKey: 'LEAGUE_OF_LEGENDS' })), role: 'ADMIN' };
+    // Keep the acknowledged result visible even before the list index catches up.
+    const existing = games.value.find(game => game.id === 'league-of-legends');
+    const visibleTeam = { ...created, userRole: 'ADMIN', plan: created.entitlement?.isPro ? 'PRO' : null, players: 0, coaches: 0, poolSubmissions: 0, publicProfilePath: '/team-hub/' + created.slug, tournament: null };
+    if (existing) existing.teams = replaceTeamInList(existing.teams, visibleTeam);
+    else games.value = [{ id: 'league-of-legends', name: 'League of Legends', shortName: 'LoL', teams: [visibleTeam] }];
+    selectedGameId.value = 'league-of-legends'; selectedTeamId.value = created.id;
+    await refreshTeams(created);
+    creationNotice.value = 'Team created. Select Open Team Workspace to manage your lineup.';
+    createDialog.value?.close(); createName.value = ''; createSlug.value = ''; slugEdited.value = false;
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Unable to create team.';
-  }
+    createError.value = error instanceof Error ? error.message : 'Team creation could not be confirmed. Refresh the team list before trying again.';
+  } finally { creating.value = false; }
 }
+
 </script>
 
 <style scoped>
+.create-team-dialog{width:min(460px,calc(100vw - 32px));box-sizing:border-box;border:1px solid #424957;border-radius:14px;padding:28px;background:#14171f;color:#f2f5fa}.create-team-dialog::backdrop{background:#05070bd9}.create-team-dialog h2{margin:0 0 10px}.create-team-dialog p,.create-team-dialog small{color:#b4bdcb;font-size:13px}.create-team-dialog label{display:grid;gap:7px;margin:18px 0 10px;font-size:13px}.create-team-dialog input{width:100%;box-sizing:border-box;background:#090c12;color:#fff;border:1px solid #465061;border-radius:7px;padding:12px;font:inherit}.create-team-dialog input:focus-visible{outline:2px solid #a9ff38;outline-offset:3px}.create-team-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:24px}.create-feedback{border:1px solid #446836;border-radius:8px;padding:12px 16px;color:#d1edc0;background:#1a2818}.create-feedback--error{border-color:#80404a;color:#ffd0d5!important;background:#301922}.create-team-dialog .button:disabled{opacity:.5;cursor:not-allowed}
+
 .team-hub-home {
   min-height: calc(100vh - var(--header-height, 72px));
   padding: 32px clamp(20px, 4vw, 64px);

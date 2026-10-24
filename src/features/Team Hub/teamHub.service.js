@@ -4,7 +4,7 @@ import { decodeTeamHubPayload } from './teamAdministration.viewModel.js';
 let client;
 const api = () => (client ||= generateClient());
 const PUBLIC_ERRORS = [
-  'Team Hub access denied', 'Team Hub changed; refresh and try again', 'Team Hub data limit exceeded',
+  'Team Hub substitute limit exceeded', 'Player already occupies', 'Team Hub access denied', 'Team Hub changed; refresh and try again', 'Team Hub data limit exceeded',
   'Invalid ', 'Active ', 'An active Player membership is required', 'Player already occupies a starting position',
   'No Project Respawn account was found for that email.', 'That account could not be assigned.', 'Team slug already exists',
   'Invalid account search', 'Account search is temporarily unavailable',
@@ -80,3 +80,10 @@ export async function resolveTeamRouteAccess(teamSlug, allowedRoles = []) {
   if (allowedRoles.length && !allowedRoles.some((role) => roles.has(role))) throw new Error('Team Hub access denied');
   return context;
 }
+
+// Legacy does not implement per-member grants. Never silently store them in the browser.
+export async function getTeamPermissions() { throw new Error('PERMISSION_BACKEND_UNAVAILABLE'); }
+export async function setMemberPermissions() { throw new Error('PERMISSION_BACKEND_UNAVAILABLE'); }
+
+// Preserve Master's accepted personal role-preference operation.
+export async function setMyPlayableRoles({teamId,primaryRole,secondaryRoles,expectedRevision}) { return mutate('SET_MY_ROLES', {teamId,payload:JSON.stringify({primaryRole,secondaryRoles,expectedRevision})}); }

@@ -1,0 +1,58 @@
+{
+  "Changes": [
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "ExecutorRole",
+        "ResourceType": "AWS::IAM::Role",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"MaxSessionDuration\":\"3600\",\"RoleName\":\"ProjectRespawn-TeamHub-Production-C1Initialize\",\"Policies\":[{\"PolicyName\":\"FixedAuthorityCreateAndReadback\",\"PolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Condition\":{\"StringEquals\":{\"aws:RequestedRegion\":\"eu-north-1\",\"aws:PrincipalArn\":\"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Production-C1Initialize\"},\"Null\":{\"dynamodb:LeadingKeys\":\"false\"},\"ForAllValues:StringEquals\":{\"dynamodb:LeadingKeys\":[\"CONTROL#AUTHORITY\"]},\"DateGreaterThanEquals\":{\"aws:CurrentTime\":\"2026-10-24T08:55:26Z\"},\"DateLessThan\":{\"aws:CurrentTime\":\"2026-10-24T09:10:26Z\"}},\"Action\":[\"dynamodb:GetItem\",\"dynamodb:PutItem\"],\"Resource\":\"arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Journal\",\"Effect\":\"Allow\",\"Sid\":\"FixedAuthorityCreateAndRead\"},{\"Resource\":\"*\",\"Effect\":\"Deny\",\"NotAction\":[\"dynamodb:GetItem\",\"dynamodb:PutItem\"],\"Sid\":\"NoOtherActions\"},{\"Action\":\"dynamodb:*\",\"Effect\":\"Deny\",\"Sid\":\"NoOtherTables\",\"NotResource\":\"arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Journal\"}]}}],\"AssumeRolePolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Condition\":{\"StringEquals\":{\"aws:SourceAccount\":\"058264289478\"},\"ArnEquals\":{\"aws:SourceArn\":\"arn:aws:states:eu-north-1:058264289478:stateMachine:ProjectRespawn-TeamHub-Production-C1Initialize\"}},\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"states.amazonaws.com\"}}]}}}"
+      }
+    },
+    {
+      "Type": "Resource",
+      "ResourceChange": {
+        "Action": "Add",
+        "LogicalResourceId": "Initializer",
+        "ResourceType": "AWS::StepFunctions::StateMachine",
+        "Scope": [],
+        "Details": [],
+        "AfterContext": "{\"Properties\":{\"Definition\":{\"TimeoutSeconds\":\"120\",\"States\":{\"ReadBack\":{\"Type\":\"Task\",\"Parameters\":{\"TableName\":\"ProjectRespawn-TeamHub-Production-Journal\",\"Key\":{\"SK\":{\"S\":\"STATE\"},\"PK\":{\"S\":\"CONTROL#AUTHORITY\"}},\"ConsistentRead\":\"true\"},\"Next\":\"VerifyExact\",\"Resource\":\"arn:aws:states:::dynamodb:getItem\"},\"Done\":{\"Type\":\"Succeed\"},\"ReadExisting\":{\"Type\":\"Task\",\"Parameters\":{\"TableName\":\"ProjectRespawn-TeamHub-Production-Journal\",\"Key\":{\"SK\":{\"S\":\"STATE\"},\"PK\":{\"S\":\"CONTROL#AUTHORITY\"}},\"ConsistentRead\":\"true\"},\"Next\":\"RequireAbsent\",\"Resource\":\"arn:aws:states:::dynamodb:getItem\"},\"RequireAbsent\":{\"Type\":\"Choice\",\"Choices\":[{\"Variable\":\"$.Item.PK\",\"Next\":\"AlreadyExists\",\"IsPresent\":\"true\"}],\"Default\":\"CreateLegacy\"},\"VerifyExact\":{\"Type\":\"Choice\",\"Choices\":[{\"And\":[{\"StringEquals\":\"CONTROL#AUTHORITY\",\"Variable\":\"$.Item.PK.S\"},{\"StringEquals\":\"STATE\",\"Variable\":\"$.Item.SK.S\"},{\"StringEquals\":\"team-hub-authority.v1\",\"Variable\":\"$.Item.schemaVersion.S\"},{\"StringEquals\":\"LEGACY_WRITER\",\"Variable\":\"$.Item.mode.S\"},{\"StringEquals\":\"1\",\"Variable\":\"$.Item.epoch.N\"},{\"StringEquals\":\"1\",\"Variable\":\"$.Item.version.N\"},{\"StringEquals\":\"2026-10-24T08:44:53.810Z\",\"Variable\":\"$.Item.changedAt.S\"},{\"StringEquals\":\"production-team-hub-c1-executor\",\"Variable\":\"$.Item.changedBy.S\"},{\"StringEquals\":\"5c310e8d7301d4119801116360ea6bb343ac26f07ac2a696bbaf5393418829e0\",\"Variable\":\"$.Item.gateDigest.S\"}],\"Next\":\"Done\"}],\"Default\":\"Mismatch\"},\"DiscardInput\":{\"Type\":\"Pass\",\"Next\":\"ReadExisting\",\"Result\":{}},\"AlreadyExists\":{\"Type\":\"Fail\",\"Error\":\"AuthorityAlreadyExists\"},\"Mismatch\":{\"Type\":\"Fail\",\"Error\":\"AuthorityReadbackMismatch\"},\"CreateLegacy\":{\"Type\":\"Task\",\"Parameters\":{\"TableName\":\"ProjectRespawn-TeamHub-Production-Journal\",\"Item\":{\"mode\":{\"S\":\"LEGACY_WRITER\"},\"schemaVersion\":{\"S\":\"team-hub-authority.v1\"},\"changedBy\":{\"S\":\"production-team-hub-c1-executor\"},\"gateDigest\":{\"S\":\"5c310e8d7301d4119801116360ea6bb343ac26f07ac2a696bbaf5393418829e0\"},\"SK\":{\"S\":\"STATE\"},\"epoch\":{\"N\":\"1\"},\"changedAt\":{\"S\":\"2026-10-24T08:44:53.810Z\"},\"PK\":{\"S\":\"CONTROL#AUTHORITY\"},\"version\":{\"N\":\"1\"}},\"ConditionExpression\":\"attribute_not_exists(PK) AND attribute_not_exists(SK)\",\"ReturnValues\":\"NONE\"},\"Next\":\"ReadBack\",\"Resource\":\"arn:aws:states:::dynamodb:putItem\"}},\"Comment\":\"Fixed Production LEGACY_WRITER 1/1 conditional create; input discarded; no retries.\",\"StartAt\":\"DiscardInput\"},\"StateMachineName\":\"ProjectRespawn-TeamHub-Production-C1Initialize\",\"RoleArn\":\"{{changeSet:KNOWN_AFTER_APPLY}}\",\"LoggingConfiguration\":{\"IncludeExecutionData\":\"false\",\"Level\":\"OFF\"},\"StateMachineType\":\"STANDARD\",\"TracingConfiguration\":{\"Enabled\":\"false\"}}}"
+      }
+    }
+  ],
+  "ChangeSetName": "fixed-c1-create",
+  "ChangeSetId": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/fixed-c1-create/0f6c07ab-b47f-4b7c-87e2-d892d50deba8",
+  "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Production-C1Initialize/19461040-cf88-11f1-9662-0affcb8dae95",
+  "StackName": "ProjectRespawn-TeamHub-Production-C1Initialize",
+  "Description": null,
+  "Parameters": [
+    {
+      "ParameterKey": "NotBefore",
+      "ParameterValue": "2026-10-24T08:55:26Z"
+    },
+    {
+      "ParameterKey": "ExpiresAt",
+      "ParameterValue": "2026-10-24T09:10:26Z"
+    }
+  ],
+  "CreationTime": "2026-10-24T08:51:27.235000+00:00",
+  "ExecutionStatus": "AVAILABLE",
+  "Status": "CREATE_COMPLETE",
+  "StatusReason": null,
+  "NotificationARNs": [],
+  "RollbackConfiguration": {},
+  "Capabilities": [
+    "CAPABILITY_NAMED_IAM"
+  ],
+  "Tags": null,
+  "ParentChangeSetId": null,
+  "IncludeNestedStacks": false,
+  "RootChangeSetId": null,
+  "OnStackFailure": null,
+  "ImportExistingResources": null,
+  "StackDriftStatus": null,
+  "DeploymentMode": null
+}

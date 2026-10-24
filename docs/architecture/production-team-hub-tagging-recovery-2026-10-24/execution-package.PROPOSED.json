@@ -1,0 +1,321 @@
+{
+  "schemaVersion": "production-team-hub-stage-tagging-execution-proposal.v1",
+  "candidateSha256": "c2d0d66bbe8b2673a5672badffa2c34851383508b2547e30e34267b676856407",
+  "status": "AWAITING_EXPLICIT_ANALYZER_EXCEPTION_AND_EXACT_RECOVERY_APPROVAL",
+  "account": "058264289478",
+  "region": "eu-north-1",
+  "operator": "arn:aws:iam::058264289478:user/RavenTest",
+  "security": {
+    "path": "docs/architecture/production-team-hub-tagging-recovery-2026-10-24/de13291048f600fefaefd393d3f9d1b623550988465a352bac083815a8244a29.security.template.json",
+    "sha256": "de13291048f600fefaefd393d3f9d1b623550988465a352bac083815a8244a29",
+    "key": "production/de13291048f600fefaefd393d3f9d1b623550988465a352bac083815a8244a29.json"
+  },
+  "product": {
+    "path": "docs/architecture/team-hub-production-permissions-candidate-2026-10-24/v2/e375a995da78fee165e2ef653225224e7546a1e9066cf3d980d8a488ce30d012.product.template.json",
+    "sha256": "e375a995da78fee165e2ef653225224e7546a1e9066cf3d980d8a488ce30d012",
+    "key": "production/e375a995da78fee165e2ef653225224e.json"
+  },
+  "runtime": {
+    "path": "docs/architecture/team-hub-production-permissions-candidate-2026-10-24/v2/acbc6199e71ca001697a4f34636cada900dc50d3b9fa1068d2735c61425e3a5e.runtime.zip",
+    "sha256": "acbc6199e71ca001697a4f34636cada900dc50d3b9fa1068d2735c61425e3a5e",
+    "key": "production/acbc6199e71ca001697a4f34636cada9.zip"
+  },
+  "expectedApiId": "9wk4a41l5m",
+  "analyzerException": {
+    "allowedOnlyIfExplicitlyApproved": true,
+    "exactIssueCode": "INVALID_ACTION",
+    "exactAction": "apigateway:TagResource",
+    "exactFindingType": "ERROR",
+    "policyLogicalIds": [
+      "ExecutionRole",
+      "ExecutionBoundary"
+    ],
+    "maximumFindings": 2,
+    "allOtherErrorsAndSecurityWarningsBlocking": true,
+    "providerSchemaEvidence": "stage-provider-schema.json",
+    "cloudTrailEvidence": "stage-cloudtrail.json",
+    "simulatorLimitation": "TagResource and UntagResource controls require separate action batches from HTTP-verb API actions; preserve all controls, no coverage waiver."
+  },
+  "publication": {
+    "path": "docs/architecture/production-team-hub-tagging-recovery-2026-10-24/de13291048f600fefaefd393d3f9d1b623550988465a352bac083815a8244a29.security.template.json",
+    "sha256": "de13291048f600fefaefd393d3f9d1b623550988465a352bac083815a8244a29",
+    "request": {
+      "Bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+      "Key": "production/de13291048f600fefaefd393d3f9d1b623550988465a352bac083815a8244a29.json",
+      "IfNoneMatch": "*",
+      "ServerSideEncryption": "AES256",
+      "ChecksumSHA256": "3hMpEEj2AP7679OT0/nRtiNVCYhGWjUrrAg4FagkSik=",
+      "ContentType": "application/json"
+    }
+  },
+  "stages": [
+    {
+      "kind": "security",
+      "createChangeSet": {
+        "StackName": "ProjectRespawn-TeamHub-Production-Security",
+        "ChangeSetName": "stage-tag-security-de13291048f600fe",
+        "ChangeSetType": "UPDATE",
+        "TemplateURL": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/de13291048f600fefaefd393d3f9d1b623550988465a352bac083815a8244a29.json",
+        "Capabilities": [
+          "CAPABILITY_NAMED_IAM"
+        ]
+      },
+      "expected": {
+        "modifications": [
+          "ExecutionBoundary",
+          "ExecutionRole"
+        ],
+        "additions": 0,
+        "deletions": 0,
+        "replacements": 0
+      },
+      "executionGate": "Complete installed old-policy equivalence; full revised certification; exact 2-modification change set; explicit Analyzer exception receipt; actual attended unexpired window; rollback enabled."
+    },
+    {
+      "kind": "failed-record",
+      "request": {
+        "StackName": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Production/39df02e0-cf3c-11f1-8ecc-0efff7189ec7"
+      },
+      "operation": "cloudformation:DeleteStack",
+      "gate": "Security UPDATE_COMPLETE and actual updated IAM verification first; exact failed stack ID and ROLLBACK_COMPLETE; full resource ownership and actual service absence rechecked; no retained or business resources; no ambiguity; wait terminal deletion. Use RavenTest, do not grant this action to runtime IAM."
+    },
+    {
+      "kind": "product",
+      "createChangeSet": {
+        "StackName": "ProjectRespawn-TeamHub-Production",
+        "ChangeSetName": "stage-tag-product-e375a995da78fee1",
+        "ChangeSetType": "CREATE",
+        "TemplateURL": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/e375a995da78fee165e2ef653225224e.json",
+        "Capabilities": [
+          "CAPABILITY_NAMED_IAM"
+        ],
+        "OnStackFailure": "ROLLBACK",
+        "RoleARN": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Production-ReadProofExecution"
+      },
+      "expected": {
+        "additions": 41,
+        "modifications": 0,
+        "deletions": 0,
+        "replacements": 0,
+        "resources": [
+          {
+            "id": "JwtAuthorizer",
+            "type": "AWS::ApiGatewayV2::Authorizer"
+          },
+          {
+            "id": "Stage",
+            "type": "AWS::ApiGatewayV2::Stage"
+          },
+          {
+            "id": "ApiErrors",
+            "type": "AWS::CloudWatch::Alarm"
+          },
+          {
+            "id": "OperationalTable",
+            "type": "AWS::DynamoDB::Table"
+          },
+          {
+            "id": "JournalTable",
+            "type": "AWS::DynamoDB::Table"
+          },
+          {
+            "id": "ParityCommandLogs",
+            "type": "AWS::Logs::LogGroup"
+          },
+          {
+            "id": "ParityCommandRole",
+            "type": "AWS::IAM::Role"
+          },
+          {
+            "id": "ParityCommandFunction",
+            "type": "AWS::Lambda::Function"
+          },
+          {
+            "id": "ParityCommandIntegration",
+            "type": "AWS::ApiGatewayV2::Integration"
+          },
+          {
+            "id": "ParityCommandPermission",
+            "type": "AWS::Lambda::Permission"
+          },
+          {
+            "id": "ParityRouteCREATETEAM",
+            "type": "AWS::ApiGatewayV2::Route"
+          },
+          {
+            "id": "ParityRouteUPDATETEAM",
+            "type": "AWS::ApiGatewayV2::Route"
+          },
+          {
+            "id": "ParityRouteSETMANAGER",
+            "type": "AWS::ApiGatewayV2::Route"
+          },
+          {
+            "id": "ParityRouteMANAGEMEMBER",
+            "type": "AWS::ApiGatewayV2::Route"
+          },
+          {
+            "id": "ParityRouteSETROSTERSLOT",
+            "type": "AWS::ApiGatewayV2::Route"
+          },
+          {
+            "id": "ParityRouteUPSERTMYCHAMPION",
+            "type": "AWS::ApiGatewayV2::Route"
+          },
+          {
+            "id": "ParityRouteDELETEMYCHAMPION",
+            "type": "AWS::ApiGatewayV2::Route"
+          },
+          {
+            "id": "ParityRouteUPSERTCOACHASSESSMENT",
+            "type": "AWS::ApiGatewayV2::Route"
+          },
+          {
+            "id": "ParityRouteSETTEAMPLAN",
+            "type": "AWS::ApiGatewayV2::Route"
+          },
+          {
+            "id": "ParityCommandErrors",
+            "type": "AWS::CloudWatch::Alarm"
+          },
+          {
+            "id": "ParityCommandThrottles",
+            "type": "AWS::CloudWatch::Alarm"
+          },
+          {
+            "id": "ParityReadLogs",
+            "type": "AWS::Logs::LogGroup"
+          },
+          {
+            "id": "ParityReadRole",
+            "type": "AWS::IAM::Role"
+          },
+          {
+            "id": "ParityReadFunction",
+            "type": "AWS::Lambda::Function"
+          },
+          {
+            "id": "ParityReadIntegration",
+            "type": "AWS::ApiGatewayV2::Integration"
+          },
+          {
+            "id": "ParityReadPermission",
+            "type": "AWS::Lambda::Permission"
+          },
+          {
+            "id": "ParityRouteGETTEAMHUB",
+            "type": "AWS::ApiGatewayV2::Route"
+          },
+          {
+            "id": "ParityRouteLISTMYCHAMPIONPOOL",
+            "type": "AWS::ApiGatewayV2::Route"
+          },
+          {
+            "id": "ParityRouteLISTTEAMCHAMPIONPOOLS",
+            "type": "AWS::ApiGatewayV2::Route"
+          },
+          {
+            "id": "ParityRouteGETPLAYERCOMPETITIVEDETAIL",
+            "type": "AWS::ApiGatewayV2::Route"
+          },
+          {
+            "id": "ParityReadErrors",
+            "type": "AWS::CloudWatch::Alarm"
+          },
+          {
+            "id": "ParityReadThrottles",
+            "type": "AWS::CloudWatch::Alarm"
+          },
+          {
+            "id": "AuthorityStatusInvokePermission",
+            "type": "AWS::Lambda::Permission"
+          },
+          {
+            "id": "AuthorityStatusRoute",
+            "type": "AWS::ApiGatewayV2::Route"
+          },
+          {
+            "id": "ListMyTeamsRoute",
+            "type": "AWS::ApiGatewayV2::Route"
+          },
+          {
+            "id": "DirectorySearchRoute",
+            "type": "AWS::ApiGatewayV2::Route"
+          },
+          {
+            "id": "DirectorySearchRouteInvokePermission",
+            "type": "AWS::Lambda::Permission"
+          },
+          {
+            "id": "DirectoryResolveRoute",
+            "type": "AWS::ApiGatewayV2::Route"
+          },
+          {
+            "id": "DirectoryResolveRouteInvokePermission",
+            "type": "AWS::Lambda::Permission"
+          },
+          {
+            "id": "MemberPermissionReadRoute",
+            "type": "AWS::ApiGatewayV2::Route"
+          },
+          {
+            "id": "MemberPermissionWriteRoute",
+            "type": "AWS::ApiGatewayV2::Route"
+          }
+        ]
+      },
+      "executionGate": "Only after exact failed-record deletion; approved DeploymentCaller and existing execution role; exact unchanged product bytes; precisely 41 Add changes; zero other changes; rollback enabled."
+    }
+  ],
+  "rollback": {
+    "security": "Use CloudFormation rollback, no permission patch or retry; preserve prior security artifact.",
+    "product": "Allow CREATE rollback to terminal status; inventory actual resources including DELETE_SKIPPED entries; no automatic destructive cleanup or retry.",
+    "business": "No authority or business writes authorized."
+  },
+  "liveAcceptance": [
+    "Exact installed trusts, attached/inline policies and boundaries; actual-policy Analyzer exception matched only; effective actual-role simulations with corrected batching.",
+    "Exact Lambda ZIP hashes, full environments, Active/Successful and reviewed Core/Cognito bindings.",
+    "Operational and Journal tables protected and empty; no authority row.",
+    "Safe unauthenticated initialization and JWT rejection only; authenticated authority/business acceptance remains pending separately approved bootstrap.",
+    "Monitoring configuration/native signals; zero business-data writes; production source/backups/Cognito/Core/Master/protected domains preserved."
+  ],
+  "preservedArtifacts": [
+    {
+      "name": "security",
+      "sha256": "d543bf22071bf001db042ee3af1f1d2f2c5ffb5ee020341531abbcef3dac6b33",
+      "bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+      "key": "production/d543bf22071bf001db042ee3af1f1d2f2c5ffb5ee020341531abbcef3dac6b33.json",
+      "overwriteAllowed": false
+    },
+    {
+      "name": "product",
+      "sha256": "e375a995da78fee165e2ef653225224e7546a1e9066cf3d980d8a488ce30d012",
+      "bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+      "key": "production/e375a995da78fee165e2ef653225224e.json",
+      "overwriteAllowed": false
+    },
+    {
+      "name": "runtime",
+      "sha256": "acbc6199e71ca001697a4f34636cada900dc50d3b9fa1068d2735c61425e3a5e",
+      "bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+      "key": "production/acbc6199e71ca001697a4f34636cada9.zip",
+      "overwriteAllowed": false
+    }
+  ],
+  "stopConditions": [
+    "Any additional Analyzer finding, IAM change, artifact mismatch or resource replacement.",
+    "Unexpected failed-stack contents, resource existence, data drift or protected-domain change.",
+    "Expired/unattended execution window, concurrent administrative deployment or incomplete security proof.",
+    "Any denied/failed/ambiguous mutation: preserve evidence, no automatic write retry, IAM broadening or artifact substitution."
+  ],
+  "exclusions": [
+    "Runtime code/environment/IAM changes",
+    "Core, Cognito, Legacy or Ntgre modifications",
+    "Authority initialization or transfer",
+    "Business data migration or writes",
+    "Frontend/Master publication",
+    "Existing secret/API deletion",
+    "Business resource cleanup"
+  ],
+  "awsWritesPerformed": 0
+}

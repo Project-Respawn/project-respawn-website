@@ -1,0 +1,310 @@
+{
+  "at": "2026-10-24T00:25:01.185Z",
+  "attempt": 1,
+  "metrics": [
+    {
+      "runtime": "read",
+      "Namespace": "AWS/Lambda",
+      "MetricName": "Invocations",
+      "Dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-TeamHub-Production-ParityRead"
+        }
+      ],
+      "datapoints": [
+        {
+          "Timestamp": "2026-10-24T01:23:00+01:00",
+          "Sum": 1,
+          "Unit": "Count"
+        }
+      ],
+      "sum": 1,
+      "observed": true
+    },
+    {
+      "runtime": "read",
+      "Namespace": "AWS/Lambda",
+      "MetricName": "Errors",
+      "Dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-TeamHub-Production-ParityRead"
+        }
+      ],
+      "datapoints": [
+        {
+          "Timestamp": "2026-10-24T01:23:00+01:00",
+          "Sum": 0,
+          "Unit": "Count"
+        }
+      ],
+      "sum": 0,
+      "observed": true
+    },
+    {
+      "runtime": "read",
+      "Namespace": "AWS/Lambda",
+      "MetricName": "Throttles",
+      "Dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-TeamHub-Production-ParityRead"
+        }
+      ],
+      "datapoints": [
+        {
+          "Timestamp": "2026-10-24T01:23:00+01:00",
+          "Sum": 0,
+          "Unit": "Count"
+        }
+      ],
+      "sum": 0,
+      "observed": true
+    },
+    {
+      "runtime": "read",
+      "Namespace": "ProjectRespawn/TeamHub",
+      "MetricName": "Requests",
+      "Dimensions": [
+        {
+          "Name": "Environment",
+          "Value": "Production"
+        },
+        {
+          "Name": "Runtime",
+          "Value": "read"
+        }
+      ],
+      "datapoints": [
+        {
+          "Timestamp": "2026-10-24T01:23:00+01:00",
+          "Sum": 1,
+          "Unit": "Count"
+        }
+      ],
+      "sum": 1,
+      "observed": true
+    },
+    {
+      "runtime": "read",
+      "Namespace": "ProjectRespawn/TeamHub",
+      "MetricName": "AuthorizationFailures",
+      "Dimensions": [
+        {
+          "Name": "Environment",
+          "Value": "Production"
+        },
+        {
+          "Name": "Runtime",
+          "Value": "read"
+        }
+      ],
+      "datapoints": [
+        {
+          "Timestamp": "2026-10-24T01:23:00+01:00",
+          "Sum": 1,
+          "Unit": "Count"
+        }
+      ],
+      "sum": 1,
+      "observed": true
+    },
+    {
+      "runtime": "command",
+      "Namespace": "AWS/Lambda",
+      "MetricName": "Invocations",
+      "Dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-TeamHub-Production-ParityCommand"
+        }
+      ],
+      "datapoints": [
+        {
+          "Timestamp": "2026-10-24T01:23:00+01:00",
+          "Sum": 1,
+          "Unit": "Count"
+        }
+      ],
+      "sum": 1,
+      "observed": true
+    },
+    {
+      "runtime": "command",
+      "Namespace": "AWS/Lambda",
+      "MetricName": "Errors",
+      "Dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-TeamHub-Production-ParityCommand"
+        }
+      ],
+      "datapoints": [
+        {
+          "Timestamp": "2026-10-24T01:23:00+01:00",
+          "Sum": 0,
+          "Unit": "Count"
+        }
+      ],
+      "sum": 0,
+      "observed": true
+    },
+    {
+      "runtime": "command",
+      "Namespace": "AWS/Lambda",
+      "MetricName": "Throttles",
+      "Dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-TeamHub-Production-ParityCommand"
+        }
+      ],
+      "datapoints": [
+        {
+          "Timestamp": "2026-10-24T01:23:00+01:00",
+          "Sum": 0,
+          "Unit": "Count"
+        }
+      ],
+      "sum": 0,
+      "observed": true
+    },
+    {
+      "runtime": "command",
+      "Namespace": "ProjectRespawn/TeamHub",
+      "MetricName": "Requests",
+      "Dimensions": [
+        {
+          "Name": "Environment",
+          "Value": "Production"
+        },
+        {
+          "Name": "Runtime",
+          "Value": "command"
+        }
+      ],
+      "datapoints": [
+        {
+          "Timestamp": "2026-10-24T01:23:00+01:00",
+          "Sum": 1,
+          "Unit": "Count"
+        }
+      ],
+      "sum": 1,
+      "observed": true
+    },
+    {
+      "runtime": "command",
+      "Namespace": "ProjectRespawn/TeamHub",
+      "MetricName": "AuthorizationFailures",
+      "Dimensions": [
+        {
+          "Name": "Environment",
+          "Value": "Production"
+        },
+        {
+          "Name": "Runtime",
+          "Value": "command"
+        }
+      ],
+      "datapoints": [
+        {
+          "Timestamp": "2026-10-24T01:23:00+01:00",
+          "Sum": 1,
+          "Unit": "Count"
+        }
+      ],
+      "sum": 1,
+      "observed": true
+    }
+  ],
+  "alarms": [
+    {
+      "name": "ProjectRespawn-TeamHub-Production-ParityCommand-Errors",
+      "state": "OK",
+      "namespace": "AWS/Lambda",
+      "metric": "Errors",
+      "dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-TeamHub-Production-ParityCommand"
+        }
+      ],
+      "statistic": "Sum",
+      "period": 60,
+      "threshold": 1,
+      "treatMissingData": "notBreaching"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Production-ParityCommand-Throttles",
+      "state": "OK",
+      "namespace": "AWS/Lambda",
+      "metric": "Throttles",
+      "dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-TeamHub-Production-ParityCommand"
+        }
+      ],
+      "statistic": "Sum",
+      "period": 60,
+      "threshold": 1,
+      "treatMissingData": "notBreaching"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Production-ParityRead-Errors",
+      "state": "OK",
+      "namespace": "AWS/Lambda",
+      "metric": "Errors",
+      "dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-TeamHub-Production-ParityRead"
+        }
+      ],
+      "statistic": "Sum",
+      "period": 60,
+      "threshold": 1,
+      "treatMissingData": "notBreaching"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Production-ParityRead-Throttles",
+      "state": "OK",
+      "namespace": "AWS/Lambda",
+      "metric": "Throttles",
+      "dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-TeamHub-Production-ParityRead"
+        }
+      ],
+      "statistic": "Sum",
+      "period": 60,
+      "threshold": 1,
+      "treatMissingData": "notBreaching"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Production-ReadProof-ApiErrors",
+      "state": "OK",
+      "namespace": "AWS/ApiGateway",
+      "metric": "5xx",
+      "dimensions": [
+        {
+          "Name": "ApiId",
+          "Value": "9wk4a41l5m"
+        }
+      ],
+      "statistic": "Sum",
+      "period": 60,
+      "threshold": 1,
+      "treatMissingData": "notBreaching"
+    }
+  ],
+  "awsWrites": 0,
+  "nativeInvocationsObserved": true,
+  "customCountersObserved": true,
+  "passed": true,
+  "fullBusinessMonitoringAccepted": false,
+  "zeroDatapointsAreNotProofOfZeroActivity": true
+}

@@ -1,0 +1,56 @@
+{
+  "at": "2026-10-23T23:57:43.968Z",
+  "policy": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": "apigateway:TagResource",
+        "Resource": "arn:aws:apigateway:eu-north-1::/apis/9wk4a41l5m/stages",
+        "Condition": {
+          "StringEquals": {
+            "aws:RequestedRegion": "eu-north-1"
+          }
+        }
+      }
+    ]
+  },
+  "result": {
+    "findings": [
+      {
+        "findingDetails": "The action apigateway:TagResource does not exist.",
+        "findingType": "ERROR",
+        "issueCode": "INVALID_ACTION",
+        "learnMoreLink": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-reference-policy-checks.html#access-analyzer-reference-policy-checks-error-invalid-action",
+        "locations": [
+          {
+            "path": [
+              {
+                "value": "Statement"
+              },
+              {
+                "index": 0
+              },
+              {
+                "value": "Action"
+              }
+            ],
+            "span": {
+              "start": {
+                "line": 1,
+                "column": 64,
+                "offset": 64
+              },
+              "end": {
+                "line": 1,
+                "column": 88,
+                "offset": 88
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "awsWrites": 0
+}

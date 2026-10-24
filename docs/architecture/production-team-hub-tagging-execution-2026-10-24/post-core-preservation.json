@@ -1,0 +1,179 @@
+{
+  "at": "2026-10-24T00:08:45.793Z",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "core": [
+    {
+      "stack": "ProjectRespawn-Core-Production-Security",
+      "status": "UPDATE_COMPLETE",
+      "resources": 6,
+      "templateSha256": "668049957edf3fb6e3dfda209e4600a824aa0b8182d41afb3051fb76f32bd613",
+      "checks": [
+        {
+          "id": "RuntimeBoundary",
+          "policySha256": "fd65f7566f04c5b5904f43c0e23b581f962b537dbc5f9c2149d85099c84f29c1",
+          "matched": true
+        },
+        {
+          "id": "ExecutionBoundary",
+          "policySha256": "add82720a3c873833581f54d01b4142f92db43af47b12e3ca23402ba3699d1dd",
+          "matched": true
+        },
+        {
+          "id": "CallerBoundary",
+          "policySha256": "c22819e692a2cb9c90a15ccf0bdcec446bab83873be7d2c49efa4dfd041f1c9e",
+          "matched": true
+        },
+        {
+          "id": "Execution",
+          "trustBoundaryAndPoliciesMatched": true
+        },
+        {
+          "id": "Caller",
+          "trustBoundaryAndPoliciesMatched": true
+        }
+      ]
+    },
+    {
+      "stack": "ProjectRespawn-Core-Production",
+      "status": "UPDATE_COMPLETE",
+      "resources": 7,
+      "templateSha256": "5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086",
+      "checks": [
+        {
+          "id": "Runtime",
+          "trustBoundaryAndPoliciesMatched": true
+        },
+        {
+          "id": "Contracts",
+          "state": "Active",
+          "lastUpdateStatus": "Successful",
+          "codeSha256": "dc2a7137a725f6a82582abc8a800f5d30846058ecdbe12965f81a19c887154c4",
+          "environmentAndLoggingMatched": true,
+          "revisionId": "a9544e2b-c15d-4b84-80b2-89041920b497"
+        }
+      ]
+    }
+  ],
+  "collisions": [],
+  "keys": [],
+  "awsWrites": 0,
+  "alarms": [
+    {
+      "AlarmName": "ProjectRespawn-Core-Production-Denied",
+      "AlarmArn": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-Core-Production-Denied",
+      "AlarmConfigurationUpdatedTimestamp": "2026-10-21T07:54:14.146000+01:00",
+      "ActionsEnabled": true,
+      "OKActions": [],
+      "AlarmActions": [],
+      "InsufficientDataActions": [],
+      "StateValue": "OK",
+      "StateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+      "StateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-21T06:55:02.438+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":20.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-21T06:54:00.000+0000\"}]}",
+      "StateUpdatedTimestamp": "2026-10-21T07:55:02.440000+01:00",
+      "MetricName": "Denied",
+      "Namespace": "ProjectRespawn/Core",
+      "Statistic": "Sum",
+      "Dimensions": [
+        {
+          "Name": "Environment",
+          "Value": "Production"
+        }
+      ],
+      "Period": 60,
+      "EvaluationPeriods": 1,
+      "Threshold": 20,
+      "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+      "TreatMissingData": "notBreaching",
+      "StateTransitionedTimestamp": "2026-10-21T07:55:02.440000+01:00"
+    },
+    {
+      "AlarmName": "ProjectRespawn-Core-Production-DependencyFailures",
+      "AlarmArn": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-Core-Production-DependencyFailures",
+      "AlarmConfigurationUpdatedTimestamp": "2026-10-21T07:54:14.717000+01:00",
+      "ActionsEnabled": true,
+      "OKActions": [],
+      "AlarmActions": [],
+      "InsufficientDataActions": [],
+      "StateValue": "OK",
+      "StateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+      "StateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-21T06:55:43.880+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":1.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-21T06:54:00.000+0000\"}]}",
+      "StateUpdatedTimestamp": "2026-10-21T07:55:43.883000+01:00",
+      "MetricName": "DependencyFailures",
+      "Namespace": "ProjectRespawn/Core",
+      "Statistic": "Sum",
+      "Dimensions": [
+        {
+          "Name": "Environment",
+          "Value": "Production"
+        }
+      ],
+      "Period": 60,
+      "EvaluationPeriods": 1,
+      "Threshold": 1,
+      "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+      "TreatMissingData": "notBreaching",
+      "StateTransitionedTimestamp": "2026-10-21T07:55:43.883000+01:00"
+    },
+    {
+      "AlarmName": "ProjectRespawn-Core-Production-Errors",
+      "AlarmArn": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-Core-Production-Errors",
+      "AlarmConfigurationUpdatedTimestamp": "2026-10-21T07:54:44.479000+01:00",
+      "ActionsEnabled": true,
+      "OKActions": [],
+      "AlarmActions": [],
+      "InsufficientDataActions": [],
+      "StateValue": "OK",
+      "StateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+      "StateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-21T07:06:51.940+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":1.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-21T07:05:00.000+0000\"}]}",
+      "StateUpdatedTimestamp": "2026-10-21T08:06:51.942000+01:00",
+      "MetricName": "Errors",
+      "Namespace": "AWS/Lambda",
+      "Statistic": "Sum",
+      "Dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-Core-Production-Contracts"
+        }
+      ],
+      "Period": 60,
+      "EvaluationPeriods": 1,
+      "Threshold": 1,
+      "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+      "TreatMissingData": "notBreaching",
+      "StateTransitionedTimestamp": "2026-10-21T08:06:51.942000+01:00"
+    },
+    {
+      "AlarmName": "ProjectRespawn-Core-Production-Throttles",
+      "AlarmArn": "arn:aws:cloudwatch:eu-north-1:058264289478:alarm:ProjectRespawn-Core-Production-Throttles",
+      "AlarmConfigurationUpdatedTimestamp": "2026-10-21T07:54:44.630000+01:00",
+      "ActionsEnabled": true,
+      "OKActions": [],
+      "AlarmActions": [],
+      "InsufficientDataActions": [],
+      "StateValue": "OK",
+      "StateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+      "StateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-21T06:56:14.445+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":1.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-21T06:55:00.000+0000\"}]}",
+      "StateUpdatedTimestamp": "2026-10-21T07:56:14.449000+01:00",
+      "MetricName": "Throttles",
+      "Namespace": "AWS/Lambda",
+      "Statistic": "Sum",
+      "Dimensions": [
+        {
+          "Name": "FunctionName",
+          "Value": "ProjectRespawn-Core-Production-Contracts"
+        }
+      ],
+      "Period": 60,
+      "EvaluationPeriods": 1,
+      "Threshold": 1,
+      "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+      "TreatMissingData": "notBreaching",
+      "StateTransitionedTimestamp": "2026-10-21T07:56:14.449000+01:00"
+    }
+  ],
+  "passed": true
+}

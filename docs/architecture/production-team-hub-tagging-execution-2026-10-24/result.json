@@ -1,0 +1,367 @@
+{
+  "at": "2026-10-24T00:29:10.067Z",
+  "outcome": "PRODUCTION TEAM HUB DARK DEPLOYED — READY FOR AUTHORITY INITIALIZATION REVIEW",
+  "packageSha256": "88039809ac363780db0df392081580b70f58fd023166249693f881f18c59473d",
+  "candidateSha256": "c2d0d66bbe8b2673a5672badffa2c34851383508b2547e30e34267b676856407",
+  "account": "058264289478",
+  "region": "eu-north-1",
+  "operator": "arn:aws:iam::058264289478:user/RavenTest",
+  "window": {
+    "recordedAt": "2026-10-24T00:08:37.406Z",
+    "approvalQuote": "Accept this exact exception; available for 60 minutes; continue",
+    "approved": true,
+    "packageSha256": "88039809ac363780db0df392081580b70f58fd023166249693f881f18c59473d",
+    "analyzerExceptionAccepted": true,
+    "exceptionAction": "apigateway:TagResource",
+    "exceptionIssueCode": "INVALID_ACTION",
+    "exceptionPolicyLogicalIds": [
+      "ExecutionRole",
+      "ExecutionBoundary"
+    ],
+    "maximumExceptionFindings": 2,
+    "noConcurrentDeployments": true,
+    "operatorAvailable": true,
+    "startsAt": "2026-10-24T00:07:36.000Z",
+    "expiresAt": "2026-10-24T01:07:36.000Z",
+    "authorityInitialization": false,
+    "businessDataWrites": false,
+    "masterPublication": false
+  },
+  "security": {
+    "stackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Production-Security/68f8c530-cf3b-11f1-b116-0effca0c3d89",
+    "status": "UPDATE_COMPLETE",
+    "resources": 8,
+    "modifications": 2,
+    "sha256": "de13291048f600fefaefd393d3f9d1b623550988465a352bac083815a8244a29",
+    "installedRoleCases": 131,
+    "analyzerPolicies": 6,
+    "explicitlyAcceptedFindings": 2,
+    "unexpectedBlockingFindings": 0
+  },
+  "product": {
+    "stackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Production/56377e50-cf40-11f1-86f0-0effd8d4ad1f",
+    "status": "CREATE_COMPLETE",
+    "resources": 41,
+    "sha256": "e375a995da78fee165e2ef653225224e7546a1e9066cf3d980d8a488ce30d012",
+    "runtimeSha256": "acbc6199e71ca001697a4f34636cada900dc50d3b9fa1068d2735c61425e3a5e",
+    "installedRoleCases": 68,
+    "analyzerPolicies": 2,
+    "unexpectedBlockingFindings": 0
+  },
+  "oldFailedRecord": {
+    "stackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Production/39df02e0-cf3c-11f1-8ecc-0efff7189ec7",
+    "deleted": true,
+    "actualBusinessResourcesDeleted": 0
+  },
+  "publication": {
+    "newImmutableObjects": 1,
+    "priorObjectsVerifiedAndRetained": 3,
+    "overwrites": 0
+  },
+  "api": {
+    "id": "9wk4a41l5m",
+    "endpoint": "https://9wk4a41l5m.execute-api.eu-north-1.amazonaws.com",
+    "routes": 19,
+    "jwtConfigurationMatched": true,
+    "unauthenticatedHttpChecks": [
+      {
+        "name": "unauthenticated",
+        "status": 401,
+        "requestId": "FuQRohuggi0EN4Q=",
+        "rejectedByJwtAuthorizer": true
+      },
+      {
+        "name": "malformed-token",
+        "status": 401,
+        "requestId": "FuQRtgC6Ai0EN_g=",
+        "rejectedByJwtAuthorizer": true
+      }
+    ]
+  },
+  "stageCreation": {
+    "actualExecutionRoleVerified": true,
+    "successfulRequests": 1,
+    "requestIds": [
+      "fc07cb7b-cb28-4501-8145-07fe92a65593"
+    ]
+  },
+  "lambdaInitialization": [
+    {
+      "runtime": "read",
+      "functionName": "ProjectRespawn-TeamHub-Production-ParityRead",
+      "requestId": "1c5803e5-209f-4268-8c06-0472ea5b7513",
+      "status": 401,
+      "code": "UNAUTHENTICATED",
+      "attempts": 1,
+      "actualInitializationAccepted": true
+    },
+    {
+      "runtime": "command",
+      "functionName": "ProjectRespawn-TeamHub-Production-ParityCommand",
+      "requestId": "7edc862a-caa8-4bee-907d-71b089c25c25",
+      "status": 401,
+      "code": "UNAUTHENTICATED",
+      "attempts": 1,
+      "actualInitializationAccepted": true
+    }
+  ],
+  "targetTables": [
+    {
+      "id": "OperationalTable",
+      "type": "AWS::DynamoDB::Table",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Operational",
+      "tableId": "237479de-3af4-4d79-b5ef-e697f5b70236",
+      "state": "ACTIVE",
+      "count": 0,
+      "pitr": true,
+      "deletionProtection": true,
+      "schemaMatched": true
+    },
+    {
+      "id": "JournalTable",
+      "type": "AWS::DynamoDB::Table",
+      "arn": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Journal",
+      "tableId": "c5af2b45-a9cb-4da3-95ce-2eea97e9751d",
+      "state": "ACTIVE",
+      "count": 0,
+      "pitr": true,
+      "deletionProtection": true,
+      "schemaMatched": true
+    }
+  ],
+  "monitoring": {
+    "nativeInvocationsObserved": true,
+    "customEmfCountersObserved": true,
+    "metrics": [
+      {
+        "runtime": "read",
+        "namespace": "AWS/Lambda",
+        "metric": "Invocations",
+        "observed": true,
+        "sum": 1
+      },
+      {
+        "runtime": "read",
+        "namespace": "AWS/Lambda",
+        "metric": "Errors",
+        "observed": true,
+        "sum": 0
+      },
+      {
+        "runtime": "read",
+        "namespace": "AWS/Lambda",
+        "metric": "Throttles",
+        "observed": true,
+        "sum": 0
+      },
+      {
+        "runtime": "read",
+        "namespace": "ProjectRespawn/TeamHub",
+        "metric": "Requests",
+        "observed": true,
+        "sum": 1
+      },
+      {
+        "runtime": "read",
+        "namespace": "ProjectRespawn/TeamHub",
+        "metric": "AuthorizationFailures",
+        "observed": true,
+        "sum": 1
+      },
+      {
+        "runtime": "command",
+        "namespace": "AWS/Lambda",
+        "metric": "Invocations",
+        "observed": true,
+        "sum": 1
+      },
+      {
+        "runtime": "command",
+        "namespace": "AWS/Lambda",
+        "metric": "Errors",
+        "observed": true,
+        "sum": 0
+      },
+      {
+        "runtime": "command",
+        "namespace": "AWS/Lambda",
+        "metric": "Throttles",
+        "observed": true,
+        "sum": 0
+      },
+      {
+        "runtime": "command",
+        "namespace": "ProjectRespawn/TeamHub",
+        "metric": "Requests",
+        "observed": true,
+        "sum": 1
+      },
+      {
+        "runtime": "command",
+        "namespace": "ProjectRespawn/TeamHub",
+        "metric": "AuthorizationFailures",
+        "observed": true,
+        "sum": 1
+      }
+    ],
+    "alarms": [
+      {
+        "name": "ProjectRespawn-TeamHub-Production-ParityCommand-Errors",
+        "state": "OK",
+        "namespace": "AWS/Lambda",
+        "metric": "Errors",
+        "dimensions": [
+          {
+            "Name": "FunctionName",
+            "Value": "ProjectRespawn-TeamHub-Production-ParityCommand"
+          }
+        ],
+        "statistic": "Sum",
+        "period": 60,
+        "threshold": 1,
+        "treatMissingData": "notBreaching"
+      },
+      {
+        "name": "ProjectRespawn-TeamHub-Production-ParityCommand-Throttles",
+        "state": "OK",
+        "namespace": "AWS/Lambda",
+        "metric": "Throttles",
+        "dimensions": [
+          {
+            "Name": "FunctionName",
+            "Value": "ProjectRespawn-TeamHub-Production-ParityCommand"
+          }
+        ],
+        "statistic": "Sum",
+        "period": 60,
+        "threshold": 1,
+        "treatMissingData": "notBreaching"
+      },
+      {
+        "name": "ProjectRespawn-TeamHub-Production-ParityRead-Errors",
+        "state": "OK",
+        "namespace": "AWS/Lambda",
+        "metric": "Errors",
+        "dimensions": [
+          {
+            "Name": "FunctionName",
+            "Value": "ProjectRespawn-TeamHub-Production-ParityRead"
+          }
+        ],
+        "statistic": "Sum",
+        "period": 60,
+        "threshold": 1,
+        "treatMissingData": "notBreaching"
+      },
+      {
+        "name": "ProjectRespawn-TeamHub-Production-ParityRead-Throttles",
+        "state": "OK",
+        "namespace": "AWS/Lambda",
+        "metric": "Throttles",
+        "dimensions": [
+          {
+            "Name": "FunctionName",
+            "Value": "ProjectRespawn-TeamHub-Production-ParityRead"
+          }
+        ],
+        "statistic": "Sum",
+        "period": 60,
+        "threshold": 1,
+        "treatMissingData": "notBreaching"
+      },
+      {
+        "name": "ProjectRespawn-TeamHub-Production-ReadProof-ApiErrors",
+        "state": "OK",
+        "namespace": "AWS/ApiGateway",
+        "metric": "5xx",
+        "dimensions": [
+          {
+            "Name": "ApiId",
+            "Value": "9wk4a41l5m"
+          }
+        ],
+        "statistic": "Sum",
+        "period": 60,
+        "threshold": 1,
+        "treatMissingData": "notBreaching"
+      }
+    ],
+    "fullBusinessMonitoringAccepted": false
+  },
+  "preservation": {
+    "sources": [
+      {
+        "model": "Team",
+        "tableId": "78f6917b-9d12-4af4-aa14-fdae57eb7f2b",
+        "count": 1,
+        "canonicalDigest": "5adb818ad4bb707e65fe60631bc8261abf478f33d7464f652b78fda221bfaba9",
+        "pitr": true,
+        "deletionProtection": true,
+        "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527947116-43f6eb02",
+        "backupStatus": "AVAILABLE"
+      },
+      {
+        "model": "TeamMembership",
+        "tableId": "84e7d7af-3ff0-4881-a76a-90bc00b3d3ab",
+        "count": 8,
+        "canonicalDigest": "3c542e65e73a4bff6190a56605afd030690f2f7e8392ff26bb32bbd059e83a11",
+        "pitr": true,
+        "deletionProtection": true,
+        "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527948497-eda960ad",
+        "backupStatus": "AVAILABLE"
+      },
+      {
+        "model": "TeamRosterSlot",
+        "tableId": "ce302ae3-9446-4594-81e1-12bff167f12f",
+        "count": 15,
+        "canonicalDigest": "68697189d383f50f6a2bfa9c9094e34bbe30c89761dc84a63e6f7615dab57cb3",
+        "pitr": true,
+        "deletionProtection": true,
+        "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527949892-3c2d8f3a",
+        "backupStatus": "AVAILABLE"
+      },
+      {
+        "model": "PlayerChampionPoolEntry",
+        "tableId": "a208a911-c53c-45f8-a499-d69117d611d5",
+        "count": 101,
+        "canonicalDigest": "8f701e4999e3e5a11df0948b46ade2c76d3b8a8e745b49afe94ca0ddd86d2e53",
+        "pitr": true,
+        "deletionProtection": true,
+        "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527951273-7b424a61",
+        "backupStatus": "AVAILABLE"
+      }
+    ],
+    "sourceDigestsMatched": true,
+    "sourcePoliciesPreserved": true,
+    "backupsAvailable": 4,
+    "pitrAndDeletionProtectionRetained": true,
+    "cognito": true,
+    "master": {
+      "remote": "5b0e0a574f503679120ca4e5e2a2c884d48de9e7",
+      "job": "156",
+      "status": "SUCCEED",
+      "environmentDigest": "bdd55929716c5a7f4e9dbe97c3b95195ac7a44f779cc1d36a621fbc1c1904400"
+    },
+    "coreIamRuntimeAndMonitoring": true,
+    "protectedStackInventory": true
+  },
+  "authorityInitialized": false,
+  "authorityRecordAbsent": true,
+  "businessRecordsCreatedOrModified": 0,
+  "sourceFencesInstalled": false,
+  "frontendActivated": false,
+  "masterPublished": false,
+  "secretValueRetrieved": false,
+  "remaining": [
+    "Separately reviewed conditional production LEGACY_WRITER authority initialization and authenticated dark-route/epoch acceptance.",
+    "Approved isolated cursor-secret/KMS and business-runtime verification; no direct secret exposure.",
+    "Current nonempty production export/transform, source-fence/original-principal proof, S3 quarantine/audit and reconciliation under separate maintenance authorization.",
+    "Five-persona live business/permission save-revoke/privacy acceptance and state-aware rollback.",
+    "Exact production frontend bindings and separately approved frontend-only Master release."
+  ],
+  "limitations": [
+    "Dark infrastructure acceptance is not business-authority, data-migration or public website acceptance.",
+    "Simulations do not establish every organization/resource-policy layer; real accepted service operations remain separately evidenced.",
+    "Authenticated authority/business responses cannot be accepted before the separately authorized control-row initialization."
+  ]
+}

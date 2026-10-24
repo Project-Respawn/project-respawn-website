@@ -1,0 +1,118 @@
+{
+  "schemaVersion": "production-team-hub-stage-tagging-recovery.v1",
+  "status": "PROPOSED_REQUIRES_EXPLICIT_ANALYZER_EXCEPTION_REVIEW",
+  "account": "058264289478",
+  "region": "eu-north-1",
+  "operator": "arn:aws:iam::058264289478:user/RavenTest",
+  "parentPackageSha256": "2df8f08fec949b5b0eadac8fb0a472eea8edcc3f8bb3f3a2671d6afb5fd3909e",
+  "security": {
+    "path": "docs/architecture/production-team-hub-tagging-recovery-2026-10-24/de13291048f600fefaefd393d3f9d1b623550988465a352bac083815a8244a29.security.template.json",
+    "sha256": "de13291048f600fefaefd393d3f9d1b623550988465a352bac083815a8244a29",
+    "key": "production/de13291048f600fefaefd393d3f9d1b623550988465a352bac083815a8244a29.json"
+  },
+  "policies": {
+    "ExecutionBoundary": {
+      "path": "docs/architecture/production-team-hub-tagging-recovery-2026-10-24/de16eeee9c885dc4faa3617b0a2c2aa7675703cad433136b6f7a7ea091c629d1.ExecutionBoundary.policy.json",
+      "sha256": "de16eeee9c885dc4faa3617b0a2c2aa7675703cad433136b6f7a7ea091c629d1"
+    },
+    "ExecutionRole": {
+      "path": "docs/architecture/production-team-hub-tagging-recovery-2026-10-24/b66231fc2f75c3d5b0bcb5c3e876f8b87e462e46271c1697053bfb8154b354d0.ExecutionRole.policy.json",
+      "sha256": "b66231fc2f75c3d5b0bcb5c3e876f8b87e462e46271c1697053bfb8154b354d0"
+    }
+  },
+  "product": {
+    "path": "docs/architecture/team-hub-production-permissions-candidate-2026-10-24/v2/e375a995da78fee165e2ef653225224e7546a1e9066cf3d980d8a488ce30d012.product.template.json",
+    "sha256": "e375a995da78fee165e2ef653225224e7546a1e9066cf3d980d8a488ce30d012",
+    "key": "production/e375a995da78fee165e2ef653225224e.json"
+  },
+  "runtime": {
+    "path": "docs/architecture/team-hub-production-permissions-candidate-2026-10-24/v2/acbc6199e71ca001697a4f34636cada900dc50d3b9fa1068d2735c61425e3a5e.runtime.zip",
+    "sha256": "acbc6199e71ca001697a4f34636cada900dc50d3b9fa1068d2735c61425e3a5e",
+    "key": "production/acbc6199e71ca001697a4f34636cada9.zip"
+  },
+  "apiId": "9wk4a41l5m",
+  "semanticDelta": {
+    "addAction": "apigateway:TagResource",
+    "resources": "Existing exact API child-resources prefix only: arn:aws:apigateway:eu-north-1::/apis/9wk4a41l5m/*",
+    "regionCondition": "eu-north-1",
+    "changedLogicalIds": [
+      "ExecutionBoundary",
+      "ExecutionRole"
+    ],
+    "newResourceWildcards": 0,
+    "otherPermissionsChanged": false,
+    "identityAndBoundaryBothRequired": true,
+    "permissionNotLimitedToOneStage": true
+  },
+  "policySizes": {
+    "ExecutionBoundary": {
+      "before": 6118,
+      "after": 6143,
+      "limit": 6144
+    },
+    "ExecutionRole": {
+      "before": 9756,
+      "after": 9781,
+      "limit": 10240
+    }
+  },
+  "analyzerException": {
+    "status": "NOT_ACCEPTED",
+    "findingType": "ERROR",
+    "issueCode": "INVALID_ACTION",
+    "action": "apigateway:TagResource",
+    "reason": "Installed eu-north-1 CloudFormation Stage provider create handler explicitly lists this action; actual matching CloudTrail/CreateStage request was denied for it, while public service authorization catalog and Analyzer disagree.",
+    "onlyThisExactFindingMayBeConsidered": true,
+    "otherErrorsOrWarningsRemainBlocking": true,
+    "noWildcardReplacement": true
+  },
+  "expectedSecurityChangeSet": {
+    "type": "UPDATE",
+    "modifications": 2,
+    "logicalIds": [
+      "ExecutionBoundary",
+      "ExecutionRole"
+    ],
+    "additions": 0,
+    "deletions": 0,
+    "replacements": 0
+  },
+  "failedProductStack": {
+    "stackName": "ProjectRespawn-TeamHub-Production",
+    "stackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Production/39df02e0-cf3c-11f1-8ecc-0efff7189ec7",
+    "requiredStatus": "ROLLBACK_COMPLETE",
+    "futureAction": "Delete only this verified empty failed stack record after renewed live absence/ownership checks; wait DELETE_COMPLETE; create the unchanged pinned product with exact 41 Add changes."
+  },
+  "publication": {
+    "objects": 1,
+    "ifNoneMatch": "*",
+    "encryption": "AES256",
+    "fullSha256Required": true,
+    "previousThreeObjectsRetained": true
+  },
+  "productCreate": {
+    "templateUnchanged": true,
+    "additions": 41,
+    "modifications": 0,
+    "deletions": 0,
+    "replacements": 0,
+    "rollbackEnabled": true
+  },
+  "requiredBeforeWrites": [
+    "Explicit owner acceptance of this specific Analyzer exception and exact recovery package; general earlier approval is not recorded as exception acceptance.",
+    "Fresh actual attended window, identity, hashes, source/backup/Core/Cognito/Master/protected-domain preservation and no concurrent deployment.",
+    "Exact installed old security IAM and empty failed-stack ownership verified.",
+    "All remaining Analyzer findings blocked; complete original 333-case certification and new tagging controls pass, without pretending simulation proves live provider success.",
+    "Exact security UPDATE change set inspected before execution; exact installed updated IAM verified before deleting failed stack record.",
+    "No retry on ambiguous write; no further policy broadening."
+  ],
+  "exclusions": [
+    "Runtime code/environment/IAM changes",
+    "Core, Cognito, Legacy or Ntgre modifications",
+    "Authority initialization or transfer",
+    "Business data migration or writes",
+    "Frontend/Master publication",
+    "Existing secret/API deletion",
+    "Business resource cleanup"
+  ]
+}

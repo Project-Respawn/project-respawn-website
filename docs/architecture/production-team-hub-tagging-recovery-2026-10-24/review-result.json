@@ -1,0 +1,50 @@
+{
+  "at": "2026-10-24T00:05:23.212Z",
+  "status": "TECHNICAL_CORRECTION_PREPARED_AWAITING_EXPLICIT_ANALYZER_EXCEPTION",
+  "candidateSha256": "c2d0d66bbe8b2673a5672badffa2c34851383508b2547e30e34267b676856407",
+  "executionPackageSha256": "88039809ac363780db0df392081580b70f58fd023166249693f881f18c59473d",
+  "securitySha256": "de13291048f600fefaefd393d3f9d1b623550988465a352bac083815a8244a29",
+  "productSha256": "e375a995da78fee165e2ef653225224e7546a1e9066cf3d980d8a488ce30d012",
+  "runtimeSha256": "acbc6199e71ca001697a4f34636cada900dc50d3b9fa1068d2735c61425e3a5e",
+  "changedResources": [
+    "ExecutionBoundary",
+    "ExecutionRole"
+  ],
+  "awsCustomPolicyCases": 393,
+  "originalCasesPreserved": 333,
+  "newTaggingControls": 60,
+  "failedCases": 0,
+  "templatesValidated": 2,
+  "analyzerPolicies": 4,
+  "analyzerBlockingFindings": [
+    {
+      "policy": "security.ExecutionRole",
+      "issueCode": "INVALID_ACTION",
+      "findingType": "ERROR",
+      "detail": "The action apigateway:TagResource does not exist."
+    },
+    {
+      "policy": "security.ExecutionBoundary",
+      "issueCode": "INVALID_ACTION",
+      "findingType": "ERROR",
+      "detail": "The action apigateway:TagResource does not exist."
+    }
+  ],
+  "analyzerExceptionAccepted": false,
+  "awsWrites": 0,
+  "approvalQuoteReceived": "I approve your changes",
+  "approvalInterpretation": "Approval of the described narrow correction/recovery remains recorded. It does not silently waive the newly discovered zero-Analyzer-error gate.",
+  "policySizes": {
+    "ExecutionBoundary": {
+      "before": 6118,
+      "after": 6143,
+      "limit": 6144
+    },
+    "ExecutionRole": {
+      "before": 9756,
+      "after": 9781,
+      "limit": 10240
+    }
+  },
+  "liveAuthorizationProven": false
+}

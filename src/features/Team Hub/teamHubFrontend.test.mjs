@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { canShowAdminControls, clearPrivateTeamState, indexRoleIndependentPool, isTeamHubConflict, isTeamHubDenied, managerAssignmentInput, memberAssignmentInput, revocationInput, teamHubLandingRoute } from './teamHub.viewModel.js';
+import { canShowAdminControls, confirmCreatedTeam, clearPrivateTeamState, indexRoleIndependentPool, isTeamHubConflict, isTeamHubDenied, managerAssignmentInput, memberAssignmentInput, revocationInput, teamHubLandingRoute } from './teamHub.viewModel.js';
 import { activeManager, decodeTeamHubPayload, filterAdminTeams, nextAccountSearchIndex, normalizeAdminTeam, normalizeAssignableUser, normalizeTeamSlug, replaceTeamInList } from './teamAdministration.viewModel.js';
 import { buildTeamHubShortcuts } from './teamHubDashboard.js';
 import { validateTeamLogoFile } from './teamBranding.js';
@@ -193,4 +193,17 @@ test('PNG selection rejects spoofed type, signature, size and dimensions before 
 test('Team Home is a real secured page and branding/plan controls remain administrative', async () => {
   const [routes, home, admin, logo, service] = await Promise.all([readFile(new URL('./team-hub.routes.js', import.meta.url),'utf8'),readFile(new URL('./TeamHome.vue', import.meta.url),'utf8'),readFile(new URL('./TeamAdministration.vue', import.meta.url),'utf8'),readFile(new URL('./TeamLogo.vue', import.meta.url),'utf8'),readFile(new URL('./teamHub.service.js', import.meta.url),'utf8')]);
   assert.match(routes, /team-hub-team[\s\S]*TeamHome\.vue/); assert.doesNotMatch(routes, /teamHubLandingRoute/); assert.match(home, /Manage team/); assert.match(home, /Review champion pools/); assert.match(home, /Update champion pool/); assert.match(admin, /Team plan/); assert.match(admin, /Team branding/); assert.match(admin, /window\.confirm/); assert.match(logo, /object-fit:contain/); assert.match(service, /REQUEST_TEAM_LOGO_UPLOAD/); assert.match(service, /COMMIT_TEAM_LOGO/); assert.match(service, /SET_TEAM_PLAN/);
+});
+
+test('team creation accepts only a confirmed team record, never a silent failure envelope', () => {
+  const team = { id: 'team:preview-team', slug: 'preview-team', name: 'Preview team', gameKey: 'LEAGUE_OF_LEGENDS', status: 'ACTIVE' };
+  assert.deepEqual(confirmCreatedTeam(team), team);
+  for (const response of [undefined, null, {}, {success: false, message: 'Unsupported resolver field'}, {...team, success: false}, {...team, id: 'team:other'}, {...team, status: 'INACTIVE'}]) assert.throws(() => confirmCreatedTeam(response), /creation could not be confirmed/);
+});
+
+test('team creation list merge retains the acknowledged new record before an index catches up', () => {
+  const existing = {id: 'team:existing', name: 'Existing'};
+  const created = {id: 'team:new', name: 'New'};
+  assert.deepEqual(replaceTeamInList([existing], created), [created, existing]);
+  assert.equal(replaceTeamInList([created, existing], created).filter(t => t.id === created.id).length, 1);
 });

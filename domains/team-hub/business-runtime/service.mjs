@@ -2,6 +2,7 @@ import { createHash, createHmac, timingSafeEqual } from 'node:crypto';
 import { fail, operations, validateRequest, validateResponse, teamDTO, playerDTO, membershipDTO, rosterDTO, assessmentDTO, privateNoteDTO } from './contracts.mjs';
 import { activeMembership, membershipId, entryKey, identityKey } from '../repository.mjs';
 import { authenticate } from '../auth.mjs';
+import {validPermissionList,assignablePermissions} from '../structure/feature-permissions.mjs';
 const project = (schema, entity) => Object.fromEntries(Object.keys(schema.properties).filter(k => Object.hasOwn(entity, k)).map(k => [k, schema.properties[k].type === 'object' ? project(schema.properties[k], entity[k]) : structuredClone(entity[k])]));
 const canonical = value => JSON.stringify(value && typeof value === 'object' ? Array.isArray(value) ? value.map(v => JSON.parse(canonical(v))) : Object.fromEntries(Object.keys(value).sort().map(k => [k, JSON.parse(canonical(value[k]))])) : value);
 const digest = value => createHash('sha256').update(canonical(value)).digest('hex');
@@ -9,20 +10,33 @@ const adminOps = new Set(['CREATE_TEAM', 'UPDATE_TEAM', 'SET_MANAGER', 'SET_TEAM
 const brandingOps = new Set(['REQUEST_TEAM_LOGO_UPLOAD', 'COMMIT_TEAM_LOGO', 'REMOVE_TEAM_LOGO']);
 const memberOps = { MANAGE_MEMBER: ['MANAGER'], SET_ROSTER_SLOT: ['MANAGER'], LIST_MY_CHAMPION_POOL: ['PLAYER'], UPSERT_MY_CHAMPION: ['PLAYER'], DELETE_MY_CHAMPION: ['PLAYER'], LIST_TEAM_CHAMPION_POOLS: ['MANAGER', 'COACH'], GET_PLAYER_COMPETITIVE_DETAIL: ['MANAGER', 'COACH'], UPSERT_COACH_ASSESSMENT: ['COACH'] };
 export class TeamService {
-  constructor({ repository, core, environment, cursorSecret, clock = () => Math.floor(Date.now() / 1000) }) {
+  constructor({ repository, core, environment, cursorSecret, permissionsEnabled = false, clock = () => Math.floor(Date.now() / 1000) }) {
     if (cursorSecret!==undefined && (typeof cursorSecret!=='string'||cursorSecret.length<32)) throw new Error('Invalid cursor signing material');
     Object.assign(this, { repository, core, environment, cursorSecret, clock });
+    this.permissionsEnabled=permissionsEnabled===true;
   }
-  async authorize(op, actor, aggregate) {
+  async authorize(op, actor, aggregate, request = {}) {
     const member = activeMembership(aggregate, actor);
+    if (['GET_TEAM_PERMISSIONS','SET_MEMBER_PERMISSIONS'].includes(op)) {
+      if(!this.permissionsEnabled)fail('NOT_FOUND');
+      if (!aggregate || aggregate.team.status !== 'ACTIVE') fail('FORBIDDEN');
+      if (!(await this.core.allows(actor,'teams.admin')) && !['MANAGER','COACH'].includes(member?.role)) fail('FORBIDDEN');
+      return member;
+    }
     if (adminOps.has(op)) { if (!(await this.core.allows(actor, 'teams.admin'))) fail('FORBIDDEN'); return member; }
     if (brandingOps.has(op)) { if (!(await this.core.allows(actor, 'teams.branding.manage'))) fail('FORBIDDEN'); if (!aggregate) fail('NOT_FOUND'); return member; }
     if (op === 'LIST_MY_TEAMS') return member;
     if (['SEARCH_TEAM_ASSIGNABLE_USERS','RESOLVE_TEAM_ASSIGNABLE_USER'].includes(op) && (await this.core.allows(actor, 'teams.admin'))) { if (!aggregate) fail('NOT_FOUND'); return member; }
     if (op === 'GET_TEAM_HUB' && ((await this.core.allows(actor, 'teams.admin')) || (await this.core.allows(actor, 'teams.branding.manage')))) { if (!aggregate) fail('NOT_FOUND'); return member; }
     if (!member || !aggregate || aggregate.team.status !== 'ACTIVE') fail('FORBIDDEN');
-    const roles = ['SEARCH_TEAM_ASSIGNABLE_USERS','RESOLVE_TEAM_ASSIGNABLE_USER'].includes(op) ? ['MANAGER'] : memberOps[op];
-    if (roles && !roles.includes(member.role)) fail('FORBIDDEN');
+    const permission={SET_ROSTER_SLOT:'roster.manage',MANAGE_MEMBER:'members.manage',SEARCH_TEAM_ASSIGNABLE_USERS:'members.manage',RESOLVE_TEAM_ASSIGNABLE_USER:'members.manage',LIST_TEAM_CHAMPION_POOLS:'pools.read',GET_PLAYER_COMPETITIVE_DETAIL:'pools.read',UPSERT_COACH_ASSESSMENT:'reviews.write'}[op];
+    const leadership=['MANAGER','COACH'].includes(member.role);
+    const roles = ['SEARCH_TEAM_ASSIGNABLE_USERS','RESOLVE_TEAM_ASSIGNABLE_USER'].includes(op) ? (this.permissionsEnabled?['MANAGER','COACH']:['MANAGER']) : memberOps[op];
+    if (roles && !roles.includes(member.role) && !(this.permissionsEnabled && permission && (leadership || member.permissions?.includes(permission)))) fail('FORBIDDEN');
+    if(op==='MANAGE_MEMBER' && member.role!=='MANAGER'){
+      const target=aggregate.memberships[request.targetMembershipId];
+      if(request.role==='COACH'||target&&['MANAGER','COACH'].includes(target.role))fail('FORBIDDEN');
+    }
     return member;
   }
   page(items, op, actor, req) {
@@ -49,7 +63,8 @@ export class TeamService {
   }
   competitive(aggregate, member, viewer) {
     if (!member || member.status !== 'ACTIVE' || member.role !== 'PLAYER') fail('NOT_FOUND');
-    const result = { membershipId: member.id, entries: Object.values(aggregate.entries).filter(e => e.membershipId === member.id).map(e => project(playerDTO, e)), assessments: Object.values(aggregate.assessments).filter(e => e.membershipId === member.id).map(e => project(assessmentDTO, e)) };
+    const readReviews=['MANAGER','COACH'].includes(viewer.role)||this.permissionsEnabled&&viewer.permissions?.includes('reviews.read');
+    const result = { membershipId: member.id, entries: Object.values(aggregate.entries).filter(e => e.membershipId === member.id).map(e => project(playerDTO, e)), assessments: readReviews?Object.values(aggregate.assessments).filter(e => e.membershipId === member.id).map(e => project(assessmentDTO, e)):[] };
     if (viewer.role === 'COACH') result.privateNotes = Object.values(aggregate.privateNotes).filter(e => e.membershipId === member.id && identityKey(e.author) === identityKey(viewer)).map(e => project(privateNoteDTO, e));
     return result;
   }
@@ -60,10 +75,11 @@ export class TeamService {
     const teamId = op === 'CREATE_TEAM' ? `team:${req.slug}` : req.teamId;
     // Slugs map deterministically to stable legacy team IDs; no second caller identity source.
     const aggregate = teamId ? await this.repository.readTeamStrong(teamId) : undefined;
-    const member = await this.authorize(op, actor, aggregate);
+    const member = await this.authorize(op, actor, aggregate, req);
     if (operations[op].runtime === 'read') {
       let response;
-      if (op === 'LIST_MY_TEAMS') {
+      if (op === 'GET_TEAM_PERMISSIONS') response={permissionContract:'team-hub.permissions.v1',team:project(teamDTO,aggregate.team),members:Object.values(aggregate.memberships).filter(m=>m.status==='ACTIVE').map(m=>({membershipId:m.id,permissions:m.permissions??[],version:m.version}))};
+      else if (op === 'LIST_MY_TEAMS') {
         const admin = (await this.core.allows(actor, 'teams.admin'));
         const candidates = await this.repository.listCandidateTeamIds(actor);
         const snapshots = await Promise.all(candidates.map(id => this.repository.readTeamStrong(id)));
@@ -85,17 +101,18 @@ export class TeamService {
       // No async gap between final authoritative check and projection return.
       if (teamId) {
         const current = await this.repository.readTeamStrong(teamId);
-        const latestMember = await this.authorize(op, actor, current);
+        const latestMember = await this.authorize(op, actor, current, req);
         if (current.team.authorizationEpoch !== aggregate.team.authorizationEpoch || current.team.version !== aggregate.team.version || latestMember?.version !== member?.version) fail('CONFLICT');
       }
       if(['LIST_MY_TEAMS','GET_TEAM_HUB'].includes(op))response.capabilities={teamsAdmin:await this.core.allows(actor,'teams.admin'),brandingManage:false};
+      if(op==='GET_TEAM_HUB'&&this.permissionsEnabled){response.capabilities.permissionContract='team-hub.permissions.v1';response.capabilities.memberPermissions=['MANAGER','COACH'].includes(member?.role)?[...assignablePermissions]:member?.permissions??[];}
       return validateResponse(op, response);
     }
     let target;
     if (['SET_MANAGER', 'MANAGE_MEMBER'].includes(op) && req.action === 'ASSIGN') target = (await this.core.resolve(actor, req.targetAccount, teamId));
     const conditions = { teamId, teamVersion: req.expectedTeamVersion ?? 0, epoch: req.expectedAuthorizationEpoch ?? 0, membershipVersion: req.expectedMembershipVersion ?? 0, actor, operation: op, key: req.idempotencyKey, digest: digest(req), now: this.clock(), requestId };
     return this.repository.transact(conditions, async state => {
-      await this.authorize(op, actor, state.teams[teamId]);
+      await this.authorize(op, actor, state.teams[teamId], req);
       if (target && (await this.core.resolve(actor, req.targetAccount, teamId)).subject !== target.subject) fail('CONFLICT');
     }, state => {
       if (op === 'CREATE_TEAM') {
@@ -109,6 +126,15 @@ export class TeamService {
       const version = (actual, expected) => { if (actual !== expected) fail('CONFLICT'); };
       const clearRoster = id => { const before = a.roster.length; a.roster = a.roster.filter(r => r.membershipId !== id); if (before !== a.roster.length) a.team.rosterVersion++; };
       let extra = {};
+      if(op==='SET_MEMBER_PERMISSIONS'){
+        const target=a.memberships[req.membershipId];
+        if(!target||target.status!=='ACTIVE')fail('NOT_FOUND');
+        if(['MANAGER','COACH'].includes(target.role))fail('FORBIDDEN');
+        if(!validPermissionList(req.permissions))fail('INVALID_INPUT');
+        version(target.version,req.expectedTargetMembershipVersion);
+        target.permissions=[...req.permissions].sort();target.version++;a.team.authorizationEpoch++;
+        extra={grant:{membershipId:target.id,permissions:target.permissions,version:target.version}};
+      }
       if (op === 'UPDATE_TEAM') { a.team.name = req.name; a.team.status = req.status; }
       if (['SET_MANAGER', 'MANAGE_MEMBER'].includes(op)) {
         const id = req.action === 'ASSIGN' ? membershipId(teamId, target.subject) : req.targetMembershipId;
@@ -117,7 +143,7 @@ export class TeamService {
         const role = op === 'SET_MANAGER' ? 'MANAGER' : req.role;
         if (req.action === 'REVOKE') {
           if (!previous || previous.role !== role || previous.status !== 'ACTIVE') fail('NOT_FOUND');
-          previous.status = 'INACTIVE'; previous.version++; clearRoster(id);
+          previous.status = 'INACTIVE'; delete previous.permissions; previous.version++; clearRoster(id);
         } else {
           if (previous?.status === 'ACTIVE' && previous.role !== 'PLAYER' && previous.role !== role) fail('CONFLICT');
           if (role !== 'PLAYER') {

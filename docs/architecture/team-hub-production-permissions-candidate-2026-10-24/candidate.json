@@ -1,0 +1,534 @@
+{
+  "schemaVersion": "production-team-hub-permissions-review.v1",
+  "status": "BLOCKED_POLICY_SIZE",
+  "authorizationRecorded": false,
+  "awsWrites": 0,
+  "environment": {
+    "contractVersion": "environment.v1",
+    "environment": "Production",
+    "account": "058264289478",
+    "region": "eu-north-1",
+    "poolId": "eu-north-1_Uufjxul58",
+    "clientId": "2kc81ph5mgvo9eu2qjvmif5u8g",
+    "issuer": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_Uufjxul58"
+  },
+  "core": {
+    "accepted": true,
+    "functionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts",
+    "runtimeSha256": "dc2a7137a725f6a82582abc8a800f5d30846058ecdbe12965f81a19c887154c4",
+    "securitySha256": "668049957edf3fb6e3dfda209e4600a824aa0b8182d41afb3051fb76f32bd613",
+    "productSha256": "5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086",
+    "acceptance": "docs/architecture/production-core-emf-execution-2026-10-21/final-result.json",
+    "acceptanceSha256": "2a60b92acc3f1db672d185d4b796ab5d166d30a2d069708c9ab83a1ca8496e06",
+    "rawHistoricalFlagNote": "The copied liveCoreAccepted=false field in the historical final receipt predates authentication. Its final liveAccepted=true and actual authenticated/monitoring receipts establish acceptance; no historical bytes modified."
+  },
+  "baseline": {
+    "manifestSha256": "2827cdbb908c3ef51096b54320a22e68bb898f3d3461ae3e95575eb4d787306d",
+    "productSha256": "995b40be6cd460999cbde2510b33c5e93a407251f48b1ba1905f75a2c8c0ef24",
+    "securitySha256": "44262d06047926ada1d1ce88edc9ad55180ab8b2e080079218fc97090ee19bdc",
+    "runtimeSha256": "3b9da09caa3e8684aabd5c0421539326eb68d1ed5aa5696dcf76425659ea0287"
+  },
+  "runtime": {
+    "path": "docs/architecture/team-hub-production-permissions-candidate-2026-10-24/acbc6199e71ca001697a4f34636cada900dc50d3b9fa1068d2735c61425e3a5e.runtime.zip",
+    "sha256": "acbc6199e71ca001697a4f34636cada900dc50d3b9fa1068d2735c61425e3a5e",
+    "key": "production/acbc6199e71ca001697a4f34636cada900dc50d3b9fa1068d2735c61425e3a5e.zip"
+  },
+  "product": {
+    "path": "docs/architecture/team-hub-production-permissions-candidate-2026-10-24/84cf22f7b7cefa42b464ff6da7b49345028a4f14ed4bb3b6ce76c7419a62e3da.product.template.json",
+    "sha256": "84cf22f7b7cefa42b464ff6da7b49345028a4f14ed4bb3b6ce76c7419a62e3da",
+    "key": "production/84cf22f7b7cefa42b464ff6da7b49345028a4f14ed4bb3b6ce76c7419a62e3da.json"
+  },
+  "security": {
+    "path": "docs/architecture/team-hub-production-permissions-candidate-2026-10-24/ef3e744bacd9e98ca9eddaa2e3af7cdc5dd8d2907094e807ef7fbdf8fdd60b1a.security.template.json",
+    "sha256": "ef3e744bacd9e98ca9eddaa2e3af7cdc5dd8d2907094e807ef7fbdf8fdd60b1a"
+  },
+  "resourceAccounting": {
+    "security": 8,
+    "product": 41,
+    "comparisonToAcceptedUndeployedCandidate": {
+      "add": [
+        "MemberPermissionReadRoute",
+        "MemberPermissionWriteRoute"
+      ],
+      "modify": [
+        "ParityCommandFunction",
+        "ParityReadFunction"
+      ],
+      "delete": []
+    },
+    "awsGeneratedChangeSet": false
+  },
+  "policyDiff": [
+    {
+      "resource": "ExecutionBoundary",
+      "document": 0,
+      "change": "Add exact new runtime/product artifact references and TemplateURL; retain all historical references"
+    },
+    {
+      "resource": "ExecutionRole",
+      "document": 0,
+      "change": "Add exact new runtime/product artifact references and TemplateURL; retain all historical references"
+    },
+    {
+      "resource": "PreparationCaller",
+      "document": 0,
+      "change": "Add exact new runtime/product artifact references and TemplateURL; retain all historical references"
+    },
+    {
+      "resource": "DeploymentCaller",
+      "document": 0,
+      "change": "Add exact new runtime/product artifact references and TemplateURL; retain all historical references"
+    }
+  ],
+  "policySizes": {
+    "ExecutionBoundary": {
+      "count": 6415,
+      "limit": 6144
+    },
+    "ExecutionRole": {
+      "count": 9908,
+      "limit": 10240
+    },
+    "PreparationCaller": {
+      "count": 2434,
+      "limit": 6144
+    },
+    "DeploymentCaller": {
+      "count": 2434,
+      "limit": 10240
+    },
+    "ParityCommandBoundary": {
+      "count": 5060,
+      "limit": 6144
+    },
+    "ParityReadBoundary": {
+      "count": 5361,
+      "limit": 6144
+    }
+  },
+  "quotaFailures": [
+    {
+      "id": "ExecutionBoundary",
+      "count": 6415,
+      "limit": 6144
+    }
+  ],
+  "sourceHashes": [
+    {
+      "path": "domains/team-hub/auth.mjs",
+      "sha256": "714da1fc10820c83171fbdb9037c8300fc37ae890923addba4c359a550d02179",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/authority-contract/contract.mjs",
+      "sha256": "190ae44422d0be2743bb6a88c3936d1b87e1a6653faecf93c21e5e2849b8711a",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/authority-contract/entry.mjs",
+      "sha256": "3353b68d7a9bd0ceb04611005baa2f7849446b860bed46eab4b6293b4fa21b20",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/authority-contract/handler.mjs",
+      "sha256": "d17714a341f269c5925bdbf12e1535f305cb1f5392a96cb9faa8adf870d59b8c",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/authority-contract/router.mjs",
+      "sha256": "6318a15847e81ed9cefa382f2e93baaf7129bb7921f86aad20f740530b369490",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/authority.mjs",
+      "sha256": "a9b0a3189685583b31b1b55caf7d5cd671925652b0aa97636093c929800a56e0",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/contracts.mjs",
+      "sha256": "8da47289f6fd1118461e9bb931b5c38fcc1d5196260e4a1b5e0a76611f686a8e",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/core-client.mjs",
+      "sha256": "52b7e3049a85facfa2cfdb419e235359c491daf26a2da068f3f934984b9ce029",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/entry.mjs",
+      "sha256": "d80e9081c7f06f28f24c2893594746f7dd5743b344798e7fcd0c47310732425f",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/handler.mjs",
+      "sha256": "eb17dce24f568c7201645b80da8579c2d3742da18c61b80d3c7d1dc97fa1a4af",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/http.mjs",
+      "sha256": "ae0e9dfbae9f59bc34f76c44c03949b823a0225c58cefa5a5bdada1384add8ec",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/observability.mjs",
+      "sha256": "fcff3c7d3b199e8508fcf59d8530a694a8eb1cbb725b043d5f7066a4fa81bca5",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/repository.mjs",
+      "sha256": "ae6ce0a6bde6eb0b24547efe7227b413fe3aa0bbff4853c1c94d72b936d18ca1",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/router.mjs",
+      "sha256": "60c5721658df6127d521fad534d10154c77b7d91ab20f3855dd29d0f60dcebc9",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/service.mjs",
+      "sha256": "18d42e2cb974f1dd4dc864153d5293e14628e2341124e9cb41a4a08fe464c13c",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/command-entry.mjs",
+      "sha256": "f887f2ea967f767d0291f9a5a12746922cd22a0432bd287a96e2699eed4c42ab",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/compatibility.mjs",
+      "sha256": "65faeed57e99aa484dea6ddb2b2eaf1f96672f00d3e3f0b2e398d72a2e6fcc9e",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/contracts.mjs",
+      "sha256": "5a9ea05b66210eb709e8bc9f4097f5680f405dc498a72b5f12ca8599273b592d",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/core-contracts.mjs",
+      "sha256": "ec5912dcf033a42fd7fa0c7c25de3cfbd7706eae74f8cefd5f9072d2ddbe26b9",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/core-integration/entry.mjs",
+      "sha256": "0b467115193f8ef67d2ba3cc6a9783b93864db5e9d6f4ceaff4afb356eb49426",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/core-integration/handler.mjs",
+      "sha256": "cf2c48f1d871c34d7414d820c51e17f247bac0d319cc5844a84457cdc84a9a3b",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/core-integration/manifest.mjs",
+      "sha256": "0ae49ab6cd92be26480e4367d2d8769d7a53bfc7883f1e06502786c3c72e1783",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/core.mjs",
+      "sha256": "3dff70568edaa0dbb3ed25cbd77016996fc84b7d4371f1b3dc2f7b4006903896",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/cutover/authority.mjs",
+      "sha256": "a9b0a3189685583b31b1b55caf7d5cd671925652b0aa97636093c929800a56e0",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/cutover/contracts.mjs",
+      "sha256": "8da47289f6fd1118461e9bb931b5c38fcc1d5196260e4a1b5e0a76611f686a8e",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/cutover/core-client.mjs",
+      "sha256": "52b7e3049a85facfa2cfdb419e235359c491daf26a2da068f3f934984b9ce029",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/cutover/entry.mjs",
+      "sha256": "754c47373d00041bfcb1522e7f6901a4b821e187d78f9e53329abbf105444230",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/cutover/handler.mjs",
+      "sha256": "caeb820768383721ce6f5360d40c93948760fc5787cd560b39ddb58b1971d52c",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/cutover/http.mjs",
+      "sha256": "ae0e9dfbae9f59bc34f76c44c03949b823a0225c58cefa5a5bdada1384add8ec",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/cutover/observability.mjs",
+      "sha256": "ee02df6c4b1f8dafef442717560b49aef672b170ed8d7d1c9ead1751a31e9ecb",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/cutover/package-lock.json",
+      "sha256": "233b993491fa23b8777111457261974c7820735c29f1999c885435974794583c",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/cutover/package.json",
+      "sha256": "679055d57225e57d09f1fc28202dc6db008efacef44311469e7f5fa05006ed05",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/cutover/repository.mjs",
+      "sha256": "81fd27eb2233efc45ba2e9387f50070cce639d24c9872939296b3a1ca3512f77",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/cutover/service.mjs",
+      "sha256": "5b1fdeb75355133685f6e1d61e7ad28119436f994798da85a1c153842be60b3d",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/dark-monitoring/entry.mjs",
+      "sha256": "57080746038a1f50b46076639772348156aee34416d224ccd17df7d16ebf4398",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/dark-monitoring/handler.mjs",
+      "sha256": "b230ab17e4045401c8ad0988f9c907104e490e36ebce550d549b9ef14e4bb5e2",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/http.mjs",
+      "sha256": "ae0e9dfbae9f59bc34f76c44c03949b823a0225c58cefa5a5bdada1384add8ec",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/model.ts",
+      "sha256": "620d9f06662a525c28897f9997090ca0619a943a7d838adf4d9458a2c360386e",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/parity/cleanup.mjs",
+      "sha256": "83255ef8877963c9c266c69ae4f48be6c76a1c74ac61a88ca8c3c782cb637576",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/parity/codec.mjs",
+      "sha256": "25d71ad9a7b7e7aa79cef7d44082c2d97a4da11961c58aa8bc67c204a8d21826",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/parity/core.mjs",
+      "sha256": "c6954d10071493ee1ba3d4e22829eb7adb5ed969c97a7bc6b6e0c6e755ab6ac8",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/parity/entry.mjs",
+      "sha256": "a5bb4a25c7cd6dbbfd16fe74878b71d08653ecee97ebcc07c732f5c44cc6f82a",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/parity/fence.mjs",
+      "sha256": "2727c4a8e6747095f7099cc5a0b7ea72f56c0b8c699526229b90070bee43232a",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/parity/handler.mjs",
+      "sha256": "46db14f3e5c1deffeb53492c9f8d4cfcb4af7932567d1d31faa4eac73a569ca1",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/parity/package-lock.json",
+      "sha256": "b86504bdcbe9be3c655c58ea205005b3816f8abf830c280de8036247340a00d3",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/parity/package.json",
+      "sha256": "01fa01acb0db65d919b87c071958cef16a0b85fadf0b870b429fc81126702e9e",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/parity/repository.mjs",
+      "sha256": "f50d6b91011eab575a0f8b50611844bb39bd7b45c4694e068941398fd520298d",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/parity/state-schema.json",
+      "sha256": "bf7fffcba70af3fea79e051e73c1f62ab6cb1cee492a78947e97b9b71b32a429",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/preview.mjs",
+      "sha256": "f7d139c0ddf9d8f11f45934b289a1a7bfa16ba84e22ed065c1ee69c27dc11f47",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/read-entry.mjs",
+      "sha256": "9271601d8367d8fb1d517955be95077fab4ce2a8587c49ed5241007368d1951b",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/repository.mjs",
+      "sha256": "4a84ee6b60ab625293545d2dd1be0dc863ab2f8c343b1e11e8cafeaf4bd921ca",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/service.mjs",
+      "sha256": "c93f0410f5766bcc0c50d1c0008f7577f9e82034413170ef75aa2dd47b935466",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/storage-plan.mjs",
+      "sha256": "aa6923a380b5a0426cd33fab605d7606c6a6b7e5b3d00e25e2971bdb8f72e491",
+      "origin": "ACCEPTED_PRODUCTION_OVERLAY"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/contracts.mjs",
+      "sha256": "8226c50c3bf0d431759403b3f727a1b4f2e9863579cf3c6aceb1d3560f8ce77c",
+      "originalMainSha256": "8226c50c3bf0d431759403b3f727a1b4f2e9863579cf3c6aceb1d3560f8ce77c",
+      "origin": "REVISED_PERMISSION_CANDIDATE",
+      "transformation": "Exact Ntgre -> Production environment/resource literal binding; no principal/pool substitutions"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/service.mjs",
+      "sha256": "fe3956c4cc21b01184b91f838d211aa4ddc9303343c1dfb9f4f1b1cf42fe2222",
+      "originalMainSha256": "fe3956c4cc21b01184b91f838d211aa4ddc9303343c1dfb9f4f1b1cf42fe2222",
+      "origin": "REVISED_PERMISSION_CANDIDATE",
+      "transformation": "Exact Ntgre -> Production environment/resource literal binding; no principal/pool substitutions"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/handler.mjs",
+      "sha256": "320ade6052e320646ba06a2c4f0fff6bd68e4cd3cfcfdeaa2f67ac30b2fa22bc",
+      "originalMainSha256": "290c99c6c799c115274c016170de7143bf6f6ba9be003cfdaeaf168348f10ec6",
+      "origin": "REVISED_PERMISSION_CANDIDATE",
+      "transformation": "Exact Ntgre -> Production environment/resource literal binding; no principal/pool substitutions"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/router.mjs",
+      "sha256": "61a35b1e29a91c5ea71e437de98150717ec75369e367e19394c5e4f00252fc9d",
+      "originalMainSha256": "61a35b1e29a91c5ea71e437de98150717ec75369e367e19394c5e4f00252fc9d",
+      "origin": "REVISED_PERMISSION_CANDIDATE",
+      "transformation": "Exact Ntgre -> Production environment/resource literal binding; no principal/pool substitutions"
+    },
+    {
+      "path": "domains/team-hub/parity/codec.mjs",
+      "sha256": "c55f3135df5f1f0b71eee70e400c08b68262f234f2905a7a0b8d48b56ca31536",
+      "originalMainSha256": "c55f3135df5f1f0b71eee70e400c08b68262f234f2905a7a0b8d48b56ca31536",
+      "origin": "REVISED_PERMISSION_CANDIDATE",
+      "transformation": "Exact Ntgre -> Production environment/resource literal binding; no principal/pool substitutions"
+    },
+    {
+      "path": "domains/team-hub/parity/state-schema.json",
+      "sha256": "c872bebc0f1fe5e1304f811709ddd4723ad8d6a3991fdbb3526dc6a668745fe1",
+      "originalMainSha256": "c872bebc0f1fe5e1304f811709ddd4723ad8d6a3991fdbb3526dc6a668745fe1",
+      "origin": "REVISED_PERMISSION_CANDIDATE",
+      "transformation": "Exact Ntgre -> Production environment/resource literal binding; no principal/pool substitutions"
+    },
+    {
+      "path": "domains/team-hub/structure/feature-permissions.mjs",
+      "sha256": "e7d084207df392238958045467ac59f924e4492d80a519fda8a1cce602d8d15c",
+      "originalMainSha256": "e7d084207df392238958045467ac59f924e4492d80a519fda8a1cce602d8d15c",
+      "origin": "REVISED_PERMISSION_CANDIDATE",
+      "transformation": "Exact Ntgre -> Production environment/resource literal binding; no principal/pool substitutions"
+    }
+  ],
+  "bundleClosure": [
+    {
+      "path": ".tmp/team-hub-production-permissions/candidate-source/domains/team-hub/core-integration/manifest.mjs",
+      "sha256": "0ae49ab6cd92be26480e4367d2d8769d7a53bfc7883f1e06502786c3c72e1783"
+    },
+    {
+      "path": ".tmp/team-hub-production-permissions/candidate-source/domains/team-hub/contracts.mjs",
+      "sha256": "5a9ea05b66210eb709e8bc9f4097f5680f405dc498a72b5f12ca8599273b592d"
+    },
+    {
+      "path": ".tmp/team-hub-production-permissions/candidate-source/domains/team-hub/auth.mjs",
+      "sha256": "714da1fc10820c83171fbdb9037c8300fc37ae890923addba4c359a550d02179"
+    },
+    {
+      "path": ".tmp/team-hub-production-permissions/candidate-source/domains/team-hub/structure/feature-permissions.mjs",
+      "sha256": "e7d084207df392238958045467ac59f924e4492d80a519fda8a1cce602d8d15c"
+    },
+    {
+      "path": ".tmp/team-hub-production-permissions/candidate-source/domains/team-hub/business-runtime/contracts.mjs",
+      "sha256": "8226c50c3bf0d431759403b3f727a1b4f2e9863579cf3c6aceb1d3560f8ce77c"
+    },
+    {
+      "path": ".tmp/team-hub-production-permissions/candidate-source/domains/team-hub/storage-plan.mjs",
+      "sha256": "aa6923a380b5a0426cd33fab605d7606c6a6b7e5b3d00e25e2971bdb8f72e491"
+    },
+    {
+      "path": ".tmp/team-hub-production-permissions/candidate-source/domains/team-hub/repository.mjs",
+      "sha256": "4a84ee6b60ab625293545d2dd1be0dc863ab2f8c343b1e11e8cafeaf4bd921ca"
+    },
+    {
+      "path": ".tmp/team-hub-production-permissions/candidate-source/domains/team-hub/business-runtime/service.mjs",
+      "sha256": "fe3956c4cc21b01184b91f838d211aa4ddc9303343c1dfb9f4f1b1cf42fe2222"
+    },
+    {
+      "path": ".tmp/team-hub-production-permissions/candidate-source/domains/team-hub/business-runtime/http.mjs",
+      "sha256": "ae0e9dfbae9f59bc34f76c44c03949b823a0225c58cefa5a5bdada1384add8ec"
+    },
+    {
+      "path": ".tmp/team-hub-production-permissions/candidate-source/domains/team-hub/business-runtime/authority.mjs",
+      "sha256": "a9b0a3189685583b31b1b55caf7d5cd671925652b0aa97636093c929800a56e0"
+    },
+    {
+      "path": ".tmp/team-hub-production-permissions/candidate-source/domains/team-hub/parity/state-schema.json",
+      "sha256": "c872bebc0f1fe5e1304f811709ddd4723ad8d6a3991fdbb3526dc6a668745fe1"
+    },
+    {
+      "path": ".tmp/team-hub-production-permissions/candidate-source/domains/team-hub/parity/codec.mjs",
+      "sha256": "c55f3135df5f1f0b71eee70e400c08b68262f234f2905a7a0b8d48b56ca31536"
+    },
+    {
+      "path": ".tmp/team-hub-production-permissions/candidate-source/domains/team-hub/business-runtime/repository.mjs",
+      "sha256": "ae6ce0a6bde6eb0b24547efe7227b413fe3aa0bbff4853c1c94d72b936d18ca1"
+    },
+    {
+      "path": ".tmp/team-hub-production-permissions/candidate-source/domains/team-hub/business-runtime/core-client.mjs",
+      "sha256": "52b7e3049a85facfa2cfdb419e235359c491daf26a2da068f3f934984b9ce029"
+    },
+    {
+      "path": ".tmp/team-hub-production-permissions/candidate-source/domains/team-hub/cutover/contracts.mjs",
+      "sha256": "8da47289f6fd1118461e9bb931b5c38fcc1d5196260e4a1b5e0a76611f686a8e"
+    },
+    {
+      "path": ".tmp/team-hub-production-permissions/candidate-source/domains/team-hub/cutover/observability.mjs",
+      "sha256": "ee02df6c4b1f8dafef442717560b49aef672b170ed8d7d1c9ead1751a31e9ecb"
+    },
+    {
+      "path": ".tmp/team-hub-production-permissions/candidate-source/domains/team-hub/business-runtime/observability.mjs",
+      "sha256": "fcff3c7d3b199e8508fcf59d8530a694a8eb1cbb725b043d5f7066a4fa81bca5"
+    },
+    {
+      "path": ".tmp/team-hub-production-permissions/candidate-source/domains/team-hub/business-runtime/handler.mjs",
+      "sha256": "320ade6052e320646ba06a2c4f0fff6bd68e4cd3cfcfdeaa2f67ac30b2fa22bc"
+    },
+    {
+      "path": ".tmp/team-hub-production-permissions/candidate-source/domains/team-hub/authority-contract/contract.mjs",
+      "sha256": "190ae44422d0be2743bb6a88c3936d1b87e1a6653faecf93c21e5e2849b8711a"
+    },
+    {
+      "path": ".tmp/team-hub-production-permissions/candidate-source/domains/team-hub/authority-contract/handler.mjs",
+      "sha256": "d17714a341f269c5925bdbf12e1535f305cb1f5392a96cb9faa8adf870d59b8c"
+    },
+    {
+      "path": ".tmp/team-hub-production-permissions/candidate-source/domains/team-hub/business-runtime/router.mjs",
+      "sha256": "61a35b1e29a91c5ea71e437de98150717ec75369e367e19394c5e4f00252fc9d"
+    },
+    {
+      "path": ".tmp/team-hub-production-permissions/candidate-source/domains/team-hub/business-runtime/entry.mjs",
+      "sha256": "d80e9081c7f06f28f24c2893594746f7dd5743b344798e7fcd0c47310732425f"
+    }
+  ],
+  "rollback": {
+    "dataCompatibility": "Old strict codecs reject the new optional membership permissions attribute, including empty arrays. After first saved grant, keep a compatible codec and disable the feature rather than blindly restoring an old runtime. Source authority cannot be reopened by frontend rollback.",
+    "historicalProduct": "995b40be6cd460999cbde2510b33c5e93a407251f48b1ba1905f75a2c8c0ef24",
+    "historicalSecurity": "44262d06047926ada1d1ce88edc9ad55180ab8b2e080079218fc97090ee19bdc"
+  },
+  "remainingGates": [
+    "Fresh production preservation/security and IAM review including exact artifact grants",
+    "Separate candidate approval before production deployment; prior exact-hash dark approval does not cover this revision",
+    "Authority bootstrap, isolated cursor proof and nonempty source migration/fence/reconciliation separately authorized",
+    "Actual production permission save/revoke and five-persona acceptance",
+    "Production frontend bindings and exact-Master frontend-only publication after business acceptance"
+  ]
+}

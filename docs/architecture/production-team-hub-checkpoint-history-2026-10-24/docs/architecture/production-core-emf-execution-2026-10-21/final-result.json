@@ -1,0 +1,303 @@
+{
+  "recordedAt": "2026-10-21T20:52:46.905Z",
+  "status": "PRODUCTION_CORE_DEPLOYED_AND_ACCEPTED_READY_FOR_TEAM_HUB_DEPLOYMENT_REVIEW",
+  "manifestSha256": "6b5eee187941873b314d1694ac16b7b12a9f369cafd9cbc344604719662a38dc",
+  "securitySha256": "668049957edf3fb6e3dfda209e4600a824aa0b8182d41afb3051fb76f32bd613",
+  "productSha256": "5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086",
+  "runtimeSha256": "dc2a7137a725f6a82582abc8a800f5d30846058ecdbe12965f81a19c887154c4",
+  "account": "058264289478",
+  "region": "eu-north-1",
+  "operatorArn": "arn:aws:iam::058264289478:user/RavenTest",
+  "authorizationWindow": {
+    "recordedAt": "2026-10-21T15:32:57.800Z",
+    "windowStart": "2026-10-21T15:32:57.800Z",
+    "expiresAt": "2026-10-21T17:32:57.800Z",
+    "operatorArn": "arn:aws:iam::058264289478:user/RavenTest",
+    "operatorAvailable": true,
+    "noConcurrentChanges": true,
+    "teamAuthorized": false,
+    "authorizationRequestSha256": "94362728c6fe97d08aa8fa89850bedaa0fceaa7ff10aa641fc6034b6f0888556",
+    "source": "Current explicit authorization and current availability reply"
+  },
+  "security": {
+    "status": "UPDATE_COMPLETE",
+    "modifications": 4,
+    "additions": 0,
+    "deletions": 0,
+    "replacements": 0,
+    "rollbackEnabled": true,
+    "changeSetArn": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/core-emf-binding-security-20261021/8fc43994-4414-4461-8376-c624169da7a5",
+    "installedMatched": true,
+    "executionRoleChecks": 126,
+    "callerRoleChecks": 43
+  },
+  "product": {
+    "status": "UPDATE_COMPLETE",
+    "modifications": 1,
+    "logicalId": "Contracts",
+    "property": "Code",
+    "additions": 0,
+    "deletions": 0,
+    "replacements": 0,
+    "rollbackEnabled": true,
+    "changeSetArn": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/core-emf-product-20261021/07a2fc0c-0e1b-4727-bb9f-63413cd7e700",
+    "installedRuntimeAndIamMatched": true,
+    "fullNonCodeConfigurationPreserved": true
+  },
+  "controlledInvocation": {
+    "at": "2026-10-21T15:39:25.547Z",
+    "passed": true,
+    "attempts": 1,
+    "automaticRetry": false,
+    "awsRequestId": "fcd8589f-26a2-4688-a2b8-9fc455c324a7",
+    "statusCode": 200,
+    "response": {
+      "ok": false,
+      "error": {
+        "code": "UNAUTHENTICATED"
+      }
+    },
+    "rootEmfTail": [
+      {
+        "requestId": "fcd8589f-26a2-4688-a2b8-9fc455c324a7",
+        "Environment": "Production",
+        "Requests": 1,
+        "Denied": 1,
+        "DependencyFailures": 0,
+        "RateLimited": 0,
+        "outcome": "UNAUTHENTICATED"
+      }
+    ],
+    "platformLogLines": [],
+    "authenticatedAcceptance": false,
+    "secretValueRetrievedByOperator": false
+  },
+  "emf": {
+    "passed": true,
+    "rootApplicationEvents": 1,
+    "requestId": "fcd8589f-26a2-4688-a2b8-9fc455c324a7",
+    "metricSums": {
+      "Requests": 1,
+      "Denied": 1,
+      "DependencyFailures": 0,
+      "RateLimited": 0,
+      "Invocations": 1,
+      "Errors": 0,
+      "Throttles": 0
+    },
+    "ProductionDimensionVerified": true,
+    "correlationVerified": true,
+    "ingestionObservationAttempts": 2
+  },
+  "alarms": {
+    "passed": true,
+    "actualDataPointsRequired": true,
+    "forcedState": false,
+    "breachTransitionClaimed": false,
+    "checks": [
+      {
+        "name": "ProjectRespawn-Core-Production-Errors",
+        "namespace": "AWS/Lambda",
+        "metric": "Errors",
+        "dimensions": [
+          {
+            "Name": "FunctionName",
+            "Value": "ProjectRespawn-Core-Production-Contracts"
+          }
+        ],
+        "statistic": "Sum",
+        "period": 60,
+        "threshold": 1,
+        "comparison": "GreaterThanOrEqualToThreshold",
+        "state": "OK",
+        "stateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+        "stateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-21T07:06:51.940+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":1.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-21T07:05:00.000+0000\"}]}",
+        "actualDatapoints": [
+          {
+            "Timestamp": "2026-10-21T16:39:00+01:00",
+            "Sum": 0,
+            "Unit": "Count"
+          }
+        ],
+        "definitionMatched": true,
+        "signalObserved": true,
+        "forcedAlarm": false
+      },
+      {
+        "name": "ProjectRespawn-Core-Production-Throttles",
+        "namespace": "AWS/Lambda",
+        "metric": "Throttles",
+        "dimensions": [
+          {
+            "Name": "FunctionName",
+            "Value": "ProjectRespawn-Core-Production-Contracts"
+          }
+        ],
+        "statistic": "Sum",
+        "period": 60,
+        "threshold": 1,
+        "comparison": "GreaterThanOrEqualToThreshold",
+        "state": "OK",
+        "stateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+        "stateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-21T06:56:14.445+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":1.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-21T06:55:00.000+0000\"}]}",
+        "actualDatapoints": [
+          {
+            "Timestamp": "2026-10-21T16:39:00+01:00",
+            "Sum": 0,
+            "Unit": "Count"
+          }
+        ],
+        "definitionMatched": true,
+        "signalObserved": true,
+        "forcedAlarm": false
+      },
+      {
+        "name": "ProjectRespawn-Core-Production-DependencyFailures",
+        "namespace": "ProjectRespawn/Core",
+        "metric": "DependencyFailures",
+        "dimensions": [
+          {
+            "Name": "Environment",
+            "Value": "Production"
+          }
+        ],
+        "statistic": "Sum",
+        "period": 60,
+        "threshold": 1,
+        "comparison": "GreaterThanOrEqualToThreshold",
+        "state": "OK",
+        "stateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+        "stateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-21T06:55:43.880+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":1.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-21T06:54:00.000+0000\"}]}",
+        "actualDatapoints": [
+          {
+            "Timestamp": "2026-10-21T16:39:00+01:00",
+            "Sum": 0,
+            "Unit": "Count"
+          }
+        ],
+        "definitionMatched": true,
+        "signalObserved": true,
+        "forcedAlarm": false
+      },
+      {
+        "name": "ProjectRespawn-Core-Production-Denied",
+        "namespace": "ProjectRespawn/Core",
+        "metric": "Denied",
+        "dimensions": [
+          {
+            "Name": "Environment",
+            "Value": "Production"
+          }
+        ],
+        "statistic": "Sum",
+        "period": 60,
+        "threshold": 20,
+        "comparison": "GreaterThanOrEqualToThreshold",
+        "state": "OK",
+        "stateReason": "Threshold Crossed: no datapoints were received for 1 period and 1 missing datapoint was treated as [NonBreaching].",
+        "stateReasonData": "{\"version\":\"1.0\",\"queryDate\":\"2026-10-21T06:55:02.438+0000\",\"statistic\":\"Sum\",\"period\":60,\"recentDatapoints\":[],\"threshold\":20.0,\"evaluatedDatapoints\":[{\"timestamp\":\"2026-10-21T06:54:00.000+0000\"}]}",
+        "actualDatapoints": [
+          {
+            "Timestamp": "2026-10-21T16:39:00+01:00",
+            "Sum": 1,
+            "Unit": "Count"
+          }
+        ],
+        "definitionMatched": true,
+        "signalObserved": true,
+        "forcedAlarm": false
+      }
+    ]
+  },
+  "authentication": {
+    "passed": false,
+    "status": "AWAITING_EXISTING_ACCOUNT_SESSIONS",
+    "admin": false,
+    "ordinary": false,
+    "directory": false,
+    "validSignedNtgreRejection": false,
+    "automaticReuse": "No usable session received from this localhost origin",
+    "helper": "http://localhost:5188",
+    "helperPid": 46064,
+    "tokensPersisted": false,
+    "helperExpiresAt": "2026-10-21T17:32:57.800Z"
+  },
+  "preservation": {
+    "passed": true,
+    "sourceCounts": [
+      {
+        "model": "Team",
+        "count": 1
+      },
+      {
+        "model": "TeamMembership",
+        "count": 8
+      },
+      {
+        "model": "TeamRosterSlot",
+        "count": 11
+      },
+      {
+        "model": "PlayerChampionPoolEntry",
+        "count": 101
+      }
+    ],
+    "sourceDigestsPreserved": true,
+    "relationshipsPreserved": true,
+    "availableBackups": 4,
+    "pitrAndDeletionProtection": true,
+    "cognito": true,
+    "master": true,
+    "protectedDomains": true,
+    "importedLogDrift": "IN_SYNC",
+    "coreResources": 13
+  },
+  "teamDeployed": false,
+  "authorityInitialized": false,
+  "productionDataMigrated": false,
+  "businessDataWrites": 0,
+  "masterPublished": false,
+  "legacyRetired": false,
+  "automaticInvocationRetry": false,
+  "rollbackPerformed": false,
+  "liveCoreAccepted": false,
+  "liveAccepted": true,
+  "authenticatedAcceptance": {
+    "passed": true,
+    "checks": 13,
+    "admin": true,
+    "ordinary": true,
+    "validSignedNtgreRejected": true,
+    "receipt": "docs/architecture/production-core-emf-execution-2026-10-21/core-contract-acceptance.json",
+    "foreignReceipt": "docs/architecture/production-core-emf-execution-2026-10-21/cross-environment-live.json",
+    "rawReceiptScopeNote": "cognitoMutations=0 refers to helper contract checks; separately authorized temporary account lifecycle is recorded independently. monitoringAcceptancePending is an inherited helper annotation superseded by actual post-auth monitoring acceptance."
+  },
+  "postAuthenticationMonitoring": {
+    "passed": true,
+    "rootEmfEvents": 28,
+    "alarmsVerified": 4,
+    "receipt": "docs/architecture/production-core-emf-execution-2026-10-21/post-auth-monitoring.json"
+  },
+  "postAuthenticationPreservation": {
+    "passed": true,
+    "receipt": "docs/architecture/production-core-emf-execution-2026-10-21/post-auth-preservation.json"
+  },
+  "temporaryCognitoAccount": {
+    "explicitlyAuthorized": true,
+    "ordinary": true,
+    "groups": [],
+    "createdAndRemoved": true,
+    "existingUsersPreserved": true,
+    "finalUserCount": 15,
+    "passwordPersisted": false,
+    "tokensPersisted": false,
+    "receipt": "docs/architecture/production-core-emf-execution-2026-10-21/temporary-ordinary-account.json"
+  },
+  "helperCleanup": {
+    "passed": true,
+    "receipt": "docs/architecture/production-core-emf-execution-2026-10-21/helper-cleanup.json"
+  },
+  "teamHubDeploymentAuthorized": false,
+  "teamHubDeployed": false,
+  "businessDataMigrated": false
+}

@@ -1,0 +1,91 @@
+{
+  "at": "2026-10-24T08:57:34.139Z",
+  "passed": true,
+  "authority": {
+    "epoch": {
+      "N": "1"
+    },
+    "changedAt": {
+      "S": "2026-10-24T08:44:53.810Z"
+    },
+    "version": {
+      "N": "1"
+    },
+    "mode": {
+      "S": "LEGACY_WRITER"
+    },
+    "schemaVersion": {
+      "S": "team-hub-authority.v1"
+    },
+    "changedBy": {
+      "S": "production-team-hub-c1-executor"
+    },
+    "PK": {
+      "S": "CONTROL#AUTHORITY"
+    },
+    "gateDigest": {
+      "S": "5c310e8d7301d4119801116360ea6bb343ac26f07ac2a696bbaf5393418829e0"
+    },
+    "SK": {
+      "S": "STATE"
+    }
+  },
+  "configurations": [
+    {
+      "functionName": "ProjectRespawn-TeamHub-Production-ParityRead",
+      "revisionId": "cc6e560c-e855-49a5-b3a4-634bd026158e",
+      "codeSha256": "rLxhmeccoAFpek80Y2ytqQDcUNO5+hBo0nNcYUJeOl4=",
+      "state": "Active",
+      "lastUpdateStatus": "Successful",
+      "environmentMatched": true,
+      "roleMatched": true
+    },
+    {
+      "functionName": "ProjectRespawn-TeamHub-Production-ParityCommand",
+      "revisionId": "bb54f050-b35f-483f-aad7-1100acecfdbd",
+      "codeSha256": "rLxhmeccoAFpek80Y2ytqQDcUNO5+hBo0nNcYUJeOl4=",
+      "state": "Active",
+      "lastUpdateStatus": "Successful",
+      "environmentMatched": true,
+      "roleMatched": true
+    }
+  ],
+  "alarms": [
+    {
+      "name": "ProjectRespawn-TeamHub-Production-ParityCommand-Errors",
+      "state": "OK"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Production-ParityCommand-Throttles",
+      "state": "OK"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Production-ParityRead-Errors",
+      "state": "OK"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Production-ParityRead-Throttles",
+      "state": "OK"
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Production-ReadProof-ApiErrors",
+      "state": "OK"
+    }
+  ],
+  "unauthenticated": [
+    {
+      "status": 401,
+      "requestId": "Fvbnxgz1Ai0EMaA=",
+      "control": "missing-token"
+    },
+    {
+      "status": 401,
+      "requestId": "Fvbnyhntgi0EN4Q=",
+      "control": "invalid-token"
+    }
+  ],
+  "authenticatedAuthority": "PENDING_REAL_PRODUCTION_SESSION",
+  "eighteenAuthenticatedBusinessDenials": "PENDING_REAL_PRODUCTION_SESSION",
+  "noBusinessAuthorityTransfer": true,
+  "noFrontendActivation": true
+}

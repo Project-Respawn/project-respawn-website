@@ -1,0 +1,127 @@
+{
+  "at": "2026-10-24T00:17:24.110Z",
+  "passed": true,
+  "stack": {
+    "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Production/39df02e0-cf3c-11f1-8ecc-0efff7189ec7",
+    "StackName": "ProjectRespawn-TeamHub-Production",
+    "CreationTime": "2026-10-23T23:48:20.317000+00:00",
+    "DeletionTime": "2026-10-23T23:48:45.830000+00:00",
+    "LastUpdatedTime": "2026-10-23T23:48:41.116000+00:00",
+    "RollbackConfiguration": {},
+    "StackStatus": "ROLLBACK_COMPLETE",
+    "DisableRollback": false,
+    "NotificationARNs": [],
+    "Capabilities": [
+      "CAPABILITY_NAMED_IAM"
+    ],
+    "RoleARN": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Production-ReadProofExecution",
+    "Tags": [],
+    "EnableTerminationProtection": false,
+    "DriftInformation": {
+      "StackDriftStatus": "NOT_CHECKED"
+    },
+    "LastOperations": [
+      {
+        "OperationType": "ROLLBACK",
+        "OperationId": "14818004-b73e-4b1b-acba-7e2f30ba5eab"
+      },
+      {
+        "OperationType": "CREATE_STACK",
+        "OperationId": "0fb384b6-4c6a-4b52-9ca1-6faa22e3e6f6"
+      }
+    ]
+  },
+  "resources": [
+    {
+      "LogicalResourceId": "ApiErrors",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Production-ReadProof-ApiErrors",
+      "ResourceType": "AWS::CloudWatch::Alarm",
+      "LastUpdatedTimestamp": "2026-10-23T23:48:48.552000+00:00",
+      "ResourceStatus": "DELETE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "JournalTable",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Production-Journal",
+      "ResourceType": "AWS::DynamoDB::Table",
+      "LastUpdatedTimestamp": "2026-10-23T23:48:47.891000+00:00",
+      "ResourceStatus": "DELETE_SKIPPED",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "JwtAuthorizer",
+      "PhysicalResourceId": "hnex8i",
+      "ResourceType": "AWS::ApiGatewayV2::Authorizer",
+      "LastUpdatedTimestamp": "2026-10-23T23:48:48.746000+00:00",
+      "ResourceStatus": "DELETE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "OperationalTable",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Production-Operational",
+      "ResourceType": "AWS::DynamoDB::Table",
+      "LastUpdatedTimestamp": "2026-10-23T23:48:47.899000+00:00",
+      "ResourceStatus": "DELETE_SKIPPED",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityCommandLogs",
+      "PhysicalResourceId": "/project-respawn/Production/team-hub/parity-command",
+      "ResourceType": "AWS::Logs::LogGroup",
+      "LastUpdatedTimestamp": "2026-10-23T23:48:48.506000+00:00",
+      "ResourceStatus": "DELETE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityCommandRole",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Production-ParityCommand",
+      "ResourceType": "AWS::IAM::Role",
+      "LastUpdatedTimestamp": "2026-10-23T23:48:49.975000+00:00",
+      "ResourceStatus": "DELETE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityReadLogs",
+      "PhysicalResourceId": "/project-respawn/Production/team-hub/parity-read",
+      "ResourceType": "AWS::Logs::LogGroup",
+      "LastUpdatedTimestamp": "2026-10-23T23:48:48.430000+00:00",
+      "ResourceStatus": "DELETE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityReadRole",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Production-ParityRead",
+      "ResourceType": "AWS::IAM::Role",
+      "LastUpdatedTimestamp": "2026-10-23T23:48:48.864000+00:00",
+      "ResourceStatus": "DELETE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "Stage",
+      "PhysicalResourceId": "$default",
+      "ResourceType": "AWS::ApiGatewayV2::Stage",
+      "LastUpdatedTimestamp": "2026-10-23T23:48:48.631000+00:00",
+      "ResourceStatus": "DELETE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    }
+  ],
+  "actualProductResourcesAbsent": true
+}

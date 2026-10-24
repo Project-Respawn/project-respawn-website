@@ -1,0 +1,91 @@
+{
+  "at": "2026-10-23T23:52:35.864Z",
+  "outcome": "PRODUCTION TEAM HUB DARK DEPLOYMENT BLOCKED — APIGATEWAY TAGRESOURCE LIFECYCLE PERMISSION",
+  "packageSha256": "2df8f08fec949b5b0eadac8fb0a472eea8edcc3f8bb3f3a2671d6afb5fd3909e",
+  "operator": "arn:aws:iam::058264289478:user/RavenTest",
+  "region": "eu-north-1",
+  "publications": 3,
+  "security": {
+    "status": "CREATE_COMPLETE",
+    "resources": 8,
+    "actualRoleTests": 111,
+    "analyzedPolicies": 6,
+    "blockingFindings": 0
+  },
+  "product": {
+    "expectedAndInspectedAdditions": 41,
+    "status": "ROLLBACK_COMPLETE",
+    "executions": 1,
+    "retried": false,
+    "failedLogicalResource": "Stage",
+    "denial": {
+      "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Production/39df02e0-cf3c-11f1-8ecc-0efff7189ec7",
+      "EventId": "Stage-CREATE_FAILED-2026-10-23T23:48:45.021Z",
+      "StackName": "ProjectRespawn-TeamHub-Production",
+      "OperationId": "0fb384b6-4c6a-4b52-9ca1-6faa22e3e6f6",
+      "LogicalResourceId": "Stage",
+      "PhysicalResourceId": "$default",
+      "ResourceType": "AWS::ApiGatewayV2::Stage",
+      "Timestamp": "2026-10-23T23:48:45.021000+00:00",
+      "ResourceStatus": "CREATE_FAILED",
+      "ResourceStatusReason": "Resource handler returned message: \"User: arn:aws:sts::058264289478:assumed-role/ProjectRespawn-TeamHub-Production-ReadProofExecution/AWSCloudFormation is not authorized to perform: apigateway:TagResource on resource: arn:aws:apigateway:eu-north-1::/apis/9wk4a41l5m/stages because no identity-based policy allows the apigateway:TagResource action (Service: ApiGatewayV2, Status Code: 403, Request ID: 5ab0b5c3-0cc9-4b73-a60b-01d27b3edbe6) (SDK Attempt Count: 1)\" (RequestToken: b650bc35-4d5f-7342-42ca-481380a9820e, HandlerErrorCode: AccessDenied)",
+      "ResourceProperties": "{\"AutoDeploy\":\"true\",\"StageName\":\"$default\",\"ApiId\":\"9wk4a41l5m\",\"DefaultRouteSettings\":{\"ThrottlingBurstLimit\":\"20\",\"DetailedMetricsEnabled\":\"true\",\"ThrottlingRateLimit\":\"10\"}}",
+      "ClientRequestToken": "09988061-abdc-4602-a5f1-35db8bc09215"
+    }
+  },
+  "currentResources": {
+    "security": 8,
+    "productTables": 0,
+    "productFunctions": 0,
+    "productRoles": 0,
+    "productLogGroups": 0,
+    "productAlarms": 0,
+    "apiId": "9wk4a41l5m",
+    "apiStages": 0,
+    "apiRoutes": 0
+  },
+  "preservation": {
+    "sourceCounts": [
+      {
+        "model": "Team",
+        "count": 1
+      },
+      {
+        "model": "TeamMembership",
+        "count": 8
+      },
+      {
+        "model": "TeamRosterSlot",
+        "count": 15
+      },
+      {
+        "model": "PlayerChampionPoolEntry",
+        "count": 101
+      }
+    ],
+    "sourceDigestsMatched": true,
+    "backupsAvailable": 4,
+    "pitrAndDeletionProtectionRetained": true,
+    "cognito": true,
+    "master": true,
+    "coreIamRuntimeAndAlarms": true,
+    "protectedStackInventory": true
+  },
+  "authorityInitialized": false,
+  "businessDataWrites": 0,
+  "sourceFencesInstalled": false,
+  "masterPublished": false,
+  "secretValueRetrieved": false,
+  "cleanupWrites": 0,
+  "remaining": [
+    "Review minimal API Gateway TagResource lifecycle permission in execution identity and boundary with supported resource/condition scoping, lifecycle and quota regressions.",
+    "Prepare separately authorized recovery of the exact ROLLBACK_COMPLETE product stack record; preserve the accepted security stack and three immutable artifacts.",
+    "Generate and approve a revised immutable security/recovery package before any further mutation.",
+    "After dark deployment acceptance: separate authority bootstrap, stateful production migration/business acceptance and frontend-only Master publication gates."
+  ],
+  "limitations": [
+    "Successful simulations and zero Analyzer findings did not cover every provider lifecycle dependency; TagResource was absent from the required positive matrix.",
+    "No Team Hub Lambda/KMS initialization, HTTP dark-runtime, cursor or authenticated Core-integration acceptance was possible after rollback.",
+    "No universal organization-policy visibility or out-of-band drift proof is inferred from IAM simulations."
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "at": "2026-10-24T00:12:36.485Z",
+  "passed": true,
+  "completeAwsChangeSet": {
+    "Changes": [
+      {
+        "Type": "Resource",
+        "ResourceChange": {
+          "Action": "Modify",
+          "LogicalResourceId": "ExecutionBoundary",
+          "PhysicalResourceId": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Production-ReadProofExecutionBoundary",
+          "ResourceType": "AWS::IAM::ManagedPolicy",
+          "Replacement": "False",
+          "Scope": [
+            "Properties"
+          ],
+          "Details": [
+            {
+              "Target": {
+                "Attribute": "Properties",
+                "Name": "PolicyDocument",
+                "RequiresRecreation": "Never",
+                "Path": "/Properties/PolicyDocument",
+                "BeforeValue": "(Truncated-Signature):a23e72051d30ec7637f2a50185b8459bfd99720172e1c5bb9e8dbd277ff69fed",
+                "AfterValue": "(Truncated-Signature):522e2b781bce811dd40d76a989aca870fa7c12644ec3fa8b59a4dc6c4c09c6d3",
+                "AttributeChangeType": "Modify"
+              },
+              "Evaluation": "Static",
+              "ChangeSource": "DirectModification"
+            }
+          ],
+          "BeforeContext": "{\"Properties\":{\"ManagedPolicyName\":\"ProjectRespawn-TeamHub-Production-ReadProofExecutionBoundary\",\"PolicyDocument\":\"(Truncated-Signature):a23e72051d30ec7637f2a50185b8459bfd99720172e1c5bb9e8dbd277ff69fed\"}}",
+          "AfterContext": "{\"Properties\":{\"ManagedPolicyName\":\"ProjectRespawn-TeamHub-Production-ReadProofExecutionBoundary\",\"PolicyDocument\":\"(Truncated-Signature):522e2b781bce811dd40d76a989aca870fa7c12644ec3fa8b59a4dc6c4c09c6d3\"}}"
+        }
+      },
+      {
+        "Type": "Resource",
+        "ResourceChange": {
+          "Action": "Modify",
+          "LogicalResourceId": "ExecutionRole",
+          "PhysicalResourceId": "ProjectRespawn-TeamHub-Production-ReadProofExecution",
+          "ResourceType": "AWS::IAM::Role",
+          "Replacement": "False",
+          "Scope": [
+            "Properties"
+          ],
+          "Details": [
+            {
+              "Target": {
+                "Attribute": "Properties",
+                "Name": "Policies",
+                "RequiresRecreation": "Never",
+                "Path": "/Properties/Policies",
+                "BeforeValue": "(Truncated-Signature):b91bc3c694a0836c9790a98d6dc7712984d57db8adee9c2ab0b928a948cfce9b",
+                "AfterValue": "(Truncated-Signature):a0383b3847ae3a0511b749f9cfe42eb8855e26af1e01896f982cba4824da8e8b",
+                "AttributeChangeType": "Modify"
+              },
+              "Evaluation": "Static",
+              "ChangeSource": "DirectModification"
+            }
+          ],
+          "BeforeContext": "{\"Properties\":{\"RoleName\":\"ProjectRespawn-TeamHub-Production-ReadProofExecution\",\"Policies\":\"(Truncated-Signature):b91bc3c694a0836c9790a98d6dc7712984d57db8adee9c2ab0b928a948cfce9b\",\"AssumeRolePolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"cloudformation.amazonaws.com\"}}]},\"PermissionsBoundary\":\"arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Production-ReadProofExecutionBoundary\"}}",
+          "AfterContext": "{\"Properties\":{\"RoleName\":\"ProjectRespawn-TeamHub-Production-ReadProofExecution\",\"Policies\":\"(Truncated-Signature):a0383b3847ae3a0511b749f9cfe42eb8855e26af1e01896f982cba4824da8e8b\",\"AssumeRolePolicyDocument\":{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"cloudformation.amazonaws.com\"}}]},\"PermissionsBoundary\":\"arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Production-ReadProofExecutionBoundary\"}}"
+        }
+      }
+    ],
+    "ChangeSetName": "stage-tag-security-de13291048f600fe",
+    "ChangeSetId": "arn:aws:cloudformation:eu-north-1:058264289478:changeSet/stage-tag-security-de13291048f600fe/3670b575-8d76-4151-90e7-b6160bb9534e",
+    "StackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Production-Security/68f8c530-cf3b-11f1-b116-0effca0c3d89",
+    "StackName": "ProjectRespawn-TeamHub-Production-Security",
+    "Description": null,
+    "Parameters": null,
+    "CreationTime": "2026-10-24T00:12:23.367000+00:00",
+    "ExecutionStatus": "AVAILABLE",
+    "Status": "CREATE_COMPLETE",
+    "StatusReason": null,
+    "NotificationARNs": [],
+    "RollbackConfiguration": {},
+    "Capabilities": [
+      "CAPABILITY_NAMED_IAM"
+    ],
+    "Tags": null,
+    "ParentChangeSetId": null,
+    "IncludeNestedStacks": false,
+    "RootChangeSetId": null,
+    "OnStackFailure": null,
+    "ImportExistingResources": null,
+    "StackDriftStatus": null,
+    "DeploymentMode": null
+  },
+  "templateMatched": true,
+  "rollbackEnabled": true
+}

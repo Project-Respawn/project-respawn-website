@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "FixedAuthorityCreateAndRead",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:GetItem",
+        "dynamodb:PutItem"
+      ],
+      "Resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Journal",
+      "Condition": {
+        "ForAllValues:StringEquals": {
+          "dynamodb:LeadingKeys": [
+            "CONTROL#AUTHORITY"
+          ]
+        },
+        "Null": {
+          "dynamodb:LeadingKeys": "false"
+        },
+        "StringEquals": {
+          "aws:PrincipalArn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Production-C1Initialize",
+          "aws:RequestedRegion": "eu-north-1"
+        },
+        "DateGreaterThanEquals": {
+          "aws:CurrentTime": {
+            "Ref": "NotBefore"
+          }
+        },
+        "DateLessThan": {
+          "aws:CurrentTime": {
+            "Ref": "ExpiresAt"
+          }
+        }
+      }
+    },
+    {
+      "Sid": "NoOtherActions",
+      "Effect": "Deny",
+      "NotAction": [
+        "dynamodb:GetItem",
+        "dynamodb:PutItem"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NoOtherTables",
+      "Effect": "Deny",
+      "Action": "dynamodb:*",
+      "NotResource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Journal"
+    }
+  ]
+}

@@ -1,0 +1,323 @@
+{
+  "at": "2026-10-23T23:50:02.936Z",
+  "awsWrites": 0,
+  "automaticRetry": false,
+  "cleanupWrites": 0,
+  "stacks": [
+    {
+      "name": "ProjectRespawn-TeamHub-Production-Security",
+      "status": "CREATE_COMPLETE",
+      "stackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Production-Security/68f8c530-cf3b-11f1-b116-0effca0c3d89",
+      "resources": [
+        {
+          "LogicalResourceId": "CursorSecret",
+          "PhysicalResourceId": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Production-Cursor-oyRawO",
+          "ResourceType": "AWS::SecretsManager::Secret",
+          "LastUpdatedTimestamp": "2026-10-23T23:42:55.198000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "DeploymentCaller",
+          "PhysicalResourceId": "ProjectRespawn-TeamHub-Production-Deploy",
+          "ResourceType": "AWS::IAM::Role",
+          "LastUpdatedTimestamp": "2026-10-23T23:43:29.492000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "ExecutionBoundary",
+          "PhysicalResourceId": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Production-ReadProofExecutionBoundary",
+          "ResourceType": "AWS::IAM::ManagedPolicy",
+          "LastUpdatedTimestamp": "2026-10-23T23:43:13.136000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "ExecutionRole",
+          "PhysicalResourceId": "ProjectRespawn-TeamHub-Production-ReadProofExecution",
+          "ResourceType": "AWS::IAM::Role",
+          "LastUpdatedTimestamp": "2026-10-23T23:43:33.842000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "HttpApi",
+          "PhysicalResourceId": "9wk4a41l5m",
+          "ResourceType": "AWS::ApiGatewayV2::Api",
+          "LastUpdatedTimestamp": "2026-10-23T23:42:55.107000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "ParityCommandBoundary",
+          "PhysicalResourceId": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Production-ParityCommandBoundary",
+          "ResourceType": "AWS::IAM::ManagedPolicy",
+          "LastUpdatedTimestamp": "2026-10-23T23:43:08.984000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "ParityReadBoundary",
+          "PhysicalResourceId": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Production-ParityReadBoundary",
+          "ResourceType": "AWS::IAM::ManagedPolicy",
+          "LastUpdatedTimestamp": "2026-10-23T23:43:13.006000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "PreparationCaller",
+          "PhysicalResourceId": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Production-ReadProofPreparation",
+          "ResourceType": "AWS::IAM::ManagedPolicy",
+          "LastUpdatedTimestamp": "2026-10-23T23:43:09.140000+00:00",
+          "ResourceStatus": "CREATE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Production",
+      "status": "ROLLBACK_COMPLETE",
+      "stackId": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Production/39df02e0-cf3c-11f1-8ecc-0efff7189ec7",
+      "resources": [
+        {
+          "LogicalResourceId": "ApiErrors",
+          "PhysicalResourceId": "ProjectRespawn-TeamHub-Production-ReadProof-ApiErrors",
+          "ResourceType": "AWS::CloudWatch::Alarm",
+          "LastUpdatedTimestamp": "2026-10-23T23:48:48.552000+00:00",
+          "ResourceStatus": "DELETE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "JournalTable",
+          "PhysicalResourceId": "ProjectRespawn-TeamHub-Production-Journal",
+          "ResourceType": "AWS::DynamoDB::Table",
+          "LastUpdatedTimestamp": "2026-10-23T23:48:47.891000+00:00",
+          "ResourceStatus": "DELETE_SKIPPED",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "JwtAuthorizer",
+          "PhysicalResourceId": "hnex8i",
+          "ResourceType": "AWS::ApiGatewayV2::Authorizer",
+          "LastUpdatedTimestamp": "2026-10-23T23:48:48.746000+00:00",
+          "ResourceStatus": "DELETE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "OperationalTable",
+          "PhysicalResourceId": "ProjectRespawn-TeamHub-Production-Operational",
+          "ResourceType": "AWS::DynamoDB::Table",
+          "LastUpdatedTimestamp": "2026-10-23T23:48:47.899000+00:00",
+          "ResourceStatus": "DELETE_SKIPPED",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "ParityCommandLogs",
+          "PhysicalResourceId": "/project-respawn/Production/team-hub/parity-command",
+          "ResourceType": "AWS::Logs::LogGroup",
+          "LastUpdatedTimestamp": "2026-10-23T23:48:48.506000+00:00",
+          "ResourceStatus": "DELETE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "ParityCommandRole",
+          "PhysicalResourceId": "ProjectRespawn-TeamHub-Production-ParityCommand",
+          "ResourceType": "AWS::IAM::Role",
+          "LastUpdatedTimestamp": "2026-10-23T23:48:49.975000+00:00",
+          "ResourceStatus": "DELETE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "ParityReadLogs",
+          "PhysicalResourceId": "/project-respawn/Production/team-hub/parity-read",
+          "ResourceType": "AWS::Logs::LogGroup",
+          "LastUpdatedTimestamp": "2026-10-23T23:48:48.430000+00:00",
+          "ResourceStatus": "DELETE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "ParityReadRole",
+          "PhysicalResourceId": "ProjectRespawn-TeamHub-Production-ParityRead",
+          "ResourceType": "AWS::IAM::Role",
+          "LastUpdatedTimestamp": "2026-10-23T23:48:48.864000+00:00",
+          "ResourceStatus": "DELETE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        },
+        {
+          "LogicalResourceId": "Stage",
+          "PhysicalResourceId": "$default",
+          "ResourceType": "AWS::ApiGatewayV2::Stage",
+          "LastUpdatedTimestamp": "2026-10-23T23:48:48.631000+00:00",
+          "ResourceStatus": "DELETE_COMPLETE",
+          "DriftInformation": {
+            "StackResourceDriftStatus": "NOT_CHECKED"
+          }
+        }
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "name": "ProjectRespawn-TeamHub-Production-Operational",
+      "absent": true
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Production-Journal",
+      "absent": true
+    }
+  ],
+  "functions": [
+    {
+      "name": "ProjectRespawn-TeamHub-Production-ParityRead",
+      "absent": true
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Production-ParityCommand",
+      "absent": true
+    }
+  ],
+  "roles": [
+    {
+      "name": "ProjectRespawn-TeamHub-Production-ParityRead",
+      "absent": true
+    },
+    {
+      "name": "ProjectRespawn-TeamHub-Production-ParityCommand",
+      "absent": true
+    }
+  ],
+  "logs": [
+    {
+      "name": "/project-respawn/Production/team-hub/parity-read",
+      "exists": false,
+      "groups": []
+    },
+    {
+      "name": "/project-respawn/Production/team-hub/parity-command",
+      "exists": false,
+      "groups": []
+    }
+  ],
+  "api": {
+    "api": {
+      "ApiEndpoint": "https://9wk4a41l5m.execute-api.eu-north-1.amazonaws.com",
+      "ApiId": "9wk4a41l5m",
+      "ApiKeySelectionExpression": "$request.header.x-api-key",
+      "CorsConfiguration": {
+        "AllowHeaders": [
+          "authorization",
+          "content-type",
+          "x-team-authority-epoch"
+        ],
+        "AllowMethods": [
+          "GET",
+          "POST",
+          "PATCH",
+          "PUT",
+          "DELETE",
+          "OPTIONS"
+        ],
+        "AllowOrigins": [
+          "https://projectrespawn.com",
+          "https://www.projectrespawn.com"
+        ]
+      },
+      "CreatedDate": "2026-10-23T23:42:53+00:00",
+      "DisableExecuteApiEndpoint": false,
+      "IpAddressType": "ipv4",
+      "Name": "ProjectRespawn-TeamHub-Production",
+      "ProtocolType": "HTTP",
+      "RouteSelectionExpression": "$request.method $request.path",
+      "Tags": {
+        "aws:cloudformation:stack-id": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Production-Security/68f8c530-cf3b-11f1-b116-0effca0c3d89",
+        "aws:cloudformation:stack-name": "ProjectRespawn-TeamHub-Production-Security",
+        "aws:cloudformation:logical-id": "HttpApi"
+      }
+    },
+    "stages": {
+      "Items": []
+    },
+    "routes": {
+      "Items": []
+    },
+    "integrations": {
+      "Items": []
+    },
+    "authorizers": {
+      "Items": []
+    }
+  },
+  "secret": {
+    "ARN": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Production-Cursor-oyRawO",
+    "Name": "ProjectRespawn-TeamHub-Production-Cursor",
+    "Description": "Team Hub pagination cursor HMAC material; never returned to clients",
+    "LastChangedDate": "2026-10-24T00:42:52.350000+01:00",
+    "Tags": [
+      {
+        "Key": "aws:cloudformation:stack-name",
+        "Value": "ProjectRespawn-TeamHub-Production-Security"
+      },
+      {
+        "Key": "aws:cloudformation:logical-id",
+        "Value": "CursorSecret"
+      },
+      {
+        "Key": "Environment",
+        "Value": "Production"
+      },
+      {
+        "Key": "aws:cloudformation:stack-id",
+        "Value": "arn:aws:cloudformation:eu-north-1:058264289478:stack/ProjectRespawn-TeamHub-Production-Security/68f8c530-cf3b-11f1-b116-0effca0c3d89"
+      },
+      {
+        "Key": "Domain",
+        "Value": "TeamHub"
+      }
+    ],
+    "VersionIdsToStages": {
+      "0110cdb8-da13-3548-9b4d-58ff4f69fa9e": [
+        "AWSCURRENT"
+      ]
+    },
+    "CreatedDate": "2026-10-24T00:42:52.311000+01:00"
+  },
+  "secretValueRetrieved": false,
+  "authorityInitialized": false,
+  "targetRows": 0,
+  "liveRuntimeAcceptancePerformed": false,
+  "preservedRetainedResources": true,
+  "complete": true
+}

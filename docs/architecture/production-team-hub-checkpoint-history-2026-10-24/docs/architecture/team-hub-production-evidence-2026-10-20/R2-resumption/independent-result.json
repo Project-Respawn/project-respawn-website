@@ -1,0 +1,120 @@
+{
+  "at": "2026-10-20T21:10:43.011Z",
+  "status": "PRODUCTION_R2_RESTORE_ACCEPTED",
+  "manifestSha256": "7f21d94f6664916c16510f33b3abf253f1dabbb38ab378c91f0c12b1524c7a67",
+  "identity": {
+    "UserId": "AIDAQ3EGSQDDCJSMJ75N5",
+    "Account": "058264289478",
+    "Arn": "arn:aws:iam::058264289478:user/RavenTest"
+  },
+  "results": [
+    {
+      "model": "Team",
+      "restoredCount": 1,
+      "restoredRawDigest": "8f202d72f19f9a04cfaf2709a3a5df497ed477ab82f592e59aa4485c24d13994",
+      "sourceCount": 1,
+      "sourceMatchesBackupCapture": true,
+      "sourceActive": true,
+      "pitr": "ENABLED",
+      "deletionProtection": true,
+      "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527947116-43f6eb02",
+      "backupAvailable": true,
+      "sourceTableId": "78f6917b-9d12-4af4-aa14-fdae57eb7f2b",
+      "restoredTableId": "e5f9ef58-c81b-4190-bb72-1473371e4c8a",
+      "temporaryTableAbsent": true,
+      "encryptedArchiveVerified": true,
+      "schemaVerified": true
+    },
+    {
+      "model": "TeamMembership",
+      "restoredCount": 8,
+      "restoredRawDigest": "c1b709749b79811c540a3e0b5b485206bd0cdeb85d1338c7e837419907f3b15f",
+      "sourceCount": 8,
+      "sourceMatchesBackupCapture": true,
+      "sourceActive": true,
+      "pitr": "ENABLED",
+      "deletionProtection": true,
+      "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527948497-eda960ad",
+      "backupAvailable": true,
+      "sourceTableId": "84e7d7af-3ff0-4881-a76a-90bc00b3d3ab",
+      "restoredTableId": "8529e649-fe5b-4d37-9935-fa6a9556c5ea",
+      "temporaryTableAbsent": true,
+      "encryptedArchiveVerified": true,
+      "schemaVerified": true
+    },
+    {
+      "model": "TeamRosterSlot",
+      "restoredCount": 11,
+      "restoredRawDigest": "d79485c9663ec496cce3e529727c2bd033fa1bc3ad372aa7101294029bbe22df",
+      "sourceCount": 11,
+      "sourceMatchesBackupCapture": true,
+      "sourceActive": true,
+      "pitr": "ENABLED",
+      "deletionProtection": true,
+      "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527949892-3c2d8f3a",
+      "backupAvailable": true,
+      "sourceTableId": "ce302ae3-9446-4594-81e1-12bff167f12f",
+      "restoredTableId": "9c2fa925-a260-4aa0-beb2-24a0c1c4df53",
+      "temporaryTableAbsent": true,
+      "encryptedArchiveVerified": true,
+      "schemaVerified": true
+    },
+    {
+      "model": "PlayerChampionPoolEntry",
+      "restoredCount": 101,
+      "restoredRawDigest": "8f701e4999e3e5a11df0948b46ade2c76d3b8a8e745b49afe94ca0ddd86d2e53",
+      "sourceCount": 101,
+      "sourceMatchesBackupCapture": true,
+      "sourceActive": true,
+      "pitr": "ENABLED",
+      "deletionProtection": true,
+      "backupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527951273-7b424a61",
+      "backupAvailable": true,
+      "sourceTableId": "a208a911-c53c-45f8-a499-d69117d611d5",
+      "restoredTableId": "f9692532-603b-441d-b4eb-69b7b948ad80",
+      "temporaryTableAbsent": true,
+      "encryptedArchiveVerified": true,
+      "schemaVerified": true
+    }
+  ],
+  "migration": {
+    "accepted": true,
+    "inputByModel": {
+      "Team": 1,
+      "TeamMembership": 8,
+      "TeamRosterSlot": 11,
+      "PlayerChampionPoolEntry": 101
+    },
+    "inputCount": 121,
+    "outputCount": 122,
+    "sourceDigest": "9d7f52ba2cfc9eb011e53f1807ac4e4bd798951144f1b304fb100f0a6474e109",
+    "targetDigest": "d685856ace4a0115a1f5618d979994dde900891e3fdf17bb6575377677ac3049",
+    "sourceRelationshipsValid": true,
+    "roundTrip": true,
+    "rawRecordsPersisted": false,
+    "sourceArchiveRequired": true,
+    "warnings": [
+      "DEFAULT_SETTINGS_REVISION_ZERO"
+    ],
+    "liveFenceRequired": true,
+    "liveImportAccepted": false
+  },
+  "cleanupConfirmed": 4,
+  "newRestoreCalls": 3,
+  "reusedOwnedTable": 1,
+  "encryptedArchivesVerified": 4,
+  "remoteMaster": "a83a874dad50395518fb0d7e2f1e853cf6bf2513",
+  "sourceWrites": 0,
+  "backupDeletes": 0,
+  "permanentIamChanges": 0,
+  "authorityChanges": 0,
+  "domainDeployments": 0,
+  "awsWritesByIndependentVerifier": 0,
+  "rawProductionRecordsPersisted": false,
+  "credentialsPersisted": false,
+  "limitations": [
+    "Four independent backup capture points, not an atomic four-table snapshot",
+    "Owner/machine-bound encrypted verification archives are not portable recovery-key custody",
+    "No production backend, writer fence, authority or public website release authorized"
+  ]
+}

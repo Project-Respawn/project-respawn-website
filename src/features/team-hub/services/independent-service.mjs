@@ -5,6 +5,8 @@ import coreManifest from '../../../../config/domains/core/domain-endpoints.Ntgre
 import {createCutoverClient} from '../api/cutover-client.mjs';
 import {createWebsiteAdapter} from './website-adapter.mjs';
 export const usingIndependentTeamHub=true;
+export const getTeamPermissions=(...a)=>adapter.getTeamPermissions(...a);
+export const setMemberPermissions=(...a)=>adapter.setMemberPermissions(...a);
 const session=()=>fetchAuthSession();
 import activation from '../../../../config/domains/team-hub/frontend-cutover.PROPOSAL.json';
 let activeClient;
@@ -21,4 +23,4 @@ export const listMyChampionPool=(...a)=>adapter.listMyChampionPool(...a),upsertM
 export const listTeamChampionPools=(...a)=>adapter.listTeamChampionPools(...a),getPlayerCompetitiveDetail=(...a)=>adapter.getPlayerCompetitiveDetail(...a),upsertCoachAssessment=(...a)=>adapter.upsertCoachAssessment(...a),setTeamPlan=(...a)=>adapter.setTeamPlan(...a);
 export const requestTeamLogoUpload=(...a)=>adapter.requestTeamLogoUpload(...a),commitTeamLogo=(...a)=>adapter.commitTeamLogo(...a),removeTeamLogo=(...a)=>adapter.removeTeamLogo(...a),uploadTeamLogo=requestTeamLogoUpload;
 export async function loadBoundedPages(load,maxPages=2){let nextToken,items=[];for(let i=0;i<maxPages;i++){const p=await load(nextToken);items.push(...p.items);nextToken=p.nextToken;if(!nextToken)return {items,complete:true,nextToken:null};}return {items,nextToken,complete:false};}
-export async function resolveTeamRouteAccess(slug,roles=[]){const c=await getTeamHub({teamSlug:slug});if(roles.length&&!roles.includes(c.teamRole)&&!(roles.includes('ADMIN')&&c.isPlatformAdmin))throw Error('Team Hub access denied');return c;}
+export async function resolveTeamRouteAccess(slug,roles=[]){const c=await getTeamHub({teamSlug:slug});if(roles.length&&!roles.includes(c.teamRole)&&!(roles.includes('ADMIN')&&c.isPlatformAdmin)&&!(roles.includes('COACH')&&c.capabilities.canReviewChampionPools)&&!(roles.includes('MANAGER')&&(c.capabilities.canManageMembers||c.capabilities.canManageRoster)))throw Error('Team Hub access denied');return c;}

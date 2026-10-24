@@ -22,3 +22,11 @@ export function clearPrivateTeamState(state) {
   state.poolEntries = {};
   return state;
 }
+
+// Do not interpret a transport success or legacy error envelope as a created team.
+export function confirmCreatedTeam(result) {
+  if (!result || result.success === false || typeof result.slug !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(result.slug) || result.id !== 'team:' + result.slug || typeof result.name !== 'string' || !result.name.trim() || result.gameKey !== 'LEAGUE_OF_LEGENDS' || result.status !== 'ACTIVE') {
+    throw new Error('Team creation could not be confirmed. Refresh the team list before trying again.');
+  }
+  return result;
+}

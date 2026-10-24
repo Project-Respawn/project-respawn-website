@@ -1,0 +1,153 @@
+{
+  "at": "2026-10-23T23:46:14.179Z",
+  "passed": true,
+  "stack": "ProjectRespawn-TeamHub-Production-Security",
+  "templateSha256": "d543bf22071bf001db042ee3af1f1d2f2c5ffb5ee020341531abbcef3dac6b33",
+  "resources": [
+    {
+      "LogicalResourceId": "CursorSecret",
+      "PhysicalResourceId": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Production-Cursor-oyRawO",
+      "ResourceType": "AWS::SecretsManager::Secret",
+      "LastUpdatedTimestamp": "2026-10-23T23:42:55.198000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "DeploymentCaller",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Production-Deploy",
+      "ResourceType": "AWS::IAM::Role",
+      "LastUpdatedTimestamp": "2026-10-23T23:43:29.492000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ExecutionBoundary",
+      "PhysicalResourceId": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Production-ReadProofExecutionBoundary",
+      "ResourceType": "AWS::IAM::ManagedPolicy",
+      "LastUpdatedTimestamp": "2026-10-23T23:43:13.136000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ExecutionRole",
+      "PhysicalResourceId": "ProjectRespawn-TeamHub-Production-ReadProofExecution",
+      "ResourceType": "AWS::IAM::Role",
+      "LastUpdatedTimestamp": "2026-10-23T23:43:33.842000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "HttpApi",
+      "PhysicalResourceId": "9wk4a41l5m",
+      "ResourceType": "AWS::ApiGatewayV2::Api",
+      "LastUpdatedTimestamp": "2026-10-23T23:42:55.107000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityCommandBoundary",
+      "PhysicalResourceId": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Production-ParityCommandBoundary",
+      "ResourceType": "AWS::IAM::ManagedPolicy",
+      "LastUpdatedTimestamp": "2026-10-23T23:43:08.984000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "ParityReadBoundary",
+      "PhysicalResourceId": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Production-ParityReadBoundary",
+      "ResourceType": "AWS::IAM::ManagedPolicy",
+      "LastUpdatedTimestamp": "2026-10-23T23:43:13.006000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    },
+    {
+      "LogicalResourceId": "PreparationCaller",
+      "PhysicalResourceId": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Production-ReadProofPreparation",
+      "ResourceType": "AWS::IAM::ManagedPolicy",
+      "LastUpdatedTimestamp": "2026-10-23T23:43:09.140000+00:00",
+      "ResourceStatus": "CREATE_COMPLETE",
+      "DriftInformation": {
+        "StackResourceDriftStatus": "NOT_CHECKED"
+      }
+    }
+  ],
+  "checks": [
+    {
+      "id": "ExecutionBoundary",
+      "type": "AWS::IAM::ManagedPolicy",
+      "arn": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Production-ReadProofExecutionBoundary",
+      "size": 6118,
+      "sha256": "53f914918011bc55b5d4c88eed9b6b3e9d87a3c0e2339f41eb1a7a45f07ab585",
+      "matched": true
+    },
+    {
+      "id": "ExecutionRole",
+      "type": "AWS::IAM::Role",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Production-ReadProofExecution",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Production-ReadProofExecutionBoundary",
+      "size": 9756,
+      "trustAndPoliciesMatched": true
+    },
+    {
+      "id": "PreparationCaller",
+      "type": "AWS::IAM::ManagedPolicy",
+      "arn": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Production-ReadProofPreparation",
+      "size": 2370,
+      "sha256": "b6f016d94f0889813e2b6d574973159653b779092ba6a4fc912a166ea6073e66",
+      "matched": true
+    },
+    {
+      "id": "DeploymentCaller",
+      "type": "AWS::IAM::Role",
+      "arn": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Production-Deploy",
+      "boundary": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Production-ReadProofPreparation",
+      "size": 2370,
+      "trustAndPoliciesMatched": true
+    },
+    {
+      "id": "ParityCommandBoundary",
+      "type": "AWS::IAM::ManagedPolicy",
+      "arn": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Production-ParityCommandBoundary",
+      "size": 5060,
+      "sha256": "97f0aeafe904af4411c595801a1c32254d7bf92ae7b73dac0cfbaad5d8665a8b",
+      "matched": true
+    },
+    {
+      "id": "ParityReadBoundary",
+      "type": "AWS::IAM::ManagedPolicy",
+      "arn": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Production-ParityReadBoundary",
+      "size": 5685,
+      "sha256": "69243f535d2ffe1523d6eb9b03e50433868f4c7bb7640b448a7350ba8aeaf2f8",
+      "matched": true
+    },
+    {
+      "id": "CursorSecret",
+      "type": "AWS::SecretsManager::Secret",
+      "arn": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Production-Cursor-oyRawO",
+      "name": "ProjectRespawn-TeamHub-Production-Cursor",
+      "generatedReferenceMatched": true,
+      "valueRetrieved": false
+    }
+  ],
+  "exports": {
+    "ProjectRespawn-TeamHub-Production-CursorSecretArn": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Production-Cursor-oyRawO",
+    "ProjectRespawn-TeamHub-Production-HttpApiId": "9wk4a41l5m",
+    "ProjectRespawn-TeamHub-Production-ParityCommandBoundaryArn": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Production-ParityCommandBoundary",
+    "ProjectRespawn-TeamHub-Production-ParityReadBoundaryArn": "arn:aws:iam::058264289478:policy/ProjectRespawn-TeamHub-Production-ParityReadBoundary"
+  },
+  "secretValueRetrieved": false
+}

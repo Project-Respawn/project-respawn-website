@@ -1,0 +1,442 @@
+{
+  "at": "2026-10-24T08:45:24.754Z",
+  "installed": false,
+  "cases": [
+    {
+      "name": "dynamodb:GetItem",
+      "action": "dynamodb:GetItem",
+      "allowed": true,
+      "decision": "allowed",
+      "missingContext": [],
+      "matched": [
+        {
+          "SourcePolicyId": "PolicyInputList.1",
+          "SourcePolicyType": "IAM Policy",
+          "StartPosition": {
+            "Line": 1,
+            "Column": 38
+          },
+          "EndPosition": {
+            "Line": 1,
+            "Column": 648
+          }
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "dynamodb:PutItem",
+      "action": "dynamodb:PutItem",
+      "allowed": true,
+      "decision": "allowed",
+      "missingContext": [],
+      "matched": [
+        {
+          "SourcePolicyId": "PolicyInputList.1",
+          "SourcePolicyType": "IAM Policy",
+          "StartPosition": {
+            "Line": 1,
+            "Column": 38
+          },
+          "EndPosition": {
+            "Line": 1,
+            "Column": 648
+          }
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "deny dynamodb:UpdateItem",
+      "action": "dynamodb:UpdateItem",
+      "allowed": false,
+      "decision": "explicitDeny",
+      "missingContext": [],
+      "matched": [
+        {
+          "SourcePolicyId": "PolicyInputList.1",
+          "SourcePolicyType": "IAM Policy",
+          "StartPosition": {
+            "Line": 1,
+            "Column": 648
+          },
+          "EndPosition": {
+            "Line": 1,
+            "Column": 756
+          }
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "deny dynamodb:DeleteItem",
+      "action": "dynamodb:DeleteItem",
+      "allowed": false,
+      "decision": "explicitDeny",
+      "missingContext": [],
+      "matched": [
+        {
+          "SourcePolicyId": "PolicyInputList.1",
+          "SourcePolicyType": "IAM Policy",
+          "StartPosition": {
+            "Line": 1,
+            "Column": 648
+          },
+          "EndPosition": {
+            "Line": 1,
+            "Column": 756
+          }
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "deny dynamodb:Query",
+      "action": "dynamodb:Query",
+      "allowed": false,
+      "decision": "explicitDeny",
+      "missingContext": [],
+      "matched": [
+        {
+          "SourcePolicyId": "PolicyInputList.1",
+          "SourcePolicyType": "IAM Policy",
+          "StartPosition": {
+            "Line": 1,
+            "Column": 648
+          },
+          "EndPosition": {
+            "Line": 1,
+            "Column": 756
+          }
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "deny dynamodb:Scan",
+      "action": "dynamodb:Scan",
+      "allowed": false,
+      "decision": "explicitDeny",
+      "missingContext": [],
+      "matched": [
+        {
+          "SourcePolicyId": "PolicyInputList.1",
+          "SourcePolicyType": "IAM Policy",
+          "StartPosition": {
+            "Line": 1,
+            "Column": 648
+          },
+          "EndPosition": {
+            "Line": 1,
+            "Column": 756
+          }
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "deny dynamodb:TransactWriteItems",
+      "action": "dynamodb:TransactWriteItems",
+      "allowed": false,
+      "decision": "explicitDeny",
+      "missingContext": [],
+      "matched": [
+        {
+          "SourcePolicyId": "PolicyInputList.1",
+          "SourcePolicyType": "IAM Policy",
+          "StartPosition": {
+            "Line": 1,
+            "Column": 648
+          },
+          "EndPosition": {
+            "Line": 1,
+            "Column": 756
+          }
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "deny iam:PassRole",
+      "action": "iam:PassRole",
+      "allowed": false,
+      "decision": "implicitDeny",
+      "missingContext": [],
+      "matched": [],
+      "passed": true
+    },
+    {
+      "name": "deny iam:PutRolePolicy",
+      "action": "iam:PutRolePolicy",
+      "allowed": false,
+      "decision": "implicitDeny",
+      "missingContext": [],
+      "matched": [],
+      "passed": true
+    },
+    {
+      "name": "deny lambda:UpdateFunctionCode",
+      "action": "lambda:UpdateFunctionCode",
+      "allowed": false,
+      "decision": "implicitDeny",
+      "missingContext": [],
+      "matched": [],
+      "passed": true
+    },
+    {
+      "name": "deny lambda:InvokeFunction",
+      "action": "lambda:InvokeFunction",
+      "allowed": false,
+      "decision": "implicitDeny",
+      "missingContext": [],
+      "matched": [],
+      "passed": true
+    },
+    {
+      "name": "deny states:UpdateStateMachine",
+      "action": "states:UpdateStateMachine",
+      "allowed": false,
+      "decision": "implicitDeny",
+      "missingContext": [],
+      "matched": [],
+      "passed": true
+    },
+    {
+      "name": "deny secretsmanager:GetSecretValue",
+      "action": "secretsmanager:GetSecretValue",
+      "allowed": false,
+      "decision": "implicitDeny",
+      "missingContext": [],
+      "matched": [],
+      "passed": true
+    },
+    {
+      "name": "deny kms:Decrypt",
+      "action": "kms:Decrypt",
+      "allowed": false,
+      "decision": "implicitDeny",
+      "missingContext": [],
+      "matched": [],
+      "passed": true
+    },
+    {
+      "name": "deny kms:CreateGrant",
+      "action": "kms:CreateGrant",
+      "allowed": false,
+      "decision": "implicitDeny",
+      "missingContext": [],
+      "matched": [],
+      "passed": true
+    },
+    {
+      "name": "deny s3:PutObject",
+      "action": "s3:PutObject",
+      "allowed": false,
+      "decision": "implicitDeny",
+      "missingContext": [],
+      "matched": [],
+      "passed": true
+    },
+    {
+      "name": "deny cognito-idp:AdminCreateUser",
+      "action": "cognito-idp:AdminCreateUser",
+      "allowed": false,
+      "decision": "implicitDeny",
+      "missingContext": [],
+      "matched": [],
+      "passed": true
+    },
+    {
+      "name": "wrong table ProjectRespawn-TeamHub-Production-Operational",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Production-Operational",
+      "allowed": false,
+      "decision": "explicitDeny",
+      "missingContext": [],
+      "matched": [
+        {
+          "SourcePolicyId": "PolicyInputList.1",
+          "SourcePolicyType": "IAM Policy",
+          "StartPosition": {
+            "Line": 1,
+            "Column": 756
+          },
+          "EndPosition": {
+            "Line": 1,
+            "Column": 923
+          }
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "wrong table ProjectRespawn-TeamHub-Ntgre-Journal",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-TeamHub-Ntgre-Journal",
+      "allowed": false,
+      "decision": "explicitDeny",
+      "missingContext": [],
+      "matched": [
+        {
+          "SourcePolicyId": "PolicyInputList.1",
+          "SourcePolicyType": "IAM Policy",
+          "StartPosition": {
+            "Line": 1,
+            "Column": 756
+          },
+          "EndPosition": {
+            "Line": 1,
+            "Column": 923
+          }
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "wrong table ProjectRespawn-Core-Production",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/ProjectRespawn-Core-Production",
+      "allowed": false,
+      "decision": "explicitDeny",
+      "missingContext": [],
+      "matched": [
+        {
+          "SourcePolicyId": "PolicyInputList.1",
+          "SourcePolicyType": "IAM Policy",
+          "StartPosition": {
+            "Line": 1,
+            "Column": 756
+          },
+          "EndPosition": {
+            "Line": 1,
+            "Column": 923
+          }
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "wrong table Tournament",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Tournament",
+      "allowed": false,
+      "decision": "explicitDeny",
+      "missingContext": [],
+      "matched": [
+        {
+          "SourcePolicyId": "PolicyInputList.1",
+          "SourcePolicyType": "IAM Policy",
+          "StartPosition": {
+            "Line": 1,
+            "Column": 756
+          },
+          "EndPosition": {
+            "Line": 1,
+            "Column": 923
+          }
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "wrong table Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "resource": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+      "allowed": false,
+      "decision": "explicitDeny",
+      "missingContext": [],
+      "matched": [
+        {
+          "SourcePolicyId": "PolicyInputList.1",
+          "SourcePolicyType": "IAM Policy",
+          "StartPosition": {
+            "Line": 1,
+            "Column": 756
+          },
+          "EndPosition": {
+            "Line": 1,
+            "Column": 923
+          }
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "wrong key",
+      "key": "AUDIT#other",
+      "allowed": false,
+      "decision": "implicitDeny",
+      "missingContext": [],
+      "matched": [],
+      "passed": true
+    },
+    {
+      "name": "missing key",
+      "key": null,
+      "allowed": false,
+      "decision": "implicitDeny",
+      "missingContext": [
+        "dynamodb:LeadingKeys"
+      ],
+      "matched": [],
+      "passed": true
+    },
+    {
+      "name": "wrong principal",
+      "principal": "arn:aws:iam::058264289478:user/RavenTest",
+      "allowed": false,
+      "decision": "implicitDeny",
+      "missingContext": [],
+      "matched": [],
+      "passed": true
+    },
+    {
+      "name": "wrong region",
+      "region": "us-east-1",
+      "allowed": false,
+      "decision": "implicitDeny",
+      "missingContext": [],
+      "matched": [],
+      "passed": true
+    },
+    {
+      "name": "before",
+      "time": "2026-10-24T09:59:59.000Z",
+      "allowed": false,
+      "decision": "implicitDeny",
+      "missingContext": [],
+      "matched": [],
+      "passed": true
+    },
+    {
+      "name": "expiry",
+      "time": "2026-10-24T10:15:00Z",
+      "allowed": false,
+      "decision": "implicitDeny",
+      "missingContext": [],
+      "matched": [],
+      "passed": true
+    }
+  ],
+  "complete": true,
+  "workflow": {
+    "result": "OK",
+    "diagnostics": [],
+    "truncated": false
+  },
+  "template": {
+    "Parameters": [
+      {
+        "ParameterKey": "NotBefore",
+        "NoEcho": false
+      },
+      {
+        "ParameterKey": "ExpiresAt",
+        "NoEcho": false
+      }
+    ],
+    "Description": "Temporary fixed production authority initializer; remove after terminal execution, preserve control row",
+    "Capabilities": [
+      "CAPABILITY_NAMED_IAM"
+    ],
+    "CapabilitiesReason": "The following resource(s) require capabilities: [AWS::IAM::Role]"
+  },
+  "analyzer": {
+    "findings": []
+  }
+}

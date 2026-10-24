@@ -1,4 +1,4 @@
-import {operations,validateRequest,validateResponse,VERSION} from '../../../../domains/team-hub/cutover/contracts.mjs';
+import {operations,validateRequest,validateResponse,VERSION} from '../../../../domains/team-hub/business-runtime/contracts.mjs';
 import {AUTHORITY_PATH,validateAuthority} from '../../../../domains/team-hub/authority-contract/contract.mjs';
 // Dormant, explicit constructor. No global SDK or domain initialization.
 export function createCutoverClient({manifest,core,activation,tokenProvider,fetcher=fetch,clock=Date.now}){

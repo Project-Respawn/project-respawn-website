@@ -2,6 +2,7 @@ import {createHash} from 'node:crypto';
 import {entryKey} from '../repository.mjs';
 import {fail} from '../contracts.mjs';
 import schema from './state-schema.json' with {type:'json'};
+import {validPermissionList} from '../structure/feature-permissions.mjs';
 export const schemaVersion='team-hub-state.v1';
 const copy=x=>structuredClone(x), hash=x=>createHash('sha256').update(x).digest('hex');
 const stable=x=>JSON.stringify(x,(_,v)=>v&&typeof v==='object'&&!Array.isArray(v)?Object.fromEntries(Object.entries(v).sort(([a],[b])=>a.localeCompare(b))):v);
@@ -13,7 +14,10 @@ export function decode(items){
  const a={team:pick(t,['id','slug','name','gameKey','status','version','authorizationEpoch','rosterVersion']),memberships:{},roster:[],entries:{},assessments:{},privateNotes:{},intents:{}};
  a.team.settings={plan:t.settings.plan,logoAssetId:t.settings.logoAssetId??''};
  for(const r of items){
-  if(r.entityType==='MEMBERSHIP')a.memberships[r.id]=pick(r,['id','teamId','issuer','subject','displayName','role','status','version']);
+  if(r.entityType==='MEMBERSHIP'){
+   if(r.permissions!==undefined&&!validPermissionList(r.permissions))fail('DEPENDENCY_UNAVAILABLE');
+   a.memberships[r.id]=pick(r,['id','teamId','issuer','subject','displayName','role','status','version','permissions']);
+  }
   else if(r.entityType==='ROSTER'&&r.status==='ACTIVE'&&r.slotType!=='STARTER_GUARD')a.roster.push(pick(r,['membershipId','gameRoleKey','slotType']));
   else if(r.entityType==='PLAYER_POOL')a.entries[entryKey(r.membershipId,r.championId)]=pick(r,['teamId','membershipId','championId','gameRoleKey','comfortLevel','priority','competitiveReady','playerNotes','version']);
   else if(r.entityType==='COACH_ASSESSMENT'){if(r.visibility!=='TEAM_VISIBLE_APPROVED')fail('DEPENDENCY_UNAVAILABLE');a.assessments[entryKey(r.membershipId,r.championId)]={...pick(r,['teamId','membershipId','championId','version']),teamVisible:r.coachAssessment??''};}
