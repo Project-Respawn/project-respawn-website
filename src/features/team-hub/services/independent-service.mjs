@@ -7,6 +7,7 @@ import {createWebsiteAdapter} from './website-adapter.mjs';
 export const usingIndependentTeamHub=true;
 export const getTeamPermissions=(...a)=>adapter.getTeamPermissions(...a);
 export const setMemberPermissions=(...a)=>adapter.setMemberPermissions(...a);
+export const setMyPlayableRoles=(...a)=>adapter.setMyPlayableRoles(...a);
 const session=()=>fetchAuthSession();
 import activation from '../../../../config/domains/team-hub/frontend-cutover.PROPOSAL.json';
 let activeClient;

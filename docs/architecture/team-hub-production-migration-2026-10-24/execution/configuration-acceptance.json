@@ -1,0 +1,104 @@
+{
+  "at": "2026-10-24T10:33:32.778Z",
+  "apiId": "9wk4a41l5m",
+  "authorityInitialized": true,
+  "businessWrites": 0,
+  "probes": [],
+  "configChecks": [
+    {
+      "id": "ParityCommandLogs",
+      "logGroup": "/project-respawn/Production/team-hub/parity-command",
+      "retentionMatched": true
+    },
+    {
+      "id": "ParityReadLogs",
+      "logGroup": "/project-respawn/Production/team-hub/parity-read",
+      "retentionMatched": true
+    },
+    {
+      "id": "ApiErrors",
+      "alarm": "ProjectRespawn-TeamHub-Production-ReadProof-ApiErrors",
+      "namespace": "AWS/ApiGateway",
+      "metric": "5xx",
+      "state": "OK",
+      "definitionMatched": true,
+      "stateAloneIsNotAcceptance": true
+    },
+    {
+      "id": "ParityCommandErrors",
+      "alarm": "ProjectRespawn-TeamHub-Production-ParityCommand-Errors",
+      "namespace": "AWS/Lambda",
+      "metric": "Errors",
+      "state": "OK",
+      "definitionMatched": true,
+      "stateAloneIsNotAcceptance": true
+    },
+    {
+      "id": "ParityCommandThrottles",
+      "alarm": "ProjectRespawn-TeamHub-Production-ParityCommand-Throttles",
+      "namespace": "AWS/Lambda",
+      "metric": "Throttles",
+      "state": "OK",
+      "definitionMatched": true,
+      "stateAloneIsNotAcceptance": true
+    },
+    {
+      "id": "ParityReadErrors",
+      "alarm": "ProjectRespawn-TeamHub-Production-ParityRead-Errors",
+      "namespace": "AWS/Lambda",
+      "metric": "Errors",
+      "state": "OK",
+      "definitionMatched": true,
+      "stateAloneIsNotAcceptance": true
+    },
+    {
+      "id": "ParityReadThrottles",
+      "alarm": "ProjectRespawn-TeamHub-Production-ParityRead-Throttles",
+      "namespace": "AWS/Lambda",
+      "metric": "Throttles",
+      "state": "OK",
+      "definitionMatched": true,
+      "stateAloneIsNotAcceptance": true
+    },
+    {
+      "id": "ParityReadFunction",
+      "resourcePolicySources": [
+        "arn:aws:execute-api:eu-north-1:058264289478:9wk4a41l5m/$default/GET/v1/authority",
+        "arn:aws:execute-api:eu-north-1:058264289478:9wk4a41l5m/*/*/v1/teams*",
+        "arn:aws:execute-api:eu-north-1:058264289478:9wk4a41l5m/$default/POST/v1/directory/assignable-resolve",
+        "arn:aws:execute-api:eu-north-1:058264289478:9wk4a41l5m/$default/POST/v1/directory/assignable-search"
+      ],
+      "onlyReviewedApiGatewayPrincipal": true
+    },
+    {
+      "id": "ParityCommandFunction",
+      "resourcePolicySources": [
+        "arn:aws:execute-api:eu-north-1:058264289478:9wk4a41l5m/*/*/v1/teams*"
+      ],
+      "onlyReviewedApiGatewayPrincipal": true
+    }
+  ],
+  "pending": [
+    "Authenticated authority and all 19 business route checks require a valid production sign-in",
+    "Actual cursor secret/decryption requires separately reviewed isolated proof; no secret value retrieved",
+    "End-to-end business Core dependency and full business monitoring acceptance remain gated by authority bootstrap/maintenance"
+  ],
+  "fullBusinessAcceptance": false,
+  "endpoint": "https://9wk4a41l5m.execute-api.eu-north-1.amazonaws.com",
+  "authorityPreserved": true,
+  "httpAuthentication": [
+    {
+      "name": "unauthenticated",
+      "status": 401,
+      "requestId": "FvpwNiBMAi0EPWg=",
+      "rejectedByJwtAuthorizer": true
+    },
+    {
+      "name": "malformed-token",
+      "status": 401,
+      "requestId": "FvpwOggPAi0EPtA=",
+      "rejectedByJwtAuthorizer": true
+    }
+  ],
+  "passed": true
+}

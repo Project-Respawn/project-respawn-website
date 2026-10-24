@@ -1,0 +1,166 @@
+{
+  "schemaVersion": "production-team-hub-release-prerequisites.v1",
+  "status": "PREPARED_PENDING_SECURITY_REVIEW_AND_AUTHORIZATION",
+  "authorizationRecorded": false,
+  "account": "058264289478",
+  "region": "eu-north-1",
+  "operator": "arn:aws:iam::058264289478:user/RavenTest",
+  "acceptedRuntime": {
+    "candidateSha256": "861720f095cf8b826a4b399c119f6850c11d2ead30533d0c914f587e1d30cb0f",
+    "runtimeSha256": "df1e45b1856184bcfafd51c89bd12474a5330075834060544ac241763d1e4d99",
+    "productSha256": "a61fc9f17f5dfad1a53494e979dab300e9a728d58f60b3323d23f806b972635c",
+    "securitySha256": "2978110ebf1350fd0b221b79fb4782e17940a55472c6953f00971c1b76c3760f"
+  },
+  "preflight": {
+    "sourceInventoryPath": "docs/architecture/team-hub-production-migration-2026-10-24/final-release-inventory-v1.json",
+    "sourceInventorySha256": "e50ad9f74a84c38aca394869b295f01ecd48365c90f22a417ea72d76ef2e179e",
+    "authority": {
+      "mode": "LEGACY_WRITER",
+      "epoch": 1,
+      "version": 1
+    },
+    "operationalRows": 0,
+    "journalRows": 1,
+    "sourceCountsAreNotAtomic": true
+  },
+  "cursor": {
+    "stack": "ProjectRespawn-TeamHub-Production-CursorProof-20261024v1",
+    "functionName": "ProjectRespawn-TeamHub-Production-CursorProof-20261024v1",
+    "temporaryResources": 1,
+    "existingReadRole": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Production-ParityRead",
+    "secretArn": "arn:aws:secretsmanager:eu-north-1:058264289478:secret:ProjectRespawn-TeamHub-Production-Cursor-oyRawO",
+    "secretKmsKey": "arn:aws:kms:eu-north-1:058264289478:key/8802a37a-f981-4384-b538-fdb4f7aba74a",
+    "source": {
+      "path": "docs/architecture/team-hub-production-release-2026-10-24/prerequisites/cursor-probe.mjs",
+      "sha256": "a9088f7f64c03b026ec556b3a177c5642db0c040a13fdf52b853f84990276ee2"
+    },
+    "runtime": {
+      "path": "docs/architecture/team-hub-production-release-2026-10-24/prerequisites/a6c6728ef1b64608db67c158c7a366bbaa7251977e2d3647cdcf299df8ac8f75.cursor.zip",
+      "sha256": "a6c6728ef1b64608db67c158c7a366bbaa7251977e2d3647cdcf299df8ac8f75",
+      "bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+      "key": "production/cursor-proof/a6c6728ef1b64608db67c158c7a366bbaa7251977e2d3647cdcf299df8ac8f75.zip"
+    },
+    "template": {
+      "path": "docs/architecture/team-hub-production-release-2026-10-24/prerequisites/d0adb229dcc705cbcd34250f2bfa666d83bc77dcc9e6ffd065c4d3205566a5d4.template.json",
+      "sha256": "d0adb229dcc705cbcd34250f2bfa666d83bc77dcc9e6ffd065c4d3205566a5d4"
+    },
+    "invocations": 1,
+    "input": {},
+    "automaticRetry": false,
+    "reservedConcurrency": "UNSET",
+    "accountCapacityRequired": true,
+    "checks": 9,
+    "outputs": [
+      "passed",
+      "nine booleans",
+      "Secrets Manager request ID"
+    ],
+    "secretValueOutsideLambda": false,
+    "permanentIamChanges": 0,
+    "cleanup": "Delete only the newly receipt-owned exact temporary stack/function after terminal invocation; verify absence. Retain immutable audit artifact."
+  },
+  "recovery": {
+    "createBackupRequests": [
+      {
+        "model": "Team",
+        "sourceName": "Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "sourceArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "tableId": "78f6917b-9d12-4af4-aa14-fdae57eb7f2b",
+        "expectedCount": 1,
+        "expectedDigest": "7f5c561beb8e50f1d1d5d57ced10dbd6ca453d0c41bc75e317e8e492561d65d2",
+        "request": {
+          "TableName": "Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+          "BackupName": "ProjectRespawn-TeamHub-Production-R3-20261024-Team"
+        },
+        "retainR1BackupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/Team-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527947116-43f6eb02"
+      },
+      {
+        "model": "TeamMembership",
+        "sourceName": "TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "sourceArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "tableId": "84e7d7af-3ff0-4881-a76a-90bc00b3d3ab",
+        "expectedCount": 8,
+        "expectedDigest": "70f37ff906963398fe56fd06a9621828dbff2be24c8021404a35482057db765d",
+        "request": {
+          "TableName": "TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE",
+          "BackupName": "ProjectRespawn-TeamHub-Production-R3-20261024-TeamMembership"
+        },
+        "retainR1BackupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527948497-eda960ad"
+      },
+      {
+        "model": "TeamRosterSlot",
+        "sourceName": "TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "sourceArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "tableId": "ce302ae3-9446-4594-81e1-12bff167f12f",
+        "expectedCount": 15,
+        "expectedDigest": "d86b00d840c53bb6e3d070b4ab2634894fcb0763b4ea99403fc3cb0c3fe47f7f",
+        "request": {
+          "TableName": "TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE",
+          "BackupName": "ProjectRespawn-TeamHub-Production-R3-20261024-TeamRosterSlot"
+        },
+        "retainR1BackupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527949892-3c2d8f3a"
+      },
+      {
+        "model": "PlayerChampionPoolEntry",
+        "sourceName": "PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "sourceArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "tableId": "a208a911-c53c-45f8-a499-d69117d611d5",
+        "expectedCount": 101,
+        "expectedDigest": "e528b302bcc24166974dfa52e3f7a68db3795d04aef83eca1a0139b6c36b8131",
+        "request": {
+          "TableName": "PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE",
+          "BackupName": "ProjectRespawn-TeamHub-Production-R3-20261024-PlayerChampionPoolEntry"
+        },
+        "retainR1BackupArn": "arn:aws:dynamodb:eu-north-1:058264289478:table/PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE/backup/01792527951273-7b424a61"
+      }
+    ],
+    "capture": {
+      "mode": "CurrentUser-DPAPI",
+      "ownerOnlyAcl": true,
+      "directory": ".tmp/team-hub-production-release-custody",
+      "contents": "Current full source records and deterministic target projection; encrypted only",
+      "independentDecryptAndDigestVerificationRequired": true,
+      "portable": false
+    },
+    "nativeBackupContentRestoreClaim": false,
+    "existingR1R2EvidenceRetained": true,
+    "newBackupsRetained": true,
+    "backupDeletionAuthorized": false
+  },
+  "execution": {
+    "freshAttendedMinutes": 60,
+    "noConcurrentAdministrativeOrTeamEdits": true,
+    "writeRetry": false,
+    "sequence": [
+      "Fresh identity, exact pins, source identities/protections/digests, retained backups, no collisions, empty target and authority 1/1",
+      "Effective Read/Command/operator IAM, trust, KMS/key/context and quota checks",
+      "Conditionally publish only the exact cursor ZIP",
+      "Inspect exactly one addition and zero unrelated changes in temporary change set",
+      "Install; verify exact code, role, logging and absence of environment/URLs/triggers",
+      "Invoke once with empty input; verify nine checks and attributable Secrets Manager request receipt",
+      "Preserve sanitized invocation/audit evidence; delete only receipt-owned temporary stack and verify absence",
+      "Create four exact named source backups without changing source settings/items; wait AVAILABLE and bind ARN/TableId/name",
+      "Capture source in memory, validate complete relationships/transform, seal owner-only CurrentUser-DPAPI evidence and independently decrypt/reconcile",
+      "Verify source/backups/authority/target/Core/Cognito/Master/Ntgre unchanged; preserve exact receipts"
+    ],
+    "cleanupAllowedAfterWindow": true
+  },
+  "limitations": [
+    "Read-role reuse retains its existing permissions; fixed reviewed code performs only the exact secret retrieval and local cursor checks. No IAM attenuation or new runtime grants.",
+    "The approved RavenTest operator has broader pre-existing account permissions; fixed executor scope is not an IAM boundary for that operator.",
+    "Successful Secrets Manager retrieval and checks are actual decryption-path evidence; simulations alone are not. Preserve KMS audit correlation if available; never invent missing events.",
+    "Probe success is not end-to-end TARGET_WRITER pagination or real Core business authorization.",
+    "Native backups are independent table capture points. AVAILABLE is not proof of a new restore; CurrentUser-DPAPI capture is owner/machine-bound verification, not portable DR."
+  ],
+  "excluded": [
+    "permanent IAM changes",
+    "production runtime or product/security-stack changes",
+    "source record/configuration changes",
+    "authority transitions",
+    "source fences",
+    "business import or mutations",
+    "Cognito administration",
+    "Master merge/publication",
+    "Legacy retirement"
+  ]
+}

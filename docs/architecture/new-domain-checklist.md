@@ -28,6 +28,8 @@ Implementation authorization / deployment authorization / production authorizati
 
 ## Required sequence
 
+For a concrete repository example and verification commands, follow the [Team Hub separation guide](team-hub-separation-guide.md). It separates frontend loading, independent deployment and business-data cutover so an incomplete stage cannot be mistaken for a finished migration. Keep the authorization gates below.
+
 1. **Classify and justify ownership.** Identify current and target owner, distinct capability/data/lifecycle and several independence benefits if requesting a new domain. Check the complete website catalog. Keep brackets/matches/drafts inside Tournament and overlays/analytics inside Creator unless a new lifecycle is justified. A page, Cognito group or table alone is insufficient. Keep Core conservative and record unresolved decisions before creating infrastructure.
 
 2. **Inventory the current dependency and state boundary.** Identify actual callers, imports, tables/custom providers, API URLs, keys, object prefixes, event sources, runtime consumers, IAM and physical stack owners. Distinguish pure source moves, stateless recreation, retain/import candidates, protected identity and high-risk state. Record remaining Legacy dependencies honestly. Existing custom-managed tables are not assumed importable as native resources. A new domain with no existing state records that fact explicitly.

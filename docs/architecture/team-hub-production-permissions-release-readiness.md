@@ -1,5 +1,17 @@
 # Production Team Hub permissions and Master publication
 
+## Current release prerequisites — 24 October 2026
+
+The [consolidated final-release review](team-hub-production-final-release-readiness.md) records actual read-only validation and the exact next cursor/R3 execution binding. No production cutover or Master publication has occurred. The next package requires explicit approval; source fences, S3 quarantine/audit, post-write permission-compatible recovery, five-persona business acceptance and separate publication remain mandatory. Do not reopen Legacy after target writes by reverting frontend code.
+
+## Current dark update accepted — 24 October 2026
+
+[Actual deployment and live dark acceptance](team-hub-production-current-data-runtime-result.md) supersedes the proposed-runtime status below. Both roots UPDATE_COMPLETE at 42 product +8 security; exact Code hashes/configuration and unchanged runtime IAM verified. Real authority 200 at LEGACY_WRITER 1/1, nineteen expected business-route denials, actual monitoring and preservation passed. Public website is not activated; production cursor proof, current-data recovery/fence/import/reconciliation, post-write rollback compatibility, five-persona business acceptance and separately authorized Master frontend-only release remain gates.
+
+## Current-data migration correction — 24 October 2026
+
+The [current-data review](team-hub-production-current-data-migration-review.md) supersedes historical assumptions about transformation readiness. Current source data are 125 rows; a deterministic dry run accounts for all rows and produces 120 target records while retaining inactive members' champion pools. A new, not-yet-authorized parity candidate adds own-player role preferences, enforces three substitutes and protects Project Respawn's Pro entitlement. Complete security certification and separately reviewed deployment precede production fence/import/reconciliation and public publication. Actual production remains LEGACY_WRITER 1/1 and the public frontend remains Legacy; no migration or new AWS writes are implied by offline tests.
+
 ## Production authority initialized — 24 October 2026
 
 [Actual C1 result](team-hub-production-c1-result.md): one fixed conditional workflow SUCCEEDED; complete strong readback confirms **LEGACY_WRITER epoch/version 1/1**. The two temporary resources were removed and absence verified. Operational is empty; Journal contains only the authority control row. Permanent IAM/runtime, source data/protections/four backups, Core/Cognito, Master and protected domains remain unchanged. Authenticated authority 200 and all **18** business-route denial checks remain pending real production sessions; missing/invalid JWT 401 checks are not substitutes. Next: authenticated dark acceptance and separately authorized isolated cursor proof; nonempty migration, business transfer and public release remain separately gated. Do not rerun initialization. Earlier entries below are historical.

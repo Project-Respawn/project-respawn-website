@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "production-team-hub-dark-parity-execution.v1",
+  "status": "PROPOSED_NOT_AUTHORIZED",
+  "authorizationRecorded": false,
+  "account": "058264289478",
+  "region": "eu-north-1",
+  "operatorArn": "arn:aws:iam::058264289478:user/RavenTest",
+  "candidate": {
+    "path": "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/candidate.json",
+    "sha256": "861720f095cf8b826a4b399c119f6850c11d2ead30533d0c914f587e1d30cb0f"
+  },
+  "baseline": {
+    "securitySha256": "de13291048f600fefaefd393d3f9d1b623550988465a352bac083815a8244a29",
+    "productSha256": "e375a995da78fee165e2ef653225224e7546a1e9066cf3d980d8a488ce30d012",
+    "runtimeSha256": "acbc6199e71ca001697a4f34636cada900dc50d3b9fa1068d2735c61425e3a5e",
+    "authority": {"mode": "LEGACY_WRITER", "epoch": 1, "version": 1},
+    "operationalRecords": 0,
+    "journalRecords": 1,
+    "securityResourceCount": 8,
+    "productResourceCount": 41,
+    "frontend": "LEGACY"
+  },
+  "publications": {"count": 3, "source": "candidate.runtime/product/security", "conditionalCreation": true, "checksumReadbackRequired": true, "overwrite": false},
+  "security": {
+    "stack": "ProjectRespawn-TeamHub-Production-Security",
+    "modifications": ["ExecutionBoundary", "ExecutionRole", "PreparationCaller", "DeploymentCaller"],
+    "additions": [], "deletions": [], "replacements": [],
+    "retireNeverInstalledDraftBinding": "dda9937e87e2bbc350597ecdfbd8b7ae31c09dae5cffe91a43241edfbe5ce291",
+    "preserveHealthyRollbackGenerations": true,
+    "proposedAnalyzerException": {"issueCode": "INVALID_ACTION", "action": "apigateway:TagResource", "exactCount": 2, "policyResources": ["ExecutionRole", "ExecutionBoundary"], "explicitNewOwnerAcceptanceRequired": true},
+    "runtimeIamChanges": 0,
+    "kmsPassRoleTrustChanges": 0
+  },
+  "product": {
+    "stack": "ProjectRespawn-TeamHub-Production",
+    "additions": ["ParityRouteSETMYROLES"],
+    "codeOnlyModifications": ["ParityReadFunction", "ParityCommandFunction"],
+    "deletions": [], "replacements": [], "environmentChanges": 0,
+    "expectedResourceCount": 42
+  },
+  "mandatoryBeforeExecution": [
+    "Complete IAM certification including policy/boundary intersections and exactly enumerated Analyzer review",
+    "Two successful template validations and all exact local artifact/rollback hashes",
+    "New explicit package authorization, obsolete-binding retirement and two-finding exception acceptance",
+    "Fresh attended 60-minute operator/recovery window with no concurrent administrative or team edits",
+    "Fresh identity, installed IAM, healthy runtime/full environments, authority and target-empty checks",
+    "Fresh source capture/protections/backups, Cognito, Core, Master, Ntgre and protected-domain preservation",
+    "AWS-generated change sets match every expected action and have no replacement or unrelated property change"
+  ],
+  "sequence": [
+    "Publish only the three exact immutable artifacts with conditional creation and full SHA verification",
+    "Inspect and execute only the four-modification security change set with rollback enabled",
+    "Wait for terminal success and verify actual installed policies, boundaries, trust and security controls",
+    "Inspect and execute only the one-addition/two-Code-modification product change set with rollback enabled",
+    "Verify installed ZIP hashes, unchanged full environments, runtime IAM, identities and actual service configuration",
+    "Perform authenticated authority 200 and all nineteen business-route 403 checks under LEGACY_WRITER 1/1",
+    "Verify monitoring, unchanged empty business state and protected-domain preservation; record evidence"
+  ],
+  "failure": {
+    "automaticWriteRetry": false,
+    "automaticPermissionBroadening": false,
+    "rollbackEnabled": true,
+    "rule": "Stop on any incomplete gate or unexpected result. Preserve partial-completion evidence. Let CloudFormation rollback complete; do not make an out-of-band repair.",
+    "postPreferenceWrite": "This dark package forbids business writes. If an unexpected business write occurs, stop; old strict-codec rollback is not assumed compatible."
+  },
+  "excluded": ["authority initialization or transition", "source fences", "business-data import or edits", "cursor probe resources without separate reviewed approval", "Master merge/publication", "Cognito changes", "Core changes", "Legacy/Ntgre/other-domain modification", "Legacy retirement"],
+  "nextStage": "Separately reviewed production maintenance, migration/reconciliation, business acceptance and frontend-only publication"
+}

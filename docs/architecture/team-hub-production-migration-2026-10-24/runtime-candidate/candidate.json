@@ -1,0 +1,303 @@
+{
+  "schemaVersion": "production-team-hub-current-data-parity.v1",
+  "status": "PROPOSED_PENDING_SECURITY_CERTIFICATION_AND_AUTHORIZATION",
+  "authorizationRecorded": false,
+  "awsWrites": 0,
+  "environment": {
+    "contractVersion": "environment.v1",
+    "environment": "Production",
+    "account": "058264289478",
+    "region": "eu-north-1",
+    "poolId": "eu-north-1_Uufjxul58",
+    "clientId": "2kc81ph5mgvo9eu2qjvmif5u8g",
+    "issuer": "https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_Uufjxul58"
+  },
+  "core": {
+    "accepted": true,
+    "functionArn": "arn:aws:lambda:eu-north-1:058264289478:function:ProjectRespawn-Core-Production-Contracts",
+    "runtimeSha256": "dc2a7137a725f6a82582abc8a800f5d30846058ecdbe12965f81a19c887154c4",
+    "securitySha256": "668049957edf3fb6e3dfda209e4600a824aa0b8182d41afb3051fb76f32bd613",
+    "productSha256": "5b8783be1765409602b978ade59e641ed11c7516f63436c436318470bbd9d086",
+    "acceptance": "docs/architecture/production-core-emf-execution-2026-10-21/final-result.json",
+    "acceptanceSha256": "2a60b92acc3f1db672d185d4b796ab5d166d30a2d069708c9ab83a1ca8496e06",
+    "rawHistoricalFlagNote": "The copied liveCoreAccepted=false field in the historical final receipt predates authentication. Its final liveAccepted=true and actual authenticated/monitoring receipts establish acceptance; no historical bytes modified."
+  },
+  "runtime": {
+    "path": "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/df1e45b1856184bcfafd51c89bd12474a5330075834060544ac241763d1e4d99.runtime.zip",
+    "sha256": "df1e45b1856184bcfafd51c89bd12474a5330075834060544ac241763d1e4d99",
+    "key": "production/df1e45b1856184bcfafd51c89bd12474.zip"
+  },
+  "product": {
+    "path": "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/a61fc9f17f5dfad1a53494e979dab300e9a728d58f60b3323d23f806b972635c.product.template.json",
+    "sha256": "a61fc9f17f5dfad1a53494e979dab300e9a728d58f60b3323d23f806b972635c",
+    "key": "production/a61fc9f17f5dfad1a53494e979dab300.json",
+    "url": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/a61fc9f17f5dfad1a53494e979dab300.json"
+  },
+  "security": {
+    "path": "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/2978110ebf1350fd0b221b79fb4782e17940a55472c6953f00971c1b76c3760f.security.template.json",
+    "sha256": "2978110ebf1350fd0b221b79fb4782e17940a55472c6953f00971c1b76c3760f"
+  },
+  "resources": {
+    "security": 8,
+    "product": 42,
+    "productDelta": {
+      "add": [
+        "ParityRouteSETMYROLES"
+      ],
+      "modify": [
+        "ParityCommandFunction",
+        "ParityReadFunction"
+      ],
+      "delete": []
+    },
+    "securityModifications": [
+      "ExecutionBoundary",
+      "ExecutionRole",
+      "PreparationCaller",
+      "DeploymentCaller"
+    ],
+    "deletions": 0,
+    "replacements": 0,
+    "environmentChanges": 0,
+    "runtimeIamChanges": 0
+  },
+  "policyChanges": [
+    {
+      "resource": "ExecutionBoundary",
+      "beforeSha256": "38f2d0387be93365f7771c98fa1e00a440d8674de9228d55c74d37b5547976b7",
+      "afterSha256": "1ec9d833bfe3c311dd104f785c940f3f5aea16af8f4dbd0185ef90e23e78fe2a",
+      "artifactGrants": [
+        "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/df1e45b1856184bcfafd51c89bd12474.zip",
+        "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/a61fc9f17f5dfad1a53494e979dab300.json"
+      ],
+      "retiredNeverInstalledDraft": "dda9937e87e2bbc350597ecdfbd8b7ae31c09dae5cffe91a43241edfbe5ce291",
+      "regionConditionFactored": true,
+      "kmsPassRoleAndRuntimePermissionsUnchanged": true
+    },
+    {
+      "resource": "ExecutionRole",
+      "beforeSha256": "838a88ce91c5407a8e9fef065bda54beb84f338dc1ce4078e091b16bdf448d0e",
+      "afterSha256": "b564b07b390cf24f52377ee263f90c665d1355aa9686c606539b29c7d950e975",
+      "artifactGrants": [
+        "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/df1e45b1856184bcfafd51c89bd12474.zip",
+        "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/a61fc9f17f5dfad1a53494e979dab300.json"
+      ],
+      "retiredNeverInstalledDraft": "dda9937e87e2bbc350597ecdfbd8b7ae31c09dae5cffe91a43241edfbe5ce291",
+      "regionConditionFactored": false,
+      "kmsPassRoleAndRuntimePermissionsUnchanged": true
+    },
+    {
+      "resource": "PreparationCaller",
+      "beforeSha256": "eb6ed1ebb54075f58a752d64ffdbf6767bcca3234495866882397326e43158d2",
+      "afterSha256": "b3ef64f0361300fdd5474986fa3d9db9bbbe30272ae6c19032ab6a801f01c0b1",
+      "artifactGrants": [
+        "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/df1e45b1856184bcfafd51c89bd12474.zip",
+        "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/a61fc9f17f5dfad1a53494e979dab300.json"
+      ],
+      "retiredNeverInstalledDraft": "dda9937e87e2bbc350597ecdfbd8b7ae31c09dae5cffe91a43241edfbe5ce291",
+      "regionConditionFactored": false,
+      "kmsPassRoleAndRuntimePermissionsUnchanged": true
+    },
+    {
+      "resource": "DeploymentCaller",
+      "beforeSha256": "eb6ed1ebb54075f58a752d64ffdbf6767bcca3234495866882397326e43158d2",
+      "afterSha256": "b3ef64f0361300fdd5474986fa3d9db9bbbe30272ae6c19032ab6a801f01c0b1",
+      "artifactGrants": [
+        "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/df1e45b1856184bcfafd51c89bd12474.zip",
+        "arn:aws:s3:::cdk-hnb659fds-assets-058264289478-eu-north-1/production/a61fc9f17f5dfad1a53494e979dab300.json"
+      ],
+      "retiredNeverInstalledDraft": "dda9937e87e2bbc350597ecdfbd8b7ae31c09dae5cffe91a43241edfbe5ce291",
+      "regionConditionFactored": false,
+      "kmsPassRoleAndRuntimePermissionsUnchanged": true
+    }
+  ],
+  "policySizes": {
+    "ExecutionBoundary": {
+      "bytes": 6110,
+      "limit": 6144
+    },
+    "ExecutionRole": {
+      "bytes": 9933,
+      "limit": 10240
+    },
+    "PreparationCaller": {
+      "bytes": 2306,
+      "limit": 6144
+    },
+    "DeploymentCaller": {
+      "bytes": 2306,
+      "limit": 10240
+    },
+    "ParityCommandBoundary": {
+      "bytes": 5060,
+      "limit": 6144
+    },
+    "ParityReadBoundary": {
+      "bytes": 5361,
+      "limit": 6144
+    }
+  },
+  "sourceClosure": [
+    {
+      "path": "domains/team-hub/core-integration/manifest.mjs",
+      "sha256": "0ae49ab6cd92be26480e4367d2d8769d7a53bfc7883f1e06502786c3c72e1783",
+      "origin": "ACCEPTED_PRODUCTION_UNCHANGED"
+    },
+    {
+      "path": "domains/team-hub/contracts.mjs",
+      "sha256": "5a9ea05b66210eb709e8bc9f4097f5680f405dc498a72b5f12ca8599273b592d",
+      "origin": "ACCEPTED_PRODUCTION_UNCHANGED"
+    },
+    {
+      "path": "domains/team-hub/auth.mjs",
+      "sha256": "714da1fc10820c83171fbdb9037c8300fc37ae890923addba4c359a550d02179",
+      "origin": "ACCEPTED_PRODUCTION_UNCHANGED"
+    },
+    {
+      "path": "domains/team-hub/structure/feature-permissions.mjs",
+      "sha256": "e7d084207df392238958045467ac59f924e4492d80a519fda8a1cce602d8d15c",
+      "origin": "ACCEPTED_PRODUCTION_UNCHANGED"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/contracts.mjs",
+      "sha256": "ce99e4e54fea33e63813022f8377bffd5e34a8895fdb692fe1327ab710a992f4",
+      "origin": "PROPOSED_CURRENT_DATA_PARITY"
+    },
+    {
+      "path": "domains/team-hub/storage-plan.mjs",
+      "sha256": "aa6923a380b5a0426cd33fab605d7606c6a6b7e5b3d00e25e2971bdb8f72e491",
+      "origin": "ACCEPTED_PRODUCTION_UNCHANGED"
+    },
+    {
+      "path": "domains/team-hub/repository.mjs",
+      "sha256": "4a84ee6b60ab625293545d2dd1be0dc863ab2f8c343b1e11e8cafeaf4bd921ca",
+      "origin": "ACCEPTED_PRODUCTION_UNCHANGED"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/service.mjs",
+      "sha256": "641b4368adf16520c5794f3fe3b7c17cabe0403bc5955bdc8aedaadd4f2cfb72",
+      "origin": "PROPOSED_CURRENT_DATA_PARITY"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/http.mjs",
+      "sha256": "ae0e9dfbae9f59bc34f76c44c03949b823a0225c58cefa5a5bdada1384add8ec",
+      "origin": "ACCEPTED_PRODUCTION_UNCHANGED"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/authority.mjs",
+      "sha256": "a9b0a3189685583b31b1b55caf7d5cd671925652b0aa97636093c929800a56e0",
+      "origin": "ACCEPTED_PRODUCTION_UNCHANGED"
+    },
+    {
+      "path": "domains/team-hub/parity/state-schema.json",
+      "sha256": "1bbba8b7fa9571528e8df4a725ef847714c3ca243d94746b5271b5cdd8716bb3",
+      "origin": "PROPOSED_CURRENT_DATA_PARITY"
+    },
+    {
+      "path": "domains/team-hub/parity/codec.mjs",
+      "sha256": "73bb835cf1539637a6a0b117aa67ddd319ac6ecef6c8ae376ec109affd91e83c",
+      "origin": "PROPOSED_CURRENT_DATA_PARITY"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/repository.mjs",
+      "sha256": "ae6ce0a6bde6eb0b24547efe7227b413fe3aa0bbff4853c1c94d72b936d18ca1",
+      "origin": "ACCEPTED_PRODUCTION_UNCHANGED"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/core-client.mjs",
+      "sha256": "52b7e3049a85facfa2cfdb419e235359c491daf26a2da068f3f934984b9ce029",
+      "origin": "ACCEPTED_PRODUCTION_UNCHANGED"
+    },
+    {
+      "path": "domains/team-hub/cutover/contracts.mjs",
+      "sha256": "8da47289f6fd1118461e9bb931b5c38fcc1d5196260e4a1b5e0a76611f686a8e",
+      "origin": "ACCEPTED_PRODUCTION_UNCHANGED"
+    },
+    {
+      "path": "domains/team-hub/cutover/observability.mjs",
+      "sha256": "ee02df6c4b1f8dafef442717560b49aef672b170ed8d7d1c9ead1751a31e9ecb",
+      "origin": "ACCEPTED_PRODUCTION_UNCHANGED"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/observability.mjs",
+      "sha256": "fcff3c7d3b199e8508fcf59d8530a694a8eb1cbb725b043d5f7066a4fa81bca5",
+      "origin": "ACCEPTED_PRODUCTION_UNCHANGED"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/handler.mjs",
+      "sha256": "320ade6052e320646ba06a2c4f0fff6bd68e4cd3cfcfdeaa2f67ac30b2fa22bc",
+      "origin": "ACCEPTED_PRODUCTION_UNCHANGED"
+    },
+    {
+      "path": "domains/team-hub/authority-contract/contract.mjs",
+      "sha256": "190ae44422d0be2743bb6a88c3936d1b87e1a6653faecf93c21e5e2849b8711a",
+      "origin": "ACCEPTED_PRODUCTION_UNCHANGED"
+    },
+    {
+      "path": "domains/team-hub/authority-contract/handler.mjs",
+      "sha256": "d17714a341f269c5925bdbf12e1535f305cb1f5392a96cb9faa8adf870d59b8c",
+      "origin": "ACCEPTED_PRODUCTION_UNCHANGED"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/router.mjs",
+      "sha256": "61a35b1e29a91c5ea71e437de98150717ec75369e367e19394c5e4f00252fc9d",
+      "origin": "ACCEPTED_PRODUCTION_UNCHANGED"
+    },
+    {
+      "path": "domains/team-hub/business-runtime/entry.mjs",
+      "sha256": "d80e9081c7f06f28f24c2893594746f7dd5743b344798e7fcd0c47310732425f",
+      "origin": "ACCEPTED_PRODUCTION_UNCHANGED"
+    }
+  ],
+  "bundleClosure": [
+    "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/source/domains/team-hub/core-integration/manifest.mjs",
+    "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/source/domains/team-hub/contracts.mjs",
+    "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/source/domains/team-hub/auth.mjs",
+    "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/source/domains/team-hub/structure/feature-permissions.mjs",
+    "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/source/domains/team-hub/business-runtime/contracts.mjs",
+    "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/source/domains/team-hub/storage-plan.mjs",
+    "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/source/domains/team-hub/repository.mjs",
+    "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/source/domains/team-hub/business-runtime/service.mjs",
+    "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/source/domains/team-hub/business-runtime/http.mjs",
+    "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/source/domains/team-hub/business-runtime/authority.mjs",
+    "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/source/domains/team-hub/parity/state-schema.json",
+    "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/source/domains/team-hub/parity/codec.mjs",
+    "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/source/domains/team-hub/business-runtime/repository.mjs",
+    "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/source/domains/team-hub/business-runtime/core-client.mjs",
+    "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/source/domains/team-hub/cutover/contracts.mjs",
+    "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/source/domains/team-hub/cutover/observability.mjs",
+    "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/source/domains/team-hub/business-runtime/observability.mjs",
+    "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/source/domains/team-hub/business-runtime/handler.mjs",
+    "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/source/domains/team-hub/authority-contract/contract.mjs",
+    "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/source/domains/team-hub/authority-contract/handler.mjs",
+    "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/source/domains/team-hub/business-runtime/router.mjs",
+    "docs/architecture/team-hub-production-migration-2026-10-24/runtime-candidate/source/domains/team-hub/business-runtime/entry.mjs"
+  ],
+  "rollback": {
+    "product": {
+      "path": "docs/architecture/team-hub-production-permissions-candidate-2026-10-24/v2/e375a995da78fee165e2ef653225224e7546a1e9066cf3d980d8a488ce30d012.product.template.json",
+      "sha256": "e375a995da78fee165e2ef653225224e7546a1e9066cf3d980d8a488ce30d012",
+      "key": "production/e375a995da78fee165e2ef653225224e.json"
+    },
+    "runtime": {
+      "path": "docs/architecture/team-hub-production-permissions-candidate-2026-10-24/v2/acbc6199e71ca001697a4f34636cada900dc50d3b9fa1068d2735c61425e3a5e.runtime.zip",
+      "sha256": "acbc6199e71ca001697a4f34636cada900dc50d3b9fa1068d2735c61425e3a5e",
+      "key": "production/acbc6199e71ca001697a4f34636cada9.zip"
+    },
+    "afterFirstPreferenceWrite": "Old strict codec cannot decode primary/secondary role fields. Use a separately tested compatible rollback; do not blindly revert the runtime after data writes.",
+    "obsoleteDraftPermissionRetirementRequiresExplicitReview": true,
+    "obsoleteDraft": {
+      "path": "docs/architecture/production-domain-deployment-evidence-2026-10-20/dda9937e87e2bbc350597ecdfbd8b7ae31c09dae5cffe91a43241edfbe5ce291.teamProduct.template.json",
+      "sha256": "dda9937e87e2bbc350597ecdfbd8b7ae31c09dae5cffe91a43241edfbe5ce291",
+      "key": "production/dda9937e87e2bbc350597ecdfbd8b7ae31c09dae5cffe91a43241edfbe5ce291.json",
+      "url": "https://cdk-hnb659fds-assets-058264289478-eu-north-1.s3.eu-north-1.amazonaws.com/production/dda9937e87e2bbc350597ecdfbd8b7ae31c09dae5cffe91a43241edfbe5ce291.json"
+    }
+  },
+  "remainingGates": [
+    "Effective IAM/Analyzer/template certification and explicit obsolete-draft binding retirement review",
+    "Separate security-first/product-second dark update approval",
+    "Authenticated production dark checks and isolated cursor proof",
+    "Production original-principal fence/audit/quarantine/import/reverse-reconciliation maintenance review",
+    "Real five-persona business acceptance and exact-Master frontend-only publication approval"
+  ]
+}

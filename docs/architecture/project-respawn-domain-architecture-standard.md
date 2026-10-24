@@ -18,6 +18,8 @@ Current source examples are `src/features/tournaments/`, `domains/tournaments/`,
 
 ## 1. Ownership and the new-domain decision
 
+The [Team Hub separation guide](team-hub-separation-guide.md) is the later worked example for independent sibling roots, environment-specific clients, lazy frontend imports and protected state cutover. Its current verification distinguishes accepted Ntgre cutover from Production's deployed dark backend and pending data/frontend transfer. Use its commands and evidence alongside this standard; do not copy its resource identities, epochs, historical exceptions or deployment authorization into another domain.
+
 Every feature MUST have one accountable product owner, authoritative data owner and module. Classify it before code changes as Shared/Core, an existing domain module, a justified independent domain, or frontend-only. Unresolved ownership blocks infrastructure creation, not further design.
 
 A new independent domain normally needs several demonstrated reasons: distinct business capability, authoritative data boundary, independent release/rollback lifecycle, meaningful growth, different runtime permissions, useful failure containment and a coherent public API. Record evidence and rejected alternatives in the feature/PR architecture note; no arbitrary numerical score replaces judgment. An owner, operational capacity, contracts and resource budget are required.

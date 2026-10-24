@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "production-team-hub-current-data-validation.v1",
+  "capturedAt": "2026-10-24T10:06:43.681Z",
+  "awsWrites": 0,
+  "tests": {
+    "focused": 55,
+    "resourceAccounting": 41,
+    "failed": 0
+  },
+  "typescript": {
+    "passed": true,
+    "configuration": "infrastructure/domains/team-hub/tsconfig.json",
+    "typeRoots": "./node_modules/@types"
+  },
+  "build": {
+    "passed": true,
+    "published": false,
+    "logSha256": "481eb7d50bf56082a2428467383da66bcce69fc5841475aac3459a9280732b57",
+    "limitation": "Local working-tree build includes unrelated changes and existing chunk-size warnings; it is not the public release artifact."
+  },
+  "ledger": {
+    "expected": 2621,
+    "total": 2621,
+    "assigned": 2430,
+    "unassigned": 0,
+    "unresolvedShared": 191,
+    "inventoryCoveragePercent": 100,
+    "ownershipResolvedPercent": 92.71270507439908,
+    "shared": 627,
+    "stateful": 61,
+    "protected": 62,
+    "retireCandidates": 0,
+    "migrated": 4,
+    "retired": 0,
+    "byOwner": {
+      "SHARED_CORE": 418,
+      "TOURNAMENT": 0,
+      "TEAM_HUB": 188,
+      "CREATOR": 629,
+      "COMMERCE": 305,
+      "COMMUNITY_EVENTS": 382,
+      "APPLICATIONS_INTAKE": 302,
+      "INVESTOR_ACCESS": 144,
+      "FRONTEND_OR_BUILD_SUPPORT": 62,
+      "LEGACY_COMPATIBILITY": 0,
+      "RETIRE_CANDIDATE": 0,
+      "UNASSIGNED": 0,
+      "UNRESOLVED_SHARED": 191
+    }
+  },
+  "secretScan": {
+    "files": 40,
+    "findings": [],
+    "rawProductionRecordsPersisted": false,
+    "limitation": "Pattern scan and scoped data-handling review do not prove absence of every possible secret encoding."
+  },
+  "scopeDiffCheck": {
+    "passed": true,
+    "unrelatedIssue": "Pre-existing AGENTS.md trailing blank line left unchanged."
+  },
+  "security": {
+    "certificationPassed": true,
+    "cases": 423,
+    "templates": 2,
+    "blocking": [
+      {
+        "policy": "security.ExecutionRole",
+        "issueCode": "INVALID_ACTION",
+        "detail": "The action apigateway:TagResource does not exist."
+      },
+      {
+        "policy": "security.ExecutionBoundary",
+        "issueCode": "INVALID_ACTION",
+        "detail": "The action apigateway:TagResource does not exist."
+      }
+    ],
+    "ownerExceptionAccepted": false,
+    "executionAuthorized": false
+  },
+  "migration": {
+    "receipt": "docs/architecture/team-hub-production-migration-2026-10-24/migration-dry-run-v2.json",
+    "postWriteReverseCertified": false
+  },
+  "executionProposal": {
+    "path": "docs/architecture/team-hub-production-migration-2026-10-24/dark-parity-execution.PROPOSED.json",
+    "sha256": "49418cbce1980ed0eb0987e94f06a5c81a0e9dac0585f241bd452315b0ab2930"
+  },
+  "limitations": [
+    "No installed-role/live dark acceptance of this proposed update",
+    "No source freeze, fence, import, authority transfer or frontend publication",
+    "Full production maintenance and state-aware post-write recovery require separately reviewed pins and authorization"
+  ]
+}

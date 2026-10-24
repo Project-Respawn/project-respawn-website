@@ -1,0 +1,40 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Fixed temporary production cursor proof only; no authority or business data writes",
+  "Resources": {
+    "CursorProbe": {
+      "Type": "AWS::Lambda::Function",
+      "DeletionPolicy": "Delete",
+      "UpdateReplacePolicy": "Delete",
+      "Properties": {
+        "FunctionName": "ProjectRespawn-TeamHub-Production-CursorProof-20261024v1",
+        "Runtime": "nodejs22.x",
+        "Handler": "index.handler",
+        "Architectures": [
+          "arm64"
+        ],
+        "MemorySize": 128,
+        "Timeout": 15,
+        "Role": "arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Production-ParityRead",
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+          "S3Key": "production/cursor-proof/a6c6728ef1b64608db67c158c7a366bbaa7251977e2d3647cdcf299df8ac8f75.zip"
+        },
+        "LoggingConfig": {
+          "LogFormat": "JSON",
+          "LogGroup": "/project-respawn/Production/team-hub/parity-read"
+        },
+        "Tags": [
+          {
+            "Key": "Owner",
+            "Value": "TeamHubProductionCursorProof"
+          },
+          {
+            "Key": "RunId",
+            "Value": "20261024v1"
+          }
+        ]
+      }
+    }
+  }
+}

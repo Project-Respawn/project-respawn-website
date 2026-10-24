@@ -13,10 +13,13 @@ export function decode(items){
  const t=items.find(r=>r.entityType==='TEAM');if(!t){if(items.length)fail('DEPENDENCY_UNAVAILABLE');return undefined;}
  const a={team:pick(t,['id','slug','name','gameKey','status','version','authorizationEpoch','rosterVersion']),memberships:{},roster:[],entries:{},assessments:{},privateNotes:{},intents:{}};
  a.team.settings={plan:t.settings.plan,logoAssetId:t.settings.logoAssetId??''};
+ if(t.id==='team:project-respawn')a.team.settings.plan='PRO';
  for(const r of items){
   if(r.entityType==='MEMBERSHIP'){
    if(r.permissions!==undefined&&!validPermissionList(r.permissions))fail('DEPENDENCY_UNAVAILABLE');
-   a.memberships[r.id]=pick(r,['id','teamId','issuer','subject','displayName','role','status','version','permissions']);
+   if(r.primaryRole!==undefined&&(!['TOP','JUNGLE','MID','ADC','SUPPORT'].includes(r.primaryRole)||!Array.isArray(r.secondaryRoles)||r.secondaryRoles.length>2||new Set(r.secondaryRoles).size!==r.secondaryRoles.length||r.secondaryRoles.some(k=>!['TOP','JUNGLE','MID','ADC','SUPPORT'].includes(k)||k===r.primaryRole)))fail('DEPENDENCY_UNAVAILABLE');
+   if(r.primaryRole===undefined&&r.secondaryRoles!==undefined)fail('DEPENDENCY_UNAVAILABLE');
+   a.memberships[r.id]=pick(r,['id','teamId','issuer','subject','displayName','role','status','version','permissions','primaryRole','secondaryRoles']);
   }
   else if(r.entityType==='ROSTER'&&r.status==='ACTIVE'&&r.slotType!=='STARTER_GUARD')a.roster.push(pick(r,['membershipId','gameRoleKey','slotType']));
   else if(r.entityType==='PLAYER_POOL')a.entries[entryKey(r.membershipId,r.championId)]=pick(r,['teamId','membershipId','championId','gameRoleKey','comfortLevel','priority','competitiveReady','playerNotes','version']);

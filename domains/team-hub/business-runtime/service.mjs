@@ -8,7 +8,7 @@ const canonical = value => JSON.stringify(value && typeof value === 'object' ? A
 const digest = value => createHash('sha256').update(canonical(value)).digest('hex');
 const adminOps = new Set(['CREATE_TEAM', 'UPDATE_TEAM', 'SET_MANAGER', 'SET_TEAM_PLAN']);
 const brandingOps = new Set(['REQUEST_TEAM_LOGO_UPLOAD', 'COMMIT_TEAM_LOGO', 'REMOVE_TEAM_LOGO']);
-const memberOps = { MANAGE_MEMBER: ['MANAGER'], SET_ROSTER_SLOT: ['MANAGER'], LIST_MY_CHAMPION_POOL: ['PLAYER'], UPSERT_MY_CHAMPION: ['PLAYER'], DELETE_MY_CHAMPION: ['PLAYER'], LIST_TEAM_CHAMPION_POOLS: ['MANAGER', 'COACH'], GET_PLAYER_COMPETITIVE_DETAIL: ['MANAGER', 'COACH'], UPSERT_COACH_ASSESSMENT: ['COACH'] };
+const memberOps = { SET_MY_ROLES:['PLAYER'], MANAGE_MEMBER: ['MANAGER'], SET_ROSTER_SLOT: ['MANAGER'], LIST_MY_CHAMPION_POOL: ['PLAYER'], UPSERT_MY_CHAMPION: ['PLAYER'], DELETE_MY_CHAMPION: ['PLAYER'], LIST_TEAM_CHAMPION_POOLS: ['MANAGER', 'COACH'], GET_PLAYER_COMPETITIVE_DETAIL: ['MANAGER', 'COACH'], UPSERT_COACH_ASSESSMENT: ['COACH'] };
 export class TeamService {
   constructor({ repository, core, environment, cursorSecret, permissionsEnabled = false, clock = () => Math.floor(Date.now() / 1000) }) {
     if (cursorSecret!==undefined && (typeof cursorSecret!=='string'||cursorSecret.length<32)) throw new Error('Invalid cursor signing material');
@@ -71,6 +71,8 @@ export class TeamService {
   async execute(op, request, claims, requestId = 'offline-request') {
     if (brandingOps.has(op) || op === 'UPSERT_COACH_ASSESSMENT' && request.privateNote !== '') fail('FORBIDDEN');
     const req = validateRequest(op, request);
+    if(op==='SET_MY_ROLES'&&(req.secondaryRoles.includes(req.primaryRole)||new Set(req.secondaryRoles).size!==req.secondaryRoles.length))fail('INVALID_INPUT');
+    if(op==='SET_TEAM_PLAN'&&req.teamId==='team:project-respawn'&&req.plan!=='PRO')fail('FORBIDDEN');
     const actor = authenticate(claims, this.environment, this.clock());
     const teamId = op === 'CREATE_TEAM' ? `team:${req.slug}` : req.teamId;
     // Slugs map deterministically to stable legacy team IDs; no second caller identity source.
@@ -126,6 +128,7 @@ export class TeamService {
       const version = (actual, expected) => { if (actual !== expected) fail('CONFLICT'); };
       const clearRoster = id => { const before = a.roster.length; a.roster = a.roster.filter(r => r.membershipId !== id); if (before !== a.roster.length) a.team.rosterVersion++; };
       let extra = {};
+      if(op==='SET_MY_ROLES'){if(!m||m.role!=='PLAYER')fail('FORBIDDEN');m.primaryRole=req.primaryRole;m.secondaryRoles=[...req.secondaryRoles];m.version++;extra={membership:project(membershipDTO,m)};}
       if(op==='SET_MEMBER_PERMISSIONS'){
         const target=a.memberships[req.membershipId];
         if(!target||target.status!=='ACTIVE')fail('NOT_FOUND');
@@ -161,6 +164,8 @@ export class TeamService {
         if (!player || player.status !== 'ACTIVE' || player.role !== 'PLAYER') fail('FORBIDDEN');
         version(player.version, req.expectedTargetMembershipVersion); version(a.team.rosterVersion, req.expectedRosterVersion);
         if (req.action === 'ASSIGN') {
+          if(a.roster.some(r=>r.membershipId===req.membershipId))fail('CONFLICT');
+          if(req.slotType==='SUBSTITUTE'&&a.roster.filter(r=>r.slotType==='SUBSTITUTE').length>=3)fail('LIMIT_EXCEEDED');
           if (a.roster.some(r => r.slotType === req.slotType && ((req.slotType === 'STARTER' && (r.gameRoleKey === req.gameRoleKey || r.membershipId === req.membershipId)) || (r.gameRoleKey === req.gameRoleKey && r.membershipId === req.membershipId)))) fail('CONFLICT');
           if (a.roster.length >= 20) fail('LIMIT_EXCEEDED');
           a.roster.push(project(rosterDTO, req));

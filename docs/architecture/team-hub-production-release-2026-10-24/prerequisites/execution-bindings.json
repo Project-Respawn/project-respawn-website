@@ -1,0 +1,145 @@
+{
+  "schemaVersion": "production-team-hub-prerequisite-execution-binding.v1",
+  "status": "REVIEWED_PENDING_EXPLICIT_AUTHORIZATION",
+  "authorized": false,
+  "account": "058264289478",
+  "region": "eu-north-1",
+  "operator": "arn:aws:iam::058264289478:user/RavenTest",
+  "package": {
+    "path": "docs/architecture/team-hub-production-release-2026-10-24/prerequisites/manifest.json",
+    "sha256": "a43e3efaf2efed3758661f0062180e530147b39d068ebe5d110f0bec9c0c1ba2"
+  },
+  "sourceClosure": [
+    {
+      "path": "scripts/team-hub-production-migration/prerequisite-security.mjs",
+      "sha256": "76caa0a9618d731dc7933f7af4f91c005d5e9698a71f95fa648e221ed60fb30c"
+    },
+    {
+      "path": "scripts/team-hub-production-migration/prerequisites.test.mjs",
+      "sha256": "98e719b032ad2d678e2e27e1bea83d83bfe21bba6f474c296db2abe820453bed"
+    },
+    {
+      "path": "scripts/team-hub-production-migration/release-custody.mjs",
+      "sha256": "5f744294d9c19b51da27aa0c1d4529d8ad2db19fe074c8d03489f14c9b45fd9b"
+    },
+    {
+      "path": "scripts/team-hub-production-migration/inventory.mjs",
+      "sha256": "9cf8584f7ef056450ff94758afad5b155e81699d81d94e7db85cae2f14479473"
+    },
+    {
+      "path": "scripts/team-hub-production-migration/transform.mjs",
+      "sha256": "1ddcad93f78fd2df04cb493cd2bbc882aa1b2bcf0649676f495f56ad95a955f5"
+    },
+    {
+      "path": "docs/architecture/team-hub-production-release-2026-10-24/prerequisites/manifest.json",
+      "sha256": "a43e3efaf2efed3758661f0062180e530147b39d068ebe5d110f0bec9c0c1ba2"
+    },
+    {
+      "path": "docs/architecture/team-hub-production-release-2026-10-24/prerequisites/security-review.json",
+      "sha256": "771e375fed371f46a4dcaf6aa190a051f0eee5d046d2b7e0a2c934924bf050e3"
+    },
+    {
+      "path": "docs/architecture/team-hub-production-release-2026-10-24/prerequisites/custody-test.json",
+      "sha256": "1b6499973e1e2c0ed497055d9d83bf76d4ba4a0ab750a996f79588beb7ba62d2"
+    },
+    {
+      "path": "docs/architecture/team-hub-production-release-2026-10-24/prerequisites/cursor-probe.mjs",
+      "sha256": "a9088f7f64c03b026ec556b3a177c5642db0c040a13fdf52b853f84990276ee2"
+    },
+    {
+      "path": "docs/architecture/team-hub-production-release-2026-10-24/prerequisites/a6c6728ef1b64608db67c158c7a366bbaa7251977e2d3647cdcf299df8ac8f75.cursor.zip",
+      "sha256": "a6c6728ef1b64608db67c158c7a366bbaa7251977e2d3647cdcf299df8ac8f75"
+    },
+    {
+      "path": "docs/architecture/team-hub-production-release-2026-10-24/prerequisites/d0adb229dcc705cbcd34250f2bfa666d83bc77dcc9e6ffd065c4d3205566a5d4.template.json",
+      "sha256": "d0adb229dcc705cbcd34250f2bfa666d83bc77dcc9e6ffd065c4d3205566a5d4"
+    }
+  ],
+  "expectedAwsChanges": {
+    "temporaryLambda": 1,
+    "temporaryIam": 0,
+    "permanentIam": 0,
+    "newRetainedBackups": 4,
+    "sourceRecords": 0,
+    "authority": 0,
+    "frontend": 0
+  },
+  "requests": {
+    "publish": {
+      "service": "s3api",
+      "operation": "put-object",
+      "input": {
+        "Bucket": "cdk-hnb659fds-assets-058264289478-eu-north-1",
+        "Key": "production/cursor-proof/a6c6728ef1b64608db67c158c7a366bbaa7251977e2d3647cdcf299df8ac8f75.zip",
+        "IfNoneMatch": "*",
+        "ServerSideEncryption": "AES256",
+        "ChecksumSHA256": "psZyjvG2RgjbZ8FYx6Nmu6pyUZd+LTZHzc8pnfisj3U="
+      },
+      "body": "docs/architecture/team-hub-production-release-2026-10-24/prerequisites/a6c6728ef1b64608db67c158c7a366bbaa7251977e2d3647cdcf299df8ac8f75.cursor.zip"
+    },
+    "createChangeSet": {
+      "StackName": "ProjectRespawn-TeamHub-Production-CursorProof-20261024v1",
+      "ChangeSetName": "cursor-proof-20261024v1",
+      "ChangeSetType": "CREATE",
+      "IncludeNestedStacks": true,
+      "TemplateBody": "{\n  \"AWSTemplateFormatVersion\": \"2010-09-09\",\n  \"Description\": \"Fixed temporary production cursor proof only; no authority or business data writes\",\n  \"Resources\": {\n    \"CursorProbe\": {\n      \"Type\": \"AWS::Lambda::Function\",\n      \"DeletionPolicy\": \"Delete\",\n      \"UpdateReplacePolicy\": \"Delete\",\n      \"Properties\": {\n        \"FunctionName\": \"ProjectRespawn-TeamHub-Production-CursorProof-20261024v1\",\n        \"Runtime\": \"nodejs22.x\",\n        \"Handler\": \"index.handler\",\n        \"Architectures\": [\n          \"arm64\"\n        ],\n        \"MemorySize\": 128,\n        \"Timeout\": 15,\n        \"Role\": \"arn:aws:iam::058264289478:role/ProjectRespawn-TeamHub-Production-ParityRead\",\n        \"Code\": {\n          \"S3Bucket\": \"cdk-hnb659fds-assets-058264289478-eu-north-1\",\n          \"S3Key\": \"production/cursor-proof/a6c6728ef1b64608db67c158c7a366bbaa7251977e2d3647cdcf299df8ac8f75.zip\"\n        },\n        \"LoggingConfig\": {\n          \"LogFormat\": \"JSON\",\n          \"LogGroup\": \"/project-respawn/Production/team-hub/parity-read\"\n        },\n        \"Tags\": [\n          {\n            \"Key\": \"Owner\",\n            \"Value\": \"TeamHubProductionCursorProof\"\n          },\n          {\n            \"Key\": \"RunId\",\n            \"Value\": \"20261024v1\"\n          }\n        ]\n      }\n    }\n  }\n}\n"
+    },
+    "invoke": {
+      "FunctionName": "ProjectRespawn-TeamHub-Production-CursorProof-20261024v1",
+      "InvocationType": "RequestResponse",
+      "Payload": "{}"
+    },
+    "createBackups": [
+      {
+        "TableName": "Team-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "BackupName": "ProjectRespawn-TeamHub-Production-R3-20261024-Team"
+      },
+      {
+        "TableName": "TeamMembership-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "BackupName": "ProjectRespawn-TeamHub-Production-R3-20261024-TeamMembership"
+      },
+      {
+        "TableName": "TeamRosterSlot-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "BackupName": "ProjectRespawn-TeamHub-Production-R3-20261024-TeamRosterSlot"
+      },
+      {
+        "TableName": "PlayerChampionPoolEntry-lte47f3mgbbvxehfgz476en3xy-NONE",
+        "BackupName": "ProjectRespawn-TeamHub-Production-R3-20261024-PlayerChampionPoolEntry"
+      }
+    ],
+    "cleanup": {
+      "StackName": "ProjectRespawn-TeamHub-Production-CursorProof-20261024v1"
+    }
+  },
+  "gates": [
+    "Explicit approval of this binding and fresh attended 60-minute window; no concurrent administrative or Team edits",
+    "Verify every closure hash, fresh RavenTest identity, all source TableIds/digests/protections/backups, authority 1/1, empty Operational and existing Journal only",
+    "Fresh complete protected-domain/Core/Cognito/Master baseline, Read/Command installed-policy equivalence, quota and exact function/stack/backup-name collision checks",
+    "Inspect complete AWS-generated CREATE change set: exactly CursorProbe Add, zero unexpected changes; no permanent execution-role alteration",
+    "Verify installed function code, role, full configuration, no trigger/function URL/resource policy and no unexpected resources",
+    "One empty-input invocation; require all nine true plus actual Secrets Manager request ID; preserve available audit correlation without asserting missing events",
+    "No automatic write retry after failure or ambiguity. Record intents before each publication/deployment/invocation/CreateBackup",
+    "Delete only receipt-owned exact temporary stack after terminal invocation; verify function/stack absence; preserve audit evidence",
+    "Four exact CreateBackup requests once, each AVAILABLE/source ARN/TableId/name readback; retain all R1 and new backups",
+    "Capture records in memory; validate transformation and source digest stability; owner-only CurrentUser-DPAPI encryption and independent decrypt/digest verification; no plaintext or personal data in Git",
+    "Recheck preservation; stop and record partial completion if any gate fails. Do not delete successful backups or disable protections"
+  ],
+  "approvalExcludes": [
+    "permanent IAM changes",
+    "production runtime or product/security-stack changes",
+    "source record/configuration changes",
+    "authority transitions",
+    "source fences",
+    "business import or mutations",
+    "Cognito administration",
+    "Master merge/publication",
+    "Legacy retirement"
+  ],
+  "limitations": [
+    "Read-role reuse retains its existing permissions; fixed reviewed code performs only the exact secret retrieval and local cursor checks. No IAM attenuation or new runtime grants.",
+    "The approved RavenTest operator has broader pre-existing account permissions; fixed executor scope is not an IAM boundary for that operator.",
+    "Successful Secrets Manager retrieval and checks are actual decryption-path evidence; simulations alone are not. Preserve KMS audit correlation if available; never invent missing events.",
+    "Probe success is not end-to-end TARGET_WRITER pagination or real Core business authorization.",
+    "Native backups are independent table capture points. AVAILABLE is not proof of a new restore; CurrentUser-DPAPI capture is owner/machine-bound verification, not portable DR."
+  ]
+}

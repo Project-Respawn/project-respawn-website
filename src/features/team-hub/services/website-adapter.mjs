@@ -18,6 +18,7 @@ export function createWebsiteAdapter({client,identity,newKey=()=>crypto.randomUU
  }
  return Object.freeze({clear,getTeamHub,
   async getTeamPermissions(teamId){const r=await call('GET_TEAM_PERMISSIONS',{teamId});const context=contexts.get(teamId);if(context)context.team=r.team;return r;},
+  async setMyPlayableRoles({teamId,primaryRole,secondaryRoles,expectedRevision}){const context=contexts.get(teamId);if(!context||expectedRevision!==context.team.version)throw Error('Team Hub changed; refresh and try again');return mutate('SET_MY_ROLES',{...await concurrency(teamId),primaryRole,secondaryRoles});},
   async setMemberPermissions({teamId,membershipId,permissions,expectedTargetMembershipVersion}){return mutate('SET_MEMBER_PERMISSIONS',{...await concurrency(teamId),membershipId,permissions,expectedTargetMembershipVersion});},
   async listMyTeams(input={}){const r=await call('LIST_MY_TEAMS',input);return {...r,items:await Promise.all(r.items.map(async item=>{const context=await getTeamHub({teamId:item.id});return {...team(item),role:context.teamRole??(context.isPlatformAdmin?'ADMIN':null)};}))};},
   async createTeam(input){const r=await call('CREATE_TEAM',{...input,idempotencyKey:newKey()});return team(r.team);},

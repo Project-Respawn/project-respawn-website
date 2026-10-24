@@ -1,0 +1,74 @@
+{
+  "accepted": true,
+  "sourceCount": 125,
+  "targetCount": 120,
+  "sourceDigest": "d47487803de59ad87e34b3173ff9c08d8d8c9f8ef1d6aa27012b6046daba9f78",
+  "targetDigest": "935e171240af2e3bae2890c422823b38aada2b9f4e6282462c5be2c953b0e543",
+  "sourceCategories": {
+    "EMPTY_FIXED_CELL_IN_RECOVERY": 5,
+    "RULES_CONTROL_IN_RECOVERY": 1,
+    "TARGET_ENTITY": 119
+  },
+  "targetTypes": {
+    "MEMBERSHIP": 8,
+    "PLAYER_POOL": 101,
+    "ROSTER": 9,
+    "SLUG": 1,
+    "TEAM": 1
+  },
+  "allSourceRowsAccounted": true,
+  "rawRecordsPersisted": false,
+  "warnings": [
+    "ACCEPTED_DEFAULT_SETTINGS_REVISION_ZERO"
+  ],
+  "recoveryRequired": true,
+  "roundTrip": true,
+  "aggregateDecoded": true,
+  "sourceCounts": [
+    {
+      "model": "Team",
+      "count": 1,
+      "digest": "7f5c561beb8e50f1d1d5d57ced10dbd6ca453d0c41bc75e317e8e492561d65d2"
+    },
+    {
+      "model": "TeamMembership",
+      "count": 8,
+      "digest": "70f37ff906963398fe56fd06a9621828dbff2be24c8021404a35482057db765d"
+    },
+    {
+      "model": "TeamRosterSlot",
+      "count": 15,
+      "digest": "d86b00d840c53bb6e3d070b4ab2634894fcb0763b4ea99403fc3cb0c3fe47f7f"
+    },
+    {
+      "model": "PlayerChampionPoolEntry",
+      "count": 101,
+      "digest": "e528b302bcc24166974dfa52e3f7a68db3795d04aef83eca1a0139b6c36b8131"
+    }
+  ],
+  "sourceProtectionsVerified": true,
+  "sourceChangedSinceInitialInventory": false,
+  "poolMaximumPerMember": 36,
+  "inactiveMemberPoolsRetained": 24,
+  "sourceNullFields": {
+    "Team": {},
+    "TeamMembership": {
+      "revokedByUserId": 7,
+      "revokedAt": 7
+    },
+    "TeamRosterSlot": {
+      "deactivatedAt": 4
+    },
+    "PlayerChampionPoolEntry": {
+      "playerNotes": 101
+    }
+  },
+  "awsWrites": 0,
+  "authority": {
+    "mode": "LEGACY_WRITER",
+    "epoch": 1,
+    "version": 1
+  },
+  "currentReadProjectionsValidated": true,
+  "notesNormalization": "Legacy null/absent playerNotes projects as empty string; original nulls retained in recovery"
+}
